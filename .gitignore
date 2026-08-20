@@ -4,6 +4,8 @@
 *.vvp
 __pycache__/
 .DS_Store
+# ngspice BSIM4 parameter-check scratch file, written to the invocation cwd
+bsim4v5.out
 
 # sim/ harness: per-corner ngspice logs under corners/ are committed evidence
 # (append-only record trail), so they escape the *.log rule.

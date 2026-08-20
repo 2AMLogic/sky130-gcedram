@@ -1,0 +1,55 @@
+* sky130-gcedram -- access-device off-state leakage testbench
+* Issue #2: retention/refresh budget evidence chain, link 1 of 3
+* (device leakage -> storage-node capacitance assumption -> retention
+* derivation in #3). See sim/leakage/README.md for the full writeup.
+*
+* Device under test: sky130_fd_pr__nfet_01v8 (sky130 core 1.8V NMOS),
+* the candidate 2T/3T gain-cell access device -- see sim/leakage/README.md
+* "Device choice" for the rationale. Geometry: W=0.42um L=0.15um, the
+* minimum drawn size for this model (an explicit sizing ASSUMPTION,
+* revisited by the retention derivation in #3, not a ratified spec value).
+*
+* Bias point (worst-case retention scenario -- access transistor holding
+* off a storage node that was last written to a logic '1', unselected
+* bitline sitting at ground):
+*   gate (wl)            = 0 V   -- access transistor held OFF
+*   drain (sn, storage)  = VDD   -- storage node holds a charged logic '1'
+*   source (bl)          = 0 V   -- unselected bitline, maximizes Vds
+*   body                 = 0 V   -- core NMOS, body tied to substrate/VSS
+*
+* Reports the DC current drawn from the storage-node source (vsn), which
+* is the total off-state leakage discharging that node: BSIM4 subthreshold
+* channel current plus the reverse-biased drain-body junction diode current
+* (diomod=1 in the shipped model). Gate leakage is NOT captured -- the
+* shipped sky130_fd_pr__nfet_01v8 model sets igcmod=igbmod=0 (no gate
+* tunneling current model in this PDK release); this is a modeling-scope
+* limitation, noted here, not folded into the reported number.
+*
+* Corner and temperature are substituted by
+* sim/leakage/run_leakage_sweep.py -- @@CORNER@@ in {tt, ss, ff, sf, fs}
+* (the sky130 MOS process corners shipped in
+* libs.tech/combined/sky130.lib.spice) and @@TEMP_C@@ in {-40, 27, 125}
+* (the temperature points named in the shipped
+* libs.tech/irsim/*_{n40,27,125}.prm corner files, and the range the
+* sky130-bandgap ratified spec uses for retention/temperature claims).
+* Uses ONLY this .lib include from the shipped PDK -- no local model edits.
+
+.param VDD = 1.8
+
+.lib "@@PDK_NGSPICE_LIB@@" @@CORNER@@
+
+.temp @@TEMP_C@@
+
+xdut sn wl bl 0 sky130_fd_pr__nfet_01v8 l=0.15 w=0.42
+
+vsn sn 0 dc {VDD}
+vwl wl 0 dc 0
+vbl bl 0 dc 0
+
+.control
+op
+let ileak_a = abs(i(vsn))
+print ileak_a
+.endc
+
+.end
