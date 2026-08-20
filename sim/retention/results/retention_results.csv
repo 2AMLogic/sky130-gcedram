@@ -1,0 +1,3 @@
+timestamp_utc,repo_git_sha,geometry_name,topology,leakage_source_row,leakage_ileak_a,device,w_um,l_um,toxe_m,epsrox,cox_ff_per_um2,c_gate_read_transistor_ff,c_storage_node_margin_factor_ASSUMPTION,c_storage_node_ff_ASSUMPTION,delta_v_sense_margin_v_ASSUMPTION,retention_time_s,notes
+2026-08-20T22:38:54+00:00,46c07a4,2T-min,2T,"corner=sf,temp_c=125",9.898880e-11,sky130_fd_pr__nfet_01v8,0.42,0.15,3.932304e-09,3.9,8.781450,0.553231,2.0,1.106463,0.9,1.005989e-05,
+2026-08-20T22:38:54+00:00,46c07a4,3T-min,3T,"corner=sf,temp_c=125",9.898880e-11,sky130_fd_pr__nfet_01v8,0.42,0.15,3.932304e-09,3.9,8.781450,0.553231,4.0,2.212925,0.9,2.011978e-05,

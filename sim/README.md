@@ -31,3 +31,23 @@ This is the leakage half of the evidence chain `CLAUDE.md` requires
 before any retention-time number can be claimed; the storage-node
 capacitance assumption and the retention derivation itself are tracked in
 issue #3.
+
+## `retention/` -- retention-time derivation for candidate 2T/3T geometries (issue #3)
+
+Second and third links in the retention/refresh budget evidence chain:
+combines the measured worst-case leakage above with an explicitly labelled
+storage-node capacitance ASSUMPTION (no layout exists yet to extract one
+from) to derive retention-time estimates for a `2T-min` and a `3T-min`
+candidate gain-cell geometry, at the worst-case temperature corner. See
+[`retention/README.md`](retention/README.md) for the full derivation
+(formula, inputs, and which numbers are measured vs. computed vs.
+assumed); results are in
+[`retention/results/retention_results.csv`](retention/results/retention_results.csv).
+
+Quick start (requires the same PDK install as `leakage/`, no ngspice
+invocation needed):
+
+```bash
+python3 sim/retention/derive_retention.py --check-env
+python3 sim/retention/derive_retention.py
+```
