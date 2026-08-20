@@ -207,8 +207,8 @@ derivation is re-run ... if #2's numbers change."
 
 - **Post-layout parasitic re-derivation**: once a layout exists for this
   macro's bitcell, the `C_SN` margin-factor assumption above should be
-  replaced with an extracted value and this derivation re-run. Tracked as
-  a follow-up issue rather than expanding this issue's scope.
+  replaced with an extracted value and this derivation re-run. Tracked in
+  #7 rather than expanding this issue's scope.
 - **Sense-amplifier-derived sense margin**: once a sense-amplifier design
   exists for this macro, `delta_V_ASSUMPTION` should be replaced with a
   value validated against that circuit's actual offset/noise budget.
