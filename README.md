@@ -6,9 +6,10 @@ CMOS PDK — designed by AI agents driving
 [klayout-tools](https://github.com/2AMLogic/klayout-tools) and the
 open-source xschem + ngspice flow.
 
-**Status: just opened.** Nothing is designed yet. The first work is the
-retention/refresh budget — the leakage study that everything else in this
-repo depends on.
+**Status: retention/refresh budget ratified.** No schematics or layout exist
+yet. The leakage study that everything else in this repo depends on is done
+and its evidence chain is ratified in `spec/`; bitcell + array simulation is
+the next work.
 
 **Built agent-native.** Every specification, decision record, testbench, and
 line of documentation here is produced by AI agents working from a ratified
@@ -44,26 +45,27 @@ periphery — is a mixed-signal layout workout, exactly the kind of work that
 surfaces tool friction for
 [klayout-tools](https://github.com/2AMLogic/klayout-tools) to absorb.
 
-## Target specification (DRAFT — engineering to ratify)
+## Target specification
 
-The spec is deliberately thin until the retention study lands. Retention is
-not a number to be targeted first and justified later; it is *derived* from
-the measured leakage of the access device against the shipped sky130 models,
-and the bitcell topology decision (2T vs 3T) follows from that derivation.
+The retention/refresh budget has been ratified (issue #5): retention is
+*derived* from the measured leakage of the access device against the shipped
+sky130 models, not targeted first and justified later, and the bitcell
+topology decision (2T vs 3T) follows from that derivation. Full evidence
+chain and rationale: [`spec/retention-refresh-budget.md`](spec/retention-refresh-budget.md).
 
 | Parameter | Position |
 |---|---|
-| Bitcell topology | 2T or 3T — decided by the retention study, recorded in `spec/` |
-| Retention time | Derived, not targeted: leakage evidence chain at the worst-case temperature corner |
-| Refresh budget | Set by the ratified retention figure; stated as bandwidth overhead |
+| Bitcell topology | **2T, ratified.** Retention evidence is topology-neutral once a pre-layout capacitance assumption is discounted; density (a hard requirement to beat 6T SRAM on area) decides it. See [`spec/retention-refresh-budget.md`](spec/retention-refresh-budget.md) § 6. |
+| Retention time | **~10.06 µs, worst case** (`sf` corner, 125 °C), pre-layout single-cell estimate. See [`spec/retention-refresh-budget.md`](spec/retention-refresh-budget.md) § 5. |
+| Refresh budget | Refresh interval ≤ **~5.03 µs** (worst case, 2x margin assumption); bandwidth-overhead formula ratified, numeric percentage pending array/periphery design. See [`spec/retention-refresh-budget.md`](spec/retention-refresh-budget.md) § 7. |
 | Supply | sky130 standard 1.8 V core; boosted wordline is a design decision to record |
-| Density vs SRAM | Must beat a 6T SRAM bitcell on area to justify existing; comparison against public [OpenRAM](https://openram.org/) documentation |
+| Density vs SRAM | Must beat a 6T SRAM bitcell on area to justify existing; comparison against public [OpenRAM](https://openram.org/) documentation — not yet performed |
 | Temperature range | Corners per the shipped sky130 model set; retention claims at worst case, never typical |
 
 Maturity ladder: retention study → spec ratified → bitcell + array simulated
 across PVT → sense/refresh periphery → layout DRC/LVS-clean → post-layout
 re-verification → shuttle seat → measured silicon. **Current position:
-pre-spec, retention study first.**
+retention/refresh budget ratified — bitcell + array simulation next.**
 
 ## Repo layout
 
