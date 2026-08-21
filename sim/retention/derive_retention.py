@@ -48,11 +48,14 @@ import argparse
 import csv
 import datetime
 import re
-import subprocess
 import sys
 from pathlib import Path
 
 SIM_RETENTION_DIR = Path(__file__).resolve().parent
+
+sys.path.insert(0, str(SIM_RETENTION_DIR.parent))
+from _evidence_common import append_result, repo_git_sha, resolve_pdk_root
+
 LEAKAGE_CSV = SIM_RETENTION_DIR.parent / "leakage" / "results" / "leakage_results.csv"
 RESULTS_CSV = SIM_RETENTION_DIR / "results" / "retention_results.csv"
 
@@ -138,17 +141,6 @@ TOXE_RE = re.compile(r"toxe\s*=\s*\{\s*([0-9.eE+-]+)\s*\+\s*MC_MM_SWITCH")
 EPSROX_RE = re.compile(r"epsrox\s*=\s*([0-9.eE+-]+)")
 
 
-def resolve_pdk_root(cli_pdk_root: str | None) -> Path:
-    if cli_pdk_root:
-        return Path(cli_pdk_root).expanduser()
-    import os
-
-    env_root = os.environ.get("PDK_ROOT")
-    if env_root:
-        return Path(env_root).expanduser()
-    return Path("~/.volare").expanduser()
-
-
 def resolve_model_file(pdk_root: Path, model_variant: str, corner: str) -> Path:
     return pdk_root / model_variant / MODEL_REL_DIR / f"{DEVICE}__{corner}.pm3.spice"
 
@@ -192,20 +184,6 @@ def load_worst_case_leakage(leakage_csv: Path) -> dict:
     return max(rows, key=lambda r: float(r["ileak_a"]))
 
 
-def repo_git_sha() -> str:
-    try:
-        out = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            capture_output=True,
-            text=True,
-            cwd=SIM_RETENTION_DIR,
-            timeout=10,
-        )
-        return out.stdout.strip() or "unknown"
-    except Exception:
-        return "unknown"
-
-
 def compute_cox_and_cgate(toxe_m: float, epsrox: float, w_um: float, l_um: float):
     """COMPUTED (not assumed): gate-oxide capacitance per unit area and the
     resulting gate capacitance of a device with the given drawn W/L, from
@@ -217,18 +195,6 @@ def compute_cox_and_cgate(toxe_m: float, epsrox: float, w_um: float, l_um: float
     c_gate_f = cox_area_f_per_m2 * (w_um * 1e-6) * (l_um * 1e-6)
     c_gate_ff = c_gate_f * 1e15
     return cox_area_ff_per_um2, c_gate_ff
-
-
-def append_result(row: dict) -> None:
-    """Append a single result row; never truncates or rewrites existing
-    rows, per CLAUDE.md's 'sim/ results are append-only evidence.'"""
-    RESULTS_CSV.parent.mkdir(parents=True, exist_ok=True)
-    write_header = not RESULTS_CSV.exists()
-    with RESULTS_CSV.open("a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_FIELDS, lineterminator="\n")
-        if write_header:
-            writer.writeheader()
-        writer.writerow(row)
 
 
 def check_env(leakage_csv: Path, model_file: Path) -> bool:
@@ -307,7 +273,7 @@ def main(argv: list[str] | None = None) -> int:
     toxe_m, epsrox = parse_toxe_epsrox(model_file)
     cox_ff_per_um2, c_gate_ff = compute_cox_and_cgate(toxe_m, epsrox, w_um, l_um)
 
-    sha = repo_git_sha()
+    sha = repo_git_sha(SIM_RETENTION_DIR)
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat(
         timespec="seconds"
     )
@@ -358,7 +324,7 @@ def main(argv: list[str] | None = None) -> int:
             "retention_time_s": f"{retention_s:.6e}",
             "notes": "",
         }
-        append_result(row)
+        append_result(RESULTS_CSV, CSV_FIELDS, row)
         n_written += 1
 
     print(f"\nAppended {n_written} rows to {RESULTS_CSV}")
