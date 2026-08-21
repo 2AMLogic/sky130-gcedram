@@ -29,7 +29,6 @@ CLAUDE.md's "sim/ results are append-only evidence."
 from __future__ import annotations
 
 import argparse
-import csv
 import datetime
 import os
 import re
@@ -39,6 +38,10 @@ import tempfile
 from pathlib import Path
 
 SIM_LEAKAGE_DIR = Path(__file__).resolve().parent
+
+sys.path.insert(0, str(SIM_LEAKAGE_DIR.parent))
+from _evidence_common import append_result, repo_git_sha, resolve_pdk_root
+
 TEMPLATE_PATH = SIM_LEAKAGE_DIR / "tb_access_leakage.spice.tmpl"
 RESULTS_CSV = SIM_LEAKAGE_DIR / "results" / "leakage_results.csv"
 CSV_FIELDS = [
@@ -69,15 +72,6 @@ DEFAULT_PDK_VARIANT = "sky130A"
 PDK_OPEN_PDKS_COMMIT = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
 
 ILEAK_RE = re.compile(r"ileak_a\s*=\s*([0-9.eE+-]+)")
-
-
-def resolve_pdk_root(cli_pdk_root: str | None) -> Path:
-    if cli_pdk_root:
-        return Path(cli_pdk_root).expanduser()
-    env_root = os.environ.get("PDK_ROOT")
-    if env_root:
-        return Path(env_root).expanduser()
-    return Path("~/.volare").expanduser()
 
 
 def resolve_ngspice_lib(pdk_root: Path, variant: str) -> Path:
@@ -127,20 +121,6 @@ def ngspice_version() -> str:
         return "unknown"
 
 
-def repo_git_sha() -> str:
-    try:
-        out = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            capture_output=True,
-            text=True,
-            cwd=SIM_LEAKAGE_DIR,
-            timeout=10,
-        )
-        return out.stdout.strip() or "unknown"
-    except Exception:
-        return "unknown"
-
-
 def render_netlist(ngspice_lib: Path, corner: str, temp_c: int) -> str:
     template = TEMPLATE_PATH.read_text()
     return (
@@ -178,20 +158,6 @@ def run_one(ngspice_lib: Path, corner: str, temp_c: int) -> float:
             os.unlink(netlist_path)
         except OSError:
             pass
-
-
-def append_result(row: dict) -> None:
-    """Append a single result row immediately, so partial sweeps (e.g. an
-    interrupted run) still leave committed-quality evidence for the points
-    that did complete, instead of losing everything to an all-at-the-end
-    write. Never truncates or rewrites existing rows."""
-    RESULTS_CSV.parent.mkdir(parents=True, exist_ok=True)
-    write_header = not RESULTS_CSV.exists()
-    with RESULTS_CSV.open("a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_FIELDS, lineterminator="\n")
-        if write_header:
-            writer.writeheader()
-        writer.writerow(row)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -241,7 +207,7 @@ def main(argv: list[str] | None = None) -> int:
     corners = [c.strip() for c in args.corners.split(",") if c.strip()]
     temps_c = [int(t.strip()) for t in args.temps_c.split(",") if t.strip()]
 
-    sha = repo_git_sha()
+    sha = repo_git_sha(SIM_LEAKAGE_DIR)
     ver = ngspice_version()
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat(
         timespec="seconds"
@@ -276,7 +242,7 @@ def main(argv: list[str] | None = None) -> int:
                 "ngspice_version": ver,
                 "notes": "",
             }
-            append_result(row)
+            append_result(RESULTS_CSV, CSV_FIELDS, row)
             n_written += 1
 
     if args.dry_run:
