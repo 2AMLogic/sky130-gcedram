@@ -1,0 +1,27 @@
+* gain_cell_2t.spice -- 2T gain-cell bitcell netlist, derived (issue #14).
+* Regenerate with: ./design/regen_netlist.sh (requires PDK_ROOT/PDK, see
+* design/README.md). --check verifies this file is not stale relative to
+* a fresh regeneration from design/gain_cell_2t.sch -- staleness is failure.
+*
+* Provenance: sha256 of the source schematic this netlist derives from
+* (reproduce with: sha256sum design/gain_cell_2t.sch). This is the
+* file-content hash, not a git commit reference, so it stays meaningful
+* in a shallow clone and does not drift when an unrelated commit
+* elsewhere touches HEAD.
+*   design/gain_cell_2t.sch: sha256:1e778b714b4eeb3433afd6b5785cc22b47c41a29d832522e8f5874c31f98927e
+*
+* Every device instance below is sky130_fd_pr__nfet_01v8 -- verified
+* mechanically by this script, not by review alone.
+** sch_path: design/gain_cell_2t.sch
+**.subckt gain_cell_2t wl bl rwl rbl
+*.ipin wl
+*.ipin bl
+*.ipin rwl
+*.opin rbl
+XM_WR sn wl bl GND sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1 m=1
+XM_RD rbl sn rwl GND sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619
++ nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1 m=1
+**.ends
+.GLOBAL GND
+.end
