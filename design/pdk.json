@@ -1,0 +1,24 @@
+{
+  "_comment": [
+    "PDK version pin for the sky130-gcedram design sources (issue #14).",
+    "Same pin as sim/leakage/pdk.json -- reused unmodified so the schematic",
+    "and its derived netlist resolve against the exact same shipped model",
+    "set the retention/refresh evidence chain (spec/retention-refresh-budget.md)",
+    "was measured against. No reason for design/ to diverge from sim/'s pin.",
+    "family            sky130 PDK family (via volare -- a stock open_pdks",
+    "                  distribution, not a local fork)",
+    "variant           sky130 flavor directory to use (A/B differ in metal",
+    "                  stack only; irrelevant to schematic capture/netlisting)",
+    "open_pdks_commit  the volare version hash design/gain_cell_2t.sch and",
+    "                  its derived netlist are pinned against",
+    "install_command   reproduces this exact install",
+    "default_pdk_root  fallback PDK_ROOT if $PDK_ROOT is unset",
+    "xschem_pdk_rc     the PDK's own xschemrc, sourced by design/xschemrc"
+  ],
+  "family": "sky130",
+  "variant": "sky130A",
+  "open_pdks_commit": "c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+  "install_command": "volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+  "default_pdk_root": "~/.volare",
+  "xschem_pdk_rc": "libs.tech/xschem/xschemrc"
+}

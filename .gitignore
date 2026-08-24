@@ -11,6 +11,7 @@ bsim4v5.out
 # (append-only record trail), so they escape the *.log rule.
 !sim/*/corners/**/*.log
 sim/build/
+design/build/
 # synthesis / P&R scratch
 flow/build/
 # local klt install, created by the setup script
