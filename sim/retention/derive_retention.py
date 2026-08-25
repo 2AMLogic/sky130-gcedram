@@ -2,14 +2,15 @@
 """Retention-time derivation for candidate 2T/3T gain-cell geometries (issue #3).
 
 Second and third links in the retention/refresh budget evidence chain
-CLAUDE.md requires: a storage-node capacitance ASSUMPTION (explicitly not a
-measured quantity) combined with the measured worst-case access-device
-leakage from sim/leakage/ (issue #2) to derive a retention-time estimate,
-at the worst-case temperature corner, for named candidate 2T/3T geometries.
+CLAUDE.md requires: a storage-node capacitance value combined with the
+measured worst-case access-device leakage from sim/leakage/ (issue #2) to
+derive a retention-time estimate, at the worst-case temperature corner, for
+named candidate 2T/3T geometries.
 
 This is a derivation/write-up script, not a simulation driver: it does not
-invoke ngspice. It does two things, kept clearly separate per CLAUDE.md's
-"a retention number without its chain is not a result":
+invoke ngspice, and it does not invoke `klt` either. It does three things,
+kept clearly separate per CLAUDE.md's "a retention number without its chain
+is not a result":
 
   1. COMPUTED (not assumed): the gate-oxide capacitance of the read
      transistor's gate, from the same minimum-geometry access device
@@ -20,13 +21,28 @@ invoke ngspice. It does two things, kept clearly separate per CLAUDE.md's
      reproducible number derived from public PDK model constants -- not a
      simulation result, but not an assumption either.
 
-  2. ASSUMED (explicitly labelled): the *total* storage-node capacitance
-     per candidate geometry, expressed as a margin factor over the
-     computed gate-oxide term above. No layout exists yet for this macro,
-     so junction, overlap, and routing parasitics cannot be extracted --
-     this repo assumes a margin factor per topology (see MARGIN_FACTORS
-     below) informed by qualitative topology reasoning, not measurement.
-     This assumption is revisited once a layout exists to extract from.
+  2. EXTRACTED (issue #7, `2T-min` only): the *total* storage-node
+     capacitance for the `2T-min` geometry, read from a committed
+     post-layout `klt extract --parasitics --critical-net sn` run against
+     `layout/gain_cell_2t.gds` (see EXTRACTED_C_SN_SOURCES below) -- the
+     storage node's lumped ground capacitance (junction + overlap +
+     routing-to-substrate, from the deck's curated sheet-capacitance
+     table) plus every same-layer lateral coupling capacitor the
+     `--critical-net sn` pass resolved onto `sn` (real physical
+     capacitance hanging off the storage node, even though its other
+     terminal is a named net rather than ground). This replaces the
+     margin-factor ASSUMPTION below for `2T-min`, now that a bitcell
+     layout exists to extract from (see load_extracted_c_sn()).
+
+  3. ASSUMED (explicitly labelled, `3T-min` only): the *total* storage-node
+     capacitance, expressed as a margin factor over the computed
+     gate-oxide term above. No `3T-min` layout exists yet for this macro
+     (3T is a documented alternative, not the ratified baseline -- see
+     spec/retention-refresh-budget.md Section 6), so junction, overlap,
+     and routing parasitics cannot be extracted for it -- this repo
+     assumes a margin factor (see MARGIN_FACTORS below) informed by
+     qualitative topology reasoning, not measurement. This assumption is
+     revisited once a `3T-min` layout exists to extract from.
 
 Usage:
     python3 sim/retention/derive_retention.py
@@ -34,12 +50,18 @@ Usage:
     python3 sim/retention/derive_retention.py --pdk-root /path/to/.volare
 
 Stdlib only, no virtualenv required. Reads (never modifies)
-sim/leakage/results/leakage_results.csv and the shipped sky130 PDK model
-card resolved from $PDK_ROOT/--pdk-root -- no local model edits.
+sim/leakage/results/leakage_results.csv, the shipped sky130 PDK model card
+resolved from $PDK_ROOT/--pdk-root, and the committed post-layout
+parasitics-extraction JSON under layout/ -- no local model or layout edits.
 
 This script never overwrites sim/retention/results/retention_results.csv --
 it always appends (creating the file with a header on first run), per
-CLAUDE.md's "sim/ results are append-only evidence."
+CLAUDE.md's "sim/ results are append-only evidence." The CSV schema (column
+names/order) is unchanged from issue #3 so the header line and all
+previously-committed rows stay byte-identical; per the `_ASSUMPTION`-suffixed
+columns' provenance being repurposed (not renamed) for the extracted
+`2T-min` rows, see load_extracted_c_sn()'s docstring and the `notes` column
+each such row carries.
 """
 
 from __future__ import annotations
@@ -47,11 +69,13 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime
+import json
 import re
 import sys
 from pathlib import Path
 
 SIM_RETENTION_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SIM_RETENTION_DIR.parent.parent
 
 sys.path.insert(0, str(SIM_RETENTION_DIR.parent))
 from _evidence_common import append_result, repo_git_sha, resolve_pdk_root
@@ -110,22 +134,55 @@ EPS0 = 8.8541878128e-12  # F/m, vacuum permittivity (physical constant)
 #     storage-node routing than the 2T layout, so this repo assumes a
 #     larger routing/coupling capacitance margin for the 3T candidate.
 #
-# Both margin factors are ASSUMPTIONS, not measurements or extractions:
-# no layout exists yet for this macro, so junction, overlap, and routing
-# parasitics on the storage node cannot be extracted from a real layout.
-# The margin is expressed relative to the one component this script CAN
-# compute from public PDK model data -- the read transistor's gate-oxide
-# capacitance (see compute_cox_and_cgate below) -- covering the storage
-# node's other real contributors (M1's drain-body junction capacitance,
-# overlap capacitance, and local routing) that pre-layout sizing has no
-# extractable value for.
+# Both margin factors were ASSUMPTIONS, not measurements or extractions,
+# when this repo had no bitcell layout at all (issue #3). Issue #7 replaced
+# `2T-min`'s entry with an EXTRACTED value (see EXTRACTED_C_SN_SOURCES /
+# load_extracted_c_sn() below) now that a `2T-min` layout exists --
+# `MARGIN_FACTORS["2T-min"]` below is therefore no longer read by main()
+# (kept only as a documented historical reference for the assumption it
+# replaced). `3T-min` has no layout yet (3T is a documented alternative,
+# not the ratified baseline -- spec/retention-refresh-budget.md Section 6),
+# so it remains on the margin-factor ASSUMPTION path: expressed relative to
+# the one component this script CAN compute from public PDK model data --
+# the read transistor's gate-oxide capacitance (see compute_cox_and_cgate
+# below) -- covering the storage node's other real contributors (M1's
+# drain-body junction capacitance, overlap capacitance, and local routing)
+# that pre-layout sizing has no extractable value for.
 MARGIN_FACTORS = {
-    "2T-min": 2.0,
+    "2T-min": 2.0,  # historical (issue #3); superseded by EXTRACTED_C_SN_SOURCES, issue #7
     "3T-min": 4.0,
 }
 TOPOLOGY = {
     "2T-min": "2T",
     "3T-min": "3T",
+}
+
+# --- EXTRACTED block (issue #7): post-layout storage-node parasitics -----
+#
+# `2T-min` now has a committed sky130 bitcell layout (layout/gain_cell_2t.gds,
+# issue #15/PR #18) and a committed post-layout parasitics extraction run
+# against it (layout/gain_cell_2t.extract.parasitics.json), produced via:
+#
+#   klt extract layout/gain_cell_2t.gds --deck sky130 \
+#       --top gain_cell_2t_layout_0 --parasitics --critical-net sn \
+#       -o layout/gain_cell_2t.extract.parasitics.spice --format json
+#
+# (`--critical-net sn` scopes the lateral same-layer coupling-capacitance
+# pass onto the storage node, since `sn` couples to the adjacent `bl`/`rwl`
+# routing in the routed layout; verified against locally installed
+# `klt 0.3.0` -- see docs/cli/extract.md in 2AMLogic/klayout-tools for the
+# flag contract.) `3T-min` has no layout, so it is intentionally absent
+# from this mapping and stays on the MARGIN_FACTORS ASSUMPTION path above.
+EXTRACTED_C_SN_SOURCES = {
+    "2T-min": {
+        "extract_json": REPO_ROOT / "layout" / "gain_cell_2t.extract.parasitics.json",
+        "net": "sn",
+        "command": (
+            "klt extract layout/gain_cell_2t.gds --deck sky130 "
+            "--top gain_cell_2t_layout_0 --parasitics --critical-net sn "
+            "-o layout/gain_cell_2t.extract.parasitics.spice --format json"
+        ),
+    },
 }
 
 # Sense margin: the storage-node voltage droop, from a written '1' at VDD,
@@ -197,6 +254,62 @@ def compute_cox_and_cgate(toxe_m: float, epsrox: float, w_um: float, l_um: float
     return cox_area_ff_per_um2, c_gate_ff
 
 
+def load_extracted_c_sn(extract_json_path: Path, net_name: str) -> tuple[float, dict]:
+    """EXTRACTED (issue #7): total storage-node parasitic capacitance from a
+    committed post-layout `klt extract --parasitics --critical-net <net>`
+    JSON report -- NOT a closed-form computation (unlike compute_cox_and_cgate)
+    and NOT a qualitative margin-factor ASSUMPTION (unlike the MARGIN_FACTORS
+    path 3T-min still uses).
+
+    Total = the net's own lumped ground capacitance (`parasitics.nets[].
+    capacitance_ff` -- junction/overlap/routing-to-substrate, from the
+    deck's curated sheet-capacitance table) PLUS every same-layer lateral
+    coupling capacitor `--critical-net` resolved onto this net
+    (`parasitics.nets[].coupled[].capacitance_ff`, summed). A coupling
+    capacitor is real physical capacitance loading the storage node even
+    though its far terminal is a named net (`bl`, `rwl`) rather than
+    ground/substrate -- omitting it would understate the node's true
+    capacitive load, so this derivation includes it (a conservative,
+    documented choice: it does not assume the coupled net is quiet, only
+    that the capacitance itself is real).
+    """
+    if not extract_json_path.is_file():
+        raise RuntimeError(
+            f"parasitics extraction report not found: {extract_json_path} -- "
+            "run the `klt extract --parasitics --critical-net "
+            f"{net_name}` command documented in EXTRACTED_C_SN_SOURCES first"
+        )
+    data = json.loads(extract_json_path.read_text())
+    parasitics = data.get("parasitics")
+    if not parasitics:
+        raise RuntimeError(
+            f"{extract_json_path} has no 'parasitics' block -- was it "
+            "generated with --parasitics? (see EXTRACTED_C_SN_SOURCES)"
+        )
+    net_entry = next(
+        (n for n in parasitics.get("nets", []) if n.get("net") == net_name), None
+    )
+    if net_entry is None:
+        raise RuntimeError(
+            f"net {net_name!r} not found in parasitics.nets[] of {extract_json_path}"
+        )
+    ground_c_ff = float(net_entry["capacitance_ff"])
+    coupled = net_entry.get("coupled", [])
+    coupling_c_ff = sum(float(c["capacitance_ff"]) for c in coupled)
+    total_c_ff = ground_c_ff + coupling_c_ff
+    provenance = {
+        "extract_json_path": extract_json_path,
+        "klt_version": data.get("provenance", {}).get("klt_version", "unknown"),
+        "input_content_hash": data.get("provenance", {})
+        .get("input", {})
+        .get("content_hash", "unknown"),
+        "ground_c_ff": ground_c_ff,
+        "coupling_c_ff": coupling_c_ff,
+        "coupled_nets": [c.get("net") for c in coupled],
+    }
+    return total_c_ff, provenance
+
+
 def check_env(leakage_csv: Path, model_file: Path) -> bool:
     ok = True
     if not leakage_csv.is_file():
@@ -215,6 +328,15 @@ def check_env(leakage_csv: Path, model_file: Path) -> bool:
             file=sys.stderr,
         )
         ok = False
+    for geometry_name, source in EXTRACTED_C_SN_SOURCES.items():
+        if not source["extract_json"].is_file():
+            print(
+                f"ERROR: parasitics extraction for {geometry_name} not found: "
+                f"{source['extract_json']}",
+                file=sys.stderr,
+            )
+            print(f"  Run: {source['command']}", file=sys.stderr)
+            ok = False
     return ok
 
 
@@ -238,7 +360,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--check-env",
         action="store_true",
-        help="Only check that inputs (leakage CSV + PDK model card) resolve, and exit",
+        help=(
+            "Only check that inputs (leakage CSV, PDK model card, and the "
+            "committed 2T-min parasitics extraction JSON) resolve, and exit"
+        ),
     )
     args = parser.parse_args(argv)
 
@@ -256,6 +381,11 @@ def main(argv: list[str] | None = None) -> int:
         if ok:
             print(f"OK: leakage results found at {leakage_csv}")
             print(f"OK: sky130 model card found at {model_file}")
+            for geometry_name, source in EXTRACTED_C_SN_SOURCES.items():
+                print(
+                    f"OK: {geometry_name} parasitics extraction found at "
+                    f"{source['extract_json']}"
+                )
         return 0 if ok else 1
 
     if not check_env(leakage_csv, model_file):
@@ -295,15 +425,53 @@ def main(argv: list[str] | None = None) -> int:
     print()
 
     n_written = 0
-    for geometry_name, margin_factor in MARGIN_FACTORS.items():
-        c_sn_ff = c_gate_ff * margin_factor
-        c_sn_f = c_sn_ff * 1e-15
-        retention_s = c_sn_f * SENSE_MARGIN_V_ASSUMPTION / ileak_a
-        print(
-            f"{geometry_name:8} ({TOPOLOGY[geometry_name]}): "
-            f"C_SN ASSUMED = {margin_factor:.1f} x C_gate = {c_sn_ff:.4f} fF  "
-            f"-> retention = {retention_s:.6e} s ({retention_s * 1e6:.3f} us)"
-        )
+    for geometry_name in MARGIN_FACTORS:
+        extracted_source = EXTRACTED_C_SN_SOURCES.get(geometry_name)
+        if extracted_source is not None:
+            # EXTRACTED path (issue #7): post-layout parasitics, not a
+            # margin-factor ASSUMPTION. The `_ASSUMPTION`-suffixed CSV
+            # columns are repurposed (not renamed, to keep the CSV schema
+            # and previously-committed rows byte-identical -- see module
+            # docstring): the margin-factor column is left blank (no
+            # margin factor was applied) and the C_SN column now holds the
+            # extracted total, with full provenance in `notes`.
+            c_sn_ff, prov = load_extracted_c_sn(
+                extracted_source["extract_json"], extracted_source["net"]
+            )
+            c_sn_f = c_sn_ff * 1e-15
+            retention_s = c_sn_f * SENSE_MARGIN_V_ASSUMPTION / ileak_a
+            print(
+                f"{geometry_name:8} ({TOPOLOGY[geometry_name]}): "
+                f"C_SN EXTRACTED (klt extract --parasitics --critical-net "
+                f"{extracted_source['net']}) = ground {prov['ground_c_ff']:.6f} fF "
+                f"+ coupling({','.join(prov['coupled_nets'])}) "
+                f"{prov['coupling_c_ff']:.6f} fF = {c_sn_ff:.6f} fF  "
+                f"-> retention = {retention_s:.6e} s ({retention_s * 1e6:.3f} us)"
+            )
+            margin_factor_field = ""
+            notes = (
+                "C_SN EXTRACTED (not ASSUMED) via `"
+                f"{extracted_source['command']}` "
+                f"(klt {prov['klt_version']}, input content_hash "
+                f"{prov['input_content_hash']}); ground={prov['ground_c_ff']:.6f}fF "
+                f"+ coupling to {','.join(prov['coupled_nets']) or 'none'}"
+                f"={prov['coupling_c_ff']:.6f}fF; see "
+                f"{prov['extract_json_path'].relative_to(REPO_ROOT)} and "
+                "sim/retention/README.md (issue #7)."
+            )
+        else:
+            margin_factor = MARGIN_FACTORS[geometry_name]
+            c_sn_ff = c_gate_ff * margin_factor
+            c_sn_f = c_sn_ff * 1e-15
+            retention_s = c_sn_f * SENSE_MARGIN_V_ASSUMPTION / ileak_a
+            print(
+                f"{geometry_name:8} ({TOPOLOGY[geometry_name]}): "
+                f"C_SN ASSUMED = {margin_factor:.1f} x C_gate = {c_sn_ff:.4f} fF  "
+                f"-> retention = {retention_s:.6e} s ({retention_s * 1e6:.3f} us)"
+            )
+            margin_factor_field = margin_factor
+            notes = ""
+
         row = {
             "timestamp_utc": timestamp,
             "repo_git_sha": sha,
@@ -318,11 +486,11 @@ def main(argv: list[str] | None = None) -> int:
             "epsrox": epsrox,
             "cox_ff_per_um2": f"{cox_ff_per_um2:.6f}",
             "c_gate_read_transistor_ff": f"{c_gate_ff:.6f}",
-            "c_storage_node_margin_factor_ASSUMPTION": margin_factor,
+            "c_storage_node_margin_factor_ASSUMPTION": margin_factor_field,
             "c_storage_node_ff_ASSUMPTION": f"{c_sn_ff:.6f}",
             "delta_v_sense_margin_v_ASSUMPTION": SENSE_MARGIN_V_ASSUMPTION,
             "retention_time_s": f"{retention_s:.6e}",
-            "notes": "",
+            "notes": notes,
         }
         append_result(RESULTS_CSV, CSV_FIELDS, row)
         n_written += 1

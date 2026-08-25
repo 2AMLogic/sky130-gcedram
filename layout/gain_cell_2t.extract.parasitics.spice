@@ -1,0 +1,56 @@
+* extracted by klt extract --deck sky130
+* parasitic model (--parasitics):
+* - capacitance: net-to-ground for every net's own (non-coupled) area/perimeter, plus net-to-net for the vertical-overlap coupling `coupling` describes below -- a coupled net pair gets a direct capacitor between their two hub nodes, not just capacitors to the deck's ground/substrate net
+* - coupling: vertical overlap (crossover) unconditionally -- where one net's conductor on an adjacent metal level sits directly over another *distinct* net's conductor, that overlap area is charged between the two nets instead of to ground (issue #760) -- plus lateral (same-layer, sidewall) coupling, but only for a net pair naming one of the caller's declared `--critical-net` nets (issue #976): facing-edge length within that layer's own minimum-spacing lookback is charged between the two nets, *additively* (not deducted from either net's substrate fringe term, unlike the vertical case -- a known simplification). Any same-layer pair with neither side named `--critical-net`, and fringe shielding in general, are still not modelled
+* - resistance: single lumped series resistance per net, distributed as a star across that net's device terminals (issue #592) -- not a per-segment, distributed RC ladder, *unless* `--distributed-rc` names this net via `--critical-net` (issue #977, Epic #709 Phase 2b): then the net's terminals are ordered along their approximate physical spread and its total R/C is broken into a chain of per-segment resistors (segment length proportional to inter-terminal distance) with a ground capacitor at each terminal node (proportional to its adjacent segment length/2), instead of one star hub -- still an approximation (terminal position is a device-placement proxy, not true per-segment routing geometry), but a strictly finer-grained one than the single-hub star
+* - frequency: quasi-static -- one frequency-independent R and C per net; no skin effect, no distributed transmission-line behavior
+
+* cell gain_cell_2t_layout_0
+* pin GND
+* pin bl
+* pin rbl
+* pin rwl
+* pin sn
+* pin wl
+.SUBCKT gain_cell_2t_layout_0 GND bl rbl rwl sn wl
+* device instance $1 r0 *1 0.545,0.21 nfet
+M$1 sn__t0 wl__t0 bl__t0 GND__t0 nfet L=0.15U W=0.42U AS=0.1974P AD=0.1974P
++ PS=1.78U PD=1.78U
+* device instance $2 r0 *1 2.035,0.21 nfet
+M$2 rbl__t0 sn__t1 rwl__t0 GND__t1 nfet L=0.15U W=0.42U AS=0.1974P AD=0.1974P
++ PS=1.78U PD=1.78U
+* device instance GND_t0 r0 *1 0,0 
+RGND_t0 GND__t0 GND 73.19275
+* device instance GND_t1 r0 *1 0,0 
+RGND_t1 GND__t1 GND 73.19275
+* device instance GND r0 *1 0,0 
+CGND GND vsubs 5.50619e-16
+* device instance bl_t0 r0 *1 0,0 
+Rbl_t0 bl__t0 bl 12.8
+* device instance bl r0 *1 0,0 
+Cbl bl vsubs 7.4903e-17
+* device instance rbl_t0 r0 *1 0,0 
+Rrbl_t0 rbl__t0 rbl 12.8
+* device instance rbl r0 *1 0,0 
+Crbl rbl vsubs 7.4903e-17
+* device instance rwl_t0 r0 *1 0,0 
+Rrwl_t0 rwl__t0 rwl 12.8
+* device instance rwl r0 *1 0,0 
+Crwl rwl vsubs 7.2261e-17
+* device instance sn_t0 r0 *1 0,0 
+Rsn_t0 sn__t0 sn 85.17595
+* device instance sn_t1 r0 *1 0,0 
+Rsn_t1 sn__t1 sn 85.17595
+* device instance sn r0 *1 0,0 
+Csn sn vsubs 5.8649e-16
+* device instance wl_t0 r0 *1 0,0 
+Rwl_t0 wl__t0 wl 106.9048
+* device instance wl r0 *1 0,0 
+Cwl wl vsubs 2.48823e-16
+* device instance cc_bl_sn r0 *1 0,0 
+Ccc_bl_sn bl sn 1.071e-17
+* device instance cc_rwl_sn r0 *1 0,0 
+Ccc_rwl_sn rwl sn 8.154e-18
+* device instance vsubs_dctie r0 *1 0,0 
+Rvsubs_dctie vsubs 0 1e+12
+.ENDS gain_cell_2t_layout_0
