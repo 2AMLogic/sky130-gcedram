@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "generator": "gen-compose",
+  "cell_name": "gain_cell_2t_layout_0",
+  "gds_path": "gain_cell_2t.gds",
+  "pdk": {
+    "name": "sky130A",
+    "variant": "sky130A",
+    "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+  },
+  "bbox_um": {
+    "x0": 0.0,
+    "y0": 0.0,
+    "x1": 5.42,
+    "y1": 1.84
+  },
+  "ports": [
+    {
+      "name": "wl",
+      "net": "wl",
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 0.545,
+      "y_um": 1.03,
+      "width_um": 0.42000000000000004,
+      "direction_deg": 90,
+      "block": "mos",
+      "port": "U0_G"
+    },
+    {
+      "name": "bl",
+      "net": "bl",
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 0.21000000000000002,
+      "y_um": 0.21,
+      "width_um": 0.42,
+      "direction_deg": 180,
+      "block": "mos",
+      "port": "U0_S"
+    },
+    {
+      "name": "rwl",
+      "net": "rwl",
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 1.7000000000000002,
+      "y_um": 0.21,
+      "width_um": 0.42,
+      "direction_deg": 180,
+      "block": "mos",
+      "port": "U1_S"
+    },
+    {
+      "name": "rbl",
+      "net": "rbl",
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 2.37,
+      "y_um": 0.21,
+      "width_um": 0.42,
+      "direction_deg": 0,
+      "block": "mos",
+      "port": "U1_D"
+    },
+    {
+      "name": "GND",
+      "net": "GND",
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 3.79,
+      "y_um": 0.9199999999999999,
+      "width_um": 0.42,
+      "direction_deg": 180,
+      "block": "tap",
+      "port": "TAP_W"
+    }
+  ],
+  "blocks": [
+    {
+      "id": "mos",
+      "source": "generator_report",
+      "generator": "mos_array",
+      "cell_name": "gain_cell_2t_mos",
+      "offset_um": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bbox_um": {
+        "x0": 0.0,
+        "y0": 0.0,
+        "x1": 2.58,
+        "y1": 1.24
+      },
+      "orientation": "none"
+    },
+    {
+      "id": "tap",
+      "source": "generator_report",
+      "generator": "guard_ring",
+      "cell_name": "gain_cell_2t_tap",
+      "offset_um": {
+        "x": 3.58,
+        "y": 0.0
+      },
+      "bbox_um": {
+        "x0": 3.58,
+        "y0": 0.0,
+        "x1": 5.42,
+        "y1": 1.84
+      },
+      "orientation": "none"
+    }
+  ],
+  "nets": [
+    {
+      "net": "sn",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U0_D"
+        },
+        {
+          "block": "mos",
+          "port": "U1_G"
+        }
+      ],
+      "routed": true,
+      "route_length_um": 1.975,
+      "status": "routed",
+      "legs": [
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U0_D"
+            },
+            {
+              "block": "mos",
+              "port": "U1_G"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 1.975,
+          "reason": null
+        }
+      ]
+    }
+  ],
+  "pins": [
+    {
+      "net": "wl",
+      "block": "mos",
+      "port": "U0_G",
+      "labelled": true
+    },
+    {
+      "net": "bl",
+      "block": "mos",
+      "port": "U0_S",
+      "labelled": true
+    },
+    {
+      "net": "rwl",
+      "block": "mos",
+      "port": "U1_S",
+      "labelled": true
+    },
+    {
+      "net": "rbl",
+      "block": "mos",
+      "port": "U1_D",
+      "labelled": true
+    },
+    {
+      "net": "GND",
+      "block": "tap",
+      "port": "TAP_W",
+      "labelled": true
+    }
+  ],
+  "unrouted_nets": [],
+  "drc_hints": {
+    "min_spacing_um": 1.0,
+    "matched_groups": [
+      {
+        "matched_group_id": "mos_array:1x2:array",
+        "blocks": [
+          "mos"
+        ],
+        "placement_symmetric": null
+      }
+    ],
+    "notes": []
+  },
+  "warnings": []
+}

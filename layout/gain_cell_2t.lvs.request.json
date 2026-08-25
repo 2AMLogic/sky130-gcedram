@@ -1,0 +1,4 @@
+{
+  "layout": { "file": "gain_cell_2t.gds", "deck": "sky130", "top": "gain_cell_2t_layout_0" },
+  "reference": { "netlist": "gain_cell_2t.lvs_reference.spice", "top": "gain_cell_2t" }
+}

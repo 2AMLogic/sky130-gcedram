@@ -1,0 +1,19 @@
+* gain_cell_2t.lvs_reference.spice -- plain-element (schematic-equivalent)
+* transcription of design/gain_cell_2t.spice's two X-card device instances,
+* for `klt lvs`'s required plain-element reference form (see
+* docs/cli/lvs.md "Netlist form" in 2AMLogic/klayout-tools -- `klt lvs`
+* rejects a bare subcircuit-call SPICE netlist directly, and
+* design/gain_cell_2t.spice's own `.subckt`/`.ends` wrapper is deliberately
+* commented out there since `sn` has no external pin, so it has no active
+* top-level pin declaration an LVS engine can correspond against). Device
+* names, connectivity, and W/L are copied unchanged from
+* design/gain_cell_2t.spice; only the SPICE *shape* differs here (an M-card
+* device class "nfet" instead of an X-card subcircuit call, plus a real
+* .SUBCKT/.ENDS wrapper with the four external pins design/gain_cell_2t.sch
+* itself declares as ipin/opin). This file is a check fixture derived from
+* #14's netlist for this issue's informal LVS iteration -- it is not a
+* second design source; design/gain_cell_2t.spice remains canonical.
+.SUBCKT gain_cell_2t wl bl rwl rbl
+M_WR sn wl bl GND nfet L=0.15U W=0.42U
+M_RD rbl sn rwl GND nfet L=0.15U W=0.42U
+.ENDS gain_cell_2t

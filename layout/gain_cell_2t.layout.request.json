@@ -1,0 +1,20 @@
+{
+  "pdk": { "variant": "sky130A" },
+  "blocks": [
+    { "id": "mos", "generator_report": "gain_cell_2t_mos.json" },
+    { "id": "tap", "generator_report": "gain_cell_2t_tap.json" }
+  ],
+  "placement": { "strategy": "row", "order": ["mos", "tap"], "spacing_um": 1.0 },
+  "connectivity": [
+    { "net": "sn", "pins": [{ "block": "mos", "port": "U0_D" }, { "block": "mos", "port": "U1_G" }] }
+  ],
+  "routing": { "layer_role": "metal", "width_um": 0.17, "cross_block_layer_role": "metal2" },
+  "pins": [
+    { "net": "wl", "block": "mos", "port": "U0_G" },
+    { "net": "bl", "block": "mos", "port": "U0_S" },
+    { "net": "rwl", "block": "mos", "port": "U1_S" },
+    { "net": "rbl", "block": "mos", "port": "U1_D" },
+    { "net": "GND", "block": "tap", "port": "TAP_W" }
+  ],
+  "options": { "cell_name": "gain_cell_2t_layout_0", "output": "gain_cell_2t.gds" }
+}
