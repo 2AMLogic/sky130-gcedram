@@ -11,10 +11,14 @@ sources -- presence and reproducibility, not a one-off manual drop, the same
 bar item 1 (#14) already established for the schematic/netlist pair.
 
 **Scope**: geometry capture only. This is *not* a formal, reported-and-signed
--off DRC/LVS pass, a PVT corner sweep, post-layout parasitic extraction, or
-characterization -- those are separate, later T1 items (#13's checklist items
-3-8). The informal `klt drc`/`klt extract`/`klt lvs` iteration below exists to
-get the geometry right, per this issue's own non-goals.
+-off DRC/LVS pass, a PVT corner sweep, or characterization -- those are
+separate, later T1 items (#13's checklist items 3-8). The informal `klt
+drc`/`klt extract`/`klt lvs` iteration below exists to get the geometry
+right, per this issue's own non-goals. Post-layout storage-node *parasitic
+extraction* (previously also out of scope here) was added by issue #7 --
+see [`gain_cell_2t.extract.parasitics.json`](gain_cell_2t.extract.parasitics.json)
+below and [`sim/retention/README.md`](../sim/retention/README.md) for how
+it feeds the retention-time re-derivation.
 
 ## What's here
 
@@ -29,6 +33,7 @@ get the geometry right, per this issue's own non-goals.
 | [`gain_cell_2t.lvs_reference.spice`](gain_cell_2t.lvs_reference.spice) | Hand-transcribed plain-element (schematic-equivalent) copy of `design/gain_cell_2t.spice`'s two devices, in the shape `klt lvs` requires (see "Informal DRC/LVS iteration" below). A check fixture, not a second design source. |
 | [`gain_cell_2t.lvs.request.json`](gain_cell_2t.lvs.request.json) | `klt lvs` request comparing `gain_cell_2t.gds` against `gain_cell_2t.lvs_reference.spice`. |
 | [`gain_cell_2t.drc.result.json`](gain_cell_2t.drc.result.json), [`gain_cell_2t.extract.spice`](gain_cell_2t.extract.spice) / [`.json`](gain_cell_2t.extract.json), [`gain_cell_2t.lvs.result.json`](gain_cell_2t.lvs.result.json) | Captured results of the informal `klt drc`/`klt extract`/`klt lvs` iteration used to get this geometry right -- see below. Informal evidence, not a formal sign-off record. |
+| [`gain_cell_2t.extract.parasitics.spice`](gain_cell_2t.extract.parasitics.spice) / [`.json`](gain_cell_2t.extract.parasitics.json) | Issue #7: post-layout first-order lumped RC parasitics extraction (`klt extract --parasitics --critical-net sn`) against this GDS, feeding the extracted `2T-min` storage-node capacitance (`C_SN`) used in [`sim/retention/derive_retention.py`](../sim/retention/derive_retention.py)'s retention-time re-derivation. Not part of the informal DRC/LVS iteration below (a separate, later extraction run against the same committed geometry). |
 
 ## Topology mapping: exactly #14's 2T schematic, no extra devices
 
@@ -160,6 +165,42 @@ verification pass (that is a separate, later T1 item). Captured by
   [2AMLogic/klayout-tools' own worked example](https://github.com/2AMLogic/klayout-tools/blob/main/examples/design-pipeline/README.md)
   documents, not a real mismatch.
 
+## Post-layout storage-node parasitic extraction (issue #7)
+
+Not part of the informal DRC/LVS iteration above -- a separate, later
+extraction run against the same committed `gain_cell_2t.gds`, feeding
+`sim/retention/derive_retention.py`'s retention-time re-derivation:
+
+```
+$ klt extract layout/gain_cell_2t.gds --deck sky130 \
+    --top gain_cell_2t_layout_0 --parasitics --critical-net sn \
+    -o layout/gain_cell_2t.extract.parasitics.spice --format json \
+    > layout/gain_cell_2t.extract.parasitics.json
+```
+
+Verified against the locally installed `klt 0.3.0` as of 2026-08-25 --
+matches the flags documented in
+[docs/cli/extract.md](https://github.com/2AMLogic/klayout-tools/blob/main/docs/cli/extract.md)
+in 2AMLogic/klayout-tools, no discrepancy to file. `--parasitics` adds one
+series R + one ground C per net (from the deck's curated sheet-resistance/
+capacitance table); `--critical-net sn` additionally scopes the lateral
+(same-layer sidewall) coupling-capacitance pass onto the storage node,
+since `sn` couples to the adjacent `bl`/`rwl` routing. The storage node
+`sn`'s reported parasitics
+([`gain_cell_2t.extract.parasitics.json`](gain_cell_2t.extract.parasitics.json)'s
+`parasitics.nets[]` entry for `sn`):
+
+| Component | Value |
+|---|---|
+| Ground capacitance (junction + overlap + routing-to-substrate) | 0.586490 fF |
+| Lateral coupling to `bl` | 0.010710 fF |
+| Lateral coupling to `rwl` | 0.008154 fF |
+| **Total `C_SN` (extracted)** | **0.605354 fF** |
+| Series resistance (star, both device terminals) | 170.3519 Ω |
+
+See [`sim/retention/README.md`](../sim/retention/README.md) "Storage-node
+capacitance" for how this total feeds the retention-time re-derivation.
+
 ## klayout-tools friction encountered
 
 None blocking. `klt gen`/`klt gen-compose` (headless PCell generation +
@@ -189,3 +230,10 @@ already-documented, expected behaviour of shipped features, not gaps):
   ([`examples/design-pipeline/07-reference.spice`](https://github.com/2AMLogic/klayout-tools/blob/main/examples/design-pipeline/07-reference.spice))
   already uses for exactly this reason, documented in `klt lvs`'s own
   "Netlist form" section rather than a surprise.
+
+**Issue #7 (post-layout parasitics extraction) update**: no friction. `klt
+extract --parasitics --critical-net sn` (see "Post-layout storage-node
+parasitic extraction" above) behaved exactly as documented in
+`docs/cli/extract.md` -- flag names, JSON `parasitics` block shape, and the
+per-net ground/coupling capacitance breakdown all matched with no surprises.
+Nothing filed against 2AMLogic/klayout-tools for this step.

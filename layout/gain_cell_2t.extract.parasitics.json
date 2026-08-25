@@ -1,0 +1,324 @@
+{
+  "schema_version": 2,
+  "file": "layout/gain_cell_2t.gds",
+  "deck": "sky130",
+  "top": "gain_cell_2t_layout_0",
+  "dbu_um": 0.001,
+  "netlist_path": "layout/gain_cell_2t.extract.parasitics.spice",
+  "netlist_sha256": "093697fb0ac3734e67b1d00f2f0f423a9b3e0a62170b58805484bd08cd7b5283",
+  "status": "extracted",
+  "device_count": 2,
+  "net_count": 6,
+  "pin_count": 6,
+  "device_counts": {
+    "nfet": 2
+  },
+  "dummy_devices_dropped": 0,
+  "ignored_layers": [],
+  "device_recognition_only_layers": [],
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "pnp",
+    "sky130_fd_pr__model__cap_mim",
+    "sky130_fd_pr__model__cap_mim_m4",
+    "resistor"
+  ],
+  "devices": [
+    {
+      "name": "$1",
+      "class": "nfet",
+      "nets": {
+        "s": "bl",
+        "g": "wl",
+        "d": "sn",
+        "b": "GND"
+      },
+      "params": {
+        "l_um": 0.15,
+        "w_um": 0.42,
+        "as_um2": 0.1974,
+        "ad_um2": 0.1974,
+        "ps_um": 1.78,
+        "pd_um": 1.78
+      }
+    },
+    {
+      "name": "$2",
+      "class": "nfet",
+      "nets": {
+        "s": "rwl",
+        "g": "sn",
+        "d": "rbl",
+        "b": "GND"
+      },
+      "params": {
+        "l_um": 0.15,
+        "w_um": 0.42,
+        "as_um2": 0.1974,
+        "ad_um2": 0.1974,
+        "ps_um": 1.78,
+        "pd_um": 1.78
+      }
+    }
+  ],
+  "nets": [
+    {
+      "name": "GND",
+      "pin": true,
+      "device_count": 2
+    },
+    {
+      "name": "bl",
+      "pin": true,
+      "device_count": 1
+    },
+    {
+      "name": "rbl",
+      "pin": true,
+      "device_count": 1
+    },
+    {
+      "name": "rwl",
+      "pin": true,
+      "device_count": 1
+    },
+    {
+      "name": "sn",
+      "pin": true,
+      "device_count": 2
+    },
+    {
+      "name": "wl",
+      "pin": true,
+      "device_count": 1
+    }
+  ],
+  "warnings": [],
+  "black_box_regions": [],
+  "abstracted_cells": [],
+  "unmodelled_poly": [],
+  "merged_net_labels": [],
+  "voltage_domain_warnings": [],
+  "unbiased_pmos_body_nets": [],
+  "single_terminal_nets": [],
+  "dead_metal": [],
+  "matched_device_groups": [],
+  "pdk": null,
+  "provenance": {
+    "klt_version": "0.3.0",
+    "klayout_version": "0.30.10",
+    "pdk": null,
+    "deck": {
+      "name": "sky130",
+      "content_hash": "sha256:2e78949d63f03012c505528158948a250e18c2c21c8710c85a23a8243649f4d0",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259"
+    }
+  },
+  "parasitics": {
+    "r_count": 8,
+    "c_count": 6,
+    "cc_count": 2,
+    "l_count": 0,
+    "total_resistance_ohm": 462.0422,
+    "total_capacitance_ff": 1.607999,
+    "total_coupling_capacitance_ff": 0.018864,
+    "total_inductance_nh": 0.0,
+    "nets": [
+      {
+        "net": "GND",
+        "net_id": 7,
+        "resistance_ohm": 146.3855,
+        "capacitance_ff": 0.550619,
+        "inductance_nh": 0.0,
+        "hub_net": "GND",
+        "rc_model": "lumped",
+        "terminals": [
+          {
+            "device": "$1",
+            "terminal": "B",
+            "leg_net": "GND__t0",
+            "resistance_ohm": 73.1927
+          },
+          {
+            "device": "$2",
+            "terminal": "B",
+            "leg_net": "GND__t1",
+            "resistance_ohm": 73.1928
+          }
+        ],
+        "segments": [],
+        "coupled": []
+      },
+      {
+        "net": "bl",
+        "net_id": 1,
+        "resistance_ohm": 12.8,
+        "capacitance_ff": 0.074903,
+        "inductance_nh": 0.0,
+        "hub_net": "bl",
+        "rc_model": "lumped",
+        "terminals": [
+          {
+            "device": "$1",
+            "terminal": "S",
+            "leg_net": "bl__t0",
+            "resistance_ohm": 12.8
+          }
+        ],
+        "segments": [],
+        "coupled": [
+          {
+            "net": "sn",
+            "capacitance_ff": 0.01071,
+            "levels": [],
+            "lateral_levels": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "net": "rbl",
+        "net_id": 4,
+        "resistance_ohm": 12.8,
+        "capacitance_ff": 0.074903,
+        "inductance_nh": 0.0,
+        "hub_net": "rbl",
+        "rc_model": "lumped",
+        "terminals": [
+          {
+            "device": "$2",
+            "terminal": "D",
+            "leg_net": "rbl__t0",
+            "resistance_ohm": 12.8
+          }
+        ],
+        "segments": [],
+        "coupled": []
+      },
+      {
+        "net": "rwl",
+        "net_id": 3,
+        "resistance_ohm": 12.8,
+        "capacitance_ff": 0.072261,
+        "inductance_nh": 0.0,
+        "hub_net": "rwl",
+        "rc_model": "lumped",
+        "terminals": [
+          {
+            "device": "$2",
+            "terminal": "S",
+            "leg_net": "rwl__t0",
+            "resistance_ohm": 12.8
+          }
+        ],
+        "segments": [],
+        "coupled": [
+          {
+            "net": "sn",
+            "capacitance_ff": 0.008154,
+            "levels": [
+              [
+                0,
+                1
+              ]
+            ],
+            "lateral_levels": []
+          }
+        ]
+      },
+      {
+        "net": "sn",
+        "net_id": 2,
+        "resistance_ohm": 170.3519,
+        "capacitance_ff": 0.58649,
+        "inductance_nh": 0.0,
+        "hub_net": "sn",
+        "rc_model": "lumped",
+        "terminals": [
+          {
+            "device": "$1",
+            "terminal": "D",
+            "leg_net": "sn__t0",
+            "resistance_ohm": 85.1759
+          },
+          {
+            "device": "$2",
+            "terminal": "G",
+            "leg_net": "sn__t1",
+            "resistance_ohm": 85.176
+          }
+        ],
+        "segments": [],
+        "coupled": [
+          {
+            "net": "bl",
+            "capacitance_ff": 0.01071,
+            "levels": [],
+            "lateral_levels": [
+              0
+            ]
+          },
+          {
+            "net": "rwl",
+            "capacitance_ff": 0.008154,
+            "levels": [
+              [
+                0,
+                1
+              ]
+            ],
+            "lateral_levels": []
+          }
+        ]
+      },
+      {
+        "net": "wl",
+        "net_id": 5,
+        "resistance_ohm": 106.9048,
+        "capacitance_ff": 0.248823,
+        "inductance_nh": 0.0,
+        "hub_net": "wl",
+        "rc_model": "lumped",
+        "terminals": [
+          {
+            "device": "$1",
+            "terminal": "G",
+            "leg_net": "wl__t0",
+            "resistance_ohm": 106.9048
+          }
+        ],
+        "segments": [],
+        "coupled": []
+      }
+    ],
+    "substrate_dc_tie": {
+      "resistance_ohm": 1000000000000.0,
+      "nets": [
+        {
+          "net": "vsubs",
+          "device": "Rvsubs_dctie"
+        }
+      ]
+    },
+    "metals_without_coefficient": [],
+    "overlap_pairs_without_coefficient": [],
+    "critical_nets": [
+      "sn"
+    ],
+    "distributed_rc": false,
+    "model": {
+      "capacitance": "net-to-ground for every net's own (non-coupled) area/perimeter, plus net-to-net for the vertical-overlap coupling `coupling` describes below -- a coupled net pair gets a direct capacitor between their two hub nodes, not just capacitors to the deck's ground/substrate net",
+      "coupling": "vertical overlap (crossover) unconditionally -- where one net's conductor on an adjacent metal level sits directly over another *distinct* net's conductor, that overlap area is charged between the two nets instead of to ground (issue #760) -- plus lateral (same-layer, sidewall) coupling, but only for a net pair naming one of the caller's declared `--critical-net` nets (issue #976): facing-edge length within that layer's own minimum-spacing lookback is charged between the two nets, *additively* (not deducted from either net's substrate fringe term, unlike the vertical case -- a known simplification). Any same-layer pair with neither side named `--critical-net`, and fringe shielding in general, are still not modelled",
+      "resistance": "single lumped series resistance per net, distributed as a star across that net's device terminals (issue #592) -- not a per-segment, distributed RC ladder, *unless* `--distributed-rc` names this net via `--critical-net` (issue #977, Epic #709 Phase 2b): then the net's terminals are ordered along their approximate physical spread and its total R/C is broken into a chain of per-segment resistors (segment length proportional to inter-terminal distance) with a ground capacitor at each terminal node (proportional to its adjacent segment length/2), instead of one star hub -- still an approximation (terminal position is a device-placement proxy, not true per-segment routing geometry), but a strictly finer-grained one than the single-hub star",
+      "frequency": "quasi-static -- one frequency-independent R and C per net; no skin effect, no distributed transmission-line behavior"
+    },
+    "mom_crosscheck": null,
+    "mom_rlc_override": null
+  },
+  "spef_path": null
+}
