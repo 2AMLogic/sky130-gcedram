@@ -1,0 +1,15 @@
+* extracted by klt extract --deck sky130
+
+* cell gain_cell_2t_layout_0
+* pin GND
+* pin bl
+* pin rbl
+* pin rwl
+* pin sn
+* pin wl
+.SUBCKT gain_cell_2t_layout_0 GND bl rbl rwl sn wl
+* device instance $1 r0 *1 0.545,0.21 nfet
+M$1 sn wl bl GND nfet L=0.15U W=0.42U AS=0.1974P AD=0.1974P PS=1.78U PD=1.78U
+* device instance $2 r0 *1 2.035,0.21 nfet
+M$2 rbl sn rwl GND nfet L=0.15U W=0.42U AS=0.1974P AD=0.1974P PS=1.78U PD=1.78U
+.ENDS gain_cell_2t_layout_0

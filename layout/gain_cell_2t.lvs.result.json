@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "engine": "klayout",
+  "layout": "gain_cell_2t.gds",
+  "reference": "gain_cell_2t.lvs_reference.spice",
+  "top": "gain_cell_2t_layout_0",
+  "reference_top": "GAIN_CELL_2T",
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": false,
+    "flatten_layout": false,
+    "flatten_reference": false,
+    "netgen_setup": null,
+    "parameter_tolerance": null
+  },
+  "status": "match",
+  "mismatch_count": 2,
+  "error_count": 0,
+  "category_counts": {
+    "topology": 2
+  },
+  "category_error_counts": {},
+  "counts": {
+    "nets": {
+      "layout": 6,
+      "reference": 6,
+      "matched": 6
+    },
+    "devices": {
+      "layout": 2,
+      "reference": 2,
+      "matched": 2
+    },
+    "pins": {
+      "layout": 6,
+      "reference": 4,
+      "matched": 6
+    }
+  },
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "pnp",
+    "sky130_fd_pr__model__cap_mim",
+    "sky130_fd_pr__model__cap_mim_m4",
+    "resistor"
+  ],
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.10",
+    "layout_sha256": "f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259",
+    "reference_sha256": "693c4990f6a54d8615153b1715e83d1bc840e23e7c68e2f47d57863c4f770340",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.3.0",
+    "klayout_version": "0.30.10",
+    "pdk": null,
+    "deck": {
+      "name": "sky130",
+      "content_hash": "sha256:2e78949d63f03012c505528158948a250e18c2c21c8710c85a23a8243649f4d0",
+      "released": false
+    },
+    "input": null
+  },
+  "mismatches": [
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch",
+      "side": "layout",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch",
+      "side": "layout",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "bl",
+      "reference": "BL",
+      "pin": true
+    },
+    {
+      "layout": "GND",
+      "reference": "GND",
+      "pin": true
+    },
+    {
+      "layout": "rbl",
+      "reference": "RBL",
+      "pin": true
+    },
+    {
+      "layout": "rwl",
+      "reference": "RWL",
+      "pin": true
+    },
+    {
+      "layout": "sn",
+      "reference": "SN",
+      "pin": true
+    },
+    {
+      "layout": "wl",
+      "reference": "WL",
+      "pin": true
+    }
+  ]
+}
