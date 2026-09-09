@@ -51,3 +51,40 @@ invocation needed):
 python3 sim/retention/derive_retention.py --check-env
 python3 sim/retention/derive_retention.py
 ```
+
+## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
+
+The **first circuit-level simulation of the ratified bitcell**: the two
+studies above look at the cell one piece at a time (a DC operating point on
+a single access device, then an analytic derivation on top of it), while
+this one exercises the whole cell as a circuit in a single `.tran` --
+writing a '1' and a '0', reading both, and timing the storage node's decay
+-- across the same `tt`/`ss`/`ff`/`sf`/`fs` x `-40/27/125 °C` grid. The deck
+`.include`s [`design/gain_cell_2t.spice`](../design/gain_cell_2t.spice)
+verbatim rather than transcribing the devices, and loads `sn` with the
+post-layout extracted `C_SN` from
+[`layout/gain_cell_2t.extract.parasitics.json`](../layout/gain_cell_2t.extract.parasitics.json)
+(issue #7, overridable with `--c-sn-ff`). See
+[`bitcell-transient/README.md`](bitcell-transient/README.md) for the phase
+timing, the `rbl` bias choice, the `.tran` settings and their convergence
+check, the worst-case-corner call-out (`sf`/125 °C,
+`t_ret_tran` = 2.3958e-05 s), the three corners where the assumed 0.9 V
+sense margin turns out to be **unattainable** with a plain-1.8 V wordline,
+and the cross-check against `retention/`'s analytic 5.50 µs; raw results are
+in
+[`bitcell-transient/results/bitcell_transient_results.csv`](bitcell-transient/results/bitcell_transient_results.csv).
+
+Quick start (requires `ngspice` on `PATH`, the PDK pinned in
+`bitcell-transient/pdk.json` enabled via `volare`, and the leakage results
+above already committed -- the hold window is seeded from them):
+
+```bash
+python3 sim/bitcell-transient/run_bitcell_transient.py --check-env
+python3 sim/bitcell-transient/run_bitcell_transient.py
+```
+
+This is the read-current / written-level / read-disturb evidence the array,
+the sense amplifier and the write-margin decision in issue #24 each consume;
+it does **not** re-ratify any retention number in
+[`spec/retention-refresh-budget.md`](../spec/retention-refresh-budget.md),
+which remains a separate, gated spec change.
