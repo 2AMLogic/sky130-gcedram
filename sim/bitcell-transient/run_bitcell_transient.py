@@ -920,11 +920,14 @@ def main(argv: list[str] | None = None) -> int:
                     if not m["threshold_reachable"]:
                         notes.append(
                             f"t_ret_tran_s BLANK: the retained level "
-                            f"{m['v_sn_hold_start_v']:.6f} V is below the "
-                            f"{delta_v} V sense margin, so the threshold "
-                            f"({m['threshold_v']:.6f} V) sits at or below the "
-                            "bitline rail and can never be crossed -- a WRITE-margin "
-                            "failure at this corner, not a retention number"
+                            f"{m['v_sn_hold_start_v']:.6f} V leaves a decay "
+                            f"threshold of {m['threshold_v']:.6f} V, at or below "
+                            f"the {THRESHOLD_FLOOR_V} V floor above the bitline "
+                            "rail (0 V) that V(sn) only approaches "
+                            f"asymptotically -- the {delta_v} V sense margin is "
+                            "not attainable at this corner with a plain-VDD "
+                            "wordline. A WRITE-margin failure, not a retention "
+                            "result; t_ret_linear_extrap_s is still recorded"
                         )
                     elif m["t_ret_tran_s"] is None:
                         notes.append(
@@ -953,9 +956,13 @@ def main(argv: list[str] | None = None) -> int:
                     "c_sn_source": "extracted" if args.c_sn_ff is None else "override",
                     "vdd_v": vdd,
                     "vrbl_bias_v": vrbl,
-                    "t_edge_ns": params["TEDGE"] * 1e9,
-                    "t_wl_pulse_ns": (params["TWL_OFF"] - params["TWL_ON"]) * 1e9,
-                    "t_rwl_pulse_ns": (params["TRWL_OFF"] - params["TRWL_ON"]) * 1e9,
+                    "t_edge_ns": round(params["TEDGE"] * 1e9, 6),
+                    "t_wl_pulse_ns": round(
+                        (params["TWL_OFF"] - params["TWL_ON"]) * 1e9, 6
+                    ),
+                    "t_rwl_pulse_ns": round(
+                        (params["TRWL_OFF"] - params["TRWL_ON"]) * 1e9, 6
+                    ),
                     "tmax_s": f"{tmax_i:.6e}",
                     "tstop_s": f"{tstop_i:.6e}",
                     "v_sn_end_wl_pulse_v": f"{m['v_sn_end_wl_pulse_v']:.6f}",
