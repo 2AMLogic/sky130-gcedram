@@ -1,0 +1,128 @@
+* sky130-gcedram -- 2T-min bitcell transient write / read / hold testbench
+* Issue #27 (gap-to-T1 tracker #13, items 5 and 9). First circuit-level
+* simulation of the ratified 2T gain-cell bitcell: the leakage deck in
+* sim/leakage/ is a DC operating point on a single access device, and
+* sim/retention/ is an analytic derivation -- neither exercises the cell
+* as a circuit. See sim/bitcell-transient/README.md for the full writeup,
+* the rationale behind every timing/bias choice below, and the
+* cross-check against the analytic retention numbers.
+*
+* THE DESIGN UNDER TEST IS INCLUDED, NOT TRANSCRIBED. The two devices
+* come from design/gain_cell_2t.spice -- the netlist derived from
+* design/gain_cell_2t.sch by design/regen_netlist.sh -- included verbatim
+* below. Nothing in this deck restates the devices, their sizing, or
+* their connectivity, so a schematic change propagates here through
+* regen_netlist.sh rather than through a hand edit. The included netlist
+* declares `.GLOBAL GND`; ngspice aliases the node name `gnd` to node 0,
+* so the device bodies land on the testbench ground with no extra source.
+* (design/gain_cell_2t.spice ends with `.end`; ngspice does not treat a
+* `.end` inside an included file as the end of the parent deck, verified
+* against ngspice-46 -- the sources below are parsed after the include.)
+*
+* Cell under test (from design/README.md "Topology"), both devices
+* sky130_fd_pr__nfet_01v8 W=0.42 um L=0.15 um:
+*   M_WR  gate=wl   drain=sn   source=bl   body=GND   (write access)
+*   M_RD  gate=sn   drain=rbl  source=rwl  body=GND   (read)
+*
+* READ-SELECT POLARITY (a design decision this deck records, not invents).
+* M_RD's SOURCE is `rwl`. For an unselected row to keep its read device
+* off with a stored '1' on `sn`, `rwl` must idle HIGH: Vgs(M_RD) =
+* V(sn) - V(rwl) < 0 at V(rwl) = VDD. A read therefore pulls `rwl` LOW
+* (active-low read select, `rwl` acting as the row's source line) and
+* senses the resulting current on `rbl`. Both wordlines still swing
+* 0 V / VDD only -- no boosted level -- per design/README.md "Wordline
+* drive scheme: plain 1.8 V (not boosted)". See the README's "Read scheme"
+* section for why the alternative (rwl idling low) is not usable in an
+* array.
+*
+* THREE PHASES, ONE .tran (times are the .param values below):
+*   1. WRITE  wl pulses 0 -> VDD -> 0 with bl held at the data level for
+*      the whole pulse; bl returns to 0 only AFTER wl is fully low, so the
+*      cell is never written by a bitline transition. V(sn) is recorded at
+*      TWL_OFF (the instant the wordline fall begins -- the write ceiling)
+*      and again after the fall (the level actually retained, after
+*      wordline-to-storage-node feedthrough).
+*   2. READ   rwl pulses VDD -> 0 -> VDD with rbl held at VRBL through
+*      vrbl, whose branch current IS the read current. The deselected-row
+*      current on rbl is sampled just before the read pulse.
+*   3. HOLD   wl = 0, bl = 0, rwl = VDD, rbl = VRBL -- the same bias the
+*      DC leakage deck (sim/leakage/tb_access_leakage.spice.tmpl) measures
+*      at, so the decay here is directly comparable to that measurement.
+*      V(sn) decays; the driver finds when it has fallen by the labelled
+*      sense margin.
+*
+* SUBSTITUTED BY sim/bitcell-transient/run_bitcell_transient.py:
+*   @@PDK_NGSPICE_LIB@@  the shipped sky130 combined model library (the
+*                        ONLY PDK file this deck references -- no local
+*                        model edits)
+*   @@CORNER@@           tt|ss|ff|sf|fs   (the 5 shipped MOS corners)
+*   @@TEMP_C@@           -40|27|125       (the adopted temperature grid)
+*   @@DESIGN_NETLIST@@   absolute path to design/gain_cell_2t.spice
+*   @@C_SN_F@@           lumped storage-node capacitance, in farads
+*   @@VRBL@@             read-bitline bias, in volts
+*   @@VBL_DATA@@         bitline level during the write pulse (VDD => write
+*                        '1', 0 => write '0')
+*   @@VSN_INIT@@         storage-node initial condition (.ic)
+*   @@TSTEP@@ @@TSTOP@@ @@TMAX@@   .tran arguments
+*   @@OUT@@              wrdata output path
+*
+* The .param block below is the SINGLE SOURCE OF TRUTH for the phase
+* timing and the supply/bias levels: run_bitcell_transient.py parses these
+* exact lines out of this template and uses them as its measurement
+* instants, so the deck's waveform and the driver's sampling points cannot
+* drift apart.
+
+.param VDD    = 1.8
+.param VRBL   = @@VRBL@@
+
+.param TEDGE       = 100p
+.param TWL_ON      = 1n
+.param TWL_OFF     = 21n
+.param TBL_OFF     = 23n
+.param TRWL_ON     = 30n
+.param TRWL_OFF    = 50n
+.param THOLD_START = 55n
+
+.param VBL_DATA = @@VBL_DATA@@
+.param VSN_INIT = @@VSN_INIT@@
+
+.lib "@@PDK_NGSPICE_LIB@@" @@CORNER@@
+
+.temp @@TEMP_C@@
+
+.include @@DESIGN_NETLIST@@
+
+* Lumped storage-node capacitance. Default value is the post-layout
+* extracted total for `sn` (layout/gain_cell_2t.extract.parasitics.json,
+* issue #7); `--c-sn-ff 0` removes it so only the device models' own
+* (bias-dependent) capacitance loads the node. See the README's
+* "Storage-node capacitance: two bounds, not one number".
+c_sn sn 0 @@C_SN_F@@
+
+* Write wordline: one 0 -> VDD -> 0 pulse. PULSE's pw is measured between
+* the end of the rise and the start of the fall, hence the -TEDGE term;
+* the period is 1 s so the pulse never repeats inside any .tran window.
+vwl  wl  0 pulse(0 {VDD} {TWL_ON} {TEDGE} {TEDGE} {TWL_OFF-TWL_ON-TEDGE} 1)
+
+* Write bitline: held at the data level from t=0 through the whole
+* wordline pulse, released to 0 at TBL_OFF (after wl is fully low).
+vbl  bl  0 pwl(0 {VBL_DATA} {TBL_OFF} {VBL_DATA} {TBL_OFF+TEDGE} 0)
+
+* Read wordline / row source line: idles at VDD (row deselected, M_RD
+* off), pulsed LOW between TRWL_ON and TRWL_OFF to select the row.
+vrwl rwl 0 pwl(0 {VDD} {TRWL_ON} {VDD} {TRWL_ON+TEDGE} 0 {TRWL_OFF} 0 {TRWL_OFF+TEDGE} {VDD})
+
+* Read bitline held at a fixed bias; this source's branch current is the
+* measured read current (negative = current drawn out of rbl into the
+* cell, i.e. a stored '1' discharging the read bitline).
+vrbl rbl 0 dc {VRBL}
+
+.ic v(sn)={VSN_INIT}
+
+.control
+set filetype=ascii
+tran @@TSTEP@@ @@TSTOP@@ 0 @@TMAX@@
+wrdata @@OUT@@ v(sn) i(vrbl)
+.endc
+
+.end
