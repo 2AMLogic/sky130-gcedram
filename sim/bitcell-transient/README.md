@@ -43,19 +43,29 @@ are parsed normally).
 
 ## Read scheme: `rwl` idles HIGH, a read pulses it LOW
 
-`M_RD`'s **source** is `rwl`, so the read-select polarity is a design fact
-this deck has to record rather than invent. For a **deselected** row to keep
-its read device off while holding a '1', `rwl` must idle at `VDD`:
-`Vgs(M_RD) = V(sn) - V(rwl) < 0` whenever `V(sn) < VDD`. A read therefore
-pulls `rwl` **low** (active-low read select, `rwl` acting as the row's source
-line) and senses the resulting current on `rbl`.
+`M_RD`'s **declared** source is `rwl` and drain is `rbl`, so the read-select
+polarity is a design fact this deck has to record rather than invent — but
+the *effective* source/drain for a deselected row is not the declared one.
+`rbl` is held at `VRBL` = `VDD`/2 = 0.9 V throughout; when `rwl` idles at
+`VDD` = 1.8 V (deselected), the declared `Vds` = `V(rbl) - V(rwl)` is
+negative, so BSIM4 swaps `M_RD`'s effective source/drain internally: **`rbl`
+is the effective source for a deselected row, not `rwl`.** The deselect bias
+is therefore `Vgs(M_RD) = V(sn) - V(rbl)`, not `V(sn) - V(rwl)` — e.g.
++0.32 V at `sf`/125 °C for a retained '1' (1.2226 V retained, 0.9 V `rbl`),
+which is **subthreshold conduction, not an off device**. `i_rbl_deselect_a`
+measures exactly that residual.
 
-The alternative — `rwl` idling low — is not usable in an array: every
-deselected cell holding a '1' would then have `Vgs(M_RD) = V(sn) > 0` and
-would dump current onto the shared `rbl` continuously. The
-`i_rbl_deselect_a` column measures exactly the current the *chosen* polarity
-leaves behind (tens of pA per deselected cell; 1.13 nA at `sf`/125 °C), which
-is the number an array column-height budget needs.
+The design conclusion — idling `rwl` HIGH beats idling it LOW — still holds,
+for a different reason than "off vs. on": with `rwl` idling LOW instead,
+`rbl` (0.9 V) would stay the higher-voltage, effectively-drain terminal, so
+the deselect bias becomes the full `Vgs(M_RD) = V(sn) - V(rwl) = V(sn)` (up
+to 1.22 V at `sf`/125 °C) rather than the much smaller `V(sn) - V(rbl)`
+residual above — conducting far harder. A read therefore pulls `rwl` **low**
+(active-low read select) to select a row and senses the resulting current on
+`rbl`. The `i_rbl_deselect_a` column measures exactly the subthreshold
+residual the *chosen* polarity leaves behind (well under 1 pA to ~1.4 nA per
+deselected cell depending on corner — see "Sign convention" below), which is
+the number an array column-height budget needs.
 
 Both wordlines still swing **0 V / 1.8 V only** — no boosted level — per
 [`design/README.md`](../../design/README.md) "Wordline drive scheme: plain
@@ -118,6 +128,23 @@ device sees `Vds` = 0.9 V > `Vgs - Vth`), so `i_read_a` reads as a
 not as a bias-point-dependent triode current. It is overridable with
 `--vrbl-v`; the value used is recorded in `vrbl_bias_v` on every row.
 
+### Sign convention: `i_read_a` and `i_rbl_deselect_a` are opposite-signed currents
+
+Both columns record `|i(vrbl)|` — the driver's `measure_read_currents()`
+applies `abs()` — but the underlying currents flow in **opposite
+directions** through the `vrbl` source, and that direction is physically
+meaningful, not incidental. At `sf`/125 °C, stored '1': a **selected** read
+draws current *out of* `rbl` (`i(vrbl)` = −3.97e−05 A, `M_RD` pulling the
+bitline down), while a **deselected** cell's subthreshold residual (see
+"Read scheme" above) *sources* current *into* `rbl` (`i(vrbl)` = +1.40e−09 A,
+flowing from `rwl` through the channel). Comparing the two magnitudes head to
+head, as the array-column discussion below does, is therefore a comparison
+of a *sink* against N cells' worth of *source* — the two don't net the way
+adding two same-signed leakage terms would. Neither column's sign is
+recorded in the CSV (both are `abs()`); if a downstream #24 array budget
+needs the direction, recompute it from this convention rather than assuming
+one.
+
 ## Storage-node capacitance: two bounds, not one number
 
 The deck adds a lumped `c_sn sn 0 <C_SN>`. Its default is the **post-layout
@@ -143,7 +170,8 @@ i.e. the two runs bracket the real node:
 | 0 fF (`--c-sn-ff 0`, intrinsic model capacitance only) | 1.0899 V | 1.4108e-05 s |
 
 Both sets of rows are committed (the `--c-sn-ff 0` rows carry
-`c_sn_source = override`, for `tt`/`ss`/`ff` × the full temperature grid).
+`c_sn_source = override`, for all five corners × the full temperature grid —
+30 rows, matching the primary sweep).
 Treating the decay as first-order in the total node capacitance, the ratio
 1.6982 implies an effective **intrinsic** node capacitance of ≈ 0.867 fF, so
 the transient's total node capacitance is ≈ 1.47 fF — about **2.4x** the
@@ -153,7 +181,16 @@ an **inference from two simulations**, not a measured or extracted quantity;
 it is stated here only because it is the dominant term in the cross-check
 below, and it should not be quoted as a `C_SN` value elsewhere.
 
-## Numerics: `.tran` settings and the convergence check
+## Numerics: TWO `.tran` runs per point, not one
+
+Every (corner, temperature, stored value) point runs **two separate
+`.tran`s**, because one `tmax` cannot serve both jobs: the hold-decay window
+is microseconds to milliseconds, while the read-phase current samples are
+nanosecond-scale and — unlike the voltage waveform — do not converge under a
+`tmax` sized for the long window (see "Read-phase current numerics" below,
+the fix for a bug an earlier Judge review of this study caught).
+
+### The long run: hold decay and every voltage column
 
 ```
 tran 10p <tstop> 0 <tmax>
@@ -164,7 +201,7 @@ tran 10p <tstop> 0 <tmax>
   are forced at every source-waveform corner, so the 100 ps write/read edges
   stay resolved even when `tmax` is sized for a millisecond hold window.
 - `tmax` = `clamp(hold_window / 2000, 1 ns, 5 µs)`, recorded per row in
-  `tmax_s`.
+  `tmax_s`. Overridable with `--tmax-ns` for the convergence check below.
 - `tstop` = `THOLD_START + hold_window`, recorded per row in `tstop_s`.
 - `hold_window` is **seeded from the DC leakage already recorded for the same
   (corner, temperature)** in
@@ -176,9 +213,14 @@ tran 10p <tstop> 0 <tmax>
   discharges). If the threshold is still not crossed the window is grown 4x
   and the point re-run, up to 3 attempts. The 0.30 fF term is a window-sizing
   allowance only — it never enters a recorded result.
+- This run produces every column **except** `i_read_a` and
+  `i_rbl_deselect_a`: `v_sn_end_wl_pulse_v`, `v_sn_after_write_settled_v`,
+  `v_sn_read_gate_v`, `v_sn_read_disturb_v`, `v_sn_hold_start_v`,
+  `v_sn_hold_end_v`, `dvdt_hold_start_v_per_s`, `t_ret_tran_s`,
+  `t_ret_linear_extrap_s`.
 
-**Convergence check.** Re-running the worst-case corner with `tmax` forced
-49x tighter changes the answer by 0.2 %:
+**Convergence check (voltages, this run only).** Re-running the worst-case
+corner with `tmax` forced 49x tighter changes the answer by 0.2 %:
 
 | `sf`/125 °C, stored '1' | `tmax` | `t_ret_tran_s` |
 |---|---:|---:|
@@ -192,6 +234,56 @@ Both rows are committed to the results CSV (they are distinguishable by the
 python3 sim/bitcell-transient/run_bitcell_transient.py \
     --corners sf --temps-c 125 --tmax-ns 1 --no-grow
 ```
+
+### Read-phase current numerics: a dedicated short run (fixes a real bug)
+
+`i_read_a` and `i_rbl_deselect_a` come from a **second, short `.tran`**
+(`read_phase_window()` in `run_bitcell_transient.py`), covering only
+`0` to `THOLD_START` (55 ns — past both current sampling instants, with
+margin), at a fixed `tmax = TEDGE/10` = 10 ps — never affected by
+`hold_window` sizing or `--tmax-ns`, which only ever apply to the long run
+above.
+
+This split exists because the single-run approach this study originally
+shipped with was **wrong for these two columns by up to ~47x, and not even
+sign-stable**. The long run's `tmax` is sized for the hold window (up to
+5 µs even at its clamped ceiling) — far coarser than the 100 ps write/read
+edges — and while ngspice's forced breakpoints keep the *voltage* waveform
+resolved at those edges (confirmed by the 0.2 % convergence check above),
+`i(vrbl)` at the current-sampling instants (5·`TEDGE` before each pulse edge,
+where `v(sn)` is nearly static) falls between breakpoints, where timestep
+spacing is LTE-controlled and coarse. A sub-nA source-branch current is not
+resolved there at all. Sweeping only `tmax` at `tt`/−40 °C confirmed this
+directly:
+
+| `tmax` | `i(vrbl)` @ deselect (29.5 ns) | accepted timepoints |
+|---|---:|---:|
+| 2.7 µs (the old single-run default for this row) | −6.64e−11 A | 90 |
+| 1 ns | +6.39e−11 A | 130 |
+| 10 ps | −9.92e−13 A (converged; ≈ ngspice's GMIN floor, the physically expected result at `Vgs ≈ 0`, −40 °C) | 6038 |
+
+— non-monotone, sign-unstable, and off by 1–2 orders of magnitude at the old
+default. The fix (this dedicated short run, `tmax` fixed at 10 ps regardless
+of corner) reproduces the converged value exactly: at `sf`/125 °C, stored
+'1', it gives `i_rbl_deselect_a` = 1.404886e-09 A and `i_read_a` =
+3.967915e-05 A, matching a manual ngspice probe of the same deck to 4 and 5
+significant figures respectively. Every `i_read_a` / `i_rbl_deselect_a` /
+`i_read_ratio_1_over_0` value in this document was (re-)measured with this
+fix; rows appended before it (distinguishable by `repo_git_sha` predating
+this fix's commit) carry the old, unconverged current values in those three
+columns only — their voltage and hold-decay columns are unaffected and
+remain valid.
+
+**Consequence: the low-`C_SN` bracket's apparent read-ratio inversion was
+this bug, not a real effect.** The `--c-sn-ff 0` bracket rows (see "Storage-node
+capacitance" above) previously carried `i_read_ratio_1_over_0` **below 1** at
+`ss`/-40 °C (0.8390) and 1.24–1.49 at `fs`/-40 °C, `fs`/27 °C, `tt`/-40 °C —
+i.e. a stored '1' appeared to produce *less* read current than a stored '0'.
+Re-measured with this fix, every bracket row's ratio is well above 1 (the
+smallest is `fs`/-40 °C at 16.35, the next-smallest `ss`/-40 °C at 19.12);
+none inverts. The apparent inversion was the same unresolved-sub-nA-current
+artifact as the primary sweep's `i_rbl_deselect_a`, not a real read-margin
+failure at those corners.
 
 ## Corner sweep
 
@@ -223,27 +315,31 @@ retention corner here, exactly as it is in `sim/leakage/` — and why the
 ## Results — write and read
 
 As of the sweep recorded in `results/bitcell_transient_results.csv`
-(2026-09-09, `repo_git_sha` `c972c05`, ngspice-46, extracted `C_SN`,
+(2026-09-10, `repo_git_sha` `daa329d`, ngspice-46, extracted `C_SN`,
 20 ns write pulse). "retained" is `v_sn_after_write_settled_v` /
-`v_sn_hold_start_v`, i.e. after wordline feedthrough.
+`v_sn_hold_start_v`, i.e. after wordline feedthrough. `i_read_a` and
+`i_rbl_deselect_a` are the converged values from the dedicated short run (see
+"Read-phase current numerics" above) — rows from before that fix
+(`repo_git_sha` `c972c05` and earlier) carry unconverged values in these three
+columns only and should not be quoted.
 
 | Corner | T (°C) | write-'1' ceiling | retained '1' | retained '0' | `i_read_a` '1' | `i_read_a` '0' | ratio | `i_rbl_deselect_a` |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| `fs` | -40 | 1.012 V | 0.865 V | -0.118 V | 3.444e-08 A | 2.579e-09 A | 13.4 | 5.951e-11 A |
-| `fs` | 27 | 1.082 V | 0.934 V | -0.126 V | 5.196e-07 A | 2.489e-09 A | 209 | 7.255e-11 A |
-| `fs` | 125 | 1.179 V | 1.030 V | -0.109 V | 3.963e-06 A | 2.194e-09 A | 1.81e+03 | 1.543e-10 A |
-| `ss` | -40 | 1.042 V | 0.898 V | -0.125 V | 1.930e-07 A | 2.385e-09 A | 80.9 | 5.256e-11 A |
-| `ss` | 27 | 1.108 V | 0.962 V | -0.132 V | 1.535e-06 A | 2.309e-09 A | 665 | 6.209e-11 A |
-| `ss` | 125 | 1.198 V | 1.051 V | -0.110 V | 6.586e-06 A | 2.103e-09 A | 3.13e+03 | 1.274e-10 A |
-| `tt` | -40 | 1.114 V | 0.961 V | -0.128 V | 1.996e-06 A | 2.683e-09 A | 744 | 4.674e-11 A |
-| `tt` | 27 | 1.184 V | 1.030 V | -0.128 V | 7.345e-06 A | 2.563e-09 A | 2.87e+03 | 7.235e-11 A |
-| `tt` | 125 | 1.281 V | 1.126 V | -0.089 V | 1.778e-05 A | 2.145e-09 A | 8.29e+03 | 2.011e-10 A |
-| `ff` | -40 | 1.179 V | 1.017 V | -0.128 V | 9.145e-06 A | 2.929e-09 A | 3.12e+03 | 4.119e-11 A |
-| `ff` | 27 | 1.253 V | 1.090 V | -0.118 V | 1.988e-05 A | 2.791e-09 A | 7.12e+03 | 8.230e-11 A |
-| `ff` | 125 | 1.353 V | 1.192 V | -0.059 V | 3.469e-05 A | 2.236e-09 A | 1.55e+04 | 1.187e-10 A |
-| `sf` | -40 | 1.217 V | 1.056 V | -0.119 V | 1.694e-05 A | 2.672e-09 A | 6.34e+03 | 3.947e-11 A |
-| `sf` | 27 | 1.286 V | 1.126 V | -0.099 V | 2.711e-05 A | 2.530e-09 A | 1.07e+04 | 8.935e-11 A |
-| `sf` | 125 | 1.380 V | 1.223 V | -0.034 V | 4.005e-05 A | 1.873e-09 A | 2.14e+04 | 1.132e-09 A |
+| `fs` | -40 | 1.012 V | 0.865 V | -0.118 V | 2.193e-08 A | 8.822e-13 A | 2.49e+04 | 9.691e-13 A |
+| `fs` | 27 | 1.082 V | 0.934 V | -0.126 V | 4.740e-07 A | 6.425e-13 A | 7.38e+05 | 9.757e-13 A |
+| `fs` | 125 | 1.179 V | 1.030 V | -0.109 V | 3.812e-06 A | 8.250e-11 A | 4.62e+04 | 8.539e-12 A |
+| `ss` | -40 | 1.042 V | 0.898 V | -0.125 V | 1.649e-07 A | 8.823e-13 A | 1.87e+05 | 9.707e-13 A |
+| `ss` | 27 | 1.108 V | 0.962 V | -0.132 V | 1.456e-06 A | 6.215e-13 A | 2.34e+06 | 9.768e-13 A |
+| `ss` | 125 | 1.198 V | 1.051 V | -0.110 V | 6.406e-06 A | 8.044e-11 A | 7.96e+04 | 8.528e-12 A |
+| `tt` | -40 | 1.114 V | 0.961 V | -0.128 V | 1.912e-06 A | 8.236e-13 A | 2.32e+06 | 9.803e-13 A |
+| `tt` | 27 | 1.184 V | 1.030 V | -0.128 V | 7.160e-06 A | 2.827e-12 A | 2.53e+06 | 9.852e-13 A |
+| `tt` | 125 | 1.281 V | 1.126 V | -0.089 V | 1.748e-05 A | 1.115e-10 A | 1.57e+05 | 4.056e-12 A |
+| `ff` | -40 | 1.179 V | 1.017 V | -0.128 V | 8.948e-06 A | 1.641e-13 A | 5.45e+07 | 9.900e-13 A |
+| `ff` | 27 | 1.253 V | 1.090 V | -0.118 V | 1.958e-05 A | 2.120e-11 A | 9.24e+05 | 7.183e-13 A |
+| `ff` | 125 | 1.353 V | 1.192 V | -0.059 V | 3.429e-05 A | 1.571e-10 A | 2.18e+05 | 3.879e-10 A |
+| `sf` | -40 | 1.217 V | 1.056 V | -0.119 V | 1.669e-05 A | 2.469e-12 A | 6.76e+06 | 9.923e-13 A |
+| `sf` | 27 | 1.286 V | 1.126 V | -0.099 V | 2.681e-05 A | 5.180e-11 A | 5.18e+05 | 6.899e-13 A |
+| `sf` | 125 | 1.380 V | 1.223 V | -0.034 V | 3.968e-05 A | 1.656e-10 A | 2.40e+05 | 1.405e-09 A |
 
 Reported, not editorialized:
 
@@ -273,11 +369,15 @@ Reported, not editorialized:
   for the same feedthrough reason. It relaxes back toward 0 V over the hold
   window (`v_sn_hold_end_v` on the stored-'0' rows). This slightly *helps*
   the read '0' current and is recorded rather than clipped.
-- **Read current spans three decades across the grid**: 34.4 nA at `fs`/-40 °C
-  to 40.1 µA at `sf`/125 °C, a **1163x** range. The '0' current is nearly
-  corner-independent at ~2 nA (`M_RD` is deeply off with `sn` below the rail),
-  so the **'1'/'0' ratio collapses to 13.4 at `fs`/-40 °C** while reaching
-  2.1e+04 at `sf`/125 °C.
+- **Read current spans more than three decades across the grid**: 21.9 nA at
+  `fs`/-40 °C to 39.7 µA at `sf`/125 °C, a **~1809x** range. The '0' current
+  is **not** corner-independent — `M_RD` is deeply off with `sn` below the
+  rail, but the residual is a leakage current and tracks temperature
+  strongly, from 0.164 pA at `ff`/-40 °C to 157 pA at `ff`/125 °C (almost
+  three decades on its own). The **'1'/'0' ratio is smallest at `fs`/-40 °C**
+  (2.49e+04) and largest at `ff`/-40 °C (5.45e+07) — the read margin is
+  worst at the same cold/fast-PMOS-slow-NMOS corner as before the numerics
+  fix below, just with a far larger floor than the unconverged data implied.
 - **`v_sn_read_disturb_v` is small but not zero**: |disturb| ≤ 1.3 mV at all
   corners for a stored '1' (the read pulse is charge-neutral to first order —
   `rwl`'s falling edge couples `sn` down and its rising edge couples it back
@@ -387,26 +487,42 @@ The transient result is **4.35x longer** than the analytic figure it is being
 compared against. The divergence is expected and decomposes cleanly into
 exactly the two effects the issue names:
 
-1. **Bias-dependent node capacitance vs. closed-form `Cox` — a 2.43x factor.**
-   `derive_retention.py` uses the extracted `C_SN` = 0.605354 fF alone (and,
-   in the superseded assumption-based row, a margin factor over a closed-form
-   `C_gate = Cox'' * W * L = 0.553231 fF`). In the transient, the shipped
-   BSIM4 models contribute their *own* bias-dependent storage-node
-   capacitance — `M_RD`'s gate in inversion plus `M_WR`'s drain junction and
-   overlap — **on top of** the lumped extracted value. The `--c-sn-ff 0`
-   comparison above puts that intrinsic contribution at ≈ 0.867 fF, for a
-   total of ≈ 1.47 fF, i.e. 2.43x the 0.605 fF the analytic path assumes.
-2. **Written level below `VDD` — a 1.79x factor.** The analytic derivation
-   uses `I_leak` measured at `Vds` = `VDD` = 1.8 V (98.99 pA, the worst-case
-   bias per `sim/leakage/README.md`). The transient node never gets to
-   1.8 V: it starts the hold phase at 1.2226 V and falls to 0.3226 V, so the
-   leakage discharging it is below the DC number for the entire window. The
-   effective average current implied by the measured decay is
-   `1.47 fF * 0.9 V / 23.96 µs` = **55.3 pA**, or 0.56x the DC figure.
+1. **Bias-dependent node capacitance vs. closed-form `Cox` — an inferred
+   2.43x factor.** `derive_retention.py` uses the extracted `C_SN` =
+   0.605354 fF alone (and, in the superseded assumption-based row, a margin
+   factor over a closed-form `C_gate = Cox'' * W * L = 0.553231 fF`). In the
+   transient, the shipped BSIM4 models contribute their *own* bias-dependent
+   storage-node capacitance — `M_RD`'s gate in inversion plus `M_WR`'s drain
+   junction and overlap — **on top of** the lumped extracted value. The
+   `--c-sn-ff 0` comparison above puts that intrinsic contribution at
+   ≈ 0.867 fF, for a total `C_tot` ≈ 1.47 fF, i.e. 2.43x the 0.605 fF the
+   analytic path assumes. This factor is an *inference from two
+   simulations* (see the caveat above) — the only one of the two below that
+   is independently derived.
+2. **Written level below `VDD` — a 1.79x residual, not an independent
+   measurement.** The analytic derivation uses `I_leak` measured at `Vds` =
+   `VDD` = 1.8 V (98.99 pA, the worst-case bias per `sim/leakage/README.md`).
+   The transient node never gets to 1.8 V: it starts the hold phase at
+   1.2226 V and falls to 0.3226 V, so the leakage discharging it is below the
+   DC number for the entire window — that part is a real, qualitative effect.
+   But the *1.79x* itself is calculated as `I_DC / I_eff`, where
+   `I_eff := C_tot * delta_V / t_tran` uses the `C_tot` ≈ 1.47 fF from factor
+   1 above — i.e. it is **defined as the residual that makes the two factors'
+   product equal the observed ratio**, not a separately measured effective
+   current.
 
-`2.43 * 1.79 = 4.35` — the observed ratio, to three digits. This is the
-decomposition, not a coincidence fit: both factors were computed from
-committed rows, and the product reproduces the measured discrepancy exactly.
+**Why the "exact" product is not independent confirmation.** Write
+`A = C_tot/C_ext` (factor 1) and `B = I_DC/I_eff` (factor 2), with
+`I_eff = C_tot * delta_V / t_tran` by construction. Then algebraically
+`A * B = (C_tot/C_ext) * I_DC*t_tran/(C_tot*delta_V) = I_DC*t_tran/(C_ext*delta_V)
+= t_tran / t_analytic` — **`C_tot` cancels**, so the product reproduces the
+observed ratio `t_tran/t_analytic` for *any* value of `C_tot` whatsoever,
+including a wrong one. The exact three-digit agreement below therefore
+carries no information beyond factor 1 itself; it is reported for
+transparency, not as a second, independent check:
+
+`2.43 * 1.79 = 4.35` — the observed ratio `t_tran/t_analytic`, to three
+digits, by construction rather than by coincidence *or* by confirmation.
 
 **Direction of the correction.** `sim/retention/README.md` already stated
 that its constant-current approximation is conservative "in the direction of
@@ -430,9 +546,14 @@ here, each of which would tend to *degrade* the numbers above:
   strength and the lines carry the whole column's/row's capacitance; the
   100 ps edges here are not achievable in an array.
 - **No array leakage aggregation.** `i_rbl_deselect_a` is per *one*
-  deselected cell; an N-row column sums N of them against the selected
-  cell's `i_read_a`. At `sf`/125 °C that is 1.13 nA per cell against a 40 µA
-  read '1' — but against a 1.87 nA read '0'.
+  deselected cell (and, per the sign convention above, sources current into
+  `rbl` rather than sinking it); an N-row column sums N of them against the
+  selected cell's `i_read_a`. At `sf`/125 °C that is 1.405 nA per deselected
+  cell against a 39.7 µA read '1' — and, after the numerics fix, against a
+  165.6 pA read '0': a *single* deselected cell's residual now measures
+  larger than the selected-'0' signal it would be summed against, where the
+  pre-fix numbers made the two look comparable. This sharpens, rather than
+  relaxes, the column-height question #24 item 1 has to answer.
 - **No mismatch.** Local `Vth` mismatch between `M_WR` devices directly
   spreads the written level, and this cell has ≈ 0.15 V of margin to spare at
   the good corners and none at the bad ones.
@@ -456,8 +577,8 @@ gain-cell eDRAM macro") is the downstream consumer of this study:
 
 | #24 item | Columns it consumes | Why |
 |---|---|---|
-| **1. Array** | `i_rbl_deselect_a`, `v_sn_read_disturb_v`, `i_read_a` ('1' and '0') | The deselected-cell current sets the maximum column height before N cells of leakage swamp the selected cell's read current; the read-disturb column bounds how many reads a row tolerates between refreshes. Worst case for column height is `sf`/125 °C (1.132e-09 A deselected vs 1.873e-09 A for a selected '0'). |
-| **2. Sense amplifier** | `i_read_a` '1', `i_read_a` '0', `i_read_ratio_1_over_0`, `vrbl_bias_v` | The sense amp must resolve the '1'/'0' current difference at the *worst* corner, not the typical one: `fs`/-40 °C gives 34.4 nA vs 2.58 nA (ratio 13.4), while `sf`/125 °C gives 40.1 µA vs 1.87 nA — a 1163x input dynamic range. `vrbl_bias_v` records the bias these currents were measured at, which the sense amp must reproduce. Replacing `delta_V = VDD/2` with a validated offset/noise budget (#24 item 2's stated goal) directly re-scores the write-margin table above. |
+| **1. Array** | `i_rbl_deselect_a`, `v_sn_read_disturb_v`, `i_read_a` ('1' and '0') | The deselected-cell current sets the maximum column height before N cells of leakage swamp the selected cell's read current; the read-disturb column bounds how many reads a row tolerates between refreshes. Worst case for column height is `sf`/125 °C (1.405e-09 A deselected vs 1.656e-10 A for a selected '0' — the deselected residual is already ~8.5x the selected-'0' signal from a single cell). |
+| **2. Sense amplifier** | `i_read_a` '1', `i_read_a` '0', `i_read_ratio_1_over_0`, `vrbl_bias_v` | The sense amp must resolve the '1'/'0' current difference at the *worst* corner, not the typical one: `fs`/-40 °C gives 21.9 nA vs 0.88 pA (ratio 2.49e+04), while `ff`/-40 °C gives the largest ratio (5.45e+07) and `sf`/125 °C gives 39.7 µA vs 165.6 pA. `vrbl_bias_v` records the bias these currents were measured at, which the sense amp must reproduce. Replacing `delta_V = VDD/2` with a validated offset/noise budget (#24 item 2's stated goal) directly re-scores the write-margin table above. |
 | **3. Refresh controller** | `t_ret_tran_s`, `t_ret_linear_extrap_s`, `v_sn_hold_start_v` | The refresh interval must sit under the worst-case *valid* retention time — 2.3958e-05 s at `sf`/125 °C by simulation, 1.5963e-05 s on the conservative column — while the ratified §7 bound remains 5.03 µs until a spec change says otherwise. |
 | **Write margin** (#24 item 2's precondition, and the open item `design/README.md` names) | `v_sn_end_wl_pulse_v`, `v_sn_after_write_settled_v`, `t_wl_pulse_ns` | The ceiling/retained pair across the grid, plus the 20/200/2000 ns settling rows, are the whole input to a boosted-wordline-vs-longer-pulse-vs-smaller-`delta_V` decision. |
 | **6. Post-layout PVT sim** | all of the above | This deck is the pre-layout half; the post-layout re-run against `layout/gain_cell_2t.extract.parasitics.spice` is T1 item 7, explicitly out of scope here (that netlist uses the deck's generic `nfet` model name and a `vsubs` node, and needs its own model-mapping decision). |
@@ -474,8 +595,9 @@ Per issue #27's "Out of scope", these are written down so they are not lost,
    assumption.
 2. **`M_RD` re-sizing.** `design/README.md` calls the read device's sizing an
    explicit placeholder "not yet driven by a read-current or sense-margin
-   analysis." This study is the first read-current analysis; the 13.4x
-   worst-corner ratio is the number a re-sizing decision would target. Note
+   analysis." This study is the first read-current analysis; the 2.49e+04
+   worst-corner ratio (`fs`/-40 °C) is the number a re-sizing decision would
+   target. Note
    that widening `M_RD` also raises the storage-node capacitance (its gate is
    `sn`), which *helps* retention — the two effects are coupled and a
    re-sizing study should sweep both.
