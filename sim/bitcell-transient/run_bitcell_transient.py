@@ -52,10 +52,16 @@ points cannot drift apart. Per (corner, temp, stored value):
                              feedthrough step that a DC check cannot see.
   i_rbl_deselect_a           |i(vrbl)| just before the read pulse: what one
                              DESELECTED cell injects into the read bitline.
+                             Measured from a SEPARATE short, fine-tmax .tran
+                             (measure_read_currents / read_phase_window) --
+                             the long run's tmax, sized for the hold window,
+                             does not resolve this sample (see
+                             READ_TMAX_DIVISOR).
   v_sn_read_gate_v           V(sn) at the end of the read pulse -- the gate
                              drive M_RD actually sees, after `rwl`'s falling
                              edge couples down onto the floating node.
-  i_read_a                   |i(vrbl)| at the end of the read pulse.
+  i_read_a                   |i(vrbl)| at the end of the read pulse. Same
+                             separate short run as i_rbl_deselect_a above.
   v_sn_read_disturb_v        V(sn) after the read minus V(sn) before it.
   v_sn_hold_start_v          V(sn) at THOLD_START: the level the hold-phase
                              decay starts from, and the reference the
@@ -132,6 +138,21 @@ TSTEP = "10p"
 TMAX_DIVISOR = 2000
 TMAX_MIN_S = 1e-9
 TMAX_MAX_S = 5e-6
+
+# Read-phase current sampling uses a SEPARATE, short `.tran` -- not the long
+# hold run above. `tmax` above is sized for the hold window (microseconds to
+# milliseconds) and is unrelated to the write/read edges (nanoseconds); a
+# tmax sweep confirms v(sn)/t_ret_tran_s move <0.2% under it, but i(vrbl) at
+# the read-phase sampling instants does not converge: it is current through
+# a source branch, sampled on a near-static node between LTE-controlled
+# points, and at the long run's tmax it comes out up to ~47x off and is not
+# even sign-stable (issue #27 Judge review). i_read_a/i_rbl_deselect_a are
+# therefore always measured from a dedicated short run covering only the
+# write/read phases, with tmax forced to TEDGE/READ_TMAX_DIVISOR --
+# independent of the hold-window sizing and of --tmax-ns, which only ever
+# affected the long run. See read_phase_window() and the README's numerics
+# section for the convergence check that justifies this value.
+READ_TMAX_DIVISOR = 10
 
 # Hold-window sizing. The window is seeded from the analytic estimate
 # C_est * delta_V / I_leak, using the DC leakage already recorded for the
@@ -572,6 +593,33 @@ def run_tran(
             pass
 
 
+def read_phase_window(params: dict[str, float]) -> tuple[float, float]:
+    """(tstop, tmax) for the dedicated short `.tran` that measures the
+    read-phase currents (see READ_TMAX_DIVISOR above). `tstop` = THOLD_START
+    is already past the read-end sampling instant by construction (the
+    ordering invariant `parse_template_params` checks), so it covers both
+    read-phase sampling instants with margin to spare; `tmax` is fixed and
+    never affected by the hold-window sizing or --tmax-ns."""
+    return params["THOLD_START"], params["TEDGE"] / READ_TMAX_DIVISOR
+
+
+def measure_read_currents(
+    t: list[float], irbl: list[float], params: dict[str, float]
+) -> tuple[float, float]:
+    """|i(vrbl)| just before and at the end of the read pulse, from the
+    dedicated fine-tmax short run (read_phase_window) -- NOT from the long
+    hold run, which cannot resolve these samples (see READ_TMAX_DIVISOR).
+    `i(vrbl)` is negative while the cell pulls current out of the read
+    bitline, so magnitudes are reported; see the README for the sign
+    convention this discards.
+    """
+    t_pre_read = params["TRWL_ON"] - 5 * params["TEDGE"]
+    t_read_end = params["TRWL_OFF"] - 5 * params["TEDGE"]
+    i_desel = abs(interp_at(t, irbl, t_pre_read))
+    i_read = abs(interp_at(t, irbl, t_read_end))
+    return i_desel, i_read
+
+
 def measure(
     t: list[float],
     vsn: list[float],
@@ -580,11 +628,11 @@ def measure(
     hold_window: float,
     delta_v: float,
 ) -> dict:
-    """Extract every scalar this study records from one .tran waveform.
+    """Extract every scalar this study records from one .tran waveform,
+    EXCEPT i_read_a/i_rbl_deselect_a -- those come from a separate short run
+    via measure_read_currents(), never from this (long, coarse-tmax) one.
 
     All instants come from `params` (the template's own `.param` block).
-    `i(vrbl)` is negative while the cell pulls current out of the read
-    bitline, so magnitudes are reported.
     """
     t_hold = params["THOLD_START"]
     # Sample a short settle time before each falling/rising edge, expressed
@@ -596,9 +644,7 @@ def measure(
 
     v_end_wl = interp_at(t, vsn, params["TWL_OFF"])
     v_settled = interp_at(t, vsn, t_pre_read)
-    i_desel = abs(interp_at(t, irbl, t_pre_read))
     v_read_gate = interp_at(t, vsn, t_read_end)
-    i_read = abs(interp_at(t, irbl, t_read_end))
     v_hold_start = interp_at(t, vsn, t_hold)
     v_hold_end = interp_at(t, vsn, t_hold + hold_window)
 
@@ -618,8 +664,6 @@ def measure(
         "v_sn_end_wl_pulse_v": v_end_wl,
         "v_sn_after_write_settled_v": v_settled,
         "v_sn_read_gate_v": v_read_gate,
-        "i_read_a": i_read,
-        "i_rbl_deselect_a": i_desel,
         "v_sn_read_disturb_v": v_hold_start - v_settled,
         "v_sn_hold_start_v": v_hold_start,
         "v_sn_hold_end_v": v_hold_end,
@@ -654,6 +698,7 @@ def run_point(
     vsn_init = 0.0 if stored == 1 else vdd
 
     attempts = HOLD_WINDOW_ATTEMPTS if grow else 1
+    m = tstop = tmax = None
     for attempt in range(attempts):
         tstop = params["THOLD_START"] + hold_window
         tmax = (
@@ -681,9 +726,30 @@ def run_point(
             or hold_window >= HOLD_WINDOW_MAX_S
         )
         if done:
-            return m, hold_window, tstop, tmax
+            break
         hold_window = min(hold_window * HOLD_WINDOW_GROWTH, HOLD_WINDOW_MAX_S)
-    raise AssertionError("unreachable")
+    else:
+        raise AssertionError("unreachable")
+
+    # Read-phase currents: a dedicated short, fine-tmax .tran (see
+    # READ_TMAX_DIVISOR / read_phase_window). Independent of hold-window
+    # sizing, so this runs exactly once regardless of growth attempts.
+    read_tstop, read_tmax = read_phase_window(params)
+    t_r, _vsn_r, irbl_r = run_tran(
+        ngspice_lib,
+        corner,
+        temp_c,
+        c_sn_f,
+        vrbl,
+        vbl_data,
+        vsn_init,
+        read_tstop,
+        read_tmax,
+        f"{corner}_{temp_c}_d{stored}_read",
+    )
+    m["i_rbl_deselect_a"], m["i_read_a"] = measure_read_currents(t_r, irbl_r, params)
+
+    return m, hold_window, tstop, tmax
 
 
 def fmt(value, spec: str = "{:.6e}") -> str:

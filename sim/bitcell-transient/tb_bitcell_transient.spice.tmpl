@@ -25,15 +25,18 @@
 *   M_RD  gate=sn   drain=rbl  source=rwl  body=GND   (read)
 *
 * READ-SELECT POLARITY (a design decision this deck records, not invents).
-* M_RD's SOURCE is `rwl`. For an unselected row to keep its read device
-* off with a stored '1' on `sn`, `rwl` must idle HIGH: Vgs(M_RD) =
-* V(sn) - V(rwl) < 0 at V(rwl) = VDD. A read therefore pulls `rwl` LOW
-* (active-low read select, `rwl` acting as the row's source line) and
-* senses the resulting current on `rbl`. Both wordlines still swing
-* 0 V / VDD only -- no boosted level -- per design/README.md "Wordline
-* drive scheme: plain 1.8 V (not boosted)". See the README's "Read scheme"
-* section for why the alternative (rwl idling low) is not usable in an
-* array.
+* `rwl` idles at VDD and a read pulls it LOW (active-low read select),
+* sensing the resulting current on `rbl`, held at VRBL = VDD/2. For a
+* DESELECTED row, `rbl` (not `rwl`) is the lower-voltage terminal, so
+* BSIM4 swaps M_RD's effective source/drain to make `rbl` the effective
+* source: the deselect bias is Vgs(M_RD) = V(sn) - V(rbl), which is
+* SUBTHRESHOLD but not off for a stored '1' (e.g. +0.32 V at sf/125 C) --
+* i_rbl_deselect_a measures exactly that residual. The alternative, `rwl`
+* idling LOW, is worse: `rbl` then stays the effective drain, so the bias
+* is the full Vgs(M_RD) = V(sn), which conducts far harder. Both
+* wordlines still swing 0 V / VDD only -- no boosted level -- per
+* design/README.md "Wordline drive scheme: plain 1.8 V (not boosted)".
+* See the README's "Read scheme" section for the full derivation.
 *
 * THREE PHASES, ONE .tran (times are the .param values below):
 *   1. WRITE  wl pulses 0 -> VDD -> 0 with bl held at the data level for
