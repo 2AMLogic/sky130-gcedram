@@ -87,10 +87,15 @@ core rail), **not** a boosted-above-`VDD` scheme.
 Consequence, stated rather than silently absorbed: an NMOS pass device
 (`M_WR`) driven by a plain-`VDD` wordline can only pull the storage node up
 to `VDD - Vgs(M_WR)`, a threshold-voltage drop below a full logic '1' --
-confirmed by a DC operating-point smoke check against the shipped `tt`
-corner model (`wl = bl = 1.8 V` yields `v(sn) ≈ 1.39 V`, i.e. roughly a
-0.4 V drop, consistent with sky130's core NMOS `Vgs,th` plus overdrive at
-this bias). This schematic does not attempt to compensate for that drop
+now measured and committed across all 15 PVT corners by
+[`sim/bitcell-transient/`](../sim/bitcell-transient/README.md) (issue #27),
+which supersedes the earlier uncommitted `tt`-only DC smoke check quoted
+here (`v(sn) ≈ 1.39 V`): that figure is the `t -> infinity` DC asymptote, and
+a real 20 ns wordline pulse reaches only 1.184 V at `tt`/27 °C, of which
+wordline-to-storage-node feedthrough leaves 1.030 V retained -- with the
+0.9 V sense margin `sim/retention/` assumes unattainable at three corners
+(`fs`/-40 °C, `ss`/-40 °C, `fs`/27 °C). This schematic does not attempt to
+compensate for that drop
 (no charge pump / level-shifter is included) -- that is an open item for a
 future write-margin analysis, not a claim that plain-`VDD` writing is
 lossless. It does **not** change any already-ratified retention number:
