@@ -40,7 +40,15 @@ from pathlib import Path
 SIM_LEAKAGE_DIR = Path(__file__).resolve().parent
 
 sys.path.insert(0, str(SIM_LEAKAGE_DIR.parent))
-from _evidence_common import append_result, repo_git_sha, resolve_pdk_root
+from _evidence_common import (
+    PDK_OPEN_PDKS_COMMIT,
+    append_result,
+    check_ngspice_available,
+    ngspice_version,
+    repo_git_sha,
+    resolve_ngspice_lib,
+    resolve_pdk_root,
+)
 
 TEMPLATE_PATH = SIM_LEAKAGE_DIR / "tb_access_leakage.spice.tmpl"
 RESULTS_CSV = SIM_LEAKAGE_DIR / "results" / "leakage_results.csv"
@@ -67,58 +75,13 @@ L_UM = 0.15
 VDD = 1.8
 DEFAULT_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 DEFAULT_TEMPS_C = [-40, 27, 125]
-DEFAULT_NGSPICE_LIB_REL = "libs.tech/combined/sky130.lib.spice"
 DEFAULT_PDK_VARIANT = "sky130A"
-PDK_OPEN_PDKS_COMMIT = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
 
 ILEAK_RE = re.compile(r"ileak_a\s*=\s*([0-9.eE+-]+)")
 
 
-def resolve_ngspice_lib(pdk_root: Path, variant: str) -> Path:
-    return pdk_root / variant / DEFAULT_NGSPICE_LIB_REL
-
-
 def check_env(ngspice_lib: Path) -> bool:
-    ok = True
-    if not ngspice_lib.is_file():
-        print(
-            f"ERROR: sky130 ngspice model library not found: {ngspice_lib}",
-            file=sys.stderr,
-        )
-        print(
-            "  Install a stock PDK with volare, e.g.:\n"
-            f"    volare enable --pdk sky130 {PDK_OPEN_PDKS_COMMIT}\n"
-            "  or set PDK_ROOT to an existing open_pdks sky130A install.",
-            file=sys.stderr,
-        )
-        ok = False
-    ngspice_bin = None
-    for candidate in ("ngspice",):
-        from shutil import which
-
-        ngspice_bin = which(candidate)
-        if ngspice_bin:
-            break
-    if not ngspice_bin:
-        print("ERROR: `ngspice` not found on PATH.", file=sys.stderr)
-        ok = False
-    return ok
-
-
-def ngspice_version() -> str:
-    try:
-        out = subprocess.run(
-            ["ngspice", "--version"], capture_output=True, text=True, timeout=10
-        )
-        # Line 1 of `ngspice --version` is a "******" banner rule; the
-        # actual "ngspice-NN : Circuit level simulation program" line is
-        # the first line containing "ngspice".
-        for line in (out.stdout or "").splitlines():
-            if "ngspice" in line.lower():
-                return line.strip()
-        return "unknown"
-    except Exception:
-        return "unknown"
+    return check_ngspice_available(ngspice_lib)
 
 
 def render_netlist(ngspice_lib: Path, corner: str, temp_c: int) -> str:

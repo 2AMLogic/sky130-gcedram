@@ -18,7 +18,17 @@ from __future__ import annotations
 import csv
 import os
 import subprocess
+import sys
 from pathlib import Path
+from shutil import which
+
+# sky130A path to the combined ngspice model library, relative to a PDK
+# root's variant directory (e.g. `$PDK_ROOT/sky130A/...`).
+DEFAULT_NGSPICE_LIB_REL = "libs.tech/combined/sky130.lib.spice"
+
+# The open_pdks commit the shipped model library is pinned to, quoted in
+# the install hint `check_ngspice_available()` prints on failure.
+PDK_OPEN_PDKS_COMMIT = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
 
 
 def resolve_pdk_root(
@@ -50,6 +60,55 @@ def repo_git_sha(cwd: Path) -> str:
             timeout=10,
         )
         return out.stdout.strip() or "unknown"
+    except Exception:
+        return "unknown"
+
+
+def resolve_ngspice_lib(pdk_root: Path, variant: str) -> Path:
+    """Resolve the combined sky130 ngspice model library path for a given
+    PDK root and variant (e.g. "sky130A")."""
+    return pdk_root / variant / DEFAULT_NGSPICE_LIB_REL
+
+
+def check_ngspice_available(ngspice_lib: Path) -> bool:
+    """Check that the sky130 ngspice model library exists and `ngspice`
+    is on PATH, printing an install hint on failure. Callers with
+    additional environment checks (e.g. a testbench template or design
+    netlist) run those separately and AND the result with this one."""
+    ok = True
+    if not ngspice_lib.is_file():
+        print(
+            f"ERROR: sky130 ngspice model library not found: {ngspice_lib}",
+            file=sys.stderr,
+        )
+        print(
+            "  Install a stock PDK with volare, e.g.:\n"
+            f"    volare enable --pdk sky130 {PDK_OPEN_PDKS_COMMIT}\n"
+            "  or set PDK_ROOT to an existing open_pdks sky130A install.",
+            file=sys.stderr,
+        )
+        ok = False
+    if not which("ngspice"):
+        print("ERROR: `ngspice` not found on PATH.", file=sys.stderr)
+        ok = False
+    return ok
+
+
+def ngspice_version() -> str:
+    """`ngspice --version`'s banner line naming the version, for the
+    provenance stamp written into every appended result row. Returns
+    "unknown" on any failure rather than raising."""
+    try:
+        out = subprocess.run(
+            ["ngspice", "--version"], capture_output=True, text=True, timeout=10
+        )
+        # Line 1 of `ngspice --version` is a "******" banner rule; the
+        # actual "ngspice-NN : Circuit level simulation program" line is
+        # the first line containing "ngspice".
+        for line in (out.stdout or "").splitlines():
+            if "ngspice" in line.lower():
+                return line.strip()
+        return "unknown"
     except Exception:
         return "unknown"
 
