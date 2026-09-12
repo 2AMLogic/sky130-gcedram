@@ -6,10 +6,23 @@ CMOS PDK — designed by AI agents driving
 [klayout-tools](https://github.com/2AMLogic/klayout-tools) and the
 open-source xschem + ngspice flow.
 
-**Status: retention/refresh budget ratified.** No schematics or layout exist
-yet. The leakage study that everything else in this repo depends on is done
-and its evidence chain is ratified in `spec/`; bitcell + array simulation is
-the next work.
+**Status: 2T bitcell designed, simulated, and DRC/LVS-clean.** The leakage
+study that everything else in this repo depends on is done and its evidence
+chain is ratified in `spec/`. On top of it the bitcell itself now exists as
+committed artifacts: an xschem schematic and its derived netlist
+([`design/gain_cell_2t.sch`](design/gain_cell_2t.sch),
+[`design/gain_cell_2t.spice`](design/gain_cell_2t.spice)), a layout that
+runs DRC-clean and LVS-matches that netlist
+([`layout/gain_cell_2t.gds`](layout/gain_cell_2t.gds), with its
+[DRC](layout/gain_cell_2t.drc.result.json) and
+[LVS](layout/gain_cell_2t.lvs.result.json) result reports committed — an
+informal pass against klayout-tools' unreleased sky130 deck, not a foundry
+sign-off run), and a circuit-level write/read/hold transient across a
+15-point PVT grid
+([`sim/bitcell-transient/`](sim/bitcell-transient/README.md)). All of that
+is at the **single-bitcell** level: the next work is the macro around it —
+array, sense amplifier, and refresh controller — tracked in
+[#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).
 
 **Built agent-native.** Every specification, decision record, testbench, and
 line of documentation here is produced by AI agents working from a ratified
@@ -64,8 +77,12 @@ chain and rationale: [`spec/retention-refresh-budget.md`](spec/retention-refresh
 
 Maturity ladder: retention study → spec ratified → bitcell + array simulated
 across PVT → sense/refresh periphery → layout DRC/LVS-clean → post-layout
-re-verification → shuttle seat → measured silicon. **Current position:
-retention/refresh budget ratified — bitcell + array simulation next.**
+re-verification → shuttle seat → measured silicon. **Current position: the
+bitcell has cleared every rung it can reach on its own — simulated across
+PVT (write/read/hold) and laid out DRC-clean with a matching LVS. The open
+frontier is the macro: array, sense amplifier and refresh-controller design
+([#24](https://github.com/2AMLogic/sky130-gcedram/issues/24)), then
+macro-level layout and post-layout re-verification.**
 
 ## Repo layout
 
