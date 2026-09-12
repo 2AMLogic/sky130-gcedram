@@ -96,14 +96,21 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from shutil import which
 
 SIM_BITCELL_DIR = Path(__file__).resolve().parent
 SIM_DIR = SIM_BITCELL_DIR.parent
 REPO_ROOT = SIM_DIR.parent
 
 sys.path.insert(0, str(SIM_DIR))
-from _evidence_common import append_result, repo_git_sha, resolve_pdk_root  # noqa: E402
+from _evidence_common import (  # noqa: E402
+    PDK_OPEN_PDKS_COMMIT,
+    append_result,
+    check_ngspice_available,
+    ngspice_version,
+    repo_git_sha,
+    resolve_ngspice_lib,
+    resolve_pdk_root,
+)
 
 sys.path.insert(0, str(SIM_DIR / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
@@ -116,9 +123,7 @@ LEAKAGE_CSV = SIM_DIR / "leakage" / "results" / "leakage_results.csv"
 
 DEFAULT_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 DEFAULT_TEMPS_C = [-40, 27, 125]
-DEFAULT_NGSPICE_LIB_REL = "libs.tech/combined/sky130.lib.spice"
 DEFAULT_PDK_VARIANT = "sky130A"
-PDK_OPEN_PDKS_COMMIT = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
 
 # Sense margin. Same labelled ASSUMPTION sim/retention/README.md "Sense
 # margin" carries (delta_V = VDD/2 = 0.9 V, the coarse half-VDD bound used
@@ -420,27 +425,12 @@ def first_crossing_below(
 # --------------------------------------------------------------------------
 
 
-def resolve_ngspice_lib(pdk_root: Path, variant: str) -> Path:
-    return pdk_root / variant / DEFAULT_NGSPICE_LIB_REL
-
-
 def check_env(ngspice_lib: Path) -> bool:
-    ok = True
-    if not ngspice_lib.is_file():
-        print(
-            f"ERROR: sky130 ngspice model library not found: {ngspice_lib}",
-            file=sys.stderr,
-        )
-        print(
-            "  Install a stock PDK with volare, e.g.:\n"
-            f"    volare enable --pdk sky130 {PDK_OPEN_PDKS_COMMIT}\n"
-            "  or set PDK_ROOT to an existing open_pdks sky130A install.",
-            file=sys.stderr,
-        )
-        ok = False
-    if not which("ngspice"):
-        print("ERROR: `ngspice` not found on PATH.", file=sys.stderr)
-        ok = False
+    # ngspice/model-library availability is shared with run_leakage_sweep.py
+    # via sim/_evidence_common.py; only the checks specific to this script's
+    # own inputs (testbench template, design netlist, extracted parasitics,
+    # leakage results) stay local.
+    ok = check_ngspice_available(ngspice_lib)
     if not TEMPLATE_PATH.is_file():
         print(f"ERROR: testbench template not found: {TEMPLATE_PATH}", file=sys.stderr)
         ok = False
@@ -467,19 +457,6 @@ def check_env(ngspice_lib: Path) -> bool:
         )
         ok = False
     return ok
-
-
-def ngspice_version() -> str:
-    try:
-        out = subprocess.run(
-            ["ngspice", "--version"], capture_output=True, text=True, timeout=10
-        )
-        for line in (out.stdout or "").splitlines():
-            if "ngspice" in line.lower():
-                return line.strip()
-        return "unknown"
-    except Exception:
-        return "unknown"
 
 
 def load_leakage_by_point() -> dict[tuple[str, int], float]:
