@@ -78,7 +78,12 @@ SIM_RETENTION_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SIM_RETENTION_DIR.parent.parent
 
 sys.path.insert(0, str(SIM_RETENTION_DIR.parent))
-from _evidence_common import append_result, repo_git_sha, resolve_pdk_root
+from _evidence_common import (
+    PDK_OPEN_PDKS_COMMIT,
+    append_result,
+    repo_git_sha,
+    resolve_pdk_root,
+)
 
 LEAKAGE_CSV = SIM_RETENTION_DIR.parent / "leakage" / "results" / "leakage_results.csv"
 RESULTS_CSV = SIM_RETENTION_DIR / "results" / "retention_results.csv"
@@ -105,10 +110,8 @@ CSV_FIELDS = [
 ]
 
 DEVICE = "sky130_fd_pr__nfet_01v8"
-DEFAULT_PDK_VARIANT = "sky130A"
 DEFAULT_PDK_VARIANT_MODEL = "sky130B"  # libs.ref model cards live under sky130B
 MODEL_REL_DIR = "libs.ref/sky130_fd_pr/spice"
-PDK_OPEN_PDKS_COMMIT = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
 
 EPS0 = 8.8541878128e-12  # F/m, vacuum permittivity (physical constant)
 

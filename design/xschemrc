@@ -23,7 +23,9 @@
 #### schematics live under design/, not sim/).
 
 #### PDK_ROOT / PDK: honour the environment, else fall back to the volare
-#### default root. Keep the fallback in sync with design/pdk.json.
+#### default root. Keep the fallback in sync with the canonical pin in
+#### docs/pdk-pin.md (Tcl can't import sim/_evidence_common.py's Python
+#### constants, so this is a by-hand mirror).
 if {![info exists env(PDK_ROOT)] || $env(PDK_ROOT) eq {}} {
   set env(PDK_ROOT) [file normalize ~/.volare]
 }

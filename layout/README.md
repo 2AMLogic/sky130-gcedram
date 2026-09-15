@@ -102,7 +102,7 @@ macro-level array/periphery integration remains out of scope here.
 ## Regenerating the layout
 
 Requires `klt` (klayout-tools) on `PATH` and a resolvable sky130A PDK (same
-pin as `design/`'s -- see [`design/pdk.json`](../design/pdk.json)):
+pin as `design/`'s -- see [`docs/pdk-pin.md`](../docs/pdk-pin.md)):
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled) and

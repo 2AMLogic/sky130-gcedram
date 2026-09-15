@@ -249,7 +249,7 @@ explicit, not a defect to be explained away.
 ## Reproducing this derivation
 
 Requires a stock `open_pdks` sky130 install (via `volare`, same pin as
-`sim/leakage/pdk.json`), the leakage results already recorded in
+[`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)), the leakage results already recorded in
 `sim/leakage/results/leakage_results.csv`, and (for the `2T-min`
 extraction path) the committed
 [`layout/gain_cell_2t.extract.parasitics.json`](../../layout/gain_cell_2t.extract.parasitics.json).
