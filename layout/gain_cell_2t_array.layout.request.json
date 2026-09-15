@@ -1,0 +1,681 @@
+{
+  "pdk": {
+    "variant": "sky130A"
+  },
+  "blocks": [
+    {
+      "id": "mos",
+      "generator_report": "gain_cell_2t_array_mos.json"
+    }
+  ],
+  "placement": {
+    "strategy": "explicit",
+    "order": [
+      "mos"
+    ],
+    "origins_um": {
+      "mos": {
+        "x": 0.0,
+        "y": 0.0
+      }
+    }
+  },
+  "connectivity": [
+    {
+      "net": "wl_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U0_G"
+        },
+        {
+          "block": "mos",
+          "port": "U2_G"
+        },
+        {
+          "block": "mos",
+          "port": "U4_G"
+        },
+        {
+          "block": "mos",
+          "port": "U6_G"
+        }
+      ]
+    },
+    {
+      "net": "wl_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U8_G"
+        },
+        {
+          "block": "mos",
+          "port": "U10_G"
+        },
+        {
+          "block": "mos",
+          "port": "U12_G"
+        },
+        {
+          "block": "mos",
+          "port": "U14_G"
+        }
+      ]
+    },
+    {
+      "net": "wl_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U16_G"
+        },
+        {
+          "block": "mos",
+          "port": "U18_G"
+        },
+        {
+          "block": "mos",
+          "port": "U20_G"
+        },
+        {
+          "block": "mos",
+          "port": "U22_G"
+        }
+      ]
+    },
+    {
+      "net": "wl_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U24_G"
+        },
+        {
+          "block": "mos",
+          "port": "U26_G"
+        },
+        {
+          "block": "mos",
+          "port": "U28_G"
+        },
+        {
+          "block": "mos",
+          "port": "U30_G"
+        }
+      ]
+    },
+    {
+      "net": "rwl_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U1_S"
+        },
+        {
+          "block": "mos",
+          "port": "U3_S"
+        },
+        {
+          "block": "mos",
+          "port": "U5_S"
+        },
+        {
+          "block": "mos",
+          "port": "U7_S"
+        }
+      ]
+    },
+    {
+      "net": "rwl_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U9_S"
+        },
+        {
+          "block": "mos",
+          "port": "U11_S"
+        },
+        {
+          "block": "mos",
+          "port": "U13_S"
+        },
+        {
+          "block": "mos",
+          "port": "U15_S"
+        }
+      ]
+    },
+    {
+      "net": "rwl_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U17_S"
+        },
+        {
+          "block": "mos",
+          "port": "U19_S"
+        },
+        {
+          "block": "mos",
+          "port": "U21_S"
+        },
+        {
+          "block": "mos",
+          "port": "U23_S"
+        }
+      ]
+    },
+    {
+      "net": "rwl_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U25_S"
+        },
+        {
+          "block": "mos",
+          "port": "U27_S"
+        },
+        {
+          "block": "mos",
+          "port": "U29_S"
+        },
+        {
+          "block": "mos",
+          "port": "U31_S"
+        }
+      ]
+    },
+    {
+      "net": "bl_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U0_S"
+        },
+        {
+          "block": "mos",
+          "port": "U8_S"
+        },
+        {
+          "block": "mos",
+          "port": "U16_S"
+        },
+        {
+          "block": "mos",
+          "port": "U24_S"
+        }
+      ]
+    },
+    {
+      "net": "bl_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U2_S"
+        },
+        {
+          "block": "mos",
+          "port": "U10_S"
+        },
+        {
+          "block": "mos",
+          "port": "U18_S"
+        },
+        {
+          "block": "mos",
+          "port": "U26_S"
+        }
+      ]
+    },
+    {
+      "net": "bl_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U4_S"
+        },
+        {
+          "block": "mos",
+          "port": "U12_S"
+        },
+        {
+          "block": "mos",
+          "port": "U20_S"
+        },
+        {
+          "block": "mos",
+          "port": "U28_S"
+        }
+      ]
+    },
+    {
+      "net": "bl_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U6_S"
+        },
+        {
+          "block": "mos",
+          "port": "U14_S"
+        },
+        {
+          "block": "mos",
+          "port": "U22_S"
+        },
+        {
+          "block": "mos",
+          "port": "U30_S"
+        }
+      ]
+    },
+    {
+      "net": "rbl_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U1_D"
+        },
+        {
+          "block": "mos",
+          "port": "U9_D"
+        },
+        {
+          "block": "mos",
+          "port": "U17_D"
+        },
+        {
+          "block": "mos",
+          "port": "U25_D"
+        }
+      ]
+    },
+    {
+      "net": "rbl_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U3_D"
+        },
+        {
+          "block": "mos",
+          "port": "U11_D"
+        },
+        {
+          "block": "mos",
+          "port": "U19_D"
+        },
+        {
+          "block": "mos",
+          "port": "U27_D"
+        }
+      ]
+    },
+    {
+      "net": "rbl_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U5_D"
+        },
+        {
+          "block": "mos",
+          "port": "U13_D"
+        },
+        {
+          "block": "mos",
+          "port": "U21_D"
+        },
+        {
+          "block": "mos",
+          "port": "U29_D"
+        }
+      ]
+    },
+    {
+      "net": "rbl_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U7_D"
+        },
+        {
+          "block": "mos",
+          "port": "U15_D"
+        },
+        {
+          "block": "mos",
+          "port": "U23_D"
+        },
+        {
+          "block": "mos",
+          "port": "U31_D"
+        }
+      ]
+    },
+    {
+      "net": "sn_0_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U0_D"
+        },
+        {
+          "block": "mos",
+          "port": "U1_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          1.08,
+          1.03
+        ]
+      ]
+    },
+    {
+      "net": "sn_0_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U2_D"
+        },
+        {
+          "block": "mos",
+          "port": "U3_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          4.0600000000000005,
+          1.03
+        ]
+      ]
+    },
+    {
+      "net": "sn_0_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U4_D"
+        },
+        {
+          "block": "mos",
+          "port": "U5_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          7.040000000000001,
+          1.03
+        ]
+      ]
+    },
+    {
+      "net": "sn_0_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U6_D"
+        },
+        {
+          "block": "mos",
+          "port": "U7_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          10.020000000000001,
+          1.03
+        ]
+      ]
+    },
+    {
+      "net": "sn_1_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U8_D"
+        },
+        {
+          "block": "mos",
+          "port": "U9_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          1.08,
+          2.67
+        ]
+      ]
+    },
+    {
+      "net": "sn_1_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U10_D"
+        },
+        {
+          "block": "mos",
+          "port": "U11_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          4.0600000000000005,
+          2.67
+        ]
+      ]
+    },
+    {
+      "net": "sn_1_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U12_D"
+        },
+        {
+          "block": "mos",
+          "port": "U13_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          7.040000000000001,
+          2.67
+        ]
+      ]
+    },
+    {
+      "net": "sn_1_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U14_D"
+        },
+        {
+          "block": "mos",
+          "port": "U15_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          10.020000000000001,
+          2.67
+        ]
+      ]
+    },
+    {
+      "net": "sn_2_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U16_D"
+        },
+        {
+          "block": "mos",
+          "port": "U17_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          1.08,
+          4.3100000000000005
+        ]
+      ]
+    },
+    {
+      "net": "sn_2_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U18_D"
+        },
+        {
+          "block": "mos",
+          "port": "U19_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          4.0600000000000005,
+          4.3100000000000005
+        ]
+      ]
+    },
+    {
+      "net": "sn_2_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U20_D"
+        },
+        {
+          "block": "mos",
+          "port": "U21_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          7.040000000000001,
+          4.3100000000000005
+        ]
+      ]
+    },
+    {
+      "net": "sn_2_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U22_D"
+        },
+        {
+          "block": "mos",
+          "port": "U23_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          10.020000000000001,
+          4.3100000000000005
+        ]
+      ]
+    },
+    {
+      "net": "sn_3_0",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U24_D"
+        },
+        {
+          "block": "mos",
+          "port": "U25_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          1.08,
+          5.95
+        ]
+      ]
+    },
+    {
+      "net": "sn_3_1",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U26_D"
+        },
+        {
+          "block": "mos",
+          "port": "U27_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          4.0600000000000005,
+          5.95
+        ]
+      ]
+    },
+    {
+      "net": "sn_3_2",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U28_D"
+        },
+        {
+          "block": "mos",
+          "port": "U29_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          7.040000000000001,
+          5.95
+        ]
+      ]
+    },
+    {
+      "net": "sn_3_3",
+      "pins": [
+        {
+          "block": "mos",
+          "port": "U30_D"
+        },
+        {
+          "block": "mos",
+          "port": "U31_G"
+        }
+      ],
+      "waypoints_um": [
+        [
+          10.020000000000001,
+          5.95
+        ]
+      ]
+    }
+  ],
+  "routing": {
+    "layer_role": "metal",
+    "width_um": 0.17,
+    "cross_block_layer_role": "metal2"
+  },
+  "pins": [
+    {
+      "net": "GND",
+      "block": "mos",
+      "port": "TAP_W"
+    }
+  ],
+  "options": {
+    "cell_name": "gain_cell_2t_array_4x4_layout_0",
+    "output": "gain_cell_2t_array.gds"
+  }
+}

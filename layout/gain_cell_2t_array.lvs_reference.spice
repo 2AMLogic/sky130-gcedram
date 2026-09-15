@@ -1,0 +1,56 @@
+* gain_cell_2t_array.lvs_reference.spice -- GENERATED array-level plain-
+* element (schematic-equivalent) LVS reference netlist for issue #34's
+* 4-row x 4-column shared-tap bitcell array, mechanically
+* replicating ../design/gain_cell_2t.spice's two-device subcircuit 4x4
+* times with the row/column bus net renaming array_topology.py computes --
+* NOT hand-transcribed (see layout/generate_array.sh, which regenerates this
+* file every run via `python3 layout/array_topology.py --emit lvs-reference`).
+* Device names, connectivity, and W/L are copied unchanged from the source
+* two-device netlist; only the SPICE *shape* differs (an M-card device class
+* "nfet" instead of an X-card subcircuit call, plus a real .SUBCKT/.ENDS
+* wrapper with the row/column bus pins below), mirroring
+* layout/gain_cell_2t.lvs_reference.spice's own single-cell precedent and
+* the reason documented there (klt lvs requires the plain-element form).
+*
+* Provenance: sha256 of the source netlist this array replicates from
+* (reproduce with: sha256sum ../design/gain_cell_2t.spice).
+*   ../design/gain_cell_2t.spice: sha256:1dbe6c519b96d651264ef30c736f62188b1c8728833fdd77ac60a9703e8aa05a
+*
+* sn_<r>_<c> (each bitcell's internal storage node) is deliberately NOT a
+* top-level .SUBCKT pin here either -- matching design/gain_cell_2t.sch's
+* and the single-cell layout's own convention (see array_topology.py's
+* module docstring "Per-cell internal node").
+.SUBCKT gain_cell_2t_array_4x4 wl_0 wl_1 wl_2 wl_3 rwl_0 rwl_1 rwl_2 rwl_3 bl_0 bl_1 bl_2 bl_3 rbl_0 rbl_1 rbl_2 rbl_3
+M_WR_0_0 sn_0_0 wl_0 bl_0 GND nfet L=0.15U W=0.42U
+M_RD_0_0 rbl_0 sn_0_0 rwl_0 GND nfet L=0.15U W=0.42U
+M_WR_0_1 sn_0_1 wl_0 bl_1 GND nfet L=0.15U W=0.42U
+M_RD_0_1 rbl_1 sn_0_1 rwl_0 GND nfet L=0.15U W=0.42U
+M_WR_0_2 sn_0_2 wl_0 bl_2 GND nfet L=0.15U W=0.42U
+M_RD_0_2 rbl_2 sn_0_2 rwl_0 GND nfet L=0.15U W=0.42U
+M_WR_0_3 sn_0_3 wl_0 bl_3 GND nfet L=0.15U W=0.42U
+M_RD_0_3 rbl_3 sn_0_3 rwl_0 GND nfet L=0.15U W=0.42U
+M_WR_1_0 sn_1_0 wl_1 bl_0 GND nfet L=0.15U W=0.42U
+M_RD_1_0 rbl_0 sn_1_0 rwl_1 GND nfet L=0.15U W=0.42U
+M_WR_1_1 sn_1_1 wl_1 bl_1 GND nfet L=0.15U W=0.42U
+M_RD_1_1 rbl_1 sn_1_1 rwl_1 GND nfet L=0.15U W=0.42U
+M_WR_1_2 sn_1_2 wl_1 bl_2 GND nfet L=0.15U W=0.42U
+M_RD_1_2 rbl_2 sn_1_2 rwl_1 GND nfet L=0.15U W=0.42U
+M_WR_1_3 sn_1_3 wl_1 bl_3 GND nfet L=0.15U W=0.42U
+M_RD_1_3 rbl_3 sn_1_3 rwl_1 GND nfet L=0.15U W=0.42U
+M_WR_2_0 sn_2_0 wl_2 bl_0 GND nfet L=0.15U W=0.42U
+M_RD_2_0 rbl_0 sn_2_0 rwl_2 GND nfet L=0.15U W=0.42U
+M_WR_2_1 sn_2_1 wl_2 bl_1 GND nfet L=0.15U W=0.42U
+M_RD_2_1 rbl_1 sn_2_1 rwl_2 GND nfet L=0.15U W=0.42U
+M_WR_2_2 sn_2_2 wl_2 bl_2 GND nfet L=0.15U W=0.42U
+M_RD_2_2 rbl_2 sn_2_2 rwl_2 GND nfet L=0.15U W=0.42U
+M_WR_2_3 sn_2_3 wl_2 bl_3 GND nfet L=0.15U W=0.42U
+M_RD_2_3 rbl_3 sn_2_3 rwl_2 GND nfet L=0.15U W=0.42U
+M_WR_3_0 sn_3_0 wl_3 bl_0 GND nfet L=0.15U W=0.42U
+M_RD_3_0 rbl_0 sn_3_0 rwl_3 GND nfet L=0.15U W=0.42U
+M_WR_3_1 sn_3_1 wl_3 bl_1 GND nfet L=0.15U W=0.42U
+M_RD_3_1 rbl_1 sn_3_1 rwl_3 GND nfet L=0.15U W=0.42U
+M_WR_3_2 sn_3_2 wl_3 bl_2 GND nfet L=0.15U W=0.42U
+M_RD_3_2 rbl_2 sn_3_2 rwl_3 GND nfet L=0.15U W=0.42U
+M_WR_3_3 sn_3_3 wl_3 bl_3 GND nfet L=0.15U W=0.42U
+M_RD_3_3 rbl_3 sn_3_3 rwl_3 GND nfet L=0.15U W=0.42U
+.ENDS gain_cell_2t_array_4x4

@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "engine": "klayout",
+  "layout": "gain_cell_2t_array.gds",
+  "reference": "gain_cell_2t_array.lvs_reference.spice",
+  "top": "gain_cell_2t_array_4x4_layout_0",
+  "reference_top": "GAIN_CELL_2T_ARRAY_4X4",
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": false,
+    "flatten_layout": false,
+    "flatten_reference": false,
+    "netgen_setup": null,
+    "parameter_tolerance": null
+  },
+  "status": "match",
+  "mismatch_count": 2,
+  "error_count": 0,
+  "category_counts": {
+    "topology": 2
+  },
+  "category_error_counts": {},
+  "counts": {
+    "nets": {
+      "layout": 33,
+      "reference": 33,
+      "matched": 33
+    },
+    "devices": {
+      "layout": 32,
+      "reference": 32,
+      "matched": 32
+    },
+    "pins": {
+      "layout": 33,
+      "reference": 16,
+      "matched": 33
+    }
+  },
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "pnp",
+    "sky130_fd_pr__model__cap_mim",
+    "sky130_fd_pr__model__cap_mim_m4",
+    "resistor"
+  ],
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.12",
+    "layout_sha256": "4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd",
+    "reference_sha256": "61cba9ba976a309dbc116701732d33aa32bbcbe5881e3a6ae1c9cb1d884b65b7",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.4.0",
+    "klayout_version": "0.30.12",
+    "pdk": null,
+    "deck": {
+      "name": "sky130",
+      "content_hash": "sha256:5afac7ab8561545859f5e2e74f4621c6ffc052756dc8fe344ea263398e96b240",
+      "released": true
+    },
+    "input": null
+  },
+  "mismatches": [
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch",
+      "side": "layout",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch",
+      "side": "layout",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "bl_0",
+      "reference": "BL_0",
+      "pin": true
+    },
+    {
+      "layout": "bl_1",
+      "reference": "BL_1",
+      "pin": true
+    },
+    {
+      "layout": "bl_2",
+      "reference": "BL_2",
+      "pin": true
+    },
+    {
+      "layout": "bl_3",
+      "reference": "BL_3",
+      "pin": true
+    },
+    {
+      "layout": "GND",
+      "reference": "GND",
+      "pin": true
+    },
+    {
+      "layout": "rbl_0",
+      "reference": "RBL_0",
+      "pin": true
+    },
+    {
+      "layout": "rbl_1",
+      "reference": "RBL_1",
+      "pin": true
+    },
+    {
+      "layout": "rbl_2",
+      "reference": "RBL_2",
+      "pin": true
+    },
+    {
+      "layout": "rbl_3",
+      "reference": "RBL_3",
+      "pin": true
+    },
+    {
+      "layout": "rwl_0",
+      "reference": "RWL_0",
+      "pin": true
+    },
+    {
+      "layout": "rwl_1",
+      "reference": "RWL_1",
+      "pin": true
+    },
+    {
+      "layout": "rwl_2",
+      "reference": "RWL_2",
+      "pin": true
+    },
+    {
+      "layout": "rwl_3",
+      "reference": "RWL_3",
+      "pin": true
+    },
+    {
+      "layout": "sn_0_0",
+      "reference": "SN_0_0",
+      "pin": true
+    },
+    {
+      "layout": "sn_0_1",
+      "reference": "SN_0_1",
+      "pin": true
+    },
+    {
+      "layout": "sn_0_2",
+      "reference": "SN_0_2",
+      "pin": true
+    },
+    {
+      "layout": "sn_0_3",
+      "reference": "SN_0_3",
+      "pin": true
+    },
+    {
+      "layout": "sn_1_0",
+      "reference": "SN_1_0",
+      "pin": true
+    },
+    {
+      "layout": "sn_1_1",
+      "reference": "SN_1_1",
+      "pin": true
+    },
+    {
+      "layout": "sn_1_2",
+      "reference": "SN_1_2",
+      "pin": true
+    },
+    {
+      "layout": "sn_1_3",
+      "reference": "SN_1_3",
+      "pin": true
+    },
+    {
+      "layout": "sn_2_0",
+      "reference": "SN_2_0",
+      "pin": true
+    },
+    {
+      "layout": "sn_2_1",
+      "reference": "SN_2_1",
+      "pin": true
+    },
+    {
+      "layout": "sn_2_2",
+      "reference": "SN_2_2",
+      "pin": true
+    },
+    {
+      "layout": "sn_2_3",
+      "reference": "SN_2_3",
+      "pin": true
+    },
+    {
+      "layout": "sn_3_0",
+      "reference": "SN_3_0",
+      "pin": true
+    },
+    {
+      "layout": "sn_3_1",
+      "reference": "SN_3_1",
+      "pin": true
+    },
+    {
+      "layout": "sn_3_2",
+      "reference": "SN_3_2",
+      "pin": true
+    },
+    {
+      "layout": "sn_3_3",
+      "reference": "SN_3_3",
+      "pin": true
+    },
+    {
+      "layout": "wl_0",
+      "reference": "WL_0",
+      "pin": true
+    },
+    {
+      "layout": "wl_1",
+      "reference": "WL_1",
+      "pin": true
+    },
+    {
+      "layout": "wl_2",
+      "reference": "WL_2",
+      "pin": true
+    },
+    {
+      "layout": "wl_3",
+      "reference": "WL_3",
+      "pin": true
+    }
+  ]
+}

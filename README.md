@@ -19,9 +19,15 @@ runs DRC-clean and LVS-matches that netlist
 informal pass against klayout-tools' unreleased sky130 deck, not a foundry
 sign-off run), and a circuit-level write/read/hold transient across a
 15-point PVT grid
-([`sim/bitcell-transient/`](sim/bitcell-transient/README.md)). All of that
-is at the **single-bitcell** level: the next work is the macro around it —
-array, sense amplifier, and refresh controller — tracked in
+([`sim/bitcell-transient/`](sim/bitcell-transient/README.md)). Beyond the
+single bitcell, a shared-tap `4x4` array of that same ratified cell
+([`layout/gain_cell_2t_array.gds`](layout/gain_cell_2t_array.gds), documented in
+[`layout/README.md`](layout/README.md) "Array (issue #34)") is DRC-clean
+and LVS-matches a generated array-level reference netlist — a
+**proof-of-technique** for the shared tap and per-row/per-column bus
+routing, not yet a ratified macro row/column count (see
+`spec/retention-refresh-budget.md` § 7). The rest of the macro — sense
+amplifier and refresh controller — is tracked in
 [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).
 
 **Built agent-native.** Every specification, decision record, testbench, and
