@@ -65,7 +65,8 @@ than silently absorbed into the "total leakage" claim.
 corners defined in the shipped
 `libs.tech/combined/sky130.lib.spice` (verified against the `.lib`
 section names in that file for the pinned `open_pdks` commit; see
-`pdk.json`). No local model edits, no uncommitted `.include` paths --
+[`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)). No local model edits,
+no uncommitted `.include` paths --
 `tb_access_leakage.spice.tmpl` references only this shipped file, at a
 path resolved from `$PDK_ROOT`/`--pdk-root` at run time.
 
@@ -107,7 +108,8 @@ the worst-case temperature corner, not typicals." All 15 points are in
 ## Reproducing this testbench
 
 Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
-`pdk.json`) and `ngspice` on `PATH`. No local model edits.
+[`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)) and `ngspice` on `PATH`.
+No local model edits.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
@@ -148,5 +150,8 @@ python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.volare --pdk sky13
 |---|---|
 | `tb_access_leakage.spice.tmpl` | ngspice netlist template (corner/temp substituted at run time) |
 | `run_leakage_sweep.py` | Sweep driver: renders netlists, invokes `ngspice -b`, appends results |
-| `pdk.json` | PDK version pin and corner/temperature set this testbench targets |
 | `results/leakage_results.csv` | Append-only recorded results (raw current vs. corner/temperature) |
+
+The PDK version pin and corner/temperature set this testbench targets are
+documented in [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md) (imported at
+run time from `sim/_evidence_common.py`), not a local `pdk.json`.

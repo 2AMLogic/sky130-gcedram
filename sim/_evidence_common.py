@@ -22,6 +22,20 @@ import sys
 from pathlib import Path
 from shutil import which
 
+# Canonical sky130 PDK pin (family/variant/open_pdks commit) for every
+# script under sim/ -- the single Python-side source of truth issue #37
+# consolidated this to, out of what were previously 7 independently
+# hand-maintained copies (three now-deleted sim/*/pdk.json and
+# design/pdk.json documentation files, design/env.sh's and
+# design/xschemrc's shell/Tcl fallback defaults, and two per-testbench
+# DEFAULT_PDK_VARIANT constants). See docs/pdk-pin.md for the full
+# rationale and the shell/Tcl-side mirror this cannot eliminate (Python
+# constants aren't importable from design/env.sh or design/xschemrc).
+#
+# sky130 flavor directory to use (A/B differ in metal stack only;
+# irrelevant to a device-level SPICE sim or to schematic capture).
+DEFAULT_PDK_VARIANT = "sky130A"
+
 # sky130A path to the combined ngspice model library, relative to a PDK
 # root's variant directory (e.g. `$PDK_ROOT/sky130A/...`).
 DEFAULT_NGSPICE_LIB_REL = "libs.tech/combined/sky130.lib.spice"

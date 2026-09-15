@@ -103,6 +103,7 @@ REPO_ROOT = SIM_DIR.parent
 
 sys.path.insert(0, str(SIM_DIR))
 from _evidence_common import (  # noqa: E402
+    DEFAULT_PDK_VARIANT,
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_ngspice_available,
@@ -123,7 +124,6 @@ LEAKAGE_CSV = SIM_DIR / "leakage" / "results" / "leakage_results.csv"
 
 DEFAULT_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 DEFAULT_TEMPS_C = [-40, 27, 125]
-DEFAULT_PDK_VARIANT = "sky130A"
 
 # Sense margin. Same labelled ASSUMPTION sim/retention/README.md "Sense
 # margin" carries (delta_V = VDD/2 = 0.9 V, the coarse half-VDD bound used

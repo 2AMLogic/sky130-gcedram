@@ -17,7 +17,11 @@ has no prior xschem usage to pattern-match against.
 | [`regen_netlist.sh`](regen_netlist.sh) | Regenerates the netlist from the schematic (`--check` verifies the committed netlist is not stale). This is the "reproducible on design change" mechanism. |
 | [`xschemrc`](xschemrc) | Project-local xschem config: resolves the sky130 PDK's symbol library without depending on `~/.xschem`. |
 | [`env.sh`](env.sh) | Exports `PDK_ROOT`/`PDK` for interactive `xschem` sessions and for `regen_netlist.sh`. |
-| [`pdk.json`](pdk.json) | PDK version pin (same `open_pdks` commit as `sim/leakage/pdk.json`). |
+
+The PDK version pin itself (same `open_pdks` commit as `sim/leakage/` and
+`sim/bitcell-transient/`) lives in [`docs/pdk-pin.md`](../docs/pdk-pin.md),
+not a per-directory `pdk.json` -- see that doc for the single canonical
+source and the shell/Tcl mirror `env.sh`/`xschemrc` above carry.
 
 ## Topology: 2T, ratified
 
@@ -107,7 +111,7 @@ written.
 ## Regenerating the netlist
 
 Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
-[`pdk.json`](pdk.json)) and `xschem` on `PATH`.
+[`docs/pdk-pin.md`](../docs/pdk-pin.md)) and `xschem` on `PATH`.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):

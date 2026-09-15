@@ -289,8 +289,9 @@ failure at those corners.
 
 `tt`, `ss`, `ff`, `sf`, `fs` × -40 / 27 / 125 °C = **15 PVT points**, two
 stored values each = **30 rows** per full sweep. This is the same grid
-`sim/leakage/pdk.json` pins and `sim/leakage/README.md` "Corner sweep"
-justifies, against the same `open_pdks` commit
+[`../../docs/pdk-pin.md`](../../docs/pdk-pin.md) pins and
+`sim/leakage/README.md` "Corner sweep" justifies, against the same
+`open_pdks` commit
 `c6d73a35f524070e85faff4a6a9eef49553ebc2b` — a divergent PDK pin would
 silently invalidate the hold-window seeding and the leakage cross-check.
 
@@ -612,8 +613,9 @@ deliberately untouched.
 ## Reproducing this testbench
 
 Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
-[`pdk.json`](pdk.json)) and `ngspice` on `PATH`. No local model edits, no
-uncommitted `.include` paths. Stdlib-only Python, no virtualenv.
+[`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)) and `ngspice` on `PATH`.
+No local model edits, no uncommitted `.include` paths. Stdlib-only Python,
+no virtualenv.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
@@ -676,5 +678,8 @@ reading `notes`: `c_sn_ff`/`c_sn_source` for `--c-sn-ff`, `tmax_s` for
 |---|---|
 | `tb_bitcell_transient.spice.tmpl` | ngspice `.tran` testbench template; includes `design/gain_cell_2t.spice` verbatim, declares the phase timing in a `.param` block the driver parses back out |
 | `run_bitcell_transient.py` | Sweep driver: renders decks, invokes `ngspice -b`, measures every recorded scalar, sizes the hold window from `sim/leakage/`, appends rows via `sim/_evidence_common.append_result` |
-| `pdk.json` | PDK version pin (same `open_pdks` commit as `sim/leakage/` and `design/`) and the corner/temperature grid |
 | `results/bitcell_transient_results.csv` | Append-only recorded results, one row per (corner, temperature, stored value) plus the committed override/sensitivity runs |
+
+The PDK version pin (same `open_pdks` commit as `sim/leakage/` and
+`design/`) and the corner/temperature grid are documented in
+[`../../docs/pdk-pin.md`](../../docs/pdk-pin.md), not a local `pdk.json`.

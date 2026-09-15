@@ -20,7 +20,7 @@ instructions; raw results are in
 [`leakage/results/leakage_results.csv`](leakage/results/leakage_results.csv).
 
 Quick start (requires `ngspice` on `PATH` and the PDK pinned in
-`leakage/pdk.json` enabled via `volare`):
+[`../docs/pdk-pin.md`](../docs/pdk-pin.md) enabled via `volare`):
 
 ```bash
 python3 sim/leakage/run_leakage_sweep.py --check-env
@@ -75,8 +75,9 @@ in
 [`bitcell-transient/results/bitcell_transient_results.csv`](bitcell-transient/results/bitcell_transient_results.csv).
 
 Quick start (requires `ngspice` on `PATH`, the PDK pinned in
-`bitcell-transient/pdk.json` enabled via `volare`, and the leakage results
-above already committed -- the hold window is seeded from them):
+[`../docs/pdk-pin.md`](../docs/pdk-pin.md) enabled via `volare`, and the
+leakage results above already committed -- the hold window is seeded from
+them):
 
 ```bash
 python3 sim/bitcell-transient/run_bitcell_transient.py --check-env
