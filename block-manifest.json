@@ -1,0 +1,15 @@
+{
+  "block": "sky130-gcedram",
+  "kind": "mixed-signal",
+  "partition_boundary": "Analog partition: the 2T gain-cell bitcell (design/gain_cell_2t.sch/.spice, layout/gain_cell_2t.gds) and the shared-tap 4x4 array built from it (layout/gain_cell_2t_array.gds); the sense path is future work tracked in #24. Digital partition: the refresh controller and SPI host interface planned in #24 - no digital partition has been built yet, so every digital-partition T1 row is unmet by construction and cites no evidence. Evidence today (items 3 and 4) covers the analog partition's committed bitcell artifacts, re-verified against the current deck by the reports cited below.",
+  "evidence": {
+    "3": {
+      "file": "layout/gain_cell_2t.drc.result.json",
+      "content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259"
+    },
+    "4": {
+      "file": "layout/gain_cell_2t.lvs.result.json",
+      "content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259"
+    }
+  }
+}

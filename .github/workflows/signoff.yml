@@ -1,0 +1,74 @@
+name: signoff
+
+# Re-grades the klt signoff block manifest so the block's T1 state is
+# checked, not hand-read. Three hazards it exists to catch:
+#   1. a cited evidence artifact changed on disk without its report being
+#      regenerated (the klt --check re-hash steps),
+#   2. the manifest cites an envelope whose embedded input hash no longer
+#      matches the manifest pin (the signoff grade flips stale_evidence),
+#   3. the graded checklist itself moved (klt upgrade changes the bundled
+#      design-evidence-tiers doc, e.g. the 2026-09-17 eleventh item).
+# Any of these makes the regenerated report differ from the committed
+# block-manifest.signoff.json and fails this job instead of letting the
+# verdict rot.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  # Pinned to the exact klayout-tools revision that graded the committed
+  # block-manifest.signoff.json (per its source_doc_content_hash). Bump this
+  # pin deliberately, together with regenerating the record, so the pinned
+  # checklist and the committed evidence record move together.
+  KLT_REV: 2b1e55e51bb803c082e8857da44687f3e37ebfc0
+
+jobs:
+  signoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Install pinned klt
+        run: uv tool install "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@${KLT_REV}"
+
+      - name: Verify committed DRC/LVS reports are fresh against the current artifacts
+        working-directory: layout
+        run: |
+          klt drc --check gain_cell_2t.drc.result.json
+          klt lvs --check gain_cell_2t.lvs.result.json
+
+      - name: Re-grade the block manifest
+        run: |
+          klt signoff --manifest block-manifest.json --format json > signoff.ci.json
+          rc=$?
+          # Exit 3 = graded successfully with tier: null (items still unmet),
+          # which is this block's current, expected state - not a CI failure.
+          if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then
+            echo "klt signoff failed to grade the manifest (exit $rc)"
+            exit 1
+          fi
+
+      - name: Compare against the committed signoff record
+        run: |
+          if ! diff <(jq -S . signoff.ci.json) <(jq -S . block-manifest.signoff.json); then
+            cat >&2 <<'EOF'
+          The regenerated signoff report differs from the committed evidence
+          record: a cited artifact changed, the manifest pin stopped matching
+          its envelope, or the pinned klt revision's checklist moved.
+          Regenerate the record with the pinned klt from this workflow:
+
+            klt signoff --manifest block-manifest.json \
+              --format json > block-manifest.signoff.json
+
+          and commit it together with whatever evidence change caused it.
+          EOF
+            exit 1
+          fi
+          echo "Signoff record matches the current grade."
