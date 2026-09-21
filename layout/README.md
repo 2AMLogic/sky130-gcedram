@@ -365,6 +365,59 @@ reported, signed-off verification pass (#24 item 5):
   device class already documented above for the single cell -- not a real
   mismatch, not new to the array.
 
+### `klt erc` supply spec (structural power delivery, T1 item 11; issue #39)
+
+The structural power-delivery evidence T1's item 11 grades -- distinct from
+the informal DRC/LVS iteration above, it is the graded artifact, not geometry
+debugging (issue #39). Two committed files:
+
+- **[`erc-supply-spec.json`](erc-supply-spec.json)** -- the supply spec: the
+  gate-poly/li1/met1 stackup this block actually draws (with
+  `active_layer` diff 65/20 for a physical `poly ∩ diff` gate-area
+  denominator), the `licon1`/`mcon` vias, and one declared supply net,
+  `GND` -- the array's only rail is the substrate/bulk (`.GLOBAL GND` in the
+  LVS reference), tapped by the shared guard ring. The spec's own
+  `_comment` block justifies every stackup entry, both `label_layer`s, and
+  the deliberate absence of `ties[]`.
+- **[`gain_cell_2t_array.erc.result.json`](gain_cell_2t_array.erc.result.json)** --
+  the run against the committed GDS (regenerate from `layout/` with
+  `klt erc gain_cell_2t_array.gds erc-supply-spec.json --pdk sky130
+  --format json`):
+
+  - `status: "clean"`, `erc_status: "clean"`, `erc_finding_count: 0` --
+    **GND resolved to exactly one electrical island**: the
+    `erc.net_connectivity:["GND"]` check fires on zero *or* on several
+    islands, so zero findings naming GND is exactly the one-island verdict
+    item 11 requires, not a merely empty result (`erc_coverage.checked`
+    names the check as actually run).
+  - All 20 gate nets (4 `wl_<r>` write gates + 16 `sn_<r>_<c>` read gates)
+    pass the antenna-ratio verdict against sky130's real table (li1 75,
+    met1 400) -- real evidence carried in the same report, though item 11
+    does not grade it.
+  - `erc.missing_tie` is **not computed** and is recorded as such by the
+    tool itself (`erc_coverage.inapplicable: "no_ties_declared"`), not
+    reported as a misleading zero. The tap structure is a psubstrate
+    guard ring; sky130's psub is not a drawn GDS layer (this all-NMOS
+    stream has no nwell geometry at all), so no `ties[]` declaration can
+    be honest, and klayout-tools#2169 records the false-`erc.supply_short`
+    collapse `ties[]` can cause. The standing-in well-tie evidence the
+    claim carries instead: (1) the `mos_array(add_guard_ring=true)` shared
+    substrate tap ring, drawn on tap 65/44 / licon1 66/44 up to a li1 ring
+    whose only text label is the GND pin; (2) the item-4 LVS report above
+    matching with `GND` paired in `net_correspondence` against a SPICE
+    reference that declares `.GLOBAL GND`, with both `layout_sha256`/
+    `reference_sha256` fresh against the committed files.
+  - Fresh: `provenance.input.content_hash`
+    `sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd`
+    matches the committed `gain_cell_2t_array.gds`, and the spec's own
+    content hash is pinned in `provenance.spec`.
+
+Iterating a `klt erc` ties[] declaration on this stream once the installed
+`klt` carries the upstream tap-assertion machinery
+(klayout-tools#2199/#2234/#2240) is the documented follow-up that would let
+the missing-tie half be graded mechanically; the fleet build pinned here
+(`klt 0.5.0+g2b1e55e51bb8`) predates it.
+
 ### klayout-tools friction encountered
 
 Real friction this time, but **already tracked upstream** -- nothing new
