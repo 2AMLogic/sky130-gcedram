@@ -8,12 +8,43 @@
   "parameter_tolerance": null,
   "options": {
     "combine_devices": false,
+    "combine_devices_per_circuit": null,
     "flatten_layout": false,
     "flatten_reference": false,
     "netgen_setup": null,
-    "parameter_tolerance": null
+    "parameter_tolerance": null,
+    "compare_parameters": null,
+    "power_connectivity": null,
+    "supply_nets": [
+      "GND",
+      "VCC",
+      "VDD",
+      "VGND",
+      "VPWR",
+      "VSS"
+    ]
   },
+  "hints_applied": null,
   "status": "match",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "reference.form is 'plain-element', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": {
+    "status": "verified",
+    "reason": null,
+    "device_classes": [],
+    "device_count": 0,
+    "findings": [],
+    "finding_count": 0
+  },
   "mismatch_count": 2,
   "error_count": 0,
   "category_counts": {
@@ -47,21 +78,25 @@
   ],
   "environment": {
     "engine": "klayout",
-    "engine_version": "0.30.10",
+    "engine_version": "0.30.12",
     "layout_sha256": "f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259",
     "reference_sha256": "693c4990f6a54d8615153b1715e83d1bc840e23e7c68e2f47d57863c4f770340",
     "extracted_netlist": null
   },
   "provenance": {
-    "klt_version": "0.3.0",
-    "klayout_version": "0.30.10",
+    "klt_version": "0.5.0+g2b1e55e51bb8.dirty",
+    "klayout_version": "0.30.12",
     "pdk": null,
     "deck": {
       "name": "sky130",
-      "content_hash": "sha256:2e78949d63f03012c505528158948a250e18c2c21c8710c85a23a8243649f4d0",
+      "content_hash": "sha256:a1d90e066e822d0a8f36e2d4f4969b83df4360692f689b5815be9c3f151f7c8e",
       "released": false
     },
-    "input": null
+    "input": {
+      "content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": true
   },
   "mismatches": [
     {
