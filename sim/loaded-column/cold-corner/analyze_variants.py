@@ -117,12 +117,18 @@ def coverage(vid, rows):
     }
 
 
-def reproduce(rows, ref_by_key, tol_v=1e-9):
+REL_TOL = 2e-6  # values are written with 7 significant digits ("%.6e")
+
+
+def reproduce(rows, ref_by_key, rel_tol=REL_TOL):
     """Compare every MEASURED field of rows against the committed Phase 2 run.
-    Values are written with 7 significant digits, so equal simulations give
-    identical strings; tol_v only absorbs float parsing."""
+    Values are written with 7 significant digits, so the tolerance is one to
+    two units in the last written digit (relative). Bit-identical rows are
+    counted separately: the unchanged Phase 2 runner reproduces every string
+    exactly, while the re-rendered harness deck differs from it only in
+    last-digit rounding (different but equal-valued parameter expressions)."""
     n = n_exact = 0
-    worst = {"field": None, "abs_diff": 0.0, "key": None}
+    worst = {"field": None, "abs_diff": 0.0, "rel_diff": 0.0, "key": None}
     missing_ref = 0
     for r in rows:
         k = tuple(r[x] for x in KEY)
@@ -137,14 +143,18 @@ def reproduce(rows, ref_by_key, tol_v=1e-9):
             if a == b:
                 continue
             fa, fb = f(a), f(b)
-            d = abs(fa - fb) if fa is not None and fb is not None else float("inf")
+            if fa is None or fb is None:
+                d = rel = float("inf")
+            else:
+                d = abs(fa - fb)
+                rel = d / max(abs(fa), abs(fb))
             exact = False
-            if d > worst["abs_diff"]:
-                worst = {"field": fld, "abs_diff": d, "key": list(k)}
+            if rel > worst["rel_diff"]:
+                worst = {"field": fld, "abs_diff": d, "rel_diff": rel, "key": list(k)}
         n_exact += exact
-    ok = n > 0 and missing_ref == 0 and worst["abs_diff"] <= tol_v
+    ok = n > 0 and missing_ref == 0 and worst["rel_diff"] <= rel_tol
     return {"n_compared": n, "n_bit_identical": n_exact, "missing_reference": missing_ref,
-            "worst": worst, "ok": ok}
+            "rel_tol": rel_tol, "worst": worst, "ok": ok}
 
 
 def worst_patterns(rs):

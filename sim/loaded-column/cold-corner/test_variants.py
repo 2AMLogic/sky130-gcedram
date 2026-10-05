@@ -118,8 +118,12 @@ class Synthetic(unittest.TestCase):
         rows = X.read_csv(self.csv)
         ref = {tuple(r[x] for x in X.KEY): dict(r) for r in rows}
         self.assertTrue(X.reproduce(rows, ref)["ok"])
-        k = next(iter(ref))
-        ref[k]["v_rbl_sense_v"] = "0.123"
+        k = next(key for key, r in ref.items() if r["stored_value"] == "1")  # v_rbl 0.5
+        ref[k]["v_rbl_sense_v"] = "5.000001e-01"  # one unit in the last written digit
+        self.assertTrue(X.reproduce(rows, ref)["ok"])
+        ref[k]["v_rbl_sense_v"] = "5.000500e-01"  # 1e-4 relative: a real difference
+        self.assertFalse(X.reproduce(rows, ref)["ok"])
+        ref[k]["v_rbl_sense_v"] = ""
         self.assertFalse(X.reproduce(rows, ref)["ok"])
 
 
@@ -173,14 +177,26 @@ class Committed(unittest.TestCase):
             self.assertFalse(cold[("fs", -40, age)]["PASS"])
         self.assertFalse(e["all_points_pass"])
 
+    def test_remedy_verdicts_and_failed_variants_preserved(self):
+        by = X.latest_per_variant(X.read_csv(X.VARIANT_CSV))
+        ev = {v: X.evaluate_variant(v, by[v]) for v in ("rem_vwl_2p0", "rem_rwl_m0p2", "rem_wr_lvt",
+                                                      "attr_rd_w_1p68", "nc_write_disabled")}
+        for v in ("rem_vwl_2p0", "rem_rwl_m0p2"):
+            self.assertTrue(ev[v]["covers_full_grid_both_ages"], v)
+            self.assertTrue(ev[v]["all_points_pass"], v)
+        for v in ("rem_wr_lvt", "attr_rd_w_1p68", "nc_write_disabled"):
+            self.assertFalse(ev[v]["all_points_pass"], v)
+
     def test_reproduction_is_bit_identical(self):
         p2 = {tuple(r[x] for x in X.KEY): r for r in X.read_csv(X.PHASE2_CSV) if r["run_id"] == X.PHASE2_RUN_ID}
         rr = X.read_csv(X.REPRO_CSV)
         rep = X.reproduce([r for r in rr if r["run_id"] == max(x["run_id"] for x in rr)], p2)
         self.assertEqual(rep["n_bit_identical"], 256)
+        self.assertTrue(rep["ok"])
         base = X.latest_per_variant(X.read_csv(X.VARIANT_CSV))["baseline"]
         rep = X.reproduce(base, p2)
-        self.assertEqual(rep["n_bit_identical"], 256)
+        self.assertEqual(rep["n_compared"], 256)
+        self.assertTrue(rep["ok"], rep)  # equal to the last written digit
 
 
 if __name__ == "__main__":
