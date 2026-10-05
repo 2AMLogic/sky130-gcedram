@@ -52,6 +52,22 @@ python3 sim/retention/derive_retention.py --check-env
 python3 sim/retention/derive_retention.py
 ```
 
+## `loaded-column/` -- loaded four-row column: stored levels and read separation (issue #45)
+
+Characterization (not sense-amplifier design) of one four-row column of the
+2T bitcell across the 15-point PVT grid, fresh and aged to the ~5.03 us
+refresh bound, for every selected row and all patterns of the other rows, with
+declared (assumed, schematic-level) bitline loading. Includes signed
+deselected-row currents, latency, read disturb and machine-readable results;
+failing corners remain visible. See
+[`loaded-column/README.md`](loaded-column/README.md).
+
+```bash
+python3 sim/loaded-column/run_loaded_column.py --check-env
+python3 sim/loaded-column/run_loaded_column.py
+python3 sim/loaded-column/analyze_loaded_column.py
+```
+
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
 
 The **first circuit-level simulation of the ratified bitcell**: the two
