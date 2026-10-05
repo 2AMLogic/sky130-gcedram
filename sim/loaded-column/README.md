@@ -65,7 +65,10 @@ One `.tran` per (corner, temperature, age, selected row, 4-bit stored pattern):
    held at 0.9 V by the precharge switch. `fresh` reads at 110 ns.
    `refresh_bound` reads at `t_wl_off(row 0) + 5.029945 us`, so row 0 is exactly at
    the bound and rows 1..3 are younger (`sel_row_age_at_read_s` and
-   `max_row_age_at_read_s` record the actual ages).
+   `max_row_age_at_read_s` record the actual ages). Ages are measured from
+   the start of the wordline fall (`TW0+TWPULSE`); the fall ends one 100 ps
+   edge later, so row 0's age after the wordline is fully off is ~100 ps short
+   of the exact bound (negligible against 5.03 us).
 3. **Precharge/read**: precharge switch (100 ohm on, 1e12 ohm off) opens 2 ns
    before the read, so `rbl_0` floats on the declared load; the selected row's
    `rwl` then falls to 0 V for 20 ns. `v_rbl_sense_v` is sampled `t_sense` after
@@ -117,7 +120,12 @@ python3 sim/loaded-column/test_analysis.py
 The runner batches the 16 stored patterns of one (corner, temperature, age,
 row) into one ngspice process (`alterparam` + `reset`), because the PDK library
 parse dominates a single run; a batched case was checked to reproduce the
-standalone-run values exactly. A full campaign took ~20 minutes of wall time on
+standalone-run values exactly. Each case runs after `destroy all` (an aborted
+`tran` leaves no plot, so no output file, rather than the previous case's
+data), and a case whose last timepoint is earlier than its planned stop time
+is recorded as `sim_failed`. These guards were added after run
+`20261005T102906Z`; a re-run of the fs/27 C row-0 batches (both ages, 32
+points) with the guarded runner reproduced every committed field exactly. A full campaign took ~20 minutes of wall time on
 a shared 18-core machine. Results are appended (never rewritten); the analyzer
 defaults to the latest `run_id` and refuses to overwrite a summary.
 
@@ -137,8 +145,9 @@ Coverage: 5 corners x 3 temperatures x 2 ages x 4 selected rows x 16 patterns
 = **1920 points, 0 simulation failures, coverage and provenance check OK**
 (each selected row sees both stored values with all 8 patterns of the other
 three rows). At the assumptions above, 150/150 groups have a positive
-worst-case separation, but two corner/temperature points are marginal and one
-is effectively failing; this positivity is a property of the assumed light load
+worst-case separation, but fs/-40 C is effectively failing, ss/-40 C is
+marginal, and fs/27 C has roughly half the margin of the remaining 12
+points; this positivity is a property of the assumed light load
 and a fixed 10 ns sense instant, not a validated margin.
 
 Worst-case column separation (all rows, all patterns), signed per the
@@ -148,7 +157,14 @@ convention above:
 |---|---:|---:|---|
 | fs / -40 C | 0.018 V | 0.017 V | **Failing engineering point.** Stored '1' only 0.864 V (0.860 V aged); `rbl` droop never reaches the 0.1 V latency threshold in 32 of 128 stored-'1' points (reason recorded per row) |
 | ss / -40 C | 0.121 V | 0.113 V | Marginal. Stored '1' 0.896 V (0.893 V aged); latency up to 8.6 ns, close to `t_sense` |
-| other 13 points | 0.515 .. 0.660 V | 0.586 .. 0.659 V | `rbl` for stored '0' stays at ~0.899 V; stored '1' falls to 0.24 .. 0.63 V |
+| fs / 27 C | 0.286 V | 0.272 V | **Reduced margin.** Stored '1' 0.932 V (0.929 V aged); latency up to 2.8 ns (3.0 ns aged); worst stored-'1' `rbl` 0.61 .. 0.63 V; separation about half that of the other room/hot corners |
+| other 12 points | 0.515 .. 0.654 V | 0.586 .. 0.659 V | `rbl` for stored '0' stays at ~0.899 V; worst-case (highest) stored-'1' `rbl` 0.24 .. 0.38 V |
+
+The fs corner degrades monotonically from 125 C (0.654 V) through 27 C
+(0.286 V) to -40 C (0.018 V), and ss is also low at -40 C: the low-margin
+region is the fs/ss cold-to-room side of the grid, not two isolated points.
+(Per selected row, the largest separation is 0.660 V, at fs/125 C aged, row 3;
+the table gives column-wide worst cases.)
 
 Other measured quantities (full per-corner detail in the summary JSON):
 
@@ -174,14 +190,28 @@ Other measured quantities (full per-corner detail in the summary JSON):
 
 ## Do the distributions permit a proposed sense reference?
 
-Under the stated assumptions: at 13 of 15 corner/temperature points and both
-ages, there is a single reference window per group (`candidate_reference_v_UNVALIDATED`
-in the summary; e.g. between ~0.28 V and ~0.9 V, half-window >= 0.25 V), so a
-fixed `rbl` reference between the two distributions is *numerically available*.
-At ss/-40 C the window is ~0.11 V wide, and at fs/-40 C it is ~0.02 V -- no
-credible single reference, given any non-zero comparator offset. Because the
-result rests on an assumed load (`C_RBL`) and an assumed sense instant, and the
-window closes at cold corners, **no sense reference is proposed or ratified**.
+Under the stated assumptions, every group has a positive window between the
+two distributions (`candidate_reference_v_UNVALIDATED` and
+`candidate_reference_half_window_v` in the summary), but its width varies
+strongly:
+
+* At 12 of 15 corner/temperature points, both ages: column window
+  0.515 .. 0.659 V wide (half-window >= 0.257 V), lying roughly between
+  0.24 .. 0.38 V (worst stored '1') and ~0.899 V (stored '0').
+* fs/27 C: window ~0.27 .. 0.29 V wide (half-window 0.136 .. 0.143 V), between
+  ~0.61 .. 0.63 V and ~0.899 V.
+* ss/-40 C: ~0.11 .. 0.12 V wide; fs/-40 C: ~0.02 V -- no credible single
+  reference, given any non-zero comparator offset.
+
+The window centres also move (0.57 .. 0.64 V at the 12 points, 0.76 V at
+fs/27 C, 0.84 .. 0.89 V at the cold fs/ss points). A single fixed `rbl`
+reference common to the 13 non-cold points would have to sit between
+0.627 V (fs/27 C aged, worst stored '1') and 0.899 V, i.e. half-window
+~0.136 V set entirely by fs/27 C; no common reference reaches fs/-40 C or
+ss/-40 C. Because the result rests on an
+assumed load (`C_RBL`) and an assumed sense instant, and the window narrows
+from room to cold temperature on the fs/ss side, **no sense reference is
+proposed or ratified**.
 
 ## What further evidence is needed
 

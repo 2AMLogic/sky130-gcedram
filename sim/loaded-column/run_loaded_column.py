@@ -164,6 +164,21 @@ def read_time(P: dict[str, float], age: str) -> float:
     return P["TW0"] + P["TWPULSE"] + T_REFRESH_S
 
 
+def case_tstop(P: dict[str, float], t_read: float) -> float:
+    """Planned .tran stop time of one case."""
+    return t_read + P["TREAD_PULSE"] + P["TTAIL"]
+
+
+def check_complete(t: list[float], tstop: float) -> None:
+    """Reject a case whose waveform ends before its planned stop time (an
+    aborted or truncated tran must never be recorded as status ok)."""
+    tol = 1e-6 * tstop
+    if t[-1] < tstop - tol:
+        raise RuntimeError(
+            f"incomplete transient: last timepoint {t[-1]:.6e} s < planned tstop {tstop:.6e} s"
+        )
+
+
 def render(tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P):
     """One deck per (corner, temp, batch): the .lib parse dominates ngspice
     runtime, so the batch's cases (pattern, sel, t_read) run in ONE process,
@@ -199,8 +214,11 @@ def render(tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P):
             ctl.append(f"alterparam SL{r} = {1 if r == sel else 0}")
         ctl.append(f"alterparam T_READ = {t_read:.9e}")
         ctl.append("reset")
-        tstop = t_read + P["TREAD_PULSE"] + P["TTAIL"]
-        ctl.append(f"tran 10p {tstop:.9e} 0 {tmax:.3e}")
+        # Drop every earlier plot: if this case's tran aborts, wrdata then has
+        # no current plot and writes no file (-> sim_failed), instead of
+        # silently re-writing the previous case's data.
+        ctl.append("destroy all")
+        ctl.append(f"tran 10p {case_tstop(P, t_read):.9e} 0 {tmax:.3e}")
         ctl.append(
             f"wrdata {outdir}/case{k}.dat v(sn_0_0) v(sn_1_0) v(sn_2_0) v(sn_3_0) v(rbl_0) "
             "i(vrwl_0) i(vrwl_1) i(vrwl_2) i(vrwl_3)"
@@ -349,7 +367,9 @@ def run_batch(args):
         try:
             if not out.is_file():
                 raise RuntimeError("ngspice produced no output for this case: " + str(err))
-            m = measure(read_wrdata(out), P, t_read, sel)
+            cols = read_wrdata(out)
+            check_complete(cols[0], case_tstop(P, t_read))
+            m = measure(cols, P, t_read, sel)
             for key, v in m.items():
                 row[key] = "" if v is None else (v if isinstance(v, str) else f"{v:.6e}")
             row["status"] = "ok"
