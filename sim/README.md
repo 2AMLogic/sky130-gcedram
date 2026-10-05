@@ -68,6 +68,22 @@ python3 sim/loaded-column/run_loaded_column.py
 python3 sim/loaded-column/analyze_loaded_column.py
 ```
 
+### `loaded-column/cold-corner/` -- cold-corner failure: attribution and remedies (issue #47)
+
+Reproduces the Phase 2 `fs/-40 C` failure (bit-identical), attributes it with
+one-knob-at-a-time sweeps (write drive and timing, read-device sizing and
+flavour, read drive, bitline load, sense time, forced stored level), and
+compares remedy classes on the full 15-point grid at both ages. It includes
+the failed variants and a negative control. A next design contract is
+proposed, not ratified. See
+[`loaded-column/cold-corner/README.md`](loaded-column/cold-corner/README.md).
+
+```bash
+python3 sim/loaded-column/cold-corner/run_variants.py --list
+python3 sim/loaded-column/cold-corner/analyze_variants.py
+python3 sim/loaded-column/cold-corner/test_variants.py
+```
+
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
 
 The **first circuit-level simulation of the ratified bitcell**: the two
