@@ -1,0 +1,78 @@
+* sky130-gcedram -- cold-corner variant deck for the loaded four-row 2T column
+* (issue #47, Epic #24 phase 3). Same circuit, stimulus and measurement plan
+* as the Phase 2 deck sim/loaded-column/tb_loaded_column.spice.tmpl, with
+* exactly these declared knobs exposed so that one assumption can be changed
+* at a time (each variant in variants.py names the one it changes):
+*
+*   VWL        write-wordline high level        (Phase 2: VDD = 1.8 V)
+*   TWPULSE    write-wordline pulse width        (Phase 2: 20 ns; TWSTEP,
+*              THOLD0 and the fresh read instant follow it, see run_variants.py)
+*   VRWL_SEL   selected read-wordline level      (Phase 2: 0 V)
+*   C_RBL      lumped read-bitline load          (Phase 2: 10 fF, ASSUMED)
+*   device cards (model, W) of M_WR / M_RD       (Phase 2: design/gain_cell_2t.spice)
+*   FORCE/VSN1 attribution-only mode: write disabled (VWL = 0) and each
+*              storage node is initialised directly to VSN1 ('1') or 0 V ('0'),
+*              so the read path can be measured against a known stored level.
+*
+* The baseline variant renders a deck electrically identical to Phase 2; the
+* equivalence is checked by simulation (README "Reproduction"), not assumed.
+* Every knob value here is a characterization setting, NOT a spec value.
+
+.param VDD     = 1.8
+.param VRBL    = 0.9
+.param TEDGE   = 100p
+.param TW0     = 1n
+.param TBL_LAG = 2n
+.param TPRE_GAP = 2n
+.param TREAD_PULSE = 20n
+.param TTAIL   = 5n
+.param TWPULSE = @@TWPULSE@@
+.param TWSTEP  = @@TWSTEP@@
+.param THOLD0  = @@THOLD0@@
+.param VWL     = @@VWL@@
+.param VRWL_SEL = @@VRWL_SEL@@
+.param FORCE   = @@FORCE@@
+.param VSN1    = @@VSN1@@
+.param T_READ  = @@T_READ_DEFAULT@@
+* per-case parameters, re-set between cases by alterparam in the .control block
+.param B0 = 0
+.param B1 = 0
+.param B2 = 0
+.param B3 = 0
+.param SL0 = 0
+.param SL1 = 0
+.param SL2 = 0
+.param SL3 = 0
+.param C_RBL   = @@C_RBL@@
+
+.lib "@@PDK_NGSPICE_LIB@@" @@CORNER@@
+.temp @@TEMP_C@@
+
+@@CELLS@@
+
+* Declared bitline loading (ASSUMPTION, schematic level -- NOT extracted).
+c_rbl rbl_0 0 {C_RBL}
+
+* Write: row r's wordline pulses 0 -> VWL -> 0 at TW0 + r*TWSTEP; bl_0 holds
+* that row's data level for the pulse and returns to 0 TBL_LAG after the
+* wordline is fully low.
+@@WRITE_SOURCES@@
+
+* Idle / hold bias: rwl_r = VDD (deselected), bl_0 = 0, rbl_0 held at VRBL.
+* In the read the selected row's rwl falls to VRWL_SEL.
+@@RWL_SOURCES@@
+
+vpre   pre 0 dc {VRBL}
+vctl   ctl 0 pwl(0 {VDD} {T_READ-TPRE_GAP} {VDD} {T_READ-TPRE_GAP+TEDGE} 0)
+.model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)
+spre   pre rbl_0 ctl 0 swpre
+
+.ic v(rbl_0)={VRBL}
+@@ICS@@
+
+.control
+set filetype=ascii
+@@CASES@@
+.endc
+
+.end
