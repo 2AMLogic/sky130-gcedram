@@ -114,3 +114,36 @@ and requires only a scope decision by the keys.
 * **Common**: an independent increment to obtain a primary reliability source
   for the 1.8 V NMOS (the missing item for both A and B). It is a research
   task, not a simulation.
+
+## 8. Evidence status update (issue #51, appended; sections 1-7 unchanged)
+
+Status remains **PROPOSED. NOT RATIFIED.** No spec value is relaxed or
+ratified. Source: [`reliability-search-log-issue51.md`](../sim/loaded-column/cold-corner/sources/reliability-search-log-issue51.md).
+
+* **(a) 2.0 V gate-oxide/TDDB/HCI limit for the 1.8 V NMOS: not found** in
+  skywater-pdk, open_pdks, the model library, arXiv/OpenAlex or the public
+  issue trackers. Published gate-stress limits cover only HV (7.3 V) and VHV
+  (5.5 V) devices and are not transferable.
+* **(b) forward-junction injection / latch-up bound: not found.** Only DRC
+  latch-up rules and reverse-breakdown specs exist.
+* New adverse-to-neutral fact: the SkyWater methodology page classifies any
+  use outside GND..Vcc as "high voltage" usage with biasing conditions in a
+  non-public ETD. Both A (2.0 V) and B (-0.2 V) are such usage. This does not
+  refute either option; it means neither can be justified from public data.
+* Not excluded: NDA foundry documents (ETD/EDR) and paywalled literature,
+  which were not reachable.
+
+**Outcome supported: C** (operating-range limitation, no supply assist) is the
+only outcome the evidence leaves viable without a missing stress item. A and
+B remain blocked, not rejected: each stays viable only if the keys supply a
+reliability basis (for example an ETD/EDR excerpt obtained by the project
+under its own terms, or measured data) or accept the risk explicitly.
+Verdict: **MISSING EVIDENCE, unchanged for A and B.**
+
+**Next independently scoped increment**: the `ee-key` and `market-key`
+decisions in section 6 remain required. The next increment is the
+ratification-only one for outcome C (write the operating-range restriction
+into `spec/`, key-signed), followed by sense characterization at the
+restricted corners using the existing contract. If the keys instead want A or
+B, the prerequisite is a key-supplied reliability source; no further public
+search is expected to change that.

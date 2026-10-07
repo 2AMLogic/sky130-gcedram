@@ -153,3 +153,20 @@ posture unless ratified explicitly.
 **Rule applied here**: a passing SPICE run is evidence of model behaviour only.
 None of the above is inferred from it, and each missing row blocks adoption
 of the corresponding candidate until a limit is cited or measured.
+
+### 5.1 Issue #51 search update (appended; the table above is preserved)
+
+Search log, pins, verbatim excerpts and classifications are in
+[`sources/reliability-search-log-issue51.md`](sources/reliability-search-log-issue51.md).
+Outcome per missing item:
+
+| Missing item | Status after #51 |
+|---|---|
+| 2.0 V gate-oxide/TDDB/HCI limit for `nfet_01v8` (A) | **Still UNAVAILABLE.** No TDDB/HCI/NBTI/absolute-maximum text in skywater-pdk, open_pdks or the model library (12 searches, including arXiv/OpenAlex/issue trackers). Published failure-point limits exist only for HV and VHV devices (7.3 V / 5.5 V gate oxide), classified NOT-APPLICABLE. |
+| Overdrive allowance / recommended conditions (A, B) | **Still UNAVAILABLE.** New fact: `hv.rst` defines any device used outside GND..Vcc as "high voltage" and defers the biasing conditions to the non-public ETD. Both A (2.0 V > 1.8 V) and B (-0.2 V < GND) are in that class by definition. |
+| Forward-junction injection / latch-up bound (B) | **Still UNAVAILABLE.** Only DRC latch-up rules (n+/p+ to n-well 0.23 um; 15 um tap distance) and reverse-breakdown E-test specs were found. |
+| Model junction validity at -40/125 C (B) | **Still UNAVAILABLE.** |
+
+Nothing found is a documented operating limit for the 1.8 V NMOS. The
+negative result is itself the finding; it is limited to the public sources
+searched and does not exclude NDA documents (ETD/EDR) or paywalled papers.

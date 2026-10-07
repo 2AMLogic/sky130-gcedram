@@ -58,3 +58,30 @@ excerpt (and live, with `--online`), and (6) that the decision record stays
 ## Verdict
 
 **Missing evidence**; see the decision record section 7.
+
+## Issue #51 addendum: reliability-source search (append-only)
+
+Epic #24 phase 5. Research only; **no simulation was run**. The sections above
+are unchanged.
+
+| Item | File |
+|---|---|
+| Search log, source pins, verbatim excerpts, classification | [`sources/reliability-search-log-issue51.md`](sources/reliability-search-log-issue51.md) |
+| Inventory update | [`STRESS_LIMIT_INVENTORY.md`](STRESS_LIMIT_INVENTORY.md) section 5.1 |
+
+Pins added: `google/skywater-pdk` HEAD `7198cf647113f56041e02abf3eb623692820c5e1`
+(`docs/rules/hv.rst` sha256 `f355ddf478c129661e96b44d4c4509a124e85e2e44d51bd3b072b43aee7e1f98`,
+`docs/rules/assumptions.rst` sha256 `99981cebb004a90f7947abc9461f03cdacc4b1906c94f340359c7aeb13f62edc`);
+`open_pdks` HEAD `801834fcbf9119e6fd4462f97da9e637f284539a`
+(`sky130/magic/sky130.tech` sha256 `5f96a22bd00169807b2228742e17a27e3624e5fb010c523447bbc4fee30a4f97`).
+
+Check additions: the log exists and its links resolve; every pinned hash and
+verbatim excerpt is present in the log; the log states the negative result
+for (a) and (b); the decision record has the issue #51 evidence status and
+remains PROPOSED. With `--online`, `hv.rst` and `assumptions.rst` are
+re-fetched from the pinned commit and their sha256 and the quoted excerpts
+are verified.
+
+**Verdict after #51**: still missing evidence. No primary reliability source
+was found for A or B. Outcome C remains the only option without a missing
+stress item; see the decision record section 8.
