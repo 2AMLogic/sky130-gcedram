@@ -25,6 +25,7 @@ DOCS = [
     HERE / "SENSE_INPUT_CONTRACT.md",
     HERE / "sources" / "skywater-pdk-device-details-excerpt.md",
     ROOT / "spec" / "supply-reliability-decision-PROPOSED.md",
+    HERE / "sources" / "reliability-search-log-issue51.md",
 ]
 OPEN_PDKS = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
 HASHES = {
@@ -156,6 +157,70 @@ def status() -> None:
     check("995acd5dfa0589d156619694db011873796a5d2d" in ex, "excerpt pins the skywater-pdk commit")
 
 
+SW_PDK_HEAD = "7198cf647113f56041e02abf3eb623692820c5e1"
+SW_FILES = {
+    "docs/rules/hv.rst": "f355ddf478c129661e96b44d4c4509a124e85e2e44d51bd3b072b43aee7e1f98",
+    "docs/rules/assumptions.rst": "99981cebb004a90f7947abc9461f03cdacc4b1906c94f340359c7aeb13f62edc",
+    "docs/rules/device-details/diodes/diodes-table0.rst": "3f16c7dd4f2d9a24c6db99e7750ae588b12664e8c0d350e1a180f49bb8dc0b06",
+    "docs/rules/device-details.rst": "506021827f52b26673daf8b580f8d79d408724af3138a65695bde86e5c1c6e49",
+}
+OP_HEAD = "801834fcbf9119e6fd4462f97da9e637f284539a"
+OP_TECH = "5f96a22bd00169807b2228742e17a27e3624e5fb010c523447bbc4fee30a4f97"
+# verbatim excerpts quoted in the #51 log: (path in skywater-pdk, text)
+SW_EXCERPTS = [
+    ("docs/rules/hv.rst", "High Voltage is defined as a voltage outside the range of GND to Vcc."),
+    ("docs/rules/hv.rst", "The biasing conditions of these high voltage devices are detailed in the ETD."),
+    ("docs/rules/hv.rst", "a. Any HV NMOS device: 7.3 V @ 25C."),
+    ("docs/rules/hv.rst", "These voltages are not operating voltages, but points of failure."),
+    ("docs/rules/assumptions.rst", "Minimum n+ or p+ - nwell spacing to prevent latch-up,um,0.23,NPNWLU"),
+    ("docs/rules/device-details.rst", "Reverse-active mode operation of the BJT"),
+]
+
+
+def issue51() -> None:
+    log_p = HERE / "sources" / "reliability-search-log-issue51.md"
+    log = log_p.read_text()
+    flat = re.sub(r"\s+", " ", log)
+    for h in [SW_PDK_HEAD, OP_HEAD, OP_TECH, *SW_FILES.values()]:
+        check(h in log, f"#51 log pins {h[:12]}...")
+    for path, text in SW_EXCERPTS:
+        check(re.sub(r"\s+", " ", text) in flat, f"#51 log quotes: {text[:50]}")
+    for tok in ("not found", "**No match**", "NOT-APPLICABLE", "Unretrievable"):
+        check(tok in log, f"#51 log records negative/unretrievable result marker: {tok}")
+    check(log.count("\n| ") >= 12 and "| 12 |" in log, "#51 log has the 12 recorded searches")
+    d = (ROOT / "spec" / "supply-reliability-decision-PROPOSED.md").read_text()
+    check("## 8. Evidence status update (issue #51" in d, "decision record has the #51 evidence status")
+    check("Outcome supported: C" in d, "decision record states the supported outcome")
+    check("STATUS: PROPOSED. NOT RATIFIED." in d and "RATIFIED" not in d.split("## 8.")[1].replace("NOT RATIFIED", "").replace("ratified", "").replace("ratification", ""), "section 8 does not claim ratification")
+    inv = (HERE / "STRESS_LIMIT_INVENTORY.md").read_text()
+    check("### 5.1 Issue #51 search update" in inv and "**UNAVAILABLE**" in inv, "inventory section 5 preserved and 5.1 appended")
+    check("Issue #51 addendum" in (HERE / "EVIDENCE_INDEX.md").read_text(), "index has the #51 addendum")
+
+
+def issue51_online() -> None:
+    import urllib.request
+    base = f"https://raw.githubusercontent.com/google/skywater-pdk/{SW_PDK_HEAD}/"
+    got = {}
+    for path, h in SW_FILES.items():
+        try:
+            b = urllib.request.urlopen(urllib.request.Request(base + path, headers={"User-Agent": "curl/8"}), timeout=30).read()
+        except Exception as e:  # network failure is a failure of the online check
+            check(False, f"fetch {path}: {e}")
+            continue
+        got[path] = re.sub(r"\s+", " ", b.decode("utf8", "ignore"))
+        check(hashlib.sha256(b).hexdigest() == h, f"online sha256 {path} at pinned commit")
+    for path, text in SW_EXCERPTS:
+        if path in got:
+            check(re.sub(r"\s+", " ", text) in got[path], f"online excerpt in {path}: {text[:40]}")
+    try:
+        b = urllib.request.urlopen(urllib.request.Request(
+            f"https://raw.githubusercontent.com/RTimothyEdwards/open_pdks/{OP_HEAD}/sky130/magic/sky130.tech",
+            headers={"User-Agent": "curl/8"}), timeout=60).read()
+        check(hashlib.sha256(b).hexdigest() == OP_TECH, "online sha256 open_pdks sky130/magic/sky130.tech")
+    except Exception as e:
+        check(False, f"fetch open_pdks tech: {e}")
+
+
 def online() -> None:
     import html
     import urllib.request
@@ -175,8 +240,10 @@ def main() -> int:
     pins()
     numbers()
     status()
+    issue51()
     if a.online:
         online()
+        issue51_online()
     print("RESULT:", "FAIL" if fails else "PASS")
     return 1 if fails else 0
 
