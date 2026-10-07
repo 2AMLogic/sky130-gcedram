@@ -84,6 +84,13 @@ python3 sim/loaded-column/cold-corner/analyze_variants.py
 python3 sim/loaded-column/cold-corner/test_variants.py
 ```
 
+**Supply/reliability evidence package (issue #49, documentation only):**
+[`EVIDENCE_INDEX.md`](loaded-column/cold-corner/EVIDENCE_INDEX.md) indexes the
+stress/limit inventory, the sense input contract and the pinned primary
+source; the decision record is PROPOSED, not ratified
+([`spec/supply-reliability-decision-PROPOSED.md`](../spec/supply-reliability-decision-PROPOSED.md)).
+Check: `python3 sim/loaded-column/cold-corner/check_evidence_index.py`.
+
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
 
 The **first circuit-level simulation of the ratified bitcell**: the two
