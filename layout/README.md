@@ -374,49 +374,77 @@ debugging (issue #39). Two committed files:
 - **[`erc-supply-spec.json`](erc-supply-spec.json)** -- the supply spec: the
   gate-poly/li1/met1 stackup this block actually draws (with
   `active_layer` diff 65/20 for a physical `poly ∩ diff` gate-area
-  denominator), the `licon1`/`mcon` vias, and one declared supply net,
-  `GND` -- the array's only rail is the substrate/bulk (`.GLOBAL GND` in the
-  LVS reference), tapped by the shared guard ring. The spec's own
-  `_comment` block justifies every stackup entry, both `label_layer`s, and
-  the deliberate absence of `ties[]`.
+  denominator), the `licon1`/`mcon` vias, one declared supply net, `GND`
+  (the array's only rail is the substrate/bulk, `.GLOBAL GND` in the LVS
+  reference, tapped by the shared guard ring), and (issue #54) one
+  `ties[]` entry, `psub_guard_ring`. The spec's own `_comment` block
+  justifies every entry.
 - **[`gain_cell_2t_array.erc.result.json`](gain_cell_2t_array.erc.result.json)** --
-  the run against the committed GDS (regenerate from `layout/` with
-  `klt erc gain_cell_2t_array.gds erc-supply-spec.json --pdk sky130
-  --format json`):
+  the run against the committed GDS, produced by klt v0.6.0
+  (`c622e8addb362491664d44ba4d717f354ca88bbd`) **from the repository root**
+  (`klt signoff` re-reads the spec the report names relative to its own
+  working directory, so the report must record `layout/erc-supply-spec.json`):
+
+  ```
+  klt erc layout/gain_cell_2t_array.gds layout/erc-supply-spec.json \
+    --pdk sky130 --format json > layout/gain_cell_2t_array.erc.result.json
+  ```
 
   - `status: "clean"`, `erc_status: "clean"`, `erc_finding_count: 0` --
-    **GND resolved to exactly one electrical island**: the
-    `erc.net_connectivity:["GND"]` check fires on zero *or* on several
-    islands, so zero findings naming GND is exactly the one-island verdict
-    item 11 requires, not a merely empty result (`erc_coverage.checked`
-    names the check as actually run).
-  - All 20 gate nets (4 `wl_<r>` write gates + 16 `sn_<r>_<c>` read gates)
-    pass the antenna-ratio verdict against sky130's real table (li1 75,
-    met1 400) -- real evidence carried in the same report, though item 11
-    does not grade it.
-  - `erc.missing_tie` is **not computed** and is recorded as such by the
-    tool itself (`erc_coverage.inapplicable: "no_ties_declared"`), not
-    reported as a misleading zero. The tap structure is a psubstrate
-    guard ring; sky130's psub is not a drawn GDS layer (this all-NMOS
-    stream has no nwell geometry at all), so no `ties[]` declaration can
-    be honest, and klayout-tools#2169 records the false-`erc.supply_short`
-    collapse `ties[]` can cause. The standing-in well-tie evidence the
-    claim carries instead: (1) the `mos_array(add_guard_ring=true)` shared
-    substrate tap ring, drawn on tap 65/44 / licon1 66/44 up to a li1 ring
-    whose only text label is the GND pin; (2) the item-4 LVS report above
-    matching with `GND` paired in `net_correspondence` against a SPICE
-    reference that declares `.GLOBAL GND`, with both `layout_sha256`/
-    `reference_sha256` fresh against the committed files.
+    **GND resolved to exactly one electrical island** (no
+    `erc.unconnected_net`, no `erc.supply_short`; the
+    `erc.net_connectivity:["GND"]` check is in `erc_coverage.checked`).
+  - All 20 gate nets pass the antenna-ratio verdict against sky130's real
+    table (li1 75, met1 400) -- carried in the same report, not graded by
+    item 11.
+  - **Substrate tie, checked by well assertion (issue #54).** sky130's
+    p-substrate is not a drawn layer and this all-NMOS stream draws no
+    nwell, so the tie is declared with `well_layer: null` and `well_boxes`
+    (klayout-tools#2255) against the tap-only layer 65/44
+    (`tap_is_dedicated: true`, `connect_to: li1`, `net: GND`).
+    `well_boxes` are the four edge strips of the guard ring, read from the
+    committed GDS: the merged 65/44 shape is one ring, outer edge
+    (-1.07, -1.07)-(12.59, 7.23) um, inner edge (-0.65, -0.65)-(12.17, 6.81) um
+    (0.42 um wide). The identity `erc.missing_tie:["psub_guard_ring"]`
+    appears in both `erc_coverage.checked` and
+    `erc_coverage.checked_by_well_assertion`; `skipped` and `inapplicable`
+    are empty; there are zero `erc.missing_tie` findings.
+  - **What the assertion does and does not cover.** It asserts that the
+    substrate under the guard ring is tied to GND through a tap that reaches
+    the GND conductor, and `klt erc` verified that against the drawn tap.
+    It does not claim every point of substrate inside the ring is tied;
+    that continuity runs through bulk silicon, which `klt erc` does not
+    model, and rests on the array LVS (bulk terminals matched, `GND` paired).
+    The ring's enclosing rectangle is deliberately not asserted: it equals
+    the top-cell extent and is skipped as `degenerate_well_assertion`.
   - Fresh: `provenance.input.content_hash`
     `sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd`
-    matches the committed `gain_cell_2t_array.gds`, and the spec's own
-    content hash is pinned in `provenance.spec`.
+    matches the committed `gain_cell_2t_array.gds` (unchanged by #54), and
+    the spec's content hash is pinned in `provenance.spec`.
+- **[`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json)**
+  and **[`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)**
+  -- refreshed with klt v0.6.0 against the *unchanged* committed GDS
+  (`klt lvs gain_cell_2t_array.lvs.request.json`, `klt drc
+  gain_cell_2t_array.gds --deck sky130`, from `layout/`): LVS `match` with
+  `GND` paired, now carrying `provenance.input`; DRC `clean`.
 
-Iterating a `klt erc` ties[] declaration on this stream once the installed
-`klt` carries the upstream tap-assertion machinery
-(klayout-tools#2199/#2234/#2240) is the documented follow-up that would let
-the missing-tie half be graded mechanically; the fleet build pinned here
-(`klt 0.5.0+g2b1e55e51bb8`) predates it.
+#### Item 11 in the signoff record
+
+`block-manifest.json` cites `"11.analog"` only: the ERC report and the array
+LVS report as separate parts, each pinned (`content_hash`) to the array
+layout hash above, so the digital partition borrows nothing. The graded
+state is in [`block-manifest.signoff.json`](../block-manifest.signoff.json)
+(`klt signoff --manifest block-manifest.json --format json`, from the repo
+root): item 11 is `met` for analog, with
+`power_delivery.ties_checked_by_well_assertion` naming `psub_guard_ring`
+(the weaker, asserted-region provenance is stated in the verdict), and
+`unmet`/`no_evidence` for digital. This is one T1 row, not tier completion.
+
+Controls (run in scratch, not committed; results recorded in the issue #54 pull request):
+a stream with 65/44 removed, and a spec whose `well_boxes` exclude the ring,
+each raise `erc.missing_tie`; a spec asserting the whole top-cell bounding
+box is skipped as `degenerate_well_assertion` and item 11 renders
+`supply_spec_incomplete`.
 
 ### klayout-tools friction encountered
 

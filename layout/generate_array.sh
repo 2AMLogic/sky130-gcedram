@@ -88,14 +88,14 @@ if [[ "${OUT_DIR}" != "${LAYOUT_DIR}" ]]; then
   cp "${LAYOUT_DIR}/array_topology.py" .
 fi
 
-echo "== 1/5: klt gen mos_array (${ARRAY_TAG} bitcells = $((2 * N_ROWS * N_COLS)) devices, shared tap) =="
+echo "== 1/6: klt gen mos_array (${ARRAY_TAG} bitcells = $((2 * N_ROWS * N_COLS)) devices, shared tap) =="
 klt gen mos_array \
   --params "$(python3 array_topology.py --rows "${N_ROWS}" --cols "${N_COLS}" --emit gen-params)" \
   --pdk "${PDK}" --pdk-root "${PDK_ROOT}" \
   --cell-name gain_cell_2t_array_mos -o gain_cell_2t_array_mos.gds --format json \
   > gain_cell_2t_array_mos.json
 
-echo "== 2/5: klt gen-compose (place, route wl/rwl/bl/rbl buses + per-cell sn, label GND) =="
+echo "== 2/6: klt gen-compose (place, route wl/rwl/bl/rbl buses + per-cell sn, label GND) =="
 python3 array_topology.py --rows "${N_ROWS}" --cols "${N_COLS}" --emit compose-request \
   --mos-report gain_cell_2t_array_mos.json \
   > gain_cell_2t_array.layout.request.json
@@ -108,12 +108,12 @@ if [[ "${UNROUTED}" != "[]" ]]; then
   exit 1
 fi
 
-echo "== 3/5: klt drc --deck sky130 (informal iteration, not a formal macro sign-off) =="
+echo "== 3/6: klt drc --deck sky130 (informal iteration, not a formal macro sign-off) =="
 klt drc gain_cell_2t_array.gds --deck sky130 --format json > gain_cell_2t_array.drc.result.json
 DRC_STATUS="$(python3 -c "import json;print(json.load(open('gain_cell_2t_array.drc.result.json'))['status'])")"
 echo "   drc status: ${DRC_STATUS}"
 
-echo "== 4/5: generate the array-level LVS reference netlist from design/gain_cell_2t.spice =="
+echo "== 4/6: generate the array-level LVS reference netlist from design/gain_cell_2t.spice =="
 SCH_SPICE_HASH="$(sha256sum "${DESIGN_SPICE}" | cut -d' ' -f1)"
 python3 array_topology.py --rows "${N_ROWS}" --cols "${N_COLS}" --emit lvs-reference \
   --source-spice ../design/gain_cell_2t.spice --source-hash "${SCH_SPICE_HASH}" \
@@ -124,7 +124,7 @@ python3 array_topology.py --rows "${N_ROWS}" --cols "${N_COLS}" --emit lvs-reque
   --reference-path gain_cell_2t_array.lvs_reference.spice \
   > gain_cell_2t_array.lvs.request.json
 
-echo "== 5/5: klt lvs (informal iteration, not a formal macro sign-off) =="
+echo "== 5/6: klt lvs (informal iteration, not a formal macro sign-off) =="
 klt lvs gain_cell_2t_array.lvs.request.json --format json > gain_cell_2t_array.lvs.result.json
 LVS_STATUS="$(python3 -c "import json;print(json.load(open('gain_cell_2t_array.lvs.result.json'))['status'])")"
 echo "   lvs status: ${LVS_STATUS}"
@@ -135,6 +135,28 @@ if [[ "${DRC_STATUS}" != "clean" ]]; then
 fi
 if [[ "${LVS_STATUS}" != "match" ]]; then
   echo "FAIL: klt lvs reports '${LVS_STATUS}', expected 'match'." >&2
+  exit 1
+fi
+
+# The ERC report is graded by `klt signoff` (T1 item 11), which re-reads the
+# spec the report names relative to ITS cwd, so the committed report is
+# produced from the repo root with repo-root-relative paths. (Scratch/--check
+# runs use the scratch dir's own files and are not committed.)
+echo "== 6/6: klt erc (supply spec incl. substrate tie, T1 item 11 evidence) =="
+if [[ "${CHECK_MODE}" -eq 1 ]]; then
+  ( cd "${OUT_DIR}" && cp "${LAYOUT_DIR}/erc-supply-spec.json" . \
+    && klt erc gain_cell_2t_array.gds erc-supply-spec.json --pdk sky130 --format json \
+       > gain_cell_2t_array.erc.result.json ) || true
+  ERC_FILE="${OUT_DIR}/gain_cell_2t_array.erc.result.json"
+else
+  ( cd "${REPO_ROOT}" && klt erc layout/gain_cell_2t_array.gds layout/erc-supply-spec.json \
+      --pdk sky130 --format json > layout/gain_cell_2t_array.erc.result.json ) || true
+  ERC_FILE="${LAYOUT_DIR}/gain_cell_2t_array.erc.result.json"
+fi
+ERC_STATUS="$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['erc_status'])" "${ERC_FILE}")"
+echo "   erc status: ${ERC_STATUS}"
+if [[ "${ERC_STATUS}" != "clean" ]]; then
+  echo "FAIL: klt erc reports '${ERC_STATUS}', expected 'clean'." >&2
   exit 1
 fi
 

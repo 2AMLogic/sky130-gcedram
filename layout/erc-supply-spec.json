@@ -4,13 +4,13 @@
     "power-delivery (T1 item 11, klayout-tools design-evidence-tiers.md)",
     "evidence committed here per issue #39.",
     "",
-    "Run from layout/ (mirrors the repo's other committed reports' own",
-    "basename-path convention):",
+    "Run from the REPO ROOT (klt signoff re-reads the spec a report names",
+    "relative to its own cwd, so the report must record the root-relative path):",
     "",
-    "    klt erc gain_cell_2t_array.gds erc-supply-spec.json \\",
+    "    klt erc layout/gain_cell_2t_array.gds layout/erc-supply-spec.json \\",
     "      --pdk sky130 --format json",
     "",
-    "    -> committed as gain_cell_2t_array.erc.result.json",
+    "    -> committed as layout/gain_cell_2t_array.erc.result.json",
     "",
     "What this spec asserts, and why each piece is shaped this way:",
     "",
@@ -58,51 +58,114 @@
     "  and a signal declaration would only opt those nets into",
     "  erc.multiply_driven_net, which the item does not grade.",
     "",
-    "- There is deliberately NO ties[] section here, and that is a recorded",
-    "  gap rather than an oversight:",
-    "  - The array's tap structure is a single substrate (psub) guard ring:",
-    "    sky130's psub is NOT a drawn GDS layer -- only nwell 64/20 can be",
-    "    drawn as a 'well', and this stream contains no nwell geometry at all",
-    "    (all-NMOS array; no nwell shape exists). Any well_layer choice",
-    "    available on this stream is either empty (nwell: zero merged shapes,",
-    "    so erc.missing_tie returns a vacuous zero that was never a check) or",
-    "    self-referential (well_layer=65/44 tap: the tap is not the well).",
-    "  - klayout-tools#2169 further documents that declaring ties[] on real",
-    "    routed geometry can collapse a design into one electrical island and",
-    "    report a FALSE erc.supply_short (reproduced four ways in",
-    "    gf180-drone-fc FRICTION F-034).",
-    "  - Because ties[] is omitted, erc.missing_tie is NOT COMPUTED by this",
-    "    run (klt erc contract: 'Omitted entirely -> erc.missing_tie is",
-    "    never computed') -- a zero/absent count in the committed report is an",
-    "    absence of evidence, not evidence of absence.",
-    "  What DOES stand in as the well-tie evidence, and is named here so the",
-    "  claim can cite it:",
-    "  1. gen-compose ran the mos_array block with add_guard_ring=true",
-    "     (layout/array_topology.py) -- one shared substrate tap ring around",
-    "     the whole 4x4 grid, drawn on tap 65/44 with licon1 66/44 up to a",
-    "     li1 67/20 ring whose only label is the GND pin text (67/5).",
-    "  2. klt lvs (gain_cell_2t_array.lvs.result.json) is status \"match\" with",
-    "     GND paired in net_correspondence (\"GND\" <-> \"GND\", pin: true)",
-    "     against the SPICE reference that declares .GLOBAL GND, and its",
-    "     layout_sha256/reference_sha256 match the committed GDS and",
-    "     reference -- i.e. an independent, device-aware engine did carry the",
-    "     supply in its compare.",
-    "  3. Upstream klt 0.5.0 predates the machinery that can grade this half",
-    "     mechanically (klayout-tools#2199 degenerate-tie reporting, #2234",
-    "     tap_boxes assertions, #2240 ties_disclosure); once the installed",
-    "     klt carries those, a follow-up can declare the psub tie by",
-    "     assertion and re-run."
+    "- ties[]: ONE substrate (p-substrate) tie, declared by well assertion",
+    "  (klayout-tools#2255, docs/cli/erc.md 'A block with no drawn well at all').",
+    "  sky130's psub is not a drawn GDS layer and this all-NMOS stream draws no",
+    "  nwell (64/20 is absent), so there is no well polygon to name:",
+    "  well_layer is null and well_boxes asserts the substrate region instead.",
+    "  Because the assertion substitutes for a drawn layer, nothing in the",
+    "  stream corroborates it, so it is derived from committed geometry and",
+    "  kept as fine as the geometry allows:",
+    "  - tap_layer 65/44 is sky130's tap-only layer (tap_is_dedicated: true), so",
+    "    no tap_requires narrowing exists to be applied; connect_to: li1 is the",
+    "    layer the tap's licon1 land on, i.e. the GND ring conductor.",
+    "  - The only tap geometry in the stream is the shared guard ring: one",
+    "    merged 65/44 polygon, outer edge (-1.07, -1.07)-(12.59, 7.23), inner",
+    "    edge (-0.65, -0.65)-(12.17, 6.81) um (ring width 0.42 um; read from",
+    "    gain_cell_2t_array.gds with klayout, not from the generator request).",
+    "    well_boxes are its four edge strips (bottom, top, left, right), i.e.",
+    "    the ring itself and not its enclosing rectangle. Adjacent strips merge",
+    "    into one ring-shaped polygon, which must hold a tap reaching GND.",
+    "  - What this does and does not claim: it asserts that the substrate under",
+    "    the guard ring is tied to GND by a tap contact that reaches the GND",
+    "    conductor. It does NOT claim that every point of the substrate inside",
+    "    the ring is tied; that interior is tied to the ring through bulk",
+    "    silicon, which klt erc does not model (docs/cli/erc.md, 'diffusion/",
+    "    well continuity is not modeled'). Asserting the ring's enclosing box",
+    "    would cover the whole top-cell extent and be skipped as",
+    "    degenerate_well_assertion, so it is deliberately not used. The",
+    "    independent device-aware cross-check for the interior is the array LVS",
+    "    (gain_cell_2t_array.lvs.result.json: GND paired, bulk terminals matched).",
+    "  - Falsifiability: if the strips are moved off the ring, or the tap",
+    "    layer is removed from the stream, erc.missing_tie fires (negative",
+    "    control recorded in the PR for issue #54)."
   ],
   "stackup": [
-    { "name": "poly", "layer": "66/20", "role": "gate", "active_layer": "65/20" },
-    { "name": "li1", "layer": "67/20", "label_layer": "67/5" },
-    { "name": "met1", "layer": "68/20", "label_layer": "68/5" }
+    {
+      "name": "poly",
+      "layer": "66/20",
+      "role": "gate",
+      "active_layer": "65/20"
+    },
+    {
+      "name": "li1",
+      "layer": "67/20",
+      "label_layer": "67/5"
+    },
+    {
+      "name": "met1",
+      "layer": "68/20",
+      "label_layer": "68/5"
+    }
   ],
   "vias": [
-    { "name": "licon1", "layer": "66/44", "between": ["poly", "li1"] },
-    { "name": "mcon", "layer": "67/44", "between": ["li1", "met1"] }
+    {
+      "name": "licon1",
+      "layer": "66/44",
+      "between": [
+        "poly",
+        "li1"
+      ]
+    },
+    {
+      "name": "mcon",
+      "layer": "67/44",
+      "between": [
+        "li1",
+        "met1"
+      ]
+    }
   ],
   "nets": [
-    { "name": "GND", "kind": "supply" }
+    {
+      "name": "GND",
+      "kind": "supply"
+    }
+  ],
+  "ties": [
+    {
+      "name": "psub_guard_ring",
+      "well_layer": null,
+      "well_boxes": [
+        [
+          -1.07,
+          -1.07,
+          12.59,
+          -0.65
+        ],
+        [
+          -1.07,
+          6.81,
+          12.59,
+          7.23
+        ],
+        [
+          -1.07,
+          -0.65,
+          -0.65,
+          6.81
+        ],
+        [
+          12.17,
+          -0.65,
+          12.59,
+          6.81
+        ]
+      ],
+      "tap_layer": "65/44",
+      "tap_is_dedicated": true,
+      "connect_to": "li1",
+      "net": "GND"
+    }
   ]
 }
