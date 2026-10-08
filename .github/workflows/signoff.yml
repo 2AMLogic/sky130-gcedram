@@ -22,10 +22,10 @@ permissions:
 
 env:
   # Pinned to the exact klayout-tools revision that graded the committed
-  # block-manifest.signoff.json (per its source_doc_content_hash). Bump this
+  # block-manifest.signoff.json (v0.6.0, per its source_doc_content_hash). Bump this
   # pin deliberately, together with regenerating the record, so the pinned
   # checklist and the committed evidence record move together.
-  KLT_REV: 2b1e55e51bb803c082e8857da44687f3e37ebfc0
+  KLT_REV: c622e8addb362491664d44ba4d717f354ca88bbd
 
 jobs:
   signoff:
@@ -43,6 +43,8 @@ jobs:
         run: |
           klt drc --check gain_cell_2t.drc.result.json
           klt lvs --check gain_cell_2t.lvs.result.json
+          klt drc --check gain_cell_2t_array.drc.result.json
+          klt lvs --check gain_cell_2t_array.lvs.result.json
 
       - name: Re-grade the block manifest
         run: |
