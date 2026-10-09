@@ -1,0 +1,12 @@
+# run_mutation.sh, iverilog 13.0, base commit 83c910c, 2026-10-09
+baseline: PASS
+MUTANT never_refresh: killed
+MUTANT urgent_late_by_guard: killed
+MUTANT ptr_skips_rows: killed
+MUTANT never_urgent: killed
+MUTANT urgent_ignores_ext_op: killed
+MUTATION CHECK PASS
+
+real	1m35.282s
+user	1m34.001s
+sys	0m0.471s

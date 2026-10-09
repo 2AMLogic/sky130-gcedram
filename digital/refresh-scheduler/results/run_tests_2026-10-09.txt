@@ -1,0 +1,14 @@
+# run_tests.sh, iverilog 13.0, base commit 83c910c (+ uncommitted digital/refresh-scheduler at time of run), 2026-10-09
+[ratified] RESULT scenario=0 N=32 T_ROW=34 T_ACC=34 INTERVAL=5029 cycles=60348 refreshes=512 ext_ops=0 max_age=3938 slack=1091 max_stall=0 refresh_busy_pct=28.84
+TB_RESULT: PASS
+[ratified] RESULT scenario=1 N=32 T_ROW=34 T_ACC=34 INTERVAL=5029 cycles=60348 refreshes=392 ext_ops=1332 max_age=5004 slack=25 max_stall=1153 refresh_busy_pct=22.09
+TB_RESULT: PASS
+[ratified] RESULT scenario=2 N=32 T_ROW=34 T_ACC=34 INTERVAL=5029 cycles=60348 refreshes=416 ext_ops=1225 max_age=5026 slack=3 max_stall=1119 refresh_busy_pct=23.43
+TB_RESULT: PASS
+[extracted] RESULT scenario=0 N=32 T_ROW=34 T_ACC=34 INTERVAL=2751 cycles=33012 refreshes=640 ext_ops=0 max_age=1660 slack=1091 max_stall=0 refresh_busy_pct=65.91
+TB_RESULT: PASS
+[extracted] RESULT scenario=1 N=32 T_ROW=34 T_ACC=34 INTERVAL=2751 cycles=33012 refreshes=391 ext_ops=552 max_age=2729 slack=22 max_stall=1153 refresh_busy_pct=40.29
+TB_RESULT: PASS
+[extracted] RESULT scenario=2 N=32 T_ROW=34 T_ACC=34 INTERVAL=2751 cycles=33012 refreshes=420 ext_ops=517 max_age=2745 slack=6 max_stall=1153 refresh_busy_pct=43.25
+TB_RESULT: PASS
+ALL PASS
