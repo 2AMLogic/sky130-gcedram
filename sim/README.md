@@ -55,10 +55,10 @@ never reported as a pass.
 
 **No bypass.** There is no label, commit marker, flag or environment
 variable that skips the check. To correct a finding, leave the existing
-evidence committed as-is and add a **new** evidence file with a correction
-record citing the original (correction-record policy: issue #68). CI runs
-the checker as committed on the base branch when it exists there, so a PR
-cannot weaken the check that judges it.
+evidence committed as-is and add a **new** evidence file plus a correction
+record citing the original (see [Correcting recorded evidence](#correcting-recorded-evidence-issue-68)).
+CI runs the checker as committed on the base branch when it exists there, so
+a PR cannot weaken the check that judges it.
 
 Invocation (exactly what CI runs, from the repository root, with full
 history fetched):
@@ -67,6 +67,119 @@ history fetched):
 python3 -I sim/check_append_only.py --base <BASE_SHA> --head <HEAD_SHA>
 python3 -I sim/test_append_only.py   # temporary-Git-repo regression fixtures
 ```
+
+## Correcting recorded evidence (issue #68)
+
+This is the **sole** correction mechanism. It adds files; it never edits
+history. The guard above ([#67](#append-only-evidence-guard-issue-67))
+stays in force and has no bypass, so a correction that touches the original
+fails CI by design.
+
+**Rules**
+
+1. Never rewrite, truncate, delete, rename or move the original artifact.
+   It stays at its path with its bytes unchanged, so the incorrect finding
+   remains inspectable.
+2. Add a **new** evidence artifact (the corrected results, under a
+   `results/` directory, at a new path) and a **new** correction write-up
+   (`CORRECTION-<NNNN>-<slug>.md`, next to the original's `README.md`) in the
+   same PR.
+3. The write-up uses the template below. Every field is required; write
+   `none` or `n/a` with a reason rather than omitting one.
+4. Corrected numbers are only ever produced by a committed, reproducible
+   run against the stock pinned PDK. Hand-edited numbers are not evidence.
+5. A correction does not change any spec by itself (see Authorization).
+
+**Template** (copy into `CORRECTION-<NNNN>-<slug>.md`)
+
+```markdown
+# Correction <NNNN>: <short title>
+
+## Original (preserved, unmodified)
+- Path: <repo path of the original artifact>
+- Commit: <full SHA that introduced it>
+- Blob hash: <output of `git rev-parse <commit>:<path>`>
+
+## Incorrect finding
+<What the original stated or implied, quoted or cited by row/field.>
+
+## Reason
+<Root cause: wrong bias, unit error, stale model pin, bad parse, ...>
+
+## Corrected artifact
+- Path: <new repo path, distinct from the original>
+- Commit: <SHA of the PR commit adding it>
+- Blob hash: <`git rev-parse <commit>:<path>`>
+
+## Reproduction command
+<Exact command(s) from the repository root, pinned PDK/tool versions,
+and which corners/temperatures it covers.>
+
+## Consequences for dependent claims
+| Dependent claim / document | Affected? | Action |
+| --- | --- | --- |
+| <e.g. spec/..., README number, downstream result> | yes/no | <none / spec change proposed in #N> |
+```
+
+**Authorization**
+
+| Change | Who approves | How |
+| --- | --- | --- |
+| Adding corrected evidence and the write-up | normal PR review | ordinary reviewer approval of the PR |
+| Any change to a specification or ratified claim | existing two-key process | a `spec/` decision record, ratified by the EE and market keys (`ratification/`) |
+
+A correction PR may *propose* a spec change in the "Consequences" table and
+link to a separate decision record. Until that record is ratified, the
+ratified claim stands and the correction is documented as pending. Agents
+cannot self-authorize a spec relaxation, and a correction must never be used
+to make results pass a spec by changing the spec (`CLAUDE.md`).
+
+**Worked example -- ILLUSTRATIVE ONLY.** Every path, hash and number below is
+fabricated to show the shape of a correction. None of it is a measured
+result and none of it is committed as evidence in this repository.
+
+Suppose `sim/example/results/example_results.csv` (commit `aaaa111`, blob
+`1111111`) reported a leakage of `9.9e-12 A` at `sf/125 C` because of a unit
+error. The correcting PR contains additions only:
+
+```text
+ sim/example/results/example_results.csv                 (unchanged, original kept)
+A sim/example/results/example_results_corr0001.csv       (new: corrected rows)
+A sim/example/CORRECTION-0001-leakage-units.md           (new: write-up)
+```
+
+and the write-up reads:
+
+```markdown
+# Correction 0001: leakage unit error (ILLUSTRATIVE)
+
+## Original (preserved, unmodified)
+- Path: sim/example/results/example_results.csv
+- Commit: aaaa111... (fabricated)
+- Blob hash: 1111111... (fabricated)
+
+## Incorrect finding
+Row `sf,125` reports 9.9e-12 A (fabricated).
+
+## Reason
+Value was scaled per micron twice (fabricated).
+
+## Corrected artifact
+- Path: sim/example/results/example_results_corr0001.csv
+- Commit: bbbb222... (fabricated)
+- Blob hash: 2222222... (fabricated)
+
+## Reproduction command
+python3 sim/example/run_example.py --out sim/example/results/example_results_corr0001.csv
+
+## Consequences for dependent claims
+| spec/retention-refresh-budget.md | yes | none applied; change proposed
+in a separate spec decision record, pending two-key ratification |
+```
+
+Reviewers verify with `git diff --name-status BASE...HEAD`: evidence paths
+show only `A`, never `M`, `D` or `R`, and `python3 -I sim/check_append_only.py`
+passes.
 
 ## `leakage/` -- access-device off-state leakage (issue #2)
 
