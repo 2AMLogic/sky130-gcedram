@@ -78,6 +78,8 @@ One `.tran` per (corner, temperature, age, selected row, 4-bit stored pattern):
    read and at the sense instant, `rbl` voltage at/after the sense instant,
    latency, and read disturb of the selected and of the worst unselected `sn`.
 
+   Cross-reference (issue #114): the ideal precharge switch and ideal `bl_0` source here are compared with a designed slice in [`sim/column-periphery`](../column-periphery/README.md); the ideal-vs-real delta is tabulated there. The text above is the original study assumption and is left as written.
+
 ### Declared assumptions (proposed engineering choices, not spec values)
 
 | Quantity | Value | Basis |

@@ -45,6 +45,12 @@ jobs:
       - name: Sense-latch design-vs-deck drift check
         run: python3 -I design/test_sense_latch.py
 
+      - name: Column-periphery slice design-vs-deck drift check
+        run: python3 -I design/test_column_periphery.py
+
+      - name: Column-periphery comparison checks
+        run: python3 -I sim/column-periphery/test_column_periphery.py
+
       - name: Sense-stage mismatch (Monte Carlo) checks
         run: python3 -I sim/sense-mismatch/test_sense_mismatch.py
 

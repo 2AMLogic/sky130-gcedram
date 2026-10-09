@@ -50,6 +50,8 @@ down, so the correct decision is `d = V(rbl) - V(ref)` -> -1.8 V.
 | decision criterion | `|d|` >= 0.9 V at full swing, correct sign, `t_dec` <= 5 ns after enable | ASSUMPTION |
 | mismatch / offset budget | NOT AVAILABLE here (global corners, no Monte Carlo); see [`sim/sense-mismatch/`](../sense-mismatch/README.md) (issue #81) for this latch's offset at four corners | -- |
 
+> Cross-reference (issue #114): the ideal 100 ohm precharge switch above is compared against a designed PMOS precharge, write driver and isolation gate in [`sim/column-periphery`](../column-periphery/README.md); the ideal-vs-real delta is tabulated there. The text above is the original study assumption and is left as written.
+
 Instance kinds: `st_*` (stage only: `rbl` starts at `VREF` +/- 1..100 mV,
 no cells), `cell1_*` (end-to-end, stored '1' at the given level),
 `cell0_*` (end-to-end, stored '0'). The `cell0_*` instances are the
