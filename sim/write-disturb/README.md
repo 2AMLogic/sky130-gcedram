@@ -237,6 +237,8 @@ distinguishable but under the limit, indistinguishable).
 * The disturb accrues linearly with the hold leakage in the derating
   arithmetic (first order).
 
+  Cross-reference (issue #114): [`sim/column-periphery`](../column-periphery/README.md) compares an ideal write-bitline source and ideal precharge with a designed slice; the ideal-vs-real delta is tabulated there. The text above is the original study assumption and is left as written.
+
 ## Append-only handling
 
 Everything in `results/` is protected automatically by

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # regen_netlist.sh -- mechanical netlist regeneration for the design/
-# schematics: the 2T gain-cell bitcell (issue #14, T1 item 1) and the sense
-# latch (issue #109).
+# schematics: the 2T gain-cell bitcell (issue #14, T1 item 1), the sense
+# latch (issue #109) and the column-periphery slice (issue #114).
 #
 # This is the concrete "regenerated on design change" deliverable
 # docs/design-evidence-tiers.md requires (presence AND reproducibility, not
@@ -20,6 +20,7 @@
 #                  Sec.6, sim/leakage/README.md "Device choice")
 #   sense_latch  : only sky130_fd_pr__nfet_01v8 / sky130_fd_pr__pfet_01v8 (the
 #                  flavours sim/sense-stage/gen_sense_stage.py instantiates)
+#   column_periphery : same two flavours (precharge/driver/isolation gates)
 # A deliberate deviation needs this script updated alongside a PR description
 # explicitly calling it out.
 #
@@ -37,14 +38,16 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 XSCHEMRC="${REPO_ROOT}/design/xschemrc"
 
 # cell name -> "|"-separated allowed sky130_fd_pr flavours
-CELLS=(gain_cell_2t sense_latch)
+CELLS=(gain_cell_2t sense_latch column_periphery)
 declare -A ALLOWED=(
   [gain_cell_2t]="sky130_fd_pr__nfet_01v8"
   [sense_latch]="sky130_fd_pr__nfet_01v8|sky130_fd_pr__pfet_01v8"
+  [column_periphery]="sky130_fd_pr__nfet_01v8|sky130_fd_pr__pfet_01v8"
 )
 declare -A DESCR=(
   [gain_cell_2t]="2T gain-cell bitcell netlist, derived (issue #14)."
   [sense_latch]="sense-latch netlist (latch + footer/header), derived (issue #109)."
+  [column_periphery]="column-periphery slice netlist (precharge, write driver, isolation), derived (issue #114)."
 )
 
 CHECK_MODE=0
