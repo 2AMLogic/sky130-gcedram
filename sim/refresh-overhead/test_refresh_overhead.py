@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Tests for refresh_overhead.py (issue #59). Run:
-    python3 sim/refresh-overhead/test_refresh_overhead.py"""
+    python3 -I sim/refresh-overhead/test_refresh_overhead.py"""
 import math
+import sys
 import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # `python -I` safe
 
 import refresh_overhead as R
 
