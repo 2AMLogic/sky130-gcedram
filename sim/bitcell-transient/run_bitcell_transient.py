@@ -107,10 +107,14 @@ from _evidence_common import (  # noqa: E402
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_ngspice_available,
+    first_crossing_below,
+    interp_at,
+    read_wrdata,
     ngspice_version,
     repo_git_sha,
     resolve_ngspice_lib,
     resolve_pdk_root,
+    spice_number,
 )
 
 sys.path.insert(0, str(SIM_DIR / "retention"))
@@ -214,16 +218,7 @@ CSV_FIELDS = [
     "notes",
 ]
 
-SI_SUFFIX = {
-    "f": 1e-15,
-    "p": 1e-12,
-    "n": 1e-9,
-    "u": 1e-6,
-    "m": 1e-3,
-    "k": 1e3,
-    "meg": 1e6,
-    "g": 1e9,
-}
+MIN_TIMEPOINTS = 3
 
 PARAM_RE = re.compile(r"^\.param\s+([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(\S+)\s*$")
 
@@ -274,25 +269,6 @@ def apply_wl_pulse_override(template: str, new_width_s: float) -> str:
 # --------------------------------------------------------------------------
 # template parameters (single source of truth for timing/bias)
 # --------------------------------------------------------------------------
-
-
-def spice_number(text: str) -> float:
-    """Parse a SPICE numeric literal with an optional engineering suffix
-    (`100p`, `21n`, `1.8`). Raises on anything else -- a silently
-    mis-parsed timing parameter would move a measurement instant."""
-    m = re.fullmatch(r"([+-]?[0-9]*\.?[0-9]+(?:[eE][+-]?[0-9]+)?)\s*([A-Za-z]*)", text)
-    if not m:
-        raise ValueError(f"not a SPICE numeric literal: {text!r}")
-    value = float(m.group(1))
-    suffix = m.group(2).lower()
-    if not suffix:
-        return value
-    for name in ("meg",):
-        if suffix.startswith(name):
-            return value * SI_SUFFIX[name]
-    if suffix[0] in SI_SUFFIX:
-        return value * SI_SUFFIX[suffix[0]]
-    raise ValueError(f"unknown SPICE suffix in {text!r}")
 
 
 def parse_template_params(template: str) -> dict[str, float]:
@@ -346,78 +322,6 @@ def parse_template_params(template: str) -> dict[str, float]:
             f"{TEMPLATE_PATH} phase timing is not strictly ordered: {order}"
         )
     return params
-
-
-# --------------------------------------------------------------------------
-# waveform helpers (stdlib only -- no numpy)
-# --------------------------------------------------------------------------
-
-
-def read_wrdata(path: Path) -> tuple[list[float], list[float], list[float]]:
-    """Parse an ngspice `wrdata` ASCII table.
-
-    `wrdata out v(sn) i(vrbl)` emits one (x, y) column PAIR per vector, so
-    the columns are: time, v(sn), time, i(vrbl).
-    """
-    t: list[float] = []
-    vsn: list[float] = []
-    irbl: list[float] = []
-    with path.open() as f:
-        for line in f:
-            parts = line.split()
-            if len(parts) < 4:
-                continue
-            try:
-                row = [float(p) for p in parts]
-            except ValueError:
-                continue
-            t.append(row[0])
-            vsn.append(row[1])
-            irbl.append(row[3])
-    if len(t) < 3:
-        raise RuntimeError(f"ngspice produced too few timepoints in {path}")
-    return t, vsn, irbl
-
-
-def interp_at(t: list[float], y: list[float], tq: float) -> float:
-    """Linear interpolation of y(tq) on a monotonically increasing t."""
-    if tq <= t[0]:
-        return y[0]
-    if tq >= t[-1]:
-        return y[-1]
-    lo, hi = 0, len(t) - 1
-    while hi - lo > 1:
-        mid = (lo + hi) // 2
-        if t[mid] <= tq:
-            lo = mid
-        else:
-            hi = mid
-    if t[hi] == t[lo]:
-        return y[lo]
-    frac = (tq - t[lo]) / (t[hi] - t[lo])
-    return y[lo] + frac * (y[hi] - y[lo])
-
-
-def first_crossing_below(
-    t: list[float], y: list[float], threshold: float, t_from: float
-) -> float | None:
-    """First time at or after `t_from` where y falls to `threshold`,
-    linearly interpolated between the bracketing timepoints. Returns None
-    if y never reaches the threshold inside the simulated window."""
-    prev_t = None
-    prev_y = None
-    for ti, yi in zip(t, y):
-        if ti < t_from:
-            continue
-        if prev_t is not None and yi <= threshold < prev_y:
-            if prev_y == yi:
-                return ti
-            frac = (prev_y - threshold) / (prev_y - yi)
-            return prev_t + frac * (ti - prev_t)
-        if prev_t is None and yi <= threshold:
-            return ti
-        prev_t, prev_y = ti, yi
-    return None
 
 
 # --------------------------------------------------------------------------
@@ -557,7 +461,8 @@ def run_tran(
                 f"ngspice produced no output for {tag}\n"
                 f"--- stdout ---\n{result.stdout}\n--- stderr ---\n{result.stderr}"
             )
-        return read_wrdata(out_path)
+        t, vsn, irbl = read_wrdata(out_path, MIN_TIMEPOINTS)[:3]
+        return t, vsn, irbl
     finally:
         for p in (deck_path, out_path):
             try:
