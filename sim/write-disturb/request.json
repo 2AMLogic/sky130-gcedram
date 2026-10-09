@@ -1,0 +1,3633 @@
+{
+ "netlist": "write_disturb.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 5018n 0 100p uic"
+ },
+ "measurements": [
+  {
+   "name": "sn_ctl0_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_00_n1 FIND v(sn_0_0_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_00_n4 FIND v(sn_0_0_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_00_n16 FIND v(sn_0_0_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_00_n64 FIND v(sn_0_0_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_00_n147 FIND v(sn_0_0_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_01_n1 FIND v(sn_0_1_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_01_n4 FIND v(sn_0_1_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_01_n16 FIND v(sn_0_1_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_01_n64 FIND v(sn_0_1_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_01_n147 FIND v(sn_0_1_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_02_n1 FIND v(sn_0_2_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_02_n4 FIND v(sn_0_2_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_02_n16 FIND v(sn_0_2_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_02_n64 FIND v(sn_0_2_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_02_n147 FIND v(sn_0_2_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_03_n1 FIND v(sn_0_3_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_03_n4 FIND v(sn_0_3_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_03_n16 FIND v(sn_0_3_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_03_n64 FIND v(sn_0_3_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_03_n147 FIND v(sn_0_3_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_10_n1 FIND v(sn_1_0_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_10_n4 FIND v(sn_1_0_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_10_n16 FIND v(sn_1_0_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_10_n64 FIND v(sn_1_0_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_10_n147 FIND v(sn_1_0_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_11_n1 FIND v(sn_1_1_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_11_n4 FIND v(sn_1_1_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_11_n16 FIND v(sn_1_1_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_11_n64 FIND v(sn_1_1_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_11_n147 FIND v(sn_1_1_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_12_n1 FIND v(sn_1_2_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_12_n4 FIND v(sn_1_2_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_12_n16 FIND v(sn_1_2_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_12_n64 FIND v(sn_1_2_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_12_n147 FIND v(sn_1_2_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_13_n1 FIND v(sn_1_3_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_13_n4 FIND v(sn_1_3_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_13_n16 FIND v(sn_1_3_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_13_n64 FIND v(sn_1_3_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_13_n147 FIND v(sn_1_3_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_20_n1 FIND v(sn_2_0_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_20_n4 FIND v(sn_2_0_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_20_n16 FIND v(sn_2_0_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_20_n64 FIND v(sn_2_0_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_20_n147 FIND v(sn_2_0_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_21_n1 FIND v(sn_2_1_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_21_n4 FIND v(sn_2_1_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_21_n16 FIND v(sn_2_1_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_21_n64 FIND v(sn_2_1_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_21_n147 FIND v(sn_2_1_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_22_n1 FIND v(sn_2_2_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_22_n4 FIND v(sn_2_2_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_22_n16 FIND v(sn_2_2_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_22_n64 FIND v(sn_2_2_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_22_n147 FIND v(sn_2_2_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_23_n1 FIND v(sn_2_3_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_23_n4 FIND v(sn_2_3_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_23_n16 FIND v(sn_2_3_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_23_n64 FIND v(sn_2_3_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_23_n147 FIND v(sn_2_3_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_30_n1 FIND v(sn_3_0_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_30_n4 FIND v(sn_3_0_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_30_n16 FIND v(sn_3_0_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_30_n64 FIND v(sn_3_0_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_30_n147 FIND v(sn_3_0_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_31_n1 FIND v(sn_3_1_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_31_n4 FIND v(sn_3_1_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_31_n16 FIND v(sn_3_1_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_31_n64 FIND v(sn_3_1_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_31_n147 FIND v(sn_3_1_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_32_n1 FIND v(sn_3_2_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_32_n4 FIND v(sn_3_2_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_32_n16 FIND v(sn_3_2_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_32_n64 FIND v(sn_3_2_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_32_n147 FIND v(sn_3_2_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl0_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_33_n1 FIND v(sn_3_3_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_ctl0_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_33_n4 FIND v(sn_3_3_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_ctl0_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_33_n16 FIND v(sn_3_3_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_ctl0_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_33_n64 FIND v(sn_3_3_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_ctl0_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl0_33_n147 FIND v(sn_3_3_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_00_n1 FIND v(sn_0_0_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_00_n4 FIND v(sn_0_0_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_00_n16 FIND v(sn_0_0_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_00_n64 FIND v(sn_0_0_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_00_n147 FIND v(sn_0_0_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_01_n1 FIND v(sn_0_1_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_01_n4 FIND v(sn_0_1_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_01_n16 FIND v(sn_0_1_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_01_n64 FIND v(sn_0_1_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_01_n147 FIND v(sn_0_1_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_02_n1 FIND v(sn_0_2_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_02_n4 FIND v(sn_0_2_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_02_n16 FIND v(sn_0_2_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_02_n64 FIND v(sn_0_2_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_02_n147 FIND v(sn_0_2_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_03_n1 FIND v(sn_0_3_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_03_n4 FIND v(sn_0_3_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_03_n16 FIND v(sn_0_3_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_03_n64 FIND v(sn_0_3_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_03_n147 FIND v(sn_0_3_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_10_n1 FIND v(sn_1_0_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_10_n4 FIND v(sn_1_0_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_10_n16 FIND v(sn_1_0_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_10_n64 FIND v(sn_1_0_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_10_n147 FIND v(sn_1_0_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_11_n1 FIND v(sn_1_1_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_11_n4 FIND v(sn_1_1_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_11_n16 FIND v(sn_1_1_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_11_n64 FIND v(sn_1_1_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_11_n147 FIND v(sn_1_1_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_12_n1 FIND v(sn_1_2_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_12_n4 FIND v(sn_1_2_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_12_n16 FIND v(sn_1_2_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_12_n64 FIND v(sn_1_2_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_12_n147 FIND v(sn_1_2_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_13_n1 FIND v(sn_1_3_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_13_n4 FIND v(sn_1_3_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_13_n16 FIND v(sn_1_3_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_13_n64 FIND v(sn_1_3_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_13_n147 FIND v(sn_1_3_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_20_n1 FIND v(sn_2_0_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_20_n4 FIND v(sn_2_0_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_20_n16 FIND v(sn_2_0_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_20_n64 FIND v(sn_2_0_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_20_n147 FIND v(sn_2_0_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_21_n1 FIND v(sn_2_1_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_21_n4 FIND v(sn_2_1_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_21_n16 FIND v(sn_2_1_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_21_n64 FIND v(sn_2_1_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_21_n147 FIND v(sn_2_1_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_22_n1 FIND v(sn_2_2_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_22_n4 FIND v(sn_2_2_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_22_n16 FIND v(sn_2_2_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_22_n64 FIND v(sn_2_2_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_22_n147 FIND v(sn_2_2_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_23_n1 FIND v(sn_2_3_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_23_n4 FIND v(sn_2_3_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_23_n16 FIND v(sn_2_3_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_23_n64 FIND v(sn_2_3_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_23_n147 FIND v(sn_2_3_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_30_n1 FIND v(sn_3_0_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_30_n4 FIND v(sn_3_0_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_30_n16 FIND v(sn_3_0_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_30_n64 FIND v(sn_3_0_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_30_n147 FIND v(sn_3_0_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_31_n1 FIND v(sn_3_1_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_31_n4 FIND v(sn_3_1_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_31_n16 FIND v(sn_3_1_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_31_n64 FIND v(sn_3_1_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_31_n147 FIND v(sn_3_1_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_32_n1 FIND v(sn_3_2_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_32_n4 FIND v(sn_3_2_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_32_n16 FIND v(sn_3_2_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_32_n64 FIND v(sn_3_2_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_32_n147 FIND v(sn_3_2_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_ctl1_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_33_n1 FIND v(sn_3_3_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_ctl1_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_33_n4 FIND v(sn_3_3_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_ctl1_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_33_n16 FIND v(sn_3_3_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_ctl1_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_33_n64 FIND v(sn_3_3_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_ctl1_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_ctl1_33_n147 FIND v(sn_3_3_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_00_n1 FIND v(sn_0_0_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_00_n4 FIND v(sn_0_0_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_00_n16 FIND v(sn_0_0_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_00_n64 FIND v(sn_0_0_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_00_n147 FIND v(sn_0_0_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_01_n1 FIND v(sn_0_1_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_01_n4 FIND v(sn_0_1_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_01_n16 FIND v(sn_0_1_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_01_n64 FIND v(sn_0_1_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_01_n147 FIND v(sn_0_1_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_02_n1 FIND v(sn_0_2_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_02_n4 FIND v(sn_0_2_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_02_n16 FIND v(sn_0_2_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_02_n64 FIND v(sn_0_2_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_02_n147 FIND v(sn_0_2_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_03_n1 FIND v(sn_0_3_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_03_n4 FIND v(sn_0_3_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_03_n16 FIND v(sn_0_3_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_03_n64 FIND v(sn_0_3_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_03_n147 FIND v(sn_0_3_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_10_n1 FIND v(sn_1_0_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_10_n4 FIND v(sn_1_0_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_10_n16 FIND v(sn_1_0_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_10_n64 FIND v(sn_1_0_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_10_n147 FIND v(sn_1_0_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_11_n1 FIND v(sn_1_1_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_11_n4 FIND v(sn_1_1_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_11_n16 FIND v(sn_1_1_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_11_n64 FIND v(sn_1_1_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_11_n147 FIND v(sn_1_1_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_12_n1 FIND v(sn_1_2_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_12_n4 FIND v(sn_1_2_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_12_n16 FIND v(sn_1_2_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_12_n64 FIND v(sn_1_2_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_12_n147 FIND v(sn_1_2_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_13_n1 FIND v(sn_1_3_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_13_n4 FIND v(sn_1_3_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_13_n16 FIND v(sn_1_3_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_13_n64 FIND v(sn_1_3_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_13_n147 FIND v(sn_1_3_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_20_n1 FIND v(sn_2_0_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_20_n4 FIND v(sn_2_0_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_20_n16 FIND v(sn_2_0_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_20_n64 FIND v(sn_2_0_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_20_n147 FIND v(sn_2_0_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_21_n1 FIND v(sn_2_1_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_21_n4 FIND v(sn_2_1_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_21_n16 FIND v(sn_2_1_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_21_n64 FIND v(sn_2_1_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_21_n147 FIND v(sn_2_1_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_22_n1 FIND v(sn_2_2_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_22_n4 FIND v(sn_2_2_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_22_n16 FIND v(sn_2_2_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_22_n64 FIND v(sn_2_2_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_22_n147 FIND v(sn_2_2_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_23_n1 FIND v(sn_2_3_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_23_n4 FIND v(sn_2_3_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_23_n16 FIND v(sn_2_3_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_23_n64 FIND v(sn_2_3_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_23_n147 FIND v(sn_2_3_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_30_n1 FIND v(sn_3_0_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_30_n4 FIND v(sn_3_0_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_30_n16 FIND v(sn_3_0_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_30_n64 FIND v(sn_3_0_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_30_n147 FIND v(sn_3_0_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_31_n1 FIND v(sn_3_1_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_31_n4 FIND v(sn_3_1_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_31_n16 FIND v(sn_3_1_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_31_n64 FIND v(sn_3_1_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_31_n147 FIND v(sn_3_1_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_32_n1 FIND v(sn_3_2_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_32_n4 FIND v(sn_3_2_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_32_n16 FIND v(sn_3_2_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_32_n64 FIND v(sn_3_2_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_32_n147 FIND v(sn_3_2_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep1_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_33_n1 FIND v(sn_3_3_rep1) AT=40n"
+  },
+  {
+   "name": "sn_rep1_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_33_n4 FIND v(sn_3_3_rep1) AT=142n"
+  },
+  {
+   "name": "sn_rep1_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_33_n16 FIND v(sn_3_3_rep1) AT=550n"
+  },
+  {
+   "name": "sn_rep1_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_33_n64 FIND v(sn_3_3_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_rep1_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep1_33_n147 FIND v(sn_3_3_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_00_n1 FIND v(sn_0_0_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_00_n4 FIND v(sn_0_0_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_00_n16 FIND v(sn_0_0_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_00_n64 FIND v(sn_0_0_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_00_n147 FIND v(sn_0_0_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_01_n1 FIND v(sn_0_1_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_01_n4 FIND v(sn_0_1_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_01_n16 FIND v(sn_0_1_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_01_n64 FIND v(sn_0_1_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_01_n147 FIND v(sn_0_1_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_02_n1 FIND v(sn_0_2_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_02_n4 FIND v(sn_0_2_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_02_n16 FIND v(sn_0_2_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_02_n64 FIND v(sn_0_2_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_02_n147 FIND v(sn_0_2_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_03_n1 FIND v(sn_0_3_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_03_n4 FIND v(sn_0_3_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_03_n16 FIND v(sn_0_3_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_03_n64 FIND v(sn_0_3_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_03_n147 FIND v(sn_0_3_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_10_n1 FIND v(sn_1_0_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_10_n4 FIND v(sn_1_0_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_10_n16 FIND v(sn_1_0_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_10_n64 FIND v(sn_1_0_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_10_n147 FIND v(sn_1_0_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_11_n1 FIND v(sn_1_1_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_11_n4 FIND v(sn_1_1_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_11_n16 FIND v(sn_1_1_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_11_n64 FIND v(sn_1_1_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_11_n147 FIND v(sn_1_1_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_12_n1 FIND v(sn_1_2_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_12_n4 FIND v(sn_1_2_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_12_n16 FIND v(sn_1_2_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_12_n64 FIND v(sn_1_2_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_12_n147 FIND v(sn_1_2_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_13_n1 FIND v(sn_1_3_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_13_n4 FIND v(sn_1_3_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_13_n16 FIND v(sn_1_3_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_13_n64 FIND v(sn_1_3_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_13_n147 FIND v(sn_1_3_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_20_n1 FIND v(sn_2_0_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_20_n4 FIND v(sn_2_0_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_20_n16 FIND v(sn_2_0_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_20_n64 FIND v(sn_2_0_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_20_n147 FIND v(sn_2_0_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_21_n1 FIND v(sn_2_1_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_21_n4 FIND v(sn_2_1_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_21_n16 FIND v(sn_2_1_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_21_n64 FIND v(sn_2_1_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_21_n147 FIND v(sn_2_1_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_22_n1 FIND v(sn_2_2_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_22_n4 FIND v(sn_2_2_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_22_n16 FIND v(sn_2_2_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_22_n64 FIND v(sn_2_2_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_22_n147 FIND v(sn_2_2_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_23_n1 FIND v(sn_2_3_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_23_n4 FIND v(sn_2_3_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_23_n16 FIND v(sn_2_3_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_23_n64 FIND v(sn_2_3_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_23_n147 FIND v(sn_2_3_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_30_n1 FIND v(sn_3_0_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_30_n4 FIND v(sn_3_0_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_30_n16 FIND v(sn_3_0_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_30_n64 FIND v(sn_3_0_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_30_n147 FIND v(sn_3_0_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_31_n1 FIND v(sn_3_1_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_31_n4 FIND v(sn_3_1_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_31_n16 FIND v(sn_3_1_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_31_n64 FIND v(sn_3_1_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_31_n147 FIND v(sn_3_1_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_32_n1 FIND v(sn_3_2_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_32_n4 FIND v(sn_3_2_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_32_n16 FIND v(sn_3_2_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_32_n64 FIND v(sn_3_2_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_32_n147 FIND v(sn_3_2_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_rep0_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_33_n1 FIND v(sn_3_3_rep0) AT=40n"
+  },
+  {
+   "name": "sn_rep0_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_33_n4 FIND v(sn_3_3_rep0) AT=142n"
+  },
+  {
+   "name": "sn_rep0_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_33_n16 FIND v(sn_3_3_rep0) AT=550n"
+  },
+  {
+   "name": "sn_rep0_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_33_n64 FIND v(sn_3_3_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_rep0_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_rep0_33_n147 FIND v(sn_3_3_rep0) AT=5004n"
+  },
+  {
+   "name": "hs_hs_p1_00_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_00_pre FIND v(sn_0_0_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_00_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_00_post FIND v(sn_0_0_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_00_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_00_min MIN v(sn_0_0_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_00_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_00_max MAX v(sn_0_0_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_01_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_01_pre FIND v(sn_0_1_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_01_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_01_post FIND v(sn_0_1_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_01_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_01_min MIN v(sn_0_1_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_01_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_01_max MAX v(sn_0_1_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_02_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_02_pre FIND v(sn_0_2_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_02_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_02_post FIND v(sn_0_2_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_02_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_02_min MIN v(sn_0_2_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_02_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_02_max MAX v(sn_0_2_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_03_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_03_pre FIND v(sn_0_3_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_03_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_03_post FIND v(sn_0_3_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_03_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_03_min MIN v(sn_0_3_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_03_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_03_max MAX v(sn_0_3_hs_p1) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p1_10_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_10_pre FIND v(sn_1_0_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_10_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_10_post FIND v(sn_1_0_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_11_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_11_pre FIND v(sn_1_1_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_11_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_11_post FIND v(sn_1_1_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_12_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_12_pre FIND v(sn_1_2_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_12_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_12_post FIND v(sn_1_2_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_13_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_13_pre FIND v(sn_1_3_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_13_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_13_post FIND v(sn_1_3_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_20_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_20_pre FIND v(sn_2_0_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_20_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_20_post FIND v(sn_2_0_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_21_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_21_pre FIND v(sn_2_1_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_21_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_21_post FIND v(sn_2_1_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_22_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_22_pre FIND v(sn_2_2_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_22_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_22_post FIND v(sn_2_2_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_23_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_23_pre FIND v(sn_2_3_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_23_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_23_post FIND v(sn_2_3_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_30_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_30_pre FIND v(sn_3_0_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_30_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_30_post FIND v(sn_3_0_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_31_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_31_pre FIND v(sn_3_1_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_31_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_31_post FIND v(sn_3_1_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_32_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_32_pre FIND v(sn_3_2_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_32_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_32_post FIND v(sn_3_2_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p1_33_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_33_pre FIND v(sn_3_3_hs_p1) AT=5n"
+  },
+  {
+   "name": "hs_hs_p1_33_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p1_33_post FIND v(sn_3_3_hs_p1) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_00_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_00_pre FIND v(sn_0_0_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_00_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_00_post FIND v(sn_0_0_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_00_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_00_min MIN v(sn_0_0_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_00_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_00_max MAX v(sn_0_0_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_01_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_01_pre FIND v(sn_0_1_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_01_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_01_post FIND v(sn_0_1_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_01_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_01_min MIN v(sn_0_1_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_01_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_01_max MAX v(sn_0_1_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_02_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_02_pre FIND v(sn_0_2_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_02_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_02_post FIND v(sn_0_2_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_02_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_02_min MIN v(sn_0_2_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_02_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_02_max MAX v(sn_0_2_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_03_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_03_pre FIND v(sn_0_3_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_03_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_03_post FIND v(sn_0_3_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_03_min",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_03_min MIN v(sn_0_3_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_03_max",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_03_max MAX v(sn_0_3_hs_p0) FROM=12.5n TO=32n"
+  },
+  {
+   "name": "hs_hs_p0_10_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_10_pre FIND v(sn_1_0_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_10_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_10_post FIND v(sn_1_0_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_11_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_11_pre FIND v(sn_1_1_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_11_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_11_post FIND v(sn_1_1_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_12_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_12_pre FIND v(sn_1_2_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_12_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_12_post FIND v(sn_1_2_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_13_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_13_pre FIND v(sn_1_3_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_13_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_13_post FIND v(sn_1_3_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_20_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_20_pre FIND v(sn_2_0_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_20_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_20_post FIND v(sn_2_0_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_21_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_21_pre FIND v(sn_2_1_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_21_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_21_post FIND v(sn_2_1_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_22_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_22_pre FIND v(sn_2_2_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_22_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_22_post FIND v(sn_2_2_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_23_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_23_pre FIND v(sn_2_3_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_23_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_23_post FIND v(sn_2_3_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_30_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_30_pre FIND v(sn_3_0_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_30_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_30_post FIND v(sn_3_0_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_31_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_31_pre FIND v(sn_3_1_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_31_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_31_post FIND v(sn_3_1_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_32_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_32_pre FIND v(sn_3_2_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_32_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_32_post FIND v(sn_3_2_hs_p0) AT=40n"
+  },
+  {
+   "name": "hs_hs_p0_33_pre",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_33_pre FIND v(sn_3_3_hs_p0) AT=5n"
+  },
+  {
+   "name": "hs_hs_p0_33_post",
+   "unit": "V",
+   "spice": ".meas tran hs_hs_p0_33_post FIND v(sn_3_3_hs_p0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_00_n1 FIND v(sn_0_0_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_00_n4 FIND v(sn_0_0_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_00_n16 FIND v(sn_0_0_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_00_n64 FIND v(sn_0_0_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_00_n147 FIND v(sn_0_0_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_01_n1 FIND v(sn_0_1_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_01_n4 FIND v(sn_0_1_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_01_n16 FIND v(sn_0_1_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_01_n64 FIND v(sn_0_1_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_01_n147 FIND v(sn_0_1_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_02_n1 FIND v(sn_0_2_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_02_n4 FIND v(sn_0_2_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_02_n16 FIND v(sn_0_2_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_02_n64 FIND v(sn_0_2_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_02_n147 FIND v(sn_0_2_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_03_n1 FIND v(sn_0_3_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_03_n4 FIND v(sn_0_3_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_03_n16 FIND v(sn_0_3_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_03_n64 FIND v(sn_0_3_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_03_n147 FIND v(sn_0_3_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_10_n1 FIND v(sn_1_0_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_10_n4 FIND v(sn_1_0_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_10_n16 FIND v(sn_1_0_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_10_n64 FIND v(sn_1_0_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_10_n147 FIND v(sn_1_0_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_11_n1 FIND v(sn_1_1_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_11_n4 FIND v(sn_1_1_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_11_n16 FIND v(sn_1_1_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_11_n64 FIND v(sn_1_1_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_11_n147 FIND v(sn_1_1_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_12_n1 FIND v(sn_1_2_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_12_n4 FIND v(sn_1_2_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_12_n16 FIND v(sn_1_2_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_12_n64 FIND v(sn_1_2_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_12_n147 FIND v(sn_1_2_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_13_n1 FIND v(sn_1_3_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_13_n4 FIND v(sn_1_3_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_13_n16 FIND v(sn_1_3_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_13_n64 FIND v(sn_1_3_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_13_n147 FIND v(sn_1_3_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_20_n1 FIND v(sn_2_0_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_20_n4 FIND v(sn_2_0_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_20_n16 FIND v(sn_2_0_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_20_n64 FIND v(sn_2_0_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_20_n147 FIND v(sn_2_0_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_21_n1 FIND v(sn_2_1_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_21_n4 FIND v(sn_2_1_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_21_n16 FIND v(sn_2_1_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_21_n64 FIND v(sn_2_1_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_21_n147 FIND v(sn_2_1_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_22_n1 FIND v(sn_2_2_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_22_n4 FIND v(sn_2_2_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_22_n16 FIND v(sn_2_2_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_22_n64 FIND v(sn_2_2_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_22_n147 FIND v(sn_2_2_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_23_n1 FIND v(sn_2_3_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_23_n4 FIND v(sn_2_3_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_23_n16 FIND v(sn_2_3_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_23_n64 FIND v(sn_2_3_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_23_n147 FIND v(sn_2_3_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_30_n1 FIND v(sn_3_0_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_30_n4 FIND v(sn_3_0_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_30_n16 FIND v(sn_3_0_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_30_n64 FIND v(sn_3_0_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_30_n147 FIND v(sn_3_0_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_31_n1 FIND v(sn_3_1_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_31_n4 FIND v(sn_3_1_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_31_n16 FIND v(sn_3_1_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_31_n64 FIND v(sn_3_1_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_31_n147 FIND v(sn_3_1_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_32_n1 FIND v(sn_3_2_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_32_n4 FIND v(sn_3_2_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_32_n16 FIND v(sn_3_2_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_32_n64 FIND v(sn_3_2_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_32_n147 FIND v(sn_3_2_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl0_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_33_n1 FIND v(sn_3_3_neg_ctl0) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl0_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_33_n4 FIND v(sn_3_3_neg_ctl0) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl0_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_33_n16 FIND v(sn_3_3_neg_ctl0) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl0_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_33_n64 FIND v(sn_3_3_neg_ctl0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl0_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl0_33_n147 FIND v(sn_3_3_neg_ctl0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_00_n1 FIND v(sn_0_0_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_00_n4 FIND v(sn_0_0_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_00_n16 FIND v(sn_0_0_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_00_n64 FIND v(sn_0_0_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_00_n147 FIND v(sn_0_0_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_01_n1 FIND v(sn_0_1_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_01_n4 FIND v(sn_0_1_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_01_n16 FIND v(sn_0_1_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_01_n64 FIND v(sn_0_1_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_01_n147 FIND v(sn_0_1_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_02_n1 FIND v(sn_0_2_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_02_n4 FIND v(sn_0_2_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_02_n16 FIND v(sn_0_2_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_02_n64 FIND v(sn_0_2_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_02_n147 FIND v(sn_0_2_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_03_n1 FIND v(sn_0_3_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_03_n4 FIND v(sn_0_3_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_03_n16 FIND v(sn_0_3_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_03_n64 FIND v(sn_0_3_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_03_n147 FIND v(sn_0_3_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_10_n1 FIND v(sn_1_0_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_10_n4 FIND v(sn_1_0_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_10_n16 FIND v(sn_1_0_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_10_n64 FIND v(sn_1_0_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_10_n147 FIND v(sn_1_0_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_11_n1 FIND v(sn_1_1_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_11_n4 FIND v(sn_1_1_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_11_n16 FIND v(sn_1_1_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_11_n64 FIND v(sn_1_1_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_11_n147 FIND v(sn_1_1_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_12_n1 FIND v(sn_1_2_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_12_n4 FIND v(sn_1_2_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_12_n16 FIND v(sn_1_2_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_12_n64 FIND v(sn_1_2_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_12_n147 FIND v(sn_1_2_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_13_n1 FIND v(sn_1_3_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_13_n4 FIND v(sn_1_3_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_13_n16 FIND v(sn_1_3_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_13_n64 FIND v(sn_1_3_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_13_n147 FIND v(sn_1_3_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_20_n1 FIND v(sn_2_0_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_20_n4 FIND v(sn_2_0_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_20_n16 FIND v(sn_2_0_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_20_n64 FIND v(sn_2_0_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_20_n147 FIND v(sn_2_0_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_21_n1 FIND v(sn_2_1_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_21_n4 FIND v(sn_2_1_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_21_n16 FIND v(sn_2_1_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_21_n64 FIND v(sn_2_1_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_21_n147 FIND v(sn_2_1_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_22_n1 FIND v(sn_2_2_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_22_n4 FIND v(sn_2_2_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_22_n16 FIND v(sn_2_2_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_22_n64 FIND v(sn_2_2_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_22_n147 FIND v(sn_2_2_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_23_n1 FIND v(sn_2_3_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_23_n4 FIND v(sn_2_3_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_23_n16 FIND v(sn_2_3_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_23_n64 FIND v(sn_2_3_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_23_n147 FIND v(sn_2_3_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_30_n1 FIND v(sn_3_0_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_30_n4 FIND v(sn_3_0_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_30_n16 FIND v(sn_3_0_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_30_n64 FIND v(sn_3_0_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_30_n147 FIND v(sn_3_0_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_31_n1 FIND v(sn_3_1_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_31_n4 FIND v(sn_3_1_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_31_n16 FIND v(sn_3_1_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_31_n64 FIND v(sn_3_1_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_31_n147 FIND v(sn_3_1_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_32_n1 FIND v(sn_3_2_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_32_n4 FIND v(sn_3_2_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_32_n16 FIND v(sn_3_2_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_32_n64 FIND v(sn_3_2_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_32_n147 FIND v(sn_3_2_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_ctl1_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_33_n1 FIND v(sn_3_3_neg_ctl1) AT=40n"
+  },
+  {
+   "name": "sn_neg_ctl1_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_33_n4 FIND v(sn_3_3_neg_ctl1) AT=142n"
+  },
+  {
+   "name": "sn_neg_ctl1_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_33_n16 FIND v(sn_3_3_neg_ctl1) AT=550n"
+  },
+  {
+   "name": "sn_neg_ctl1_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_33_n64 FIND v(sn_3_3_neg_ctl1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_ctl1_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_ctl1_33_n147 FIND v(sn_3_3_neg_ctl1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_00_n1 FIND v(sn_0_0_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_00_n4 FIND v(sn_0_0_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_00_n16 FIND v(sn_0_0_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_00_n64 FIND v(sn_0_0_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_00_n147 FIND v(sn_0_0_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_01_n1 FIND v(sn_0_1_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_01_n4 FIND v(sn_0_1_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_01_n16 FIND v(sn_0_1_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_01_n64 FIND v(sn_0_1_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_01_n147 FIND v(sn_0_1_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_02_n1 FIND v(sn_0_2_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_02_n4 FIND v(sn_0_2_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_02_n16 FIND v(sn_0_2_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_02_n64 FIND v(sn_0_2_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_02_n147 FIND v(sn_0_2_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_03_n1 FIND v(sn_0_3_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_03_n4 FIND v(sn_0_3_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_03_n16 FIND v(sn_0_3_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_03_n64 FIND v(sn_0_3_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_03_n147 FIND v(sn_0_3_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_10_n1 FIND v(sn_1_0_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_10_n4 FIND v(sn_1_0_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_10_n16 FIND v(sn_1_0_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_10_n64 FIND v(sn_1_0_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_10_n147 FIND v(sn_1_0_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_11_n1 FIND v(sn_1_1_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_11_n4 FIND v(sn_1_1_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_11_n16 FIND v(sn_1_1_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_11_n64 FIND v(sn_1_1_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_11_n147 FIND v(sn_1_1_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_12_n1 FIND v(sn_1_2_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_12_n4 FIND v(sn_1_2_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_12_n16 FIND v(sn_1_2_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_12_n64 FIND v(sn_1_2_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_12_n147 FIND v(sn_1_2_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_13_n1 FIND v(sn_1_3_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_13_n4 FIND v(sn_1_3_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_13_n16 FIND v(sn_1_3_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_13_n64 FIND v(sn_1_3_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_13_n147 FIND v(sn_1_3_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_20_n1 FIND v(sn_2_0_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_20_n4 FIND v(sn_2_0_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_20_n16 FIND v(sn_2_0_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_20_n64 FIND v(sn_2_0_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_20_n147 FIND v(sn_2_0_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_21_n1 FIND v(sn_2_1_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_21_n4 FIND v(sn_2_1_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_21_n16 FIND v(sn_2_1_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_21_n64 FIND v(sn_2_1_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_21_n147 FIND v(sn_2_1_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_22_n1 FIND v(sn_2_2_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_22_n4 FIND v(sn_2_2_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_22_n16 FIND v(sn_2_2_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_22_n64 FIND v(sn_2_2_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_22_n147 FIND v(sn_2_2_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_23_n1 FIND v(sn_2_3_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_23_n4 FIND v(sn_2_3_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_23_n16 FIND v(sn_2_3_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_23_n64 FIND v(sn_2_3_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_23_n147 FIND v(sn_2_3_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_30_n1 FIND v(sn_3_0_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_30_n4 FIND v(sn_3_0_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_30_n16 FIND v(sn_3_0_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_30_n64 FIND v(sn_3_0_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_30_n147 FIND v(sn_3_0_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_31_n1 FIND v(sn_3_1_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_31_n4 FIND v(sn_3_1_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_31_n16 FIND v(sn_3_1_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_31_n64 FIND v(sn_3_1_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_31_n147 FIND v(sn_3_1_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_32_n1 FIND v(sn_3_2_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_32_n4 FIND v(sn_3_2_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_32_n16 FIND v(sn_3_2_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_32_n64 FIND v(sn_3_2_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_32_n147 FIND v(sn_3_2_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep1_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_33_n1 FIND v(sn_3_3_neg_rep1) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep1_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_33_n4 FIND v(sn_3_3_neg_rep1) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep1_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_33_n16 FIND v(sn_3_3_neg_rep1) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep1_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_33_n64 FIND v(sn_3_3_neg_rep1) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep1_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep1_33_n147 FIND v(sn_3_3_neg_rep1) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_00_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_00_n1 FIND v(sn_0_0_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_00_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_00_n4 FIND v(sn_0_0_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_00_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_00_n16 FIND v(sn_0_0_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_00_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_00_n64 FIND v(sn_0_0_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_00_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_00_n147 FIND v(sn_0_0_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_01_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_01_n1 FIND v(sn_0_1_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_01_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_01_n4 FIND v(sn_0_1_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_01_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_01_n16 FIND v(sn_0_1_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_01_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_01_n64 FIND v(sn_0_1_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_01_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_01_n147 FIND v(sn_0_1_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_02_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_02_n1 FIND v(sn_0_2_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_02_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_02_n4 FIND v(sn_0_2_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_02_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_02_n16 FIND v(sn_0_2_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_02_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_02_n64 FIND v(sn_0_2_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_02_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_02_n147 FIND v(sn_0_2_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_03_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_03_n1 FIND v(sn_0_3_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_03_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_03_n4 FIND v(sn_0_3_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_03_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_03_n16 FIND v(sn_0_3_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_03_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_03_n64 FIND v(sn_0_3_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_03_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_03_n147 FIND v(sn_0_3_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_10_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_10_n1 FIND v(sn_1_0_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_10_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_10_n4 FIND v(sn_1_0_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_10_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_10_n16 FIND v(sn_1_0_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_10_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_10_n64 FIND v(sn_1_0_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_10_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_10_n147 FIND v(sn_1_0_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_11_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_11_n1 FIND v(sn_1_1_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_11_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_11_n4 FIND v(sn_1_1_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_11_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_11_n16 FIND v(sn_1_1_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_11_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_11_n64 FIND v(sn_1_1_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_11_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_11_n147 FIND v(sn_1_1_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_12_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_12_n1 FIND v(sn_1_2_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_12_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_12_n4 FIND v(sn_1_2_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_12_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_12_n16 FIND v(sn_1_2_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_12_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_12_n64 FIND v(sn_1_2_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_12_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_12_n147 FIND v(sn_1_2_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_13_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_13_n1 FIND v(sn_1_3_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_13_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_13_n4 FIND v(sn_1_3_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_13_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_13_n16 FIND v(sn_1_3_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_13_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_13_n64 FIND v(sn_1_3_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_13_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_13_n147 FIND v(sn_1_3_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_20_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_20_n1 FIND v(sn_2_0_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_20_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_20_n4 FIND v(sn_2_0_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_20_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_20_n16 FIND v(sn_2_0_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_20_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_20_n64 FIND v(sn_2_0_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_20_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_20_n147 FIND v(sn_2_0_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_21_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_21_n1 FIND v(sn_2_1_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_21_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_21_n4 FIND v(sn_2_1_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_21_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_21_n16 FIND v(sn_2_1_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_21_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_21_n64 FIND v(sn_2_1_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_21_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_21_n147 FIND v(sn_2_1_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_22_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_22_n1 FIND v(sn_2_2_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_22_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_22_n4 FIND v(sn_2_2_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_22_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_22_n16 FIND v(sn_2_2_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_22_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_22_n64 FIND v(sn_2_2_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_22_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_22_n147 FIND v(sn_2_2_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_23_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_23_n1 FIND v(sn_2_3_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_23_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_23_n4 FIND v(sn_2_3_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_23_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_23_n16 FIND v(sn_2_3_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_23_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_23_n64 FIND v(sn_2_3_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_23_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_23_n147 FIND v(sn_2_3_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_30_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_30_n1 FIND v(sn_3_0_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_30_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_30_n4 FIND v(sn_3_0_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_30_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_30_n16 FIND v(sn_3_0_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_30_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_30_n64 FIND v(sn_3_0_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_30_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_30_n147 FIND v(sn_3_0_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_31_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_31_n1 FIND v(sn_3_1_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_31_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_31_n4 FIND v(sn_3_1_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_31_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_31_n16 FIND v(sn_3_1_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_31_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_31_n64 FIND v(sn_3_1_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_31_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_31_n147 FIND v(sn_3_1_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_32_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_32_n1 FIND v(sn_3_2_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_32_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_32_n4 FIND v(sn_3_2_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_32_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_32_n16 FIND v(sn_3_2_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_32_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_32_n64 FIND v(sn_3_2_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_32_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_32_n147 FIND v(sn_3_2_neg_rep0) AT=5004n"
+  },
+  {
+   "name": "sn_neg_rep0_33_n1",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_33_n1 FIND v(sn_3_3_neg_rep0) AT=40n"
+  },
+  {
+   "name": "sn_neg_rep0_33_n4",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_33_n4 FIND v(sn_3_3_neg_rep0) AT=142n"
+  },
+  {
+   "name": "sn_neg_rep0_33_n16",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_33_n16 FIND v(sn_3_3_neg_rep0) AT=550n"
+  },
+  {
+   "name": "sn_neg_rep0_33_n64",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_33_n64 FIND v(sn_3_3_neg_rep0) AT=2182n"
+  },
+  {
+   "name": "sn_neg_rep0_33_n147",
+   "unit": "V",
+   "spice": ".meas tran sn_neg_rep0_33_n147 FIND v(sn_3_3_neg_rep0) AT=5004n"
+  }
+ ],
+ "options": {
+  "timeout_s": 3600,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}
