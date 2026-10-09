@@ -6,11 +6,11 @@
     "digital": "The refresh controller and SPI host interface planned in #24 - no digital partition has been built yet, so every digital-partition T1 row is unmet by construction and cites no evidence."
   },
   "evidence": {
-    "3": {
+    "3.analog": {
       "file": "layout/gain_cell_2t.drc.result.json",
       "content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259"
     },
-    "4": {
+    "4.analog": {
       "file": "layout/gain_cell_2t.lvs.result.json",
       "content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259"
     },
