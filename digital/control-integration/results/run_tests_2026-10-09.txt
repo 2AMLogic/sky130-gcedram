@@ -1,0 +1,100 @@
+== 1. lockstep equivalence vs digital/refresh-scheduler/refresh_sched.v ==
+[ratified] EQUIV scenario=0 INTERVAL=5029 cycles=60348 refreshes=512 ext_ops=0 mismatches=0 TB_RESULT: PASS 
+[ratified] EQUIV scenario=1 INTERVAL=5029 cycles=60348 refreshes=392 ext_ops=1332 mismatches=0 TB_RESULT: PASS 
+[ratified] EQUIV scenario=2 INTERVAL=5029 cycles=60348 refreshes=416 ext_ops=1225 mismatches=0 TB_RESULT: PASS 
+[extracted] EQUIV scenario=0 INTERVAL=2751 cycles=33012 refreshes=640 ext_ops=0 mismatches=0 TB_RESULT: PASS 
+[extracted] EQUIV scenario=1 INTERVAL=2751 cycles=33012 refreshes=391 ext_ops=552 mismatches=0 TB_RESULT: PASS 
+[extracted] EQUIV scenario=2 INTERVAL=2751 cycles=33012 refreshes=420 ext_ops=517 mismatches=0 TB_RESULT: PASS 
+== 2. integration bench ==
+[ratified sclk_half_ps=3700 phase_ps=130 traffic=1]
+RESULT INTERVAL=5029 MIN_INTERVAL=1124 sclk_half_ps=3700 phase_ps=130 traffic=1 neg=0 cycles=226951 checks=95 refreshes=2708 ext_ops=3777 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1157 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=25
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[ratified sclk_half_ps=370 phase_ps=610 traffic=1]
+RESULT INTERVAL=5029 MIN_INTERVAL=1124 sclk_half_ps=370 phase_ps=610 traffic=1 neg=0 cycles=214651 checks=95 refreshes=2612 ext_ops=3523 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1155 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=25
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[ratified sclk_half_ps=500 phase_ps=0 traffic=1]
+RESULT INTERVAL=5029 MIN_INTERVAL=1124 sclk_half_ps=500 phase_ps=0 traffic=1 neg=0 cycles=214981 checks=95 refreshes=2615 ext_ops=3529 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1148 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=25
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[ratified sclk_half_ps=10000 phase_ps=500 traffic=1]
+RESULT INTERVAL=5029 MIN_INTERVAL=1124 sclk_half_ps=10000 phase_ps=500 traffic=1 neg=0 cycles=249387 checks=95 refreshes=2974 ext_ops=4153 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1152 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=25
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[ratified sclk_half_ps=1300 phase_ps=870 traffic=2]
+RESULT INTERVAL=5029 MIN_INTERVAL=1124 sclk_half_ps=1300 phase_ps=870 traffic=2 neg=0 cycles=219808 checks=95 refreshes=2710 ext_ops=3329 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1156 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=5
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[extracted sclk_half_ps=3700 phase_ps=130 traffic=1]
+RESULT INTERVAL=2751 MIN_INTERVAL=1124 sclk_half_ps=3700 phase_ps=130 traffic=1 neg=0 cycles=158673 checks=95 refreshes=2751 ext_ops=1783 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1152 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=22
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[extracted sclk_half_ps=370 phase_ps=610 traffic=1]
+RESULT INTERVAL=2751 MIN_INTERVAL=1124 sclk_half_ps=370 phase_ps=610 traffic=1 neg=0 cycles=146356 checks=95 refreshes=2613 ext_ops=1570 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1151 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=22
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[extracted sclk_half_ps=500 phase_ps=0 traffic=1]
+RESULT INTERVAL=2751 MIN_INTERVAL=1124 sclk_half_ps=500 phase_ps=0 traffic=1 neg=0 cycles=146748 checks=95 refreshes=2615 ext_ops=1580 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1152 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=22
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[extracted sclk_half_ps=10000 phase_ps=500 traffic=1]
+RESULT INTERVAL=2751 MIN_INTERVAL=1124 sclk_half_ps=10000 phase_ps=500 traffic=1 neg=0 cycles=181075 checks=95 refreshes=3074 ext_ops=2101 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1152 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=22
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[extracted sclk_half_ps=1300 phase_ps=870 traffic=2]
+RESULT INTERVAL=2751 MIN_INTERVAL=1124 sclk_half_ps=1300 phase_ps=870 traffic=2 neg=0 cycles=151848 checks=95 refreshes=2775 ext_ops=1528 sweeps_accepted=6 sweeps_done=5 sweeps_cancelled_by_reset=1 resets=4 shortenings=21 max_transition_obs=1155 bound_T_SETTLE=1163 near_deadline_hits=14/14 min_slack_vs_committed=5 min_slack_vs_INTERVAL=6
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+== 3. negative controls (must FAIL with LOST START_SWEEP) ==
+[ratified neg_spacing] LOST START_SWEEP: accepted at cycle 1289, no completion within 1163 cycles
+[ratified neg_spacing] LOST START_SWEEP: accepted at cycle 2453, no completion within 1163 cycles
+[ratified neg_spacing] RESULT INTERVAL=5029 MIN_INTERVAL=1124 sclk_half_ps=3700 phase_ps=130 traffic=1 neg=1 cycles=4908 checks=0 refreshes=32 ext_ops=109 sweeps_accepted=2 sweeps_done=0 sweeps_cancelled_by_reset=0 resets=0 shortenings=0 max_transition_obs=0 bound_T_SETTLE=1163 near_deadline_hits=0/0 min_slack_vs_committed=156 min_slack_vs_INTERVAL=156
+[ratified neg_spacing] ERRORS total=2 deadline=0 hard=0 lost_sweep=2 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+[ratified neg_spacing] TB_RESULT: FAIL (2 errors)
+[ratified neg_spacing] expected failure observed
+[extracted neg_spacing] LOST START_SWEEP: accepted at cycle 1289, no completion within 1163 cycles
+[extracted neg_spacing] LOST START_SWEEP: accepted at cycle 2453, no completion within 1163 cycles
+[extracted neg_spacing] RESULT INTERVAL=2751 MIN_INTERVAL=1124 sclk_half_ps=3700 phase_ps=130 traffic=1 neg=1 cycles=4908 checks=0 refreshes=64 ext_ops=77 sweeps_accepted=2 sweeps_done=0 sweeps_cancelled_by_reset=0 resets=0 shortenings=0 max_transition_obs=0 bound_T_SETTLE=1163 near_deadline_hits=0/0 min_slack_vs_committed=22 min_slack_vs_INTERVAL=22
+[extracted neg_spacing] ERRORS total=2 deadline=0 hard=0 lost_sweep=2 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+[extracted neg_spacing] TB_RESULT: FAIL (2 errors)
+[extracted neg_spacing] expected failure observed
+== 4. fault injection ==
+baseline: PASS
+MUTANT sweep_toggle_dropped: killed
+    first: FAIL busy_after_sweep_accept: got 0 expected 1 (cycle 173205)
+    ERRORS total=17 deadline=0 hard=0 lost_sweep=6 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT capture_on_cs_fall: killed
+    first: NOT APPLIED: committed en=1 ivl=1124, applied en=1 ivl=5029, cycle 3644
+    ERRORS total=1021386 deadline=1021314 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=9 not_applied=46 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT busy_ignores_sweep: killed
+MUTANT floor_not_passed_to_spi: killed
+    first: FAIL below_floor_rejected: got 463 expected 13a5 (cycle 2203)
+    ERRORS total=28506 deadline=28496 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=1 partial=0 cfg_reject=1 rearm=0 protocol=0
+MUTANT urgent_ignores_runtime_interval: killed
+    first: VIOLATION row 0 age 4765 > deadline 1124 at cycle 4800
+    ERRORS total=1397057 deadline=1397057 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT shortening_ignored: killed
+    first: NOT APPLIED: committed en=1 ivl=1124, applied en=1 ivl=5029, cycle 3644
+    ERRORS total=1397105 deadline=1397057 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=27 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT ptr_restart_on_cfg: killed
+    first: VIOLATION row 3 age 4660 > deadline 1124 at cycle 4800
+    ERRORS total=490121 deadline=216067 hard=122845 lost_sweep=0 spurious=0 incomplete_sweep=5 ok_early=10582 unnoticed_invalid=140613 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=9 protocol=0
+MUTANT disable_not_applied: killed
+    first: NOT APPLIED: committed en=0 ivl=5029, applied en=1 ivl=5029, cycle 185513
+    ERRORS total=5806 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=5794 unnoticed_invalid=0 data_lost_flag=0 not_applied=3 partial=0 cfg_reject=0 rearm=4 protocol=0
+MUTANT reinit_skipped: killed
+    first: REFRESH_OK before every row was refreshed since (re)init, cycle 194960
+    ERRORS total=2289 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=2288 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT ok_ignores_init: killed
+    first: FAIL refresh_ok_low_after_reset: got 1 expected 0 (cycle 0)
+    ERRORS total=7887 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=7885 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT disable_not_flagged: killed
+    first: DATA_LOST flag wrong (0, disabled_since_reset=1) at cycle 185513
+    ERRORS total=36314 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=12222 data_lost_flag=24087 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT sweep_done_early: killed
+    first: REFRESH_OK before every row was refreshed since (re)init, cycle 1085
+    ERRORS total=250 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=5 ok_early=245 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTATION CHECK PASS
+ALL PASS
+exit=0
