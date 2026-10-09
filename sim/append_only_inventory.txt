@@ -1,0 +1,15 @@
+# Append-only evidence inventory (read by sim/check_append_only.py, issue #67)
+#
+# Every tracked file under sim/ with a directory component named `results`
+# is protected automatically and does NOT need to be listed here.
+#
+# List here, one repository-relative path per line, any committed
+# result-summary file that lives OUTSIDE a `results` directory. Do not list
+# configuration or input files (e.g. config JSON) -- only results.
+# Lines starting with `#` and blank lines are ignored.
+#
+# The checker reads this file from the merge-base commit, so removing an
+# entry in a PR does not remove protection within that PR.
+#
+# Inventory as of 2026-10-09 (origin/main @ e69a94a): empty -- every tracked
+# result summary under sim/ is already inside a `results` directory.
