@@ -91,7 +91,7 @@ chain and rationale: [`spec/retention-refresh-budget.md`](spec/retention-refresh
 | Retention time | **~10.06 µs, worst case** (`sf` corner, 125 °C), pre-layout single-cell estimate. See [`spec/retention-refresh-budget.md`](spec/retention-refresh-budget.md) § 5. |
 | Refresh budget | Refresh interval ≤ **~5.03 µs** (worst case, 2x margin assumption); bandwidth-overhead formula ratified, numeric percentage pending array/periphery design. See [`spec/retention-refresh-budget.md`](spec/retention-refresh-budget.md) § 7. |
 | Supply | sky130 standard 1.8 V core; boosted wordline is a design decision to record |
-| Density vs SRAM | Must beat a 6T SRAM bitcell on area to justify existing; comparison against public [OpenRAM](https://openram.org/) documentation — not yet performed |
+| Density vs SRAM | Must beat a 6T SRAM bitcell on area to justify existing. Comparison against public [OpenRAM](https://openram.org/)/sky130 SRAM cell data performed: see [`spec/density-vs-sram.md`](spec/density-vs-sram.md) (decision issue #100) |
 | Temperature range | **Restricted (outcome C, #24, 2026-10-08); not the full model-corner range.** Wording lives only in [`spec/operating-range-decision-PROPOSED.md`](spec/operating-range-decision-PROPOSED.md) — proposed, not ratified. Evidence: [`sim/loaded-column/cold-corner/`](sim/loaded-column/cold-corner/README.md). Retention claims at worst case, never typical. |
 
 Maturity ladder: retention study → spec ratified → bitcell + array simulated
