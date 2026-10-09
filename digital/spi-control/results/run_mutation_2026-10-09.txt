@@ -1,0 +1,10 @@
+baseline: PASS
+MUTANT poisoned_shadow: killed
+MUTANT zero_allowed: killed
+MUTANT bound_off_by_one: killed
+MUTANT no_bound_check: killed
+MUTANT clear_cmd_noop: killed
+MUTANT no_frame_error: killed
+MUTANT accept_long_frame: killed
+MUTANT read_latch_early: killed
+MUTATION CHECK PASS
