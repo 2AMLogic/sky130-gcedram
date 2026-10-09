@@ -32,7 +32,9 @@ sign-off evidence, and it does not change any provisional timing value.
 2. `digital/refresh-scheduler/run_mutation.sh` (~100 s)
 3. `digital/spi-control/run_tests.sh`
 4. `digital/spi-control/run_mutation.sh`
-5. `digital/control-integration/run_tests.sh` (~11 min; includes lockstep
+5. `digital/phase-control/run_tests.sh` and `run_mutation.sh` (seconds;
+   behavioral analog phase sequencer, issue #108)
+6. `digital/control-integration/run_tests.sh` (~11 min; includes lockstep
    equivalence, both interval bases, expected-failure negative controls and
    its own mutation suite)
 
