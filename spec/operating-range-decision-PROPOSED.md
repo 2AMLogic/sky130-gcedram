@@ -83,19 +83,19 @@ the point. Each cell is `fresh / refresh_bound`. Values are from
 |---|---:|---|---|---:|---|---|
 | fs | -40 | 0.018 / 0.017 | not reached (32 stored-'1' cases per age) | 0.864 | 0.864 / 0.860 | **FAIL** both ages |
 | ss | -40 | 0.121 / 0.113 | 7.92 / 8.55 | 0.896 | 0.896 / 0.893 | pass, **marginal**; stored '1' < 0.9 V |
-| tt | -40 | 0.648 / 0.633 | 7.43 / 7.82 | 0.959 | 0.959 / 0.956 | pass |
-| ff | -40 | 0.646 / 0.647 | 2.20 / 2.26 | 1.016 | 1.016 / 1.012 | pass |
-| sf | -40 | 0.629 / 0.630 | 1.54 / 1.56 | 1.055 | 1.055 / 1.050 | pass |
+| tt | -40 | 0.648 / 0.633 | 0.743 / 0.782 | 0.959 | 0.959 / 0.956 | pass |
+| ff | -40 | 0.646 / 0.647 | 0.220 / 0.226 | 1.016 | 1.016 / 1.012 | pass |
+| sf | -40 | 0.629 / 0.630 | 0.154 / 0.156 | 1.055 | 1.055 / 1.050 | pass |
 | fs | 27 | 0.286 / 0.272 | 2.78 / 2.96 | 0.932 | 0.932 / 0.929 | pass |
-| ss | 27 | 0.608 / 0.591 | 9.41 / 9.85 | 0.961 | 0.961 / 0.957 | pass; latency within 0.15 ns of the 10 ns placeholder |
-| tt | 27 | 0.651 / 0.652 | 2.53 / 2.60 | 1.028 | 1.028 / 1.024 | pass |
-| ff | 27 | 0.604 / 0.606 | 1.44 / 1.46 | 1.088 | 1.088 / 1.083 | pass |
-| sf | 27 | 0.583 / 0.586 | 1.27 / 1.28 | 1.123 | 1.123 / 1.117 | pass |
-| fs | 125 | 0.654 / 0.659 | 4.10 / 5.41 | 1.027 | 1.027 / 0.994 | pass |
-| ss | 125 | 0.647 / 0.654 | 2.74 / 3.31 | 1.048 | 1.048 / 1.016 | pass |
-| tt | 125 | 0.602 / 0.618 | 1.52 / 1.76 | 1.123 | 1.123 / 1.069 | pass |
-| ff | 125 | 0.540 / 0.601 | 1.18 / 1.65 | 1.187 | 1.187 / 1.014 | pass |
-| sf | 125 | 0.515 / 0.615 | 1.13 / 1.76 | 1.217 | 1.217 / 0.956 | pass |
+| ss | 27 | 0.608 / 0.591 | 0.941 / 0.985 | 0.961 | 0.961 / 0.957 | pass |
+| tt | 27 | 0.651 / 0.652 | 0.253 / 0.260 | 1.028 | 1.028 / 1.024 | pass |
+| ff | 27 | 0.604 / 0.606 | 0.144 / 0.146 | 1.088 | 1.088 / 1.083 | pass |
+| sf | 27 | 0.583 / 0.586 | 0.127 / 0.128 | 1.123 | 1.123 / 1.117 | pass |
+| fs | 125 | 0.654 / 0.659 | 0.410 / 0.541 | 1.027 | 1.027 / 0.994 | pass |
+| ss | 125 | 0.647 / 0.654 | 0.274 / 0.331 | 1.048 | 1.048 / 1.016 | pass |
+| tt | 125 | 0.602 / 0.618 | 0.152 / 0.176 | 1.123 | 1.123 / 1.069 | pass |
+| ff | 125 | 0.540 / 0.601 | 0.118 / 0.165 | 1.187 | 1.187 / 1.014 | pass |
+| sf | 125 | 0.515 / 0.615 | 0.113 / 0.176 | 1.217 | 1.217 / 0.956 | pass |
 
 Totals: 28 of 30 (corner, temperature, age) points pass the study criteria.
 The two failures are fs/-40 C at both ages. The worst-case row/pattern is
@@ -158,9 +158,10 @@ This is a conservative interval that rests on **discrete simulated points**
 * No mismatch or Monte Carlo; no local variation; no supply-tolerance data.
 * The passing margins rest on an ideal-driver 4-row column, an assumed
   10 fF `C_RBL`, a 10 ns sense time and a 0.1 V droop, all placeholders;
-  ss/27 C sits within 0.15 ns of the 10 ns placeholder, so a modest change
-  of `C_RBL` or timing could move the 27 C boundary. The cold study showed
-  ss/-40 C is sensitive to `C_RBL` and `t_sense`.
+  at 27 C the thinnest margins are at fs/27 C (latency 2.8-3.0 ns against
+  the 10 ns placeholder; aged separation 0.272 V), so a large change of
+  `C_RBL` or timing could still erode the 27 C result. The cold study
+  showed ss/-40 C is sensitive to `C_RBL` and `t_sense`.
 * `C_SN` in the loaded-column study (0.605354 fF) is not the ratified
   ASSUMED 1.106463 fF; the stored-level checks above use the study value.
 * Storage-node levels for longer columns, real layout parasitics and the
