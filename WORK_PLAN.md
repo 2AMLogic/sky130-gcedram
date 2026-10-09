@@ -37,17 +37,22 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#24**: Build the full gain-cell eDRAM macro (array + sense amp + refresh controller + SPI) to reach Chipalooza sign-off bar *(curated)*
+- **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-_None._
+- **#62**: CI: enforce append-only sim/ results mechanically *(architect)*
+- **#80**: Extract read-bitline and wordline parasitics from the 4x4 array to replace the C_RBL assumption *(architect)*
+- **#81**: Monte Carlo mismatch study of the sense stage: input-referred offset at the restricted corners *(architect)*
+- **#82**: Draft macro-level pass conditions for epic #24 items 2-6 as a PROPOSED record *(architect)*
+- **#83**: Propose the SPI control interface spec with a behavioral SPI-slave model and testbench (#24 item 4) *(architect)*
 
 ## Epics
 
@@ -63,8 +68,8 @@ _None._
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 0 |
-| Curated | 1 |
-| Architect / Hermit proposals | 0 |
+| Approved PRs awaiting merge | 1 |
+| Curated | 2 |
+| Architect / Hermit proposals | 5 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
