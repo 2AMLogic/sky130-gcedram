@@ -93,7 +93,7 @@ module spi_slave #(
                     A_IVL_H: begin
                         val = {rx[7:0], sh_l};
                         if (val < MIN_INTERVAL) val = 16'd0;   // #93 floor; no-op at MIN_INTERVAL=1
-                        if (val == 16'd0 || val > MAX_INTERVAL) begin   // MUT_BOUND
+                        if (val == 16'd0 || val >= MAX_INTERVAL) begin   // MUT_BOUND  INJECTED FAULT (throwaway, issue #105 CI demo; never merge)
                             nst[0] = 1'b1; sh_l <= ivl_l;
                         end else begin
                             ivl_h <= rx[7:0]; ivl_l <= sh_l;
