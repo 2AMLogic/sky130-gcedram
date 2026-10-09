@@ -8,6 +8,7 @@ This roadmap is generated from current GitHub label state by the Loom Guide role
 Judge-approved PRs stuck under a `loom:operator` merge-risk hold — implementation work is done, only a human merge decision is missing.
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
+- **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
 
 ## Operator Priority
 
@@ -25,7 +26,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#110**: Measure t_row_refresh_op with a closed-loop sense and write-back refresh operation
 
 ## PRs Awaiting Review
 
@@ -38,6 +39,7 @@ _None._
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
+- **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
 
 ## Proposed
 
@@ -51,9 +53,7 @@ Issues carrying `loom:curated`.
 
 - **#62**: CI: enforce append-only sim/ results mechanically *(architect)*
 - **#94**: Characterize write-hold-sense trajectories and mixed neighbor patterns at the refresh deadline *(architect)*
-- **#108**: Define the digital-to-analog phase-control contract with an ordering-checked sequencer model *(architect)*
-- **#109**: Commit the sense latch as a design source (schematic and derived netlist) tied to the sense-stage deck *(architect)*
-- **#110**: Measure t_row_refresh_op with a closed-loop sense and write-back refresh operation *(architect)*
+- **#115**: Quantify refresh energy and standby power of the 2T array at the PVT corners *(architect)*
 
 ## Epics
 
@@ -64,13 +64,13 @@ Issues carrying `loom:curated`.
 
 | Tier | Count |
 |------|-------|
-| Operator merge-risk holds | 1 |
+| Operator merge-risk holds | 2 |
 | Operator priority | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 1 |
+| Approved PRs awaiting merge | 2 |
 | Curated | 3 |
-| Architect / Hermit proposals | 5 |
+| Architect / Hermit proposals | 3 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
