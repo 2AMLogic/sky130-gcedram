@@ -35,6 +35,11 @@ Tags: **SOURCED** (cites a committed document) or **ASSUMPTION** (design choice,
 
 Unmapped addresses read 0x00.
 
+Optional (issue #93, parameter `XSTAT_EN`, default 0 = the map above unchanged):
+address 0x06 XSTATUS, read-only, returns the `xstat_in` input. Only the
+integration in [`../control-integration/`](../control-integration/CONTRACT.md)
+enables it; its bit meanings are defined there (PROPOSED).
+
 ## 3. Refresh-interval bound
 
 `IVL` is in clock cycles. The legal range is `1 .. MAX_INTERVAL`.
@@ -50,6 +55,11 @@ Unmapped addresses read 0x00.
   Rationale (ASSUMPTION): a longer-than-retention interval silently loses data, so the safe failure is to keep the last good value and flag.
 * The reset default is the maximum legal interval (ASSUMPTION); software may only shorten it.
 * Lower bound 1 is a placeholder (ASSUMPTION); the true floor is set by the refresh-sweep time (`N_ROWS * T_ROW`, see #74 feasibility check).
+  Issue #93 makes the floor a parameter, `MIN_INTERVAL` (default 1 = this
+  placeholder, so the standalone model is unchanged); the integration in
+  [`../control-integration/`](../control-integration/CONTRACT.md) sets it to the
+  scheduler's feasibility floor `N_ROWS*T_ROW + T_ACC + GUARD`. A value below
+  the floor is rejected exactly like 0 (ERR_RANGE, nothing committed).
 
 ## 4. Error handling
 
