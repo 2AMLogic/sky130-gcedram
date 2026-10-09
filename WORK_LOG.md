@@ -2,6 +2,32 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-09
+
+- **Issue #74** (closed): Refresh scheduler behavioral model with deadline-invariant testbench (#24 item 3)
+- **PR #79**: Refresh scheduler behavioral model with deadline-invariant testbench (#24 item 3)
+- **Issue #60** (closed): Sense-stage characterization at the restricted corners (after #56)
+- **PR #77**: Sense-stage characterization at the restricted corners (#60)
+- **Issue #63** (closed): README: reflect cold-corner finding and restricted operating range by reference (after #56)
+- **PR #75**: docs(readme): reference proposed restricted operating range and cold-corner evidence
+- **Issue #67** (closed): CI: guard simulation evidence with exact byte-prefix comparisons
+- **PR #71**: ci(sim): guard simulation evidence with exact byte-prefix comparisons
+- **Issue #56** (closed): spec: write the operating-range restriction for the cold corner as a proposed decision record (outcome C, operator ruling 2026-10-08)
+- **PR #70**: spec: proposed operating-range restriction for the cold corner (outcome C)
+- **Issue #55** (closed): T1 items 3 and 4: stop the bitcell's DRC/LVS reports grading the unbuilt digital partition
+- **PR #69**: fix(signoff): scope T1 items 3/4 evidence to analog partition (met 5 -> 3)
+- **Issue #58** (closed): Consolidate duplicated waveform/SPICE helpers in sim runners into _evidence_common
+- **PR #66**: refactor(sim): consolidate duplicated SPICE/waveform helpers (#58)
+- **Issue #61** (closed): CI: run the evidence-chain Python checks (test_analysis, test_variants, check_evidence_index)
+- **PR #64**: ci: run evidence-chain Python checks (test_analysis, test_variants, check_evidence_index)
+- **Issue #59** (closed): Refresh-overhead envelope: evaluate the ratified §7 formula over N_rows x t_row_refresh_op
+- **PR #65**: feat: refresh-overhead envelope (N_rows x t_row_refresh_op) (#59)
+
+### 2026-10-08
+
+- **Issue #54** (closed): T1 item 11 (analog): declare the array's substrate tie, re-run klt erc and LVS, and cite the power-delivery row
+- **PR #57**: feat: cite T1 item 11 (analog) via psub substrate tie; pin klt v0.6.0 (#54)
+
 ### 2026-10-07
 
 - **PR #52**: Reliability-source search for 1.8 V NMOS overdrive and junction injection (#51)
