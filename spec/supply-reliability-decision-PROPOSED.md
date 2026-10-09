@@ -147,3 +147,21 @@ into `spec/`, key-signed), followed by sense characterization at the
 restricted corners using the existing contract. If the keys instead want A or
 B, the prerequisite is a key-supplied reliability source; no further public
 search is expected to change that.
+
+## 9. Outcome-C disposition (issue #56, appended 2026-10-09; sections 1-8 unchanged)
+
+**Operator ruling, 2026-10-08, on #24: outcome C.** The cold-corner failure
+is handled by restricting the operating temperature range and saying so in
+the claim. Options A (write-WL boost to 2.0 V) and B (sub-ground read word
+line) are not adopted, for the missing reliability basis recorded in section
+8; they remain blocked, not rejected, and the analysis above is kept.
+
+This is the operator's selection of an option. It is **not** two-key
+ratification. This record is still **PROPOSED. NOT RATIFIED.**, and
+`ratification/ee-key` and `ratification/market-key` have not signed. The
+ratification-only increment named in section 7 is written as
+[`operating-range-decision-PROPOSED.md`](operating-range-decision-PROPOSED.md)
+(also PROPOSED), which holds the proposed range, per-corner evidence, the
+stated boundary resolution and the canonical claim wording (its section 8).
+Sense characterization at the restricted corners (#60) is the next circuit
+increment. No ratified value is changed.
