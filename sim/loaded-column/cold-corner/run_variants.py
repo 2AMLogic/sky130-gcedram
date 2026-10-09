@@ -249,11 +249,11 @@ def run_batch(args):
         try:
             if not out.is_file():
                 raise RuntimeError("ngspice produced no output for this case: " + str(err))
-            cols = R.read_wrdata(out)
+            cols = R.read_wrdata(out, R.MIN_TIMEPOINTS)
             R.check_complete(cols[0], R.case_tstop(P, t_read))
             sel = int(row["sel_row"])
             m = R.measure(cols, P, t_read, sel)
-            m["v_sn_sel_sense_v"] = R.interp(cols[0], cols[1 + sel], t_read + k["t_sense_s"])
+            m["v_sn_sel_sense_v"] = R.interp_at(cols[0], cols[1 + sel], t_read + k["t_sense_s"])
             for key, v in m.items():
                 row[key] = "" if v is None else (v if isinstance(v, str) else f"{v:.6e}")
             row["status"] = "ok"

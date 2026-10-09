@@ -37,7 +37,6 @@ SIGN CONVENTIONS (declared; also in README.md)
 from __future__ import annotations
 
 import argparse
-import bisect
 import concurrent.futures as cf
 import datetime
 import itertools
@@ -58,10 +57,14 @@ from _evidence_common import (  # noqa: E402
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_ngspice_available,
+    first_below,
+    interp_at,
+    read_wrdata,
     ngspice_version,
     repo_git_sha,
     resolve_ngspice_lib,
     resolve_pdk_root,
+    spice_number,
 )
 
 sys.path.insert(0, str(SIM_DIR / "retention"))
@@ -78,6 +81,7 @@ CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [-40, 27, 125]
 AGE_LABELS = ["fresh", "refresh_bound"]
 VDD = 1.8
+MIN_TIMEPOINTS = 10  # fewer wrdata rows than this => sim failed
 
 # ASSUMPTIONS (proposed engineering choices, NOT ratified spec values)
 C_RBL_F = 10e-15  # declared schematic-level read-bitline load
@@ -109,14 +113,6 @@ FIELDS = (
         "dv_sn_unsel_worst_signed_v", "notes",
     ]
 )
-
-
-def spice_number(s: str) -> float:
-    m = re.fullmatch(r"([0-9.eE+-]+?)([a-zA-Z]*)", s.strip())
-    scale = {"": 1, "p": 1e-12, "n": 1e-9, "u": 1e-6, "m": 1e-3, "f": 1e-15}
-    if not m:
-        raise ValueError(s)
-    return float(m.group(1)) * scale[m.group(2).lower()]
 
 
 def parse_params(tmpl: str) -> dict[str, float]:
@@ -237,72 +233,27 @@ def render(tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P):
     return tmpl
 
 
-def read_wrdata(path: Path):
-    """wrdata emits (x, y) pairs per vector: cols = [t, sn0..sn3, rbl, i0..i3]."""
-    cols = None
-    for line in path.read_text().splitlines():
-        p = line.split()
-        if len(p) < 4:
-            continue
-        try:
-            row = [float(x) for x in p]
-        except ValueError:
-            continue
-        if cols is None:
-            cols = [[] for _ in range(len(row) // 2 + 1)]
-        cols[0].append(row[0])
-        for i in range(len(row) // 2):
-            cols[i + 1].append(row[2 * i + 1])
-    if cols is None or len(cols[0]) < 10:
-        raise RuntimeError("too few timepoints")
-    return cols
-
-
-def interp(t, y, tq):
-    if tq <= t[0]:
-        return y[0]
-    if tq >= t[-1]:
-        return y[-1]
-    i = bisect.bisect_right(t, tq)
-    f = (tq - t[i - 1]) / (t[i] - t[i - 1])
-    return y[i - 1] + f * (y[i] - y[i - 1])
-
-
-def first_below(t, y, t0, level):
-    """Time after t0 at which y first reaches <= level (linear interp), or None."""
-    if interp(t, y, t0) <= level:
-        return 0.0
-    for i in range(1, len(t)):
-        if t[i] <= t0:
-            continue
-        if y[i] <= level:
-            ta = max(t[i - 1], t0)
-            ya = interp(t, y, ta)
-            return ta + (level - ya) / (y[i] - ya) * (t[i] - ta) - t0
-    return None
-
-
 def measure(cols, P, t_read, sel):
     t, sn, rbl = cols[0], cols[1:5], cols[5]
     irw = [[-x for x in c] for c in cols[6:10]]  # into rbl from rwl_r
     m = {}
     for r in range(N_ROWS):
         t_off = P["TW0"] + r * P["TWSTEP"] + P["TWPULSE"]
-        m[f"v_sn_r{r}_wl_off_v"] = interp(t, sn[r], t_off)
-        m[f"v_sn_r{r}_after_write_v"] = interp(t, sn[r], P["THOLD0"] - 0.5e-9)
+        m[f"v_sn_r{r}_wl_off_v"] = interp_at(t, sn[r], t_off)
+        m[f"v_sn_r{r}_after_write_v"] = interp_at(t, sn[r], P["THOLD0"] - 0.5e-9)
     t_pre = t_read - P["TPRE_GAP"] - 0.5e-9
     for r in range(N_ROWS):
-        m[f"v_sn_r{r}_preread_v"] = interp(t, sn[r], t_pre)
-        m[f"i_into_rbl_r{r}_preread_a"] = interp(t, irw[r], t_pre)
-    m["v_rbl_preread_float_v"] = interp(t, rbl, t_read - 0.2e-9)
+        m[f"v_sn_r{r}_preread_v"] = interp_at(t, sn[r], t_pre)
+        m[f"i_into_rbl_r{r}_preread_a"] = interp_at(t, irw[r], t_pre)
+    m["v_rbl_preread_float_v"] = interp_at(t, rbl, t_read - 0.2e-9)
     uns = [r for r in range(N_ROWS) if r != sel]
     m["i_desel_sum_preread_a"] = sum(m[f"i_into_rbl_r{r}_preread_a"] for r in uns)
     t_s = t_read + T_SENSE_S
     for r in range(N_ROWS):
-        m[f"i_into_rbl_r{r}_sense_a"] = interp(t, irw[r], t_s)
+        m[f"i_into_rbl_r{r}_sense_a"] = interp_at(t, irw[r], t_s)
     m["i_desel_sum_sense_a"] = sum(m[f"i_into_rbl_r{r}_sense_a"] for r in uns)
-    m["v_rbl_sense_v"] = interp(t, rbl, t_s)
-    m["v_rbl_end_v"] = interp(t, rbl, t_read + P["TREAD_PULSE"] - 5 * P["TEDGE"])
+    m["v_rbl_sense_v"] = interp_at(t, rbl, t_s)
+    m["v_rbl_end_v"] = interp_at(t, rbl, t_read + P["TREAD_PULSE"] - 5 * P["TEDGE"])
     m["dv_rbl_sense_v"] = m["v_rbl_sense_v"] - m["v_rbl_preread_float_v"]
     lat = first_below(t, rbl, t_read, m["v_rbl_preread_float_v"] - DV_LATENCY_V)
     m["latency_s"] = lat
@@ -313,8 +264,8 @@ def measure(cols, P, t_read, sel):
         f"{P['TREAD_PULSE'] * 1e9:.0f} ns read window plus tail"
     )
     t_end = t_read + P["TREAD_PULSE"] + P["TTAIL"] - 0.5e-9
-    m["dv_sn_sel_read_disturb_v"] = interp(t, sn[sel], t_end) - m[f"v_sn_r{sel}_preread_v"]
-    d = [interp(t, sn[r], t_end) - m[f"v_sn_r{r}_preread_v"] for r in uns]
+    m["dv_sn_sel_read_disturb_v"] = interp_at(t, sn[sel], t_end) - m[f"v_sn_r{sel}_preread_v"]
+    d = [interp_at(t, sn[r], t_end) - m[f"v_sn_r{r}_preread_v"] for r in uns]
     m["dv_sn_unsel_worst_signed_v"] = max(d, key=abs)
     return m
 
@@ -367,7 +318,7 @@ def run_batch(args):
         try:
             if not out.is_file():
                 raise RuntimeError("ngspice produced no output for this case: " + str(err))
-            cols = read_wrdata(out)
+            cols = read_wrdata(out, MIN_TIMEPOINTS)
             check_complete(cols[0], case_tstop(P, t_read))
             m = measure(cols, P, t_read, sel)
             for key, v in m.items():

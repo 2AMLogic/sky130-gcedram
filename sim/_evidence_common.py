@@ -15,8 +15,10 @@ scripts at once instead of silently drifting between two copies.
 
 from __future__ import annotations
 
+import bisect
 import csv
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -140,3 +142,129 @@ def append_result(results_csv: Path, csv_fields: list[str], row: dict) -> None:
         if write_header:
             writer.writeheader()
         writer.writerow(row)
+
+
+# --------------------------------------------------------------------------
+# SPICE number / waveform helpers (issue #58) -- shared by
+# sim/bitcell-transient/run_bitcell_transient.py and
+# sim/loaded-column/run_loaded_column.py (and, via the latter, the
+# cold-corner variant runner). Stdlib only, no numpy.
+# --------------------------------------------------------------------------
+
+SI_SUFFIX = {
+    "f": 1e-15,
+    "p": 1e-12,
+    "n": 1e-9,
+    "u": 1e-6,
+    "m": 1e-3,
+    "k": 1e3,
+    "meg": 1e6,
+    "g": 1e9,
+}
+
+
+def spice_number(text: str) -> float:
+    """Parse a SPICE numeric literal with an optional engineering suffix
+    (`100p`, `21n`, `1.8`, `1meg`). Raises ValueError on anything else
+    (including an unknown suffix) -- a silently mis-parsed timing
+    parameter would move a measurement instant. Callers that want to skip
+    non-numeric `.param` values catch ValueError."""
+    m = re.fullmatch(r"([+-]?[0-9]*\.?[0-9]+(?:[eE][+-]?[0-9]+)?)\s*([A-Za-z]*)", text)
+    if not m:
+        raise ValueError(f"not a SPICE numeric literal: {text!r}")
+    value = float(m.group(1))
+    suffix = m.group(2).lower()
+    if not suffix:
+        return value
+    if suffix.startswith("meg"):
+        return value * SI_SUFFIX["meg"]
+    if suffix[0] in SI_SUFFIX:
+        return value * SI_SUFFIX[suffix[0]]
+    raise ValueError(f"unknown SPICE suffix in {text!r}")
+
+
+def read_wrdata(path: Path, min_points: int) -> list[list[float]]:
+    """Parse an ngspice `wrdata` ASCII table into columns.
+
+    `wrdata out v(a) v(b) ...` emits one (x, y) column PAIR per vector, so
+    a row is [t, y1, t, y2, ...]. Returns `[t, y1, y2, ...]` (the shared
+    time column once, then each vector's y column). Rows with fewer than 4
+    fields or non-numeric fields are skipped. Raises RuntimeError if fewer
+    than `min_points` timepoints were parsed (the caller picks the limit:
+    3 for the bitcell transient, 10 for the loaded column).
+    """
+    cols: list[list[float]] | None = None
+    for line in Path(path).read_text().splitlines():
+        parts = line.split()
+        if len(parts) < 4:
+            continue
+        try:
+            row = [float(x) for x in parts]
+        except ValueError:
+            continue
+        if cols is None:
+            cols = [[] for _ in range(len(row) // 2 + 1)]
+        cols[0].append(row[0])
+        for i in range(len(row) // 2):
+            cols[i + 1].append(row[2 * i + 1])
+    if cols is None or len(cols[0]) < min_points:
+        raise RuntimeError(f"ngspice produced too few timepoints in {path}")
+    return cols
+
+
+def interp_at(t: list[float], y: list[float], tq: float) -> float:
+    """Linear interpolation of y(tq) on a non-decreasing t, clamped to the
+    end values outside the sampled window. Duplicate timestamps do not
+    divide by zero."""
+    if tq <= t[0]:
+        return y[0]
+    if tq >= t[-1]:
+        return y[-1]
+    hi = bisect.bisect_right(t, tq)
+    lo = hi - 1
+    if t[hi] == t[lo]:
+        return y[lo]
+    frac = (tq - t[lo]) / (t[hi] - t[lo])
+    return y[lo] + frac * (y[hi] - y[lo])
+
+
+def first_crossing_below(
+    t: list[float], y: list[float], threshold: float, t_from: float
+) -> float | None:
+    """ABSOLUTE time of the first fall to `threshold` at or after `t_from`,
+    linearly interpolated between the bracketing timepoints. If the first
+    sample at/after `t_from` is already <= threshold, that sample's time is
+    returned (no interpolation from `t_from`). None if never reached.
+    Contrast `first_below()`."""
+    prev_t = None
+    prev_y = None
+    for ti, yi in zip(t, y):
+        if ti < t_from:
+            continue
+        if prev_t is not None and yi <= threshold < prev_y:
+            if prev_y == yi:
+                return ti
+            frac = (prev_y - threshold) / (prev_y - yi)
+            return prev_t + frac * (ti - prev_t)
+        if prev_t is None and yi <= threshold:
+            return ti
+        prev_t, prev_y = ti, yi
+    return None
+
+
+def first_below(t: list[float], y: list[float], t0: float, level: float) -> float | None:
+    """Time RELATIVE to `t0` at which y first reaches <= level (linear
+    interpolation, bracket starting at max(t[i-1], t0)). Returns 0.0 if y
+    is already <= level at t0; None if never reached. Contrast
+    `first_crossing_below()` (absolute time, different already-below and
+    bracketing behaviour, different argument order)."""
+    if interp_at(t, y, t0) <= level:
+        return 0.0
+    for i in range(1, len(t)):
+        if t[i] <= t0:
+            continue
+        if y[i] <= level:
+            ta = max(t[i - 1], t0)
+            ya = interp_at(t, y, ta)
+            return ta + (level - ya) / (y[i] - ya) * (t[i] - ta) - t0
+    return None
