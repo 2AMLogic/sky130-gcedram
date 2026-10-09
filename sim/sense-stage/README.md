@@ -48,7 +48,7 @@ down, so the correct decision is `d = V(rbl) - V(ref)` -> -1.8 V.
 | `common_reference_v_UNVALIDATED` | **not used** (the contract says do not use) | -- |
 | reference level | swept: `VREF` = 0.9 V minus 20 / 50 / 100 / 200 mV | ASSUMPTION |
 | decision criterion | `|d|` >= 0.9 V at full swing, correct sign, `t_dec` <= 5 ns after enable | ASSUMPTION |
-| mismatch / offset budget | NOT AVAILABLE (global corners, no Monte Carlo) | -- |
+| mismatch / offset budget | NOT AVAILABLE here (global corners, no Monte Carlo); see [`sim/sense-mismatch/`](../sense-mismatch/README.md) (issue #81) for this latch's offset at four corners | -- |
 
 Instance kinds: `st_*` (stage only: `rbl` starts at `VREF` +/- 1..100 mV,
 no cells), `cell1_*` (end-to-end, stored '1' at the given level),

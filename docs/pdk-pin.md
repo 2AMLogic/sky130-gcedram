@@ -67,6 +67,17 @@ each script's CLI already exposes `--corners`/`--temps-c` overrides):
   `-40..125 °C` range 2AMLogic/sky130-bandgap's ratified spec uses for
   temperature-corner claims.
 
+## Mismatch (Monte Carlo) sections
+
+The same `libs.tech/combined/sky130.lib.spice` also ships mismatch-enabled
+sections `tt_mm`, `ss_mm`, `ff_mm`, `sf_mm` and `fs_mm` (lines 730, 811,
+784, 757, 838 at this pin), each setting `.param MC_MM_SWITCH=1`; the plain
+corners above set it to `0`. The file's header comment lists only `tt_mm`,
+`ss_mm`, `sf_mm`, `fs_mm`, but `ff_mm` exists. For `nfet_01v8`/`pfet_01v8`
+the switch gates a per-instance Vth term only (`AGAUSS`, coefficients in
+`continuous/models_global.spice`). The check, with line citations, is in
+[`sim/sense-mismatch/README.md`](../sim/sense-mismatch/README.md) (issue #81).
+
 ## History
 
 Before issue #37, this pin was hand-duplicated across seven independent
