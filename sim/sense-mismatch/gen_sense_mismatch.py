@@ -1,0 +1,296 @@
+#!/usr/bin/env python3
+"""Generate the sense-stage Monte Carlo mismatch decks and `klt sim` requests (issue #81).
+
+Stdlib only. Writes, next to this file:
+
+* ``sense_mismatch.spice`` + ``request.json`` -- STAGE-ONLY latch offset study:
+  the latch of ``sim/sense-stage`` (same devices, sizes, timing and bias, taken
+  from ``gen_sense_stage.py`` by import so the two cannot drift), replicated
+  ``N_REPLICAS`` times at every swept input differential. Run over the
+  mismatch-enabled ``*_mm`` sections of the pinned sky130 library at the
+  corners in ``STAGE_CORNERS`` with ``monte_carlo`` (``vary: mismatch``).
+* ``sense_mismatch_cell.spice`` + ``request_cell.json`` -- END-TO-END variant
+  (``cell1``/``cell0`` instances: 4-row column + latch) at the least-margin
+  corner only (fs/27 C). It reports the READ-DEVICE (cell/column) induced
+  spread of the differential delivered to the latch separately from the latch
+  offset; it is never folded into the latch sigma.
+
+Why replicas inside one deck: the sky130 ``*_mm`` sections draw the Vth
+mismatch term with ``AGAUSS`` inside each device subcircuit's ``.param``
+block, so every device INSTANCE gets its own draw. ``R`` replicas at the same
+differential are therefore ``R`` independent latches per Monte Carlo sample,
+and one ``tran`` per sample yields ``R x len(D_MV)`` Bernoulli decisions.
+The analysis checks this (replicas must disagree somewhere, samples must
+differ) instead of assuming it.
+
+PROPOSED, NOT RATIFIED: corners/temperatures are inside the restricted range
+of ``spec/operating-range-decision-PROPOSED.md`` (27 C and 125 C, VDD = 1.8 V).
+Nothing outside it is simulated. Re-run after editing any constant;
+``test_sense_mismatch.py`` fails if the committed files are stale.
+"""
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+REPO = HERE.parent.parent
+sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
+import gen_sense_stage as G  # noqa: E402
+
+STAGE_NETLIST_PATH = HERE / "sense_mismatch.spice"
+STAGE_REQUEST_PATH = HERE / "request.json"
+CELL_NETLIST_PATH = HERE / "sense_mismatch_cell.spice"
+CELL_REQUEST_PATH = HERE / "request_cell.json"
+
+# ---- scope (subset of the PROPOSED restricted range; nothing outside it) ----
+# (mismatch-enabled .lib section, temperature C). Base corners chosen from the
+# committed sense-stage summary (sim/sense-stage/README.md results table):
+#   ss/125 and tt/27 (named in issue #81), fs/27 (least margin: min resolvable SN
+#   0.7-0.8 V), sf/125 (ratified worst-case retention corner; cheap to add).
+STAGE_CORNERS = [("tt_mm", 27), ("fs_mm", 27), ("ss_mm", 125), ("sf_mm", 125)]
+CELL_CORNERS = [("fs_mm", 27)]
+VDD_V = G.VDD_V                # 1.8 V, the one supply of the PROPOSED range
+
+# ---- Monte Carlo (recorded in the request and echoed in the report) ----
+MC_SEED = 20261009_81          # base seed; klt derives per-sample seeds from it (SHA-256)
+MC_N_STAGE = 40                # samples per stage corner
+MC_N_CELL = 40                 # samples at the cell corner
+
+# ---- stage-only sweep (ASSUMPTION: grid; same common mode as sense-stage st_*) ----
+STAGE_DREF_V = G.STAGE_ONLY_DREF_V          # ref = VRBL - 0.1 V, rbl = ref + d (as in sense-stage)
+D_MV = [0, 2, -2, 5, -5, 10, -10, 15, -15, 20, -20, 30, -30, 40, -40,
+        50, -50, 60, -60, 80, -80, 100, -100, 150, -150]
+N_REPLICAS = 6                 # independent latches per differential per sample
+
+# ---- end-to-end (cell) variant at fs/27 (ASSUMPTION: grid) ----
+CELL_DVREF_V = [0.05, 0.10]    # 50 mV = best swept reference at fs/27; 100 mV = placeholder separation
+CELL_SN1_LEVELS_V = [round(0.60 + 0.05 * k, 2) for k in range(9)]   # 0.60 .. 1.00 V stored '1'
+CELL_SN0_LEVELS_V = [0.00]     # stored '0' negative control
+N_CELL_REPLICAS = 4
+
+# ---- timing: as sense-stage, but stop 10 ns after enable (window is 5 ns) ----
+T_STOP_S = G.T_EN_S + 10e-9
+
+
+def _mv_tag(d: int) -> str:
+    return ("z" if d == 0 else "p" if d > 0 else "m") + f"{abs(d):03d}"
+
+
+def stage_instances() -> list[dict]:
+    pts = []
+    for d in D_MV:
+        for r in range(N_REPLICAS):
+            pts.append(dict(kind="stage", dref=STAGE_DREF_V, d_mv=d, rep=r,
+                            name=f"s{_mv_tag(d)}_{r}"))
+    return pts
+
+
+def cell_instances() -> list[dict]:
+    pts = []
+    for dref in CELL_DVREF_V:
+        for kind, levels in (("cell0", CELL_SN0_LEVELS_V), ("cell1", CELL_SN1_LEVELS_V)):
+            for lvl in levels:
+                for r in range(N_CELL_REPLICAS):
+                    tag = ("n%03d" % round(-lvl * 1000)) if lvl < 0 else ("%04d" % round(lvl * 1000))
+                    pts.append(dict(kind=kind, dref=dref, sn=lvl, rep=r,
+                                    name=f"{'c1' if kind == 'cell1' else 'c0'}_r{round(dref * 1000):03d}_{tag}_{r}"))
+    return pts
+
+
+def _header(title: str, kinds: str) -> list[str]:
+    return [
+        f"* {title}",
+        "* GENERATED by sim/sense-mismatch/gen_sense_mismatch.py (issue #81); do not edit by hand.",
+        "*",
+        "* PROPOSED/UNRATIFIED SCOPE: corners/temperatures from spec/operating-range-decision-PROPOSED.md.",
+        "* CIRCUIT BODY for `klt sim`: no .control/.end; klt appends the .lib (a *_mm mismatch section,",
+        "* MC_MM_SWITCH=1), .temp and the per-sample `.options seed` cards.",
+        "* Latch/footer/header devices, sizes, timing and bias are those of sim/sense-stage/gen_sense_stage.py.",
+        "* Every sky130 FET instance gets its own AGAUSS Vth-mismatch draw (the PDK switch is global per",
+        "* section: footer/header/cell devices also carry mismatch, see README).",
+        f"* Instance kinds: {kinds}",
+        "*",
+        "* ASSUMPTIONS (labelled; none is a spec value): C_RBL, VRBL, reference level, sense instant,",
+        "* latch/footer/header sizes, ideal precharge switch, ideal drivers, ideal matched dummy load.",
+        "",
+        f".param VDD     = {G._fmt(VDD_V)}",
+        f".param VRBL    = {G._fmt(G.VRBL_V)}   $ ASSUMPTION (contract)",
+        f".param TEDGE   = {G._fmt(G.T_EDGE_S)}",
+        f".param T_READ  = {G._fmt(G.T_READ_S)}   $ select edge",
+        f".param T_PGAP  = {G._fmt(G.T_PRE_GAP_S)}   $ precharge released this long before T_READ",
+        f".param T_EN    = {G._fmt(G.T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)",
+        f".param C_RBL   = {G._fmt(G.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)",
+        "",
+        "* ---- shared drivers (ideal) ----",
+        "vdd   vdd 0 dc {VDD}",
+        "vctl  ctl 0 pwl(0 {VDD} {T_READ-T_PGAP} {VDD} {T_READ-T_PGAP+TEDGE} 0)",
+        "ven   en  0 pwl(0 0 {T_EN} 0 {T_EN+TEDGE} {VDD})",
+        "venb  enb 0 pwl(0 {VDD} {T_EN} {VDD} {T_EN+TEDGE} 0)",
+        ".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)",
+    ]
+
+
+def _latch(a, ics: list[str], n: str, rb: str, rf: str) -> None:
+    vn, vp = f"vn_{n}", f"vp_{n}"
+    ln, lp, fo, he = G.LATCH_N, G.LATCH_P, G.FOOTER, G.HEADER
+    a(f"XMN1_{n} {rb} {rf} {vn} 0 {ln[0]} {G.dev_params(ln[1], ln[2])}")
+    a(f"XMN2_{n} {rf} {rb} {vn} 0 {ln[0]} {G.dev_params(ln[1], ln[2])}")
+    a(f"XMP1_{n} {rb} {rf} {vp} vdd {lp[0]} {G.dev_params(lp[1], lp[2])}")
+    a(f"XMP2_{n} {rf} {rb} {vp} vdd {lp[0]} {G.dev_params(lp[1], lp[2])}")
+    a(f"XMNF_{n} {vn} en 0 0 {fo[0]} {G.dev_params(fo[1], fo[2])}")
+    a(f"XMPH_{n} {vp} enb vdd vdd {he[0]} {G.dev_params(he[1], he[2])}")
+    ics.append(f"v({vn})=0.45")
+    ics.append(f"v({vp})=1.35")
+    a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
+    a(f"bdabs_{n} dabs_{n} 0 v=abs(v({rb})-v({rf}))")
+
+
+def _ic_block(ics: list[str]) -> list[str]:
+    out = ["* initial conditions (tran uic): precharged rails, stored levels, tail nodes"]
+    for k in range(0, len(ics), 6):
+        out.append(".ic " + " ".join(ics[k:k + 6]))
+    out.append("")
+    return out
+
+
+def build_stage_netlist() -> str:
+    L = _header("sense_mismatch.spice -- stage-only latch offset Monte Carlo (sense-stage latch, R replicas)",
+                "s<p|m|z><mV>_<r>: rbl precharged to VREF+d, no cells, replica r")
+    a = L.append
+    ref = f"pref_{round(STAGE_DREF_V * 1000):03d}"
+    a(f"vref_{round(STAGE_DREF_V * 1000):03d} {ref} 0 dc {G._fmt(G.VRBL_V - STAGE_DREF_V)}   $ reference = VRBL - {G._fmt(STAGE_DREF_V)} (ASSUMPTION)")
+    for d in D_MV:
+        va = G.VRBL_V - STAGE_DREF_V + d * 1e-3
+        a(f"vpa_{_mv_tag(d)} pa_{_mv_tag(d)} 0 dc {va:.6f}")
+    a("")
+    ics: list[str] = []
+    for p in stage_instances():
+        n = p["name"]
+        rb, rf = f"rbl_{n}", f"ref_{n}"
+        va = G.VRBL_V - STAGE_DREF_V + p["d_mv"] * 1e-3
+        a(f"* ---- {n}: d = {p['d_mv']} mV, replica {p['rep']} ----")
+        a(f"spa_{n} pa_{_mv_tag(p['d_mv'])} {rb} ctl 0 swpre")
+        a(f"crbl_{n} {rb} 0 {{C_RBL}}")
+        a(f"spr_{n} {ref} {rf} ctl 0 swpre")
+        a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
+        ics.append(f"v({rb})={va:.6f}")
+        ics.append(f"v({rf})={G.VRBL_V - STAGE_DREF_V:.6f}")
+        _latch(a, ics, n, rb, rf)
+        a("")
+    L += _ic_block(ics)
+    return "\n".join(L)
+
+
+def build_cell_netlist(c_sn_f: float) -> str:
+    (wr_m, wr_p), (rd_m, rd_p) = G.design_cell_cards()
+    L = _header("sense_mismatch_cell.spice -- end-to-end (4-row column + latch) Monte Carlo at fs/27 C",
+                "c1_* stored '1', c0_* stored '0'; r<mV> = reference offset; last field = replica")
+    a = L.append
+    a(f".param C_SN    = {G._fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a("vrwls rwl_sel 0 pwl(0 {VDD} {T_READ} {VDD} {T_READ+TEDGE} 0)")
+    a("vrwld rwl_des 0 dc {VDD}")
+    a("vpre  prea 0 dc {VRBL}")
+    for dref in CELL_DVREF_V:
+        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {G._fmt(G.VRBL_V - dref)}   $ reference = VRBL - {G._fmt(dref)} (ASSUMPTION)")
+    a("")
+    ics: list[str] = []
+    for p in cell_instances():
+        n = p["name"]
+        rb, rf = f"rbl_{n}", f"ref_{n}"
+        a(f"* ---- {n}: {p['kind']} SN = {p['sn']} V, ref offset {p['dref']} V, replica {p['rep']} ----")
+        a(f"spa_{n} prea {rb} ctl 0 swpre")
+        ics.append(f"v({rb})={G._fmt(G.VRBL_V)}")
+        for r in range(G.N_ROWS):
+            sn = f"sn_{n}_{r}"
+            rwl = "rwl_sel" if r == 0 else "rwl_des"
+            a(f"XMWR_{n}_{r} {sn} 0 0 0 {wr_m} {wr_p}")
+            a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
+            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
+            ics.append(f"v({sn})={G._fmt(p['sn'])}")
+        a(f"crbl_{n} {rb} 0 {{C_RBL}}")
+        a(f"spr_{n} pref_{round(p['dref'] * 1000):03d} {rf} ctl 0 swpre")
+        a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
+        ics.append(f"v({rf})={G.VRBL_V - p['dref']:.6f}")
+        _latch(a, ics, n, rb, rf)
+        a("")
+    L += _ic_block(ics)
+    return "\n".join(L)
+
+
+def _meas(names: list[str]) -> list[dict]:
+    """din (differential at the enable instant), dend (at stop), tdec per instance."""
+    t_en_ns = G._fmt(G.T_EN_S * 1e9)
+    t_stop_ns = G._fmt(T_STOP_S * 1e9)
+    out = []
+    for n in names:
+        out += [
+            {"name": f"din_{n}", "unit": "V",
+             "spice": f".meas tran din_{n} FIND v(d_{n}) AT={t_en_ns}n"},
+            {"name": f"dend_{n}", "unit": "V",
+             "spice": f".meas tran dend_{n} FIND v(d_{n}) AT={t_stop_ns}n"},
+            {"name": f"tdec_{n}", "unit": "s",
+             "spice": f".meas tran tdec_{n} TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_{n}) VAL=0.9 RISE=1"},
+        ]
+    return out
+
+
+def _corners(cs: list[tuple[str, int]]) -> tuple[dict, list[dict]]:
+    procs = list(dict.fromkeys(p for p, _ in cs))
+    temps = sorted({t for _, t in cs})
+    excl = [{"process": p, "temperature_c": t} for p in procs for t in temps if (p, t) not in cs]
+    out: dict = {"process": procs, "temperature_c": temps}
+    return out, excl
+
+
+def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict]) -> dict:
+    corners, excl = _corners(cs)
+    req = {
+        "netlist": netlist,
+        "engine": "ngspice",
+        "backend": "batch",
+        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
+        "corners": corners,
+    }
+    if excl:
+        req["exclude"] = excl
+    req.update({
+        "monte_carlo": {"n": n_mc, "seed": MC_SEED, "vary": "mismatch", "quantiles": [2.5, 50, 97.5]},
+        "analysis": {"kind": "tran", "args": f"10p {G._fmt(T_STOP_S * 1e9)}n 0 50p uic"},
+        "measurements": meas,
+        "options": {"timeout_s": 900, "keep_artifacts": False, "waveforms": False},
+    })
+    return req
+
+
+def build_stage_request() -> dict:
+    names = [p["name"] for p in stage_instances()]
+    return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, MC_N_STAGE, _meas(names))
+
+
+def build_cell_request() -> dict:
+    names = [p["name"] for p in cell_instances()]
+    return _request(CELL_NETLIST_PATH.name, CELL_CORNERS, MC_N_CELL, _meas(names))
+
+
+def render() -> dict[Path, str]:
+    c_sn_ff, _prov = G.load_extracted_c_sn(G.EXTRACT_JSON, "sn")
+    return {
+        STAGE_NETLIST_PATH: build_stage_netlist(),
+        STAGE_REQUEST_PATH: json.dumps(build_stage_request(), indent=1) + "\n",
+        CELL_NETLIST_PATH: build_cell_netlist(c_sn_ff * 1e-15),
+        CELL_REQUEST_PATH: json.dumps(build_cell_request(), indent=1) + "\n",
+    }
+
+
+def main() -> int:
+    for path, text in render().items():
+        path.write_text(text)
+        print(f"wrote {path.name}")
+    print(f"{len(stage_instances())} stage instances, {len(cell_instances())} cell instances")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
