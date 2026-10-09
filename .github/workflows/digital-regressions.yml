@@ -17,8 +17,8 @@ permissions:
 jobs:
   digital-regressions:
     runs-on: ubuntu-latest
-    # Integration suite is ~11 min on a quiet machine; source build is a few
-    # minutes. Provisional bound with headroom; revise from measured CI runs.
+    # Measured uncached hosted run: 16m38s (build 2m21s, regressions 13m51s;
+    # see digital/ci/README.md). Provisional bound, ~2.7x headroom.
     timeout-minutes: 45
     env:
       IVERILOG_PREFIX: ${{ github.workspace }}/.iverilog-prefix
