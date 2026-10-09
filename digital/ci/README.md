@@ -86,20 +86,66 @@ afterwards as `iverilog-Linux-X64-4e342da7…`.
 
 ### Cache-hit run
 
-Pending: to be recorded from the run triggered by the push that added the
-uncached record above.
+[Run 37973154779](https://github.com/2AMLogic/sky130-gcedram/actions/runs/37973154779)
+([job](https://github.com/2AMLogic/sky130-gcedram/actions/runs/37973154779/job/113964644946)),
+PR #106 head `2bd9108` (docs-only change, same installer and therefore same
+cache key), conclusion **success**. Cache hit: "Install build dependencies"
+and "Build pinned Icarus Verilog" were skipped.
+
+* Versions: identical to the uncached run (`13.0 (stable) (dfeee90)` for
+  `iverilog` and `vvp`, `Python 3.12.3`).
+* Step durations: serial regressions 10 min 12 s (18:25:27 to 18:35:39 UTC);
+  whole run 10 min 22 s.
+* Per-suite verdicts: all exit 0, `overall: PASS`, the same verdicts as the
+  uncached run (refresh-scheduler-tests 11 s, refresh-scheduler-mutation
+  71 s, spi-control-tests 0 s, spi-control-mutation 1 s,
+  control-integration 529 s).
+
+The regression step itself varied between the two hosted runs (13 min 51 s
+and 10 min 12 s). That variation is runner noise, not a caching effect,
+because the cache only replaces the build steps.
 
 ### Timeout
 
-The uncached run took 16 min 38 s end to end, so `timeout-minutes: 45` is
-about 2.7x the measured uncached duration. That headroom covers shared-runner
-slowdown of the integration suite, which takes about 12 min. The bound stays
-**provisional**: one hosted measurement is not a distribution. Lower it only
-once several runs are recorded.
+The slowest measured run, the uncached one, took 16 min 38 s end to end, and
+the slowest regression step took 13 min 51 s. So `timeout-minutes: 45` is
+about 2.7x the slowest measured run. That headroom covers shared-runner
+slowdown of the integration suite, which took 529 to 713 s in the runs above.
+The bound stays **provisional**: three hosted runs are not a distribution.
+Lower it only once more runs are recorded.
+
+### Injected-fault demonstration
+
+A throwaway branch `throwaway/issue-105-fault-injection` was created off
+`feature/issue-105` at `2bd9108`. It was opened as draft PR #107 only to
+trigger the workflow, then closed unmerged and the branch was deleted. It
+carried one fault in `digital/spi-control/spi_slave.v`: the interval upper
+bound check was changed from `val > MAX_INTERVAL` to `val >= MAX_INTERVAL`,
+so a valid maximum interval was rejected.
+
+[Run 37973105340](https://github.com/2AMLogic/sky130-gcedram/actions/runs/37973105340)
+([job](https://github.com/2AMLogic/sky130-gcedram/actions/runs/37973105340/job/113964485126)),
+head `3d50fad`, conclusion **failure**. The "Behavioral regressions (serial)"
+step failed, and the logs were still uploaded. In `summary.txt`:
+
+| Suite | Exit | Evidence in log |
+|---|---|---|
+| refresh-scheduler-tests | 0 | unaffected |
+| refresh-scheduler-mutation | 0 | unaffected |
+| spi-control-tests | 1 | `FAIL ivl_max_ok`, `status_clean_after_valid` and `err_any_clean` at both interval bases (`errors=3` each), `SOME FAIL` |
+| spi-control-mutation | 2 | `baseline does not pass` |
+| control-integration | 1 | integration bench `TB_RESULT: FAIL`, then `baseline does not pass`, `SOME FAIL` |
+| overall | FAIL | |
+
+This shows that a baseline failure propagates through the driver to a red
+job. Every suite still ran. This run was a cache miss, because a PR ref cannot
+read another PR's cache. Its "Post Cache" step was skipped because the job
+failed.
 
 ## Demonstrating failure propagation
 
-On a throwaway branch (do not merge), make a bounded fault such as flipping a
+The recorded result is under "Injected-fault demonstration" above. To repeat
+it, on a throwaway branch (do not merge), make a bounded fault such as flipping a
 comparison in `digital/spi-control/spi_slave.v`; the baseline bench and
 `spi-control-tests` must fail and the job go red. For the mutation guard,
 add a no-op mutant entry to a `run_mutation.sh` list that the bench cannot
