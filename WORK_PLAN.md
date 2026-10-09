@@ -25,7 +25,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#93**: Integrate SPI configuration with the behavioral refresh scheduler and verify transitions
+_None._
 
 ## PRs Awaiting Review
 
@@ -45,11 +45,15 @@ Issues carrying `loom:curated`.
 
 - **#24**: Build the full gain-cell eDRAM macro (array + sense amp + refresh controller + SPI) to reach Chipalooza sign-off bar *(curated)*
 - **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead *(curated)*
+- **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
 
 ## Proposed (Architect / Hermit)
 
 - **#62**: CI: enforce append-only sim/ results mechanically *(architect)*
 - **#94**: Characterize write-hold-sense trajectories and mixed neighbor patterns at the refresh deadline *(architect)*
+- **#108**: Define the digital-to-analog phase-control contract with an ordering-checked sequencer model *(architect)*
+- **#109**: Commit the sense latch as a design source (schematic and derived netlist) tied to the sense-stage deck *(architect)*
+- **#110**: Measure t_row_refresh_op with a closed-loop sense and write-back refresh operation *(architect)*
 
 ## Epics
 
@@ -63,10 +67,10 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 1 |
 | Operator priority | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
-| Curated | 2 |
-| Architect / Hermit proposals | 2 |
+| Curated | 3 |
+| Architect / Hermit proposals | 5 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->

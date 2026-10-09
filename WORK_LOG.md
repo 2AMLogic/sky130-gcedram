@@ -4,6 +4,17 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-09
 
+- **Issue #105** (closed): CI: run behavioral SPI and refresh Verilog regressions with a pinned simulator
+- **PR #106**: CI: run behavioral SPI and refresh Verilog regressions with pinned Icarus (#105)
+- **Issue #68** (closed): docs: define provenance and review for appended evidence corrections
+- **PR #103**: docs(sim): define correction-record mechanism for appended evidence
+- **Issue #98** (closed): Characterize write disturb of unselected and half-selected cells in the extracted 4x4 array
+- **PR #102**: feat(sim): write-disturb study of unselected and half-selected cells (#98)
+- **Issue #84** (closed): Auditor guard review: worktree-write-confinement
+- **Issue #93** (closed): Integrate SPI configuration with the behavioral refresh scheduler and verify transitions
+- **PR #99**: feat(digital): integrate SPI config with runtime refresh scheduler (#93)
+- **Issue #97** (closed): Density vs 6T SRAM: compute area-per-bit from the committed 4x4 array and compare against public sources
+- **PR #101**: Density vs 6T SRAM: area per bit from committed 4x4 array (#97)
 - **Issue #81** (closed): Monte Carlo mismatch study of the sense stage: input-referred offset at the restricted corners
 - **PR #95**: Monte Carlo mismatch study of the sense stage: input-referred offset at the restricted corners (#81)
 - **Issue #80** (closed): Extract read-bitline and wordline parasitics from the 4x4 array to replace the C_RBL assumption
