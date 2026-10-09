@@ -30,6 +30,19 @@ routing, not yet a ratified macro row/column count (see
 amplifier and refresh controller — is tracked in
 [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).
 
+**Operating-range caveat.** The bitcell results above are not a full-range
+claim. A loaded-column characterization
+([`sim/loaded-column/`](sim/loaded-column/README.md)) found that the stored
+'1' read fails at the cold corner (fs, -40 C); the reproduction, attribution
+and remedy comparison are committed in
+[`sim/loaded-column/cold-corner/`](sim/loaded-column/cold-corner/README.md).
+The operator ruling on [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24)
+(2026-10-08, outcome C) is that the block carries a restricted
+operating-temperature range. The one canonical wording of that restriction is
+[`spec/operating-range-decision-PROPOSED.md`](spec/operating-range-decision-PROPOSED.md);
+it is **proposed, not ratified**, and this README does not restate it. This
+macro is not a drop-in SRAM replacement.
+
 **Built agent-native.** Every specification, decision record, testbench, and
 line of documentation here is produced by AI agents working from a ratified
 spec and an append-only evidence trail — not human-authored work that agents
@@ -79,13 +92,16 @@ chain and rationale: [`spec/retention-refresh-budget.md`](spec/retention-refresh
 | Refresh budget | Refresh interval ≤ **~5.03 µs** (worst case, 2x margin assumption); bandwidth-overhead formula ratified, numeric percentage pending array/periphery design. See [`spec/retention-refresh-budget.md`](spec/retention-refresh-budget.md) § 7. |
 | Supply | sky130 standard 1.8 V core; boosted wordline is a design decision to record |
 | Density vs SRAM | Must beat a 6T SRAM bitcell on area to justify existing; comparison against public [OpenRAM](https://openram.org/) documentation — not yet performed |
-| Temperature range | Corners per the shipped sky130 model set; retention claims at worst case, never typical |
+| Temperature range | **Restricted (outcome C, #24, 2026-10-08); not the full model-corner range.** Wording lives only in [`spec/operating-range-decision-PROPOSED.md`](spec/operating-range-decision-PROPOSED.md) — proposed, not ratified. Evidence: [`sim/loaded-column/cold-corner/`](sim/loaded-column/cold-corner/README.md). Retention claims at worst case, never typical. |
 
 Maturity ladder: retention study → spec ratified → bitcell + array simulated
 across PVT → sense/refresh periphery → layout DRC/LVS-clean → post-layout
 re-verification → shuttle seat → measured silicon. **Current position: the
-bitcell has cleared every rung it can reach on its own — simulated across
-PVT (write/read/hold) and laid out DRC-clean with a matching LVS. The open
+bitcell is simulated across PVT (write/read/hold) and laid out DRC-clean
+with a matching LVS, but its loaded-column read does not hold over the full
+temperature range, so any operating-range claim is restricted as described
+in the proposed (not ratified)
+[operating-range record](spec/operating-range-decision-PROPOSED.md). The open
 frontier is the macro: array, sense amplifier and refresh-controller design
 ([#24](https://github.com/2AMLogic/sky130-gcedram/issues/24)), then
 macro-level layout and post-layout re-verification.**
