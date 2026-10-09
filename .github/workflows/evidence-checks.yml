@@ -1,10 +1,18 @@
 name: evidence-checks
 
 # Runs the stdlib-Python checks that guard the evidence chain: the
-# loaded-column analysis tests, the cold-corner variant tests, and the
-# evidence-index consistency check. No ngspice, no klt, no network
-# (check_evidence_index.py is run without --online). Keep this list in sync
-# with the `test` script in package.json.
+# loaded-column analysis tests, the cold-corner variant tests, the
+# evidence-index consistency check, and the append-only evidence guard's
+# fixture suite. No ngspice, no klt, no network (check_evidence_index.py is
+# run without --online). Keep this list in sync with the `test` script in
+# package.json.
+#
+# The `append-only` job (issue #67) compares committed sim/ evidence blobs
+# between the PR's merge base and head commit. It uses the `pull_request`
+# event (fork PRs get a read-only token and no secrets), passes the event's
+# immutable base/head SHAs through env vars (no PR text is interpolated into
+# shell), checks out full history, and fails closed if either commit or any
+# blob is unavailable.
 
 on:
   push:
@@ -19,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Loaded-column analysis tests
         run: python3 -I sim/loaded-column/test_analysis.py
@@ -28,3 +38,46 @@ jobs:
 
       - name: Evidence index check
         run: python3 -I sim/loaded-column/cold-corner/check_evidence_index.py
+
+      - name: Append-only guard fixture tests
+        run: python3 -I sim/test_append_only.py
+
+  append-only:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Fetch exact base and head commits
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          # Head lives at refs/pull/N/head (also for forks); fetch both by
+          # ref and SHA so the check never relies on a moving branch tip.
+          git fetch --no-tags origin "+refs/pull/${PR_NUMBER}/head:refs/remotes/pr/head" "$BASE_SHA"
+          git cat-file -e "${BASE_SHA}^{commit}"
+          git cat-file -e "${HEAD_SHA}^{commit}"
+          test "$(git rev-parse --is-shallow-repository)" = false
+
+      - name: Append-only evidence check
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          # Prefer the checker as committed on the base branch so a PR cannot
+          # weaken the check that judges it; fall back to the PR's copy only
+          # when the base does not have one yet (the PR introducing it).
+          checker="$RUNNER_TEMP/check_append_only.py"
+          if git cat-file -e "${BASE_SHA}:sim/check_append_only.py" 2>/dev/null; then
+            git show "${BASE_SHA}:sim/check_append_only.py" > "$checker"
+          else
+            cp sim/check_append_only.py "$checker"
+          fi
+          python3 -I "$checker" --base "$BASE_SHA" --head "$HEAD_SHA"

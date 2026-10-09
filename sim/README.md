@@ -6,6 +6,68 @@ model edits, no uncommitted `.include` paths. Results files are
 **append-only evidence** per `CLAUDE.md`: reruns append new rows, they
 never overwrite or truncate prior results.
 
+## Append-only evidence guard (issue #67)
+
+[`check_append_only.py`](check_append_only.py) enforces the append-only
+rule on every pull request (`append-only` job in
+[`../.github/workflows/evidence-checks.yml`](../.github/workflows/evidence-checks.yml)).
+It compares **committed Git blobs** at `git merge-base BASE HEAD` against
+HEAD -- never worktree text -- using raw bytes and NUL-delimited Git output.
+Stdlib Python plus `git` only; no PDK, ngspice or klt.
+
+**Protection inventory** (derived from the *merge-base* tree, so deleting a
+file or editing the inventory in the same PR cannot remove its protection):
+
+1. every tracked file under `sim/` with a directory component named
+   `results` -- currently `sim/*/results/` and
+   `sim/loaded-column/cold-corner/results/` (CSV results plus the two
+   `summary_*.json` files);
+2. any path listed in
+   [`append_only_inventory.txt`](append_only_inventory.txt): committed
+   result-summary files that live *outside* a `results` directory. The list
+   is currently empty (re-inventoried 2026-10-09: every tracked result
+   summary under `sim/` is inside a `results` directory). JSON is not
+   protected by extension -- configuration/input JSON stays editable.
+
+**Rules** for each protected path:
+
+| Case | Verdict |
+| --- | --- |
+| new file at HEAD (anywhere) | pass |
+| unchanged | pass |
+| `*.csv`: old bytes are an exact prefix of new bytes (EOF append) | pass |
+| `*.csv`: was empty, now has content | pass |
+| `*.csv`: nonempty and old content lacks a final LF, any change | **fail** -- appending would alter the last record; write a new evidence file |
+| `*.csv`: middle insertion, rewrite, CRLF/LF normalisation, truncation | **fail** |
+| any other file (e.g. `summary_*.json`): any byte change | **fail** |
+| deleted, renamed or moved (even if a copy is added elsewhere) | **fail** |
+| object type or file mode changed | **fail** |
+
+An added copy is fine as long as the original stays at its path. CSV
+prefix preservation is a byte-integrity check only; whether appended rows
+are scientifically valid is still a review question.
+
+**Fail closed.** Exit `0` = pass, `1` = violation(s) (offending paths are
+listed), `2` = the check could not run: base/head commit missing, all-zero
+SHA, shallow repository, no merge base, an inventory entry absent from the
+merge base, or any `git` / blob-read error. Exit `2` fails the job; it is
+never reported as a pass.
+
+**No bypass.** There is no label, commit marker, flag or environment
+variable that skips the check. To correct a finding, leave the existing
+evidence committed as-is and add a **new** evidence file with a correction
+record citing the original (correction-record policy: issue #68). CI runs
+the checker as committed on the base branch when it exists there, so a PR
+cannot weaken the check that judges it.
+
+Invocation (exactly what CI runs, from the repository root, with full
+history fetched):
+
+```bash
+python3 -I sim/check_append_only.py --base <BASE_SHA> --head <HEAD_SHA>
+python3 -I sim/test_append_only.py   # temporary-Git-repo regression fixtures
+```
+
 ## `leakage/` -- access-device off-state leakage (issue #2)
 
 First link in the retention/refresh budget evidence chain: measures the
