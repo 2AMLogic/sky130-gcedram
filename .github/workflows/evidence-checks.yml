@@ -39,6 +39,9 @@ jobs:
       - name: Evidence index check
         run: python3 -I sim/loaded-column/cold-corner/check_evidence_index.py
 
+      - name: Sense-stage checks
+        run: python3 -I sim/sense-stage/test_sense_stage.py
+
       - name: Append-only guard fixture tests
         run: python3 -I sim/test_append_only.py
 
