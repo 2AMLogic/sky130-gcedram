@@ -134,3 +134,7 @@ any finer-grained recovery of data validity than "reset clears DATA_LOST".
 Multi-bank refresh. Any production or ratified specification. Re-check this
 contract whenever an item in [`../spi-control/SPEC.md`](../spi-control/SPEC.md)
 Sec. 5 changes.
+
+Analog phase strobes (precharge, RWL, sense, WWL) are proposed separately in
+[`../phase-control/CONTRACT.md`](../phase-control/CONTRACT.md); they are not
+part of this transfer contract.

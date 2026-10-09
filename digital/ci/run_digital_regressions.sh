@@ -22,6 +22,8 @@ run refresh-scheduler-tests "$root/digital/refresh-scheduler/run_tests.sh"
 run refresh-scheduler-mutation "$root/digital/refresh-scheduler/run_mutation.sh"
 run spi-control-tests "$root/digital/spi-control/run_tests.sh"
 run spi-control-mutation "$root/digital/spi-control/run_mutation.sh"
+run phase-control-tests "$root/digital/phase-control/run_tests.sh"
+run phase-control-mutation "$root/digital/phase-control/run_mutation.sh"
 # Includes its own mutation suite (run_mutation.sh) by default.
 run control-integration "$root/digital/control-integration/run_tests.sh"
 echo "overall: $([ $fail -eq 0 ] && echo PASS || echo FAIL)" | tee -a "$logs/summary.txt"
