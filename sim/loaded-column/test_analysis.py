@@ -8,18 +8,18 @@ import contextlib
 import csv
 import io
 import itertools
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-import analyze_loaded_column as A
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))  # `python -I` drops the script dir from sys.path
+import analyze_loaded_column as A  # noqa: E402
 sys_path = None
 
 
 def synth(path, drop=None, sep=0.3):
-    import sys
-    sys.path.insert(0, str(HERE))
     import run_loaded_column as R
     with path.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=R.FIELDS)

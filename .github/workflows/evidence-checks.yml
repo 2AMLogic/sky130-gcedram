@@ -1,0 +1,30 @@
+name: evidence-checks
+
+# Runs the stdlib-Python checks that guard the evidence chain: the
+# loaded-column analysis tests, the cold-corner variant tests, and the
+# evidence-index consistency check. No ngspice, no klt, no network
+# (check_evidence_index.py is run without --online). Keep this list in sync
+# with the `test` script in package.json.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Loaded-column analysis tests
+        run: python3 -I sim/loaded-column/test_analysis.py
+
+      - name: Cold-corner variant tests
+        run: python3 -I sim/loaded-column/cold-corner/test_variants.py
+
+      - name: Evidence index check
+        run: python3 -I sim/loaded-column/cold-corner/check_evidence_index.py
