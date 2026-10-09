@@ -7,7 +7,7 @@ This roadmap is generated from current GitHub label state by the Loom Guide role
 
 Judge-approved PRs stuck under a `loom:operator` merge-risk hold — implementation work is done, only a human merge decision is missing.
 
-_None._
+- **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 
 ## Operator Priority
 
@@ -25,7 +25,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#93**: Integrate SPI configuration with the behavioral refresh scheduler and verify transitions
 
 ## PRs Awaiting Review
 
@@ -49,10 +49,7 @@ Issues carrying `loom:curated`.
 ## Proposed (Architect / Hermit)
 
 - **#62**: CI: enforce append-only sim/ results mechanically *(architect)*
-- **#80**: Extract read-bitline and wordline parasitics from the 4x4 array to replace the C_RBL assumption *(architect)*
-- **#81**: Monte Carlo mismatch study of the sense stage: input-referred offset at the restricted corners *(architect)*
-- **#82**: Draft macro-level pass conditions for epic #24 items 2-6 as a PROPOSED record *(architect)*
-- **#83**: Propose the SPI control interface spec with a behavioral SPI-slave model and testbench (#24 item 4) *(architect)*
+- **#94**: Characterize write-hold-sense trajectories and mixed neighbor patterns at the refresh deadline *(architect)*
 
 ## Epics
 
@@ -63,13 +60,13 @@ Issues carrying `loom:curated`.
 
 | Tier | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
+| Operator merge-risk holds | 1 |
 | Operator priority | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
 | Curated | 2 |
-| Architect / Hermit proposals | 5 |
+| Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
