@@ -13,3 +13,4 @@
 #
 # Inventory as of 2026-10-09 (origin/main @ e69a94a): empty -- every tracked
 # result summary under sim/ is already inside a `results` directory.
+layout/results/density_20261009.json
