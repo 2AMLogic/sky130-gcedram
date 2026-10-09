@@ -111,9 +111,9 @@ Needs only `iverilog` (>= 12 style `-g2012`), `vvp` and `python3`.
 
 ## CI
 
-Not wired into `.github/workflows/evidence-checks.yml`: the workflow has no
-Verilog simulator and installing one on `ubuntu-latest` needs network/apt.
-Follow-up if a pinned simulator becomes available to CI.
+CI: `.github/workflows/digital-regressions.yml` runs this under the pinned
+Icarus Verilog (see [`digital/ci/README.md`](../ci/README.md)). Behavioral
+regression only; not physical CDC, synthesis, timing or macro sign-off.
 
 ## Not covered
 

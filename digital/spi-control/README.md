@@ -20,3 +20,9 @@ Run: `./run_tests.sh` then `./run_mutation.sh`.
 Limits: protocol model only; `sclk`/`cs_n` are used directly as clocks, so no
 CDC, timing or synthesis claims. All interface choices are ASSUMPTIONs until
 the challenge rules and a real scheduler fix them (SPEC.md Sec. 5).
+
+## CI
+
+CI: `.github/workflows/digital-regressions.yml` runs this under the pinned
+Icarus Verilog (see [`digital/ci/README.md`](../ci/README.md)). Behavioral
+regression only; not physical CDC, synthesis, timing or macro sign-off.

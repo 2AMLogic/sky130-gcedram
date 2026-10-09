@@ -171,8 +171,14 @@ digital/control-integration/run_tests.sh --no-mutation   # ~5 min
 digital/control-integration/run_mutation.sh              # ~6 min
 ```
 
-This needs only `iverilog` (`-g2012`), `vvp` and `python3`. It is not wired
-into CI, for the same reason as #74: CI has no Verilog simulator.
+This needs only `iverilog` (`-g2012`), `vvp` and `python3`.
+
+CI: `.github/workflows/digital-regressions.yml` runs this script (with its
+mutation suite) after the refresh-scheduler and spi-control suites, under an
+Icarus Verilog 13.0 built from a pinned commit. Toolchain pin, cache policy,
+timeout and runtime are in [`digital/ci/README.md`](../ci/README.md). This is
+behavioral regression coverage only, not physical CDC, synthesis, timing or
+macro sign-off.
 
 ## Not covered
 
