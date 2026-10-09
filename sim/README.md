@@ -19,7 +19,7 @@ Stdlib Python plus `git` only; no PDK, ngspice or klt.
 file or editing the inventory in the same PR cannot remove its protection):
 
 1. every tracked file under `sim/` with a directory component named
-   `results` -- currently `sim/*/results/` and
+   `results` -- currently `sim/*/results/` (including `sim/sense-stage/results/`) and
    `sim/loaded-column/cold-corner/results/` (CSV results plus the two
    `summary_*.json` files);
 2. any path listed in
@@ -152,6 +152,22 @@ stress/limit inventory, the sense input contract and the pinned primary
 source; the decision record is PROPOSED, not ratified
 ([`spec/supply-reliability-decision-PROPOSED.md`](../spec/supply-reliability-decision-PROPOSED.md)).
 Check: `python3 sim/loaded-column/cold-corner/check_evidence_index.py`.
+
+## `sense-stage/` -- single-ended latch sense stage at the restricted corners (issue #60)
+
+Characterizes a first-pass latch sense stage driven per
+[`SENSE_INPUT_CONTRACT.md`](loaded-column/cold-corner/SENSE_INPUT_CONTRACT.md)
+over exactly the corners and temperatures of the **PROPOSED, unratified**
+restricted range ([`spec/operating-range-decision-PROPOSED.md`](../spec/operating-range-decision-PROPOSED.md):
+tt/ss/ff/sf/fs at 27 C and 125 C, 1.8 V). The 10-corner grid is one
+`klt sim` batch request. Reports minimum resolvable `delta_V` and sense time
+per corner, and a FINDING on the `VDD`/2 assumption in `retention/` (no spec
+edited). See [`sense-stage/README.md`](sense-stage/README.md).
+
+```bash
+python3 -I sim/sense-stage/gen_sense_stage.py
+python3 -I sim/sense-stage/test_sense_stage.py
+```
 
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
 
