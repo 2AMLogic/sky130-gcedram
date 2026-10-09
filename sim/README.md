@@ -169,6 +169,24 @@ python3 -I sim/sense-stage/gen_sense_stage.py
 python3 -I sim/sense-stage/test_sense_stage.py
 ```
 
+## `write-disturb/` -- disturb of unselected and half-selected cells in the extracted 4x4 array (issue #98)
+
+Epic #24 item 6. Ten instances of the committed **extracted** 4x4 array
+([`layout/gain_cell_2t_array.extract.parasitics.spice`](../layout/gain_cell_2t_array.extract.parasitics.spice))
+are driven with one wordline pulse (half-select, both data polarities) and
+with 147 back-to-back writes (the most a 34 ns scheduler could issue in the
+5.03 us ratified window), against no-toggle controls and a deliberately leaky
+negative control, over the PROPOSED restricted range (tt/ss/ff/sf/fs at
+27 C and 125 C, 1.8 V; one `klt sim` batch request). Disturb is reported as a
+fraction of `delta_V` = 0.9 V and as equivalent retention loss; the ratified
+spec and refresh bound are not touched. See
+[`write-disturb/README.md`](write-disturb/README.md).
+
+```bash
+python3 -I sim/write-disturb/gen_write_disturb.py
+python3 -I sim/write-disturb/test_write_disturb.py
+```
+
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
 
 The **first circuit-level simulation of the ratified bitcell**: the two
