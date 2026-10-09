@@ -187,7 +187,7 @@ crbl_sw_0100 rbl_sw_0100 0 {C_RBL}
 cwbl_sw_0100 wbl_sw_0100 0 {C_WBL}
 cref_sw_0100 ref_sw_0100 0 {C_RBL}   $ ASSUMPTION: ideal matched dummy load
 spr_sw_0100 pref ref_sw_0100 pca 0 swpre   $ reference-side precharge stays an ideal switch
-XMPPRE_sw_0100 rbl_sw_0100 pcb prea prea sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1 m=1
+XMPPRE_sw_0100 rbl_sw_0100 pcb prea prea sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
 XMPU1_sw_0100 x_sw_0100 dinb1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
 XMPU2_sw_0100 wbl_sw_0100 wenb x_sw_0100 vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
 XMND2_sw_0100 wbl_sw_0100 wen y_sw_0100 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0 mult=1 m=1
@@ -223,7 +223,7 @@ crbl_sw_0200 rbl_sw_0200 0 {C_RBL}
 cwbl_sw_0200 wbl_sw_0200 0 {C_WBL}
 cref_sw_0200 ref_sw_0200 0 {C_RBL}   $ ASSUMPTION: ideal matched dummy load
 spr_sw_0200 pref ref_sw_0200 pca 0 swpre   $ reference-side precharge stays an ideal switch
-XMPPRE_sw_0200 rbl_sw_0200 pcb prea prea sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1 m=1
+XMPPRE_sw_0200 rbl_sw_0200 pcb prea prea sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1 m=1
 XMPU1_sw_0200 x_sw_0200 dinb1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
 XMPU2_sw_0200 wbl_sw_0200 wenb x_sw_0200 vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
 XMND2_sw_0200 wbl_sw_0200 wen y_sw_0200 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0 mult=1 m=1
@@ -295,7 +295,7 @@ crbl_sw_0800 rbl_sw_0800 0 {C_RBL}
 cwbl_sw_0800 wbl_sw_0800 0 {C_WBL}
 cref_sw_0800 ref_sw_0800 0 {C_RBL}   $ ASSUMPTION: ideal matched dummy load
 spr_sw_0800 pref ref_sw_0800 pca 0 swpre   $ reference-side precharge stays an ideal switch
-XMPPRE_sw_0800 rbl_sw_0800 pcb prea prea sky130_fd_pr__pfet_01v8 L=0.15 W=8 nf=1 ad=2.32 as=2.32 pd=16.58 ps=16.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1 m=1
+XMPPRE_sw_0800 rbl_sw_0800 pcb prea prea sky130_fd_pr__pfet_01v8 L=0.15 W=8 nf=1 ad=2.32 as=2.32 pd=16.58 ps=16.58 nrd=0.03625 nrs=0.03625 sa=0 sb=0 sd=0 mult=1 m=1
 XMPU1_sw_0800 x_sw_0800 dinb1 vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
 XMPU2_sw_0800 wbl_sw_0800 wenb x_sw_0800 vdd sky130_fd_pr__pfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
 XMND2_sw_0800 wbl_sw_0800 wen y_sw_0800 0 sky130_fd_pr__nfet_01v8 L=0.15 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0 mult=1 m=1

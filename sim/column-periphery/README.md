@@ -84,26 +84,40 @@ sense-stage criterion, not spec values.
   (about 2.4 ns with the well on `vpre`). The well is therefore on `vpre`,
   which costs a separate n-well and tap in layout (a later layout issue).
   That probe was a single-corner debug run, not recorded as evidence.
-* **Width sweep (recorded, ns, per corner)**: the slowest corner is the cold
-  one (sf/27 C and ss/27 C), not 125 C - the 125 C worst case for retention is
-  not the worst case for precharge speed.
+* **Width sweep (recorded, ns, per corner; run `20261009T205913Z`)**: the
+  slowest corner is the cold one (sf/27 C and ss/27 C), not 125 C - the 125 C
+  worst case for retention is not the worst case for precharge speed.
+  In parentheses: the **superseded** first sweep, run `20261009T204412Z`, in
+  which the swept `MPPRE` scaled W, `ad`/`as` and `pd`/`ps` but kept
+  `nrd`/`nrs` at the W = 4 um value (0.0725) for every width, so the W = 1, 2
+  and 8 um points were not a consistent resizing of the schematic device.
+  The corrected sweep uses the single-finger convention of the `design/`
+  netlists, `nrd` = `nrs` = 0.29/W (0.29, 0.145, 0.0725, 0.03625), and
+  `design/test_column_periphery.py` now checks every geometry parameter.
+  The superseded run's files are kept unchanged (append-only); do not cite
+  its W = 1, 2, 8 um columns.
 
 | corner | W=1 um | W=2 um | W=4 um | W=8 um |
 |---|---|---|---|---|
-| ff/27C | 1.43 | 0.88 | 0.55 | 0.37 |
-| ff/125C | 0.76 | 0.45 | 0.29 | 0.21 |
-| fs/27C | 1.60 | 0.99 | 0.62 | 0.40 |
-| fs/125C | 1.02 | 0.59 | 0.37 | 0.25 |
-| sf/27C | 3.73 | 2.37 | 1.52 | 1.00 |
-| sf/125C | 0.98 | 0.60 | 0.39 | 0.27 |
-| ss/27C | 3.98 | 2.56 | 1.62 | 1.01 |
-| ss/125C | 1.52 | 0.87 | 0.53 | 0.35 |
-| tt/27C | 2.30 | 1.46 | 0.92 | 0.59 |
-| tt/125C | 1.07 | 0.63 | 0.39 | 0.27 |
+| ff/27C | 1.49 (1.43) | 0.90 (0.88) | 0.55 (0.55) | 0.36 (0.37) |
+| ff/125C | 0.81 (0.76) | 0.47 (0.45) | 0.29 (0.29) | 0.20 (0.21) |
+| fs/27C | 1.68 (1.60) | 1.02 (0.99) | 0.62 (0.62) | 0.39 (0.40) |
+| fs/125C | 1.09 (1.02) | 0.61 (0.59) | 0.37 (0.37) | 0.23 (0.25) |
+| sf/27C | 3.78 (3.73) | 2.39 (2.37) | 1.52 (1.52) | 0.99 (1.00) |
+| sf/125C | 1.02 (0.98) | 0.62 (0.60) | 0.39 (0.39) | 0.27 (0.27) |
+| ss/27C | 4.07 (3.98) | 2.59 (2.56) | 1.62 (1.62) | 0.99 (1.01) |
+| ss/125C | 1.59 (1.52) | 0.89 (0.87) | 0.53 (0.53) | 0.34 (0.35) |
+| tt/27C | 2.37 (2.30) | 1.48 (1.46) | 0.92 (0.92) | 0.57 (0.59) |
+| tt/125C | 1.14 (1.07) | 0.65 (0.63) | 0.39 (0.39) | 0.26 (0.27) |
 
-  W = 4.0 um is the smallest swept width that meets 2 ns everywhere
-  (worst 1.62 ns, 19 % margin); W = 2 um fails at sf/27 and ss/27 C. Wider
-  costs gate/overlap charge on `rbl` for speed the budget does not need.
+  The correction moves W = 1 um by +0.05 to +0.09 ns, W = 2 um by +0.02 to
+  +0.03 ns (both slower: more source/drain squares at narrow width), W = 8 um
+  by -0.01 to -0.02 ns, and leaves W = 4 um unchanged (its geometry was
+  already correct). **The sizing conclusion does not change**: W = 4.0 um is
+  the smallest swept width that meets 2 ns everywhere (worst 1.62 ns at
+  ss/27 C, 19 % margin); W = 2 um still fails at sf/27 C (2.39 ns) and
+  ss/27 C (2.59 ns), W = 1 um additionally at tt/27 C (2.37 ns). Wider costs
+  gate/overlap charge on `rbl` for speed the budget does not need.
 * **Write driver**: not speed limited. The written '1' level is set by the
   access device and `C_SN`, not the driver (table below: |delta| < 0.1 mV), so
   the driver is sized for a modest on-resistance only (series pfet pair 1.0 um,
@@ -117,21 +131,32 @@ checked against the deck by `design/test_column_periphery.py`.
 
 ## Evidence (append-only)
 
-Run `20261009T204412Z`, fleet job **`klt-sim-7a36d3a319c2`** (c7i.8xlarge,
-spot, state `done`, 44 s; `environment.remote` of the report), 10/10 corners
-pass, netlist sha256 `f005f9b4...c9eb85` (as hashed by klt), model library
-sha256 `48de7c67...133c84`, ngspice-46, open_pdks `c6d73a35...`
-([`docs/pdk-pin.md`](../../docs/pdk-pin.md)). The grid was submitted once as
-a `klt sim` request on the batch backend (client
-`uvx --from klayout-tools==0.6.0 klt`, the version the fleet runner accepted
-today; the host `klt` 0.7.0 was not used for the submit and no host tool was
-changed). Nothing was looped locally. Two **local single-corner debug probes**
-(tt/27 C and ss/125 C, `--backend local`) were run while sizing; they are not
-recorded as evidence. The committed report has the bucket name redacted.
+Two runs, same request scope (10 corners), both submitted once as a `klt sim`
+request on the batch backend (client `uvx --from klayout-tools==0.6.0 klt`,
+the version the fleet runner accepts; the host `klt` 0.7.0 was not used for
+a submit and no host tool was changed). Nothing was looped locally. Both
+committed reports have the bucket name redacted. Model library sha256
+`48de7c67...133c84`, ngspice-46, open_pdks `c6d73a35...`
+([`docs/pdk-pin.md`](../../docs/pdk-pin.md)) for both.
 
-* `results/klt_report_20261009T204412Z.json` raw klt report
-* `results/periphery_points_20261009T204412Z.csv` 80 rows (10 corners x 8 instances)
-* `results/periphery_summary_20261009T204412Z.json` per-corner metrics, deltas, compliance flags
+| run | fleet job | status | cites |
+|---|---|---|---|
+| `20261009T205913Z` (current) | **`klt-sim-e8a94973d1fc`** (m7i.4xlarge, spot, `done`, 65 s) | 10/10 corners pass, netlist sha256 `93296003...a4f420` = the committed deck | everything in this README |
+| `20261009T204412Z` (**superseded** for the width sweep) | `klt-sim-7a36d3a319c2` (c7i.8xlarge, spot, `done`, 44 s) | 10/10 corners pass, netlist sha256 `f005f9b4...c9eb85` | parenthesised sweep values only |
+
+The superseded run differs from the current deck only in `nrd`/`nrs` of
+`XMPPRE_sw_0100/0200/0800`. The ideal/real instances (`ideal_w*`, `real_w*`,
+`sw_0400`) are the same circuit in both runs; their values differ only at
+solver-noise level (settle <= 0.2 ps, `din`/`sn` <= 25 uV; the flat deck is
+one transient, so time-step control is shared across instances) and every
+number in the ideal-vs-real table below is identical at the quoted precision
+in both runs. Two **local single-corner debug probes** (tt/27 C and ss/125 C,
+`--backend local`) were run while sizing; they are not recorded as evidence.
+
+* `results/klt_report_20261009T205913Z.json` raw klt report (current)
+* `results/periphery_points_20261009T205913Z.csv` 80 rows (10 corners x 8 instances)
+* `results/periphery_summary_20261009T205913Z.json` per-corner metrics, deltas, compliance flags
+* `results/*_20261009T204412Z.*` the superseded run, kept unchanged
 
 Reproduce (new run id, never edit these): `python3 -I sim/column-periphery/gen_column_periphery.py`,
 `uvx --from klayout-tools==0.6.0 klt sim --format json sim/column-periphery/request.json > sim/column-periphery/results/klt_report_<NEW_RUN_ID>.json`

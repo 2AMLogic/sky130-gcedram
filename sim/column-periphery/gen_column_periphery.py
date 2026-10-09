@@ -98,12 +98,22 @@ def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
 
 
 def set_width(params: str, w_um: float) -> str:
-    """Rewrite W and the diffusion geometry (bitcell/xschem convention) for a sweep width."""
+    """Rewrite W and ALL width-dependent geometry for a sweep width.
+
+    Single-finger xschem/bitcell convention (as in design/*.spice):
+    ad = as = W * 0.29, pd = ps = 2 * (W + 0.29), nrd = nrs = 0.29 / W.
+    Every one of the six must follow W (nrd/nrs were missed in the first
+    sweep, run 20261009T204412Z; design/test_column_periphery.py now checks
+    the full geometry).
+    """
     ad = w_um * DIFF_UM
     pd = 2 * (w_um + DIFF_UM)
+    nr = DIFF_UM / w_um
     p = re.sub(r"\bW=\S+", f"W={_fmt(w_um)}", params)
-    for k, v in (("ad", ad), ("as", ad), ("pd", pd), ("ps", pd)):
-        p = re.sub(rf"\b{k}=\S+", f"{k}={_fmt(v)}", p)
+    for k, v in (("ad", ad), ("as", ad), ("pd", pd), ("ps", pd), ("nrd", nr), ("nrs", nr)):
+        p, n = re.subn(rf"\b{k}=\S+", f"{k}={_fmt(v)}", p)
+        if n != 1:
+            raise ValueError(f"set_width: expected exactly one {k}= in {params!r}")
     return p
 
 

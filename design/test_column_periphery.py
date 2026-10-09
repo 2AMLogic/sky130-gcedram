@@ -3,8 +3,10 @@
 
 Every `real_*` / `sw_*` instance block of sim/column-periphery/column_periphery.spice
 must instantiate exactly the devices of the schematic-derived netlist
-design/column_periphery.spice (names, model, W/L, nets); the sweep instances
-may differ only in the precharge device width. The latch devices of every
+design/column_periphery.spice (names, model, W/L, nets and every geometry
+parameter: nf, ad/as, pd/ps, nrd/nrs, sa/sb/sd, m); the sweep instances
+may differ only in the precharge device width and its width-dependent geometry
+(single-finger rule ad=as=0.29W, pd=ps=2(W+0.29), nrd=nrs=0.29/W). The latch devices of every
 instance must equal design/sense_latch.spice. No xschem, ngspice or PDK needed.
 
 Run: python3 -I design/test_column_periphery.py
@@ -41,10 +43,32 @@ def logical_lines(text: str):
     return out
 
 
+GEOMETRY = ("nf", "ad", "as", "pd", "ps", "nrd", "nrs", "sa", "sb", "sd", "mult", "m")
+DIFF_UM = 0.29  # single-finger diffusion length of the xschem/bitcell convention
+
+
 def parse_device(line: str):
+    """nets, model, W/L and every geometry parameter (all parsed as numbers)."""
     t = line.split()
     params = dict(p.split("=", 1) for p in t[6:] if "=" in p)
-    return {"nets": tuple(t[1:5]), "model": t[5], "W": float(params["W"]), "L": float(params["L"])}
+    unknown = set(params) - {"W", "L", *GEOMETRY}
+    if unknown:
+        raise AssertionError(f"unexpected device parameters {sorted(unknown)} in: {line}")
+    d = {"nets": tuple(t[1:5]), "model": t[5], "W": float(params["W"]), "L": float(params["L"])}
+    for k in GEOMETRY:
+        d[k] = round(float(params[k]), 9) if k in params else None
+    return d
+
+
+def resized(dev: dict, w_um: float) -> dict:
+    """Independent expectation for a single-finger device resized to w_um:
+    ad = as = W*0.29, pd = ps = 2*(W+0.29), nrd = nrs = 0.29/W; L, nf, sa/sb/sd, m unchanged."""
+    want = dict(dev)
+    want["W"] = w_um
+    want["ad"] = want["as"] = round(w_um * DIFF_UM, 9)
+    want["pd"] = want["ps"] = round(2 * (w_um + DIFF_UM), 9)
+    want["nrd"] = want["nrs"] = round(DIFF_UM / w_um, 9)
+    return want
 
 
 def canon(net: str, inst: str | None) -> str:
@@ -102,8 +126,31 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
                 for dev in PERIPHERY_DEVICES:
                     want = dict(sch[dev])
                     if name.startswith("sw_") and dev == "MPPRE":
-                        want["W"] = int(name.split("_")[1]) / 100
+                        want = resized(sch[dev], int(name.split("_")[1]) / 100)
                     self.assertEqual(devs[dev], want, f"{dev} in {name} drifted from design/column_periphery.sch")
+
+    def test_parser_keeps_full_geometry(self):
+        mp = netlist_devices(NETLIST, PERIPHERY_DEVICES)["MPPRE"]
+        for k in ("ad", "as", "pd", "ps", "nrd", "nrs"):
+            self.assertIsNotNone(mp[k], f"{k} not parsed; geometry would go unchecked")
+
+    def test_resize_convention_reproduces_every_schematic_device(self):
+        # the single-finger rule used for the sweep expectation must reproduce the
+        # schematic's own geometry at the schematic width, for every slice device
+        for dev, d in netlist_devices(NETLIST, PERIPHERY_DEVICES).items():
+            with self.subTest(device=dev):
+                self.assertEqual(resized(d, d["W"]), d)
+
+    def test_sweep_geometry_would_catch_unscaled_square_counts(self):
+        # regression for the first sweep (run 20261009T204412Z): nrd/nrs left at the W=4 value
+        sch = netlist_devices(NETLIST, PERIPHERY_DEVICES)["MPPRE"]
+        stale = resized(sch, 1.0)
+        stale["nrd"] = stale["nrs"] = sch["nrd"]
+        self.assertNotEqual(stale, resized(sch, 1.0))
+        got = deck_devices(("MPPRE",))["sw_0100"]["MPPRE"]
+        self.assertEqual((got["nrd"], got["nrs"]), (0.29, 0.29))
+        got8 = deck_devices(("MPPRE",))["sw_0800"]["MPPRE"]
+        self.assertEqual((got8["nrd"], got8["nrs"]), (0.03625, 0.03625))
 
     def test_every_instance_latch_equals_sense_latch(self):
         lat = netlist_devices(LATCH, LATCH_DEVICES)
