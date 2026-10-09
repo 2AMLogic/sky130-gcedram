@@ -4,6 +4,12 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-09
 
+- **Issue #92** (closed): Add a reproducible local auditor bootstrap for Python and pinned Icarus Verilog
+- **PR #116**: feat(ci): local auditor bootstrap for pinned Icarus Verilog
+- **Issue #108** (closed): Define the digital-to-analog phase-control contract with an ordering-checked sequencer model
+- **PR #113**: feat(digital): analog phase-control contract, sequencer and mutation suite
+- **Issue #109** (closed): Commit the sense latch as a design source (schematic and derived netlist) tied to the sense-stage deck
+- **PR #112**: design: sense latch schematic + derived netlist tied to sense-stage deck (#109)
 - **Issue #105** (closed): CI: run behavioral SPI and refresh Verilog regressions with a pinned simulator
 - **PR #106**: CI: run behavioral SPI and refresh Verilog regressions with pinned Icarus (#105)
 - **Issue #68** (closed): docs: define provenance and review for appended evidence corrections
