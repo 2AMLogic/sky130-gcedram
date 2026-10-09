@@ -42,6 +42,9 @@ jobs:
       - name: Sense-stage checks
         run: python3 -I sim/sense-stage/test_sense_stage.py
 
+      - name: Sense-latch design-vs-deck drift check
+        run: python3 -I design/test_sense_latch.py
+
       - name: Sense-stage mismatch (Monte Carlo) checks
         run: python3 -I sim/sense-mismatch/test_sense_mismatch.py
 
