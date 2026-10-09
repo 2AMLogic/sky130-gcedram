@@ -4,6 +4,14 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-09
 
+- **Issue #81** (closed): Monte Carlo mismatch study of the sense stage: input-referred offset at the restricted corners
+- **PR #95**: Monte Carlo mismatch study of the sense stage: input-referred offset at the restricted corners (#81)
+- **Issue #80** (closed): Extract read-bitline and wordline parasitics from the 4x4 array to replace the C_RBL assumption
+- **PR #90**: Extract 4x4 array bitline/wordline/sn parasitics; compare to C_RBL and C_SN assumptions (#80)
+- **Issue #83** (closed): Propose the SPI control interface spec with a behavioral SPI-slave model and testbench (#24 item 4)
+- **PR #87**: feat(digital): proposed SPI control interface model (#83)
+- **Issue #82** (closed): Draft macro-level pass conditions for epic #24 items 2-6 as a PROPOSED record
+- **PR #86**: docs(spec): PROPOSED macro-level pass conditions for epic #24 items 2-6
 - **Issue #74** (closed): Refresh scheduler behavioral model with deadline-invariant testbench (#24 item 3)
 - **PR #79**: Refresh scheduler behavioral model with deadline-invariant testbench (#24 item 3)
 - **Issue #60** (closed): Sense-stage characterization at the restricted corners (after #56)
