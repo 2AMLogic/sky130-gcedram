@@ -53,9 +53,65 @@ and `versions.txt` are uploaded as artifact `digital-regression-logs` with
 
 ## Running locally
 
+### Local auditor setup (Ubuntu 24.04)
+
+Supported local host: Ubuntu 24.04 LTS. Python policy: use the distro
+`python3` (3.12 series); the tests are stdlib-only, so no pip environment or
+virtualenv is needed. Package versions are whatever apt provides; record them
+(below) rather than assuming they are immutable. The simulator is the only
+pinned tool: Icarus Verilog `v13_0`, commit
+`dfeee909ed9f20b4870dd93423156c0170c0e1ff`, defined solely in
+`digital/ci/install_iverilog.sh` and verified there (fetched `HEAD` must equal
+that commit).
+
+1. Packages (needs root once; the bootstrap never installs anything itself):
+
+   ```
+   sudo apt-get update
+   sudo apt-get install -y --no-install-recommends python3 git gperf bison flex g++ make
+   ```
+
+2. Build the pinned simulator into a user-writable prefix, with the prefix and
+   scratch build tree both absolute and outside the checkout. The script
+   checks prerequisites first and exits non-zero with the apt command above if
+   any is missing; it creates nothing in that case. The prefix must not
+   contain whitespace (Icarus `configure` rejects it); the build dir may. Builds use
+   `IVERILOG_JOBS` parallel jobs (installer default 2).
+
+   ```
+   digital/ci/bootstrap_auditor.sh "$HOME/iverilog-v13_0" /tmp/iverilog-build
+   ```
+
+3. Put the simulator on `PATH` for the current shell (no shell startup file is
+   edited) and check that both tools resolve to the prefix:
+
+   ```
+   export PATH="$HOME/iverilog-v13_0/bin:$PATH"
+   command -v iverilog vvp
+   ```
+
+4. Capture versions and run the two baseline runners, with logs and exit
+   status outside the checkout:
+
+   ```
+   logs=/tmp/digital-logs; mkdir -p "$logs"
+   { head -2 /etc/os-release; python3 --version; iverilog -V | head -1
+     vvp -V | head -1; git rev-parse HEAD; } > "$logs/versions.txt" 2>&1
+   for s in refresh-scheduler spi-control; do
+     rc=0; digital/$s/run_tests.sh > "$logs/$s.log" 2>&1 || rc=$?
+     echo "$s exit=$rc" >> "$logs/summary.txt"
+   done
+   cat "$logs/summary.txt"; grep -c 'ALL PASS' "$logs"/*.log
+   git status --porcelain   # must be unchanged
+   ```
+
+   Each runner covers both interval bases (ratified and extracted) and must
+   exit 0 with a final `ALL PASS` line.
+
+The bootstrap does not run any suite. For the full serial driver (optional):
+
 ```
-digital/ci/install_iverilog.sh "$HOME/iverilog-v13_0"   # optional, needs gperf bison flex
-PATH="$HOME/iverilog-v13_0/bin:$PATH" digital/ci/run_digital_regressions.sh /tmp/digital-logs
+digital/ci/run_digital_regressions.sh /tmp/digital-logs
 ```
 
 ## Recorded CI runs
