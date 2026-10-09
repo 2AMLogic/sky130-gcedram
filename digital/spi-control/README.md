@@ -8,10 +8,10 @@ are in [`SPEC.md`](SPEC.md). `spec/` is not edited.
 | File | Purpose |
 |---|---|
 | `SPEC.md` | proposed frame format, register map, bound, errors, re-check list |
-| `spi_slave.v` | behavioral slave (`MAX_INTERVAL` parameter) |
+| `spi_slave.v` | behavioral slave (`MAX_INTERVAL` parameter, no default: must be supplied) |
 | `tb_spi_slave.v` | self-checking TB: reset values, round trip, sequencing, bound, malformed frames, async reset; prints `TB_RESULT: PASS/FAIL` |
 | `params.py` | refresh-interval bound, reusing `../refresh-scheduler/params.py` (reads the committed retention CSV; nothing retyped) |
-| `run_tests.sh` | iverilog `-g2012` + vvp at ratified (5029) and extracted-C_SN stress (2751) bounds |
+| `run_tests.sh` | iverilog `-g2012` + vvp at the ratified and extracted-C_SN stress bounds, each read from `params.py` (`params.py ratified`, `params.py extracted`) |
 | `run_mutation.sh` | 8 deliberately broken slaves must all fail the TB |
 | `results/` | dated run output (append-only; add new files) |
 

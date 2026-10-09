@@ -7,7 +7,7 @@
 // Writes/commands commit on the cs_n rising edge, and only if exactly 16 sclk
 // rising edges were seen (otherwise ERR_FRAME and no state change).
 module spi_slave #(
-    parameter integer MAX_INTERVAL = 5029   // ratified bound, cycles (from params.py)
+    parameter integer MAX_INTERVAL          // no default: must be supplied (params.py via run_tests.sh)
 ) (
     input  wire        rst_n,       // async, active low
     input  wire        sclk,

@@ -1,7 +1,8 @@
 `timescale 1ns/1ps
 // Self-checking testbench for spi_slave (issue #83). Prints TB_RESULT: PASS/FAIL.
-module tb_spi_slave;
-    parameter integer MAX_INTERVAL = 5029;   // overridden from params.py
+module tb_spi_slave #(
+    parameter integer MAX_INTERVAL    // no default: supplied by run_tests.sh from params.py
+);
     localparam H = 50;
     reg rst_n = 1, sclk = 0, cs_n = 1, mosi = 0, busy_in = 0;
     wire miso, refresh_en, sweep_tog, err_any;
