@@ -37,8 +37,8 @@ ends at about **-0.11 to -0.14 V** (baseline: ~0 V): a signed observation worth 
 
 What the probes show (diagnostic, not an isolated cause): with the hold adapter the WBL is driven to 1.8 V and
 SN just before WWL falls (1.08-1.37 V) is close to the baseline's value at the same point. In the baseline SN
-then *rises* ~0.15 V after WWL falls (RWL, still held low, is released afterwards); in the RTL sequence RWL
-was released 20 ns earlier, WWL falls last and SN *drops* by 0.01-0.09 V. In the raw variant the 1 ns enable
+then *rises* 0.08-0.27 V after WWL falls (RWL, still held low, is released afterwards); in the RTL sequence RWL
+was released 20 ns earlier, WWL falls last and SN *drops* by 0.01-0.10 V. In the raw variant the 1 ns enable
 lets the latch decide but then floats: the latch complement node shares charge with WBL
 (WBL 1.28-1.36 V before WWL falls instead of 1.8 V). Whether the RWL-hold ordering or the WWL-fall
 feedthrough dominates was **not** isolated; that needs a separate experiment.
@@ -113,7 +113,7 @@ Scheduler timing was not changed.
 Because the RTL waveform fails restoration, a contract change must be proposed separately with evidence.
 Candidates this data motivates, none applied: (a) hold the read select until after WWL falls (overlap rule
 change), (b) a latch-hold adapter plus a post-write settle/RWL-release phase, (c) re-defining the restore
-measurement point. The 0.15 V post-WWL-fall RWL coupling that lifts the baseline is a candidate cause
+measurement point. The 0.08-0.27 V post-WWL-fall rise that lifts the baseline is a candidate cause
 of the difference and may be an artifact of the ideal-driver study circuit; that matters before any contract is
 changed (#114/#117, #88/#89 for physical drivers and loads, #94 for mixed-pattern trajectories).
 
