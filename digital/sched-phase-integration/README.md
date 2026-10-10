@@ -10,6 +10,9 @@ array; this is not an SRAM controller. Behavioral evidence only: no analog
 restoration, CDC, synthesis or timing sign-off claim, and no SPICE.
 
 Results and the PROPOSED integration contract: [`TIMING_REPORT.md`](TIMING_REPORT.md).
+The coupled passing configuration that implements its C1/C2/C3 (issue #138), with the
+re-derived floor, is in [`COUPLED_REPORT.md`](COUPLED_REPORT.md); the files below that are not
+prefixed `coupled_`/`tb_coupled` are the uncoupled #135 characterization controls and are unchanged.
 
 | File | Role |
 |---|---|
@@ -18,6 +21,9 @@ Results and the PROPOSED integration contract: [`TIMING_REPORT.md`](TIMING_REPOR
 | `tb_sched_phase.v` | stimulus, cycle-indexed trace (`+TRACE=file`), scoreboard, per-kind timing report |
 | `run_tests.sh` | scenarios 0-4 x five phase-timing sets; asserts the expected pass/conflict outcome |
 | `run_mutation.sh` | 6 adapter mutants + 4 sequencer early-completion mutants; each must be killed by a `VIOLATION` |
+| `coupled_top.v` | #138: scheduler + adapter + sequencer with `T_ROW`/`T_ACC` (and the decision guard) DERIVED from the phase durations plus the launch latency |
+| `tb_coupled.v`, `coupled_params.py` | #138: configuration gate + independent executed-completion deadline / coverage monitors; Python cross-derivation |
+| `run_coupled.sh`, `run_coupled_mutation.sh` | #138: coupled matrix (2 interval bases x 5 phase sets x 4 scenarios), infeasible/underbudget negative controls, 14 mutants |
 | `results/` | dated, append-only logs |
 
 ## What the scoreboard checks

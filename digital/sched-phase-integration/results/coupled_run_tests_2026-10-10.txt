@@ -1,0 +1,312 @@
+== 1. coupled positive matrix ==
+[ratified anchored scen=0]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=8..8 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=87
+KIND REFRESH launches=160 executed=160 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=1144 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1178); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified anchored scen=1]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=176 executed=176 sched_minus_seq_done=8..8 next_launch_margin_min=1
+KIND WRITE   launches=183 executed=182 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=38 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1178); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified anchored scen=2]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=221 executed=221 sched_minus_seq_done=8..8 next_launch_margin_min=1
+KIND WRITE   launches=176 executed=176 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=369 executed=369 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=27 cycles; shortenings=4 max_transition_over_new_interval=1167 (bound 1178); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[ratified anchored scen=3]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=169 executed=169 sched_minus_seq_done=8..8 next_launch_margin_min=1
+KIND WRITE   launches=186 executed=186 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=147 executed=144 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=38 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1178); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified gap1 scen=0]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=7..7 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=85
+KIND REFRESH launches=160 executed=160 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=1238 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1275); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified gap1 scen=1]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=160 executed=160 sched_minus_seq_done=7..7 next_launch_margin_min=1
+KIND WRITE   launches=173 executed=172 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=57 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1275); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified gap1 scen=2]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=210 executed=210 sched_minus_seq_done=7..7 next_launch_margin_min=1
+KIND WRITE   launches=160 executed=159 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=354 executed=354 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=28 cycles; shortenings=4 max_transition_over_new_interval=1272 (bound 1275); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[ratified gap1 scen=3]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=169 executed=169 sched_minus_seq_done=7..7 next_launch_margin_min=1
+KIND WRITE   launches=164 executed=163 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=146 executed=143 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=57 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1275); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified full_read_pulse scen=0]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=2..2 next_launch_margin_min=77
+KIND REFRESH launches=160 executed=160 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=1456 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1500); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified full_read_pulse scen=1]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=140 executed=140 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=154 executed=154 sched_minus_seq_done=2..2 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=48 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1500); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified full_read_pulse scen=2]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=166 executed=165 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=175 executed=175 sched_minus_seq_done=2..2 next_launch_margin_min=1
+KIND REFRESH launches=324 executed=324 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=29 cycles; shortenings=4 max_transition_over_new_interval=1491 (bound 1500); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[ratified full_read_pulse scen=3]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=147 executed=147 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=156 executed=155 sched_minus_seq_done=2..2 next_launch_margin_min=1
+KIND REFRESH launches=144 executed=141 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=48 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1500); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified fast scen=0]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=1..1 next_launch_margin_min=94
+KIND REFRESH launches=128 executed=128 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=447 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 459); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified fast scen=1]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=579 executed=578 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=612 executed=612 sched_minus_seq_done=1..1 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=2402 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 459); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified fast scen=2]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=632 executed=631 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=593 executed=593 sched_minus_seq_done=1..1 next_launch_margin_min=1
+KIND REFRESH launches=684 executed=684 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=12 cycles; shortenings=4 max_transition_over_new_interval=451 (bound 459); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[ratified fast scen=3]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=521 executed=521 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=580 executed=579 sched_minus_seq_done=1..1 next_launch_margin_min=1
+KIND REFRESH launches=174 executed=171 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=12 cycles; shortenings=1 max_transition_over_new_interval=449 (bound 459); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified mismatch scen=0]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=28..28 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=87
+KIND REFRESH launches=180 executed=179 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=1784 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1838); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified mismatch scen=1]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=75 executed=75 sched_minus_seq_done=28..28 next_launch_margin_min=1
+KIND WRITE   launches=77 executed=76 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=70 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1838); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[ratified mismatch scen=2]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=92 executed=92 sched_minus_seq_done=28..28 next_launch_margin_min=1
+KIND WRITE   launches=95 executed=94 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=296 executed=296 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=47 cycles; shortenings=4 max_transition_over_new_interval=1823 (bound 1838); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[ratified mismatch scen=3]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=84 executed=84 sched_minus_seq_done=28..28 next_launch_margin_min=1
+KIND WRITE   launches=80 executed=80 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=141 executed=138 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=70 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1838); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted anchored scen=0]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=8..8 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=87
+KIND REFRESH launches=198 executed=198 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=1144 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1178); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted anchored scen=1]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=78 executed=77 sched_minus_seq_done=8..8 next_launch_margin_min=1
+KIND WRITE   launches=91 executed=91 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=40 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1178); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted anchored scen=2]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=155 executed=155 sched_minus_seq_done=8..8 next_launch_margin_min=1
+KIND WRITE   launches=126 executed=126 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=383 executed=383 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=27 cycles; shortenings=4 max_transition_over_new_interval=1155 (bound 1178); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[extracted anchored scen=3]
+CONFIG: T_ROW=35 T_ACC=23 (min 35/23, LAT=1, observed launch->start 1..1) floor=1178 shorten_bound=1178 cfg_gate=ok
+KIND READ    launches=83 executed=83 sched_minus_seq_done=8..8 next_launch_margin_min=1
+KIND WRITE   launches=82 executed=82 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=147 executed=144 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=40 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1178); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted gap1 scen=0]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=7..7 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=214 executed=213 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=1200 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1275); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted gap1 scen=1]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=87 executed=87 sched_minus_seq_done=7..7 next_launch_margin_min=1
+KIND WRITE   launches=64 executed=63 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=54 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1275); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted gap1 scen=2]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=137 executed=137 sched_minus_seq_done=7..7 next_launch_margin_min=1
+KIND WRITE   launches=121 executed=120 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=369 executed=369 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=28 cycles; shortenings=4 max_transition_over_new_interval=1272 (bound 1275); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[extracted gap1 scen=3]
+CONFIG: T_ROW=38 T_ACC=24 (min 38/24, LAT=1, observed launch->start 1..1) floor=1275 shorten_bound=1275 cfg_gate=ok
+KIND READ    launches=80 executed=80 sched_minus_seq_done=7..7 next_launch_margin_min=1
+KIND WRITE   launches=71 executed=70 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=146 executed=143 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=54 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1275); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted full_read_pulse scen=0]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=2..2 next_launch_margin_min=1
+KIND REFRESH launches=222 executed=221 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=1176 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1500); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted full_read_pulse scen=1]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=55 executed=55 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=64 executed=63 sched_minus_seq_done=2..2 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=58 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1500); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted full_read_pulse scen=2]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=99 executed=99 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=128 executed=127 sched_minus_seq_done=2..2 next_launch_margin_min=1
+KIND REFRESH launches=344 executed=344 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=29 cycles; shortenings=4 max_transition_over_new_interval=1491 (bound 1500); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[extracted full_read_pulse scen=3]
+CONFIG: T_ROW=45 T_ACC=25 (min 45/25, LAT=1, observed launch->start 1..1) floor=1500 shorten_bound=1500 cfg_gate=ok
+KIND READ    launches=56 executed=56 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=71 executed=70 sched_minus_seq_done=2..2 next_launch_margin_min=1
+KIND REFRESH launches=144 executed=141 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=58 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1500); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted fast scen=0]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=51
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=1..1 next_launch_margin_min=94
+KIND REFRESH launches=128 executed=128 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=447 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 459); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted fast scen=1]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=344 executed=344 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=341 executed=340 sched_minus_seq_done=1..1 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=364 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 459); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted fast scen=2]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=499 executed=499 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=425 executed=424 sched_minus_seq_done=1..1 next_launch_margin_min=1
+KIND REFRESH launches=715 executed=715 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=12 cycles; shortenings=4 max_transition_over_new_interval=451 (bound 459); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[extracted fast scen=3]
+CONFIG: T_ROW=13 T_ACC=8 (min 13/8, LAT=1, observed launch->start 1..1) floor=459 shorten_bound=459 cfg_gate=ok
+KIND READ    launches=291 executed=291 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND WRITE   launches=304 executed=303 sched_minus_seq_done=1..1 next_launch_margin_min=1
+KIND REFRESH launches=174 executed=171 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=12 cycles; shortenings=1 max_transition_over_new_interval=449 (bound 459); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted mismatch scen=0]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=2 executed=2 sched_minus_seq_done=28..28 next_launch_margin_min=1
+KIND WRITE   launches=2 executed=2 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=188 executed=187 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=784 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1838); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted mismatch scen=1]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=21 executed=21 sched_minus_seq_done=28..28 next_launch_margin_min=1
+KIND WRITE   launches=28 executed=27 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=96 executed=96 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=36 cycles; shortenings=0 max_transition_over_new_interval=0 (bound 1838); forced_sweeps_done=0 rearm_ok=1 resets=0 cfg=0 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+[extracted mismatch scen=2]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=64 executed=64 sched_minus_seq_done=28..28 next_launch_margin_min=1
+KIND WRITE   launches=55 executed=54 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=319 executed=319 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=36 cycles; shortenings=4 max_transition_over_new_interval=1819 (bound 1838); forced_sweeps_done=2 rearm_ok=2 resets=0 cfg=11 refused=2 disables=1 enables=1
+TB_RESULT: PASS (violations=0)
+[extracted mismatch scen=3]
+CONFIG: T_ROW=55 T_ACC=43 (min 55/43, LAT=1, observed launch->start 1..1) floor=1838 shorten_bound=1838 cfg_gate=ok
+KIND READ    launches=29 executed=29 sched_minus_seq_done=28..28 next_launch_margin_min=1
+KIND WRITE   launches=33 executed=33 sched_minus_seq_done=0..0 next_launch_margin_min=1
+KIND REFRESH launches=140 executed=137 sched_minus_seq_done=0..0 next_launch_margin_min=1
+DEADLINE: min_slack=36 cycles; shortenings=1 max_transition_over_new_interval=500 (bound 1838); forced_sweeps_done=0 rearm_ok=3 resets=3 cfg=1 refused=0 disables=0 enables=0
+TB_RESULT: PASS (violations=0)
+== 2. infeasible combination must be rejected (non-zero) ==
+[ratified huge] python: INFEASIBLE: set=huge MIN_INTERVAL=5468 INTERVAL=5029 (T_ROW=165 T_ACC=153)
+[ratified huge bench] CONFIG_REJECT: infeasible: floor exceeds the interval (a=5468 b=5029)
+[ratified huge bench] TB_RESULT: FAIL (infeasible duration/interval combination rejected before traffic)
+[ratified huge bench] expected rejection observed
+[extracted huge] python: INFEASIBLE: set=huge MIN_INTERVAL=5468 INTERVAL=2751 (T_ROW=165 T_ACC=153)
+[extracted huge bench] CONFIG_REJECT: infeasible: floor exceeds the interval (a=5468 b=2751)
+[extracted huge bench] TB_RESULT: FAIL (infeasible duration/interval combination rejected before traffic)
+[extracted huge bench] expected rejection observed
+== 3. underbudgeted negative controls (must FAIL) ==
+[neg row_minus1 anchored gate=1] failed as required: CONFIG_REJECT: T_ROW underbudgeted: below sequencer REFRESH cycles + launch latency (a=34 b=35)
+[neg row_minus1 anchored gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=38 a=38 b=5)
+[neg row_minus1 gap1 gate=1] failed as required: CONFIG_REJECT: T_ROW underbudgeted: below sequencer REFRESH cycles + launch latency (a=37 b=38)
+[neg row_minus1 gap1 gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=41 a=41 b=5)
+[neg row_minus1 full_read_pulse gate=1] failed as required: CONFIG_REJECT: T_ROW underbudgeted: below sequencer REFRESH cycles + launch latency (a=44 b=45)
+[neg row_minus1 full_read_pulse gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=48 a=48 b=5)
+[neg acc_minus1 anchored gate=1] failed as required: CONFIG_REJECT: T_ACC underbudgeted: below sequencer READ/WRITE cycles + launch latency (a=22 b=23)
+[neg acc_minus1 anchored gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=1178 a=1178 b=1157)
+[neg acc_minus1 mismatch gate=1] failed as required: CONFIG_REJECT: T_ACC underbudgeted: below sequencer READ/WRITE cycles + launch latency (a=42 b=43)
+[neg acc_minus1 mismatch gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=1838 a=1838 b=1797)
+[neg stale34 gap1 gate=1] failed as required: CONFIG_REJECT: T_ROW underbudgeted: below sequencer REFRESH cycles + launch latency (a=34 b=38)
+[neg stale34 gap1 gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=38 a=38 b=5)
+[neg stale34 full_read_pulse gate=1] failed as required: CONFIG_REJECT: T_ROW underbudgeted: below sequencer REFRESH cycles + launch latency (a=34 b=45)
+[neg stale34 full_read_pulse gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=38 a=38 b=5)
+[neg stale34 mismatch gate=1] failed as required: CONFIG_REJECT: T_ROW underbudgeted: below sequencer REFRESH cycles + launch latency (a=34 b=55)
+[neg stale34 mismatch gate=0] failed as required: VIOLATION: SCHEDULER COMPLETES WHILE SEQUENCER STILL BUSY (c=38 a=38 b=5)
+[neg legacy_floor anchored gate=1] failed as required: CONFIG_REJECT: scheduler decision guard lacks the per-operation decision cycle (a=2 b=35)
+[neg legacy_floor anchored gate=0] failed as required: VIOLATION: applied interval differs from model (floor / range handling) (c=4658 a=1177 b=1178)
+[neg legacy_floor full_read_pulse gate=1] failed as required: CONFIG_REJECT: scheduler decision guard lacks the per-operation decision cycle (a=2 b=35)
+[neg legacy_floor full_read_pulse gate=0] failed as required: VIOLATION: applied interval differs from model (floor / range handling) (c=4978 a=1499 b=1500)
+ALL PASS

@@ -118,3 +118,13 @@ PROPOSED contract (for a separate, approved proposal):
 Until C1 or C2 lands, no timing claim connecting scheduler `T_ROW` to
 sequencer phases may be made for any set other than `anchored`, and for
 `anchored` only with the one-cycle skew and zero margin recorded above.
+
+## 5. Follow-up (appended, issue #138; sections 1-4 above are unchanged evidence)
+
+The fixed-budget remedy proposed in C1/C2/C3 is implemented as a separate
+coupled configuration and verified in [`COUPLED_REPORT.md`](COUPLED_REPORT.md)
+(`T_ROW = D_REF + 1`, `T_ACC = max(D_RD, D_WR) + 1`, configuration gate, executed
+completion monitors). The F1/F2 findings above remain the characterization of
+the uncoupled harness and are still reproduced by `run_tests.sh`. The coupled
+work also found that the #74/#93 interval floor needs the per-operation decision
+cycle for these durations (COUPLED_REPORT.md Sec. 1).
