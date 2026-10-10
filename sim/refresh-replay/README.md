@@ -128,6 +128,136 @@ The analog baseline needs 37. Nothing in `scheduler`/`CONTRACT.md` was changed.
   driver (finite edge rate/impedance), column driver and extracted RBL/WBL loads must be checked before any macro claim.
   No ratified specification or digital overlap rule was revised.
 
+## RWL driver slew / impedance / release-delay sensitivity (issue #134, run `driver_sweep_results/20261010T141816Z`)
+
+**Experimental stimulus model, not a designed physical driver.** Question left open by #131: is the late-RWL restoration
+benefit an artifact of the ideal 0.1 ns edge and a zero-impedance read-wordline source? The selected row's RWL source (the
+read-device source pin of row 0, active-low) now has a **declared ramp time** (0 -> 100 %, applied to every RWL edge) and a
+**declared series resistor** to the cell pin; everything else (circuit, loads `C_RBL = C_WBL = 10 fF` assumed, extracted `C_SN`, 100 ohm
+switches, 20 ns write pulse, latch hold, initial levels, thresholds, **fixed gating probe time**) is the unchanged #131 deck. Nothing in
+the ratified spec, `phase_seq` RTL, `CONTRACT.md` overlap rule or scheduler defaults was changed. **All sweep values are ASSUMPTIONS**
+(no driver design exists); the bounds need human review. Scope: tt/ss/ff/sf/fs x 27/125 C, 1.8 V, no mismatch (PROPOSED, not ratified).
+Voltages are recorded **at the cell pin** (`rwls_<inst>`), and the **programmed source edge** (start, 50 %, end; `manifest.json`) is kept
+distinct from the **measured pin crossings** (`summary.json` -> `results[].pin`).
+
+Sweep (`gen_rwl_driver_sweep.py`; 80 points x 4 patterns + the 41 unchanged #131 control instances = 361 instances, **one** batch request):
+slew-only 0.5/1/2/5 ns at R = 0; R-only 1k/3k/10k/30k/100k/300k/1M ohm at 0.1 ns; **then** combined {1, 2 ns} x {10k, 100k}; each for the
+analog baseline (`an_`), unchanged RTL + latch hold (`rh_`, RWL release 12 ns) and late-RWL + latch hold (`rl_`, release 34 ns). Release
+delay (RWL release start minus WWL fall start at 32 ns) -16/-8/-4/-2/0/+1/+2/+3 ns for `rl_` with the ideal driver, (1 ns, 10k) and
+(2 ns, 100k). Negative controls: missing write-back with release 12 ns and with the late release, at three driver settings.
+
+### Controls, provenance
+
+* The ten original #131 variants run unchanged in the same deck: **100 control results (10 variants x 10 corners) reproduce their recorded
+  restore / sense / simulator verdicts and negative-control verdicts with 0 mismatches**; max |SN_end| difference to the recorded run 4e-5 V
+  (`summary.json` -> `controls_reproduction`). Both original missing-write-back controls and all six new ones (including **late RWL release
+  with no write-back**, worst stored-1 fraction 0.65) remain failures at 10/10 corners: the late-release lift alone is not read as restoration.
+* Source sha256s (generator, analyzer-at-analysis, `replay_lib`, RTL, circuit generators), git head, deck/request sha256 (deck sha256 =
+  klt `netlist_sha256`), model library sha256 `48de7c67...`, open_pdks `c6d73a35...`, klt 0.6.0, ngspice 46, batch job id
+  `klt-sim-7e6455aebff7` (c7i.4xlarge spot, 649 s, 10/10 corners) are pinned in `manifest.json` / `summary.json`. `fleet_attempts.json`
+  lists every submission, including the superseded ones (below). The committed report is gzip-compressed with the bucket name redacted.
+* `test_refresh_replay.py` (`DriverSweep`): every sweep instance is compared with its parent control instance; **only** the declared RWL ramp
+  time, series resistor, RWL release time and (group `ic_artifact_check`) pin initial condition may differ. Unintended changes to another source, the
+  circuit, an initial condition or a probe time are flagged (tamper tests). `replay_lib.edges_to_pwl` keeps the 0.1 ns default byte-for-byte.
+* Same effective start regime: SN just before the RWL assert differs from the parent control by <= 0.42 mV at every non-`ic` sweep point
+  (`start_regime_check`).
+
+### Results (restore at 0.95 / 0.90 / 0.98 of the in-deck SN_ref, corners restored out of 10; gating probe fixed at 36 ns)
+
+`rl_` (late RWL release, latch held), ideal other axis. Slack = 34 ns minus the worst (conservative, interpolated; see below) **cell-pin 90 %
+release crossing**, a time-budget number reported separately from restoration. "first" = earliest sampled time at which all patterns restore
+(a quantized upper bound; the gating verdict is only the 36 ns probe).
+
+| Slew (ns), R = 0 | sense | restore 0.95 / 0.90 / 0.98 | worst stored-1 SN/SN_ref | stored-0 SN_end (V) | pin-90 ns (slack) | first |
+|---|---:|---|---:|---|---|---:|
+| 0.1 (control) | 10 | 10 / 10 / 10 | 1.014 | -0.015 .. +0.027 | 34.1 (-0.1) | 34.5 |
+| 0.5 | 10 | 10 / 10 / 10 | 1.013 | -0.015 .. +0.027 | 34.5 (-0.5) | 34.5 |
+| 1 | 10 | 10 / 10 / 10 | 1.012 | -0.015 .. +0.027 | 34.9 (-0.9) | 35.0 |
+| 2 | 10 | 10 / 10 / 10 | 1.005 | -0.015 .. +0.027 | 35.8 (-1.8) | 36.0 |
+| **5** | 10 | **0** / 10 / 0 | 0.927 | -0.090 .. -0.057 | 38.5 (-4.5) | 38.0 |
+
+| R (ohm), slew 0.1 | sense | restore 0.95 / 0.90 / 0.98 | worst stored-1 SN/SN_ref | stored-0 SN_end (V) | pin-90 ns (slack) | first |
+|---|---:|---|---:|---|---|---:|
+| 1k | 10 | 10 / 10 / 10 | 1.014 | -0.015 .. +0.027 | 34.2 (-0.2) | 34.5 |
+| 10k | 10 | 10 / 10 / 10 | 1.012 | -0.015 .. +0.027 | 34.3 (-0.3) | 34.5 |
+| 100k | 10 | 10 / 10 / 10 | 1.001 | -0.015 .. +0.028 | 35.9 (-1.9) | 35.0 |
+| 300k | 10 | 10 / 10 / **5** | 0.963 | -0.015 .. +0.028 | 39.3 (-5.3) | 36.0 |
+| **1M** | **5** | **0** / 5 / 0 | -0.011 | -0.015 .. +0.028 | 49.9 (-15.9) | never |
+
+(3k and 30k behave between their neighbours; all in `summary.json`.) Combined {1, 2 ns} x {10k, 100k}: all four restore 10/10 at 0.95
+(worst fraction 0.980-1.009). The analog baseline `an_` (release 37 ns) behaves the same way (restores up to 2 ns / 300k; fails at 5 ns / 1M).
+**Failed sweep points** (`failed_sweep_points`: 24 of 74 non-negative-control points, none removed): `rl_`/`an_` at 5 ns slew (stored-1 below 0.95 at the 36 / 39 ns
+gate while the pin is still mid-ramp; they restore later, see "first"); `rl_`/`an_` at 1 Mohm (the series resistor starves the read: the latch decides wrongly at 5 corners);
+`rl_` (2 ns, 100k) at +3 ns release (pin still releasing at the gate); 14 `rh_` points (unchanged RTL release order: every slew-only point, every R <= 10k point and the
+combined points still fail, as in #131; R = 30k restores 3/10, 100k 9/10, 300k 10/10, 1M fails the read); and the five `ic_artifact_check` points (sense failures, below).
+
+**Release-delay sweep** (`rl_`, restore 0.95 / 0.98, stored-0 range, worst pin-90 slack against 34 ns):
+
+| delay (ns) | ideal driver | (1 ns, 10k) | (2 ns, 100k) |
+|---|---|---|---|
+| -16 | 10 / 4, SN/ref 0.954, stored-0 -0.139..-0.113, +17.9 | 10 / 0, 0.954, -4.1 | 10 / 6, 0.969, -5.2 |
+| -8 | 10 / 10, 0.996, +9.9 | 10 / 10, 0.993, -1.1 | 10 / 10, 0.991, -1.9 |
+| -2 | 10 / 10, 1.011, +3.9 | 10 / 10, 1.009, -1.5 | 10 / 10, 0.999, -2.0 |
+| 0 | 10 / 10, 1.014, stored-0 -0.068..-0.051, +1.9 | 10 / 10, 1.012, -0.8 | 10 / 10, 1.001, -1.9 |
+| +1 | 10 / 10, 1.014, stored-0 -0.015..+0.027, +0.9 | 10 / 10, 1.012, -0.4 | 10 / 10, 0.999, -2.0 |
+| +2 (= #131) | 10 / 10, 1.014, -0.1 | 10 / 10, 1.009, -0.9 | 10 / 10, 0.980, -2.9 |
+| +3 | 10 / 10, 1.008, -1.1 | 10 / 10, 0.996, -1.9 | **0** / 0, 0.897, -3.9 |
+
+SN probes, stored '1' 0.9 V, tt/27 C (SN_ref 1.284; V): SN before / after WWL fall, before / after RWL release, end: baseline 1.175 / 1.051, 1.051 /
+1.269, 1.325; `rtl_hold` 1.179 / 1.042, 0.770 / 1.026, 1.112; `rl_` ideal (+2 ns) = baseline to 1e-3; release 16 ns early: 1.294 / 1.158, 1.121 / 1.293,
+1.251 (0.975); `rl_` 300k: 1.175 / 1.051, 1.051 / 1.111, 1.264 (0.984).
+
+### What this says (and does not)
+
+1. **The late-release restoration survives finite edge rate and finite driver impedance within the tested box, and is not a pure ideal-edge
+   artifact.** At the gating probe, restoration holds at 10/10 corners for slew <= 2 ns at R = 0, R <= 300 kohm at 0.1 ns, and all four combined
+   points. Tested-grid envelope (`robustness_envelope`, restoration only): slew in [0.1, 2] ns bounded above by the failing 5 ns point; R in [0, 300k]
+   bounded above by the failing 1 Mohm point (at 300k the 0.98 fraction is already only 5/10). The envelope is the tested grid, not a continuous
+   bound, and the first failure above it (5 ns, 1 Mohm) is a *different* failure each (gate probe mid-ramp; read path).
+2. **The mechanism is pin timing, not source-edge timing.** The unchanged RTL order (`rh_`, source release at 12 ns, which fails in #131) *starts restoring* when
+   the series resistance delays the pin: 3/10 corners at 30k, 9/10 at 100k, 10/10 at 300k, even though the programmed source edge is untouched. With 300k the pin
+   50 % crossing is 0.3-2.8 ns **after** WWL falls (at 100k the 50 % crossing is earlier but the 90 % crossing, the slow tail, is at 35.8 ns).
+   Binning every sense-correct corner record by the measured pin 90 % crossing relative to the WWL fall (`restoration_vs_pin_crossing`): records whose pin finishes
+   releasing later than 2 ns after WWL fall restore 426/435 (2..4 ns) and 77/117 (> 4 ns; the late ones fail at the fixed probe), and those finishing earlier
+   than -10 ns restore 10/116 (the ten are the ideal-driver -16 ns point, marginal at 0.954); the programmed source release time alone does not predict restoration (compare the `rh_` rows). This is an association over this
+   stimulus model.
+3. **Release-delay margin (ideal driver and finite drivers):** restoration at 0.95 holds for every tested release from 16 ns before to 3 ns after the WWL
+   fall (the unchanged RTL release is 20 ns before and fails), i.e. the stored-1 benefit does **not** require the release to follow the WWL fall, which narrows
+   the #131 reading ("release after WWL fall"). The lower boundary is only bracketed between -20 ns (fails) and -16 ns (passes at 0.954, the 0.98 fraction at
+   only 4/10): it is a thin margin there. A separate constraint is the **signed stored-0 level**: it returns to the clean -0.015..+0.027 V only when the release is
+   >= +1 ns after the WWL fall (undershoot -0.14..-0.11 V for releases before it, -0.07..-0.05 V at 0 ns). The restoration criterion (stored 0 <= 50 mV) does not
+   penalize the undershoot, so both are reported. The upper end is set by the gating probe (and time budget), not by the cell: `(2 ns, 100k)` at +3 ns fails because the
+   pin is still releasing at 36 ns. No restore probe was moved to obtain a pass (the gating probe is 36 ns for the RTL-derived points and 39 ns for the analog baseline,
+   as in #131).
+4. **Time budget, reported separately.** The source edge *starts* at the 34 ns budget edge for the +2 ns point, but the cell pin reaches 90 % at 34.1 ns (ideal),
+   34.2-35.9 ns for R = 1k-100k, 35.8 ns at 2 ns slew and 39.3 ns at 300k; counting the one-cycle `done` observation after the operation end, **no** sweep point
+   completes within 34 ns (as in #131: 34 + 1). Earlier release recovers pin-90 slack (ideal driver: +17.9 ns at -16, still positive to +1 ns), but
+   the gating probe (36 ns) and the completion accounting still exceed 34 ns; restoration and budget are independent verdicts here
+   (the budget-inclusive envelope, `restoration_and_pin_release_90_within_budget`, is empty or anchored on a reference that itself does not fit). The pin 90 % time of
+   series-R instances is interpolated from pin samples (+0.2 .. +32 ns after the release start); on a concave tail the chord lies below the curve, so the true crossing is
+   **earlier or equal** (a conservative slack).
+5. **Not shown:** a physical driver, its size or its shared-row loading; extracted RBL/WBL/RWL loads (#88/#89, #114/#117); mismatch/offset; column-driver behaviour;
+   any decision about the `CONTRACT.md` overlap rule. This study is one more input to that decision, not the decision.
+
+### Start-up artifact in the shared deck (found while building this study; affects #128/#131 as well)
+
+The #128/#131 controls (and `sim/refresh-op`) give the idle-high RWL pin no initial condition. Under `uic` the forced pin steps 0 -> VDD in the
+first step and injects charge onto SN through the read device, so the stored level at the read is **about 0.07-0.12 V above its label** (tt/27: '1' 0.9 V reads from
+1.024 V, stored '0' -0.1 V from -0.033 V). The group `ic_artifact_check` adds an explicit idle-high pin IC (declared change; everything else identical): the pre-read levels
+fall by 0.12-0.26 V, the stored-'1' 0.9 V pattern is then **sensed wrongly at ss/27 and fs/27** (even with the ideal driver, 8/10 corners sense-correct), and the
+restoration verdicts of the sense-correct corners are unchanged (`rl_` ideal 8/8, `rh_` 0/8). So the earlier sense margin of the 0.9 V pattern leaned on
+the artifact. All sweep points deliberately keep the legacy start regime (no pin IC) so that they compare with the recorded controls; the artifact is *not* corrected in the
+existing results and the legacy runs were not touched. This belongs in the read-path/circuit follow-up work, not in this PR.
+
+### Discarded runs and fleet notes
+
+Four batch submissions were made for this study; only the last is recorded. (1) `klt-sim-2480fb15ca17` / `klt-sim-96abb903ed99`: an earlier whole study whose series-R
+instances carried a pin IC the controls lack (the artifact above made its R-axis sense failures a start-level confound); discarded and not committed. (2) `klt-sim-a0ce12190c1f`:
+a point id containing an upper-case letter (`r1M`) made the fleet runner return "no value" for those instances (ngspice lower-cases `.meas` names; already filed as
+klayout-tools#2914) and graded all corners `error`; ids are lower case now and a test enforces it. (3) `klt-sim-c8004da21637`: 10/10 corners ran, but the `.meas WHEN ... RISE=1`
+pin-crossing probes of series-R instances locked onto the t = 0 start-up charge of the unclamped pin; replaced by sampled pin voltages (exact `WHEN` only for R = 0, where it cannot fail).
+Single-corner local runs of small subset decks (and of the failed full deck) were diagnostics only. No grid was run locally.
+
 ## Files
 
 | File | Role |
@@ -137,6 +267,8 @@ The analog baseline needs 37. Nothing in `scheduler`/`CONTRACT.md` was changed.
 | [`replay_lib.py`](replay_lib.py) | `PIN_MAP`, edge -> PWL converter, latch-hold adapter, reverse PWL parser, trace-consistency check, negative-control mutations |
 | [`gen_refresh_replay.py`](gen_refresh_replay.py) | builds a NEW `results/<RUN_ID>/` with deck, `klt sim` request, waveforms, consistency check, manifest |
 | [`analyze_refresh_replay.py`](analyze_refresh_replay.py) | reduces the klt report into `points.csv` + `summary.json` (refuses to overwrite) |
+| [`gen_rwl_driver_sweep.py`](gen_rwl_driver_sweep.py) | #134: RWL-driver sweep generator (declared slew / series R / release delay, declared-change-only verification, probes at the cell pin); writes a NEW `driver_sweep_results/<RUN_ID>/` |
+| [`analyze_rwl_driver_sweep.py`](analyze_rwl_driver_sweep.py) | #134: reduces the klt report into `points.csv` + `summary.json` (separate restoration / time-budget verdicts, controls reproduction, envelope, pin-crossing view) |
 | [`test_refresh_replay.py`](test_refresh_replay.py) | stdlib tests (converter, consistency check, analysis logic, committed-run self-consistency); wired into `evidence-checks.yml` |
 
 ## Pin mapping (explicit; `replay_lib.PIN_MAP`)
@@ -220,6 +352,11 @@ python3 -I sim/refresh-replay/gen_refresh_replay.py /tmp/rtl_trace.json         
 uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json results/<RUN_ID>/request.json   # from the repo root
 python3 -I sim/refresh-replay/analyze_refresh_replay.py sim/refresh-replay/results/<RUN_ID>
 python3 -I sim/refresh-replay/test_refresh_replay.py
+
+# #134 driver sweep (new run directory under driver_sweep_results/)
+python3 -I sim/refresh-replay/gen_rwl_driver_sweep.py /tmp/rtl_trace.json
+uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json sim/refresh-replay/driver_sweep_results/<RUN_ID>/request.json
+python3 -I sim/refresh-replay/analyze_rwl_driver_sweep.py sim/refresh-replay/driver_sweep_results/<RUN_ID>
 ```
 
 Run `20261010T130000Z` (issue #131): one `klt sim` batch request (`uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json`,
