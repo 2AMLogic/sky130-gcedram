@@ -4,6 +4,16 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-10
 
+- **PR #137**: feat(sim): RWL driver slew/impedance/release-delay sensitivity of late-RWL refresh restoration (#134)
+- **Issue #134** (closed): Characterize late-RWL refresh restoration sensitivity to driver slew and impedance
+- **PR #136**: feat(digital): scheduler-to-phase-sequencer integration harness and timing report
+- **Issue #135** (closed): Verify scheduler-to-phase-sequencer launch and completion timing in a behavioral integration harness
+- **PR #133**: feat(sim): refresh-replay RWL/latch release-order attribution experiment
+- **Issue #131** (closed): Isolate refresh restoration failure with controlled RWL and latch release-order experiments
+- **PR #129**: feat(sim): replay phase_seq RTL strobes in refresh-op circuit (RTL waveform fails restoration)
+- **Issue #128** (closed): Replay phase-sequencer RTL strobes in SPICE to test refresh waveform compatibility
+- **PR #126**: docs(sim): narrow 'a PR cannot weaken the check' claim
+- **Issue #72** (closed): docs(sim): narrow 'a PR cannot weaken the check' claim for the append-only guard
 - **Issue #115** (closed): Quantify refresh energy and standby power of the 2T array at the PVT corners
 - **PR #124**: feat(sim): array-boundary refresh energy and standby power of the extracted 4x4 array
 - **Issue #119** (closed): Auditor: retain rm-scope rejection for custom-template mktemp cleanup
