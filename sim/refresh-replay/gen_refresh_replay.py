@@ -41,10 +41,31 @@ import gen_sense_stage as S  # noqa: E402
 
 BASE_SENSE_S, BASE_WB_S = 10e-9, 20e-9        # the existing contract-sense / ideal-reference pulse point
 PATTERNS = [("op1", v) for v in G.SN1_PRE_V] + [("op0", v) for v in G.SN0_PRE_V]
-VARIANTS = ["baseline_analog", "rtl_raw", "rtl_hold", "neg_missing_wb", "neg_short_wb"]
+BASE_VARIANTS = ["baseline_analog", "rtl_raw", "rtl_hold", "neg_missing_wb", "neg_short_wb"]
+# Issue #131 controlled release-order experiments. EXPERIMENTAL waveforms, NOT approved overlap-rule changes.
+# Each moves ONLY the named release edge(s) of its parent variant (nodes: rwls = read select, en = latch enable);
+# ``intended`` is node -> new release time (ns). Enforced by experiment_diff() and by the consistency check.
+RWL_LATE_NS = 34.0         # read-select release 2 ns after WWL falls (32 ns) = the baseline offset; coincident with BL release
+LATCH_EARLY_NS = 30.0      # latch-enable release 2 ns BEFORE WWL falls
+LATCH_LATE_NS = 36.0       # latch-enable release 2 ns after WWL falls / BL-drive release (34 ns)
+EXPERIMENTS = {
+    "rwl_late_raw":    dict(parent="rtl_raw",  adapter=False, rwl_release=RWL_LATE_NS, latch_release=None,
+                            intended={"rwls": RWL_LATE_NS}, what="RWL release 12 -> 34 ns; 1-cycle sample pulse unchanged (no hold)"),
+    "rwl_late_hold":   dict(parent="rtl_hold", adapter=True,  rwl_release=RWL_LATE_NS, latch_release=None,
+                            intended={"rwls": RWL_LATE_NS}, what="RWL release 12 -> 34 ns; latch-hold adapter unchanged"),
+    "latch_early_hold": dict(parent="rtl_hold", adapter=True, rwl_release=None, latch_release=LATCH_EARLY_NS,
+                             intended={"en": LATCH_EARLY_NS}, what="latch-enable release 34 -> 30 ns (before WWL fall); RWL unchanged"),
+    "latch_late_hold": dict(parent="rtl_hold", adapter=True,  rwl_release=None, latch_release=LATCH_LATE_NS,
+                            intended={"en": LATCH_LATE_NS}, what="latch-enable release 34 -> 36 ns (after WWL fall and BL release); RWL unchanged"),
+    "combined_hold":   dict(parent="rtl_hold", adapter=True,  rwl_release=RWL_LATE_NS, latch_release=LATCH_LATE_NS,
+                            intended={"rwls": RWL_LATE_NS, "en": LATCH_LATE_NS}, what="rwl_late_hold + latch_late_hold composed (both controls, run after the individual ones)"),
+}
+VARIANTS = BASE_VARIANTS + list(EXPERIMENTS)
 NEGATIVE = {"neg_missing_wb": "missing_wb", "neg_short_wb": "short_wb"}
 T_MEAS_NS = G.T_MEAS_S * 1e9
 SN_DEC_LEAD_NS = 0.1       # decision / pre-read probes this long before the reference WWL rise (as sim/refresh-op)
+POST_LAG_NS = 0.2          # "immediately after" an edge: just past the 0.1 ns ramp (#131 probes)
+SETTLE_EXTRA_NS = 8.0      # extra late-settle probe, this long after the restore-measurement point (#131)
 STROBES = list(L.PIN_MAP)
 
 
@@ -72,22 +93,38 @@ def variant_traces(golden: dict) -> dict:
            "rtl_hold": dict(trace=golden, adapter=True)}
     for name, kind in NEGATIVE.items():
         out[name] = dict(trace=L.mutate_trace(golden, kind), adapter=True)
+    for name, ex in EXPERIMENTS.items():
+        tr = golden
+        if ex["rwl_release"] is not None:
+            tr = L.retime_edge(tr, "rwl_sel", 0, ex["rwl_release"])
+        out[name] = dict(trace=tr, adapter=ex["adapter"], latch_release=ex["latch_release"])
     return out
 
 
-def node_waveforms(trace: dict, adapter: bool) -> dict:
+def node_waveforms(trace: dict, adapter: bool, latch_release: float | None = None) -> dict:
     """node -> (initial logical value, edges, invert); the enable node optionally replaced by the adapter."""
     nodes = {}
     for sig, pm in L.PIN_MAP.items():
         nodes[pm["node"]] = (trace["initial"].get(sig, 0), L.trace_signal_edges(trace, sig), pm["invert"])
     if adapter:
-        ad = L.latch_hold_adapter(trace)
+        ad = L.latch_hold_adapter(trace, latch_release)
         nodes[L.ADAPTER_NODE] = (ad["initial"], ad["edges"], False)
     return nodes
 
 
 def node_pwl(nodes: dict) -> dict:
     return {n: L.edges_to_pwl(init, edges, inv) for n, (init, edges, inv) in nodes.items()}
+
+
+def experiment_diff(name: str, node_maps: dict) -> dict:
+    """Prove an experiment changed only its intended release edge(s) relative to its parent variant
+    (node-level PWL source edges, so the latch-hold adapter waveform is covered)."""
+    ex = EXPERIMENTS[name]
+    diffs = L.diff_node_waveforms(node_maps[ex["parent"]], node_maps[name])
+    got = {d["node"]: d.get("to_ns") for d in diffs if d["kind"] == "shifted"}
+    only_shifts = all(d["kind"] == "shifted" for d in diffs)
+    ok = only_shifts and got == ex["intended"] and len(diffs) == len(ex["intended"])
+    return dict(parent=ex["parent"], intended=ex["intended"], observed=diffs, only_intended_edges=ok)
 
 
 def timing(trace: dict, golden: dict, nodes: dict) -> dict:
@@ -98,7 +135,16 @@ def timing(trace: dict, golden: dict, nodes: dict) -> dict:
     gwr = [t for t, v in L.trace_signal_edges(golden, "wwl_en") if v == 1]
     ref_rise = (wr or gwr)[0]
     ctl_last = max(t for n, (i, ed, inv) in nodes.items() for t, _ in ed) if any(ed for _, ed, _ in nodes.values()) else 0.0
-    return dict(t_dec_ns=round(ref_rise - SN_DEC_LEAD_NS, 6), t_wwl_rise_ns=wr[0] if wr else None,
+    rwl_rel = [t for t, v in L.trace_signal_edges(trace, "rwl_sel") if v == 0]
+    en_edges = nodes["en"][1]
+    latch_rel = max(t for t, v in en_edges if v == 0) if any(v == 0 for _, v in en_edges) else None
+    wfp = (wf[0] if wf else ref_rise + 1.0)
+    return dict(t_rwl_release_ns=rwl_rel[-1] if rwl_rel else None, t_latch_release_ns=latch_rel,
+                t_after_wwl_fall_ns=round(wfp + POST_LAG_NS, 6),
+                t_before_rwl_rel_ns=round(rwl_rel[-1] - SN_DEC_LEAD_NS, 6) if rwl_rel else None,
+                t_after_rwl_rel_ns=round(rwl_rel[-1] + POST_LAG_NS, 6) if rwl_rel else None,
+                t_settle_ns=round(ctl_last + T_MEAS_NS + SETTLE_EXTRA_NS, 6),
+                t_dec_ns=round(ref_rise - SN_DEC_LEAD_NS, 6), t_wwl_rise_ns=wr[0] if wr else None,
                 t_wwl_fall_ns=wf[0] if wf else None, t_release_ns=ctl_last, t_meas_ns=round(ctl_last + T_MEAS_NS, 6),
                 t_wbl_probe_ns=round((wf[0] if wf else ref_rise + 1.0) - SN_DEC_LEAD_NS, 6))
 
@@ -113,7 +159,7 @@ def build_instances(golden: dict) -> list[dict]:
     insts = []
     for variant in VARIANTS:
         tr, ad = vt[variant]["trace"], vt[variant]["adapter"]
-        nodes = node_waveforms(tr, ad)
+        nodes = node_waveforms(tr, ad, vt[variant].get("latch_release"))
         tm = timing(tr, golden, nodes)
         for kind, sn in PATTERNS:
             insts.append(dict(name=inst_name(kind, sn, variant), kind=kind, sn=sn, variant=variant, trace=tr,
@@ -211,7 +257,7 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
 
 
 def t_stop_ns(insts) -> float:
-    return max(p["t_meas_ns"] for p in insts) + 1.0
+    return max(p["t_settle_ns"] for p in insts) + 1.0
 
 
 def build_request(insts: list[dict]) -> dict:
@@ -224,6 +270,14 @@ def build_request(insts: list[dict]) -> dict:
             {"name": f"dec_{n}", "unit": "V", "spice": f".meas tran dec_{n} FIND v(d_{n}) AT={p['t_dec_ns']:.6g}n"},
             {"name": f"wblp_{n}", "unit": "V", "spice": f".meas tran wblp_{n} FIND v(wbl_{n}) AT={p['t_wbl_probe_ns']:.6g}n"},
             {"name": f"snwf_{n}", "unit": "V", "spice": f".meas tran snwf_{n} FIND v(sn_{n}_0) AT={p['t_wbl_probe_ns']:.6g}n"},
+            # issue #131: SN just after WWL falls, around the RWL release, WBL / latch state after WWL falls, late settle
+            {"name": f"snwa_{n}", "unit": "V", "spice": f".meas tran snwa_{n} FIND v(sn_{n}_0) AT={p['t_after_wwl_fall_ns']:.6g}n"},
+            {"name": f"wbla_{n}", "unit": "V", "spice": f".meas tran wbla_{n} FIND v(wbl_{n}) AT={p['t_after_wwl_fall_ns']:.6g}n"},
+            {"name": f"dla_{n}", "unit": "V", "spice": f".meas tran dla_{n} FIND v(d_{n}) AT={p['t_after_wwl_fall_ns']:.6g}n"},
+            {"name": f"snrb_{n}", "unit": "V", "spice": f".meas tran snrb_{n} FIND v(sn_{n}_0) AT={p['t_before_rwl_rel_ns']:.6g}n"},
+            {"name": f"snra_{n}", "unit": "V", "spice": f".meas tran snra_{n} FIND v(sn_{n}_0) AT={p['t_after_rwl_rel_ns']:.6g}n"},
+            {"name": f"snset_{n}", "unit": "V", "spice": f".meas tran snset_{n} FIND v(sn_{n}_0) AT={p['t_settle_ns']:.6g}n"},
+            {"name": f"dend_{n}", "unit": "V", "spice": f".meas tran dend_{n} FIND v(d_{n}) AT={p['t_meas_ns']:.6g}n"},
         ]
     return {"netlist": "refresh_replay.spice", "engine": "ngspice", "backend": "batch",
             "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
@@ -273,6 +327,10 @@ def verify_deck(deck: str, insts: list[dict], golden: dict) -> dict:
             tv = L.check_trace_consistency(golden, p["trace"])
         res[name] = dict(variant=p["variant"], deck_matches_trace=not findings, deck_findings=findings,
                          trace_matches_golden_rtl=not tv, trace_findings=tv)
+        if p["variant"] in EXPERIMENTS:
+            maps = {v: next(i for i in insts if i["variant"] == v and i["kind"] == p["kind"] and i["sn"] == p["sn"])["nodes"]
+                    for v in (EXPERIMENTS[p["variant"]]["parent"], p["variant"])}
+            res[name]["experiment_diff"] = experiment_diff(p["variant"], maps)
     return res
 
 
@@ -283,7 +341,7 @@ def git(*a) -> str:
 def pins(golden: dict) -> dict:
     files = ["digital/phase-control/phase_seq.v", "digital/phase-control/tb_trace_export.v",
              "sim/refresh-replay/replay_lib.py", "sim/refresh-replay/gen_refresh_replay.py",
-             "sim/refresh-replay/export_rtl_trace.py", "sim/refresh-op/gen_refresh_op.py",
+             "sim/refresh-replay/export_rtl_trace.py", "sim/refresh-replay/analyze_refresh_replay.py", "sim/refresh-op/gen_refresh_op.py",
              "sim/sense-stage/gen_sense_stage.py", "design/gain_cell_2t.spice",
              "layout/gain_cell_2t.extract.parasitics.json"]
     try:
@@ -327,12 +385,14 @@ def main(argv=None) -> int:
     (run_dir / "waveforms.json").write_text(json.dumps(wf, indent=1) + "\n")
     (run_dir / "consistency_check.json").write_text(json.dumps(check, indent=1) + "\n")
     man = dict(
-        run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=128,
+        run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=131,
+        experiments={k: {kk: vv for kk, vv in v.items()} for k, v in EXPERIMENTS.items()},
         deck_sha256=hashlib.sha256(deck.encode()).hexdigest(), request_sha256=hashlib.sha256((json.dumps(req, indent=1) + "\n").encode()).hexdigest(),
         variants=VARIANTS, negative_controls=NEGATIVE, patterns=[dict(kind=k, sn_v=v) for k, v in PATTERNS],
         instances=[dict(name=p["name"], kind=p["kind"], sn_v=p["sn"], variant=p["variant"],
                         t_dec_ns=p["t_dec_ns"], t_wwl_rise_ns=p["t_wwl_rise_ns"], t_wwl_fall_ns=p["t_wwl_fall_ns"],
                         t_release_ns=p["t_release_ns"], t_meas_ns=p["t_meas_ns"],
+                        t_rwl_release_ns=p["t_rwl_release_ns"], t_latch_release_ns=p["t_latch_release_ns"],
                         digital=L.digital_duration(p["trace"]) if p["variant"] not in ("baseline_analog", "reference_write") else None)
                    for p in insts],
         assumptions=dict(

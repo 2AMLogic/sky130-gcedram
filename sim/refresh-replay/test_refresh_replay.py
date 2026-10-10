@@ -110,7 +110,8 @@ class Deck(unittest.TestCase):
         chk = G.verify_deck(self.deck, self.insts, self.g)
         for n, c in chk.items():
             self.assertTrue(c["deck_matches_trace"], n)
-            neg = c["variant"] in G.NEGATIVE
+            neg = c["variant"] in G.NEGATIVE or bool(G.EXPERIMENTS.get(c["variant"], {}).get("rwl_release"))
+            # by-design deviations; latch-only experiments change only the adapter, not the RTL strobes
             self.assertEqual(c["trace_matches_golden_rtl"], not neg, n)
 
     def test_deck_tamper_detected(self):
@@ -178,9 +179,9 @@ class Analysis(unittest.TestCase):
         c_sn_ff, _ = G.S.load_extracted_c_sn(G.S.EXTRACT_JSON, "sn")
         deck = G.build_netlist(c_sn_ff * 1e-15, insts)
         cls.check = G.verify_deck(deck, insts, g)
-        cls.man = dict(variants=G.VARIANTS, negative_controls=G.NEGATIVE, instances=[
+        cls.man = dict(variants=G.VARIANTS, negative_controls=G.NEGATIVE, experiments=G.EXPERIMENTS, instances=[
             dict(name=p["name"], kind=p["kind"], sn_v=p["sn"], variant=p["variant"], t_release_ns=p["t_release_ns"],
-                 t_meas_ns=p["t_meas_ns"],
+                 t_meas_ns=p["t_meas_ns"], t_rwl_release_ns=p["t_rwl_release_ns"], t_latch_release_ns=p["t_latch_release_ns"],
                  digital=L.digital_duration(p["trace"]) if p["variant"] not in ("baseline_analog", "reference_write") else None)
             for p in insts])
 
@@ -229,6 +230,77 @@ class Analysis(unittest.TestCase):
         self.assertFalse(d["fits_budget_completion_observed"])
         self.assertFalse(d["fits_budget_settled_measurement"])
         self.assertFalse(r["baseline_analog"]["duration"]["fits_budget_op_end"])    # 37 ns
+
+
+class Experiments(unittest.TestCase):
+    """Issue #131: each control changes only its intended release edge(s); consistency still checked."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.g = golden()
+        cls.insts = G.build_instances(cls.g)
+        c_sn_ff, _ = G.S.load_extracted_c_sn(G.S.EXTRACT_JSON, "sn")
+        cls.deck = G.build_netlist(c_sn_ff * 1e-15, cls.insts)
+        cls.check = G.verify_deck(cls.deck, cls.insts, cls.g)
+
+    def nodes(self, v):
+        return next(i for i in self.insts if i["variant"] == v and i["kind"] == "op1" and i["sn"] == 0.9)["nodes"]
+
+    def test_each_experiment_changes_only_intended_edges(self):
+        for v, ex in G.EXPERIMENTS.items():
+            d = L.diff_node_waveforms(self.nodes(ex["parent"]), self.nodes(v))
+            self.assertEqual({x["node"]: x["to_ns"] for x in d}, ex["intended"], v)
+            self.assertTrue(all(x["kind"] == "shifted" for x in d), v)
+            for c in self.check.values():
+                if c["variant"] == v:
+                    self.assertTrue(c["deck_matches_trace"] and c["experiment_diff"]["only_intended_edges"], v)
+
+    def test_individual_controls_are_orthogonal_and_combined_composes_them(self):
+        n = {v: self.nodes(v) for v in ("rtl_hold", "rwl_late_hold", "latch_late_hold", "combined_hold")}
+        self.assertEqual(n["rwl_late_hold"]["en"], n["rtl_hold"]["en"])        # RWL control leaves the latch alone
+        self.assertEqual(n["latch_late_hold"]["rwls"], n["rtl_hold"]["rwls"])  # latch control leaves RWL alone
+        for node in ("ctl", "wwl", "wbc"):
+            for v in n:
+                self.assertEqual(n[v][node], n["rtl_hold"][node], (v, node))
+        self.assertEqual(n["combined_hold"]["rwls"], n["rwl_late_hold"]["rwls"])
+        self.assertEqual(n["combined_hold"]["en"], n["latch_late_hold"]["en"])
+
+    def test_retimed_write_pulse_width_is_unchanged(self):
+        for i in self.insts:
+            if i["variant"] in G.EXPERIMENTS:
+                self.assertEqual(i["t_wwl_fall_ns"] - i["t_wwl_rise_ns"], 20.0, i["name"])
+                self.assertEqual(i["sn"], next(j for j in self.insts if j["variant"] == "rtl_hold" and j["kind"] == i["kind"] and j["sn"] == i["sn"])["sn"])
+
+    def test_retime_edge_refuses_ambiguous_edge(self):
+        with self.assertRaises(ValueError):
+            L.retime_edge(self.g, "sense_en", 5, 3.0)
+        t = L.retime_edge(self.g, "rwl_sel", 0, 34.0)
+        self.assertEqual(L.check_trace_consistency(self.g, t)[0]["kind"], "shifted")
+        self.assertEqual({f["kind"] for f in L.check_trace_consistency(self.g, t)}, {"shifted", "reordered"})
+
+    def test_tampered_experiment_is_flagged(self):
+        maps = {"rtl_hold": self.nodes("rtl_hold"), "rwl_late_hold": dict(self.nodes("rwl_late_hold"))}
+        init, ed, inv = maps["rwl_late_hold"]["wwl"]
+        maps["rwl_late_hold"]["wwl"] = (init, [(t + 1.0, v) for t, v in ed], inv)    # an unintended extra change
+        self.assertFalse(G.experiment_diff("rwl_late_hold", maps)["only_intended_edges"])
+
+    def test_request_has_issue131_probes(self):
+        names = {m["name"] for m in G.build_request(self.insts)["measurements"]}
+        for p in self.insts:
+            for k in ("snwa", "wbla", "dla", "snrb", "snra", "snset", "dend", "wblp", "snwf"):
+                self.assertIn(f"{k}_{p['name']}", names)
+
+    def test_attribution_labels(self):
+        def res(v, frac, ok):
+            return dict(corner="tt", temp_c=27, variant=v, min_op1_fraction=frac, restore_success=ok)
+        base = [res("rtl_raw", .79, False), res("rtl_hold", .87, False), res("rwl_late_raw", .79, False),
+                res("rwl_late_hold", .99, True), res("latch_early_hold", .87, False), res("latch_late_hold", .87, False),
+                res("combined_hold", .99, True), res("baseline_analog", 1.03, True)]
+        a = A.attribution(base)
+        self.assertEqual(a["rwl_release_late | latch hold"]["label"], "isolated_sufficient_restores_everywhere")
+        self.assertEqual(a["rwl_release_late | no latch hold"]["label"], "no_resolvable_effect")
+        self.assertEqual(a["latch_hold | RWL early"]["label"], "improves_all_corners_not_sufficient")
+        self.assertEqual(a["latch_hold | RWL late"]["corners_fail_to_pass"], 1)
 
 
 class Committed(unittest.TestCase):

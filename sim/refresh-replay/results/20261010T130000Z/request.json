@@ -1,0 +1,2493 @@
+{
+ "netlist": "refresh_replay.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 48n 0 50p uic"
+ },
+ "measurements": [
+  {
+   "name": "snend_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_baseline_analog FIND v(sn_op1_0900_baseline_analog_0) AT=39n"
+  },
+  {
+   "name": "snrd_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_baseline_analog FIND v(sn_op1_0900_baseline_analog_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_baseline_analog FIND v(d_op1_0900_baseline_analog) AT=14.9n"
+  },
+  {
+   "name": "wblp_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_baseline_analog FIND v(wbl_op1_0900_baseline_analog) AT=34.9n"
+  },
+  {
+   "name": "snwf_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_baseline_analog FIND v(sn_op1_0900_baseline_analog_0) AT=34.9n"
+  },
+  {
+   "name": "snwa_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_baseline_analog FIND v(sn_op1_0900_baseline_analog_0) AT=35.2n"
+  },
+  {
+   "name": "wbla_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_baseline_analog FIND v(wbl_op1_0900_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "dla_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_baseline_analog FIND v(d_op1_0900_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "snrb_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_baseline_analog FIND v(sn_op1_0900_baseline_analog_0) AT=36.9n"
+  },
+  {
+   "name": "snra_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_baseline_analog FIND v(sn_op1_0900_baseline_analog_0) AT=37.2n"
+  },
+  {
+   "name": "snset_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_baseline_analog FIND v(sn_op1_0900_baseline_analog_0) AT=47n"
+  },
+  {
+   "name": "dend_op1_0900_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_baseline_analog FIND v(d_op1_0900_baseline_analog) AT=39n"
+  },
+  {
+   "name": "snend_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_baseline_analog FIND v(sn_op1_1000_baseline_analog_0) AT=39n"
+  },
+  {
+   "name": "snrd_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_baseline_analog FIND v(sn_op1_1000_baseline_analog_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_baseline_analog FIND v(d_op1_1000_baseline_analog) AT=14.9n"
+  },
+  {
+   "name": "wblp_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_baseline_analog FIND v(wbl_op1_1000_baseline_analog) AT=34.9n"
+  },
+  {
+   "name": "snwf_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_baseline_analog FIND v(sn_op1_1000_baseline_analog_0) AT=34.9n"
+  },
+  {
+   "name": "snwa_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_baseline_analog FIND v(sn_op1_1000_baseline_analog_0) AT=35.2n"
+  },
+  {
+   "name": "wbla_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_baseline_analog FIND v(wbl_op1_1000_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "dla_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_baseline_analog FIND v(d_op1_1000_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "snrb_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_baseline_analog FIND v(sn_op1_1000_baseline_analog_0) AT=36.9n"
+  },
+  {
+   "name": "snra_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_baseline_analog FIND v(sn_op1_1000_baseline_analog_0) AT=37.2n"
+  },
+  {
+   "name": "snset_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_baseline_analog FIND v(sn_op1_1000_baseline_analog_0) AT=47n"
+  },
+  {
+   "name": "dend_op1_1000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_baseline_analog FIND v(d_op1_1000_baseline_analog) AT=39n"
+  },
+  {
+   "name": "snend_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_baseline_analog FIND v(sn_op0_n100_baseline_analog_0) AT=39n"
+  },
+  {
+   "name": "snrd_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_baseline_analog FIND v(sn_op0_n100_baseline_analog_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_baseline_analog FIND v(d_op0_n100_baseline_analog) AT=14.9n"
+  },
+  {
+   "name": "wblp_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_baseline_analog FIND v(wbl_op0_n100_baseline_analog) AT=34.9n"
+  },
+  {
+   "name": "snwf_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_baseline_analog FIND v(sn_op0_n100_baseline_analog_0) AT=34.9n"
+  },
+  {
+   "name": "snwa_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_baseline_analog FIND v(sn_op0_n100_baseline_analog_0) AT=35.2n"
+  },
+  {
+   "name": "wbla_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_baseline_analog FIND v(wbl_op0_n100_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "dla_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_baseline_analog FIND v(d_op0_n100_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "snrb_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_baseline_analog FIND v(sn_op0_n100_baseline_analog_0) AT=36.9n"
+  },
+  {
+   "name": "snra_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_baseline_analog FIND v(sn_op0_n100_baseline_analog_0) AT=37.2n"
+  },
+  {
+   "name": "snset_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_baseline_analog FIND v(sn_op0_n100_baseline_analog_0) AT=47n"
+  },
+  {
+   "name": "dend_op0_n100_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_baseline_analog FIND v(d_op0_n100_baseline_analog) AT=39n"
+  },
+  {
+   "name": "snend_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_baseline_analog FIND v(sn_op0_0000_baseline_analog_0) AT=39n"
+  },
+  {
+   "name": "snrd_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_baseline_analog FIND v(sn_op0_0000_baseline_analog_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_baseline_analog FIND v(d_op0_0000_baseline_analog) AT=14.9n"
+  },
+  {
+   "name": "wblp_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_baseline_analog FIND v(wbl_op0_0000_baseline_analog) AT=34.9n"
+  },
+  {
+   "name": "snwf_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_baseline_analog FIND v(sn_op0_0000_baseline_analog_0) AT=34.9n"
+  },
+  {
+   "name": "snwa_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_baseline_analog FIND v(sn_op0_0000_baseline_analog_0) AT=35.2n"
+  },
+  {
+   "name": "wbla_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_baseline_analog FIND v(wbl_op0_0000_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "dla_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_baseline_analog FIND v(d_op0_0000_baseline_analog) AT=35.2n"
+  },
+  {
+   "name": "snrb_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_baseline_analog FIND v(sn_op0_0000_baseline_analog_0) AT=36.9n"
+  },
+  {
+   "name": "snra_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_baseline_analog FIND v(sn_op0_0000_baseline_analog_0) AT=37.2n"
+  },
+  {
+   "name": "snset_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_baseline_analog FIND v(sn_op0_0000_baseline_analog_0) AT=47n"
+  },
+  {
+   "name": "dend_op0_0000_baseline_analog",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_baseline_analog FIND v(d_op0_0000_baseline_analog) AT=39n"
+  },
+  {
+   "name": "snend_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_rtl_raw FIND v(sn_op1_0900_rtl_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_rtl_raw FIND v(sn_op1_0900_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_rtl_raw FIND v(d_op1_0900_rtl_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_rtl_raw FIND v(wbl_op1_0900_rtl_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_rtl_raw FIND v(sn_op1_0900_rtl_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_rtl_raw FIND v(sn_op1_0900_rtl_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_rtl_raw FIND v(wbl_op1_0900_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_rtl_raw FIND v(d_op1_0900_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_rtl_raw FIND v(sn_op1_0900_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_rtl_raw FIND v(sn_op1_0900_rtl_raw_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_rtl_raw FIND v(sn_op1_0900_rtl_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_0900_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_rtl_raw FIND v(d_op1_0900_rtl_raw) AT=36n"
+  },
+  {
+   "name": "snend_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_rtl_raw FIND v(sn_op1_1000_rtl_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_rtl_raw FIND v(sn_op1_1000_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_rtl_raw FIND v(d_op1_1000_rtl_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_rtl_raw FIND v(wbl_op1_1000_rtl_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_rtl_raw FIND v(sn_op1_1000_rtl_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_rtl_raw FIND v(sn_op1_1000_rtl_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_rtl_raw FIND v(wbl_op1_1000_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_rtl_raw FIND v(d_op1_1000_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_rtl_raw FIND v(sn_op1_1000_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_rtl_raw FIND v(sn_op1_1000_rtl_raw_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_rtl_raw FIND v(sn_op1_1000_rtl_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_1000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_rtl_raw FIND v(d_op1_1000_rtl_raw) AT=36n"
+  },
+  {
+   "name": "snend_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_rtl_raw FIND v(sn_op0_n100_rtl_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_rtl_raw FIND v(sn_op0_n100_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_rtl_raw FIND v(d_op0_n100_rtl_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_rtl_raw FIND v(wbl_op0_n100_rtl_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_rtl_raw FIND v(sn_op0_n100_rtl_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_rtl_raw FIND v(sn_op0_n100_rtl_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_rtl_raw FIND v(wbl_op0_n100_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_rtl_raw FIND v(d_op0_n100_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_rtl_raw FIND v(sn_op0_n100_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_rtl_raw FIND v(sn_op0_n100_rtl_raw_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_rtl_raw FIND v(sn_op0_n100_rtl_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_n100_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_rtl_raw FIND v(d_op0_n100_rtl_raw) AT=36n"
+  },
+  {
+   "name": "snend_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_rtl_raw FIND v(sn_op0_0000_rtl_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_rtl_raw FIND v(sn_op0_0000_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_rtl_raw FIND v(d_op0_0000_rtl_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_rtl_raw FIND v(wbl_op0_0000_rtl_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_rtl_raw FIND v(sn_op0_0000_rtl_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_rtl_raw FIND v(sn_op0_0000_rtl_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_rtl_raw FIND v(wbl_op0_0000_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_rtl_raw FIND v(d_op0_0000_rtl_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_rtl_raw FIND v(sn_op0_0000_rtl_raw_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_rtl_raw FIND v(sn_op0_0000_rtl_raw_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_rtl_raw FIND v(sn_op0_0000_rtl_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_0000_rtl_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_rtl_raw FIND v(d_op0_0000_rtl_raw) AT=36n"
+  },
+  {
+   "name": "snend_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_rtl_hold FIND v(sn_op1_0900_rtl_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_rtl_hold FIND v(sn_op1_0900_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_rtl_hold FIND v(d_op1_0900_rtl_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_rtl_hold FIND v(wbl_op1_0900_rtl_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_rtl_hold FIND v(sn_op1_0900_rtl_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_rtl_hold FIND v(sn_op1_0900_rtl_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_rtl_hold FIND v(wbl_op1_0900_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_rtl_hold FIND v(d_op1_0900_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_rtl_hold FIND v(sn_op1_0900_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_rtl_hold FIND v(sn_op1_0900_rtl_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_rtl_hold FIND v(sn_op1_0900_rtl_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_0900_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_rtl_hold FIND v(d_op1_0900_rtl_hold) AT=36n"
+  },
+  {
+   "name": "snend_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_rtl_hold FIND v(sn_op1_1000_rtl_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_rtl_hold FIND v(sn_op1_1000_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_rtl_hold FIND v(d_op1_1000_rtl_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_rtl_hold FIND v(wbl_op1_1000_rtl_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_rtl_hold FIND v(sn_op1_1000_rtl_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_rtl_hold FIND v(sn_op1_1000_rtl_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_rtl_hold FIND v(wbl_op1_1000_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_rtl_hold FIND v(d_op1_1000_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_rtl_hold FIND v(sn_op1_1000_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_rtl_hold FIND v(sn_op1_1000_rtl_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_rtl_hold FIND v(sn_op1_1000_rtl_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_1000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_rtl_hold FIND v(d_op1_1000_rtl_hold) AT=36n"
+  },
+  {
+   "name": "snend_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_rtl_hold FIND v(sn_op0_n100_rtl_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_rtl_hold FIND v(sn_op0_n100_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_rtl_hold FIND v(d_op0_n100_rtl_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_rtl_hold FIND v(wbl_op0_n100_rtl_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_rtl_hold FIND v(sn_op0_n100_rtl_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_rtl_hold FIND v(sn_op0_n100_rtl_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_rtl_hold FIND v(wbl_op0_n100_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_rtl_hold FIND v(d_op0_n100_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_rtl_hold FIND v(sn_op0_n100_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_rtl_hold FIND v(sn_op0_n100_rtl_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_rtl_hold FIND v(sn_op0_n100_rtl_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_n100_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_rtl_hold FIND v(d_op0_n100_rtl_hold) AT=36n"
+  },
+  {
+   "name": "snend_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_rtl_hold FIND v(sn_op0_0000_rtl_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_rtl_hold FIND v(sn_op0_0000_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_rtl_hold FIND v(d_op0_0000_rtl_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_rtl_hold FIND v(wbl_op0_0000_rtl_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_rtl_hold FIND v(sn_op0_0000_rtl_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_rtl_hold FIND v(sn_op0_0000_rtl_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_rtl_hold FIND v(wbl_op0_0000_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_rtl_hold FIND v(d_op0_0000_rtl_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_rtl_hold FIND v(sn_op0_0000_rtl_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_rtl_hold FIND v(sn_op0_0000_rtl_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_rtl_hold FIND v(sn_op0_0000_rtl_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_0000_rtl_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_rtl_hold FIND v(d_op0_0000_rtl_hold) AT=36n"
+  },
+  {
+   "name": "snend_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_neg_missing_wb FIND v(sn_op1_0900_neg_missing_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_neg_missing_wb FIND v(sn_op1_0900_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_neg_missing_wb FIND v(d_op1_0900_neg_missing_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_neg_missing_wb FIND v(wbl_op1_0900_neg_missing_wb) AT=12.9n"
+  },
+  {
+   "name": "snwf_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_neg_missing_wb FIND v(sn_op1_0900_neg_missing_wb_0) AT=12.9n"
+  },
+  {
+   "name": "snwa_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_neg_missing_wb FIND v(sn_op1_0900_neg_missing_wb_0) AT=13.2n"
+  },
+  {
+   "name": "wbla_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_neg_missing_wb FIND v(wbl_op1_0900_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "dla_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_neg_missing_wb FIND v(d_op1_0900_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "snrb_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_neg_missing_wb FIND v(sn_op1_0900_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_neg_missing_wb FIND v(sn_op1_0900_neg_missing_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_neg_missing_wb FIND v(sn_op1_0900_neg_missing_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_0900_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_neg_missing_wb FIND v(d_op1_0900_neg_missing_wb) AT=36n"
+  },
+  {
+   "name": "snend_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_neg_missing_wb FIND v(sn_op1_1000_neg_missing_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_neg_missing_wb FIND v(sn_op1_1000_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_neg_missing_wb FIND v(d_op1_1000_neg_missing_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_neg_missing_wb FIND v(wbl_op1_1000_neg_missing_wb) AT=12.9n"
+  },
+  {
+   "name": "snwf_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_neg_missing_wb FIND v(sn_op1_1000_neg_missing_wb_0) AT=12.9n"
+  },
+  {
+   "name": "snwa_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_neg_missing_wb FIND v(sn_op1_1000_neg_missing_wb_0) AT=13.2n"
+  },
+  {
+   "name": "wbla_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_neg_missing_wb FIND v(wbl_op1_1000_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "dla_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_neg_missing_wb FIND v(d_op1_1000_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "snrb_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_neg_missing_wb FIND v(sn_op1_1000_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_neg_missing_wb FIND v(sn_op1_1000_neg_missing_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_neg_missing_wb FIND v(sn_op1_1000_neg_missing_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_1000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_neg_missing_wb FIND v(d_op1_1000_neg_missing_wb) AT=36n"
+  },
+  {
+   "name": "snend_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_neg_missing_wb FIND v(sn_op0_n100_neg_missing_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_neg_missing_wb FIND v(sn_op0_n100_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_neg_missing_wb FIND v(d_op0_n100_neg_missing_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_neg_missing_wb FIND v(wbl_op0_n100_neg_missing_wb) AT=12.9n"
+  },
+  {
+   "name": "snwf_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_neg_missing_wb FIND v(sn_op0_n100_neg_missing_wb_0) AT=12.9n"
+  },
+  {
+   "name": "snwa_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_neg_missing_wb FIND v(sn_op0_n100_neg_missing_wb_0) AT=13.2n"
+  },
+  {
+   "name": "wbla_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_neg_missing_wb FIND v(wbl_op0_n100_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "dla_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_neg_missing_wb FIND v(d_op0_n100_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "snrb_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_neg_missing_wb FIND v(sn_op0_n100_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_neg_missing_wb FIND v(sn_op0_n100_neg_missing_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_neg_missing_wb FIND v(sn_op0_n100_neg_missing_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_n100_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_neg_missing_wb FIND v(d_op0_n100_neg_missing_wb) AT=36n"
+  },
+  {
+   "name": "snend_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_neg_missing_wb FIND v(sn_op0_0000_neg_missing_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_neg_missing_wb FIND v(sn_op0_0000_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_neg_missing_wb FIND v(d_op0_0000_neg_missing_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_neg_missing_wb FIND v(wbl_op0_0000_neg_missing_wb) AT=12.9n"
+  },
+  {
+   "name": "snwf_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_neg_missing_wb FIND v(sn_op0_0000_neg_missing_wb_0) AT=12.9n"
+  },
+  {
+   "name": "snwa_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_neg_missing_wb FIND v(sn_op0_0000_neg_missing_wb_0) AT=13.2n"
+  },
+  {
+   "name": "wbla_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_neg_missing_wb FIND v(wbl_op0_0000_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "dla_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_neg_missing_wb FIND v(d_op0_0000_neg_missing_wb) AT=13.2n"
+  },
+  {
+   "name": "snrb_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_neg_missing_wb FIND v(sn_op0_0000_neg_missing_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_neg_missing_wb FIND v(sn_op0_0000_neg_missing_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_neg_missing_wb FIND v(sn_op0_0000_neg_missing_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_0000_neg_missing_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_neg_missing_wb FIND v(d_op0_0000_neg_missing_wb) AT=36n"
+  },
+  {
+   "name": "snend_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_neg_short_wb FIND v(sn_op1_0900_neg_short_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_neg_short_wb FIND v(sn_op1_0900_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_neg_short_wb FIND v(d_op1_0900_neg_short_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_neg_short_wb FIND v(wbl_op1_0900_neg_short_wb) AT=12.1n"
+  },
+  {
+   "name": "snwf_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_neg_short_wb FIND v(sn_op1_0900_neg_short_wb_0) AT=12.1n"
+  },
+  {
+   "name": "snwa_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_neg_short_wb FIND v(sn_op1_0900_neg_short_wb_0) AT=12.4n"
+  },
+  {
+   "name": "wbla_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_neg_short_wb FIND v(wbl_op1_0900_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "dla_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_neg_short_wb FIND v(d_op1_0900_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "snrb_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_neg_short_wb FIND v(sn_op1_0900_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_neg_short_wb FIND v(sn_op1_0900_neg_short_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_neg_short_wb FIND v(sn_op1_0900_neg_short_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_0900_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_neg_short_wb FIND v(d_op1_0900_neg_short_wb) AT=36n"
+  },
+  {
+   "name": "snend_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_neg_short_wb FIND v(sn_op1_1000_neg_short_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_neg_short_wb FIND v(sn_op1_1000_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_neg_short_wb FIND v(d_op1_1000_neg_short_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_neg_short_wb FIND v(wbl_op1_1000_neg_short_wb) AT=12.1n"
+  },
+  {
+   "name": "snwf_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_neg_short_wb FIND v(sn_op1_1000_neg_short_wb_0) AT=12.1n"
+  },
+  {
+   "name": "snwa_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_neg_short_wb FIND v(sn_op1_1000_neg_short_wb_0) AT=12.4n"
+  },
+  {
+   "name": "wbla_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_neg_short_wb FIND v(wbl_op1_1000_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "dla_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_neg_short_wb FIND v(d_op1_1000_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "snrb_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_neg_short_wb FIND v(sn_op1_1000_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_neg_short_wb FIND v(sn_op1_1000_neg_short_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_neg_short_wb FIND v(sn_op1_1000_neg_short_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_1000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_neg_short_wb FIND v(d_op1_1000_neg_short_wb) AT=36n"
+  },
+  {
+   "name": "snend_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_neg_short_wb FIND v(sn_op0_n100_neg_short_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_neg_short_wb FIND v(sn_op0_n100_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_neg_short_wb FIND v(d_op0_n100_neg_short_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_neg_short_wb FIND v(wbl_op0_n100_neg_short_wb) AT=12.1n"
+  },
+  {
+   "name": "snwf_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_neg_short_wb FIND v(sn_op0_n100_neg_short_wb_0) AT=12.1n"
+  },
+  {
+   "name": "snwa_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_neg_short_wb FIND v(sn_op0_n100_neg_short_wb_0) AT=12.4n"
+  },
+  {
+   "name": "wbla_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_neg_short_wb FIND v(wbl_op0_n100_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "dla_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_neg_short_wb FIND v(d_op0_n100_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "snrb_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_neg_short_wb FIND v(sn_op0_n100_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_neg_short_wb FIND v(sn_op0_n100_neg_short_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_neg_short_wb FIND v(sn_op0_n100_neg_short_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_n100_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_neg_short_wb FIND v(d_op0_n100_neg_short_wb) AT=36n"
+  },
+  {
+   "name": "snend_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_neg_short_wb FIND v(sn_op0_0000_neg_short_wb_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_neg_short_wb FIND v(sn_op0_0000_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_neg_short_wb FIND v(d_op0_0000_neg_short_wb) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_neg_short_wb FIND v(wbl_op0_0000_neg_short_wb) AT=12.1n"
+  },
+  {
+   "name": "snwf_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_neg_short_wb FIND v(sn_op0_0000_neg_short_wb_0) AT=12.1n"
+  },
+  {
+   "name": "snwa_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_neg_short_wb FIND v(sn_op0_0000_neg_short_wb_0) AT=12.4n"
+  },
+  {
+   "name": "wbla_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_neg_short_wb FIND v(wbl_op0_0000_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "dla_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_neg_short_wb FIND v(d_op0_0000_neg_short_wb) AT=12.4n"
+  },
+  {
+   "name": "snrb_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_neg_short_wb FIND v(sn_op0_0000_neg_short_wb_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_neg_short_wb FIND v(sn_op0_0000_neg_short_wb_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_neg_short_wb FIND v(sn_op0_0000_neg_short_wb_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_0000_neg_short_wb",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_neg_short_wb FIND v(d_op0_0000_neg_short_wb) AT=36n"
+  },
+  {
+   "name": "snend_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_rwl_late_raw FIND v(sn_op1_0900_rwl_late_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_rwl_late_raw FIND v(sn_op1_0900_rwl_late_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_rwl_late_raw FIND v(d_op1_0900_rwl_late_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_rwl_late_raw FIND v(wbl_op1_0900_rwl_late_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_rwl_late_raw FIND v(sn_op1_0900_rwl_late_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_rwl_late_raw FIND v(sn_op1_0900_rwl_late_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_rwl_late_raw FIND v(wbl_op1_0900_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_rwl_late_raw FIND v(d_op1_0900_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_rwl_late_raw FIND v(sn_op1_0900_rwl_late_raw_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_rwl_late_raw FIND v(sn_op1_0900_rwl_late_raw_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_rwl_late_raw FIND v(sn_op1_0900_rwl_late_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_0900_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_rwl_late_raw FIND v(d_op1_0900_rwl_late_raw) AT=36n"
+  },
+  {
+   "name": "snend_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_rwl_late_raw FIND v(sn_op1_1000_rwl_late_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_rwl_late_raw FIND v(sn_op1_1000_rwl_late_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_rwl_late_raw FIND v(d_op1_1000_rwl_late_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_rwl_late_raw FIND v(wbl_op1_1000_rwl_late_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_rwl_late_raw FIND v(sn_op1_1000_rwl_late_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_rwl_late_raw FIND v(sn_op1_1000_rwl_late_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_rwl_late_raw FIND v(wbl_op1_1000_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_rwl_late_raw FIND v(d_op1_1000_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_rwl_late_raw FIND v(sn_op1_1000_rwl_late_raw_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_rwl_late_raw FIND v(sn_op1_1000_rwl_late_raw_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_rwl_late_raw FIND v(sn_op1_1000_rwl_late_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_1000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_rwl_late_raw FIND v(d_op1_1000_rwl_late_raw) AT=36n"
+  },
+  {
+   "name": "snend_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_rwl_late_raw FIND v(sn_op0_n100_rwl_late_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_rwl_late_raw FIND v(sn_op0_n100_rwl_late_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_rwl_late_raw FIND v(d_op0_n100_rwl_late_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_rwl_late_raw FIND v(wbl_op0_n100_rwl_late_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_rwl_late_raw FIND v(sn_op0_n100_rwl_late_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_rwl_late_raw FIND v(sn_op0_n100_rwl_late_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_rwl_late_raw FIND v(wbl_op0_n100_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_rwl_late_raw FIND v(d_op0_n100_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_rwl_late_raw FIND v(sn_op0_n100_rwl_late_raw_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_rwl_late_raw FIND v(sn_op0_n100_rwl_late_raw_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_rwl_late_raw FIND v(sn_op0_n100_rwl_late_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_n100_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_rwl_late_raw FIND v(d_op0_n100_rwl_late_raw) AT=36n"
+  },
+  {
+   "name": "snend_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_rwl_late_raw FIND v(sn_op0_0000_rwl_late_raw_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_rwl_late_raw FIND v(sn_op0_0000_rwl_late_raw_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_rwl_late_raw FIND v(d_op0_0000_rwl_late_raw) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_rwl_late_raw FIND v(wbl_op0_0000_rwl_late_raw) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_rwl_late_raw FIND v(sn_op0_0000_rwl_late_raw_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_rwl_late_raw FIND v(sn_op0_0000_rwl_late_raw_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_rwl_late_raw FIND v(wbl_op0_0000_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_rwl_late_raw FIND v(d_op0_0000_rwl_late_raw) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_rwl_late_raw FIND v(sn_op0_0000_rwl_late_raw_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_rwl_late_raw FIND v(sn_op0_0000_rwl_late_raw_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_rwl_late_raw FIND v(sn_op0_0000_rwl_late_raw_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_0000_rwl_late_raw",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_rwl_late_raw FIND v(d_op0_0000_rwl_late_raw) AT=36n"
+  },
+  {
+   "name": "snend_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_rwl_late_hold FIND v(sn_op1_0900_rwl_late_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_rwl_late_hold FIND v(sn_op1_0900_rwl_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_rwl_late_hold FIND v(d_op1_0900_rwl_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_rwl_late_hold FIND v(wbl_op1_0900_rwl_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_rwl_late_hold FIND v(sn_op1_0900_rwl_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_rwl_late_hold FIND v(sn_op1_0900_rwl_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_rwl_late_hold FIND v(wbl_op1_0900_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_rwl_late_hold FIND v(d_op1_0900_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_rwl_late_hold FIND v(sn_op1_0900_rwl_late_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_rwl_late_hold FIND v(sn_op1_0900_rwl_late_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_rwl_late_hold FIND v(sn_op1_0900_rwl_late_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_0900_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_rwl_late_hold FIND v(d_op1_0900_rwl_late_hold) AT=36n"
+  },
+  {
+   "name": "snend_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_rwl_late_hold FIND v(sn_op1_1000_rwl_late_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_rwl_late_hold FIND v(sn_op1_1000_rwl_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_rwl_late_hold FIND v(d_op1_1000_rwl_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_rwl_late_hold FIND v(wbl_op1_1000_rwl_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_rwl_late_hold FIND v(sn_op1_1000_rwl_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_rwl_late_hold FIND v(sn_op1_1000_rwl_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_rwl_late_hold FIND v(wbl_op1_1000_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_rwl_late_hold FIND v(d_op1_1000_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_rwl_late_hold FIND v(sn_op1_1000_rwl_late_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_rwl_late_hold FIND v(sn_op1_1000_rwl_late_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_rwl_late_hold FIND v(sn_op1_1000_rwl_late_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_1000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_rwl_late_hold FIND v(d_op1_1000_rwl_late_hold) AT=36n"
+  },
+  {
+   "name": "snend_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_rwl_late_hold FIND v(sn_op0_n100_rwl_late_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_rwl_late_hold FIND v(sn_op0_n100_rwl_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_rwl_late_hold FIND v(d_op0_n100_rwl_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_rwl_late_hold FIND v(wbl_op0_n100_rwl_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_rwl_late_hold FIND v(sn_op0_n100_rwl_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_rwl_late_hold FIND v(sn_op0_n100_rwl_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_rwl_late_hold FIND v(wbl_op0_n100_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_rwl_late_hold FIND v(d_op0_n100_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_rwl_late_hold FIND v(sn_op0_n100_rwl_late_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_rwl_late_hold FIND v(sn_op0_n100_rwl_late_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_rwl_late_hold FIND v(sn_op0_n100_rwl_late_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_n100_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_rwl_late_hold FIND v(d_op0_n100_rwl_late_hold) AT=36n"
+  },
+  {
+   "name": "snend_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_rwl_late_hold FIND v(sn_op0_0000_rwl_late_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_rwl_late_hold FIND v(sn_op0_0000_rwl_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_rwl_late_hold FIND v(d_op0_0000_rwl_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_rwl_late_hold FIND v(wbl_op0_0000_rwl_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_rwl_late_hold FIND v(sn_op0_0000_rwl_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_rwl_late_hold FIND v(sn_op0_0000_rwl_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_rwl_late_hold FIND v(wbl_op0_0000_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_rwl_late_hold FIND v(d_op0_0000_rwl_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_rwl_late_hold FIND v(sn_op0_0000_rwl_late_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_rwl_late_hold FIND v(sn_op0_0000_rwl_late_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_rwl_late_hold FIND v(sn_op0_0000_rwl_late_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_0000_rwl_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_rwl_late_hold FIND v(d_op0_0000_rwl_late_hold) AT=36n"
+  },
+  {
+   "name": "snend_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_latch_early_hold FIND v(sn_op1_0900_latch_early_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_latch_early_hold FIND v(sn_op1_0900_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_latch_early_hold FIND v(d_op1_0900_latch_early_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_latch_early_hold FIND v(wbl_op1_0900_latch_early_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_latch_early_hold FIND v(sn_op1_0900_latch_early_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_latch_early_hold FIND v(sn_op1_0900_latch_early_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_latch_early_hold FIND v(wbl_op1_0900_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_latch_early_hold FIND v(d_op1_0900_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_latch_early_hold FIND v(sn_op1_0900_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_latch_early_hold FIND v(sn_op1_0900_latch_early_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_latch_early_hold FIND v(sn_op1_0900_latch_early_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_0900_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_latch_early_hold FIND v(d_op1_0900_latch_early_hold) AT=36n"
+  },
+  {
+   "name": "snend_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_latch_early_hold FIND v(sn_op1_1000_latch_early_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_latch_early_hold FIND v(sn_op1_1000_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_latch_early_hold FIND v(d_op1_1000_latch_early_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_latch_early_hold FIND v(wbl_op1_1000_latch_early_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_latch_early_hold FIND v(sn_op1_1000_latch_early_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_latch_early_hold FIND v(sn_op1_1000_latch_early_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_latch_early_hold FIND v(wbl_op1_1000_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_latch_early_hold FIND v(d_op1_1000_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_latch_early_hold FIND v(sn_op1_1000_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_latch_early_hold FIND v(sn_op1_1000_latch_early_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_latch_early_hold FIND v(sn_op1_1000_latch_early_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op1_1000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_latch_early_hold FIND v(d_op1_1000_latch_early_hold) AT=36n"
+  },
+  {
+   "name": "snend_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_latch_early_hold FIND v(sn_op0_n100_latch_early_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_latch_early_hold FIND v(sn_op0_n100_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_latch_early_hold FIND v(d_op0_n100_latch_early_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_latch_early_hold FIND v(wbl_op0_n100_latch_early_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_latch_early_hold FIND v(sn_op0_n100_latch_early_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_latch_early_hold FIND v(sn_op0_n100_latch_early_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_latch_early_hold FIND v(wbl_op0_n100_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_latch_early_hold FIND v(d_op0_n100_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_latch_early_hold FIND v(sn_op0_n100_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_latch_early_hold FIND v(sn_op0_n100_latch_early_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_latch_early_hold FIND v(sn_op0_n100_latch_early_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_n100_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_latch_early_hold FIND v(d_op0_n100_latch_early_hold) AT=36n"
+  },
+  {
+   "name": "snend_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_latch_early_hold FIND v(sn_op0_0000_latch_early_hold_0) AT=36n"
+  },
+  {
+   "name": "snrd_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_latch_early_hold FIND v(sn_op0_0000_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_latch_early_hold FIND v(d_op0_0000_latch_early_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_latch_early_hold FIND v(wbl_op0_0000_latch_early_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_latch_early_hold FIND v(sn_op0_0000_latch_early_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_latch_early_hold FIND v(sn_op0_0000_latch_early_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_latch_early_hold FIND v(wbl_op0_0000_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_latch_early_hold FIND v(d_op0_0000_latch_early_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_latch_early_hold FIND v(sn_op0_0000_latch_early_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_latch_early_hold FIND v(sn_op0_0000_latch_early_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_latch_early_hold FIND v(sn_op0_0000_latch_early_hold_0) AT=44n"
+  },
+  {
+   "name": "dend_op0_0000_latch_early_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_latch_early_hold FIND v(d_op0_0000_latch_early_hold) AT=36n"
+  },
+  {
+   "name": "snend_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_latch_late_hold FIND v(sn_op1_0900_latch_late_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_latch_late_hold FIND v(sn_op1_0900_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_latch_late_hold FIND v(d_op1_0900_latch_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_latch_late_hold FIND v(wbl_op1_0900_latch_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_latch_late_hold FIND v(sn_op1_0900_latch_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_latch_late_hold FIND v(sn_op1_0900_latch_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_latch_late_hold FIND v(wbl_op1_0900_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_latch_late_hold FIND v(d_op1_0900_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_latch_late_hold FIND v(sn_op1_0900_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_latch_late_hold FIND v(sn_op1_0900_latch_late_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_latch_late_hold FIND v(sn_op1_0900_latch_late_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op1_0900_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_latch_late_hold FIND v(d_op1_0900_latch_late_hold) AT=38n"
+  },
+  {
+   "name": "snend_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_latch_late_hold FIND v(sn_op1_1000_latch_late_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_latch_late_hold FIND v(sn_op1_1000_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_latch_late_hold FIND v(d_op1_1000_latch_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_latch_late_hold FIND v(wbl_op1_1000_latch_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_latch_late_hold FIND v(sn_op1_1000_latch_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_latch_late_hold FIND v(sn_op1_1000_latch_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_latch_late_hold FIND v(wbl_op1_1000_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_latch_late_hold FIND v(d_op1_1000_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_latch_late_hold FIND v(sn_op1_1000_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_latch_late_hold FIND v(sn_op1_1000_latch_late_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_latch_late_hold FIND v(sn_op1_1000_latch_late_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op1_1000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_latch_late_hold FIND v(d_op1_1000_latch_late_hold) AT=38n"
+  },
+  {
+   "name": "snend_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_latch_late_hold FIND v(sn_op0_n100_latch_late_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_latch_late_hold FIND v(sn_op0_n100_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_latch_late_hold FIND v(d_op0_n100_latch_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_latch_late_hold FIND v(wbl_op0_n100_latch_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_latch_late_hold FIND v(sn_op0_n100_latch_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_latch_late_hold FIND v(sn_op0_n100_latch_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_latch_late_hold FIND v(wbl_op0_n100_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_latch_late_hold FIND v(d_op0_n100_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_latch_late_hold FIND v(sn_op0_n100_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_latch_late_hold FIND v(sn_op0_n100_latch_late_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_latch_late_hold FIND v(sn_op0_n100_latch_late_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op0_n100_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_latch_late_hold FIND v(d_op0_n100_latch_late_hold) AT=38n"
+  },
+  {
+   "name": "snend_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_latch_late_hold FIND v(sn_op0_0000_latch_late_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_latch_late_hold FIND v(sn_op0_0000_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_latch_late_hold FIND v(d_op0_0000_latch_late_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_latch_late_hold FIND v(wbl_op0_0000_latch_late_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_latch_late_hold FIND v(sn_op0_0000_latch_late_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_latch_late_hold FIND v(sn_op0_0000_latch_late_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_latch_late_hold FIND v(wbl_op0_0000_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_latch_late_hold FIND v(d_op0_0000_latch_late_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_latch_late_hold FIND v(sn_op0_0000_latch_late_hold_0) AT=11.9n"
+  },
+  {
+   "name": "snra_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_latch_late_hold FIND v(sn_op0_0000_latch_late_hold_0) AT=12.2n"
+  },
+  {
+   "name": "snset_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_latch_late_hold FIND v(sn_op0_0000_latch_late_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op0_0000_latch_late_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_latch_late_hold FIND v(d_op0_0000_latch_late_hold) AT=38n"
+  },
+  {
+   "name": "snend_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_combined_hold FIND v(sn_op1_0900_combined_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_combined_hold FIND v(sn_op1_0900_combined_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_combined_hold FIND v(d_op1_0900_combined_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_0900_combined_hold FIND v(wbl_op1_0900_combined_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_0900_combined_hold FIND v(sn_op1_0900_combined_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_0900_combined_hold FIND v(sn_op1_0900_combined_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_0900_combined_hold FIND v(wbl_op1_0900_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_0900_combined_hold FIND v(d_op1_0900_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_0900_combined_hold FIND v(sn_op1_0900_combined_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_0900_combined_hold FIND v(sn_op1_0900_combined_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_0900_combined_hold FIND v(sn_op1_0900_combined_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op1_0900_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_0900_combined_hold FIND v(d_op1_0900_combined_hold) AT=38n"
+  },
+  {
+   "name": "snend_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_combined_hold FIND v(sn_op1_1000_combined_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_combined_hold FIND v(sn_op1_1000_combined_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_combined_hold FIND v(d_op1_1000_combined_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op1_1000_combined_hold FIND v(wbl_op1_1000_combined_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op1_1000_combined_hold FIND v(sn_op1_1000_combined_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op1_1000_combined_hold FIND v(sn_op1_1000_combined_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op1_1000_combined_hold FIND v(wbl_op1_1000_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op1_1000_combined_hold FIND v(d_op1_1000_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op1_1000_combined_hold FIND v(sn_op1_1000_combined_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op1_1000_combined_hold FIND v(sn_op1_1000_combined_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op1_1000_combined_hold FIND v(sn_op1_1000_combined_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op1_1000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op1_1000_combined_hold FIND v(d_op1_1000_combined_hold) AT=38n"
+  },
+  {
+   "name": "snend_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_combined_hold FIND v(sn_op0_n100_combined_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_combined_hold FIND v(sn_op0_n100_combined_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_combined_hold FIND v(d_op0_n100_combined_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_n100_combined_hold FIND v(wbl_op0_n100_combined_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_n100_combined_hold FIND v(sn_op0_n100_combined_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_n100_combined_hold FIND v(sn_op0_n100_combined_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_n100_combined_hold FIND v(wbl_op0_n100_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_n100_combined_hold FIND v(d_op0_n100_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_n100_combined_hold FIND v(sn_op0_n100_combined_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_n100_combined_hold FIND v(sn_op0_n100_combined_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_n100_combined_hold FIND v(sn_op0_n100_combined_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op0_n100_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_n100_combined_hold FIND v(d_op0_n100_combined_hold) AT=38n"
+  },
+  {
+   "name": "snend_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_combined_hold FIND v(sn_op0_0000_combined_hold_0) AT=38n"
+  },
+  {
+   "name": "snrd_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_combined_hold FIND v(sn_op0_0000_combined_hold_0) AT=11.9n"
+  },
+  {
+   "name": "dec_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_combined_hold FIND v(d_op0_0000_combined_hold) AT=11.9n"
+  },
+  {
+   "name": "wblp_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wblp_op0_0000_combined_hold FIND v(wbl_op0_0000_combined_hold) AT=31.9n"
+  },
+  {
+   "name": "snwf_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwf_op0_0000_combined_hold FIND v(sn_op0_0000_combined_hold_0) AT=31.9n"
+  },
+  {
+   "name": "snwa_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snwa_op0_0000_combined_hold FIND v(sn_op0_0000_combined_hold_0) AT=32.2n"
+  },
+  {
+   "name": "wbla_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran wbla_op0_0000_combined_hold FIND v(wbl_op0_0000_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "dla_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dla_op0_0000_combined_hold FIND v(d_op0_0000_combined_hold) AT=32.2n"
+  },
+  {
+   "name": "snrb_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snrb_op0_0000_combined_hold FIND v(sn_op0_0000_combined_hold_0) AT=33.9n"
+  },
+  {
+   "name": "snra_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snra_op0_0000_combined_hold FIND v(sn_op0_0000_combined_hold_0) AT=34.2n"
+  },
+  {
+   "name": "snset_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran snset_op0_0000_combined_hold FIND v(sn_op0_0000_combined_hold_0) AT=46n"
+  },
+  {
+   "name": "dend_op0_0000_combined_hold",
+   "unit": "V",
+   "spice": ".meas tran dend_op0_0000_combined_hold FIND v(d_op0_0000_combined_hold) AT=38n"
+  },
+  {
+   "name": "snend_refw",
+   "unit": "V",
+   "spice": ".meas tran snend_refw FIND v(sn_refw_0) AT=39n"
+  },
+  {
+   "name": "snrd_refw",
+   "unit": "V",
+   "spice": ".meas tran snrd_refw FIND v(sn_refw_0) AT=14.9n"
+  },
+  {
+   "name": "dec_refw",
+   "unit": "V",
+   "spice": ".meas tran dec_refw FIND v(d_refw) AT=14.9n"
+  },
+  {
+   "name": "wblp_refw",
+   "unit": "V",
+   "spice": ".meas tran wblp_refw FIND v(wbl_refw) AT=34.9n"
+  },
+  {
+   "name": "snwf_refw",
+   "unit": "V",
+   "spice": ".meas tran snwf_refw FIND v(sn_refw_0) AT=34.9n"
+  },
+  {
+   "name": "snwa_refw",
+   "unit": "V",
+   "spice": ".meas tran snwa_refw FIND v(sn_refw_0) AT=35.2n"
+  },
+  {
+   "name": "wbla_refw",
+   "unit": "V",
+   "spice": ".meas tran wbla_refw FIND v(wbl_refw) AT=35.2n"
+  },
+  {
+   "name": "dla_refw",
+   "unit": "V",
+   "spice": ".meas tran dla_refw FIND v(d_refw) AT=35.2n"
+  },
+  {
+   "name": "snrb_refw",
+   "unit": "V",
+   "spice": ".meas tran snrb_refw FIND v(sn_refw_0) AT=36.9n"
+  },
+  {
+   "name": "snra_refw",
+   "unit": "V",
+   "spice": ".meas tran snra_refw FIND v(sn_refw_0) AT=37.2n"
+  },
+  {
+   "name": "snset_refw",
+   "unit": "V",
+   "spice": ".meas tran snset_refw FIND v(sn_refw_0) AT=47n"
+  },
+  {
+   "name": "dend_refw",
+   "unit": "V",
+   "spice": ".meas tran dend_refw FIND v(d_refw) AT=39n"
+  }
+ ],
+ "options": {
+  "timeout_s": 1800,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}
