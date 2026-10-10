@@ -1,0 +1,101 @@
+{
+ "initial": {
+  "pre_en": 0,
+  "rwl_sel": 0,
+  "sense_en": 0,
+  "wwl_en": 0,
+  "bl_drive": 0,
+  "busy": 0,
+  "done": 0
+ },
+ "edges": [
+  {
+   "t_ns": 0.0,
+   "signal": "pre_en",
+   "value": 1
+  },
+  {
+   "t_ns": 0.0,
+   "signal": "busy",
+   "value": 1
+  },
+  {
+   "t_ns": 2.0,
+   "signal": "pre_en",
+   "value": 0
+  },
+  {
+   "t_ns": 2.0,
+   "signal": "rwl_sel",
+   "value": 1
+  },
+  {
+   "t_ns": 11.0,
+   "signal": "sense_en",
+   "value": 1
+  },
+  {
+   "t_ns": 12.0,
+   "signal": "rwl_sel",
+   "value": 0
+  },
+  {
+   "t_ns": 12.0,
+   "signal": "sense_en",
+   "value": 0
+  },
+  {
+   "t_ns": 12.0,
+   "signal": "wwl_en",
+   "value": 1
+  },
+  {
+   "t_ns": 12.0,
+   "signal": "bl_drive",
+   "value": 1
+  },
+  {
+   "t_ns": 32.0,
+   "signal": "wwl_en",
+   "value": 0
+  },
+  {
+   "t_ns": 34.0,
+   "signal": "bl_drive",
+   "value": 0
+  },
+  {
+   "t_ns": 34.0,
+   "signal": "busy",
+   "value": 0
+  },
+  {
+   "t_ns": 34.0,
+   "signal": "done",
+   "value": 1
+  },
+  {
+   "t_ns": 35.0,
+   "signal": "done",
+   "value": 0
+  }
+ ],
+ "meta": {
+  "kind": 2,
+  "P_PRE": 2,
+  "P_SENSE": 10,
+  "P_WB": 20,
+  "P_GUARD": 2,
+  "GAP": 0
+ },
+ "delta_glitches_not_exported": 2,
+ "end_ns": 80.0,
+ "pins": {
+  "phase_seq_v_sha256": "8aea9826f80151214f8a678da530dc4207564af81b847ad36cf818c9b6f04daa",
+  "tb_trace_export_v_sha256": "8f25a9f01b0c38c862c6012d247fe2f665eeccecd8662d88883336dc925c941a",
+  "iverilog": "Icarus Verilog version 13.0 (stable) (v13_0)",
+  "command": "iverilog -g2012 -o <tmp>.vvp -Ptb_trace_export.P_PRE=2 -Ptb_trace_export.P_SENSE=10 -Ptb_trace_export.P_WB=20 -Ptb_trace_export.P_GUARD=2 -Ptb_trace_export.GAP=0 -Ptb_trace_export.KIND=2 /home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-131/digital/phase-control/phase_seq.v /home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-131/digital/phase-control/tb_trace_export.v",
+  "time_base": "1 cycle = 1 ns (study assumption, not a silicon frequency claim)",
+  "sampling": "strobes sampled 0.1 ns after each rising clock edge; zero-width delta glitches not exported"
+ }
+}

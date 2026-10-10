@@ -151,7 +151,7 @@ def pwl_to_edges(text: str, invert: bool) -> tuple[int, list[tuple[float, int]]]
     return init, out
 
 
-def latch_hold_adapter(trace: dict) -> dict:
+def latch_hold_adapter(trace: dict, release_ns: float | None = None) -> dict:
     """EXPLICIT adapter: latch enable = set at the sense_en rising edge, held until busy falls.
 
     Recorded as its own waveform (``latch_en_held``). The digital sample pulse is 1 cycle; the analog
@@ -163,7 +163,43 @@ def latch_hold_adapter(trace: dict) -> dict:
     busy_fall = [t for t, v in trace_signal_edges(trace, "busy") if v == 0]
     if not rises or not busy_fall:
         raise ValueError("trace lacks sense_en rise or busy fall; cannot apply the latch-hold adapter")
-    return dict(initial=0, edges=[(rises[0], 1), (busy_fall[-1], 0)])
+    rel = busy_fall[-1] if release_ns is None else release_ns   # release_ns: experimental #131 override only
+    return dict(initial=0, edges=[(rises[0], 1), (rel, 0)])
+
+
+def retime_edge(trace: dict, signal: str, value: int, new_t_ns: float) -> dict:
+    """Experiment helper (#131): move exactly ONE edge (the single ``signal`` edge to ``value``) to ``new_t_ns``.
+
+    Raises unless that edge is unique, so a retiming can never silently touch another edge. All other
+    edges, initial levels and signals are copied unchanged.
+    """
+    hits = [i for i, e in enumerate(trace["edges"]) if e["signal"] == signal and e["value"] == value]
+    if len(hits) != 1:
+        raise ValueError(f"expected exactly one {signal}->{value} edge, found {len(hits)}")
+    edges = [dict(e) for e in trace["edges"]]
+    edges[hits[0]]["t_ns"] = round(new_t_ns, 6)
+    return dict(trace, edges=sorted_edges(edges))
+
+
+def diff_node_waveforms(a: dict, b: dict) -> list[dict]:
+    """Per-node edge/initial differences between two ``node -> (init, edges, invert)`` maps (b relative to a).
+    Used to prove an experiment changed only its intended release edge(s)."""
+    out = []
+    for node in sorted(set(a) | set(b)):
+        if node not in a or node not in b:
+            out.append(dict(node=node, kind="node_missing"))
+            continue
+        (ia, ea, va), (ib, eb, vb) = a[node], b[node]
+        if va != vb or ia != ib:
+            out.append(dict(node=node, kind="initial_or_polarity"))
+        for i in range(max(len(ea), len(eb))):
+            x = ea[i] if i < len(ea) else None
+            y = eb[i] if i < len(eb) else None
+            if x is None or y is None or x[1] != y[1]:
+                out.append(dict(node=node, kind="edge_added_removed_or_value", index=i, a=x, b=y))
+            elif abs(x[0] - y[0]) > TIME_TOL_NS:
+                out.append(dict(node=node, kind="shifted", index=i, from_ns=x[0], to_ns=y[0], value=x[1]))
+    return out
 
 
 def mutate_trace(trace: dict, kind: str) -> dict:
