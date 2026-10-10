@@ -26,13 +26,13 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#115**: Quantify refresh energy and standby power of the 2T array at the PVT corners
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#124**: feat(sim): array-boundary refresh energy and standby power of the extracted 4x4 array
 
 ## Approved (Awaiting Merge)
 
@@ -48,11 +48,11 @@ Issues carrying `loom:curated`.
 - **#24**: Build the full gain-cell eDRAM macro (array + sense amp + refresh controller + SPI) to reach Chipalooza sign-off bar *(curated)*
 - **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead *(curated)*
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
+- **#115**: Quantify refresh energy and standby power of the 2T array at the PVT corners *(curated)*
 
 ## Proposed (Architect / Hermit)
 
 - **#94**: Characterize write-hold-sense trajectories and mixed neighbor patterns at the refresh deadline *(architect)*
-- **#115**: Quantify refresh energy and standby power of the 2T array at the PVT corners *(architect)*
 
 ## Epics
 
@@ -66,10 +66,10 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 2 |
 | Operator priority | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 0 |
-| PRs awaiting review | 0 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 2 |
-| Curated | 3 |
-| Architect / Hermit proposals | 2 |
+| Curated | 4 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
