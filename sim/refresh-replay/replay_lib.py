@@ -77,12 +77,15 @@ def level(sig_node: str, val: int, invert: bool) -> str:
     return "{VDD}" if on else "0"
 
 
-def edges_to_pwl(init: int, edges: list[tuple[float, int]], invert: bool) -> list[tuple[float, str]]:
+def edges_to_pwl(init: int, edges: list[tuple[float, int]], invert: bool,
+                 t_edge_ns: float | None = None) -> list[tuple[float, str]]:
     """Deterministic edge list -> PWL points ``[(t_ns, level), ...]`` (levels are '0' or '{VDD}').
 
     Value at t=0 is the value after all edges at t<=0. Each later edge at T adds (T, old) and
     (T+TEDGE, new). Edges closer than TEDGE, a repeated value, or a negative time raise ValueError.
+    ``t_edge_ns`` (issue #134 driver sweep only; default T_EDGE_NS = unchanged behaviour) replaces TEDGE for this source.
     """
+    te = T_EDGE_NS if t_edge_ns is None else float(t_edge_ns)
     val = init
     pts: list[tuple[float, str]] = []
     later = []
@@ -95,14 +98,16 @@ def edges_to_pwl(init: int, edges: list[tuple[float, int]], invert: bool) -> lis
             later.append((t, v))
     pts.append((0.0, level("", val, invert)))
     last_t = 0.0
+    ramped = False
     for t, v in later:
         if v == val:
             raise ValueError(f"edge at {t} ns repeats value {v}")
-        if t < last_t + T_EDGE_NS - TIME_TOL_NS:
+        if t < last_t + (te if ramped else T_EDGE_NS) - TIME_TOL_NS:
             raise ValueError(f"edge at {t} ns closer than TEDGE to previous point {last_t}")
         pts.append((t, level("", val, invert)))
-        pts.append((round(t + T_EDGE_NS, 6), level("", v, invert)))
-        last_t = round(t + T_EDGE_NS, 6)
+        pts.append((round(t + te, 6), level("", v, invert)))
+        last_t = round(t + te, 6)
+        ramped = True
         val = v
     return pts
 
@@ -126,8 +131,9 @@ def complement_pts(pts: list[tuple[float, str]]) -> list[tuple[float, str]]:
     return [(t, "0" if lv == "{VDD}" else "{VDD}") for t, lv in pts]
 
 
-def pwl_to_edges(text: str, invert: bool) -> tuple[int, list[tuple[float, int]]]:
+def pwl_to_edges(text: str, invert: bool, t_edge_ns: float | None = None) -> tuple[int, list[tuple[float, int]]]:
     """Reverse of edges_to_pwl for a deck ``pwl(...)`` string -> (initial logical value, edges)."""
+    te = T_EDGE_NS if t_edge_ns is None else float(t_edge_ns)
     m = re.search(r"pwl\((.*)\)", text)
     if not m:
         raise ValueError("no pwl() in source")
@@ -144,7 +150,7 @@ def pwl_to_edges(text: str, invert: bool) -> tuple[int, list[tuple[float, int]]]
     while i < len(logical):
         # a transition is (T, old) then (T+TEDGE, new)
         t0, v0 = logical[i]
-        if i + 1 >= len(logical) or abs(logical[i + 1][0] - t0 - T_EDGE_NS) > 1e-4 or logical[i + 1][1] == v0:
+        if i + 1 >= len(logical) or abs(logical[i + 1][0] - t0 - te) > 1e-4 or logical[i + 1][1] == v0:
             raise ValueError(f"malformed ramp at {t0} ns")
         out.append((round(t0, 6), logical[i + 1][1]))
         i += 2
