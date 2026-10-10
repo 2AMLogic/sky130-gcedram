@@ -6,7 +6,7 @@
     "worktree:return": "./.loom/scripts/worktree-return.sh",
     "check:ci": "echo 'No CI checks configured. Customize this script for your project.' && exit 0",
     "check:all": "echo 'No checks configured. Customize this script for your project.' && exit 0",
-    "test": "python3 -I sim/loaded-column/test_analysis.py && python3 -I sim/loaded-column/cold-corner/test_variants.py && python3 -I sim/loaded-column/cold-corner/check_evidence_index.py && python3 -I sim/sense-mismatch/test_sense_mismatch.py && python3 -I sim/refresh-energy/test_refresh_energy.py && python3 -I sim/test_append_only.py",
+    "test": "python3 -I sim/loaded-column/test_analysis.py && python3 -I sim/loaded-column/cold-corner/test_variants.py && python3 -I sim/loaded-column/cold-corner/check_evidence_index.py && python3 -I sim/sense-stage/test_sense_stage.py && python3 -I sim/refresh-op/test_refresh_op.py && python3 -I sim/refresh-replay/test_refresh_replay.py && python3 -I sim/refresh-replay/test_init_control.py && python3 -I sim/refresh-energy/test_refresh_energy.py && python3 -I design/test_sense_latch.py && python3 -I sim/sense-mismatch/test_sense_mismatch.py && python3 -I sim/write-disturb/test_write_disturb.py && python3 -I sim/test_append_only.py",
     "lint": "echo 'No linter configured. Customize this script for your project.' && exit 0"
   }
 }
