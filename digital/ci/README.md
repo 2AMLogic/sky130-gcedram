@@ -37,6 +37,8 @@ sign-off evidence, and it does not change any provisional timing value.
 6. `digital/control-integration/run_tests.sh` (~11 min; includes lockstep
    equivalence, both interval bases, expected-failure negative controls and
    its own mutation suite)
+7. `digital/sched-phase-integration/run_tests.sh` and `run_mutation.sh`
+   (seconds; scheduler-to-sequencer launch/completion timing, issue #135)
 
 Every suite runs even if an earlier one fails (so all logs exist); the driver
 exits non-zero if any failed, which fails the job. Compile errors, a failing
