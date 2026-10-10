@@ -258,6 +258,12 @@ class Analysis(unittest.TestCase):
         # families are separate: the analog baseline's sense timing is not pooled with the RTL one
         self.assertTrue(A.sense_vs_pre_read(ok + [row("baseline_analog", 0.9, "0")])["all_monotone"])
 
+    def test_restore_counted_only_among_sense_correct_records(self):
+        n = self.n[("rwl_late_hold", "op1", 0.9)]
+        rows, _ = self.run_(dec={n: +1.7}, snend={n: 1.35})
+        e = A.restore_among_sense_correct_records(list(rows.values()))["legacy|rwl_late_hold|op1"]
+        self.assertEqual((e["records"], e["sense_correct"], e["sense_incorrect"], e["restored_among_sense_correct"]), (2, 1, 1, 1))
+
     def test_documented_claims_check(self):
         rows, results = [], []
         for c, t in [("tt", 27), ("ss", 27), ("fs", 27), ("ff", 125)]:

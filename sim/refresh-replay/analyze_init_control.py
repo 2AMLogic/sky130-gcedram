@@ -215,6 +215,28 @@ def survival(results: list[dict]) -> dict:
     return out
 
 
+def restore_among_sense_correct_records(rows: list[dict]) -> dict:
+    """Record-level view per (regime, base, pattern kind): restoration (0.95) counted ONLY over records whose sense decision is correct,
+    next to how many records were sense-incorrect (those are never restore results). Separates 'does the write-back restore what was
+    read correctly' from 'was it read correctly'."""
+    k = f"restored_{int(PRIMARY * 100)}"
+    out = {}
+    for r in rows:
+        key = f"{r['regime']}|{r['variant']}|{r['kind']}"
+        e = out.setdefault(key, dict(regime=r["regime"], variant=r["variant"], kind=r["kind"], records=0, sense_correct=0, restored_among_sense_correct=0,
+                                     sense_incorrect=0, restore_fraction_range_sense_correct=None))
+        e["records"] += 1
+        if r["sense_correct"]:
+            e["sense_correct"] += 1
+            e["restored_among_sense_correct"] += bool(r[k])
+            if r["restore_fraction"] is not None and r["kind"] == "op1":
+                lo, hi = e["restore_fraction_range_sense_correct"] or (r["restore_fraction"], r["restore_fraction"])
+                e["restore_fraction_range_sense_correct"] = (min(lo, r["restore_fraction"]), max(hi, r["restore_fraction"]))
+        else:
+            e["sense_incorrect"] += 1
+    return out
+
+
 def documented_claims(rows: list[dict], results: list[dict]) -> dict:
     """Check the #134 README statements against this controlled run (reported, never forced)."""
     rtl = [r for r in rows if r["regime"] == "legacy" and family(r["base"]) == "rtl_sense_timing" and not r["init_negative"]]
@@ -344,6 +366,7 @@ def main(argv=None) -> int:
         reproduction=reproduction(results, rows),
         documented_claims=documented_claims(rows, results),
         survival=survival(results),
+        restore_among_sense_correct_records=restore_among_sense_correct_records(rows),
         sense_vs_pre_read=sense_vs_pre_read(rows),
         negative_controls=dict(
             restoration={r["variant"] + f"@{r['corner']}/{r['temp_c']}": r["negative_control_ok"] for r in results if "negative_control_ok" in r},
