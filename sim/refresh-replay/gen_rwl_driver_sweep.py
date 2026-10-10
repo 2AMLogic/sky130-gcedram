@@ -41,16 +41,13 @@ IDEAL_SLEW_NS = L.T_EDGE_NS          # the ideal control edge (0.1 ns)
 
 # ---- sweep values: ASSUMPTIONS (human review of bounds requested in the PR) --------------------------------
 SLEW_ONLY_NS = [0.5, 1.0, 2.0, 5.0]                 # R = 0 (no series resistor)
-R_ONLY_OHM = [1e3, 3e3, 1e4, 3e4, 1e5]               # slew = ideal 0.1 ns (series R also degenerates the read path: the pin sinks the read current)
-COMBINED = [(1.0, 1e4), (1.0, 3e4), (5.0, 1e4), (5.0, 3e4)]   # (slew_ns, r_ohm) -- only after the axes above
-RELEASE_DELAYS_NS = [-2.0, -1.0, 0.0, 0.5, 1.0, 2.0, 3.0]    # RWL release start minus WWL fall start (32 ns)
-RELEASE_DRIVERS = [(IDEAL_SLEW_NS, 0.0), (1.0, 1e4), (5.0, 3e4)]
-# "refine" profile (second, append-only run): resolves what the "main" run left open -- (a) series R below the first tested value
-# (1 kohm already fails the read path at 2 corners) and (b) release delays EARLIER than 2 ns before WWL fall (the ideal driver
-# restored at every delay down to -2 ns while the unchanged RTL release at 12 ns, i.e. -20 ns, does not).
-REFINE_R_ONLY_OHM = [100.0, 300.0]
-REFINE_RELEASE_DELAYS_NS = [-16.0, -12.0, -8.0, -4.0, -2.0, 2.0]
-REFINE_RELEASE_DRIVERS = [(IDEAL_SLEW_NS, 0.0), (1.0, 1e3)]
+R_ONLY_OHM = [1e3, 3e3, 1e4, 3e4, 1e5, 3e5, 1e6]     # slew = ideal 0.1 ns (series R also degenerates the read path: the pin sinks the read current)
+COMBINED = [(1.0, 1e4), (1.0, 1e5), (2.0, 1e4), (2.0, 1e5)]   # (slew_ns, r_ohm) -- only after the axes above
+RELEASE_DELAYS_NS = [-16.0, -8.0, -4.0, -2.0, 0.0, 1.0, 2.0, 3.0]    # RWL release start minus WWL fall start (32 ns); +2 = the #131 rwl_late_hold
+RELEASE_DRIVERS = [(IDEAL_SLEW_NS, 0.0), (1.0, 1e4), (2.0, 1e5)]
+# group ic_artifact_check: SAME as the ideal / R points but with an explicit idle-high pin initial condition (see README: the legacy
+# controls have none, so under `uic` the pin steps 0 -> VDD in the first step and lifts the stored level by ~0.1 V before the read).
+IC_CHECK = [("an", IDEAL_SLEW_NS, 0.0), ("rh", IDEAL_SLEW_NS, 0.0), ("rl", IDEAL_SLEW_NS, 0.0), ("rl", IDEAL_SLEW_NS, 1e3), ("rl", IDEAL_SLEW_NS, 1e4)]
 WWL_FALL_NS = 32.0                                   # unchanged RTL
 BASES = {"an": "baseline_analog", "rh": "rtl_hold", "rl": "rwl_late_hold", "nr": "neg_missing_wb", "nl": "neg_missing_wb"}
 NEG_BASES = ("nr", "nl")
@@ -79,28 +76,14 @@ def point_id(base: str, slew: float, r: float, delay: float | None) -> str:
     return p
 
 
-def sweep_points(profile: str = "main") -> list[dict]:
+def sweep_points() -> list[dict]:
     """Declared sweep. Axes are varied independently BEFORE the combined points."""
     pts: list[dict] = []
 
-    def add(base, slew, r, group, delay=None, release=None):
-        pts.append(dict(id=point_id(base, slew, r, delay), base=base, parent=BASES[base], slew_ns=slew, r_ohm=r, group=group,
-                        release_delay_ns=delay, rwl_release_ns=release))
+    def add(base, slew, r, group, delay=None, release=None, pin_ic=False):
+        pts.append(dict(id=point_id(base, slew, r, delay) + ("_ic" if pin_ic else ""), base=base, parent=BASES[base], slew_ns=slew, r_ohm=r,
+                        group=group, release_delay_ns=delay, rwl_release_ns=release, pin_ic=pin_ic))
 
-    if profile == "refine":
-        for base in ("an", "rh", "rl"):
-            for r in REFINE_R_ONLY_OHM:
-                add(base, IDEAL_SLEW_NS, r, "r_only")
-        for sl, r in REFINE_RELEASE_DRIVERS:
-            for d in REFINE_RELEASE_DELAYS_NS:
-                add("rl", sl, r, "release_delay", delay=d, release=round(WWL_FALL_NS + d, 6))
-        for sl, r in REFINE_RELEASE_DRIVERS[:1]:
-            add("nr", sl, r, "negative_control")
-            add("nl", sl, r, "negative_control", release=GR.RWL_LATE_NS)
-        ids = [p["id"] for p in pts]
-        assert len(ids) == len(set(ids)), "duplicate sweep point id"
-        return pts
-    assert profile == "main", profile
     for base in ("an", "rh", "rl"):
         for sl in SLEW_ONLY_NS:
             add(base, sl, 0.0, "slew_only")
@@ -111,6 +94,8 @@ def sweep_points(profile: str = "main") -> list[dict]:
     for sl, r in RELEASE_DRIVERS:
         for d in RELEASE_DELAYS_NS:
             add("rl", sl, r, "release_delay", delay=d, release=round(WWL_FALL_NS + d, 6))
+    for base, sl, r in IC_CHECK:
+        add(base, sl, r, "ic_artifact_check", pin_ic=True)
     # negative controls: missing write-back must stay a failure, incl. with the late RWL release the study is about
     for sl, r in RELEASE_DRIVERS:
         add("nr", sl, r, "negative_control")
@@ -173,8 +158,11 @@ def build_deck(c_sn_f: float, controls: list[dict], sweep: list[dict]) -> str:
             out.append(f"* RWL driver model (EXPERIMENTAL): slew {inst['point']['slew_ns']:g} ns, series R {inst['point']['r_ohm']:g} ohm;"
                        f" cell pin = rwls_{inst['name']}")
             out += rwl_source_line(inst)
-            if inst["point"]["r_ohm"] > 0:
-                ics.append(f"v(rwls_{inst['name']})={S._fmt(GEN.VDD_V)} v(rwlsrc_{inst['name']})={S._fmt(GEN.VDD_V)}")
+            # Default: NO pin initial condition (as the legacy controls) so every sweep instance starts in the same effective regime
+            # (under `uic` the forced/charged pin steps 0 -> VDD at t = 0 and injects charge onto SN through the read device;
+            # see the README). `pin_ic` points (group ic_artifact_check) DECLARE an explicit idle-high pin IC to quantify that artifact.
+            if inst["point"].get("pin_ic"):
+                ics.append(f"v(rwls_{inst['name']})={S._fmt(GEN.VDD_V)}" + (f" v(rwlsrc_{inst['name']})={S._fmt(GEN.VDD_V)}" if inst["point"]["r_ohm"] > 0 else ""))
             continue
         out.append(ln)
     out.append("* initial conditions of the finite-impedance RWL pins (idle = VDD)")
@@ -194,6 +182,7 @@ def extra_meas(p: dict) -> list[dict]:
     m = []
     for k, t in enumerate(traj_times(p)):
         m.append({"name": f"snt{k}_{n}", "unit": "V", "spice": f".meas tran snt{k}_{n} FIND v(sn_{n}_0) AT={t:.6g}n"})
+    m.append({"name": f"snpre_{n}", "unit": "V", "spice": f".meas tran snpre_{n} FIND v(sn_{n}_0) AT=1.9n"})   # effective stored level before RWL assert
     # cell-pin (read-device source) voltages and threshold crossings; the source is never probed
     m.append({"name": f"pinm_{n}", "unit": "V", "spice": f".meas tran pinm_{n} FIND v(rwls_{n}) AT={p['t_meas_ns']:.6g}n"})
     m.append({"name": f"pina_{n}", "unit": "V", "spice": f".meas tran pina_{n} FIND v(rwls_{n}) AT={p['t_after_rwl_rel_ns']:.6g}n"})
@@ -224,6 +213,19 @@ SRC_PREFIXES = ("vctl_", "vrs_", "ven_", "venb_", "vww_", "vwc_")
 def inst_lines(deck: str, name: str) -> list[str]:
     rx = re.compile(r"(?<=_)" + re.escape(name) + r"(?:_\d+)?(?![A-Za-z0-9_])")
     return [ln.replace(name, "@") for ln in deck.splitlines() if rx.search(ln) and not ln.startswith(("*", ".ic"))]
+
+
+def ic_tokens(deck: str, name: str) -> dict:
+    """``.ic v(node)=value`` tokens of one instance, name masked."""
+    rx = re.compile(r"v\((\S+?)\)=(\S+)")
+    nrx = re.compile(r"(?<=_)" + re.escape(name) + r"(?:_\d+)?$")
+    out = {}
+    for ln in deck.splitlines():
+        if ln.startswith(".ic"):
+            for node, val in rx.findall(ln):
+                if nrx.search(node):
+                    out[node.replace(name, "@")] = val
+    return out
 
 
 def split_lines(lines: list[str]):
@@ -269,6 +271,14 @@ def verify_sweep(deck: str, allinst: list[dict]) -> dict:
                 continue
             if ss.get(pre) != ps.get(pre):
                 findings.append(dict(kind="other_source_changed", source=pre))
+        # initial conditions: identical to the parent's, plus ONLY the declared idle-high pin IC (group ic_artifact_check)
+        want = dict(ic_tokens(deck, par["name"]))
+        if pt.get("pin_ic"):
+            want["rwls_@"] = "1.8"
+            if pt["r_ohm"] > 0:
+                want["rwlsrc_@"] = "1.8"
+        if ic_tokens(deck, name) != want:
+            findings.append(dict(kind="initial_conditions_changed", got=ic_tokens(deck, name), expected=want))
         # RWL source: parse back with the declared slew and compare with the parent edge list (+declared release)
         init, edges, inv = i["nodes"]["rwls"]
         try:
@@ -304,7 +314,6 @@ def main(argv=None) -> int:
     ap.add_argument("trace", type=Path, help="golden RTL trace JSON (export_rtl_trace.py)")
     ap.add_argument("--run-id", default=datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     ap.add_argument("--results-dir", type=Path, default=RESULTS_DIR)
-    ap.add_argument("--profile", choices=("main", "refine"), default="main")
     ap.add_argument("--only", default=None, help="DEBUG: comma list of sweep point ids (plus no controls) -> small probe deck")
     a = ap.parse_args(argv)
     run_dir = a.results_dir / a.run_id
@@ -313,7 +322,7 @@ def main(argv=None) -> int:
         return 2
     golden = json.loads(a.trace.read_text())
     controls = GR.build_instances(golden)
-    points = sweep_points(a.profile)
+    points = sweep_points()
     if a.only:
         keep = set(a.only.split(","))
         points = [p for p in points if p["id"] in keep]
@@ -345,11 +354,8 @@ def main(argv=None) -> int:
     man = dict(
         run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=134,
         experimental_stimulus_model="RWL source: PWL with declared 0-100% ramp time (all RWL edges) + series resistor to the cell pin; NOT a designed physical driver",
-        profile=a.profile,
-        sweep_values_assumptions=dict(refine_profile=dict(r_only_ohm=REFINE_R_ONLY_OHM, release_delays_ns=REFINE_RELEASE_DELAYS_NS,
-                                                          release_drivers_slew_ns_r_ohm=REFINE_RELEASE_DRIVERS) if a.profile == "refine" else None,
-                                      slew_only_ns=SLEW_ONLY_NS, r_only_ohm=R_ONLY_OHM, combined_slew_ns_r_ohm=COMBINED,
-                                      release_delays_ns=RELEASE_DELAYS_NS, release_drivers_slew_ns_r_ohm=RELEASE_DRIVERS,
+        sweep_values_assumptions=dict(slew_only_ns=SLEW_ONLY_NS, r_only_ohm=R_ONLY_OHM, combined_slew_ns_r_ohm=COMBINED,
+                                      release_delays_ns=RELEASE_DELAYS_NS, release_drivers_slew_ns_r_ohm=RELEASE_DRIVERS, ic_artifact_check=IC_CHECK,
                                       wwl_fall_start_ns=WWL_FALL_NS, ideal_slew_ns=IDEAL_SLEW_NS,
                                       note="ASSUMPTIONS; no committed driver design exists. Human review of bounds requested."),
         deck_sha256=hashlib.sha256(deck.encode()).hexdigest(), request_sha256=hashlib.sha256((json.dumps(req, indent=1) + "\n").encode()).hexdigest(),

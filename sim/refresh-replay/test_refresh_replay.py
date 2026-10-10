@@ -334,6 +334,7 @@ class DriverSweep(unittest.TestCase):
 
     def test_all_sweep_instances_change_only_declared_parameters(self):
         self.assertEqual(len(self.sweep), 4 * len(self.points))
+        self.assertEqual(len({p['name'] for p in self.all}), len(self.all))
         for n, c in self.check.items():
             self.assertTrue(c["declared_changes_only"], (n, c["findings"]))
 
@@ -371,6 +372,18 @@ class DriverSweep(unittest.TestCase):
         i = next(k for k, ln in enumerate(lines) if ln.startswith(f"vrs_{n} "))
         lines[i] = lines[i].replace("3.0000e-09", "3.5000e-09", 1)
         self.assertFalse(D.verify_sweep("\n".join(lines), self.all)[n]["declared_changes_only"])
+
+    def test_initial_conditions_only_change_for_declared_pin_ic_points(self):
+        pick = next(p for p in self.sweep if p["point"]["id"] == "rl_s0p1_r1k")          # no pin IC declared
+        ic_pick = next(p for p in self.sweep if p["point"]["id"] == "rl_s0p1_r1k_ic")    # pin IC declared
+        n = pick["name"]
+        self.assertEqual(D.ic_tokens(self.deck, n).keys(), D.ic_tokens(self.deck, next(c for c in self.controls if c["variant"] == "rwl_late_hold"
+                                                                                       and c["kind"] == pick["kind"] and c["sn"] == pick["sn"])["name"]).keys())
+        self.assertEqual(set(D.ic_tokens(self.deck, ic_pick["name"])) - set(D.ic_tokens(self.deck, n)), {"rwls_@", "rwlsrc_@"})
+        bad = self.deck + f"\n.ic v(rwls_{n})=1.8\n"                                    # an undeclared extra IC must be flagged
+        self.assertFalse(D.verify_sweep(bad, self.all)[n]["declared_changes_only"])
+        self.assertEqual(sum(1 for p in self.points if p["pin_ic"]), len(D.IC_CHECK))
+        self.assertTrue(all(p["group"] == "ic_artifact_check" for p in self.points if p["pin_ic"]))
 
     def test_release_delay_points_move_only_the_rwl_release(self):
         par = next(c for c in self.controls if c["variant"] == "rwl_late_hold" and c["kind"] == "op1" and c["sn"] == 0.9)
@@ -444,26 +457,6 @@ class DriverSweep(unittest.TestCase):
 
 
 GR_RWL_LATE = G.RWL_LATE_NS
-
-
-class DriverSweepRefine(unittest.TestCase):
-    """The refine profile (second run) obeys the same declared-parameters-only rule and adds no new mechanism."""
-
-    def test_refine_points_only_declared_changes(self):
-        g = golden()
-        controls = G.build_instances(g)
-        pts = D.sweep_points("refine")
-        self.assertEqual({p["group"] for p in pts}, {"r_only", "release_delay", "negative_control"})
-        self.assertTrue(all(p["slew_ns"] == D.IDEAL_SLEW_NS for p in pts if p["group"] == "r_only"))
-        self.assertIn(2.0, {p["release_delay_ns"] for p in pts if p["group"] == "release_delay"})   # envelope reference
-        sweep = D.build_sweep_instances(g, controls, pts)
-        c_sn_ff, _ = G.S.load_extracted_c_sn(G.S.EXTRACT_JSON, "sn")
-        deck = D.build_deck(c_sn_ff * 1e-15, controls, sweep)
-        chk = D.verify_sweep(deck, controls + sweep)
-        for n, c in chk.items():
-            self.assertTrue(c["declared_changes_only"], (n, c["findings"]))
-        with self.assertRaises(AssertionError):
-            D.sweep_points("bogus")
 
 
 class DriverSweepAnalysis(unittest.TestCase):

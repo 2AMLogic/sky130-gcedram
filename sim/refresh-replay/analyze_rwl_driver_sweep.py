@@ -100,7 +100,7 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
         pt = mi.get("point") or {}
         row = dict(corner=corner["process"], temp_c=corner["temperature_c"], instance=n, variant=mi["variant"], group=mi["group"],
                    slew_ns=pt.get("slew_ns"), r_ohm=pt.get("r_ohm"), release_delay_ns=pt.get("release_delay_ns"), kind=mi["kind"], sn_pre_v=mi["sn_v"],
-                   dec_v=dec, decided=AR.decided(dec), snend_v=sn, sn_ref_v=sn_ref, snend_over_sn_ref=(sn / sn_ref if sn is not None and sn_ref else None),
+                   pin_ic=pt.get("pin_ic", False), snpre_v=meas.get(f"snpre_{n}"), dec_v=dec, decided=AR.decided(dec), snend_v=sn, sn_ref_v=sn_ref, snend_over_sn_ref=(sn / sn_ref if sn is not None and sn_ref else None),
                    snrd_v=meas.get(f"snrd_{n}"), sn_before_wwl_fall_v=meas.get(f"snwf_{n}"), sn_after_wwl_fall_v=meas.get(f"snwa_{n}"),
                    sn_before_rwl_release_v=meas.get(f"snrb_{n}"), sn_after_rwl_release_v=meas.get(f"snra_{n}"), sn_settle_v=meas.get(f"snset_{n}"),
                    pin_v_at_gating_probe=meas.get(f"pinm_{n}"), pin_v_at_release_plus_0p2ns=meas.get(f"pina_{n}"),
@@ -158,7 +158,7 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
             sn_trajectory_ns_v={pat(r): [[t, r[f"snt{k}_v"]] for k, t in enumerate(t_traj)] for r in rs},
             min_op1_fraction=min((r["snend_over_sn_ref"] for r in op1 if r["snend_over_sn_ref"] is not None), default=None),
             stored_zero_signed_levels_v=sorted(r["snend_v"] for r in op0 if r["snend_v"] is not None),
-            sn_ref_v=sn_ref,
+            sn_ref_v=sn_ref, pin_ic=bool(pt.get("pin_ic")), snpre_by_pattern_v={pat(r): r["snpre_v"] for r in rs},
             first_restored_sample_ns=first,          # quantized UPPER bound on time-to-restore (probe grid); None = never in the window
             pin=dict(v_at_gating_probe=ref_row["pin_v_at_gating_probe"], v_at_release_plus_0p2ns=ref_row["pin_v_at_release_plus_0p2ns"],
                      source_release_start_ns=mi0.get("t_src_release_start_ns"), source_release_50_ns=mi0.get("t_src_release_50_ns"),
@@ -289,7 +289,7 @@ def restoration_vs_pin_crossing(results: list[dict], man: dict) -> dict:
     views = {}
     for key, label in (("pin_release_50_minus_wwl_fall_50_ns", "pin 50 % release crossing minus WWL 50 % fall"),
                        ("pin_release_90_minus_wwl_fall_50_ns", "pin 90 % release crossing minus WWL 50 % fall")):
-        recs = [r for r in results if r["sense_correct"] and r["simulator_ok"] and r["group"] != "negative_control"
+        recs = [r for r in results if r["sense_correct"] and r["simulator_ok"] and r["group"] not in ("negative_control", "ic_artifact_check")
                 and r["variant"] not in man["control_negatives"] and r["pin"][key] is not None]
         out = []
         for lo, hi in BINS:
@@ -303,6 +303,31 @@ def restoration_vs_pin_crossing(results: list[dict], man: dict) -> dict:
                             observed_ns=[min(r["pin"][key] for r in b), max(r["pin"][key] for r in b)]))
         views[key] = dict(definition=label, bins=out)
     return dict(views=views, note="association over this stimulus model only; bins are (lo, hi] in ns; the gating probe is fixed")
+
+
+def start_regime_check(results: list[dict], man: dict) -> dict:
+    """Every non-`pin_ic` sweep instance must start in the SAME effective regime as its parent legacy control: SN just before the
+    RWL assert (`snpre`) equal to the control's. `pin_ic` points (ic_artifact_check) are expected to differ; the offset is the artifact."""
+    ctl = {(r["corner"], r["temp_c"], r["variant"]): r for r in results if r["variant"] in man["control_variants"]}
+    dev, ic_off, bad = [], [], []
+    for r in results:
+        pt = r.get("point")
+        if not pt:
+            continue
+        par = ctl.get((r["corner"], r["temp_c"], pt["parent"]))
+        if par is None:
+            continue
+        for k, v in r["snpre_by_pattern_v"].items():
+            pv = par["snpre_by_pattern_v"].get(k)
+            if v is None or pv is None:
+                continue
+            (ic_off if r["pin_ic"] else dev).append(v - pv)
+            if not r["pin_ic"] and abs(v - pv) > 0.005:
+                bad.append(dict(variant=r["variant"], corner=f"{r['corner']}/{r['temp_c']}", pattern=k, delta_v=round(v - pv, 4)))
+    return dict(tolerance_v=0.005, non_ic_points_max_abs_delta_v=max((abs(x) for x in dev), default=None), non_ic_points_outside_tolerance=bad,
+                same_effective_start_regime=not bad and bool(dev),
+                pin_ic_points_delta_v_range=[min(ic_off), max(ic_off)] if ic_off else None,
+                note="delta = SN at 1.9 ns (before the RWL assert) minus the parent legacy control's; the pin_ic delta quantifies the legacy startup charge injection")
 
 
 def controls_reproduction(results: list[dict], man: dict) -> dict:
@@ -384,6 +409,7 @@ def main(argv=None) -> int:
         claims=dict(physical_rwl_driver_validated=False, mismatch_or_offset_yield_validated=False, extracted_c_rbl=False, extracted_c_wbl=False,
                     extracted_rwl_load=False, spec_changed=False, scheduler_timing_changed=False, contract_changed=False, overlap_rule_changed=False),
         controls_reproduction=controls_reproduction(results, man),
+        start_regime_check=start_regime_check(results, man),
         negative_controls=dict(detail=neg_detail, all_remain_failures=all(d["negative_control_ok_corners"] == d["corners"] for d in neg_detail.values())),
         control_points={i: p for i, p in ctl.items()},
         sweep_points=sweep,
