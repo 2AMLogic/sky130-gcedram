@@ -20,7 +20,8 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#114**: Design the column periphery (precharge, write driver, column select) to replace ideal sources in the read/write studies
+- **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead
 
 ## In Progress
 
@@ -52,7 +53,6 @@ Issues carrying `loom:curated`.
 ## Proposed (Architect / Hermit)
 
 - **#94**: Characterize write-hold-sense trajectories and mixed neighbor patterns at the refresh deadline *(architect)*
-- **#115**: Quantify refresh energy and standby power of the 2T array at the PVT corners *(architect)*
 
 ## Epics
 
@@ -65,11 +65,11 @@ Issues carrying `loom:curated`.
 |------|-------|
 | Operator merge-risk holds | 2 |
 | Operator priority | 0 |
-| Ready (`loom:issue`) | 0 |
+| Ready (`loom:issue`) | 2 |
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 2 |
 | Curated | 3 |
-| Architect / Hermit proposals | 2 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
