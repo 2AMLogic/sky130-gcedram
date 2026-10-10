@@ -177,6 +177,7 @@ def main(argv=None) -> int:
         klt_status=rep["status"], corner_count=rep["corner_count"], batch_job_id=remote.get("job_id"),
         batch_instance_type=remote.get("instance_type"), report_netlist_sha256=env.get("netlist_sha256"),
         report_models_lib_sha256=env.get("models_lib_sha256"), engine=env.get("engine"), engine_version=env.get("engine_version"),
+        report_provenance=rep.get("provenance"), report_klt_client_note="klt_version in report_provenance is the client that produced the report; pins.klt_client is the generator-time default client",
         generated_deck_sha256=man["deck_sha256"], request_sha256=man["request_sha256"], pins=man["pins"],
         criteria=dict(decide_v=AR.DECIDE_V, fracs=FRACS, primary_frac=PRIMARY, zero_max_v=AR.ZERO_MAX_V, budget_cycles=BUDGET_CYCLES,
                       prior_report=str(PRIOR_REPORT.relative_to(REPO)), prior_tolerance_v=PRIOR_TOL_V),

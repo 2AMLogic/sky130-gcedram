@@ -285,6 +285,13 @@ python3 -I sim/sense-stage/gen_sense_stage.py
 python3 -I sim/sense-stage/test_sense_stage.py
 ```
 
+## `refresh-replay/` -- phase_seq RTL strobes replayed in the refresh-op circuit (issue #128)
+
+Exports the edges of one `phase_seq` REFRESH, converts them to PWL (explicit pin map, explicit latch-hold
+adapter) and replays them over 5 corners x {27, 125} C in the `sim/refresh-op` circuit, next to the matched
+analog baseline and two write-back negative controls. Result: the RTL waveform does **not** restore at
+any of the 10 corners; failure preserved, contract unchanged. See [`refresh-replay/README.md`](refresh-replay/README.md).
+
 ## `refresh-op/` -- closed-loop row refresh operation, measured `t_row_refresh_op` (issue #110)
 
 One transient per corner runs a full refresh of a row of the loaded 4-row
