@@ -315,6 +315,22 @@ python3 -I sim/write-disturb/gen_write_disturb.py
 python3 -I sim/write-disturb/test_write_disturb.py
 ```
 
+## `refresh-energy/` -- ideal-driver array-boundary refresh energy and standby power of the extracted 4x4 array (issue #115)
+
+Epic #24 item 6. Replays the #110 refresh operation (10 ns sense, 10 ns
+write-back; no latch) on row 0 of the committed **extracted** 4x4 array with
+one ideal source per array port, integrates every port's signed power, and
+subtracts a matched idle control, for four data patterns at the 10 PROPOSED
+restricted corners (two `klt sim` batch requests: the grid, and the same grid
+at a 4x finer step for convergence). A partial cost under stated assumptions,
+not complete refresh energy, not macro power and not an SRAM comparison. See
+[`refresh-energy/README.md`](refresh-energy/README.md).
+
+```bash
+python3 -I sim/refresh-energy/gen_refresh_energy.py
+python3 -I sim/refresh-energy/test_refresh_energy.py
+```
+
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
 
 The **first circuit-level simulation of the ratified bitcell**: the two
