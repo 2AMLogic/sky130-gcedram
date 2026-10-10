@@ -1,0 +1,3895 @@
+{
+ "op1_0900_baseline_analog": {
+  "variant": "baseline_analog",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op1_1000_baseline_analog": {
+  "variant": "baseline_analog",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op0_n100_baseline_analog": {
+  "variant": "baseline_analog",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op0_0000_baseline_analog": {
+  "variant": "baseline_analog",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op1_0900_rtl_raw": {
+  "variant": "rtl_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op1_1000_rtl_raw": {
+  "variant": "rtl_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op0_n100_rtl_raw": {
+  "variant": "rtl_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op0_0000_rtl_raw": {
+  "variant": "rtl_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op1_0900_rtl_hold": {
+  "variant": "rtl_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op1_1000_rtl_hold": {
+  "variant": "rtl_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op0_n100_rtl_hold": {
+  "variant": "rtl_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op0_0000_rtl_hold": {
+  "variant": "rtl_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op1_0900_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op1_1000_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op0_n100_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op0_0000_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op1_0900_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op1_1000_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op0_n100_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op0_0000_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": null
+ },
+ "op1_0900_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_combined_hold": {
+  "variant": "combined_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_combined_hold": {
+  "variant": "combined_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_combined_hold": {
+  "variant": "combined_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_combined_hold": {
+  "variant": "combined_hold",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false,
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "refw": {
+  "variant": "reference_write",
+  "group": "control",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true,
+  "experiment_diff": null
+ },
+ "op1_0900_an_s0p5_r0": {
+  "variant": "an_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s0p5_r0": {
+  "variant": "an_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s0p5_r0": {
+  "variant": "an_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s0p5_r0": {
+  "variant": "an_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s1_r0": {
+  "variant": "an_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s1_r0": {
+  "variant": "an_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s1_r0": {
+  "variant": "an_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s1_r0": {
+  "variant": "an_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s2_r0": {
+  "variant": "an_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s2_r0": {
+  "variant": "an_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s2_r0": {
+  "variant": "an_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s2_r0": {
+  "variant": "an_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s5_r0": {
+  "variant": "an_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s5_r0": {
+  "variant": "an_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s5_r0": {
+  "variant": "an_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s5_r0": {
+  "variant": "an_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s0p1_r1k": {
+  "variant": "an_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s0p1_r1k": {
+  "variant": "an_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s0p1_r1k": {
+  "variant": "an_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s0p1_r1k": {
+  "variant": "an_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s0p1_r3k": {
+  "variant": "an_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s0p1_r3k": {
+  "variant": "an_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s0p1_r3k": {
+  "variant": "an_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s0p1_r3k": {
+  "variant": "an_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s0p1_r10k": {
+  "variant": "an_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s0p1_r10k": {
+  "variant": "an_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s0p1_r10k": {
+  "variant": "an_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s0p1_r10k": {
+  "variant": "an_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s0p1_r30k": {
+  "variant": "an_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s0p1_r30k": {
+  "variant": "an_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s0p1_r30k": {
+  "variant": "an_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s0p1_r30k": {
+  "variant": "an_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s0p1_r100k": {
+  "variant": "an_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s0p1_r100k": {
+  "variant": "an_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s0p1_r100k": {
+  "variant": "an_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s0p1_r100k": {
+  "variant": "an_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s1_r10k": {
+  "variant": "an_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s1_r10k": {
+  "variant": "an_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s1_r10k": {
+  "variant": "an_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s1_r10k": {
+  "variant": "an_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s1_r30k": {
+  "variant": "an_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s1_r30k": {
+  "variant": "an_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s1_r30k": {
+  "variant": "an_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s1_r30k": {
+  "variant": "an_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s5_r10k": {
+  "variant": "an_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s5_r10k": {
+  "variant": "an_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s5_r10k": {
+  "variant": "an_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s5_r10k": {
+  "variant": "an_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_an_s5_r30k": {
+  "variant": "an_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op1_0900_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_an_s5_r30k": {
+  "variant": "an_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op1_1000_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_an_s5_r30k": {
+  "variant": "an_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op0_n100_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_an_s5_r30k": {
+  "variant": "an_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op0_0000_baseline_analog",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s0p5_r0": {
+  "variant": "rh_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s0p5_r0": {
+  "variant": "rh_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s0p5_r0": {
+  "variant": "rh_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s0p5_r0": {
+  "variant": "rh_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s1_r0": {
+  "variant": "rh_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s1_r0": {
+  "variant": "rh_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s1_r0": {
+  "variant": "rh_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s1_r0": {
+  "variant": "rh_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s2_r0": {
+  "variant": "rh_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s2_r0": {
+  "variant": "rh_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s2_r0": {
+  "variant": "rh_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s2_r0": {
+  "variant": "rh_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s5_r0": {
+  "variant": "rh_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s5_r0": {
+  "variant": "rh_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s5_r0": {
+  "variant": "rh_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s5_r0": {
+  "variant": "rh_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s0p1_r1k": {
+  "variant": "rh_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s0p1_r1k": {
+  "variant": "rh_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s0p1_r1k": {
+  "variant": "rh_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s0p1_r1k": {
+  "variant": "rh_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s0p1_r3k": {
+  "variant": "rh_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s0p1_r3k": {
+  "variant": "rh_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s0p1_r3k": {
+  "variant": "rh_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s0p1_r3k": {
+  "variant": "rh_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s0p1_r10k": {
+  "variant": "rh_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s0p1_r10k": {
+  "variant": "rh_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s0p1_r10k": {
+  "variant": "rh_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s0p1_r10k": {
+  "variant": "rh_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s0p1_r30k": {
+  "variant": "rh_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s0p1_r30k": {
+  "variant": "rh_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s0p1_r30k": {
+  "variant": "rh_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s0p1_r30k": {
+  "variant": "rh_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s0p1_r100k": {
+  "variant": "rh_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s0p1_r100k": {
+  "variant": "rh_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s0p1_r100k": {
+  "variant": "rh_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s0p1_r100k": {
+  "variant": "rh_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s1_r10k": {
+  "variant": "rh_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s1_r10k": {
+  "variant": "rh_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s1_r10k": {
+  "variant": "rh_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s1_r10k": {
+  "variant": "rh_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s1_r30k": {
+  "variant": "rh_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s1_r30k": {
+  "variant": "rh_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s1_r30k": {
+  "variant": "rh_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s1_r30k": {
+  "variant": "rh_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s5_r10k": {
+  "variant": "rh_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s5_r10k": {
+  "variant": "rh_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s5_r10k": {
+  "variant": "rh_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s5_r10k": {
+  "variant": "rh_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rh_s5_r30k": {
+  "variant": "rh_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rh_s5_r30k": {
+  "variant": "rh_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rh_s5_r30k": {
+  "variant": "rh_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rh_s5_r30k": {
+  "variant": "rh_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rtl_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p5_r0": {
+  "variant": "rl_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p5_r0": {
+  "variant": "rl_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p5_r0": {
+  "variant": "rl_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p5_r0": {
+  "variant": "rl_s0p5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.5,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r0": {
+  "variant": "rl_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r0": {
+  "variant": "rl_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r0": {
+  "variant": "rl_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r0": {
+  "variant": "rl_s1_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s2_r0": {
+  "variant": "rl_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s2_r0": {
+  "variant": "rl_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s2_r0": {
+  "variant": "rl_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s2_r0": {
+  "variant": "rl_s2_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 2.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r0": {
+  "variant": "rl_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r0": {
+  "variant": "rl_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r0": {
+  "variant": "rl_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r0": {
+  "variant": "rl_s5_r0",
+  "group": "slew_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r1k": {
+  "variant": "rl_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r1k": {
+  "variant": "rl_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r1k": {
+  "variant": "rl_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r1k": {
+  "variant": "rl_s0p1_r1k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 1000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r3k": {
+  "variant": "rl_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r3k": {
+  "variant": "rl_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r3k": {
+  "variant": "rl_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r3k": {
+  "variant": "rl_s0p1_r3k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 3000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r10k": {
+  "variant": "rl_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r10k": {
+  "variant": "rl_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r10k": {
+  "variant": "rl_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r10k": {
+  "variant": "rl_s0p1_r10k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r30k": {
+  "variant": "rl_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r30k": {
+  "variant": "rl_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r30k": {
+  "variant": "rl_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r30k": {
+  "variant": "rl_s0p1_r30k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r100k": {
+  "variant": "rl_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r100k": {
+  "variant": "rl_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r100k": {
+  "variant": "rl_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r100k": {
+  "variant": "rl_s0p1_r100k",
+  "group": "r_only",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 100000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k": {
+  "variant": "rl_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k": {
+  "variant": "rl_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k": {
+  "variant": "rl_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k": {
+  "variant": "rl_s1_r10k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r30k": {
+  "variant": "rl_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r30k": {
+  "variant": "rl_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r30k": {
+  "variant": "rl_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r30k": {
+  "variant": "rl_s1_r30k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r10k": {
+  "variant": "rl_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r10k": {
+  "variant": "rl_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r10k": {
+  "variant": "rl_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r10k": {
+  "variant": "rl_s5_r10k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k": {
+  "variant": "rl_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k": {
+  "variant": "rl_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k": {
+  "variant": "rl_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k": {
+  "variant": "rl_s5_r30k",
+  "group": "combined",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r0_dm002p0": {
+  "variant": "rl_s0p1_r0_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r0_dm002p0": {
+  "variant": "rl_s0p1_r0_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r0_dm002p0": {
+  "variant": "rl_s0p1_r0_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r0_dm002p0": {
+  "variant": "rl_s0p1_r0_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r0_dm001p0": {
+  "variant": "rl_s0p1_r0_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r0_dm001p0": {
+  "variant": "rl_s0p1_r0_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r0_dm001p0": {
+  "variant": "rl_s0p1_r0_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r0_dm001p0": {
+  "variant": "rl_s0p1_r0_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r0_dp000p0": {
+  "variant": "rl_s0p1_r0_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r0_dp000p0": {
+  "variant": "rl_s0p1_r0_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r0_dp000p0": {
+  "variant": "rl_s0p1_r0_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r0_dp000p0": {
+  "variant": "rl_s0p1_r0_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r0_dp000p5": {
+  "variant": "rl_s0p1_r0_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r0_dp000p5": {
+  "variant": "rl_s0p1_r0_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r0_dp000p5": {
+  "variant": "rl_s0p1_r0_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r0_dp000p5": {
+  "variant": "rl_s0p1_r0_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r0_dp001p0": {
+  "variant": "rl_s0p1_r0_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r0_dp001p0": {
+  "variant": "rl_s0p1_r0_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r0_dp001p0": {
+  "variant": "rl_s0p1_r0_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r0_dp001p0": {
+  "variant": "rl_s0p1_r0_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r0_dp002p0": {
+  "variant": "rl_s0p1_r0_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r0_dp002p0": {
+  "variant": "rl_s0p1_r0_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r0_dp002p0": {
+  "variant": "rl_s0p1_r0_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r0_dp002p0": {
+  "variant": "rl_s0p1_r0_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s0p1_r0_dp003p0": {
+  "variant": "rl_s0p1_r0_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s0p1_r0_dp003p0": {
+  "variant": "rl_s0p1_r0_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s0p1_r0_dp003p0": {
+  "variant": "rl_s0p1_r0_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s0p1_r0_dp003p0": {
+  "variant": "rl_s0p1_r0_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k_dm002p0": {
+  "variant": "rl_s1_r10k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k_dm002p0": {
+  "variant": "rl_s1_r10k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k_dm002p0": {
+  "variant": "rl_s1_r10k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k_dm002p0": {
+  "variant": "rl_s1_r10k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k_dm001p0": {
+  "variant": "rl_s1_r10k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k_dm001p0": {
+  "variant": "rl_s1_r10k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k_dm001p0": {
+  "variant": "rl_s1_r10k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k_dm001p0": {
+  "variant": "rl_s1_r10k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k_dp000p0": {
+  "variant": "rl_s1_r10k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k_dp000p0": {
+  "variant": "rl_s1_r10k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k_dp000p0": {
+  "variant": "rl_s1_r10k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k_dp000p0": {
+  "variant": "rl_s1_r10k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k_dp000p5": {
+  "variant": "rl_s1_r10k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k_dp000p5": {
+  "variant": "rl_s1_r10k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k_dp000p5": {
+  "variant": "rl_s1_r10k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k_dp000p5": {
+  "variant": "rl_s1_r10k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k_dp001p0": {
+  "variant": "rl_s1_r10k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k_dp001p0": {
+  "variant": "rl_s1_r10k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k_dp001p0": {
+  "variant": "rl_s1_r10k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k_dp001p0": {
+  "variant": "rl_s1_r10k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k_dp002p0": {
+  "variant": "rl_s1_r10k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k_dp002p0": {
+  "variant": "rl_s1_r10k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k_dp002p0": {
+  "variant": "rl_s1_r10k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k_dp002p0": {
+  "variant": "rl_s1_r10k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s1_r10k_dp003p0": {
+  "variant": "rl_s1_r10k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s1_r10k_dp003p0": {
+  "variant": "rl_s1_r10k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s1_r10k_dp003p0": {
+  "variant": "rl_s1_r10k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s1_r10k_dp003p0": {
+  "variant": "rl_s1_r10k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k_dm002p0": {
+  "variant": "rl_s5_r30k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k_dm002p0": {
+  "variant": "rl_s5_r30k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k_dm002p0": {
+  "variant": "rl_s5_r30k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k_dm002p0": {
+  "variant": "rl_s5_r30k_dm002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 30.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k_dm001p0": {
+  "variant": "rl_s5_r30k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k_dm001p0": {
+  "variant": "rl_s5_r30k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k_dm001p0": {
+  "variant": "rl_s5_r30k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k_dm001p0": {
+  "variant": "rl_s5_r30k_dm001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 31.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k_dp000p0": {
+  "variant": "rl_s5_r30k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k_dp000p0": {
+  "variant": "rl_s5_r30k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k_dp000p0": {
+  "variant": "rl_s5_r30k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k_dp000p0": {
+  "variant": "rl_s5_r30k_dp000p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k_dp000p5": {
+  "variant": "rl_s5_r30k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k_dp000p5": {
+  "variant": "rl_s5_r30k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k_dp000p5": {
+  "variant": "rl_s5_r30k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k_dp000p5": {
+  "variant": "rl_s5_r30k_dp000p5",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 32.5
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k_dp001p0": {
+  "variant": "rl_s5_r30k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k_dp001p0": {
+  "variant": "rl_s5_r30k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k_dp001p0": {
+  "variant": "rl_s5_r30k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k_dp001p0": {
+  "variant": "rl_s5_r30k_dp001p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 33.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k_dp002p0": {
+  "variant": "rl_s5_r30k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k_dp002p0": {
+  "variant": "rl_s5_r30k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k_dp002p0": {
+  "variant": "rl_s5_r30k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k_dp002p0": {
+  "variant": "rl_s5_r30k_dp002p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_rl_s5_r30k_dp003p0": {
+  "variant": "rl_s5_r30k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op1_0900_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_rl_s5_r30k_dp003p0": {
+  "variant": "rl_s5_r30k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op1_1000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_rl_s5_r30k_dp003p0": {
+  "variant": "rl_s5_r30k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op0_n100_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_rl_s5_r30k_dp003p0": {
+  "variant": "rl_s5_r30k_dp003p0",
+  "group": "release_delay",
+  "parent_instance": "op0_0000_rwl_late_hold",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 35.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_nr_s0p1_r0": {
+  "variant": "nr_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op1_0900_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_nr_s0p1_r0": {
+  "variant": "nr_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op1_1000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_nr_s0p1_r0": {
+  "variant": "nr_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op0_n100_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_nr_s0p1_r0": {
+  "variant": "nr_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op0_0000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_nl_s0p1_r0": {
+  "variant": "nl_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op1_0900_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_nl_s0p1_r0": {
+  "variant": "nl_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op1_1000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_nl_s0p1_r0": {
+  "variant": "nl_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op0_n100_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_nl_s0p1_r0": {
+  "variant": "nl_s0p1_r0",
+  "group": "negative_control",
+  "parent_instance": "op0_0000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 0.1,
+   "r_ohm": 0.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_nr_s1_r10k": {
+  "variant": "nr_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op1_0900_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_nr_s1_r10k": {
+  "variant": "nr_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op1_1000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_nr_s1_r10k": {
+  "variant": "nr_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op0_n100_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_nr_s1_r10k": {
+  "variant": "nr_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op0_0000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_nl_s1_r10k": {
+  "variant": "nl_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op1_0900_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_nl_s1_r10k": {
+  "variant": "nl_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op1_1000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_nl_s1_r10k": {
+  "variant": "nl_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op0_n100_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_nl_s1_r10k": {
+  "variant": "nl_s1_r10k",
+  "group": "negative_control",
+  "parent_instance": "op0_0000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 1.0,
+   "r_ohm": 10000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_nr_s5_r30k": {
+  "variant": "nr_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op1_0900_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_nr_s5_r30k": {
+  "variant": "nr_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op1_1000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_nr_s5_r30k": {
+  "variant": "nr_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op0_n100_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_nr_s5_r30k": {
+  "variant": "nr_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op0_0000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": null
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_nl_s5_r30k": {
+  "variant": "nl_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op1_0900_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_nl_s5_r30k": {
+  "variant": "nl_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op1_1000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_nl_s5_r30k": {
+  "variant": "nl_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op0_n100_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_nl_s5_r30k": {
+  "variant": "nl_s5_r30k",
+  "group": "negative_control",
+  "parent_instance": "op0_0000_neg_missing_wb",
+  "declared": {
+   "slew_ns": 5.0,
+   "r_ohm": 30000.0,
+   "rwl_release_ns": 34.0
+  },
+  "declared_changes_only": true,
+  "findings": []
+ }
+}

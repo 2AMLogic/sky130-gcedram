@@ -446,6 +446,26 @@ class DriverSweep(unittest.TestCase):
 GR_RWL_LATE = G.RWL_LATE_NS
 
 
+class DriverSweepRefine(unittest.TestCase):
+    """The refine profile (second run) obeys the same declared-parameters-only rule and adds no new mechanism."""
+
+    def test_refine_points_only_declared_changes(self):
+        g = golden()
+        controls = G.build_instances(g)
+        pts = D.sweep_points("refine")
+        self.assertEqual({p["group"] for p in pts}, {"r_only", "release_delay", "negative_control"})
+        self.assertTrue(all(p["slew_ns"] == D.IDEAL_SLEW_NS for p in pts if p["group"] == "r_only"))
+        self.assertIn(2.0, {p["release_delay_ns"] for p in pts if p["group"] == "release_delay"})   # envelope reference
+        sweep = D.build_sweep_instances(g, controls, pts)
+        c_sn_ff, _ = G.S.load_extracted_c_sn(G.S.EXTRACT_JSON, "sn")
+        deck = D.build_deck(c_sn_ff * 1e-15, controls, sweep)
+        chk = D.verify_sweep(deck, controls + sweep)
+        for n, c in chk.items():
+            self.assertTrue(c["declared_changes_only"], (n, c["findings"]))
+        with self.assertRaises(AssertionError):
+            D.sweep_points("bogus")
+
+
 class DriverSweepAnalysis(unittest.TestCase):
     def test_envelope_bounded_and_unbounded_and_reference_failure(self):
         def e(ok):

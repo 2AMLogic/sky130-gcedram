@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import csv
 import gzip
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -164,6 +165,7 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
                      pin_release_10_ns=ref_row["pin_release_10_ns"], pin_release_50_ns=pin50, pin_release_90_ns=pin90,
                      pin_minus_source_50_ns=None if pin50 is None or mi0.get("t_src_release_50_ns") is None else round(pin50 - mi0["t_src_release_50_ns"], 4),
                      wwl_fall_50_ns=ref_row["wwl_fall_50_ns"],
+                     pin_release_90_minus_wwl_fall_50_ns=None if pin90 is None or ref_row["wwl_fall_50_ns"] is None else round(pin90 - ref_row["wwl_fall_50_ns"], 4),
                      pin_release_50_minus_wwl_fall_50_ns=None if pin50 is None or ref_row["wwl_fall_50_ns"] is None else round(pin50 - ref_row["wwl_fall_50_ns"], 4)),
             time_budget=duration(mi0, pin90, pin50))
         res["overall_pass"] = bool(sim_ok and declared_ok and deck_ok and sense and res["restore_success"]) and not neg
@@ -219,7 +221,8 @@ def axis_envelope(name: str, entries: list[tuple[float, dict]], ref_label: str, 
     """entries: ordered (axis value, point summary). ``ref_idx`` is the entry with the ideal / reference setting."""
     passes = [bool(key_pass(e)) for _, e in entries]
     lo, hi = contiguous_from(ref_idx, passes)
-    out = dict(axis=name, reference=ref_label, tested=[dict(value=v, passes=p, restore_success_0_95=e["restore_success_0_95"],
+    out = dict(axis=name, reference=ref_label, passing_values=[v for (v, _), p in zip(entries, passes) if p],
+               failing_values=[v for (v, _), p in zip(entries, passes) if not p], tested=[dict(value=v, passes=p, restore_success_0_95=e["restore_success_0_95"],
                                                                  worst_min_op1_fraction=e["worst_min_op1_fraction"],
                                                                  failure_reasons=e["failure_reasons"]) for (v, e), p in zip(entries, passes)])
     if lo < 0:
@@ -275,6 +278,31 @@ def envelope(points: dict, ctl: dict) -> dict:
                                  "d = +2 ns (the #131 rwl_late_hold release at 34 ns)", key, ref_idx)
             for label, key in (("restoration_only", rest), ("restoration_and_pin_release_90_within_budget", rest_and_pin))}
     return out
+
+
+BINS = [(-1e9, -10.0), (-10.0, -4.0), (-4.0, 0.0), (0.0, 2.0), (2.0, 4.0), (4.0, 1e9)]   # ns, pin 50 % release minus WWL 50 % fall
+
+
+def restoration_vs_pin_crossing(results: list[dict], man: dict) -> dict:
+    """Restoration vs the MEASURED cell-pin release crossings (10/50/90 %) relative to the WWL fall -- not the programmed source edge.
+    Only sense-correct (corner, point) records of non-negative-control points; a record is one corner of one point."""
+    views = {}
+    for key, label in (("pin_release_50_minus_wwl_fall_50_ns", "pin 50 % release crossing minus WWL 50 % fall"),
+                       ("pin_release_90_minus_wwl_fall_50_ns", "pin 90 % release crossing minus WWL 50 % fall")):
+        recs = [r for r in results if r["sense_correct"] and r["simulator_ok"] and r["group"] != "negative_control"
+                and r["variant"] not in man["control_negatives"] and r["pin"][key] is not None]
+        out = []
+        for lo, hi in BINS:
+            b = [r for r in recs if lo < r["pin"][key] <= hi]
+            if not b:
+                continue
+            s1 = [all(v for k, v in r["restored_by_pattern"].items() if k.startswith("op1")) for r in b]
+            s0 = [all(v for k, v in r["restored_by_pattern"].items() if k.startswith("op0")) for r in b]
+            out.append(dict(range_ns=[None if lo < -1e8 else lo, None if hi > 1e8 else hi], records=len(b), stored1_restored=sum(s1),
+                            stored0_ok=sum(s0), restore_success_all_patterns=sum(r["restore_success"] for r in b),
+                            observed_ns=[min(r["pin"][key] for r in b), max(r["pin"][key] for r in b)]))
+        views[key] = dict(definition=label, bins=out)
+    return dict(views=views, note="association over this stimulus model only; bins are (lo, hi] in ns; the gating probe is fixed")
 
 
 def controls_reproduction(results: list[dict], man: dict) -> dict:
@@ -348,6 +376,7 @@ def main(argv=None) -> int:
         klt_status=rep["status"], corner_count=rep["corner_count"], batch_job_id=remote.get("job_id"), batch_instance_type=remote.get("instance_type"),
         report_netlist_sha256=env.get("netlist_sha256"), report_models_lib_sha256=env.get("models_lib_sha256"), engine=env.get("engine"),
         engine_version=env.get("engine_version"), report_provenance=rep.get("provenance"),
+        analyzer_sha256_at_analysis=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         generated_deck_sha256=man["deck_sha256"], request_sha256=man["request_sha256"], pins=man["pins"],
         sweep_values_assumptions=man["sweep_values_assumptions"], probe_definitions=man["probe_definitions"],
         criteria=dict(decide_v=AR.DECIDE_V, fracs=FRACS, primary_frac=PRIMARY, zero_max_v=AR.ZERO_MAX_V, budget_cycles=int(BUDGET_NS), gating_probe="fixed (not moved with release delay, slew or R)"),
@@ -360,6 +389,7 @@ def main(argv=None) -> int:
         sweep_points=sweep,
         failed_sweep_points=failed,
         robustness_envelope=envelope(sweep, ctl),
+        restoration_vs_pin_crossing=restoration_vs_pin_crossing(results, man),
         envelope_note="Computed on the TESTED grid only: contiguous from the ideal/reference point along ONE axis; the combined points are listed, not interpolated. "
                       "'restoration_only' ignores the time budget; 'restoration_and_pin_release_90_within_budget' additionally requires the cell-pin 90 % release "
                       "crossing to be <= the provisional 34 ns budget. The two are reported separately and are not the same claim.",

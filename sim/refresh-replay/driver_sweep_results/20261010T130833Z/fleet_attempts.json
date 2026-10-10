@@ -1,0 +1,6 @@
+{
+ "note": "Single batch submission of the exact generated request; no refusals, no retries, no local fallback for the grid. A single-corner (tt/27 C) local debug probe of a 5-point subset deck (different, smaller deck, not committed) was run before generation to check the .meas WHEN probes and the read-path behaviour of a series resistor; it informed the choice of the R sweep values (1 Mohm dropped: read path fails trivially).",
+ "attempts": [
+  {"n": 1, "client": "uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json", "result": "job klt-sim-2480fb15ca17 done, 10/10 corners pass, 657 s, c7i.4xlarge spot (us-east-1a)", "recorded_report": "klt_report.json.gz"}
+ ]
+}

@@ -45,6 +45,12 @@ R_ONLY_OHM = [1e3, 3e3, 1e4, 3e4, 1e5]               # slew = ideal 0.1 ns (seri
 COMBINED = [(1.0, 1e4), (1.0, 3e4), (5.0, 1e4), (5.0, 3e4)]   # (slew_ns, r_ohm) -- only after the axes above
 RELEASE_DELAYS_NS = [-2.0, -1.0, 0.0, 0.5, 1.0, 2.0, 3.0]    # RWL release start minus WWL fall start (32 ns)
 RELEASE_DRIVERS = [(IDEAL_SLEW_NS, 0.0), (1.0, 1e4), (5.0, 3e4)]
+# "refine" profile (second, append-only run): resolves what the "main" run left open -- (a) series R below the first tested value
+# (1 kohm already fails the read path at 2 corners) and (b) release delays EARLIER than 2 ns before WWL fall (the ideal driver
+# restored at every delay down to -2 ns while the unchanged RTL release at 12 ns, i.e. -20 ns, does not).
+REFINE_R_ONLY_OHM = [100.0, 300.0]
+REFINE_RELEASE_DELAYS_NS = [-16.0, -12.0, -8.0, -4.0, -2.0, 2.0]
+REFINE_RELEASE_DRIVERS = [(IDEAL_SLEW_NS, 0.0), (1.0, 1e3)]
 WWL_FALL_NS = 32.0                                   # unchanged RTL
 BASES = {"an": "baseline_analog", "rh": "rtl_hold", "rl": "rwl_late_hold", "nr": "neg_missing_wb", "nl": "neg_missing_wb"}
 NEG_BASES = ("nr", "nl")
@@ -73,7 +79,7 @@ def point_id(base: str, slew: float, r: float, delay: float | None) -> str:
     return p
 
 
-def sweep_points() -> list[dict]:
+def sweep_points(profile: str = "main") -> list[dict]:
     """Declared sweep. Axes are varied independently BEFORE the combined points."""
     pts: list[dict] = []
 
@@ -81,6 +87,20 @@ def sweep_points() -> list[dict]:
         pts.append(dict(id=point_id(base, slew, r, delay), base=base, parent=BASES[base], slew_ns=slew, r_ohm=r, group=group,
                         release_delay_ns=delay, rwl_release_ns=release))
 
+    if profile == "refine":
+        for base in ("an", "rh", "rl"):
+            for r in REFINE_R_ONLY_OHM:
+                add(base, IDEAL_SLEW_NS, r, "r_only")
+        for sl, r in REFINE_RELEASE_DRIVERS:
+            for d in REFINE_RELEASE_DELAYS_NS:
+                add("rl", sl, r, "release_delay", delay=d, release=round(WWL_FALL_NS + d, 6))
+        for sl, r in REFINE_RELEASE_DRIVERS[:1]:
+            add("nr", sl, r, "negative_control")
+            add("nl", sl, r, "negative_control", release=GR.RWL_LATE_NS)
+        ids = [p["id"] for p in pts]
+        assert len(ids) == len(set(ids)), "duplicate sweep point id"
+        return pts
+    assert profile == "main", profile
     for base in ("an", "rh", "rl"):
         for sl in SLEW_ONLY_NS:
             add(base, sl, 0.0, "slew_only")
@@ -284,6 +304,7 @@ def main(argv=None) -> int:
     ap.add_argument("trace", type=Path, help="golden RTL trace JSON (export_rtl_trace.py)")
     ap.add_argument("--run-id", default=datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     ap.add_argument("--results-dir", type=Path, default=RESULTS_DIR)
+    ap.add_argument("--profile", choices=("main", "refine"), default="main")
     ap.add_argument("--only", default=None, help="DEBUG: comma list of sweep point ids (plus no controls) -> small probe deck")
     a = ap.parse_args(argv)
     run_dir = a.results_dir / a.run_id
@@ -292,7 +313,7 @@ def main(argv=None) -> int:
         return 2
     golden = json.loads(a.trace.read_text())
     controls = GR.build_instances(golden)
-    points = sweep_points()
+    points = sweep_points(a.profile)
     if a.only:
         keep = set(a.only.split(","))
         points = [p for p in points if p["id"] in keep]
@@ -324,7 +345,10 @@ def main(argv=None) -> int:
     man = dict(
         run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=134,
         experimental_stimulus_model="RWL source: PWL with declared 0-100% ramp time (all RWL edges) + series resistor to the cell pin; NOT a designed physical driver",
-        sweep_values_assumptions=dict(slew_only_ns=SLEW_ONLY_NS, r_only_ohm=R_ONLY_OHM, combined_slew_ns_r_ohm=COMBINED,
+        profile=a.profile,
+        sweep_values_assumptions=dict(refine_profile=dict(r_only_ohm=REFINE_R_ONLY_OHM, release_delays_ns=REFINE_RELEASE_DELAYS_NS,
+                                                          release_drivers_slew_ns_r_ohm=REFINE_RELEASE_DRIVERS) if a.profile == "refine" else None,
+                                      slew_only_ns=SLEW_ONLY_NS, r_only_ohm=R_ONLY_OHM, combined_slew_ns_r_ohm=COMBINED,
                                       release_delays_ns=RELEASE_DELAYS_NS, release_drivers_slew_ns_r_ohm=RELEASE_DRIVERS,
                                       wwl_fall_start_ns=WWL_FALL_NS, ideal_slew_ns=IDEAL_SLEW_NS,
                                       note="ASSUMPTIONS; no committed driver design exists. Human review of bounds requested."),
