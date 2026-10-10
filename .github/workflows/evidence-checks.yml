@@ -89,9 +89,12 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
-          # Prefer the checker as committed on the base branch so a PR cannot
-          # weaken the check that judges it; fall back to the PR's copy only
-          # when the base does not have one yet (the PR introducing it).
+          # Prefer the checker as committed on the base branch, so changing
+          # sim/check_append_only.py in a PR does not change the check applied
+          # to that PR; fall back to the PR's copy only when the base does not
+          # have one yet (the PR introducing it). Edits to this workflow file
+          # still require review: it runs from the PR's own merge ref under
+          # the pull_request event.
           checker="$RUNNER_TEMP/check_append_only.py"
           if git cat-file -e "${BASE_SHA}:sim/check_append_only.py" 2>/dev/null; then
             git show "${BASE_SHA}:sim/check_append_only.py" > "$checker"
