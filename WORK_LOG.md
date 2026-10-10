@@ -2,6 +2,12 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-10
+
+- **Issue #62** (closed): CI: enforce append-only sim/ results mechanically
+- **Issue #110** (closed): Measure t_row_refresh_op with a closed-loop sense and write-back refresh operation
+- **PR #122**: sim: closed-loop refresh operation, measured t_row_refresh_op (#110)
+
 ### 2026-10-09
 
 - **Issue #92** (closed): Add a reproducible local auditor bootstrap for Python and pinned Icarus Verilog

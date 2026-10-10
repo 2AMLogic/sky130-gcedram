@@ -26,7 +26,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#110**: Measure t_row_refresh_op with a closed-loop sense and write-back refresh operation
+_None._
 
 ## PRs Awaiting Review
 
@@ -51,7 +51,6 @@ Issues carrying `loom:curated`.
 
 ## Proposed (Architect / Hermit)
 
-- **#62**: CI: enforce append-only sim/ results mechanically *(architect)*
 - **#94**: Characterize write-hold-sense trajectories and mixed neighbor patterns at the refresh deadline *(architect)*
 - **#115**: Quantify refresh energy and standby power of the 2T array at the PVT corners *(architect)*
 
@@ -67,10 +66,10 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 2 |
 | Operator priority | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 2 |
 | Curated | 3 |
-| Architect / Hermit proposals | 3 |
+| Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
