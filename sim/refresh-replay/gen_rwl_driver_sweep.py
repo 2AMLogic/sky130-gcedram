@@ -62,8 +62,7 @@ def fmt_num(x: float) -> str:
 def fmt_r(r: float) -> str:
     if r <= 0:
         return "r0"
-    if r >= 1e6 and r % 1e6 == 0:
-        return "r%dM" % (r // 1e6)
+    # lower case ONLY: ngspice case-folds .meas names and the fleet runner matches them case-sensitively (klayout-tools#2914)
     if r >= 1e3 and r % 1e3 == 0:
         return "r%dk" % (r // 1e3)
     return "r%g" % r

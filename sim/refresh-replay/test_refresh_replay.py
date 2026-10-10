@@ -451,6 +451,13 @@ class DriverSweep(unittest.TestCase):
         self.assertEqual(self.g, self.g0)
         self.assertEqual([c["name"] for c in self.controls], [c["name"] for c in G.build_instances(golden())])
 
+    def test_all_measurement_and_instance_names_are_lower_case(self):
+        # ngspice case-folds .meas names; the fleet runner matches them case-sensitively (klayout-tools#2914) -> a mixed-case name
+        # silently becomes "produced no value" for the whole instance (observed with an `r1M` id in a first submission)
+        req = D.build_request(self.all)
+        bad = [m["name"] for m in req["measurements"] if m["name"] != m["name"].lower()] + [p["name"] for p in self.all if p["name"] != p["name"].lower()]
+        self.assertEqual(bad, [])
+
     def test_negative_control_points_present(self):
         bases = {p["base"] for p in self.points if p["group"] == "negative_control"}
         self.assertEqual(bases, {"nr", "nl"})
