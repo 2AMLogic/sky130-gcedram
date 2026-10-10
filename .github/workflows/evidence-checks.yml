@@ -45,6 +45,9 @@ jobs:
       - name: Refresh-operation (sense + write-back) checks
         run: python3 -I sim/refresh-op/test_refresh_op.py
 
+      - name: RTL-strobe replay (converter, consistency check, analysis) checks
+        run: python3 -I sim/refresh-replay/test_refresh_replay.py
+
       - name: Refresh energy / standby power checks
         run: python3 -I sim/refresh-energy/test_refresh_energy.py
 
