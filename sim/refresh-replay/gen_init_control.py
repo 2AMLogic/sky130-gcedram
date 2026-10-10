@@ -255,8 +255,20 @@ def verify(deck: str, insts: list[dict]) -> dict:
             want = {k: v for k, v in zip(PREP, [ln.replace(i["name"], "@") for ln in prep_lines(i)[1:]])}
             if p != want:
                 f.append(dict(kind="preparation_driver_not_declared_one", got=p, expected=want))
+            # venb_ (latch-header half of the enable) is not in NODE_OF: it must be the exact complement of the ven_ waveform
+            # (verified against the shifted legacy one in the loop below) on the legacy instance's own source terminals
             if s.get("venb_") is None:
                 f.append(dict(kind="source_missing", source="venb_"))
+            else:
+                if ls.get("venb_") is None or s["venb_"].split()[1:3] != ls["venb_"].split()[1:3]:
+                    f.append(dict(kind="source_terminals_changed", source="venb_"))
+                try:
+                    bi, be = L.pwl_to_edges(s["venb_"].split(None, 3)[3], True)
+                    ei, ee = L.pwl_to_edges(s["ven_"].split(None, 3)[3], False)
+                    if bi != ei or len(be) != len(ee) or any(a[1] != b[1] or abs(a[0] - b[0]) > L.TIME_TOL_NS for a, b in zip(be, ee)):
+                        f.append(dict(kind="enb_not_complement_of_en", source="venb_", got=[bi, be], expected=[ei, ee]))
+                except (KeyError, IndexError, ValueError) as ex:
+                    f.append(dict(kind="source_unparsable", source="venb_", detail=str(ex)))
             for pre, node in NODE_OF.items():
                 inv = L.PIN_MAP[next(k for k, v in L.PIN_MAP.items() if v["node"] == node)]["invert"]
                 try:

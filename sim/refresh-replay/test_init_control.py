@@ -96,6 +96,14 @@ class Generator(unittest.TestCase):
         # init negative control: a prep write sneaking back in
         self._flagged(nw, "\n".join(ln.replace("pwl(0.0000e+00 0 ", "pwl(0.0000e+00 0 1.0000e-09 0 1.1000e-09 {VDD} 2.1000e-08 {VDD} 2.1100e-08 0 ")
                                     if ln.startswith(f"vww_{nw} ") else ln for ln in lines))
+        # physical: ONLY the latch-header enable (venb_) edge moved -- ven_ and every NODE_OF source untouched
+        venb = next(ln for ln in lines if ln.startswith(f"venb_{pw} "))
+        pts = venb.split(None, 3)[3]
+        self._flagged(pw, "\n".join(venb.replace(pts, pts.replace("3.5000e-08", "3.6500e-08", 1)) if ln == venb else ln for ln in lines))
+        # physical: ONLY a venb_ level changed (no longer the complement of ven_)
+        self._flagged(pw, "\n".join(venb.replace(pts, pts.replace("{VDD}", "0", 1)) if ln == venb else ln for ln in lines))
+        # physical: venb_ source terminals rewired (enb node tied elsewhere)
+        self._flagged(pw, "\n".join(venb.replace(f"enb_{pw} 0", f"enbx_{pw} 0", 1) if ln == venb else ln for ln in lines))
         # an undeclared element in an instance
         self._flagged(pic, self.deck + f"\nrextra_{pic} sn_{pic}_0 0 1k\n")
 
