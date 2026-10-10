@@ -516,6 +516,20 @@ class DriverSweepAnalysis(unittest.TestCase):
         self.assertEqual((d2["fits_pin_release_90"], d2["completion_observed_ns"], d2["fits_completion_observed"]), (None, None, False))
 
 
+    def test_aggregate_pin_budget_uses_slowest_pattern_and_unknown_never_fits(self):
+        mi = dict(digital=dict(busy_fall_ns=34.0), t_release_ns=34.0, t_src_release_end_ns=34.1, t_meas_ns=36.0)
+        by_pat = {"op1_0.9": 12.8, "op1_1": 43.5, "op0_0.2": 20.0}                   # unequal pattern crossings (finite-R pin is data dependent)
+        slow = AD.slowest_crossing(list(by_pat.values()))
+        self.assertEqual(slow, 43.5)
+        d = AD.duration(mi, slow, slow)
+        self.assertFalse(d["fits_pin_release_90"])
+        self.assertEqual(d["slack_pin_release_90_ns"], -9.5)
+        self.assertIsNone(AD.slowest_crossing([12.8, None, 20.0]))                    # missing crossing -> unknown, not the max of the rest
+        d2 = AD.duration(mi, AD.slowest_crossing([12.8, None, 20.0]), None)
+        self.assertEqual((d2["fits_pin_release_90"], d2["slack_pin_release_90_ns"]), (None, None))
+        self.assertIsNone(AD.slowest_crossing([]))
+
+
 class Committed(unittest.TestCase):
     def test_committed_runs_are_self_consistent(self):
         for rd in sorted((HERE / "results").glob("*/")):
@@ -562,6 +576,23 @@ class CommittedDriverSweep(unittest.TestCase):
                     if n in man["control_negatives"]:
                         self.assertEqual(c["negative_control_ok_corners"], c["corners"], n)
                 self.assertIn("robustness_envelope", s)
+
+
+class CommittedDriverSweepReanalysis(unittest.TestCase):
+    def test_pattern_aware_budget_never_fits_when_any_pattern_exceeds_it(self):
+        for rd in sorted((HERE / "driver_sweep_reanalysis").glob("*/")):
+            s = json.loads((rd / "summary.json").read_text())
+            budget = s["results"][0]["time_budget"]["budget_ns"]
+            for r in s["results"]:
+                by_pat = r["pin"]["pin_release_90_by_pattern_ns"]
+                fits = r["time_budget"]["fits_pin_release_90"]
+                if fits:
+                    self.assertTrue(all(v is not None and v <= budget + 1e-9 for v in by_pat.values()), (rd.name, r["variant"], r["corner"], r["temp_c"]))
+                if any(v is None for v in by_pat.values()):
+                    self.assertFalse(fits, (rd.name, r["variant"]))
+            for p in s["sweep_points"].values():
+                if p["time_budget"]["fits_pin_release_90"]:
+                    self.assertIsNotNone(p["time_budget"]["worst_pin_release_90_ns"])
 
 
 if __name__ == "__main__":

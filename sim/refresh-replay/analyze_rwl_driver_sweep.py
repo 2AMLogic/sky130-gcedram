@@ -71,6 +71,11 @@ def pat(r):
     return f"{r['kind']}_{r['sn_pre_v']:g}"
 
 
+def slowest_crossing(vals: list):
+    """Slowest (max) crossing over the patterns; None (unknown, never fitting) if ANY pattern has no crossing in the window."""
+    return None if not vals or any(v is None for v in vals) else max(vals)
+
+
 def duration(mi: dict, pin90_ns, pin50_ns) -> dict:
     dg = mi.get("digital")
     rel = mi["t_release_ns"]
@@ -149,7 +154,10 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
         r1_ok = bool(sim_ok and all(r[f"restored_{int(PRIMARY * 100)}"] for r in op1))
         r0_ok = bool(sim_ok and all(r[f"restored_{int(PRIMARY * 100)}"] for r in op0))
         ref_row = next(r for r in op1 if r["sn_pre_v"] == 0.9)
-        pin50, pin90 = ref_row["pin_release_50_ns"], ref_row["pin_release_90_ns"]
+        pin50, pin90 = ref_row["pin_release_50_ns"], ref_row["pin_release_90_ns"]       # reference pattern (op1 / 0.9 V): association views only
+        # the finite-R pin is data-dependent: the time budget uses the SLOWEST pattern (unknown if any pattern never crosses)
+        pin50_by_pat, pin90_by_pat = {pat(r): r["pin_release_50_ns"] for r in rs}, {pat(r): r["pin_release_90_ns"] for r in rs}
+        pin50_slow, pin90_slow = slowest_crossing(list(pin50_by_pat.values())), slowest_crossing(list(pin90_by_pat.values()))
         # quantized time-to-restore: earliest sampled time (gating probe or trajectory) at which every pattern meets the criterion
         t_traj = mi0["traj_times_ns"]
         samples = sorted(set([(mi0["t_meas_ns"], "gating")] + [(t, f"snt{k}") for k, t in enumerate(t_traj)]))
@@ -184,12 +192,14 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
             pin=dict(v_at_gating_probe=ref_row["pin_v_at_gating_probe"], v_at_release_plus_0p2ns=ref_row["pin_v_at_release_plus_0p2ns"],
                      source_release_start_ns=mi0.get("t_src_release_start_ns"), source_release_50_ns=mi0.get("t_src_release_50_ns"),
                      pin_crossing_method=ref_row["pin_crossing_method"], pin_release_50_ns=pin50, pin_release_90_ns=pin90,
+                     pin_release_50_by_pattern_ns=pin50_by_pat, pin_release_90_by_pattern_ns=pin90_by_pat,
+                     pin_release_50_slowest_ns=pin50_slow, pin_release_90_slowest_ns=pin90_slow,
                      samples_ns_v=[[mi0["t_rwl_release_ns"] + o, ref_row[f"pins{k}_v"]] for k, o in enumerate(man["pin_offsets_ns"])],
                      pin_minus_source_50_ns=None if pin50 is None or mi0.get("t_src_release_50_ns") is None else round(pin50 - mi0["t_src_release_50_ns"], 4),
                      wwl_fall_50_ns=ref_row["wwl_fall_50_ns"],
                      pin_release_90_minus_wwl_fall_50_ns=None if pin90 is None or ref_row["wwl_fall_50_ns"] is None else round(pin90 - ref_row["wwl_fall_50_ns"], 4),
                      pin_release_50_minus_wwl_fall_50_ns=None if pin50 is None or ref_row["wwl_fall_50_ns"] is None else round(pin50 - ref_row["wwl_fall_50_ns"], 4)),
-            time_budget=duration(mi0, pin90, pin50))
+            time_budget=duration(mi0, pin90_slow, pin50_slow))
         res["overall_pass"] = bool(sim_ok and declared_ok and deck_ok and sense and res["restore_success"]) and not neg
         if neg:
             res["negative_control_ok"] = all(not r[f"restored_{int(PRIMARY * 100)}"] for r in op1)
@@ -202,7 +212,7 @@ def point_summary(results: list[dict], pid: str) -> dict:
     rs = [r for r in results if r["variant"] == pid]
     mf = [r["min_op1_fraction"] for r in rs if r["min_op1_fraction"] is not None]
     tb = [r["time_budget"] for r in rs]
-    pin90 = [r["pin"]["pin_release_90_ns"] for r in rs if r["pin"]["pin_release_90_ns"] is not None]
+    pin90 = [t["pin_release_90_ns"] for t in tb if t["pin_release_90_ns"] is not None]      # per corner: slowest pattern
     d50 = [r["pin"]["pin_release_50_minus_wwl_fall_50_ns"] for r in rs if r["pin"]["pin_release_50_minus_wwl_fall_50_ns"] is not None]
     z = [x for r in rs for x in r["stored_zero_signed_levels_v"]]
     firsts = [r["first_restored_sample_ns"] for r in rs]
@@ -219,7 +229,8 @@ def point_summary(results: list[dict], pid: str) -> dict:
         restoration_pass_all_corners=all(r["restore_success"] and r["sense_correct"] and r["simulator_ok"] for r in rs),
         time_budget=dict(
             op_end_source_start_ns=sorted({t["op_end_source_start_ns"] for t in tb}), fits_op_end_source_start=all(t["fits_op_end_source_start"] for t in tb),
-            worst_pin_release_90_ns=max(pin90) if pin90 else None, min_slack_pin_release_90_ns=min((t["slack_pin_release_90_ns"] for t in tb if t["slack_pin_release_90_ns"] is not None), default=None),
+            worst_pin_release_90_ns=max(pin90) if len(pin90) == len(tb) else None,   # None = some corner has an unknown (never-crossing) pattern
+            min_slack_pin_release_90_ns=min((t["slack_pin_release_90_ns"] for t in tb if t["slack_pin_release_90_ns"] is not None), default=None),
             fits_pin_release_90=all(bool(t["fits_pin_release_90"]) for t in tb),
             pin_release_90_reached_corners=len(pin90),
             min_slack_completion_observed_ns=min((t["slack_completion_observed_ns"] for t in tb if t["slack_completion_observed_ns"] is not None), default=None), fits_completion_observed=all(t["fits_completion_observed"] for t in tb),
@@ -386,10 +397,13 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("run_dir", type=Path)
     ap.add_argument("--report", type=Path, default=None, help="default: <run_dir>/klt_report.json.gz")
+    ap.add_argument("--out-dir", type=Path, default=None, help="write points.csv/summary.json here (default: run_dir); use a NEW directory to re-analyse a recorded run append-only")
     a = ap.parse_args(argv)
     rd = a.run_dir
     report = a.report or rd / "klt_report.json.gz"
-    pts, summ = rd / "points.csv", rd / "summary.json"
+    out = a.out_dir or rd
+    out.mkdir(parents=True, exist_ok=True)
+    pts, summ = out / "points.csv", out / "summary.json"
     for p in (pts, summ):
         if p.exists():
             print(f"refusing to overwrite existing evidence file {p}", file=sys.stderr)

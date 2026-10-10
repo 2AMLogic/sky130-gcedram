@@ -221,8 +221,9 @@ SN probes, stored '1' 0.9 V, tt/27 C (SN_ref 1.284; V): SN before / after WWL fa
    releasing later than 2 ns after WWL fall restore 426/435 (2..4 ns) and 77/117 (> 4 ns; the late ones fail at the fixed probe), and those finishing earlier
    than -10 ns restore 10/116 (the ten are the ideal-driver -16 ns point, marginal at 0.954); the programmed source release time alone does not predict restoration (compare the `rh_` rows). This is an association over this
    stimulus model.
-3. **Release-delay margin (ideal driver and finite drivers):** restoration at 0.95 holds for every tested release from 16 ns before to 3 ns after the WWL
-   fall (the unchanged RTL release is 20 ns before and fails), i.e. the stored-1 benefit does **not** require the release to follow the WWL fall, which narrows
+3. **Release-delay margin (per driver):** restoration at 0.95 holds for every tested release from 16 ns before to 3 ns after the WWL
+   fall for the ideal driver and for (1 ns, 10k), and from 16 ns before to 2 ns after for (2 ns, 100k), which fails at +3 ns (0/10 corners)
+   (the unchanged RTL release is 20 ns before and fails), i.e. the stored-1 benefit does **not** require the release to follow the WWL fall, which narrows
    the #131 reading ("release after WWL fall"). The lower boundary is only bracketed between -20 ns (fails) and -16 ns (passes at 0.954, the 0.98 fraction at
    only 4/10): it is a thin margin there. A separate constraint is the **signed stored-0 level**: it returns to the clean -0.015..+0.027 V only when the release is
    >= +1 ns after the WWL fall (undershoot -0.14..-0.11 V for releases before it, -0.07..-0.05 V at 0 ns). The restoration criterion (stored 0 <= 50 mV) does not
@@ -235,7 +236,12 @@ SN probes, stored '1' 0.9 V, tt/27 C (SN_ref 1.284; V): SN before / after WWL fa
    the gating probe (36 ns) and the completion accounting still exceed 34 ns; restoration and budget are independent verdicts here
    (the budget-inclusive envelope, `restoration_and_pin_release_90_within_budget`, is empty or anchored on a reference that itself does not fit). The pin 90 % time of
    series-R instances is interpolated from pin samples (+0.2 .. +32 ns after the release start); on a concave tail the chord lies below the curve, so the true crossing is
-   **earlier or equal** (a conservative slack).
+   **earlier or equal** (a conservative slack). **Correction (review of PR #137):** the committed `summary.json` took the pin 90 % time from one reference pattern
+   (stored 1 at 0.9 V) only, but the finite-R pin is data dependent. The aggregate budget is recomputed from the **slowest of the four patterns** (a pattern
+   that never crosses makes the point unknown, never fitting) in the append-only re-analysis
+   `driver_sweep_reanalysis/20261010T141816Z-pattern-aware/` (`analyze_rwl_driver_sweep.py --out-dir`); the original run is untouched. Seven corner/point records
+   flip to not-fitting or unknown (e.g. `rh_s0p1_r1000k` tt/27 C: 12.8 ns reference, 43.5 ns slowest; `nr_s2_r100k` tt/27 C: 33.7 ns vs 34.4 ns). At point level the
+   fit flags are unchanged except `rh_s0p1_r1000k` (worst crossing unknown); no restoration verdict, envelope or `rl_` slack in the tables above changes.
 5. **Not shown:** a physical driver, its size or its shared-row loading; extracted RBL/WBL/RWL loads (#88/#89, #114/#117); mismatch/offset; column-driver behaviour;
    any decision about the `CONTRACT.md` overlap rule. This study is one more input to that decision, not the decision.
 
