@@ -264,6 +264,89 @@ klayout-tools#2914) and graded all corners `error`; ids are lower case now and a
 pin-crossing probes of series-R instances locked onto the t = 0 start-up charge of the unclamped pin; replaced by sampled pin voltages (exact `WHEN` only for R = 0, where it cannot fail).
 Single-corner local runs of small subset decks (and of the failed full deck) were diagnostics only. No grid was run locally.
 
+## Matched initialization controls (issue #139, run `init_control_results/20261010T163500Z`)
+
+Question: the start-up artifact above means every recorded sense / restore verdict of #128/#131/#134 was obtained from a storage-node level
+that is **not** its label. Which conclusions depend on that legacy start, and which survive when the stored level is prepared differently?
+The circuit, nominal data targets (labels), operation waveforms, loads, criteria and probes are the unchanged #131 ones. Nothing in the
+ratified spec, topology, refresh interval, operating range, sense thresholds, `CONTRACT.md` overlap rule or scheduler was changed.
+Scope as before: tt/ss/ff/sf/fs x 27/125 C, 1.8 V, no mismatch, ideal drivers (PROPOSED range, not ratified).
+
+| Regime | Initialization (declared changes vs legacy, verified per instance: `consistency_check.json`, 52/52 `declared_changes_only`) |
+|---|---|
+| `legacy` | the #131 control instances, byte-identical deck lines: SN = label as `.ic`, no RWL pin IC, `tran ... uic` |
+| `pin_ic` (`pic_`) | legacy + explicit idle-high RWL pin IC (the #134 `ic_artifact_check` change); nothing else |
+| `physical` (`pw_`) | **zero-hold physical write/settle preparation.** Row-0 SN starts at the **opposite** data level (0 V for a '1' target, 1.2 V for a '0' target; ASSUMPTION, so that a write that does not happen is visible); RWL pin IC idle-high; a declared ideal preparation driver drives WBL to the **label voltage** through the existing 100 ohm switch model while row 0's WWL is pulsed 1-21 ns (the op's 20 ns write width); WBL is returned to 0 V (the legacy WBL start) at 22 ns and disconnected at 23 ns; the operation starts at 24 ns. No hold. **Unavoidable preparation-time changes, part of the variant:** every op edge, probe and the gating probe move by +24 ns, and the latch / bitline nodes float for 24 ns before the op's precharge |
+| `pwnw_rwl_late_hold` | **initialization negative control**: the physical `rwl_late_hold` with the preparation WWL pulse deleted (no write) |
+
+Variants per regime (curator-verified set): `baseline_analog`, `rtl_hold`, `rwl_late_hold`, restoration negative control `neg_missing_wb`;
+patterns `op1` 0.9 / 1.0 V and `op0` -0.1 / 0.0 V (`GR.PATTERNS`). 52 instances + the in-deck reference write (the restoration criterion's
+SN_ref is the unchanged legacy `refw`). Per record (`points.csv`, 520 rows) the analysis keeps **separate**: intended level (label), achieved
+post-write level (physical: SN after the prep WWL fall), **measured pre-read level** (SN 0.1 ns before the read-select assert; the label never
+stands in for it), the **signed** decision d = V(rbl) - V(ref), sense correctness, restore fraction SN_end / SN_ref and the 0.90/0.95/0.98 verdicts
+(which require the correct decision: a restore ratio can never pass a wrong read; `restore_ratio_high_but_sense_wrong` is empty here).
+
+### Controls and reproduction (`summary.json` -> `reproduction`, `documented_claims`, `negative_controls`)
+
+* `legacy` reproduces the recorded #131 controls: 40/40 (corner, variant) sense / restore / simulator / per-fraction verdicts, max |SN_end|
+  difference 54 uV. `pin_ic` reproduces the #134 `ic_artifact_check` points (`an_`/`rh_`/`rl_s0p1_r0_ic`): 30/30 verdicts incl. per-pattern
+  sense, max |SN_end| difference 52 uV, pre-read 2 uV.
+* **Start-up uplift reproduced, but wider than the documented "about 0.07-0.12 V":** legacy pre-read minus label is **+0.10..+0.18 V** for stored '1'
+  (0.9 V reads from 1.003-1.062 V, 1.0 V from 1.118-1.181 V) and +0.06..+0.07 V for stored '0', over the ten corners. Pin IC minus legacy:
+  -0.26..-0.12 V (as documented).
+* **Corrected sense failures reproduced:** with the pin IC, stored '1' 0.9 V is sensed wrongly at exactly **ss/27 and fs/27** for all three variants
+  (8/10 corners sense-correct each). These failures stay in the result set.
+* The pin-IC pre-read is itself **not** the label: -0.07..-0.08 V below it in every corner/pattern (stored '1' 0.9 V reads from 0.821-0.830 V). This is
+  the precharge step at op start (RBL `.ic` = VDD pulled to VRBL) coupling onto SN; it is common to all three regimes and remains an
+  initialization assumption of the shared circuit (not removed here).
+* Negative controls: `neg_missing_wb` never restores a stored '1' in any regime (30/30). The no-write control `pwnw_rwl_late_hold` is caught at 10/10
+  corners: every pre-read is flagged as not its label (stored-'1' targets read from about -0.07 V, stored-'0' targets from about 1.13 V) and every decision is wrong.
+
+### Results (corners out of 10; `survival`, `restore_among_sense_correct_records`)
+
+| Variant | legacy: sense / restore 0.95 | pin IC: sense / restore | physical: sense / restore | stored-'1' records restored **among sense-correct** (legacy / pin IC / physical) |
+|---|---|---|---|---|
+| `baseline_analog` | 10 / 10 | 8 / 8 | **1** / 1 | 20/20 / 18/18 / 5/5 (fraction 1.01-1.05) |
+| `rtl_hold` | 10 / 0 | 8 / 0 | 1 / 0 | 0/20 / 0/18 / 0/5 (0.86-0.93) |
+| `rwl_late_hold` | 10 / 10 | 8 / 8 | **1** / 1 | 20/20 / 18/18 / 5/5 (1.01-1.05) |
+| `neg_missing_wb` (neg.) | 10 / 0 | 8 / 0 | 1 / 0 | 0 / 0 / 0 |
+
+Physical preparation (all variants alike; V): writing the **label voltage** onto WBL achieves a post-write level of **0.70-0.74** (label 0.9),
+**0.81-0.85** (1.0), -0.19..-0.23 (-0.1) and -0.11..-0.14 (0.0) -- the WWL-fall feedthrough of the write device lowers every written level by
+0.11-0.20 V. The label is **not tuned** to compensate. The pre-read levels are then 0.60-0.66 / 0.70-0.77 / -0.24..-0.31 / -0.18..-0.22 V. Stored '1'
+written at 0.9 V is sensed wrongly at **9/10** corners (correct only at sf/125), at 1.0 V at **6/10** (correct at tt/125, ff/125, sf/27, sf/125);
+stored '0' is sensed correctly everywhere in every regime.
+
+**Attribution (`sense_vs_pre_read`):** in all 20 (corner, sense-timing family) groups the signed decision is a **monotone function of the measured
+pre-read level** across all regimes, variants and patterns (every level read as '0' lies below every level read as '1'; no unresolved decision).
+The regime differences in sense correctness are therefore attributable to the **preparation** (the level presented to the unchanged sense path),
+not to a change in sensing. Effective stored-'1' threshold brackets (max pre-read read as '0', min read as '1'], V: ss/27 (0.829, 0.929], fs/27
+(0.828, 0.928], ff/27 (0.718, 0.821], tt/27 (0.733, 0.825], sf/27 (0.597, 0.705], 125 C corners lower (sf/125 below 0.609).
+
+### Which historical claims depend on the legacy initialization, and which survive
+
+| Recorded claim | Status under matched controls |
+|---|---|
+| #128/#131 "latch decision correct everywhere (10/10, all four patterns)"; the `sense` = 10 column of every #131 variant and of every #134 sweep point (legacy start) | **Depends on the legacy start-up uplift.** With the pin IC: 8/10 (ss/27, fs/27 fail on stored '1' 0.9 V); with physical preparation of the same labels: 1/10. The sense margin of the 0.9 V pattern in those runs is an artifact of the start regime. `sim/refresh-op` (whose sequence is `baseline_analog`) shares the legacy start and therefore the same caveat for its sense claims (not re-run here) |
+| The stored-'1' 0.9 V / 1.0 V labels describe the level read | **Does not hold in any regime** (+0.10..+0.18 V legacy, -0.07..-0.08 V pin IC, -0.24..-0.30 V physical); all 520 records differ from their label by more than 25 mV (`mislabeled_pre_read_records`). Labels are targets, not measured levels |
+| #128/#131 restoration ordering: `rtl_hold` does not restore, `rwl_late_hold` / the analog baseline do; #131 causal attribution of the RWL release | **Survives, conditional on a correct read:** among sense-correct stored-'1' records, `rwl_late_hold` and `baseline_analog` restore 100 % in all three regimes (fraction 1.01-1.05), `rtl_hold` 0 % (0.86-0.93), the missing write-back never restores. Restore verdicts are only meaningful alongside sense correctness and the actual pre-read level |
+| #134 driver-sweep restoration envelope (slew / R / release delay) | Not re-run under the new regimes. Its restoration verdicts are of sense-correct legacy records; given the result above (restoration among sense-correct records is regime-independent for the ideal-driver controls), it is expected to carry over **only where the read is correct**, which with matched initialization it is not at ss/27, fs/27 for the 0.9 V label. Unverified; a re-run would be a separate study |
+
+### What this does not show / follow-up (not done here)
+
+* The physical regime writes the **label voltage** (a degraded-level stand-in), not a full-rail write; it is a zero-hold preparation control, not the
+  long-hold / mixed-neighbour study (#94). The opposite-level start, the 24 ns preparation timing and the ideal preparation driver are assumptions.
+* The RBL start (`.ic` = VDD, precharged to VRBL at op start) is a remaining common initialization assumption that lowers SN by about 0.07 V in every regime.
+* Read-path consequence (a separate decision, nothing changed): at ss/27 and fs/27 a stored '1' must present about 0.83-0.93 V at the read to be sensed,
+  so the read path, not the write-back ordering, is what the matched controls expose. The retention end-level / sense-threshold interplay needs its own issue
+  and evidence; no spec, threshold or operating range was adjusted.
+
+Fleet: one `klt sim` batch request, first and only submission (`uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json`, job
+`klt-sim-525deb23471f`, m6i.4xlarge spot, 110 s, 10/10 corners; report from stdout, bucket name redacted; `fleet_attempts.json`). Deck sha256 =
+klt `netlist_sha256` (`1acf25c0...`); klt 0.6.0, ngspice 46, model lib sha256 `48de7c67...133c84`, open_pdks `c6d73a35...`; source sha256s and
+git head in `manifest.json` / `summary.json`. The only local simulation was a single-corner (tt/27 C, `--backend local`) probe of a scratch deck of the
+same generator, used to check the probes; it is not a result. No grid was run locally.
+
 ## Files
 
 | File | Role |
@@ -275,6 +358,9 @@ Single-corner local runs of small subset decks (and of the failed full deck) wer
 | [`analyze_refresh_replay.py`](analyze_refresh_replay.py) | reduces the klt report into `points.csv` + `summary.json` (refuses to overwrite) |
 | [`gen_rwl_driver_sweep.py`](gen_rwl_driver_sweep.py) | #134: RWL-driver sweep generator (declared slew / series R / release delay, declared-change-only verification, probes at the cell pin); writes a NEW `driver_sweep_results/<RUN_ID>/` |
 | [`analyze_rwl_driver_sweep.py`](analyze_rwl_driver_sweep.py) | #134: reduces the klt report into `points.csv` + `summary.json` (separate restoration / time-budget verdicts, controls reproduction, envelope, pin-crossing view) |
+| [`gen_init_control.py`](gen_init_control.py) | #139: matched initialization-control generator (legacy / pin IC / physical write-settle regimes, no-write negative control, declared-change-only verification against the legacy instance); writes a NEW `init_control_results/<RUN_ID>/` |
+| [`analyze_init_control.py`](analyze_init_control.py) | #139: per-record intended / achieved post-write / pre-read level, signed decision, restore fraction; reproduction of #131/#134, documented-claim check, sense-vs-pre-read attribution, negative controls (`--out-dir` for append-only re-analysis) |
+| [`test_init_control.py`](test_init_control.py) | #139: generator tamper tests, analyzer tests (mislabeled pre-read, wrong sense hidden by a restore ratio, init negative control), committed-run self-consistency |
 | [`test_refresh_replay.py`](test_refresh_replay.py) | stdlib tests (converter, consistency check, analysis logic, committed-run self-consistency); wired into `evidence-checks.yml` |
 
 ## Pin mapping (explicit; `replay_lib.PIN_MAP`)
@@ -363,6 +449,12 @@ python3 -I sim/refresh-replay/test_refresh_replay.py
 python3 -I sim/refresh-replay/gen_rwl_driver_sweep.py /tmp/rtl_trace.json
 uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json sim/refresh-replay/driver_sweep_results/<RUN_ID>/request.json
 python3 -I sim/refresh-replay/analyze_rwl_driver_sweep.py sim/refresh-replay/driver_sweep_results/<RUN_ID>
+
+# #139 matched initialization controls (new run directory under init_control_results/)
+python3 -I sim/refresh-replay/gen_init_control.py /tmp/rtl_trace.json
+uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json sim/refresh-replay/init_control_results/<RUN_ID>/request.json > report.json
+python3 -I sim/refresh-replay/analyze_init_control.py sim/refresh-replay/init_control_results/<RUN_ID> --report report.json
+python3 -I sim/refresh-replay/test_init_control.py
 ```
 
 Run `20261010T130000Z` (issue #131): one `klt sim` batch request (`uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json`,

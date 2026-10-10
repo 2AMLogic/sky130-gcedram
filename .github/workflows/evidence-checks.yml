@@ -48,6 +48,9 @@ jobs:
       - name: RTL-strobe replay (converter, consistency check, analysis) checks
         run: python3 -I sim/refresh-replay/test_refresh_replay.py
 
+      - name: Refresh-replay matched initialization controls (issue #139) checks
+        run: python3 -I sim/refresh-replay/test_init_control.py
+
       - name: Refresh energy / standby power checks
         run: python3 -I sim/refresh-energy/test_refresh_energy.py
 
