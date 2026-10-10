@@ -58,7 +58,10 @@ variable that skips the check. To correct a finding, leave the existing
 evidence committed as-is and add a **new** evidence file plus a correction
 record citing the original (see [Correcting recorded evidence](#correcting-recorded-evidence-issue-68)).
 CI runs the checker as committed on the base branch when it exists there, so
-a PR cannot weaken the check that judges it.
+changing `sim/check_append_only.py` in a PR does not change the check applied
+to that PR. Edits to `.github/workflows/evidence-checks.yml` itself still
+require review: the workflow runs from the PR's own merge ref under the
+`pull_request` event.
 
 Invocation (exactly what CI runs, from the repository root, with full
 history fetched):
