@@ -4,6 +4,10 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-10
 
+- **Issue #115** (closed): Quantify refresh energy and standby power of the 2T array at the PVT corners
+- **PR #124**: feat(sim): array-boundary refresh energy and standby power of the extracted 4x4 array
+- **Issue #119** (closed): Auditor: retain rm-scope rejection for custom-template mktemp cleanup
+- **Issue #104** (closed): Auditor: worktree confinement rejects scratch-directory layout validation with shell variables
 - **Issue #62** (closed): CI: enforce append-only sim/ results mechanically
 - **Issue #110** (closed): Measure t_row_refresh_op with a closed-loop sense and write-back refresh operation
 - **PR #122**: sim: closed-loop refresh operation, measured t_row_refresh_op (#110)
