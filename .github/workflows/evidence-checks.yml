@@ -45,6 +45,9 @@ jobs:
       - name: Refresh-operation (sense + write-back) checks
         run: python3 -I sim/refresh-op/test_refresh_op.py
 
+      - name: Refresh energy / standby power checks
+        run: python3 -I sim/refresh-energy/test_refresh_energy.py
+
       - name: Sense-latch design-vs-deck drift check
         run: python3 -I design/test_sense_latch.py
 
