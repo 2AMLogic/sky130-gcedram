@@ -51,6 +51,22 @@ def ns(x):
     return None if x is None else x * 1e9
 
 
+def interp_crossing(samples: list[tuple[float, float | None]], thr: float):
+    """First rising crossing of ``thr`` by linear interpolation between consecutive (t_ns, v) samples; None if never reached.
+    A sample already >= thr at the first point means the crossing happened before the window (reported as that first time)."""
+    prev = None
+    for t, v in samples:
+        if v is None:
+            return None
+        if v >= thr:
+            if prev is None:
+                return t
+            (t0, v0) = prev
+            return t if v == v0 else round(t0 + (thr - v0) * (t - t0) / (v - v0), 4)
+        prev = (t, v)
+    return None
+
+
 def pat(r):
     return f"{r['kind']}_{r['sn_pre_v']:g}"
 
@@ -61,16 +77,18 @@ def duration(mi: dict, pin90_ns, pin50_ns) -> dict:
     end = max(dg["busy_fall_ns"], rel) if dg else rel
     src_end = mi.get("t_src_release_end_ns")
     src_end = rel if src_end is None else src_end
-    completes = max([x for x in (end, src_end, pin90_ns) if x is not None])
-    done_seen = completes + CYCLE_NS if dg else completes
+    # pin_release_90_ns None = the cell pin did not reach 90 % within the window: completion is then UNKNOWN (never counted as fitting)
+    completes = None if pin90_ns is None else max(end, src_end, pin90_ns)
+    done_seen = None if completes is None else (completes + CYCLE_NS if dg else completes)
     return dict(budget_ns=BUDGET_NS, op_end_source_start_ns=end, slack_op_end_source_start_ns=round(BUDGET_NS - end, 6),
                 fits_op_end_source_start=end <= BUDGET_NS + 1e-9,
                 source_edge_end_ns=src_end, fits_source_edge_end=src_end <= BUDGET_NS + 1e-9,
                 pin_release_50_ns=pin50_ns, pin_release_90_ns=pin90_ns,
                 slack_pin_release_90_ns=None if pin90_ns is None else round(BUDGET_NS - pin90_ns, 4),
                 fits_pin_release_90=None if pin90_ns is None else pin90_ns <= BUDGET_NS + 1e-9,
-                completion_observed_ns=None if completes is None else round(done_seen, 4),
-                slack_completion_observed_ns=round(BUDGET_NS - done_seen, 4), fits_completion_observed=done_seen <= BUDGET_NS + 1e-9,
+                completion_observed_ns=None if done_seen is None else round(done_seen, 4),
+                slack_completion_observed_ns=None if done_seen is None else round(BUDGET_NS - done_seen, 4),
+                fits_completion_observed=False if done_seen is None else done_seen <= BUDGET_NS + 1e-9,
                 gating_probe_ns=mi["t_meas_ns"], fits_gating_probe=mi["t_meas_ns"] <= BUDGET_NS + 1e-9)
 
 
@@ -98,14 +116,17 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
         n = mi["name"]
         dec, sn = meas.get(f"dec_{n}"), meas.get(f"snend_{n}")
         pt = mi.get("point") or {}
+        psamp = [(mi["t_rwl_release_ns"] + o, meas.get(f"pins{k}_{n}")) for k, o in enumerate(man["pin_offsets_ns"])]
+        pin50 = ns(meas.get(f"tp50r_{n}")) if meas.get(f"tp50r_{n}") is not None else interp_crossing(psamp, 0.5 * 1.8)
+        pin90 = ns(meas.get(f"tp90r_{n}")) if meas.get(f"tp90r_{n}") is not None else interp_crossing(psamp, 0.9 * 1.8)
         row = dict(corner=corner["process"], temp_c=corner["temperature_c"], instance=n, variant=mi["variant"], group=mi["group"],
                    slew_ns=pt.get("slew_ns"), r_ohm=pt.get("r_ohm"), release_delay_ns=pt.get("release_delay_ns"), kind=mi["kind"], sn_pre_v=mi["sn_v"],
                    pin_ic=pt.get("pin_ic", False), snpre_v=meas.get(f"snpre_{n}"), dec_v=dec, decided=AR.decided(dec), snend_v=sn, sn_ref_v=sn_ref, snend_over_sn_ref=(sn / sn_ref if sn is not None and sn_ref else None),
                    snrd_v=meas.get(f"snrd_{n}"), sn_before_wwl_fall_v=meas.get(f"snwf_{n}"), sn_after_wwl_fall_v=meas.get(f"snwa_{n}"),
                    sn_before_rwl_release_v=meas.get(f"snrb_{n}"), sn_after_rwl_release_v=meas.get(f"snra_{n}"), sn_settle_v=meas.get(f"snset_{n}"),
                    pin_v_at_gating_probe=meas.get(f"pinm_{n}"), pin_v_at_release_plus_0p2ns=meas.get(f"pina_{n}"),
-                   pin_release_10_ns=ns(meas.get(f"tp10r_{n}")), pin_release_50_ns=ns(meas.get(f"tp50r_{n}")),
-                   pin_release_90_ns=ns(meas.get(f"tp90r_{n}")), pin_assert_50_ns=ns(meas.get(f"tpa50_{n}")),
+                   pin_release_50_ns=pin50, pin_release_90_ns=pin90, pin_crossing_method="exact_meas_when" if meas.get(f"tp50r_{n}") is not None else "interpolated_samples",
+                   pin_assert_50_ns=ns(meas.get(f"tpa50_{n}")), **{f"pins{k}_v": meas.get(f"pins{k}_{n}") for k in range(len(man["pin_offsets_ns"]))},
                    wwl_fall_50_ns=ns(meas.get(f"twf50_{n}")), t_src_release_start_ns=mi.get("t_src_release_start_ns"),
                    t_src_release_50_ns=mi.get("t_src_release_50_ns"), t_gating_probe_ns=mi["t_meas_ns"],
                    sense_correct=dec is not None and AR.decided(dec) == mi["kind"][-1],
@@ -162,7 +183,8 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
             first_restored_sample_ns=first,          # quantized UPPER bound on time-to-restore (probe grid); None = never in the window
             pin=dict(v_at_gating_probe=ref_row["pin_v_at_gating_probe"], v_at_release_plus_0p2ns=ref_row["pin_v_at_release_plus_0p2ns"],
                      source_release_start_ns=mi0.get("t_src_release_start_ns"), source_release_50_ns=mi0.get("t_src_release_50_ns"),
-                     pin_release_10_ns=ref_row["pin_release_10_ns"], pin_release_50_ns=pin50, pin_release_90_ns=pin90,
+                     pin_crossing_method=ref_row["pin_crossing_method"], pin_release_50_ns=pin50, pin_release_90_ns=pin90,
+                     samples_ns_v=[[mi0["t_rwl_release_ns"] + o, ref_row[f"pins{k}_v"]] for k, o in enumerate(man["pin_offsets_ns"])],
                      pin_minus_source_50_ns=None if pin50 is None or mi0.get("t_src_release_50_ns") is None else round(pin50 - mi0["t_src_release_50_ns"], 4),
                      wwl_fall_50_ns=ref_row["wwl_fall_50_ns"],
                      pin_release_90_minus_wwl_fall_50_ns=None if pin90 is None or ref_row["wwl_fall_50_ns"] is None else round(pin90 - ref_row["wwl_fall_50_ns"], 4),
@@ -198,8 +220,9 @@ def point_summary(results: list[dict], pid: str) -> dict:
         time_budget=dict(
             op_end_source_start_ns=sorted({t["op_end_source_start_ns"] for t in tb}), fits_op_end_source_start=all(t["fits_op_end_source_start"] for t in tb),
             worst_pin_release_90_ns=max(pin90) if pin90 else None, min_slack_pin_release_90_ns=min((t["slack_pin_release_90_ns"] for t in tb if t["slack_pin_release_90_ns"] is not None), default=None),
-            fits_pin_release_90=all(bool(t["fits_pin_release_90"]) for t in tb) if pin90 else None,
-            min_slack_completion_observed_ns=min(t["slack_completion_observed_ns"] for t in tb), fits_completion_observed=all(t["fits_completion_observed"] for t in tb),
+            fits_pin_release_90=all(bool(t["fits_pin_release_90"]) for t in tb),
+            pin_release_90_reached_corners=len(pin90),
+            min_slack_completion_observed_ns=min((t["slack_completion_observed_ns"] for t in tb if t["slack_completion_observed_ns"] is not None), default=None), fits_completion_observed=all(t["fits_completion_observed"] for t in tb),
             fits_gating_probe=all(t["fits_gating_probe"] for t in tb)),
         pin_release_50_minus_wwl_fall_50_ns_range=[min(d50), max(d50)] if d50 else None,
         worst_first_restored_sample_ns=(None if any(f is None for f in firsts) else max(firsts)))

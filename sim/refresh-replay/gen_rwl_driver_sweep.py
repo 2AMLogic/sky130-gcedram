@@ -52,7 +52,13 @@ WWL_FALL_NS = 32.0                                   # unchanged RTL
 BASES = {"an": "baseline_analog", "rh": "rtl_hold", "rl": "rwl_late_hold", "nr": "neg_missing_wb", "nl": "neg_missing_wb"}
 NEG_BASES = ("nr", "nl")
 TRAJ_OFFSETS_NS = [0.5, 1.0, 2.0, 4.0, 8.0, 16.0, 24.0]   # SN trajectory probes after the LAST control edge start
-VPIN_FRACS = {"10": 0.1, "50": 0.5, "90": 0.9}            # cell-pin threshold crossings (fractions of VDD)
+VPIN_FRACS = {"50": 0.5, "90": 0.9}                       # cell-pin threshold crossings (fractions of VDD)
+PIN_OFFSETS_NS = [0.0, 0.2, 0.4, 0.7, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0, 8.0, 12.0, 16.0, 24.0, 32.0]   # pin samples after the programmed release start
+
+
+def ideal_pin(p: dict) -> bool:
+    """True for instances whose pin is the source itself (controls and R = 0 sweep points)."""
+    return ("point" not in p) or p["point"]["r_ohm"] == 0
 
 
 def fmt_num(x: float) -> str:
@@ -185,10 +191,17 @@ def extra_meas(p: dict) -> list[dict]:
     # cell-pin (read-device source) voltages and threshold crossings; the source is never probed
     m.append({"name": f"pinm_{n}", "unit": "V", "spice": f".meas tran pinm_{n} FIND v(rwls_{n}) AT={p['t_meas_ns']:.6g}n"})
     m.append({"name": f"pina_{n}", "unit": "V", "spice": f".meas tran pina_{n} FIND v(rwls_{n}) AT={p['t_after_rwl_rel_ns']:.6g}n"})
-    for tag, fr in VPIN_FRACS.items():
-        m.append({"name": f"tp{tag}r_{n}", "unit": "s",
-                  "spice": f".meas tran tp{tag}r_{n} WHEN v(rwls_{n})={fr * GEN.VDD_V:.4g} RISE=1"})
-    m.append({"name": f"tpa50_{n}", "unit": "s", "spice": f".meas tran tpa50_{n} WHEN v(rwls_{n})={0.5 * GEN.VDD_V:.4g} FALL=1"})
+    # Pin release trajectory: cell-pin voltage sampled after the programmed release start. For a series-R pin the 50/90 % crossing time is
+    # interpolated from these samples in the analysis (a `.meas WHEN` that never fires would grade the whole corner "error"; the pin tail
+    # can be slow). For R = 0 (pin = source) the exact `.meas WHEN` crossings are added too.
+    rel0 = p["t_rwl_release_ns"]
+    for k, off in enumerate(PIN_OFFSETS_NS):
+        m.append({"name": f"pins{k}_{n}", "unit": "V", "spice": f".meas tran pins{k}_{n} FIND v(rwls_{n}) AT={rel0 + off:.6g}n"})
+    if ideal_pin(p):
+        for tag in ("50", "90"):
+            m.append({"name": f"tp{tag}r_{n}", "unit": "s",
+                      "spice": f".meas tran tp{tag}r_{n} WHEN v(rwls_{n})={VPIN_FRACS[tag] * GEN.VDD_V:.4g} RISE=1 TD={rel0:.6g}n"})
+        m.append({"name": f"tpa50_{n}", "unit": "s", "spice": f".meas tran tpa50_{n} WHEN v(rwls_{n})={0.5 * GEN.VDD_V:.4g} FALL=1"})
     if p["t_wwl_fall_ns"] is not None:
         m.append({"name": f"twf50_{n}", "unit": "s", "spice": f".meas tran twf50_{n} WHEN v(wwl_{n})={0.5 * GEN.VDD_V:.4g} FALL=1"})
     return m
@@ -199,7 +212,7 @@ def build_request(allinst: list[dict]) -> dict:
     for p in allinst:
         if p["kind"] != "ref":
             req["measurements"] += extra_meas(p)
-    t_stop = max([GR.t_stop_ns(allinst)] + [max(traj_times(p)) + 1.0 for p in allinst if p["kind"] != "ref"])
+    t_stop = max([GR.t_stop_ns(allinst)] + [max(max(traj_times(p)), p["t_rwl_release_ns"] + PIN_OFFSETS_NS[-1]) + 1.0 for p in allinst if p["kind"] != "ref"])
     req["analysis"] = {"kind": "tran", "args": f"10p {t_stop:.6g}n 0 50p uic"}
     req["netlist"] = "rwl_driver_sweep.spice"
     return req
@@ -359,13 +372,15 @@ def main(argv=None) -> int:
                                       note="ASSUMPTIONS; no committed driver design exists. Human review of bounds requested."),
         deck_sha256=hashlib.sha256(deck.encode()).hexdigest(), request_sha256=hashlib.sha256((json.dumps(req, indent=1) + "\n").encode()).hexdigest(),
         control_variants=GR.VARIANTS, control_negatives=GR.NEGATIVE, patterns=[dict(kind=k, sn_v=v) for k, v in GR.PATTERNS],
-        points=points, traj_offsets_ns=TRAJ_OFFSETS_NS,
+        points=points, traj_offsets_ns=TRAJ_OFFSETS_NS, pin_offsets_ns=PIN_OFFSETS_NS,
         probe_definitions=dict(
             snend="SN of row 0 at the FIXED gating time t_meas_fixed_ns (36 ns RTL-derived / 39 ns analog baseline = the #131 control values); never moved with the release delay, slew or R",
             snset="SN at last-control-edge-start + 10 ns (diagnostic, not gating)",
             snt_k="SN at last-control-edge-start + TRAJ_OFFSETS_NS[k] (diagnostic trajectory; quantized time-to-restore)",
             pinm_pina="voltage at the CELL PIN (read-device source, node rwls_<inst>) at t_meas and at release start + 0.2 ns",
-            tp10r_tp50r_tp90r="time of the cell-pin rising crossing of 10/50/90 % VDD (the RWL release; .meas WHEN RISE=1), seconds",
+            pins_k="cell-pin voltage at the programmed release start + PIN_OFFSETS_NS[k] (all instances)",
+            tp50r_tp90r="R = 0 and control instances only: time of the first cell-pin rising crossing of 50/90 % VDD AFTER the programmed release start (.meas WHEN RISE=1 TD=<release start>), seconds. "
+                        "For series-R instances the analysis interpolates linearly between the pins_k samples (None = not reached within the +32 ns window)",
             tpa50="time of the cell-pin falling 50 % crossing (the RWL assert), seconds",
             twf50="time of the WWL falling 50 % crossing at the WWL pin, seconds (absent for missing-write-back instances)",
             source_edge_timing="t_src_release_start_ns (programmed edge start), t_src_release_50_ns = start + slew/2, t_src_release_end_ns = start + slew; "

@@ -439,9 +439,18 @@ class DriverSweep(unittest.TestCase):
         text = {m["name"]: m["spice"] for m in req["measurements"]}
         p = next(i for i in self.sweep if i["point"]["id"] == "rl_s5_r0")
         n = p["name"]
-        for k in ("tp10r", "tp50r", "tp90r", "tpa50", "pinm", "pina"):
+        for k in ("tp50r", "tp90r", "tpa50", "pinm", "pina", "pins0", "pins14"):
             self.assertIn(f"v(rwls_{n})", text[f"{k}_{n}"])
         self.assertNotIn("rwlsrc", " ".join(text.values()))
+        for k in ("tp50r", "tp90r"):            # exact crossings (R = 0 only) count only AFTER the programmed release start
+            self.assertIn("TD=34n", text[f"{k}_{n}"])
+        r10 = next(i for i in self.sweep if i["point"]["id"] == "rl_s0p1_r10k")
+        self.assertNotIn(f"tp90r_{r10['name']}", text)         # series-R pin: sampled, never a .meas WHEN that could fail the corner
+        self.assertIn("AT=34n", text[f"pins0_{r10['name']}"])
+        self.assertIn("AT=66n", text[f"pins14_{r10['name']}"])
+        live = [i for i in self.all if i["kind"] != "ref"]
+        t_stop = max(max(max(D.traj_times(i)), i["t_rwl_release_ns"] + D.PIN_OFFSETS_NS[-1]) for i in live) + 1.0   # all probes inside the run
+        self.assertEqual(req["analysis"]["args"].split()[1], "%gn" % t_stop)
         self.assertEqual((p["t_src_release_start_ns"], p["t_src_release_50_ns"], p["t_src_release_end_ns"]), (34.0, 36.5, 39.0))
         self.assertIn("v(wwl_", text[f"twf50_{n}"])
         neg = next(i for i in self.sweep if i["point"]["base"] == "nr")
@@ -481,6 +490,13 @@ class DriverSweepAnalysis(unittest.TestCase):
         r = AD.axis_envelope("d", [(-2, e(0)), (0, e(1)), (2, e(1)), (3, e(0))], "d=2", lambda x: x["restore_success_0_95"] == 10, 2)
         self.assertEqual((r["status"], r["passing_interval"]), ("bounded_on_both_sides", [0, 2]))
 
+    def test_pin_crossing_interpolation(self):
+        smp = [(34.0, 0.1), (34.5, 0.5), (35.0, 1.3), (36.0, 1.8)]
+        self.assertAlmostEqual(AD.interp_crossing(smp, 0.9), 34.75, places=3)
+        self.assertEqual(AD.interp_crossing(smp, 1.9), None)                         # never reached in the window -> explicit None
+        self.assertEqual(AD.interp_crossing([(34.0, 1.0)], 0.9), 34.0)               # already above at the first sample
+        self.assertEqual(AD.interp_crossing([(34.0, None), (35.0, 2.0)], 0.9), None)
+
     def test_failure_reason_separates_sense_and_restore(self):
         self.assertEqual(AD.reason(True, True, True, True), "pass")
         self.assertEqual(AD.reason(True, False, False, False), "sense_incorrect")
@@ -496,7 +512,8 @@ class DriverSweepAnalysis(unittest.TestCase):
         self.assertFalse(d["fits_pin_release_90"])
         self.assertEqual(d["slack_pin_release_90_ns"], -4.5)
         self.assertEqual(d["completion_observed_ns"], 40.0)
-        self.assertEqual(AD.duration(dict(mi, t_src_release_end_ns=34.1), None, None)["fits_pin_release_90"], None)
+        d2 = AD.duration(dict(mi, t_src_release_end_ns=34.1), None, None)
+        self.assertEqual((d2["fits_pin_release_90"], d2["completion_observed_ns"], d2["fits_completion_observed"]), (None, None, False))
 
 
 class Committed(unittest.TestCase):
