@@ -282,6 +282,21 @@ python3 -I sim/sense-stage/gen_sense_stage.py
 python3 -I sim/sense-stage/test_sense_stage.py
 ```
 
+## `refresh-op/` -- closed-loop row refresh operation, measured `t_row_refresh_op` (issue #110)
+
+One transient per corner runs a full refresh of a row of the loaded 4-row
+column with the provisional sense stage: precharge, RWL select, latch enable,
+latch complement node drives WBL, WWL write-back pulse, release. Sweeps the
+sense time and the write-back pulse width, finds the shortest pair that
+restores the cell for stored '1' and '0' at the 10 PROPOSED restricted
+corners, and appends a measured-`t_row_refresh_op` overhead record to
+`refresh-overhead/results/`. See [`refresh-op/README.md`](refresh-op/README.md).
+
+```bash
+python3 -I sim/refresh-op/gen_refresh_op.py
+python3 -I sim/refresh-op/test_refresh_op.py
+```
+
 ## `write-disturb/` -- disturb of unselected and half-selected cells in the extracted 4x4 array (issue #98)
 
 Epic #24 item 6. Ten instances of the committed **extracted** 4x4 array
