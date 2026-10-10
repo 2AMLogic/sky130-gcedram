@@ -63,6 +63,11 @@ INTERVALS = [  # (label, retention row basis) -- read from the retention CSV, no
     ("ratified_assumed_csn", 0),
     ("extracted_csn_unratified", 1),
 ]
+# Numerical floor of the idle measurement: ngspice shunts every MOS junction with gmin, so up to
+# (2 junctions x 32 devices) x gmin x VDD^2 of "hold power" can be the solver's own shunt, not leakage.
+# Idle points at or below this bound are flagged, not presented as physical leakage.
+GMIN_S = float(G.SIM_OPTIONS.split("gmin=")[1].split()[0])
+GMIN_FLOOR_W = 2 * 2 * G.N_ROWS * G.N_COLS * GMIN_S * G.VDD_V ** 2
 N_ROWS_GRID = RO.N_ROWS_GRID   # 4 .. 1024 powers of two (refresh-overhead ASSUMPTION grid)
 ROW_WIDTH = G.N_COLS           # fixed four-column row (ASSUMPTION)
 CELLS_REF_ARRAY = G.N_ROWS * G.N_COLS
@@ -278,6 +283,7 @@ def reduce_corner(corner: dict, c_sn_f: float) -> tuple[list[dict], list[dict], 
             e_idle_net_J=ei["net"], e_idle_gross_J=ei["gross"], e_idle_rec_J=ei["rec"],
             e_row_incr_J=ea["net"] - ei["net"],
             p_idle_net_W=ei["net"] / dur, p_idle_gross_W=ei["gross"] / dur,
+            idle_at_gmin_floor=ei["gross"] / dur <= GMIN_FLOOR_W,
             identity_ok=all(r["identity_ok"] for r in energy[act]["rows"] + energy[idl]["rows"]),
             dc_check_ok=all(r["dc_check_ok"] is not False for r in energy[act]["rows"] + energy[idl]["rows"]),
             status="restored" if ok else "FAILED",
@@ -332,9 +338,14 @@ def add_convergence(pts: list[dict], fine_pts: list[dict]) -> None:
         for k in ("e_active_net_J", "e_idle_net_J", "e_row_incr_J"):
             p[k.replace("_J", "_fine_J")] = f[k]
             p[k.replace("_J", "_conv_rel")] = rel_diff(p[k], f[k])
+        p["status_main"] = p.get("status_main", p["status"])
         p["status_fine"] = f["status"]
+        if p["status_main"] != f["status"]:
+            # classification depends on time resolution: neither a success nor a clean failure
+            p["status"] = "UNRESOLVED"
+            p["fail_reasons"] = (p["fail_reasons"] + ";" if p["fail_reasons"] else "") + "status differs at finer step"
         p["converged_1pct"] = (p["e_row_incr_conv_rel"] <= CONV_TOL and p["e_active_net_conv_rel"] <= CONV_TOL
-                               and p["status"] == f["status"])
+                               and p["status_main"] == f["status"])
         p["idle_converged_1pct"] = p["e_idle_net_conv_rel"] <= CONV_TOL
 
 
@@ -507,9 +518,14 @@ def main(argv: list[str] | None = None) -> int:
                   "N_rows * E_row_incr / interval")),
         maxima_all_points=maxima(pts),
         results_125C=[{k: p[k] for k in ("process", "pattern", "status", "e_row_incr_J", "e_active_net_J",
-                                         "e_idle_net_J", "p_idle_net_W", "converged_1pct")}
+                                         "e_idle_net_J", "p_idle_net_W", "idle_at_gmin_floor", "converged_1pct")}
                       for p in pts if p["temp_c"] == hot],
-        failed_points=[{k: p[k] for k in ("process", "temp_c", "pattern", "fail_reasons", "e_row_incr_J",
+        idle_numerical_floor=dict(
+            gmin_s=GMIN_S, floor_w=GMIN_FLOOR_W,
+            rule="P_idle_gross <= 2 x 32 junctions x gmin x VDD^2 -> idle_at_gmin_floor (numerical, not physical leakage)",
+            points_at_floor=[f"{p['process']}/{p['temp_c']}C/{p['pattern']}" for p in pts if p["idle_at_gmin_floor"]]),
+        failed_points=[{k: p[k] for k in ("process", "temp_c", "pattern", "status", "status_main", "status_fine",
+                                          "fail_reasons", "e_row_incr_J",
                                           "min_read_margin_v", "min_restore_ratio_1", "max_sn_end_0_v")}
                        for p in pts if p["status"] != "restored"],
         negative_incremental_points=[{k: p[k] for k in ("process", "temp_c", "pattern", "e_row_incr_J")}
@@ -528,7 +544,15 @@ def main(argv: list[str] | None = None) -> int:
             max_rel_e_row_incr=max(p["e_row_incr_conv_rel"] for p in pts),
             max_rel_e_active_net=max(p["e_active_net_conv_rel"] for p in pts),
             max_rel_e_idle_net=max(p["e_idle_net_conv_rel"] for p in pts),
-            restore_status_agrees=all(p["status"] == p["status_fine"] for p in pts)),
+            restore_status_agrees=all(p["status_main"] == p["status_fine"] for p in pts),
+            not_converged=[dict(point=f"{p['process']}/{p['temp_c']}C/{p['pattern']}",
+                                e_row_incr_J=p["e_row_incr_J"], e_row_incr_fine_J=p["e_row_incr_fine_J"],
+                                abs_diff_J=abs(p["e_row_incr_J"] - p["e_row_incr_fine_J"]),
+                                rel=p["e_row_incr_conv_rel"], e_active_gross_J=p["e_active_gross_J"],
+                                status_main=p["status_main"], status_fine=p["status_fine"])
+                           for p in pts if not p["converged_1pct"]],
+            idle_not_converged=[f"{p['process']}/{p['temp_c']}C/{p['pattern']}" for p in pts
+                                if not p["idle_converged_1pct"]]),
         scaling=dict(
             formula="P_total = N_rows * E_row_incr / refresh_interval + N_rows * (P_idle_16 / 4)",
             n_rows_grid_ASSUMPTION=N_ROWS_GRID, row_width_cols=ROW_WIDTH,
@@ -547,7 +571,7 @@ def main(argv: list[str] | None = None) -> int:
                     sram_comparison=False, statistical_yield=False, spec_changed=False,
                     larger_array_geometry_simulated=False),
     )
-    outs["summary"].write_text(json.dumps(summary, indent=1) + "\n")
+    outs["summary"].write_text(json.dumps(summary, indent=1, default=str) + "\n")
     print("wrote " + ", ".join(p.name for p in outs.values()))
     return 0
 

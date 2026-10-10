@@ -14,3 +14,13 @@
 # Inventory as of 2026-10-09 (origin/main @ e69a94a): empty -- every tracked
 # result summary under sim/ is already inside a `results` directory.
 layout/results/density_20261009.json
+#
+# sim/refresh-energy (issue #115): array-boundary refresh energy / standby power.
+# These live inside a `results` directory and are therefore already protected by
+# the rule above; they are listed explicitly so the study's evidence is registered.
+sim/refresh-energy/results/klt_report_20261010T055142Z.json.gz
+sim/refresh-energy/results/klt_report_fine_20261010T055550Z.json.gz
+sim/refresh-energy/results/refresh_energy_sources_20261010T055142Z.csv
+sim/refresh-energy/results/refresh_energy_points_20261010T055142Z.csv
+sim/refresh-energy/results/refresh_energy_scaling_20261010T055142Z.csv
+sim/refresh-energy/results/refresh_energy_summary_20261010T055142Z.json

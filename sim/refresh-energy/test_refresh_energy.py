@@ -410,6 +410,24 @@ class Reduction(unittest.TestCase):
         with self.assertRaises(ValueError):
             A.add_convergence(pts2, fine[1:])
 
+    def test_resolution_sensitive_status_is_unresolved_and_excluded(self):
+        _s, pts, _c = self.reduce(synth_report())
+        fine = copy.deepcopy(pts)
+        fine[0]["status"] = "FAILED"
+        pts[0]["e_row_incr_J"] = 10.0                 # would be the maximum if it counted
+        A.add_convergence(pts, fine)
+        self.assertEqual(pts[0]["status"], "UNRESOLVED")
+        self.assertEqual((pts[0]["status_main"], pts[0]["status_fine"]), ("restored", "FAILED"))
+        self.assertFalse(pts[0]["converged_1pct"])
+        self.assertLess(A.maxima(pts)["e_row_incr_J"]["value"], 10.0)
+        self.assertTrue(all(p["status"] == "restored" for p in pts[1:]))
+
+    def test_idle_gmin_floor_flag(self):
+        self.assertAlmostEqual(A.GMIN_FLOOR_W, 64 * 1e-15 * 1.8 ** 2, delta=1e-20)
+        for e_idle, flagged in ((1e-22, True), (1e-15, False)):
+            _s, pts, _c = self.reduce(synth_report(e_idle_dc=e_idle))
+            self.assertTrue(all(p["idle_at_gmin_floor"] is flagged for p in pts), e_idle)
+
     def test_errored_report_rejected(self):
         with self.assertRaises(ValueError):
             A.reduce_report(dict(status="error", errored=3, corners=[]), C_SN)
@@ -438,9 +456,10 @@ class Evidence(unittest.TestCase):
                     name = f"refresh_energy_{k}_{rid}.csv"
                     self.assertEqual((Path(td) / name).read_text(), (RESULTS / name).read_text(), name)
                 new = json.loads((Path(td) / s.name).read_text())
-                for x in (new, d):
+                old = dict(d)
+                for x in (new, old):
                     x.pop("input_hashes")       # hashes the deck/scripts as they are at analysis time
-                self.assertEqual(new, d)
+                self.assertEqual(new, old)
             self.assertEqual(d["input_hashes"]["sim/refresh-energy/refresh_energy.spice"],
                              d["klt"]["main"]["netlist_sha256"])
             self.assertEqual(d["klt"]["main"]["netlist_sha256"], d["klt"]["fine"]["netlist_sha256"])
@@ -456,7 +475,8 @@ class Evidence(unittest.TestCase):
             self.assertTrue(d["controls"]["identity_all"])
             self.assertTrue(d["controls"]["dc_charge_check_all"])
             self.assertEqual(len(d["results_125C"]), 5 * 4)
-            rows = list(csv.DictReader((RESULTS / f"refresh_energy_points_{d['run_id']}.csv").open()))
+            with (RESULTS / f"refresh_energy_points_{d['run_id']}.csv").open(newline="") as fh:
+                rows = list(csv.DictReader(fh))
             self.assertEqual({(r["process"], int(r["temp_c"]), r["pattern"]) for r in rows},
                              {(p, t, q) for p in G.PROCESS_CORNERS for t in G.TEMPS_C for q in G.PATTERNS})
             self.assertEqual(d["klt"]["main"]["corner_count"], 10)
