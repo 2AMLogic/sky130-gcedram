@@ -20,19 +20,19 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#139**: Revalidate refresh sense evidence with matched physical initialization controls
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-- **#72**: docs(sim): narrow 'a PR cannot weaken the check' claim for the append-only guard
+- **#138**: Couple scheduler budgets to phase durations and verify executed-refresh deadlines
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#126**: docs(sim): narrow 'a PR cannot weaken the check' claim
+- **#140**: Couple scheduler budgets to phase durations and verify executed-refresh deadlines (#138)
 
 ## Approved (Awaiting Merge)
 
@@ -46,7 +46,6 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 Issues carrying `loom:curated`.
 
 - **#24**: Build the full gain-cell eDRAM macro (array + sense amp + refresh controller + SPI) to reach Chipalooza sign-off bar *(curated)*
-- **#72**: docs(sim): narrow 'a PR cannot weaken the check' claim for the append-only guard *(curated)*
 - **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead *(curated)*
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
 - **#114**: Design the column periphery (precharge, write driver, column select) to replace ideal sources in the read/write studies *(curated)*
@@ -66,11 +65,11 @@ Issues carrying `loom:curated`.
 |------|-------|
 | Operator merge-risk holds | 2 |
 | Operator priority | 0 |
-| Ready (`loom:issue`) | 0 |
+| Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 2 |
-| Curated | 5 |
+| Curated | 4 |
 | Architect / Hermit proposals | 1 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
