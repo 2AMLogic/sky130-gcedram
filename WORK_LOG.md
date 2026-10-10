@@ -4,6 +4,12 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-10
 
+- **Issue #143** (closed): Auditor: retain gh-api-rawfield-body-literal-at guard
+- **PR #142**: Revalidate refresh sense evidence with matched physical initialization controls (#139)
+- **Issue #139** (closed): Revalidate refresh sense evidence with matched physical initialization controls
+- **Issue #132** (closed): Auditor guard review: worktree-write-confinement-unresolved-var
+- **Issue #138** (closed): Couple scheduler budgets to phase durations and verify executed-refresh deadlines
+- **PR #140**: Couple scheduler budgets to phase durations and verify executed-refresh deadlines (#138)
 - **PR #137**: feat(sim): RWL driver slew/impedance/release-delay sensitivity of late-RWL refresh restoration (#134)
 - **Issue #134** (closed): Characterize late-RWL refresh restoration sensitivity to driver slew and impedance
 - **PR #136**: feat(digital): scheduler-to-phase-sequencer integration harness and timing report
