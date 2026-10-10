@@ -1,0 +1,13 @@
+# run_mutation.sh 2026-10-10
+baseline: PASS
+MUTANT dropped_launch_refresh: killed (1 violations shown; first: VIOLATION: start/launch mismatch (dropped or duplicated start) (c=215 a=0 b=1))
+MUTANT dropped_launch_access: killed (1 violations shown; first: VIOLATION: start/launch mismatch (dropped or duplicated start) (c=2070 a=0 b=1))
+MUTANT wrong_row_refresh: killed (2 violations shown; first: VIOLATION: adapter row (c=215 a=7 b=6))
+MUTANT wrong_row_access: killed (2 violations shown; first: VIOLATION: adapter row (c=2070 a=3 b=2))
+MUTANT duplicated_start_refresh: killed (1 violations shown; first: VIOLATION: start/launch mismatch (dropped or duplicated start) (c=216 a=1 b=0))
+MUTANT duplicated_start_access: killed (1 violations shown; first: VIOLATION: start/launch mismatch (dropped or duplicated start) (c=2071 a=1 b=0))
+MUTANT early_completion_guard_short: killed (20 violations shown; first: VIOLATION: sequencer busy length != expected phase total (c=39 a=33 b=34))
+MUTANT early_completion_no_guard_after_wb: killed (20 violations shown; first: VIOLATION: sequencer busy length != expected phase total (c=38 a=32 b=34))
+MUTANT early_completion_sense_short: killed (20 violations shown; first: VIOLATION: sequencer busy length != expected phase total (c=39 a=33 b=34))
+MUTANT early_completion_writeback_short: killed (20 violations shown; first: VIOLATION: sequencer busy length != expected phase total (c=37 a=31 b=34))
+MUTATION CHECK PASS

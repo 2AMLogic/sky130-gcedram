@@ -84,7 +84,8 @@ Scheduler constants `T_ROW` = 34, `T_ACC` = 34, `GUARD` = 2 (ASSUMPTION, [`../re
    value that fits `T_ROW`. Open.
 4. **Scheduler coupling.** The scheduler asserts `op_busy` for exactly `T_ROW`
    cycles and does not wait on `phase_seq.done`. They are not wired together;
-   no lockstep equivalence is claimed. Open.
+   no lockstep equivalence is claimed. Open. Measured (behavioral) in
+   [`../sched-phase-integration/TIMING_REPORT.md`](../sched-phase-integration/TIMING_REPORT.md) (issue #135).
 5. Write-in-refresh needs a boosted wordline for a full level at short
    pulses (bitcell-transient); no boost strobe exists here. Open.
 6. Polarity, drive strength, pin-level skew and sense-amp offset are all
