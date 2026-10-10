@@ -467,6 +467,10 @@ def main(argv: list[str] | None = None) -> int:
             return 2
     rep, rep_f = load_report(a.report), load_report(a.fine)
     c_sn_ff, c_sn_prov = G.G.S.load_extracted_c_sn(G.G.S.EXTRACT_JSON, "sn")
+    # Record the extraction report repo-root-relative so the committed summary is
+    # machine-independent (an absolute path differs between worktrees / CI runners).
+    c_sn_prov = dict(c_sn_prov)
+    c_sn_prov["extract_json_path"] = Path(c_sn_prov["extract_json_path"]).resolve().relative_to(REPO).as_posix()
     src, pts, ctl = reduce_report(rep, c_sn_ff * 1e-15)
     _src_f, pts_f, ctl_f = reduce_report(rep_f, c_sn_ff * 1e-15)
     add_convergence(pts, pts_f)

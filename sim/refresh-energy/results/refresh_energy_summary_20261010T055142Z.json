@@ -51,7 +51,7 @@
   "sim/refresh-energy/request.json": "1d7b4caa5a6ea8dc77d7da823edad763029cc5a8b8bc0f0edd2fb234c73c5f6d",
   "sim/refresh-energy/request_fine.json": "fa755897d8e0c7c2af6bcfa466124add32b33ba229d0f981fc1653eb6a944082",
   "sim/refresh-energy/gen_refresh_energy.py": "67a905ac5a693122f0c72fe199cb01440ac37e607418050f41db55f9a0655813",
-  "sim/refresh-energy/analyze_refresh_energy.py": "a6c9722ece57ca7e46d343ddac2b858f4eacf425422ae526536a37ea19b820a4",
+  "sim/refresh-energy/analyze_refresh_energy.py": "a08bdb132d5d377df38f4439a110faebaf70bbb5514b172a91c37174ffe23d1d",
   "sim/refresh-op/gen_refresh_op.py": "9dc99ce6051c08fe826484e1d7de3a176745f2709c6f4bfef5eddbfed2a3f0d4",
   "sim/retention/results/retention_results.csv": "f70fb13f9e5570237d60b62aefd53150a57376f3626f4725dc0938910ee8f50e"
  },
@@ -414,7 +414,7 @@
   ],
   "c_sn_used_for_stored_energy_disclosure_ff": 0.605354,
   "c_sn_provenance": {
-   "extract_json_path": "/home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-115/layout/gain_cell_2t.extract.parasitics.json",
+   "extract_json_path": "layout/gain_cell_2t.extract.parasitics.json",
    "klt_version": "0.3.0",
    "input_content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259",
    "ground_c_ff": 0.58649,

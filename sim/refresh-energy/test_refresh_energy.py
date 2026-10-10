@@ -464,6 +464,18 @@ class Evidence(unittest.TestCase):
                              d["klt"]["main"]["netlist_sha256"])
             self.assertEqual(d["klt"]["main"]["netlist_sha256"], d["klt"]["fine"]["netlist_sha256"])
 
+    def test_committed_results_have_no_absolute_paths(self):
+        """Committed reduced results must be machine-independent (no author/CI absolute paths)."""
+        files = sorted(RESULTS.glob("refresh_energy_*_*.json")) + sorted(RESULTS.glob("refresh_energy_*_*.csv"))
+        for f in files:
+            text = f.read_text()
+            for marker in ("/home/", "/runner", "/Users/", "/tmp/", ".loom/worktrees"):
+                self.assertNotIn(marker, text, f"{f.name} contains absolute/machine-specific path ({marker})")
+        for s in self.summaries():
+            p = json.loads(s.read_text())["evidence_chain"]["c_sn_provenance"]["extract_json_path"]
+            self.assertFalse(Path(p).is_absolute(), p)
+            self.assertTrue((HERE.parent.parent / p).is_file(), p)
+
     def test_summary_scope_claims_and_controls(self):
         for s in self.summaries():
             d = json.loads(s.read_text())
