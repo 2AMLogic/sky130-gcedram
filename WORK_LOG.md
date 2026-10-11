@@ -2,6 +2,15 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-11
+
+- **Issue #91** (closed): Committed 4x4 array GDS no longer reproduces from generate_array.sh with current klt (0.6.0 vs 0.7.0 geometry drift)
+- **PR #153**: feat(layout): pin the array generation toolchain and compare --check output with the committed 4x4
+- **Issue #146** (closed): Integrate live SPI configuration with the duration-coupled phase sequencer
+- **PR #151**: feat(digital): SPI-configured scheduler driving the phase sequencer (#146)
+- **Issue #89** (closed): Array-context storage-node capacitance is 17-22% below the single-cell C_SN used by retention
+- **PR #150**: Array-context C_SN comparison and proposed retention-input decision (#89)
+
 ### 2026-10-10
 
 - **PR #145**: test: include all evidence-checks suites in npm test
