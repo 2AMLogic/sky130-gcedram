@@ -283,6 +283,110 @@ against the new worst-case point rather than silently reusing a stale
 number -- the mechanism satisfying this issue's Test Plan "confirm the
 derivation is re-run ... if #2's numbers change."
 
+## Array-context `C_SN`: capacitance-only comparison (issue #89)
+
+**Label: CAPACITANCE-ONLY SENSITIVITY.** This is not measured array
+retention, not geometry-matched, not dynamic, not ratified, and not an
+array guarantee. The default derivation above is unchanged:
+`derive_retention.py` still reads the isolated-cell report (`net sn`) and
+`retention_results.csv` gets no new rows. The proposed decision that uses
+this comparison is in
+[`spec/retention-refresh-budget.md`](../../spec/retention-refresh-budget.md)
+Section 9 (PROPOSED, not ratified).
+
+[`compare_array_c_sn.py`](compare_array_c_sn.py) reduces every
+`sn_<row>_<col>` net in the committed 4x4 array extraction
+([`layout/gain_cell_2t_array.extract.parasitics.json`](../../layout/gain_cell_2t_array.extract.parasitics.json),
+issue #80). It uses `load_extracted_c_sn()` itself, so the convention is the
+same as the default path: ground plus every coupling capacitor on the net.
+It then compares three estimates and keeps them separate:
+
+| Estimate | `C_SN` (fF) | Ratio to isolated cell | `t_retention` | Status |
+|---|---|---|---|---|
+| Pre-layout (`retention_results.csv` line 2) | 1.106463 (ASSUMED) | n/a | 10.06 µs | **Ratified**, spec Section 5. Not changed here |
+| Isolated cell, extracted (line 4) | 0.605354 | 1 | 5.50 µs | Current best single-cell estimate (#7). Not ratified |
+| Array, limiting node `sn_3_3` | 0.473620 | 0.782385 | 4.31 µs | Capacitance-only sensitivity |
+| Array, largest nodes `sn_1_1`, `sn_1_2`, `sn_2_1`, `sn_2_2` | 0.502000 | 0.829267 | 4.56 µs | Capacitance-only sensitivity |
+
+These figures are a snapshot of the committed inputs. The script
+recomputes them, and
+[`results/array_c_sn_comparison_20261011T020547Z.json`](results/array_c_sn_comparison_20261011T020547Z.json)
+records them. That file also holds the full 16-node distribution, per-node
+ratios and times, the minimum and maximum node identities and their ties,
+and the inputs' sha256 hashes and klt content hashes. The scaling is
+`t_array = t_single * C_array / C_single`, applied to the **extracted**
+isolated-cell row, with that row's `I_leak` (sf, 125 °C) and
+`delta_V = 0.9 V` ASSUMPTION unchanged. It is not applied to the ratified
+pre-layout value.
+
+How the limiting node is chosen: the smallest total, rounded to 1e-9 fF.
+Ties go to the lowest `(row, col)`, and every tied node is listed. The
+whole distribution is kept, so the limiting node is never swapped for the
+largest one. In this 4x4 the minimum is the corner cell `sn_3_3`, which
+has the fewest coupled neighbours. Coupling is 8.5% to 14.2% of each
+node's total. With coupling dropped, the smallest ground-only value is
+0.430576 fF (ratio 0.71128). That is a reference for how much the number
+depends on quiet neighbours, not a bound.
+
+### What `C_SN` contains: wiring only
+
+Neither the single-cell nor the array number includes the M_RD gate
+capacitance or the M_WR drain-junction capacitance. `by_layer` lists only
+poly, li1 and met1 (see [`layout/README.md`](../../layout/README.md),
+issue #80 "Convention"). So the ground capacitance row in "Storage-node
+capacitance" above, labelled "junction + overlap + routing-to-substrate",
+is wiring to substrate. That label comes from issue #7 and is left as
+written, since it is historical text.
+
+The comparison is therefore wiring against wiring. It is not the node's
+full physical capacitance. The computed gate-oxide term (0.553231 fF) must
+not simply be added to these numbers, for two reasons. First, the
+extractor's 0.173920 fF poly term has not been checked for overlap with
+the channel region, so adding the gate term could count it twice. Second,
+junction capacitance depends on voltage and device geometry. The
+geometry-matched path in spec Section 9 instead lets the device model
+evaluate both terms from the extracted netlist.
+
+### Leakage-device geometry trace (AD/AS/PD/PS)
+
+| Source | AD = AS (µm²) | PD = PS (µm) | Provenance |
+|---|---|---|---|
+| Leakage testbench `xdut` | **not passed** (wrapper default 0) | **not passed** (wrapper default 0) | [`sim/leakage/tb_access_leakage.spice.tmpl`](../leakage/tb_access_leakage.spice.tmpl) passes only `l=0.15 w=0.42`. The shipped wrapper `.subckt sky130_fd_pr__nfet_01v8` in `$PDK_ROOT/sky130A/libs.tech/combined/continuous/models_fet.spice` (open_pdks `c6d73a35`) declares `.param l = 1 w = 1 nf = 1 ad = 0 as = 0 pd = 0 ps = 0 ...` |
+| Schematic `XM_WR`/`XM_RD` | 0.1218 | 1.42 | [`design/gain_cell_2t.spice`](../../design/gain_cell_2t.spice) |
+| Extracted, single cell and all 32 array devices | 0.1974 | 1.78 | Device `params` in both `layout/*.extract.parasitics.json` reports |
+
+So the measured `I_leak` = 9.898880e-11 A was evaluated with **zero**
+drain/source diffusion area and perimeter. Issue #89 assumed it used the
+schematic values; it used neither those nor the extracted ones. The BSIM4
+junction terms of `diomod = 1` that scale with drawn diffusion area and
+field-edge perimeter therefore contribute nothing to that number. Only the
+gate-edge sidewall term, which scales with W, remains. As a result, the
+sentence in [`sim/leakage/README.md`](../leakage/README.md) saying the
+measurement captures junction leakage needs this qualification; a note
+has been added there. Adding reverse-biased junction area can only add
+current, so the committed `I_leak` most likely **understates** the leakage
+of the drawn device, and every retention figure in this file is optimistic
+in that respect. Changing `C_SN` alone does not fix this.
+
+**Missing evidence before any array estimate can be adopted:** a leakage
+sweep using the extracted geometry (`ad = as = 0.1974`, `pd = ps = 1.78`)
+over the same 15 PVT points, committed as new append-only evidence. It
+should be submitted as a `klt sim` corner request, not a hand-run grid. Tracked in #149.
+The full list is in spec Section 9.
+
+```bash
+python3 -I sim/retention/compare_array_c_sn.py            # print the summary
+python3 -I sim/retention/compare_array_c_sn.py --check sim/retention/results/array_c_sn_comparison_20261011T020547Z.json
+python3 -I sim/retention/compare_array_c_sn.py --write    # NEW timestamped file; never overwrites
+python3 -I sim/retention/test_compare_array_c_sn.py       # focused tests
+```
+
+The script needs only the standard library, with no PDK, ngspice or klt.
+`--check` exits 1 if the committed inputs no longer reproduce the
+committed file. That covers a changed report, a changed hash, or a changed
+baseline row. A regenerated array GDS (#91) needs a new extraction and a
+new comparison file. Do not edit this one.
+
 ## Follow-up (out of scope here)
 
 - **`3T-min` post-layout parasitic re-derivation**: if a `3T-min` layout
@@ -305,3 +409,6 @@ derivation is re-run ... if #2's numbers change."
 |---|---|
 | `derive_retention.py` | Derivation driver: reads the worst-case leakage row from `sim/leakage/`, computes the gate-oxide capacitance term from the shipped PDK model card, reads the extracted `2T-min` storage-node capacitance from `layout/gain_cell_2t.extract.parasitics.json` (issue #7) / applies the labelled `3T-min` margin-factor assumption, applies the sense-margin assumption, and appends retention-time results |
 | `results/retention_results.csv` | Append-only recorded results (all intermediate values, machine-readable) |
+| `compare_array_c_sn.py` | Issue #89: array-context `C_SN` reduction (all `sn_<r>_<c>`), capacitance-only retention sensitivity against the ratified and isolated-cell baselines, and AD/AS/PD/PS trace. Never writes `retention_results.csv` |
+| `results/array_c_sn_comparison_*.json` | Issue #89: append-only comparison snapshots (one new file per `--write`) |
+| `test_compare_array_c_sn.py` | Issue #89: focused stdlib tests (reduction, validation, ties, units, reproduction of the committed snapshot) |
