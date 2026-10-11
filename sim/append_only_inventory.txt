@@ -24,3 +24,7 @@ sim/refresh-energy/results/refresh_energy_sources_20261010T055142Z.csv
 sim/refresh-energy/results/refresh_energy_points_20261010T055142Z.csv
 sim/refresh-energy/results/refresh_energy_scaling_20261010T055142Z.csv
 sim/refresh-energy/results/refresh_energy_summary_20261010T055142Z.json
+#
+# sim/retention (issue #89): array-context C_SN capacitance-only comparison.
+# Inside a `results` directory (already protected); listed to register it.
+sim/retention/results/array_c_sn_comparison_20261011T020547Z.json

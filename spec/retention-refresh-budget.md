@@ -11,6 +11,10 @@ document is self-contained: a reader who has not seen #2, #3, or #4 can
 follow it end to end without opening those issues, though every number below
 links back to the committed netlist or write-up that produced it.
 
+> Section 9 (issue #89) is a **PROPOSED, not ratified** addition about
+> array-context storage-node inputs. It changes none of the ratified values
+> in Sections 5–8.
+
 ## 1. The evidence chain, summarized
 
 | Link | What it establishes | Committed evidence |
@@ -271,9 +275,148 @@ above — it assembles what is already committed into a ratified decision and
 records, rather than papers over, everything that decision does not yet
 settle.
 
+## 9. PROPOSED, not ratified: array-context storage-node inputs (issue #89)
+
+**Status: PROPOSED. Not ratified.** Sections 1–8 remain the ratified
+record, and nothing in this section changes them. The retention time is
+still **~10.06 µs** (Section 5), the topology is still **2T** (Section 6),
+and the refresh-interval upper bound is still **~5.03 µs** (Section 7).
+This section proposes which storage-node inputs a *future* array-level
+retention study should use, and what evidence it would need before
+anything here could replace a ratified number. It is a proposal and does
+not approve a new refresh deadline.
+
+### 9.1 Question
+
+Issue #80 extracted the committed 4x4 array. A storage node there has
+17–22% less capacitance than the isolated bitcell that the retention
+derivation reads. The question is whether the retention derivation's
+`C_SN` should come from the array-context extraction rather than from the
+isolated cell. A second question follows: whether the junction geometry
+behind the leakage term should also be the extracted geometry.
+
+### 9.2 Evidence (snapshot of committed inputs)
+
+[`sim/retention/compare_array_c_sn.py`](../sim/retention/compare_array_c_sn.py)
+produced all of these values from the committed reports and CSV rows.
+They are recorded with input hashes in
+[`sim/retention/results/array_c_sn_comparison_20261011T020547Z.json`](../sim/retention/results/array_c_sn_comparison_20261011T020547Z.json),
+and the method is described in
+[`sim/retention/README.md`](../sim/retention/README.md) "Array-context
+`C_SN`". All rows share the same measured `I_leak` (9.898880e-11 A, `sf`,
+125 °C) and the same `delta_V = VDD/2` ASSUMPTION.
+
+| Estimate | `C_SN` (fF) | `t_retention` | Kind |
+|---|---|---|---|
+| Pre-layout | 1.106463 (ASSUMED, 2.0x `C_gate`) | ~10.06 µs | **Ratified** (Section 5) |
+| Isolated cell, extracted (#7) | 0.605354 | ~5.50 µs | Extracted single cell; not ratified |
+| 4x4 array, limiting node `sn_3_3` | 0.473620 (0.782x isolated) | ~4.31 µs | **Capacitance-only sensitivity** |
+| 4x4 array, largest nodes (four tied interior cells) | 0.502000 (0.829x isolated) | ~4.56 µs | **Capacitance-only sensitivity** |
+
+The array rows scale the *extracted isolated-cell* estimate by
+`C_array / C_single`. They do not scale the ratified pre-layout value, and
+they are not array retention measurements.
+
+The trace found two further facts, both of which bear on the decision:
+
+1. **`C_SN` is wiring capacitance only, in both reports.** Neither number
+   contains the M_RD gate or the M_WR drain-junction capacitance. Those
+   are left to the device model (layout/README.md, #80 "Convention").
+2. **The measured leakage used no drawn diffusion geometry.** The leakage
+   testbench passes no `AD/AS/PD/PS`, so the shipped wrapper's zero
+   defaults applied. The layout draws `AD = AS = 0.1974 µm²` and
+   `PD = PS = 1.78 µm`; the schematic says 0.1218 µm² and 1.42 µm. More
+   reverse-biased junction can only add current, so the committed
+   `I_leak` likely understates the drawn device's leakage. No
+   geometry-matched leakage evidence is committed.
+
+### 9.3 Alternatives
+
+| | Option | For | Against |
+|---|---|---|---|
+| A | Keep the isolated-cell `C_SN` (0.605354 fF) | Already in the default derivation; complete evidence chain (#7) | A cell built in the array does not have this capacitance. The isolated cell's extra met1 crossing (0.263 fF) is absent in the array, so every array cell's `C_SN` is overstated by 17–22%. Optimistic |
+| B | Use the array minimum under the existing convention (0.473620 fF, `sn_3_3`) | Same reader and convention; deterministic; reproducible from committed extraction; closer to an array-built cell than A | Leakage is still at zero diffusion geometry (optimistic). Assumes quiet neighbours. 4x4 only, and the minimum sits at a corner cell. Wiring only. Static |
+| C | Use geometry-matched array evidence: array-context `C_SN` **and** leakage re-measured with the extracted `AD/AS/PD/PS` across the 15 PVT points, with device capacitance from the model | Leakage and capacitance describe the same drawn device; no mixed geometry | Needs new simulation evidence that is not yet committed (Section 9.6) |
+
+### 9.4 Recommendation (proposed)
+
+- **Evidence path: C.** Any future change to Section 5 or Section 7 should
+  rest on geometry-matched array evidence. The combination should not be
+  ratified while the capacitance describes the array-built device and the
+  leakage describes a device with no drawn diffusion. B corrects one input
+  and leaves the other biased in the same optimistic direction, so B
+  should not be ratified as a revised retention time.
+- **Interim planning input: B, labelled.** Until C exists, array studies
+  (#94, #147) should use the array limiting-node value as their planning
+  input, labelled "capacitance-only sensitivity, leakage at testbench
+  geometry". That is ~4.31 µs at `sf`/125 °C against the 5.50 µs extracted
+  single-cell estimate, a factor of 0.782. Use the whole distribution
+  (`sn_3_3` minimum, 0.473620–0.502000 fF), not one representative cell.
+  Choosing the minimum is conservative relative to A. It is not a bound,
+  because of the known leakage bias.
+- **A is kept only as the isolated-cell baseline.** It is not an input
+  for array-level conclusions.
+- Rationale: retention is linear in `C_SN` at fixed leakage and margin, so
+  an input that overstates `C_SN` by about 20% overstates retention by the
+  same factor. Correcting the capacitance makes the estimate more
+  representative. Correcting it alone, without the matched leakage, could
+  still be mistaken for a corrected chain, which is why B is proposed as a
+  labelled planning input and not as a ratified number.
+
+### 9.5 Assumptions behind B
+
+- **Quiet neighbours.** Coupling capacitance (8.5–14.2% of each node's
+  total) is counted as load to a far terminal held at a fixed potential:
+  `bl`, `rbl`, `wl`, `rwl` quiescent during hold. Dropping it gives
+  0.430576 fF, a ratio of 0.71128. That figure shows how much of the value
+  rests on this assumption; it is not a bound. A switching neighbour
+  injects charge through these capacitors. That is a disturb, which is
+  characterized as write/hold/sense trajectories in #94, not a static
+  capacitance.
+- **Same convention as the default path.** Total equals ground plus all
+  coupling capacitors, wiring only. The computed `C_gate` (0.553231 fF)
+  must not be added on top. Whether the extracted poly term overlaps the
+  channel region has not been checked, so adding it risks counting
+  capacitance twice. Device capacitance should come from the BSIM model
+  evaluated on the extracted netlist.
+- **4x4, committed GDS.** The limiting node is the array corner `sn_3_3`,
+  which has the fewest coupled neighbours. A larger array or a regenerated
+  layout (#91) needs re-extraction and a new comparison file.
+- **Unchanged from Sections 2–5:** constant-current decay, `delta_V =
+  VDD/2` (ASSUMPTION), the single worst-case PVT point, and no mismatch.
+
+### 9.6 Remaining evidence before any ratification
+
+1. **Geometry-matched leakage.** Re-run the access-device leakage over the
+   same 15 PVT points with `ad = as = 0.1974`, `pd = ps = 1.78`, committed
+   as new append-only evidence. Submit it as a `klt sim` corner request,
+   not a hand-run grid. Tracked in #149.
+2. **A node-capacitance convention that includes device capacitance.**
+   Either evaluate `C_SN` with the device model on the extracted array
+   netlist (for example, the hold-droop slope at the storage node), or
+   show that the extractor's poly term excludes the channel region so
+   that `C_gate` and the junction term can be added without counting
+   twice.
+3. **Dynamic behaviour with neighbours switching.** Physical write, hold
+   and sense trajectories at the refresh deadline with mixed neighbour
+   patterns: #94.
+4. **Repeated refresh.** Data preservation over closed-loop refresh
+   cycles: #147.
+5. **Array size.** Evidence that the 4x4 limiting node represents the
+   macro's array, or an extraction at the macro's `N_ROWS`/`N_COLS`.
+
+### 9.7 Inputs available to #94 and #147, and their limits
+
+| Input | Value | Use it for | Do not use it for |
+|---|---|---|---|
+| Array `C_SN` distribution | 16 nodes, 0.473620–0.502000 fF, limiting node `sn_3_3` (comparison JSON `array.nodes`) | Choosing the cells to stress; a wiring-only cross-check of simulated node capacitance | Adding to a netlist that already contains the extracted parasitics (that counts the wiring twice) |
+| Capacitance-only retention | ~4.31–4.56 µs at `sf`/125 °C (`per_node` in the JSON) | A planning deadline, labelled as sensitivity | A refresh-interval spec or guarantee |
+| Extracted device geometry | `AD = AS = 0.1974 µm²`, `PD = PS = 1.78 µm` | Device cards in array-context decks, so that junction leakage and junction capacitance match the layout | Mixing with the testbench `I_leak` as if that were geometry-matched |
+
 ## Files
 
 | Path | Purpose |
 |---|---|
-| `retention-refresh-budget.md` (this file) | Ratified decision record: retention time, 2T-vs-3T topology decision, refresh bandwidth-overhead framing — the exit criterion for #1 |
+| `retention-refresh-budget.md` (this file) | Ratified decision record: retention time, 2T-vs-3T topology decision, refresh bandwidth-overhead framing — the exit criterion for #1. Section 9 is a PROPOSED, not ratified, array-context input decision (#89) |
+| [`../sim/retention/compare_array_c_sn.py`](../sim/retention/compare_array_c_sn.py) | Issue #89 comparison behind Section 9 (capacitance-only sensitivity) |
 | [`retention-literature-crosscheck.md`](retention-literature-crosscheck.md) | Literature cross-check this decision cites (issue #4) |
