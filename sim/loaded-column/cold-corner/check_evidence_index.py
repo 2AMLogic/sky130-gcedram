@@ -26,6 +26,7 @@ DOCS = [
     HERE / "sources" / "skywater-pdk-device-details-excerpt.md",
     ROOT / "spec" / "supply-reliability-decision-PROPOSED.md",
     HERE / "sources" / "reliability-search-log-issue51.md",
+    HERE.parent / "extracted-crbl" / "README.md",
 ]
 OPEN_PDKS = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
 HASHES = {
@@ -197,6 +198,70 @@ def issue51() -> None:
     check("Issue #51 addendum" in (HERE / "EVIDENCE_INDEX.md").read_text(), "index has the #51 addendum")
 
 
+EXT_DIR = HERE.parent / "extracted-crbl"
+EXT_RUN = EXT_DIR / "results" / "20261011T015419Z"
+SS_RES = ROOT / "sim" / "sense-stage" / "results"
+ISSUE88_HASHES = {
+    EXT_RUN / "summary.json": "77d07c21bcf59aa3c5b81e64c2ceb90026e2ff79788c57a808d4acdd72efe464",
+    EXT_RUN / "cases.csv.gz": "48a83f9e2ef56f7f0617eb4c33d241215b35a0ccb549952c9138af8a71f3dbc4",
+    SS_RES / "sense_summary_20261011T015836Z.json": "d171548c93997aa1bd1207f2511d2585eef33bdb1bef4b00781d9779214caa0b",
+    SS_RES / "sense_summary_20261011T020128Z.json": "5a913667308f99335046eb930ecfb5d655e30ba1bb508848ab382deab94a1bda",
+    SS_RES / "sense_summary_20261011T020422Z.json": "39b06ab5d4acba1aa01af6b9b9b8ff5a73c049e87350825312c060a82ff03bad",
+}
+ARRAY_NETLIST_SHA = "dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33"
+
+
+def issue88() -> None:
+    """Issue #88: extracted C_RBL re-run, contract addendum numbers, pins."""
+    for p, h in ISSUE88_HASHES.items():
+        check(p.exists() and sha(p) == h, f"#88 sha256 {p.relative_to(ROOT)}")
+    par = json.loads((ROOT / "layout" / "gain_cell_2t_array.parasitics.summary.json").read_text())
+    c_rbl = par["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"]
+    check(close(c_rbl, 0.859179, 1e-6), "#88 extracted C_RBL is 0.859179 fF at the cited key")
+    check(par["source"]["netlist_sha256"] == ARRAY_NETLIST_SHA, "#88 extracted netlist sha256 pinned")
+    s = json.loads((EXT_RUN / "summary.json").read_text())
+    check(not s["errors"], "#88 loaded-column summary has no errors")
+    check(s["reproduction"]["ok"] and s["reproduction"]["cases_compared"] == 1920,
+          "#88 10 fF harness reproduces committed Phase 2 (1920 cases)")
+    check(s["negative_control"]["behaves_as_expected"], "#88 negative control fails as required")
+    check(not s["claims"]["spec_changed"] and not s["claims"]["n_rows_ratified"]
+          and not s["claims"]["real_periphery_used"], "#88 claims: no spec change, N_rows not ratified, ideal periphery")
+    check(close(s["c_rbl_source"]["value_ff"], c_rbl, 1e-9), "#88 run used the cited C_RBL")
+    V = s["variants"]
+
+    def pt(v, c, t, a):
+        return next(p for p in V[v]["points"] if (p["corner"], p["temp_c"], p["age"]) == (c, t, a))
+
+    ext_min = V["crbl_ext4row"]["min_point_separation_v"]
+    check(close(ext_min, 0.075, 6e-4), "#88 extracted min separation 0.075 V")
+    check(close(pt("crbl_ext4row", "fs", -40, "refresh_bound")["worst_case_separation_v"], ext_min, 1e-12),
+          "#88 extracted min is at fs/-40 aged")
+    a = pt("crbl_ext4row", "fs", -40, "refresh_bound")
+    check(not a["PASS"] and close(a["latency_stored1_s"]["max"] * 1e9, 12.97, 6e-3), "#88 fs/-40 aged FAIL, latency 12.97 ns")
+    check(V["crbl_ext4row"]["n_points_pass"] == 28 and V["ref_crbl_10f"]["n_points_pass"] == 28, "#88 28/30 at 10 fF and extracted")
+    for age, sep, lat in (("refresh_bound", 0.370, 1.69), ("fresh", 0.388, 1.56)):
+        p = pt("crbl_ext4row", "ss", -40, age)
+        check(p["PASS"] and close(p["worst_case_separation_v"], sep, 6e-4) and close(p["latency_stored1_s"]["max"] * 1e9, lat, 6e-3),
+              f"#88 ss/-40 {age} {sep} V / {lat} ns")
+    check(close(V["crbl_2f"]["min_point_separation_v"], 0.052, 6e-4), "#88 2 fF min 0.052 V")
+    check(close(pt("crbl_2f", "ss", -40, "refresh_bound")["worst_case_separation_v"], 0.288, 6e-4), "#88 2 fF ss/-40 aged 0.288 V")
+    check(V["crbl_ext4row_layoutcard"]["n_points_pass"] == 30
+          and close(V["crbl_ext4row_layoutcard"]["min_point_separation_v"], 0.108, 6e-4), "#88 layout card 30/30, min 0.108 V")
+    ss = json.loads((SS_RES / "sense_summary_20261011T015836Z.json").read_text())
+    td = [c["stage_tdec_at_1mv_ns_minus"] for c in ss["corners"]]
+    check(close(min(td), 0.11, 6e-3) and close(max(td), 0.23, 6e-3), "#88 sense-stage t_dec at 1 mV 0.11-0.23 ns")
+    check({c["temp_c"] for c in ss["corners"]} == {27, 125}, "#88 sense stage has no -40 C result")
+    con = (HERE / "SENSE_INPUT_CONTRACT.md").read_text()
+    head, _, add = con.partition("## 2026-10-11 addendum: extracted `C_RBL` row (issue #88, PROPOSED)")
+    check(bool(add), "#88 contract has the dated addendum")
+    check("| `C_RBL` | 10 fF | same | same | ASSUMPTION (not extracted)" in head and "4. Any new multi-corner" in head,
+          "#88 original contract row and rules preserved")
+    for tok in ("0.859179 fF", "EXTRACTED-4-ROW", "not ratified", ARRAY_NETLIST_SHA, "0.075 V", "0.370 V", "0.288 V",
+                "0.108 V", "12.97 ns", "0.11-0.23 ns", "comparison.c_rbl.extracted_4row_worst_total_ff", "**ideal**"):
+        check(tok in add, f"#88 contract addendum quotes {tok}")
+    check("Issue #88 addendum" in (HERE / "EVIDENCE_INDEX.md").read_text(), "index has the #88 addendum")
+
+
 def issue51_online() -> None:
     import urllib.request
     base = f"https://raw.githubusercontent.com/google/skywater-pdk/{SW_PDK_HEAD}/"
@@ -241,6 +306,7 @@ def main() -> int:
     numbers()
     status()
     issue51()
+    issue88()
     if a.online:
         online()
         issue51_online()

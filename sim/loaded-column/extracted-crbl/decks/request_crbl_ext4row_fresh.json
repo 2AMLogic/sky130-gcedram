@@ -1,0 +1,4834 @@
+{
+ "netlist": "crbl_ext4row_fresh.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   -40,
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 1.350000000e-07 0 5e-10"
+ },
+ "measurements": [
+  {
+   "name": "wo_s0p00",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p00 FIND v(sn0_s0p00) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p00",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p00 FIND v(sn0_s0p00) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p00",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p00 FIND v(sn0_s0p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p00",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p00 FIND v(rbl_s0p00) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p00",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p00 FIND v(rbl_s0p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p00",
+   "unit": "V",
+   "spice": ".meas tran re_s0p00 FIND v(rbl_s0p00) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p00",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p00 FIND v(sn0_s0p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p00",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p00 FIND v(sn0_s0p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p00",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p00 FIND v(sn1_s0p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p00",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p00 FIND v(sn1_s0p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p00",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p00 FIND v(sn2_s0p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p00",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p00 FIND v(sn2_s0p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p00",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p00 FIND v(sn3_s0p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p00",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p00 FIND v(sn3_s0p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p00",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p00 WHEN v(dl_s0p00)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p01",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p01 FIND v(sn0_s0p01) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p01",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p01 FIND v(sn0_s0p01) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p01",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p01 FIND v(sn0_s0p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p01",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p01 FIND v(rbl_s0p01) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p01",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p01 FIND v(rbl_s0p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p01",
+   "unit": "V",
+   "spice": ".meas tran re_s0p01 FIND v(rbl_s0p01) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p01",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p01 FIND v(sn0_s0p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p01",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p01 FIND v(sn0_s0p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p01",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p01 FIND v(sn1_s0p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p01",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p01 FIND v(sn1_s0p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p01",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p01 FIND v(sn2_s0p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p01",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p01 FIND v(sn2_s0p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p01",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p01 FIND v(sn3_s0p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p01",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p01 FIND v(sn3_s0p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p01",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p01 WHEN v(dl_s0p01)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p02",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p02 FIND v(sn0_s0p02) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p02",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p02 FIND v(sn0_s0p02) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p02",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p02 FIND v(sn0_s0p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p02",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p02 FIND v(rbl_s0p02) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p02",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p02 FIND v(rbl_s0p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p02",
+   "unit": "V",
+   "spice": ".meas tran re_s0p02 FIND v(rbl_s0p02) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p02",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p02 FIND v(sn0_s0p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p02",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p02 FIND v(sn0_s0p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p02",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p02 FIND v(sn1_s0p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p02",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p02 FIND v(sn1_s0p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p02",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p02 FIND v(sn2_s0p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p02",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p02 FIND v(sn2_s0p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p02",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p02 FIND v(sn3_s0p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p02",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p02 FIND v(sn3_s0p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p02",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p02 WHEN v(dl_s0p02)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p03",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p03 FIND v(sn0_s0p03) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p03",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p03 FIND v(sn0_s0p03) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p03",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p03 FIND v(sn0_s0p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p03",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p03 FIND v(rbl_s0p03) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p03",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p03 FIND v(rbl_s0p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p03",
+   "unit": "V",
+   "spice": ".meas tran re_s0p03 FIND v(rbl_s0p03) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p03",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p03 FIND v(sn0_s0p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p03",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p03 FIND v(sn0_s0p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p03",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p03 FIND v(sn1_s0p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p03",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p03 FIND v(sn1_s0p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p03",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p03 FIND v(sn2_s0p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p03",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p03 FIND v(sn2_s0p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p03",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p03 FIND v(sn3_s0p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p03",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p03 FIND v(sn3_s0p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p03",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p03 WHEN v(dl_s0p03)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p04",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p04 FIND v(sn0_s0p04) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p04",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p04 FIND v(sn0_s0p04) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p04",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p04 FIND v(sn0_s0p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p04",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p04 FIND v(rbl_s0p04) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p04",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p04 FIND v(rbl_s0p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p04",
+   "unit": "V",
+   "spice": ".meas tran re_s0p04 FIND v(rbl_s0p04) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p04",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p04 FIND v(sn0_s0p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p04",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p04 FIND v(sn0_s0p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p04",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p04 FIND v(sn1_s0p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p04",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p04 FIND v(sn1_s0p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p04",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p04 FIND v(sn2_s0p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p04",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p04 FIND v(sn2_s0p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p04",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p04 FIND v(sn3_s0p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p04",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p04 FIND v(sn3_s0p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p04",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p04 WHEN v(dl_s0p04)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p05",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p05 FIND v(sn0_s0p05) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p05",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p05 FIND v(sn0_s0p05) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p05",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p05 FIND v(sn0_s0p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p05",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p05 FIND v(rbl_s0p05) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p05",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p05 FIND v(rbl_s0p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p05",
+   "unit": "V",
+   "spice": ".meas tran re_s0p05 FIND v(rbl_s0p05) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p05",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p05 FIND v(sn0_s0p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p05",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p05 FIND v(sn0_s0p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p05",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p05 FIND v(sn1_s0p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p05",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p05 FIND v(sn1_s0p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p05",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p05 FIND v(sn2_s0p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p05",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p05 FIND v(sn2_s0p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p05",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p05 FIND v(sn3_s0p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p05",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p05 FIND v(sn3_s0p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p05",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p05 WHEN v(dl_s0p05)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p06",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p06 FIND v(sn0_s0p06) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p06",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p06 FIND v(sn0_s0p06) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p06",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p06 FIND v(sn0_s0p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p06",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p06 FIND v(rbl_s0p06) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p06",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p06 FIND v(rbl_s0p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p06",
+   "unit": "V",
+   "spice": ".meas tran re_s0p06 FIND v(rbl_s0p06) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p06",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p06 FIND v(sn0_s0p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p06",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p06 FIND v(sn0_s0p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p06",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p06 FIND v(sn1_s0p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p06",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p06 FIND v(sn1_s0p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p06",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p06 FIND v(sn2_s0p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p06",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p06 FIND v(sn2_s0p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p06",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p06 FIND v(sn3_s0p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p06",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p06 FIND v(sn3_s0p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p06",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p06 WHEN v(dl_s0p06)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p07",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p07 FIND v(sn0_s0p07) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p07",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p07 FIND v(sn0_s0p07) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p07",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p07 FIND v(sn0_s0p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p07",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p07 FIND v(rbl_s0p07) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p07",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p07 FIND v(rbl_s0p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p07",
+   "unit": "V",
+   "spice": ".meas tran re_s0p07 FIND v(rbl_s0p07) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p07",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p07 FIND v(sn0_s0p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p07",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p07 FIND v(sn0_s0p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p07",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p07 FIND v(sn1_s0p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p07",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p07 FIND v(sn1_s0p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p07",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p07 FIND v(sn2_s0p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p07",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p07 FIND v(sn2_s0p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p07",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p07 FIND v(sn3_s0p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p07",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p07 FIND v(sn3_s0p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p07",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p07 WHEN v(dl_s0p07)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p08",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p08 FIND v(sn0_s0p08) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p08",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p08 FIND v(sn0_s0p08) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p08",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p08 FIND v(sn0_s0p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p08",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p08 FIND v(rbl_s0p08) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p08",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p08 FIND v(rbl_s0p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p08",
+   "unit": "V",
+   "spice": ".meas tran re_s0p08 FIND v(rbl_s0p08) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p08",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p08 FIND v(sn0_s0p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p08",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p08 FIND v(sn0_s0p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p08",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p08 FIND v(sn1_s0p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p08",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p08 FIND v(sn1_s0p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p08",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p08 FIND v(sn2_s0p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p08",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p08 FIND v(sn2_s0p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p08",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p08 FIND v(sn3_s0p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p08",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p08 FIND v(sn3_s0p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p08",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p08 WHEN v(dl_s0p08)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p09",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p09 FIND v(sn0_s0p09) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p09",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p09 FIND v(sn0_s0p09) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p09",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p09 FIND v(sn0_s0p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p09",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p09 FIND v(rbl_s0p09) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p09",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p09 FIND v(rbl_s0p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p09",
+   "unit": "V",
+   "spice": ".meas tran re_s0p09 FIND v(rbl_s0p09) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p09",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p09 FIND v(sn0_s0p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p09",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p09 FIND v(sn0_s0p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p09",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p09 FIND v(sn1_s0p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p09",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p09 FIND v(sn1_s0p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p09",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p09 FIND v(sn2_s0p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p09",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p09 FIND v(sn2_s0p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p09",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p09 FIND v(sn3_s0p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p09",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p09 FIND v(sn3_s0p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p09",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p09 WHEN v(dl_s0p09)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p10",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p10 FIND v(sn0_s0p10) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p10",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p10 FIND v(sn0_s0p10) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p10",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p10 FIND v(sn0_s0p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p10",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p10 FIND v(rbl_s0p10) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p10",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p10 FIND v(rbl_s0p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p10",
+   "unit": "V",
+   "spice": ".meas tran re_s0p10 FIND v(rbl_s0p10) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p10",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p10 FIND v(sn0_s0p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p10",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p10 FIND v(sn0_s0p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p10",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p10 FIND v(sn1_s0p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p10",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p10 FIND v(sn1_s0p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p10",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p10 FIND v(sn2_s0p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p10",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p10 FIND v(sn2_s0p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p10",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p10 FIND v(sn3_s0p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p10",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p10 FIND v(sn3_s0p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p10",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p10 WHEN v(dl_s0p10)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p11",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p11 FIND v(sn0_s0p11) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p11",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p11 FIND v(sn0_s0p11) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p11",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p11 FIND v(sn0_s0p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p11",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p11 FIND v(rbl_s0p11) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p11",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p11 FIND v(rbl_s0p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p11",
+   "unit": "V",
+   "spice": ".meas tran re_s0p11 FIND v(rbl_s0p11) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p11",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p11 FIND v(sn0_s0p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p11",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p11 FIND v(sn0_s0p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p11",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p11 FIND v(sn1_s0p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p11",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p11 FIND v(sn1_s0p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p11",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p11 FIND v(sn2_s0p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p11",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p11 FIND v(sn2_s0p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p11",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p11 FIND v(sn3_s0p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p11",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p11 FIND v(sn3_s0p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p11",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p11 WHEN v(dl_s0p11)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p12",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p12 FIND v(sn0_s0p12) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p12",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p12 FIND v(sn0_s0p12) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p12",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p12 FIND v(sn0_s0p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p12",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p12 FIND v(rbl_s0p12) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p12",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p12 FIND v(rbl_s0p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p12",
+   "unit": "V",
+   "spice": ".meas tran re_s0p12 FIND v(rbl_s0p12) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p12",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p12 FIND v(sn0_s0p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p12",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p12 FIND v(sn0_s0p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p12",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p12 FIND v(sn1_s0p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p12",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p12 FIND v(sn1_s0p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p12",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p12 FIND v(sn2_s0p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p12",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p12 FIND v(sn2_s0p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p12",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p12 FIND v(sn3_s0p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p12",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p12 FIND v(sn3_s0p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p12",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p12 WHEN v(dl_s0p12)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p13",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p13 FIND v(sn0_s0p13) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p13",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p13 FIND v(sn0_s0p13) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p13",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p13 FIND v(sn0_s0p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p13",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p13 FIND v(rbl_s0p13) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p13",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p13 FIND v(rbl_s0p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p13",
+   "unit": "V",
+   "spice": ".meas tran re_s0p13 FIND v(rbl_s0p13) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p13",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p13 FIND v(sn0_s0p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p13",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p13 FIND v(sn0_s0p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p13",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p13 FIND v(sn1_s0p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p13",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p13 FIND v(sn1_s0p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p13",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p13 FIND v(sn2_s0p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p13",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p13 FIND v(sn2_s0p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p13",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p13 FIND v(sn3_s0p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p13",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p13 FIND v(sn3_s0p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p13",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p13 WHEN v(dl_s0p13)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p14",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p14 FIND v(sn0_s0p14) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p14",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p14 FIND v(sn0_s0p14) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p14",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p14 FIND v(sn0_s0p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p14",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p14 FIND v(rbl_s0p14) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p14",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p14 FIND v(rbl_s0p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p14",
+   "unit": "V",
+   "spice": ".meas tran re_s0p14 FIND v(rbl_s0p14) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p14",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p14 FIND v(sn0_s0p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p14",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p14 FIND v(sn0_s0p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p14",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p14 FIND v(sn1_s0p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p14",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p14 FIND v(sn1_s0p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p14",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p14 FIND v(sn2_s0p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p14",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p14 FIND v(sn2_s0p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p14",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p14 FIND v(sn3_s0p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p14",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p14 FIND v(sn3_s0p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p14",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p14 WHEN v(dl_s0p14)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s0p15",
+   "unit": "V",
+   "spice": ".meas tran wo_s0p15 FIND v(sn0_s0p15) AT=2.100000000e-08"
+  },
+  {
+   "name": "aw_s0p15",
+   "unit": "V",
+   "spice": ".meas tran aw_s0p15 FIND v(sn0_s0p15) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s0p15",
+   "unit": "V",
+   "spice": ".meas tran ss_s0p15 FIND v(sn0_s0p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s0p15",
+   "unit": "V",
+   "spice": ".meas tran rf_s0p15 FIND v(rbl_s0p15) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s0p15",
+   "unit": "V",
+   "spice": ".meas tran rs_s0p15 FIND v(rbl_s0p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s0p15",
+   "unit": "V",
+   "spice": ".meas tran re_s0p15 FIND v(rbl_s0p15) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s0p15",
+   "unit": "V",
+   "spice": ".meas tran pr0_s0p15 FIND v(sn0_s0p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s0p15",
+   "unit": "V",
+   "spice": ".meas tran en0_s0p15 FIND v(sn0_s0p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s0p15",
+   "unit": "V",
+   "spice": ".meas tran pr1_s0p15 FIND v(sn1_s0p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s0p15",
+   "unit": "V",
+   "spice": ".meas tran en1_s0p15 FIND v(sn1_s0p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s0p15",
+   "unit": "V",
+   "spice": ".meas tran pr2_s0p15 FIND v(sn2_s0p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s0p15",
+   "unit": "V",
+   "spice": ".meas tran en2_s0p15 FIND v(sn2_s0p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s0p15",
+   "unit": "V",
+   "spice": ".meas tran pr3_s0p15 FIND v(sn3_s0p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s0p15",
+   "unit": "V",
+   "spice": ".meas tran en3_s0p15 FIND v(sn3_s0p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s0p15",
+   "unit": "s",
+   "spice": ".meas tran lat_s0p15 WHEN v(dl_s0p15)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p00",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p00 FIND v(sn1_s1p00) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p00",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p00 FIND v(sn1_s1p00) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p00",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p00 FIND v(sn1_s1p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p00",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p00 FIND v(rbl_s1p00) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p00",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p00 FIND v(rbl_s1p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p00",
+   "unit": "V",
+   "spice": ".meas tran re_s1p00 FIND v(rbl_s1p00) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p00",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p00 FIND v(sn0_s1p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p00",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p00 FIND v(sn0_s1p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p00",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p00 FIND v(sn1_s1p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p00",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p00 FIND v(sn1_s1p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p00",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p00 FIND v(sn2_s1p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p00",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p00 FIND v(sn2_s1p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p00",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p00 FIND v(sn3_s1p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p00",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p00 FIND v(sn3_s1p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p00",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p00 WHEN v(dl_s1p00)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p01",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p01 FIND v(sn1_s1p01) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p01",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p01 FIND v(sn1_s1p01) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p01",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p01 FIND v(sn1_s1p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p01",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p01 FIND v(rbl_s1p01) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p01",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p01 FIND v(rbl_s1p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p01",
+   "unit": "V",
+   "spice": ".meas tran re_s1p01 FIND v(rbl_s1p01) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p01",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p01 FIND v(sn0_s1p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p01",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p01 FIND v(sn0_s1p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p01",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p01 FIND v(sn1_s1p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p01",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p01 FIND v(sn1_s1p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p01",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p01 FIND v(sn2_s1p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p01",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p01 FIND v(sn2_s1p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p01",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p01 FIND v(sn3_s1p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p01",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p01 FIND v(sn3_s1p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p01",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p01 WHEN v(dl_s1p01)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p02",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p02 FIND v(sn1_s1p02) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p02",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p02 FIND v(sn1_s1p02) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p02",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p02 FIND v(sn1_s1p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p02",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p02 FIND v(rbl_s1p02) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p02",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p02 FIND v(rbl_s1p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p02",
+   "unit": "V",
+   "spice": ".meas tran re_s1p02 FIND v(rbl_s1p02) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p02",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p02 FIND v(sn0_s1p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p02",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p02 FIND v(sn0_s1p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p02",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p02 FIND v(sn1_s1p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p02",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p02 FIND v(sn1_s1p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p02",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p02 FIND v(sn2_s1p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p02",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p02 FIND v(sn2_s1p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p02",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p02 FIND v(sn3_s1p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p02",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p02 FIND v(sn3_s1p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p02",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p02 WHEN v(dl_s1p02)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p03",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p03 FIND v(sn1_s1p03) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p03",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p03 FIND v(sn1_s1p03) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p03",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p03 FIND v(sn1_s1p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p03",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p03 FIND v(rbl_s1p03) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p03",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p03 FIND v(rbl_s1p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p03",
+   "unit": "V",
+   "spice": ".meas tran re_s1p03 FIND v(rbl_s1p03) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p03",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p03 FIND v(sn0_s1p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p03",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p03 FIND v(sn0_s1p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p03",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p03 FIND v(sn1_s1p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p03",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p03 FIND v(sn1_s1p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p03",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p03 FIND v(sn2_s1p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p03",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p03 FIND v(sn2_s1p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p03",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p03 FIND v(sn3_s1p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p03",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p03 FIND v(sn3_s1p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p03",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p03 WHEN v(dl_s1p03)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p04",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p04 FIND v(sn1_s1p04) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p04",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p04 FIND v(sn1_s1p04) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p04",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p04 FIND v(sn1_s1p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p04",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p04 FIND v(rbl_s1p04) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p04",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p04 FIND v(rbl_s1p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p04",
+   "unit": "V",
+   "spice": ".meas tran re_s1p04 FIND v(rbl_s1p04) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p04",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p04 FIND v(sn0_s1p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p04",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p04 FIND v(sn0_s1p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p04",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p04 FIND v(sn1_s1p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p04",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p04 FIND v(sn1_s1p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p04",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p04 FIND v(sn2_s1p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p04",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p04 FIND v(sn2_s1p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p04",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p04 FIND v(sn3_s1p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p04",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p04 FIND v(sn3_s1p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p04",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p04 WHEN v(dl_s1p04)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p05",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p05 FIND v(sn1_s1p05) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p05",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p05 FIND v(sn1_s1p05) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p05",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p05 FIND v(sn1_s1p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p05",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p05 FIND v(rbl_s1p05) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p05",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p05 FIND v(rbl_s1p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p05",
+   "unit": "V",
+   "spice": ".meas tran re_s1p05 FIND v(rbl_s1p05) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p05",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p05 FIND v(sn0_s1p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p05",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p05 FIND v(sn0_s1p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p05",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p05 FIND v(sn1_s1p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p05",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p05 FIND v(sn1_s1p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p05",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p05 FIND v(sn2_s1p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p05",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p05 FIND v(sn2_s1p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p05",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p05 FIND v(sn3_s1p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p05",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p05 FIND v(sn3_s1p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p05",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p05 WHEN v(dl_s1p05)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p06",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p06 FIND v(sn1_s1p06) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p06",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p06 FIND v(sn1_s1p06) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p06",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p06 FIND v(sn1_s1p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p06",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p06 FIND v(rbl_s1p06) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p06",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p06 FIND v(rbl_s1p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p06",
+   "unit": "V",
+   "spice": ".meas tran re_s1p06 FIND v(rbl_s1p06) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p06",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p06 FIND v(sn0_s1p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p06",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p06 FIND v(sn0_s1p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p06",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p06 FIND v(sn1_s1p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p06",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p06 FIND v(sn1_s1p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p06",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p06 FIND v(sn2_s1p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p06",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p06 FIND v(sn2_s1p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p06",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p06 FIND v(sn3_s1p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p06",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p06 FIND v(sn3_s1p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p06",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p06 WHEN v(dl_s1p06)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p07",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p07 FIND v(sn1_s1p07) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p07",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p07 FIND v(sn1_s1p07) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p07",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p07 FIND v(sn1_s1p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p07",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p07 FIND v(rbl_s1p07) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p07",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p07 FIND v(rbl_s1p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p07",
+   "unit": "V",
+   "spice": ".meas tran re_s1p07 FIND v(rbl_s1p07) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p07",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p07 FIND v(sn0_s1p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p07",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p07 FIND v(sn0_s1p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p07",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p07 FIND v(sn1_s1p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p07",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p07 FIND v(sn1_s1p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p07",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p07 FIND v(sn2_s1p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p07",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p07 FIND v(sn2_s1p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p07",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p07 FIND v(sn3_s1p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p07",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p07 FIND v(sn3_s1p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p07",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p07 WHEN v(dl_s1p07)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p08",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p08 FIND v(sn1_s1p08) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p08",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p08 FIND v(sn1_s1p08) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p08",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p08 FIND v(sn1_s1p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p08",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p08 FIND v(rbl_s1p08) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p08",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p08 FIND v(rbl_s1p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p08",
+   "unit": "V",
+   "spice": ".meas tran re_s1p08 FIND v(rbl_s1p08) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p08",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p08 FIND v(sn0_s1p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p08",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p08 FIND v(sn0_s1p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p08",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p08 FIND v(sn1_s1p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p08",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p08 FIND v(sn1_s1p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p08",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p08 FIND v(sn2_s1p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p08",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p08 FIND v(sn2_s1p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p08",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p08 FIND v(sn3_s1p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p08",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p08 FIND v(sn3_s1p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p08",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p08 WHEN v(dl_s1p08)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p09",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p09 FIND v(sn1_s1p09) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p09",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p09 FIND v(sn1_s1p09) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p09",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p09 FIND v(sn1_s1p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p09",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p09 FIND v(rbl_s1p09) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p09",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p09 FIND v(rbl_s1p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p09",
+   "unit": "V",
+   "spice": ".meas tran re_s1p09 FIND v(rbl_s1p09) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p09",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p09 FIND v(sn0_s1p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p09",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p09 FIND v(sn0_s1p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p09",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p09 FIND v(sn1_s1p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p09",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p09 FIND v(sn1_s1p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p09",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p09 FIND v(sn2_s1p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p09",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p09 FIND v(sn2_s1p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p09",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p09 FIND v(sn3_s1p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p09",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p09 FIND v(sn3_s1p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p09",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p09 WHEN v(dl_s1p09)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p10",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p10 FIND v(sn1_s1p10) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p10",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p10 FIND v(sn1_s1p10) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p10",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p10 FIND v(sn1_s1p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p10",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p10 FIND v(rbl_s1p10) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p10",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p10 FIND v(rbl_s1p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p10",
+   "unit": "V",
+   "spice": ".meas tran re_s1p10 FIND v(rbl_s1p10) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p10",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p10 FIND v(sn0_s1p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p10",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p10 FIND v(sn0_s1p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p10",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p10 FIND v(sn1_s1p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p10",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p10 FIND v(sn1_s1p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p10",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p10 FIND v(sn2_s1p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p10",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p10 FIND v(sn2_s1p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p10",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p10 FIND v(sn3_s1p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p10",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p10 FIND v(sn3_s1p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p10",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p10 WHEN v(dl_s1p10)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p11",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p11 FIND v(sn1_s1p11) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p11",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p11 FIND v(sn1_s1p11) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p11",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p11 FIND v(sn1_s1p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p11",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p11 FIND v(rbl_s1p11) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p11",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p11 FIND v(rbl_s1p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p11",
+   "unit": "V",
+   "spice": ".meas tran re_s1p11 FIND v(rbl_s1p11) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p11",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p11 FIND v(sn0_s1p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p11",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p11 FIND v(sn0_s1p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p11",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p11 FIND v(sn1_s1p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p11",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p11 FIND v(sn1_s1p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p11",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p11 FIND v(sn2_s1p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p11",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p11 FIND v(sn2_s1p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p11",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p11 FIND v(sn3_s1p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p11",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p11 FIND v(sn3_s1p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p11",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p11 WHEN v(dl_s1p11)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p12",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p12 FIND v(sn1_s1p12) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p12",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p12 FIND v(sn1_s1p12) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p12",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p12 FIND v(sn1_s1p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p12",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p12 FIND v(rbl_s1p12) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p12",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p12 FIND v(rbl_s1p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p12",
+   "unit": "V",
+   "spice": ".meas tran re_s1p12 FIND v(rbl_s1p12) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p12",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p12 FIND v(sn0_s1p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p12",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p12 FIND v(sn0_s1p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p12",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p12 FIND v(sn1_s1p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p12",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p12 FIND v(sn1_s1p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p12",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p12 FIND v(sn2_s1p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p12",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p12 FIND v(sn2_s1p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p12",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p12 FIND v(sn3_s1p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p12",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p12 FIND v(sn3_s1p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p12",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p12 WHEN v(dl_s1p12)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p13",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p13 FIND v(sn1_s1p13) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p13",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p13 FIND v(sn1_s1p13) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p13",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p13 FIND v(sn1_s1p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p13",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p13 FIND v(rbl_s1p13) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p13",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p13 FIND v(rbl_s1p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p13",
+   "unit": "V",
+   "spice": ".meas tran re_s1p13 FIND v(rbl_s1p13) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p13",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p13 FIND v(sn0_s1p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p13",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p13 FIND v(sn0_s1p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p13",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p13 FIND v(sn1_s1p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p13",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p13 FIND v(sn1_s1p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p13",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p13 FIND v(sn2_s1p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p13",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p13 FIND v(sn2_s1p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p13",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p13 FIND v(sn3_s1p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p13",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p13 FIND v(sn3_s1p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p13",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p13 WHEN v(dl_s1p13)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p14",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p14 FIND v(sn1_s1p14) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p14",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p14 FIND v(sn1_s1p14) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p14",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p14 FIND v(sn1_s1p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p14",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p14 FIND v(rbl_s1p14) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p14",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p14 FIND v(rbl_s1p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p14",
+   "unit": "V",
+   "spice": ".meas tran re_s1p14 FIND v(rbl_s1p14) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p14",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p14 FIND v(sn0_s1p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p14",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p14 FIND v(sn0_s1p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p14",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p14 FIND v(sn1_s1p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p14",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p14 FIND v(sn1_s1p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p14",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p14 FIND v(sn2_s1p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p14",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p14 FIND v(sn2_s1p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p14",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p14 FIND v(sn3_s1p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p14",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p14 FIND v(sn3_s1p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p14",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p14 WHEN v(dl_s1p14)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s1p15",
+   "unit": "V",
+   "spice": ".meas tran wo_s1p15 FIND v(sn1_s1p15) AT=4.600000000e-08"
+  },
+  {
+   "name": "aw_s1p15",
+   "unit": "V",
+   "spice": ".meas tran aw_s1p15 FIND v(sn1_s1p15) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s1p15",
+   "unit": "V",
+   "spice": ".meas tran ss_s1p15 FIND v(sn1_s1p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s1p15",
+   "unit": "V",
+   "spice": ".meas tran rf_s1p15 FIND v(rbl_s1p15) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s1p15",
+   "unit": "V",
+   "spice": ".meas tran rs_s1p15 FIND v(rbl_s1p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s1p15",
+   "unit": "V",
+   "spice": ".meas tran re_s1p15 FIND v(rbl_s1p15) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s1p15",
+   "unit": "V",
+   "spice": ".meas tran pr0_s1p15 FIND v(sn0_s1p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s1p15",
+   "unit": "V",
+   "spice": ".meas tran en0_s1p15 FIND v(sn0_s1p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s1p15",
+   "unit": "V",
+   "spice": ".meas tran pr1_s1p15 FIND v(sn1_s1p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s1p15",
+   "unit": "V",
+   "spice": ".meas tran en1_s1p15 FIND v(sn1_s1p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s1p15",
+   "unit": "V",
+   "spice": ".meas tran pr2_s1p15 FIND v(sn2_s1p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s1p15",
+   "unit": "V",
+   "spice": ".meas tran en2_s1p15 FIND v(sn2_s1p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s1p15",
+   "unit": "V",
+   "spice": ".meas tran pr3_s1p15 FIND v(sn3_s1p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s1p15",
+   "unit": "V",
+   "spice": ".meas tran en3_s1p15 FIND v(sn3_s1p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s1p15",
+   "unit": "s",
+   "spice": ".meas tran lat_s1p15 WHEN v(dl_s1p15)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p00",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p00 FIND v(sn2_s2p00) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p00",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p00 FIND v(sn2_s2p00) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p00",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p00 FIND v(sn2_s2p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p00",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p00 FIND v(rbl_s2p00) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p00",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p00 FIND v(rbl_s2p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p00",
+   "unit": "V",
+   "spice": ".meas tran re_s2p00 FIND v(rbl_s2p00) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p00",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p00 FIND v(sn0_s2p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p00",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p00 FIND v(sn0_s2p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p00",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p00 FIND v(sn1_s2p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p00",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p00 FIND v(sn1_s2p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p00",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p00 FIND v(sn2_s2p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p00",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p00 FIND v(sn2_s2p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p00",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p00 FIND v(sn3_s2p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p00",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p00 FIND v(sn3_s2p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p00",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p00 WHEN v(dl_s2p00)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p01",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p01 FIND v(sn2_s2p01) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p01",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p01 FIND v(sn2_s2p01) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p01",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p01 FIND v(sn2_s2p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p01",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p01 FIND v(rbl_s2p01) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p01",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p01 FIND v(rbl_s2p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p01",
+   "unit": "V",
+   "spice": ".meas tran re_s2p01 FIND v(rbl_s2p01) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p01",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p01 FIND v(sn0_s2p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p01",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p01 FIND v(sn0_s2p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p01",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p01 FIND v(sn1_s2p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p01",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p01 FIND v(sn1_s2p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p01",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p01 FIND v(sn2_s2p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p01",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p01 FIND v(sn2_s2p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p01",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p01 FIND v(sn3_s2p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p01",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p01 FIND v(sn3_s2p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p01",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p01 WHEN v(dl_s2p01)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p02",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p02 FIND v(sn2_s2p02) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p02",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p02 FIND v(sn2_s2p02) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p02",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p02 FIND v(sn2_s2p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p02",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p02 FIND v(rbl_s2p02) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p02",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p02 FIND v(rbl_s2p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p02",
+   "unit": "V",
+   "spice": ".meas tran re_s2p02 FIND v(rbl_s2p02) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p02",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p02 FIND v(sn0_s2p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p02",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p02 FIND v(sn0_s2p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p02",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p02 FIND v(sn1_s2p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p02",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p02 FIND v(sn1_s2p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p02",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p02 FIND v(sn2_s2p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p02",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p02 FIND v(sn2_s2p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p02",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p02 FIND v(sn3_s2p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p02",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p02 FIND v(sn3_s2p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p02",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p02 WHEN v(dl_s2p02)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p03",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p03 FIND v(sn2_s2p03) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p03",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p03 FIND v(sn2_s2p03) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p03",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p03 FIND v(sn2_s2p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p03",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p03 FIND v(rbl_s2p03) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p03",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p03 FIND v(rbl_s2p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p03",
+   "unit": "V",
+   "spice": ".meas tran re_s2p03 FIND v(rbl_s2p03) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p03",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p03 FIND v(sn0_s2p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p03",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p03 FIND v(sn0_s2p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p03",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p03 FIND v(sn1_s2p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p03",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p03 FIND v(sn1_s2p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p03",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p03 FIND v(sn2_s2p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p03",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p03 FIND v(sn2_s2p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p03",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p03 FIND v(sn3_s2p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p03",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p03 FIND v(sn3_s2p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p03",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p03 WHEN v(dl_s2p03)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p04",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p04 FIND v(sn2_s2p04) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p04",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p04 FIND v(sn2_s2p04) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p04",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p04 FIND v(sn2_s2p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p04",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p04 FIND v(rbl_s2p04) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p04",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p04 FIND v(rbl_s2p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p04",
+   "unit": "V",
+   "spice": ".meas tran re_s2p04 FIND v(rbl_s2p04) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p04",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p04 FIND v(sn0_s2p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p04",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p04 FIND v(sn0_s2p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p04",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p04 FIND v(sn1_s2p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p04",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p04 FIND v(sn1_s2p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p04",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p04 FIND v(sn2_s2p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p04",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p04 FIND v(sn2_s2p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p04",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p04 FIND v(sn3_s2p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p04",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p04 FIND v(sn3_s2p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p04",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p04 WHEN v(dl_s2p04)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p05",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p05 FIND v(sn2_s2p05) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p05",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p05 FIND v(sn2_s2p05) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p05",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p05 FIND v(sn2_s2p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p05",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p05 FIND v(rbl_s2p05) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p05",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p05 FIND v(rbl_s2p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p05",
+   "unit": "V",
+   "spice": ".meas tran re_s2p05 FIND v(rbl_s2p05) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p05",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p05 FIND v(sn0_s2p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p05",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p05 FIND v(sn0_s2p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p05",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p05 FIND v(sn1_s2p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p05",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p05 FIND v(sn1_s2p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p05",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p05 FIND v(sn2_s2p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p05",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p05 FIND v(sn2_s2p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p05",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p05 FIND v(sn3_s2p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p05",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p05 FIND v(sn3_s2p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p05",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p05 WHEN v(dl_s2p05)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p06",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p06 FIND v(sn2_s2p06) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p06",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p06 FIND v(sn2_s2p06) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p06",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p06 FIND v(sn2_s2p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p06",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p06 FIND v(rbl_s2p06) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p06",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p06 FIND v(rbl_s2p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p06",
+   "unit": "V",
+   "spice": ".meas tran re_s2p06 FIND v(rbl_s2p06) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p06",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p06 FIND v(sn0_s2p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p06",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p06 FIND v(sn0_s2p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p06",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p06 FIND v(sn1_s2p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p06",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p06 FIND v(sn1_s2p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p06",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p06 FIND v(sn2_s2p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p06",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p06 FIND v(sn2_s2p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p06",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p06 FIND v(sn3_s2p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p06",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p06 FIND v(sn3_s2p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p06",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p06 WHEN v(dl_s2p06)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p07",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p07 FIND v(sn2_s2p07) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p07",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p07 FIND v(sn2_s2p07) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p07",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p07 FIND v(sn2_s2p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p07",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p07 FIND v(rbl_s2p07) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p07",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p07 FIND v(rbl_s2p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p07",
+   "unit": "V",
+   "spice": ".meas tran re_s2p07 FIND v(rbl_s2p07) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p07",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p07 FIND v(sn0_s2p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p07",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p07 FIND v(sn0_s2p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p07",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p07 FIND v(sn1_s2p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p07",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p07 FIND v(sn1_s2p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p07",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p07 FIND v(sn2_s2p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p07",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p07 FIND v(sn2_s2p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p07",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p07 FIND v(sn3_s2p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p07",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p07 FIND v(sn3_s2p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p07",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p07 WHEN v(dl_s2p07)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p08",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p08 FIND v(sn2_s2p08) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p08",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p08 FIND v(sn2_s2p08) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p08",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p08 FIND v(sn2_s2p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p08",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p08 FIND v(rbl_s2p08) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p08",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p08 FIND v(rbl_s2p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p08",
+   "unit": "V",
+   "spice": ".meas tran re_s2p08 FIND v(rbl_s2p08) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p08",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p08 FIND v(sn0_s2p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p08",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p08 FIND v(sn0_s2p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p08",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p08 FIND v(sn1_s2p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p08",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p08 FIND v(sn1_s2p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p08",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p08 FIND v(sn2_s2p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p08",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p08 FIND v(sn2_s2p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p08",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p08 FIND v(sn3_s2p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p08",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p08 FIND v(sn3_s2p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p08",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p08 WHEN v(dl_s2p08)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p09",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p09 FIND v(sn2_s2p09) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p09",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p09 FIND v(sn2_s2p09) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p09",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p09 FIND v(sn2_s2p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p09",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p09 FIND v(rbl_s2p09) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p09",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p09 FIND v(rbl_s2p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p09",
+   "unit": "V",
+   "spice": ".meas tran re_s2p09 FIND v(rbl_s2p09) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p09",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p09 FIND v(sn0_s2p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p09",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p09 FIND v(sn0_s2p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p09",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p09 FIND v(sn1_s2p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p09",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p09 FIND v(sn1_s2p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p09",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p09 FIND v(sn2_s2p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p09",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p09 FIND v(sn2_s2p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p09",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p09 FIND v(sn3_s2p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p09",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p09 FIND v(sn3_s2p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p09",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p09 WHEN v(dl_s2p09)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p10",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p10 FIND v(sn2_s2p10) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p10",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p10 FIND v(sn2_s2p10) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p10",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p10 FIND v(sn2_s2p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p10",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p10 FIND v(rbl_s2p10) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p10",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p10 FIND v(rbl_s2p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p10",
+   "unit": "V",
+   "spice": ".meas tran re_s2p10 FIND v(rbl_s2p10) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p10",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p10 FIND v(sn0_s2p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p10",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p10 FIND v(sn0_s2p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p10",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p10 FIND v(sn1_s2p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p10",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p10 FIND v(sn1_s2p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p10",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p10 FIND v(sn2_s2p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p10",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p10 FIND v(sn2_s2p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p10",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p10 FIND v(sn3_s2p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p10",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p10 FIND v(sn3_s2p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p10",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p10 WHEN v(dl_s2p10)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p11",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p11 FIND v(sn2_s2p11) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p11",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p11 FIND v(sn2_s2p11) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p11",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p11 FIND v(sn2_s2p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p11",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p11 FIND v(rbl_s2p11) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p11",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p11 FIND v(rbl_s2p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p11",
+   "unit": "V",
+   "spice": ".meas tran re_s2p11 FIND v(rbl_s2p11) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p11",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p11 FIND v(sn0_s2p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p11",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p11 FIND v(sn0_s2p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p11",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p11 FIND v(sn1_s2p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p11",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p11 FIND v(sn1_s2p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p11",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p11 FIND v(sn2_s2p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p11",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p11 FIND v(sn2_s2p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p11",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p11 FIND v(sn3_s2p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p11",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p11 FIND v(sn3_s2p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p11",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p11 WHEN v(dl_s2p11)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p12",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p12 FIND v(sn2_s2p12) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p12",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p12 FIND v(sn2_s2p12) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p12",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p12 FIND v(sn2_s2p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p12",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p12 FIND v(rbl_s2p12) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p12",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p12 FIND v(rbl_s2p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p12",
+   "unit": "V",
+   "spice": ".meas tran re_s2p12 FIND v(rbl_s2p12) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p12",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p12 FIND v(sn0_s2p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p12",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p12 FIND v(sn0_s2p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p12",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p12 FIND v(sn1_s2p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p12",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p12 FIND v(sn1_s2p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p12",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p12 FIND v(sn2_s2p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p12",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p12 FIND v(sn2_s2p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p12",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p12 FIND v(sn3_s2p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p12",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p12 FIND v(sn3_s2p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p12",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p12 WHEN v(dl_s2p12)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p13",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p13 FIND v(sn2_s2p13) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p13",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p13 FIND v(sn2_s2p13) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p13",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p13 FIND v(sn2_s2p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p13",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p13 FIND v(rbl_s2p13) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p13",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p13 FIND v(rbl_s2p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p13",
+   "unit": "V",
+   "spice": ".meas tran re_s2p13 FIND v(rbl_s2p13) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p13",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p13 FIND v(sn0_s2p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p13",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p13 FIND v(sn0_s2p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p13",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p13 FIND v(sn1_s2p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p13",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p13 FIND v(sn1_s2p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p13",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p13 FIND v(sn2_s2p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p13",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p13 FIND v(sn2_s2p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p13",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p13 FIND v(sn3_s2p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p13",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p13 FIND v(sn3_s2p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p13",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p13 WHEN v(dl_s2p13)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p14",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p14 FIND v(sn2_s2p14) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p14",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p14 FIND v(sn2_s2p14) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p14",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p14 FIND v(sn2_s2p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p14",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p14 FIND v(rbl_s2p14) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p14",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p14 FIND v(rbl_s2p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p14",
+   "unit": "V",
+   "spice": ".meas tran re_s2p14 FIND v(rbl_s2p14) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p14",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p14 FIND v(sn0_s2p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p14",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p14 FIND v(sn0_s2p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p14",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p14 FIND v(sn1_s2p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p14",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p14 FIND v(sn1_s2p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p14",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p14 FIND v(sn2_s2p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p14",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p14 FIND v(sn2_s2p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p14",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p14 FIND v(sn3_s2p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p14",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p14 FIND v(sn3_s2p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p14",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p14 WHEN v(dl_s2p14)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s2p15",
+   "unit": "V",
+   "spice": ".meas tran wo_s2p15 FIND v(sn2_s2p15) AT=7.100000000e-08"
+  },
+  {
+   "name": "aw_s2p15",
+   "unit": "V",
+   "spice": ".meas tran aw_s2p15 FIND v(sn2_s2p15) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s2p15",
+   "unit": "V",
+   "spice": ".meas tran ss_s2p15 FIND v(sn2_s2p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s2p15",
+   "unit": "V",
+   "spice": ".meas tran rf_s2p15 FIND v(rbl_s2p15) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s2p15",
+   "unit": "V",
+   "spice": ".meas tran rs_s2p15 FIND v(rbl_s2p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s2p15",
+   "unit": "V",
+   "spice": ".meas tran re_s2p15 FIND v(rbl_s2p15) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s2p15",
+   "unit": "V",
+   "spice": ".meas tran pr0_s2p15 FIND v(sn0_s2p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s2p15",
+   "unit": "V",
+   "spice": ".meas tran en0_s2p15 FIND v(sn0_s2p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s2p15",
+   "unit": "V",
+   "spice": ".meas tran pr1_s2p15 FIND v(sn1_s2p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s2p15",
+   "unit": "V",
+   "spice": ".meas tran en1_s2p15 FIND v(sn1_s2p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s2p15",
+   "unit": "V",
+   "spice": ".meas tran pr2_s2p15 FIND v(sn2_s2p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s2p15",
+   "unit": "V",
+   "spice": ".meas tran en2_s2p15 FIND v(sn2_s2p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s2p15",
+   "unit": "V",
+   "spice": ".meas tran pr3_s2p15 FIND v(sn3_s2p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s2p15",
+   "unit": "V",
+   "spice": ".meas tran en3_s2p15 FIND v(sn3_s2p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s2p15",
+   "unit": "s",
+   "spice": ".meas tran lat_s2p15 WHEN v(dl_s2p15)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p00",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p00 FIND v(sn3_s3p00) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p00",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p00 FIND v(sn3_s3p00) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p00",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p00 FIND v(sn3_s3p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p00",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p00 FIND v(rbl_s3p00) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p00",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p00 FIND v(rbl_s3p00) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p00",
+   "unit": "V",
+   "spice": ".meas tran re_s3p00 FIND v(rbl_s3p00) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p00",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p00 FIND v(sn0_s3p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p00",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p00 FIND v(sn0_s3p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p00",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p00 FIND v(sn1_s3p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p00",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p00 FIND v(sn1_s3p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p00",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p00 FIND v(sn2_s3p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p00",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p00 FIND v(sn2_s3p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p00",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p00 FIND v(sn3_s3p00) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p00",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p00 FIND v(sn3_s3p00) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p00",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p00 WHEN v(dl_s3p00)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p01",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p01 FIND v(sn3_s3p01) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p01",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p01 FIND v(sn3_s3p01) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p01",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p01 FIND v(sn3_s3p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p01",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p01 FIND v(rbl_s3p01) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p01",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p01 FIND v(rbl_s3p01) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p01",
+   "unit": "V",
+   "spice": ".meas tran re_s3p01 FIND v(rbl_s3p01) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p01",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p01 FIND v(sn0_s3p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p01",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p01 FIND v(sn0_s3p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p01",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p01 FIND v(sn1_s3p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p01",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p01 FIND v(sn1_s3p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p01",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p01 FIND v(sn2_s3p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p01",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p01 FIND v(sn2_s3p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p01",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p01 FIND v(sn3_s3p01) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p01",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p01 FIND v(sn3_s3p01) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p01",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p01 WHEN v(dl_s3p01)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p02",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p02 FIND v(sn3_s3p02) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p02",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p02 FIND v(sn3_s3p02) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p02",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p02 FIND v(sn3_s3p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p02",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p02 FIND v(rbl_s3p02) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p02",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p02 FIND v(rbl_s3p02) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p02",
+   "unit": "V",
+   "spice": ".meas tran re_s3p02 FIND v(rbl_s3p02) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p02",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p02 FIND v(sn0_s3p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p02",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p02 FIND v(sn0_s3p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p02",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p02 FIND v(sn1_s3p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p02",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p02 FIND v(sn1_s3p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p02",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p02 FIND v(sn2_s3p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p02",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p02 FIND v(sn2_s3p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p02",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p02 FIND v(sn3_s3p02) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p02",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p02 FIND v(sn3_s3p02) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p02",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p02 WHEN v(dl_s3p02)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p03",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p03 FIND v(sn3_s3p03) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p03",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p03 FIND v(sn3_s3p03) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p03",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p03 FIND v(sn3_s3p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p03",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p03 FIND v(rbl_s3p03) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p03",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p03 FIND v(rbl_s3p03) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p03",
+   "unit": "V",
+   "spice": ".meas tran re_s3p03 FIND v(rbl_s3p03) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p03",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p03 FIND v(sn0_s3p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p03",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p03 FIND v(sn0_s3p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p03",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p03 FIND v(sn1_s3p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p03",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p03 FIND v(sn1_s3p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p03",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p03 FIND v(sn2_s3p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p03",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p03 FIND v(sn2_s3p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p03",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p03 FIND v(sn3_s3p03) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p03",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p03 FIND v(sn3_s3p03) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p03",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p03 WHEN v(dl_s3p03)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p04",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p04 FIND v(sn3_s3p04) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p04",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p04 FIND v(sn3_s3p04) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p04",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p04 FIND v(sn3_s3p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p04",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p04 FIND v(rbl_s3p04) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p04",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p04 FIND v(rbl_s3p04) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p04",
+   "unit": "V",
+   "spice": ".meas tran re_s3p04 FIND v(rbl_s3p04) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p04",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p04 FIND v(sn0_s3p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p04",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p04 FIND v(sn0_s3p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p04",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p04 FIND v(sn1_s3p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p04",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p04 FIND v(sn1_s3p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p04",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p04 FIND v(sn2_s3p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p04",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p04 FIND v(sn2_s3p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p04",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p04 FIND v(sn3_s3p04) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p04",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p04 FIND v(sn3_s3p04) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p04",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p04 WHEN v(dl_s3p04)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p05",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p05 FIND v(sn3_s3p05) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p05",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p05 FIND v(sn3_s3p05) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p05",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p05 FIND v(sn3_s3p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p05",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p05 FIND v(rbl_s3p05) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p05",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p05 FIND v(rbl_s3p05) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p05",
+   "unit": "V",
+   "spice": ".meas tran re_s3p05 FIND v(rbl_s3p05) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p05",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p05 FIND v(sn0_s3p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p05",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p05 FIND v(sn0_s3p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p05",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p05 FIND v(sn1_s3p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p05",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p05 FIND v(sn1_s3p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p05",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p05 FIND v(sn2_s3p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p05",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p05 FIND v(sn2_s3p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p05",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p05 FIND v(sn3_s3p05) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p05",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p05 FIND v(sn3_s3p05) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p05",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p05 WHEN v(dl_s3p05)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p06",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p06 FIND v(sn3_s3p06) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p06",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p06 FIND v(sn3_s3p06) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p06",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p06 FIND v(sn3_s3p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p06",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p06 FIND v(rbl_s3p06) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p06",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p06 FIND v(rbl_s3p06) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p06",
+   "unit": "V",
+   "spice": ".meas tran re_s3p06 FIND v(rbl_s3p06) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p06",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p06 FIND v(sn0_s3p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p06",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p06 FIND v(sn0_s3p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p06",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p06 FIND v(sn1_s3p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p06",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p06 FIND v(sn1_s3p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p06",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p06 FIND v(sn2_s3p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p06",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p06 FIND v(sn2_s3p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p06",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p06 FIND v(sn3_s3p06) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p06",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p06 FIND v(sn3_s3p06) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p06",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p06 WHEN v(dl_s3p06)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p07",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p07 FIND v(sn3_s3p07) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p07",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p07 FIND v(sn3_s3p07) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p07",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p07 FIND v(sn3_s3p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p07",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p07 FIND v(rbl_s3p07) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p07",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p07 FIND v(rbl_s3p07) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p07",
+   "unit": "V",
+   "spice": ".meas tran re_s3p07 FIND v(rbl_s3p07) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p07",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p07 FIND v(sn0_s3p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p07",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p07 FIND v(sn0_s3p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p07",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p07 FIND v(sn1_s3p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p07",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p07 FIND v(sn1_s3p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p07",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p07 FIND v(sn2_s3p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p07",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p07 FIND v(sn2_s3p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p07",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p07 FIND v(sn3_s3p07) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p07",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p07 FIND v(sn3_s3p07) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p07",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p07 WHEN v(dl_s3p07)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p08",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p08 FIND v(sn3_s3p08) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p08",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p08 FIND v(sn3_s3p08) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p08",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p08 FIND v(sn3_s3p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p08",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p08 FIND v(rbl_s3p08) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p08",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p08 FIND v(rbl_s3p08) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p08",
+   "unit": "V",
+   "spice": ".meas tran re_s3p08 FIND v(rbl_s3p08) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p08",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p08 FIND v(sn0_s3p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p08",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p08 FIND v(sn0_s3p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p08",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p08 FIND v(sn1_s3p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p08",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p08 FIND v(sn1_s3p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p08",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p08 FIND v(sn2_s3p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p08",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p08 FIND v(sn2_s3p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p08",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p08 FIND v(sn3_s3p08) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p08",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p08 FIND v(sn3_s3p08) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p08",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p08 WHEN v(dl_s3p08)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p09",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p09 FIND v(sn3_s3p09) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p09",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p09 FIND v(sn3_s3p09) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p09",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p09 FIND v(sn3_s3p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p09",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p09 FIND v(rbl_s3p09) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p09",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p09 FIND v(rbl_s3p09) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p09",
+   "unit": "V",
+   "spice": ".meas tran re_s3p09 FIND v(rbl_s3p09) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p09",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p09 FIND v(sn0_s3p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p09",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p09 FIND v(sn0_s3p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p09",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p09 FIND v(sn1_s3p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p09",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p09 FIND v(sn1_s3p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p09",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p09 FIND v(sn2_s3p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p09",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p09 FIND v(sn2_s3p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p09",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p09 FIND v(sn3_s3p09) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p09",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p09 FIND v(sn3_s3p09) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p09",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p09 WHEN v(dl_s3p09)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p10",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p10 FIND v(sn3_s3p10) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p10",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p10 FIND v(sn3_s3p10) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p10",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p10 FIND v(sn3_s3p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p10",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p10 FIND v(rbl_s3p10) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p10",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p10 FIND v(rbl_s3p10) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p10",
+   "unit": "V",
+   "spice": ".meas tran re_s3p10 FIND v(rbl_s3p10) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p10",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p10 FIND v(sn0_s3p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p10",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p10 FIND v(sn0_s3p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p10",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p10 FIND v(sn1_s3p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p10",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p10 FIND v(sn1_s3p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p10",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p10 FIND v(sn2_s3p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p10",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p10 FIND v(sn2_s3p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p10",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p10 FIND v(sn3_s3p10) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p10",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p10 FIND v(sn3_s3p10) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p10",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p10 WHEN v(dl_s3p10)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p11",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p11 FIND v(sn3_s3p11) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p11",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p11 FIND v(sn3_s3p11) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p11",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p11 FIND v(sn3_s3p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p11",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p11 FIND v(rbl_s3p11) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p11",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p11 FIND v(rbl_s3p11) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p11",
+   "unit": "V",
+   "spice": ".meas tran re_s3p11 FIND v(rbl_s3p11) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p11",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p11 FIND v(sn0_s3p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p11",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p11 FIND v(sn0_s3p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p11",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p11 FIND v(sn1_s3p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p11",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p11 FIND v(sn1_s3p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p11",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p11 FIND v(sn2_s3p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p11",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p11 FIND v(sn2_s3p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p11",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p11 FIND v(sn3_s3p11) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p11",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p11 FIND v(sn3_s3p11) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p11",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p11 WHEN v(dl_s3p11)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p12",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p12 FIND v(sn3_s3p12) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p12",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p12 FIND v(sn3_s3p12) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p12",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p12 FIND v(sn3_s3p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p12",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p12 FIND v(rbl_s3p12) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p12",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p12 FIND v(rbl_s3p12) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p12",
+   "unit": "V",
+   "spice": ".meas tran re_s3p12 FIND v(rbl_s3p12) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p12",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p12 FIND v(sn0_s3p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p12",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p12 FIND v(sn0_s3p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p12",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p12 FIND v(sn1_s3p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p12",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p12 FIND v(sn1_s3p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p12",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p12 FIND v(sn2_s3p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p12",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p12 FIND v(sn2_s3p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p12",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p12 FIND v(sn3_s3p12) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p12",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p12 FIND v(sn3_s3p12) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p12",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p12 WHEN v(dl_s3p12)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p13",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p13 FIND v(sn3_s3p13) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p13",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p13 FIND v(sn3_s3p13) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p13",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p13 FIND v(sn3_s3p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p13",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p13 FIND v(rbl_s3p13) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p13",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p13 FIND v(rbl_s3p13) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p13",
+   "unit": "V",
+   "spice": ".meas tran re_s3p13 FIND v(rbl_s3p13) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p13",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p13 FIND v(sn0_s3p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p13",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p13 FIND v(sn0_s3p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p13",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p13 FIND v(sn1_s3p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p13",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p13 FIND v(sn1_s3p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p13",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p13 FIND v(sn2_s3p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p13",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p13 FIND v(sn2_s3p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p13",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p13 FIND v(sn3_s3p13) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p13",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p13 FIND v(sn3_s3p13) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p13",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p13 WHEN v(dl_s3p13)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p14",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p14 FIND v(sn3_s3p14) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p14",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p14 FIND v(sn3_s3p14) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p14",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p14 FIND v(sn3_s3p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p14",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p14 FIND v(rbl_s3p14) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p14",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p14 FIND v(rbl_s3p14) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p14",
+   "unit": "V",
+   "spice": ".meas tran re_s3p14 FIND v(rbl_s3p14) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p14",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p14 FIND v(sn0_s3p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p14",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p14 FIND v(sn0_s3p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p14",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p14 FIND v(sn1_s3p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p14",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p14 FIND v(sn1_s3p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p14",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p14 FIND v(sn2_s3p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p14",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p14 FIND v(sn2_s3p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p14",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p14 FIND v(sn3_s3p14) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p14",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p14 FIND v(sn3_s3p14) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p14",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p14 WHEN v(dl_s3p14)=0 FALL=1 TD=1.100000000e-07"
+  },
+  {
+   "name": "wo_s3p15",
+   "unit": "V",
+   "spice": ".meas tran wo_s3p15 FIND v(sn3_s3p15) AT=9.600000000e-08"
+  },
+  {
+   "name": "aw_s3p15",
+   "unit": "V",
+   "spice": ".meas tran aw_s3p15 FIND v(sn3_s3p15) AT=9.950000000e-08"
+  },
+  {
+   "name": "ss_s3p15",
+   "unit": "V",
+   "spice": ".meas tran ss_s3p15 FIND v(sn3_s3p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "rf_s3p15",
+   "unit": "V",
+   "spice": ".meas tran rf_s3p15 FIND v(rbl_s3p15) AT=1.098000000e-07"
+  },
+  {
+   "name": "rs_s3p15",
+   "unit": "V",
+   "spice": ".meas tran rs_s3p15 FIND v(rbl_s3p15) AT=1.200000000e-07"
+  },
+  {
+   "name": "re_s3p15",
+   "unit": "V",
+   "spice": ".meas tran re_s3p15 FIND v(rbl_s3p15) AT=1.295000000e-07"
+  },
+  {
+   "name": "pr0_s3p15",
+   "unit": "V",
+   "spice": ".meas tran pr0_s3p15 FIND v(sn0_s3p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en0_s3p15",
+   "unit": "V",
+   "spice": ".meas tran en0_s3p15 FIND v(sn0_s3p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr1_s3p15",
+   "unit": "V",
+   "spice": ".meas tran pr1_s3p15 FIND v(sn1_s3p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en1_s3p15",
+   "unit": "V",
+   "spice": ".meas tran en1_s3p15 FIND v(sn1_s3p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr2_s3p15",
+   "unit": "V",
+   "spice": ".meas tran pr2_s3p15 FIND v(sn2_s3p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en2_s3p15",
+   "unit": "V",
+   "spice": ".meas tran en2_s3p15 FIND v(sn2_s3p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "pr3_s3p15",
+   "unit": "V",
+   "spice": ".meas tran pr3_s3p15 FIND v(sn3_s3p15) AT=1.075000000e-07"
+  },
+  {
+   "name": "en3_s3p15",
+   "unit": "V",
+   "spice": ".meas tran en3_s3p15 FIND v(sn3_s3p15) AT=1.345000000e-07"
+  },
+  {
+   "name": "lat_s3p15",
+   "unit": "s",
+   "spice": ".meas tran lat_s3p15 WHEN v(dl_s3p15)=0 FALL=1 TD=1.100000000e-07"
+  }
+ ],
+ "options": {
+  "timeout_s": 900,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}

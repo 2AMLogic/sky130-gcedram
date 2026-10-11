@@ -155,6 +155,20 @@ def summarize_corner(corner: dict, writes: dict) -> tuple[list[dict], dict]:
     return rows, res
 
 
+def report_variant(rep: dict) -> str | None:
+    """Issue #88 variant id from the report's netlist path (None = the default deck)."""
+    net = rep.get("netlist") or {}
+    name = Path(net.get("path", "") if isinstance(net, dict) else str(net)).name
+    if name in ("", G.NETLIST_PATH.name):
+        return None
+    if not (name.startswith("sense_stage_") and name.endswith(".spice")):
+        raise ValueError(f"unrecognised sense-stage netlist {name!r}")
+    vid = name[len("sense_stage_"):-len(".spice")]
+    if vid not in G.variants():
+        raise ValueError(f"unknown sense-stage variant {vid!r}")
+    return vid
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("report", type=Path, help="results/klt_report_<RUN_ID>.json")
@@ -181,6 +195,8 @@ def main(argv: list[str] | None = None) -> int:
         w.writeheader()
         w.writerows(rows)
     remote = rep["environment"].get("remote", {})
+    variant = report_variant(rep)
+    c_rbl_f = G.C_RBL_F if variant is None else G.variants()[variant]["c_rbl_f"]
     summary = dict(
         run_id=run_id,
         status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
@@ -190,12 +206,22 @@ def main(argv: list[str] | None = None) -> int:
         netlist_sha256=rep["environment"].get("netlist_sha256"),
         models_lib_sha256=rep["environment"].get("models_lib_sha256"),
         engine_version=rep["environment"].get("engine_version"),
-        assumptions=dict(t_window_s=T_WINDOW_S, resolve_v=RESOLVE_V, c_rbl_f=G.C_RBL_F, vrbl_v=G.VRBL_V,
+        assumptions=dict(t_window_s=T_WINDOW_S, resolve_v=RESOLVE_V, c_rbl_f=c_rbl_f, vrbl_v=G.VRBL_V,
                          dvref_v=G.DVREF_V, t_en_after_select_s=G.T_EN_S - G.T_READ_S, n_rows=G.N_ROWS),
         claims=dict(mismatch_or_offset_yield_validated=False, supply_tolerance_studied=False,
                     extracted_c_rbl=False, spec_changed=False),
         corners=corners,
     )
+    if variant is not None:  # issue #88; the default (issue #60) summary keeps its exact shape
+        v = G.variants()[variant]
+        summary["variant"] = dict(
+            id=variant, c_rbl_label=v["c_rbl_label"], cell_card=v["card"],
+            reference_dummy_load="same C_RBL as rbl (ideal matched dummy load)",
+            c_rbl_source=dict(file="layout/gain_cell_2t_array.parasitics.summary.json",
+                              key=".".join(G.C_RBL_KEY), value_ff=G.extracted_c_rbl_ff()),
+            n_rows_ratified=False)
+        summary["claims"]["extracted_c_rbl"] = v["c_rbl_label"].startswith("EXTRACTED-4-ROW")
+        summary["claims"]["n_rows_ratified"] = False
     sum_json.write_text(json.dumps(summary, indent=1) + "\n")
     print(f"wrote {pts_csv.name} and {sum_json.name}")
     return 0

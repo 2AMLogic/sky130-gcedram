@@ -197,3 +197,100 @@ No offset or yield result; no Monte Carlo; no supply other than 1.8 V; no
 temperature outside {27, 125} C; no extracted `C_RBL`; no layout of the
 stage; no sense-time vs enable-time sweep; no power. Nothing here ratifies
 the proposed range or any sense-amplifier specification.
+
+## Issue #88: re-run with the extracted 4-row `C_RBL` (append-only, 2026-10-11)
+
+New evidence only. The sections above and their results files are
+unchanged. The loaded-column half of the issue, and the full description of
+the `C_RBL` value, are in
+[`../loaded-column/extracted-crbl/README.md`](../loaded-column/extracted-crbl/README.md).
+
+**`C_RBL` source.**
+
+| Item | Value |
+|---|---|
+| File | [`layout/gain_cell_2t_array.parasitics.summary.json`](../../layout/gain_cell_2t_array.parasitics.summary.json) |
+| Key | `comparison.c_rbl.extracted_4row_worst_total_ff` |
+| Value | **0.859179 fF** (worst `rbl_<c>`: 0.581168 fF ground + 0.278011 fF coupling) |
+| Extracted netlist | `layout/gain_cell_2t_array.extract.parasitics.spice`, sha256 `dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33` |
+| Label | **EXTRACTED-4-ROW**. The 4-row column stays a STUDY-ASSUMPTION; `N_rows` is **not ratified**. |
+
+**Deck changes.** The generator reads the value from the JSON key
+(`gen_sense_stage.py --variant`). Without `--variant` the generator
+output is byte-identical to the committed `sense_stage.spice` / `request.json`
+(tested). Each variant is a new deck and a new request; `request.json` was
+not edited. A variant changes only:
+
+* `.param C_RBL`. It loads both `rbl` and the **matched dummy reference
+  load** (`cref_*`), so the reference side drops to the same value. That
+  keeps the "ideal matched dummy load" assumption.
+* For the layout-card variant, the bitcell diffusion card.
+
+**Interpretation.** The extracted value is wiring only, and it replaces
+10 fF. The latch transistors are simulated explicitly, so their own input
+load is present. Any further sense-input load that the 10 fF may have
+included (isolation, muxing) is not, so 0.859 fF is the lightest-load bound.
+2 fF is an ASSUMPTION mid-point.
+
+The scope is unchanged: 27 C and 125 C only. **No -40 C sense-stage result is
+claimed.** The -40 C sensitivity is in the loaded-column re-run.
+
+| Run | Variant | `C_RBL` | Bitcell card | Fleet job | Deck sha256 |
+|---|---|---|---|---|---|
+| `20261009T131831Z` | (issue #60 baseline) | 10 fF ASSUMPTION | design | `klt-sim-8c62fc8d1019` | `4cd2834d...` |
+| `20261011T015836Z` | `crbl_ext4row` | 0.859179 fF EXTRACTED-4-ROW | design | `klt-sim-6008da1d6b94` (c7i.4xlarge, 138 s) | `64232229...` |
+| `20261011T020128Z` | `crbl_2f` | 2 fF ASSUMPTION | design | `klt-sim-d5296ed7f82b` (m6i.4xlarge, 135 s) | `098cd39b...` |
+| `20261011T020422Z` | `crbl_ext4row_layoutcard` | 0.859179 fF EXTRACTED-4-ROW | layout (`ad=as=0.1974`, `pd=ps=1.78`) | `klt-sim-9ad077c252f4` (m6i.4xlarge, 147 s) | `5f0d3f66...` |
+
+**Run details.**
+
+* Every variant ran 10/10 corners `pass` on the batch fleet as a first
+  submission, using `uvx --from "klayout-tools==0.6.0" klt sim --backend batch`.
+  No local grid was run.
+* Reports have the bucket name redacted. Each summary's `netlist_sha256`
+  equals the committed variant deck (tested).
+* **Negative control.** The `cell0_*` instances are in every deck: a '1' that
+  was never written must read '0'. They resolve as '0' at every corner and
+  every reference for all three variants.
+
+### Old vs new (summary JSONs; ranges over the 10 corners)
+
+| Quantity | 10 fF (issue #60) | **0.859 fF** | 2 fF | 0.859 fF + layout card |
+|---|---|---|---|---|
+| Stage-only `t_dec` at the 1 mV point | 0.27-0.51 ns | **0.11-0.23 ns** | 0.14-0.26 ns | 0.11-0.23 ns |
+| Stage-only `|d|` at enable, nominal 1 mV | 1.10-1.31 mV | 1.27-1.95 mV | 1.22-1.76 mV | 1.27-1.95 mV |
+| All stage-only points (+/-1..100 mV) resolve | yes | yes | yes | yes |
+| `t_dec` at `SN` = 1.0 V, 100 mV reference | 0.059-0.090 ns | **0.034-0.053 ns** | 0.037-0.059 ns | 0.033-0.053 ns |
+| Min resolvable `SN` at the 100 mV reference | 0.45-0.75 V | 0.40-0.70 V | 0.40-0.70 V | 0.40-0.70 V |
+| Droop verdict vs `VDD`/2 at 100 mV reference | violated 10/10 | violated 10/10 | violated 10/10 | violated 10/10 |
+| Best-reference droop verdict at sf/125 C | indeterminate (0.87-0.92 V) | **met** (>= 0.917 V, at 20 mV) | indeterminate | indeterminate (0.87-0.92 V, at 50 mV) |
+
+**Decision time.**
+
+* With the extracted load, `t_dec` falls by a factor of about 2.2-2.5 at every
+  corner.
+* The `|d|` seen at the enable instant drifts further from the nominal 1 mV.
+  A lighter floating `rbl` moves more in the 2 ns before enable. Every
+  stage-only point still resolves with the correct sign.
+* A random-offset budget is still missing (see `sim/sense-mismatch/`, which
+  used 10 fF; not re-run here). The 1 mV floor therefore still says nothing
+  about mismatch.
+
+**Verdicts.**
+
+* **The droop reading of the `VDD`/2 finding moves at one corner, one
+  reference.** At sf/125 C with the 20 mV reference, every swept stored-'1'
+  level down to the sweep floor (0.30 V) now resolves. The usable droop is
+  therefore >= 0.917 V. That is bounded by the sweep, not measured, and it is
+  `met` against 0.9 V, where it was indeterminate before.
+* Three things qualify that:
+  * It holds only for the bounding 0.859 fF load on the design card. With 2 fF
+    or with the layout card it stays indeterminate.
+  * The 20 mV reference was already called not credible without an offset
+    result.
+  * At the 100 mV placeholder reference every corner is still violated.
+* The earlier finding stands: `VDD`/2 is not supported by this stage as
+  built. Nothing here changes `delta_V` or any spec value. That would need a
+  decision record.
+* The stored-level reading ("a stored '1' at 0.9 V resolves") remains met
+  at every corner, reference and variant.
