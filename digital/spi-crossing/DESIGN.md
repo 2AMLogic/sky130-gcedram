@@ -38,7 +38,7 @@ cycles); it is not used.
 |---|---|---|---|---|---|---|---|
 | C1 | Config/command bundle `{sw, en, ivl[15:0]}` | SPI -> CLK | SPI until ack | Bundled data. Loaded at an accepted commit, read by CLK only after `req_tog` is seen, and **not written again until `ack_tog` matches** (mailbox free) | Bundle returns to reset values (`en=1`, `ivl`=reset default, `sw=0`) | Bundle wires settle before the CLK capture edge: path delay `<` about 2 `clk` periods minus setup relative to the launch edge (OPEN, a `set_max_delay`/skew constraint to be set at synthesis) | Protocol: exactly-once and atomic (TB T1, T1b). Structural: confirm the capture flops only enable from the synchronised toggle. Physical: bundle skew |
 | C2 | Request toggle `req_tog` | SPI -> CLK | SPI | Toggle, two-flop synchroniser in `clk` (3rd flop OPEN, see Sec. 8). Toggle (not pulse): no minimum pulse width, so the current "cs_n high and low >= 4 clk" rule is no longer needed for capture | 0 | Level held until consumed (guaranteed by C1 protocol) | Protocol: TB. Structural: single-bit sync cell. Physical: MTBF |
-| C3 | Acknowledge `ack_tog` | CLK -> SPI | CLK | Toggle, two-flop synchroniser clocked by **`sclk`**; evaluated only at the commit | 0 | Must be visible before the next commit's 16th `sclk` edge, else the next write/command is *refused*, never corrupted (Sec. 8.2) | Protocol: TB (refusals appear when `sclk` is fast). Structural/physical as C2 |
+| C3 | Acknowledge `ack_tog` | CLK -> SPI | CLK | Toggle, two-flop synchroniser clocked by **`sclk`**; evaluated only at the commit | 0 | Must be visible before the next commit's 16th `sclk` edge, else the next write/command is *refused*, never corrupted (Sec. 8.2) | Protocol: TB T5 (directed violation of the Sec. 8.2 obligation: the mailbox commit right after an accepted one is refused, ERR_BUSY set, bundle and applied configuration untouched, retry succeeds; `run_tests.sh` asserts exactly 2 mailbox refusals per run). Structural/physical as C2 |
 | C4 | Sweep-done toggle `sdone_tog` | CLK -> SPI | CLK | Toggle, two-flop synchroniser clocked by `sclk`. Toggles once per *commanded* sweep, when the sweep completes. Compared with SPI-local `sw_tog` | 0 (`sw_tog` also 0) | None beyond a stable level | Protocol: TB T2, T3, T4b, T6 |
 | C5 | Snapshot request `snap_req` | SPI -> CLK | SPI | Toggle, two-flop synchroniser in `clk` | 0 | Flipped only after the previous snapshot was acknowledged | Protocol: TB T3 |
 | C6 | Snapshot acknowledge `snap_ack` | CLK -> SPI | CLK | Toggle, two-flop synchroniser clocked by `sclk` | 0 | As C3 | Protocol: TB T3 |
@@ -59,7 +59,7 @@ and out of scope. `miso` launch (falling `sclk`) is I/O timing, not CDC.
    commit) or issue START_SWEEP, the SPI side checks *free*. If free: load
    the bundle and flip `req_tog` in the same `cs_n` edge. If not free: the
    commit is **refused**, sticky ERR_BUSY is set (name OPEN, Sec. 9 OA-1), the
-   bundle is untouched.
+   bundle is untouched (TB T5 exercises this path for IVL_H and START_SWEEP).
 3. The CLK side, on a synchronised `req_tog` change, captures the bundle in one
    cycle into its configuration register, performs the command if `sw=1`,
    and flips `ack_tog`. The bundle is stable throughout because it is only
@@ -191,11 +191,25 @@ synchroniser**. Both are inside the existing bench allowance `T_XFER = 6`.
 after which only edges 15 and 16 remain to clock the synchroniser.) The
 existing "cs_n high >= 4 clk" rule supplies 4 `Tc` of gap before the first
 `sclk` edge, which alone exceeds the `3 Tc` ack latency by one `Tc` of skew
-budget, independently of `Ts`. The 13 `Ts` term only adds margin.
-**If the obligation is
-violated, the effect is a refusal (ERR_BUSY) and a retry, never loss,
-duplication or tearing**; TB runs with a faster `sclk` show refusals while the
-exactly-once scoreboard still passes.
+budget; the 2 `Ts` still needed to synchronise the ack into the SPI domain
+are covered by the 13 `Ts` term (that is, `4 Tc >= 3 Tc + t_skew` **plus**
+`13 Ts >= 2 Ts`). The rest of the 13 `Ts` term only adds margin.
+**If the obligation is violated, the effect is a refusal (ERR_BUSY) and a
+retry, never loss, duplication or tearing.** This is tested by the directed
+TB T5, which violates the obligation on purpose (`sclk` half period 50 ps,
+`cs_n` high 0.1 ns, so the next commit lands 1.8 ns after an accepted one,
+before the CLK side can capture the request in its minimum 2 `Tc`): the
+IVL_H and START_SWEEP commits that follow an accepted CTRL commit are refused
+by the mailbox (the sweep reservation is clear at that point), ERR_BUSY is
+set, the bundle and the applied configuration are unchanged, the exactly-once
+scoreboard is clean, and the master's retry applies the intended value. The
+run script asserts exactly 2 mailbox refusals in every positive run. With the
+acknowledgement omitted (`NEG=1`) the same sequence produces `STALE/MISMATCH
+bundle` scoreboard errors (the CLK side captures a bundle other than the one
+the SPI side accepted for that toggle), which is the failure the refusal
+prevents. The model's ack latency is a fixed 3 `Tc`; a CLK side that is late
+for other reasons is not modelled separately, but reaches the commit decision
+through the same `req_tog != ack_s` comparison.
 
 ### 8.3 Sweep status latencies
 
@@ -219,9 +233,13 @@ bounds: `T_XFER` = 6 (observed <= 4), `T_SWEEP`, `T_SETTLE`, deadline slack 26
 * New: a **refused** commit adds one retry. The commit-to-applied bound
   applies to *accepted* commits. The worst-case time from the master's first
   attempt of a *shortening* write to application grows by at most one extra
-  frame period per refusal. Under the 8.2 obligations no refusal occurs on
-  back-to-back config writes (the model shows refusals only at fast `sclk`),
-  but the deadline-bearing case (shortening the interval) is a master
+  frame period per refusal. Under the 8.2 obligations no mailbox refusal
+  occurs on back-to-back config writes; in the model, mailbox refusals occur
+  only in the directed T5 test that violates the obligation. (The other
+  refusals in the summary line, at fast `sclk` only, are T2's second
+  back-to-back START_SWEEP refused by the sweep reservation of Sec. 4, not by
+  the mailbox: `refused_commits` counts both, `mailbox_refusals` only the
+  latter.) Even so, the deadline-bearing case (shortening the interval) is a master
   obligation: read STATUS for ERR_BUSY after the write and retry
   (OPEN: whether the shortened-interval deadline analysis must include this
   retry; recommended yes, one frame per retry).
@@ -282,12 +300,19 @@ Established here (Icarus protocol checks, `run_tests.sh`): exactly-once and
 atomic delivery under the stated master obligations, including paused and
 restarted `sclk` and reset cancellation; BUSY exactness (never reads 0 while a
 commanded sweep is outstanding; no flap); coherent snapshots; commit-to-applied
-<= 3 `clk` edges in the model; and that omitting the acknowledgement and
-reservation (negative control `NEG=1`) loses sweeps (completions fewer than
-accepted) and accepts a START_SWEEP while the previous one is outstanding.
-The negative control shows its effect only when frames are shorter than a
-sweep (fast `sclk`); at slow `sclk` the sweep finishes between frames and the
-unsafe variant is not caught there, which the script does not claim.
+<= 3 `clk` edges in the model; that a commit made while the mailbox is
+occupied (violated Sec. 8.2 obligation, TB T5) is refused with ERR_BUSY,
+leaves the bundle and applied configuration untouched, and succeeds on retry;
+and that omitting the acknowledgement and reservation (negative control
+`NEG=1`) breaks both mechanisms. For the **config bundle**, T5 under `NEG=1`
+yields `STALE/MISMATCH bundle` scoreboard errors at every tested `sclk`,
+including the slow 3.7 ns half period (T5 sets its own fast `sclk`), and the
+script requires such a mailbox-level error in every negative-control run. For
+the **sweep reservation**, `NEG=1` loses sweeps (completions fewer than
+accepted) and accepts a START_SWEEP while the previous one is outstanding;
+this part shows its effect only when frames are shorter than a sweep (fast
+`sclk`); at slow `sclk` the sweep finishes between frames and that part of
+the unsafe variant is not caught there, which the script does not claim.
 
 **Not established:** metastability or MTBF; physical timing; structural CDC
 cleanliness (a reviewed lint pass is required); `cs_n`-as-clock timing;

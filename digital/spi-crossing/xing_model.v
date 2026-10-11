@@ -50,8 +50,9 @@ module xing_spi #(
 
     // TB-only bookkeeping (not reset by rst_n, not hardware)
     integer     acc_cnt, acc_sw, refuse_cnt;
+    integer     refuse_mbx;            // refusals caused by an occupied mailbox (subset of refuse_cnt)
     reg [17:0]  acc_log [0:1023];
-    initial begin acc_cnt = 0; acc_sw = 0; refuse_cnt = 0; end
+    initial begin acc_cnt = 0; acc_sw = 0; refuse_cnt = 0; refuse_mbx = 0; end
 
     assign miso = cs_n ? 1'bz : tx[7];
 
@@ -108,16 +109,16 @@ module xing_spi #(
                 nen = b_en; nivl = b_ivl; nsw = 1'b0; ok = 1'b0;
                 case (rx[14:8])
                     7'h01: begin
-                        if (mfree) begin nen = rx[0]; ok = 1'b1; end else begin st_busy <= 1'b1; refuse_cnt = refuse_cnt + 1; end
+                        if (mfree) begin nen = rx[0]; ok = 1'b1; end else begin st_busy <= 1'b1; refuse_cnt = refuse_cnt + 1; refuse_mbx = refuse_mbx + 1; end
                     end
                     7'h03: sh_l <= rx[7:0];
                     7'h04: begin
-                        if (mfree) begin nivl = {rx[7:0], sh_l}; ok = 1'b1; end else begin st_busy <= 1'b1; refuse_cnt = refuse_cnt + 1; end
+                        if (mfree) begin nivl = {rx[7:0], sh_l}; ok = 1'b1; end else begin st_busy <= 1'b1; refuse_cnt = refuse_cnt + 1; refuse_mbx = refuse_mbx + 1; end
                     end
                     7'h02: begin
                         if (rx[7:0] == 8'h01) begin
                             if (mfree && sfree) begin nsw = 1'b1; ok = 1'b1; sw_tog <= ~sw_tog; acc_sw = acc_sw + 1; end
-                            else begin st_busy <= 1'b1; refuse_cnt = refuse_cnt + 1; end
+                            else begin st_busy <= 1'b1; refuse_cnt = refuse_cnt + 1; if (!mfree) refuse_mbx = refuse_mbx + 1; end
                         end else if (rx[7:0] == 8'h02) st_busy <= 1'b0;
                     end
                     default: ;

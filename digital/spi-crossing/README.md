@@ -11,13 +11,14 @@ interface.
 | [`DESIGN.md`](DESIGN.md) | The design record: crossing inventory, mailbox, reservation, snapshot, stopped-sclk and reset behaviour, compatibility table, latency derivations, open decisions, blockers |
 | [`xing_model.v`](xing_model.v) | Small behavioral protocol model (SPI side, clk side, top) with a `NOACK` negative-control switch |
 | [`tb_xing.v`](tb_xing.v) | Deterministic testbench |
-| [`run_tests.sh`](run_tests.sh) | Positive runs over sclk/clk phase relationships plus the negative control, which the script asserts must fail |
+| [`run_tests.sh`](run_tests.sh) | Positive runs over sclk/clk phase relationships (each must show the T5 mailbox refusals) plus the negative control, which the script asserts must fail, including a config-bundle scoreboard error |
 
 ## What the evidence is, and is not
 
 * **Protocol checks (here, Icarus Verilog):** exactly-once delivery, bundle
   atomicity, BUSY exactness, paused and restarted `sclk`, reset cancellation,
-  commit-to-applied latency.
+  commit-to-applied latency, and the mailbox refusal path under a violated
+  ack-latency obligation (TB T5: refused, ERR_BUSY, bundle untouched, retry).
 * **Structural CDC review (not done):** reviewed synchroniser cells, the
   single-bit-only rule on every asynchronous wire, bundle-stability paths.
 * **Physical timing / MTBF (not done):** bundle skew constraints, synchroniser
