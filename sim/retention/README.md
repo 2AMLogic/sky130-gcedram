@@ -371,7 +371,7 @@ in that respect. Changing `C_SN` alone does not fix this.
 **Missing evidence before any array estimate can be adopted:** a leakage
 sweep using the extracted geometry (`ad = as = 0.1974`, `pd = ps = 1.78`)
 over the same 15 PVT points, committed as new append-only evidence. It
-should be submitted as a `klt sim` corner request, not a hand-run grid.
+should be submitted as a `klt sim` corner request, not a hand-run grid. Tracked in #149.
 The full list is in spec Section 9.
 
 ```bash
