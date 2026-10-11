@@ -39,6 +39,11 @@ sign-off evidence, and it does not change any provisional timing value.
    its own mutation suite)
 7. `digital/sched-phase-integration/run_tests.sh` and `run_mutation.sh`
    (seconds; scheduler-to-sequencer launch/completion timing, issue #135)
+   and `run_coupled.sh` / `run_coupled_mutation.sh` (coupled budgets, issue #138)
+8. `digital/spi-sched-phase-integration/run_tests.sh` and `run_mutation.sh`
+   (real SPI transactions into the single SPI/configuration/runtime scheduler
+   driving the launch adapter and phase sequencer under saturated foreground
+   traffic, issue #146; several minutes, see its README for measured times)
 
 Every suite runs even if an earlier one fails (so all logs exist); the driver
 exits non-zero if any failed, which fails the job. Compile errors, a failing
