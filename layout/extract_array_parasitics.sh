@@ -17,7 +17,21 @@
 #      the exact generate_array.sh recipe (array_topology.py -> klt gen
 #      mos_array -> klt gen-compose), gated on unrouted_nets == [], DRC clean
 #      and LVS match, then extracted with the same flags as part 1. The
-#      scratch 4x4 must reproduce the committed 4x4's numbers.
+#      scratch 4x4 must reproduce the committed 4x4: since issue #91 its
+#      geometry/connectivity is compared with the committed array
+#      (compare_array_layout.py --generation-only) and a mismatch fails.
+#
+# Toolchains (issue #91) -- three, deliberately separate:
+#   generation  klt gen / gen-compose for the scaling builds: the SAME pin
+#               generate_array.sh uses (layout/generation-toolchain.json).
+#   check       klt drc / klt lvs gates on the scaling builds: the pinned
+#               check toolchain from the same file.
+#   extraction  klt extract --parasitics: `${KLT_EXTRACT:-klt}`, NOT the
+#               generation pin (that revision predates extraction features
+#               used here). The committed extraction records which klt it
+#               used (provenance.klt_version); see layout/README.md.
+# Both pinned toolchains and the PDK are verified before anything is
+# written; see layout/generation_toolchain.py for setup.
 #
 # Both parts are reduced by array_parasitics.py into
 # layout/gain_cell_2t_array.parasitics.summary.json (per-net table, the
@@ -28,6 +42,9 @@
 # Usage (from anywhere; paths are resolved against the repo root):
 #   source design/env.sh
 #   ./layout/extract_array_parasitics.sh
+#   ./layout/extract_array_parasitics.sh --out-dir DIR
+#       write the part-1 extraction and the summary to DIR instead of
+#       layout/ (verification without touching committed evidence)
 #
 # Freshness of the committed extraction can be checked without re-running:
 #   klt extract --check layout/gain_cell_2t_array.extract.parasitics.json   (from the repo root)
@@ -39,14 +56,37 @@ LAYOUT_DIR="${REPO_ROOT}/layout"
 DESIGN_SPICE="${REPO_ROOT}/design/gain_cell_2t.spice"
 N_COLS=4
 SCALING_ROWS=(2 4 8)
+KLT_EXTRACT="${KLT_EXTRACT:-klt}"
 
-if ! command -v klt >/dev/null 2>&1; then
-  echo "FAIL: klt (klayout-tools) not found on PATH -- see layout/README.md" >&2
+DEST_DIR="${LAYOUT_DIR}"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --out-dir)
+      [[ $# -ge 2 ]] || { echo "FAIL: --out-dir needs a directory" >&2; exit 64; }
+      mkdir -p "$2"; DEST_DIR="$(cd "$2" && pwd)"; shift ;;
+    *) echo "FAIL: unknown argument '$1' (usage: extract_array_parasitics.sh [--out-dir DIR])" >&2; exit 64 ;;
+  esac
+  shift
+done
+
+# ---- Preflight: nothing below this block writes before it has passed. ----
+if [[ -z "${PDK_ROOT:-}" || -z "${PDK:-}" ]]; then
+  echo "FAIL: PDK_ROOT/PDK not set -- run 'source design/env.sh' first. No artifacts were written." >&2
   exit 1
 fi
-if [[ -z "${PDK_ROOT:-}" || -z "${PDK:-}" ]]; then
-  echo "FAIL: PDK_ROOT/PDK not set -- run 'source design/env.sh' first" >&2
+if ! command -v "${KLT_EXTRACT}" >/dev/null 2>&1; then
+  echo "FAIL: extraction klt '${KLT_EXTRACT}' not found (set KLT_EXTRACT or put klt on PATH) -- see layout/README.md. No artifacts were written." >&2
   exit 1
+fi
+if ! PREFLIGHT="$(python3 -I "${LAYOUT_DIR}/generation_toolchain.py" preflight --role generation --role check --pdk)"; then
+  exit 2
+fi
+eval "${PREFLIGHT}"  # KLT_GENERATION, KLT_CHECK
+echo "== toolchains: generation=$("${KLT_GENERATION}" --version)  check=$("${KLT_CHECK}" --version)  extraction=$("${KLT_EXTRACT}" --version) =="
+if [[ "${DEST_DIR}" == "${LAYOUT_DIR}" ]]; then
+  OUT_PREFIX="layout"
+else
+  OUT_PREFIX="${DEST_DIR}"
 fi
 
 # Every signal net of an R x C array, as repeated --critical-net flags.
@@ -69,13 +109,13 @@ echo "== 1/3: klt extract --parasitics on the committed 4x4 array =="
 mapfile -t CRIT_4 < <(critical_net_flags 4 "${N_COLS}")
 (
   cd "${REPO_ROOT}"
-  klt extract layout/gain_cell_2t_array.gds --deck sky130 \
+  "${KLT_EXTRACT}" extract layout/gain_cell_2t_array.gds --deck sky130 \
     --top gain_cell_2t_array_4x4_layout_0 --parasitics "${CRIT_4[@]}" \
-    -o layout/gain_cell_2t_array.extract.parasitics.spice --format json \
-    > layout/gain_cell_2t_array.extract.parasitics.json
+    -o "${OUT_PREFIX}/gain_cell_2t_array.extract.parasitics.spice" --format json \
+    > "${DEST_DIR}/gain_cell_2t_array.extract.parasitics.json"
 )
 STATUS="$(python3 -c "import json,sys;print(json.load(open(sys.argv[1]))['status'])" \
-  "${LAYOUT_DIR}/gain_cell_2t_array.extract.parasitics.json")"
+  "${DEST_DIR}/gain_cell_2t_array.extract.parasitics.json")"
 echo "   extract status: ${STATUS}"
 if [[ "${STATUS}" != "extracted" ]]; then
   echo "FAIL: klt extract reports '${STATUS}', expected 'extracted'." >&2
@@ -96,16 +136,16 @@ for R in "${SCALING_ROWS[@]}"; do
   cp "${LAYOUT_DIR}/array_topology.py" "${D}/"
   (
     cd "${D}"
-    klt gen mos_array \
+    "${KLT_GENERATION}" gen mos_array \
       --params "$(python3 array_topology.py --rows "${R}" --cols "${N_COLS}" --emit gen-params)" \
       --pdk "${PDK}" --pdk-root "${PDK_ROOT}" \
       --cell-name gain_cell_2t_array_mos -o gain_cell_2t_array_mos.gds --format json \
       > gain_cell_2t_array_mos.json
     python3 array_topology.py --rows "${R}" --cols "${N_COLS}" --emit compose-request \
       --mos-report gain_cell_2t_array_mos.json > gain_cell_2t_array.layout.request.json
-    klt gen-compose gain_cell_2t_array.layout.request.json --format json \
+    "${KLT_GENERATION}" gen-compose gain_cell_2t_array.layout.request.json --format json \
       > gain_cell_2t_array.layout.json
-    klt drc gain_cell_2t_array.gds --deck sky130 --format json > drc.json
+    "${KLT_CHECK}" drc gain_cell_2t_array.gds --deck sky130 --format json > drc.json
     python3 array_topology.py --rows "${R}" --cols "${N_COLS}" --emit lvs-reference \
       --source-spice "${DESIGN_SPICE}" --source-hash "${SCH_SPICE_HASH}" \
       > gain_cell_2t_array.lvs_reference.spice
@@ -114,9 +154,9 @@ for R in "${SCALING_ROWS[@]}"; do
       --top-cell "gain_cell_2t_array_${TAG}_layout_0" \
       --reference-path gain_cell_2t_array.lvs_reference.spice \
       > lvs.request.json
-    klt lvs lvs.request.json --format json > lvs.json || true
+    "${KLT_CHECK}" lvs lvs.request.json --format json > lvs.json || true
     mapfile -t CRIT < <(critical_net_flags "${R}" "${N_COLS}")
-    klt extract gain_cell_2t_array.gds --deck sky130 \
+    "${KLT_EXTRACT}" extract gain_cell_2t_array.gds --deck sky130 \
       --top "gain_cell_2t_array_${TAG}_layout_0" --parasitics "${CRIT[@]}" \
       -o extract.parasitics.spice --format json > extract.parasitics.json
   )
@@ -133,13 +173,21 @@ json.dump({"unrouted_nets": unrouted, "drc_status": drc, "lvs_status": lvs},
 if unrouted or drc != "clean" or lvs != "match" or ext != "extracted":
     sys.exit(f"FAIL: {tag} scaling array did not pass its gates")
 PY
+  if [[ "${TAG}" == "4x${N_COLS}" ]]; then
+    echo "   ${TAG}: geometry/connectivity vs the committed array (generation pin check)"
+    if ! python3 -I "${LAYOUT_DIR}/compare_array_layout.py" --generation-only \
+         --committed "${LAYOUT_DIR}" --regenerated "${D}" -o "${D}/baseline_comparison.json"; then
+      echo "FAIL: the scratch ${TAG} does not reproduce the committed array -- the scaling set would not be built with the committed geometry." >&2
+      exit 1
+    fi
+  fi
   SCALING_ARGS+=(--scaling "${R}:${D}/extract.parasitics.json:${D}/gates.json")
 done
 
-echo "== 3/3: reduce to layout/gain_cell_2t_array.parasitics.summary.json =="
+echo "== 3/3: reduce to ${OUT_PREFIX}/gain_cell_2t_array.parasitics.summary.json =="
 python3 "${LAYOUT_DIR}/array_parasitics.py" \
-  --committed "${LAYOUT_DIR}/gain_cell_2t_array.extract.parasitics.json" \
+  --committed "${DEST_DIR}/gain_cell_2t_array.extract.parasitics.json" \
   --single-cell "${LAYOUT_DIR}/gain_cell_2t.extract.parasitics.json" \
   "${SCALING_ARGS[@]}" \
-  -o "${LAYOUT_DIR}/gain_cell_2t_array.parasitics.summary.json"
+  -o "${DEST_DIR}/gain_cell_2t_array.parasitics.summary.json"
 echo "OK: array parasitic extraction + summary written."

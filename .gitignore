@@ -16,6 +16,8 @@ design/build/
 flow/build/
 # local klt install, created by the setup script
 .venv/
+# pinned layout-generation/check klt venvs (layout/generation_toolchain.py install)
+.toolchains/
 # >>> loom-managed (do not edit) >>>
 # Loom runtime state (don't commit these)
 .loom-in-use
