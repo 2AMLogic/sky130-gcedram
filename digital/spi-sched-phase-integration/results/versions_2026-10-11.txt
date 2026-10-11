@@ -1,0 +1,6 @@
+NAME="Ubuntu"
+Python 3.12.3
+Icarus Verilog version 13.0 (stable) (v13_0)
+Icarus Verilog runtime version 13.0 (stable) (v13_0)
+fb02960b9f85db3b186a380f69336ca52c9dd497
+run: serial (no -j) on a shared host
