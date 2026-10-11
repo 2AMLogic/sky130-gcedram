@@ -59,6 +59,21 @@ leakage is not captured by this testbench. This is a limitation of the
 shipped PDK model, not a testbench defect -- it is documented here rather
 than silently absorbed into the "total leakage" claim.
 
+**Diffusion-geometry qualification (issue #89 trace, added after the
+fact; the recorded results are unchanged).** The `xdut` card passes only
+`l` and `w`, with no `ad`/`as`/`pd`/`ps`. The shipped wrapper subcircuit
+therefore uses its defaults, `ad = as = pd = ps = 0`. So the junction
+diode above is evaluated with **zero drawn drain/source area and
+perimeter**, and only the gate-edge sidewall term (which scales with W)
+remains. The layout draws `AD = AS = 0.1974 µm²` and `PD = PS = 1.78 µm`;
+the schematic uses 0.1218 µm² and 1.42 µm. A leakage sweep with matched
+geometry has not been committed. Until one is, treat the recorded
+`ileak_a` as likely understating the drawn device's junction leakage. See
+[`../retention/README.md`](../retention/README.md) "Leakage-device geometry
+trace" and
+[`spec/retention-refresh-budget.md`](../../spec/retention-refresh-budget.md)
+Section 9.
+
 ## Corner sweep
 
 **Process corners**: `tt`, `ss`, `ff`, `sf`, `fs` -- the five MOS process

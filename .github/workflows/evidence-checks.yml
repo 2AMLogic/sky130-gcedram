@@ -66,6 +66,9 @@ jobs:
       - name: Append-only guard fixture tests
         run: python3 -I sim/test_append_only.py
 
+      - name: Array-context C_SN comparison (issue #89) checks
+        run: python3 -I sim/retention/test_compare_array_c_sn.py
+
   append-only:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

@@ -668,6 +668,17 @@ for `spec/`. Both numbers are wiring-only, like the bitline numbers above.
 The `M_WR` drain junction and the `M_RD` gate are evaluated by the device
 models, and the AD/PD mismatch noted above applies to them too.
 
+**Follow-up (issue #89).** A reproducible all-node reduction and a
+capacitance-only retention comparison now exist:
+[`sim/retention/compare_array_c_sn.py`](../sim/retention/compare_array_c_sn.py)
+and its committed snapshot under `sim/retention/results/`. The limiting
+node is `sn_3_3`, at 0.782x the single-cell value. The trace also found
+that the leakage testbench passes no `AD/AS/PD/PS`, so the leakage used
+neither the schematic nor the extracted geometry. The proposed (not
+ratified) decision on which inputs an array retention study should use is
+[`spec/retention-refresh-budget.md`](../spec/retention-refresh-budget.md)
+Section 9.
+
 ### klayout-tools friction (issue #80)
 
 Giving every signal net lateral coupling took 32 repeated `--critical-net`
