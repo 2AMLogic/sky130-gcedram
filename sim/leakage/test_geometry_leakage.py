@@ -27,14 +27,21 @@ def dev(name, g, s, d, params=None, cls="nfet"):
             "params": copy.deepcopy(P if params is None else params)}
 
 
+def committed_report():
+    return json.loads(sorted(RES.glob("klt_report_*.json"))[-1].read_text())
+
+
 def synth_report(mut=None):
     corners = []
     for p in G.PROCESS_CORNERS:
         for t in G.TEMPS_C:
             corners.append({"process": p, "temperature_c": t, "status": "pass", "measurements": [
-                {"name": G.MEAS_EXT, "value": 2e-11, "status": "pass"},
-                {"name": G.MEAS_LEG, "value": 1e-11, "status": "pass"}]})
-    rep = {"status": "pass", "failed": 0, "errored": 0, "corners": corners, "environment": {}}
+                {"name": G.MEAS_EXT, "value": 2e-11, "unit": "A", "status": "pass"},
+                {"name": G.MEAS_LEG, "value": 1e-11, "unit": "A", "status": "pass"}]})
+    ident = committed_report()
+    rep = {"status": "pass", "failed": 0, "errored": 0, "corners": corners,
+           "environment": {"netlist_sha256": ident["environment"]["netlist_sha256"]},
+           "provenance": copy.deepcopy(ident["provenance"])}
     if mut:
         mut(rep)
     return rep
@@ -134,6 +141,33 @@ class Analysis(unittest.TestCase):
         for m in (drop, dup, failed, badstatus, nan, none, zero, missing, extra):
             with self.assertRaises(A.AnalysisError, msg=m.__name__):
                 A.extract_points(synth_report(m))
+
+    def test_identity_and_units_rejected(self):
+        def deck(r): r["environment"]["netlist_sha256"] = "0" * 64
+        def deck_gone(r): del r["environment"]["netlist_sha256"]
+        def input_hash(r): r["provenance"]["input"]["content_hash"] = "sha256:" + "0" * 64
+        def pdk_ver(r): r["provenance"]["pdk"]["version"] = "open_pdks WRONG_PIN"
+        def pdk_name(r): r["provenance"]["pdk"]["name"] = "sky130B"
+        def no_prov(r): del r["provenance"]
+        def milli(r):
+            for c in r["corners"]:
+                for m in c["measurements"]: m["unit"] = "mA"
+        def no_unit(r): del r["corners"][4]["measurements"][0]["unit"]
+        for m in (deck, deck_gone, input_hash, pdk_ver, pdk_name, no_prov, milli, no_unit):
+            with self.assertRaises(A.AnalysisError, msg=m.__name__):
+                A.extract_points(synth_report(m))
+
+    def test_stale_deck_rejected(self):
+        g = dict(G.load_geometry()["geometry"], w_um=0.84)
+        with self.assertRaisesRegex(A.AnalysisError, "stale"):
+            A.check_deck_matches_geometry(g)
+        A.check_deck_matches_geometry(G.load_geometry()["geometry"])
+
+    def test_committed_report_passes_identity(self):
+        for p in RES.glob("klt_report_*.json"):
+            rep = json.loads(p.read_text())
+            if rep.get("status") == "pass":
+                A.check_identity(rep)
 
     def test_baseline_ambiguity_and_selection(self):
         extra = [dict(legacy_rows()[0], timestamp_utc="T1", ileak_a="3.0e-11")]

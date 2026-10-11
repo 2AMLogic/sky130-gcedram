@@ -44,9 +44,36 @@ def _finite_pos(x, what):
     return float(x)
 
 
-def extract_points(report: dict, request: dict | None = None) -> dict:
+def _bare_hash(h) -> str:
+    return h.split(":", 1)[1] if isinstance(h, str) and h.startswith("sha256:") else h
+
+
+def check_identity(report: dict, deck_path: Path | None = None) -> None:
+    """Bind the report to the generated deck and the pinned PDK before any number is attributed."""
+    deck_sha = _bare_hash(G.sha256_file(deck_path or G.DECK_PATH))
+    env = report.get("environment") or {}
+    prov = report.get("provenance") or {}
+    if env.get("netlist_sha256") != deck_sha:
+        raise AnalysisError(f"report netlist_sha256 {env.get('netlist_sha256')!r} != generated deck {deck_sha}")
+    in_hash = _bare_hash((prov.get("input") or {}).get("content_hash"))
+    if in_hash != deck_sha:
+        raise AnalysisError(f"report provenance.input.content_hash {in_hash!r} != generated deck {deck_sha}")
+    pdk = prov.get("pdk") or {}
+    want = f"open_pdks {G_pin()}"
+    if pdk.get("name") != "sky130A" or pdk.get("version") != want:
+        raise AnalysisError(f"PDK provenance {pdk.get('name')!r}/{pdk.get('version')!r} != sky130A/{want!r}")
+
+
+def check_deck_matches_geometry(geometry: dict, deck_path: Path | None = None) -> None:
+    """The deck the report was bound to must be the rendering of the geometry we are about to publish."""
+    if Path(deck_path or G.DECK_PATH).read_text() != G.render_deck(geometry):
+        raise AnalysisError("generated deck does not match the extraction geometry (stale deck?)")
+
+
+def extract_points(report: dict, request: dict | None = None, deck_path: Path | None = None) -> dict:
     """{(corner, temp_c): (i_ext, i_leg)} -- exactly the request's Cartesian product."""
     request = request or G.build_request()
+    check_identity(report, deck_path)
     if report.get("status") != "pass" or report.get("errored") or report.get("failed"):
         raise AnalysisError(f"report not successful: status={report.get('status')!r} "
                             f"failed={report.get('failed')} errored={report.get('errored')}")
@@ -64,6 +91,8 @@ def extract_points(report: dict, request: dict | None = None) -> dict:
                 raise AnalysisError(f"corner {key}: duplicate measurement {e['name']}")
             if e.get("status") != "pass":
                 raise AnalysisError(f"corner {key}: measurement {e['name']} status {e.get('status')!r}")
+            if e.get("unit") != "A":
+                raise AnalysisError(f"corner {key}: measurement {e['name']} unit {e.get('unit')!r}, need 'A'")
             m[e["name"]] = e.get("value")
         for n in (G.MEAS_EXT, G.MEAS_LEG):
             if n not in m:
@@ -173,6 +202,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         points = extract_points(rep)
         info = G.load_geometry()
+        check_deck_matches_geometry(info["geometry"])
         rows = build_rows(points, load_legacy(), info["geometry"], a.baseline_timestamp)
     except (AnalysisError, G.GeometryError) as e:
         print(f"error: {e}", file=sys.stderr)

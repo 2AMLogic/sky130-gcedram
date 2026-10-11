@@ -222,7 +222,7 @@ unchanged baselines, and nothing ratified (spec Sections 5/7) changes.
   the extracted run; the sign and size were not investigated and are reported as
   measured (the junction contribution is negligible there, so it is a second-order
   model effect, not leakage physics claimed here).
-* The same-batch control reproduces the historical CSV to <= 2e-6 relative error at
+* The same-batch control reproduces the historical CSV to <= 2.3e-6 relative error at
   all 15 points (`control_vs_historical` in the CSV), so the historical ngspice-47
   vs. this ngspice-46 batch run is not a measurable confound; the ratio against the
   CSV and against the control agree.
