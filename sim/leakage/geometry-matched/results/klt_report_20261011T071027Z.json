@@ -1,0 +1,986 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/leakage/geometry-matched/access_leakage_geom.spice",
+    "scope": "repo"
+  },
+  "status": "error",
+  "corner_count": 15,
+  "passed": 0,
+  "failed": 0,
+  "errored": 15,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {
+      "batch_job_failed": 15
+    },
+    "by_severity": {
+      "error": 15
+    },
+    "corners_with_diagnostics": 15
+  },
+  "metrics": {
+    "sim__corner__count": 15,
+    "sim__corner__passed_count": 0,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 15,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": null,
+    "ngspice_binary": "/home/ubuntu/.local/bin/ngspice",
+    "models_lib": {
+      "path": null,
+      "scope": "external"
+    },
+    "models_lib_sha256": "48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+    "netlist_sha256": "bde905d88cbcb5242cf14de55cb7217dcd6b700954a11dd32662c8e0f76f2ddf",
+    "netlist_closure": [
+      {
+        "path": "sim/leakage/geometry-matched/access_leakage_geom.spice",
+        "scope": "repo",
+        "sha256": "bde905d88cbcb5242cf14de55cb7217dcd6b700954a11dd32662c8e0f76f2ddf"
+      }
+    ],
+    "remote": {
+      "provider": "aws-batch-fleet",
+      "job_id": "klt-sim-7885478aebe0",
+      "bucket": "2am-batch-jobs-221082181346",
+      "region": "us-east-1",
+      "instance_id": "i-046180a602edfed87",
+      "instance_type": "c7i.4xlarge",
+      "availability_zone": "us-east-1b",
+      "ami_id": "ami-0e40e3245f1923ac8",
+      "lifecycle": "spot",
+      "spot": true,
+      "state": "failed",
+      "exit_code": "87",
+      "concurrency": "1",
+      "physical_cores": "8",
+      "elapsed_seconds": 5,
+      "runner_klt_version": "0.5.0",
+      "client_klt_version": "0.7.0+g0301a1404ce8",
+      "runner_compatibility": "mismatch",
+      "runner_compatibility_warning": "the fleet runner ran klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8; request options the runner does not know may have been ignored -- update the runner image or use a compatible client"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 15,
+    "measurements_declared": 2,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [],
+    "skipped": [
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_ext_a\"]/observation",
+        "reason": "unavailable_measurement"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_leg_a\"]/observation",
+        "reason": "unavailable_measurement"
+      }
+    ],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_ext_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": true,
+    "nothing_checked_reasons": [
+      "characterization_without_limits",
+      "unavailable_measurement"
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.7.0+g0301a1404ce8",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "search root: ~/.volare",
+      "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "deck": {
+      "name": "sky130.lib.spice",
+      "content_hash": "sha256:48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:bde905d88cbcb5242cf14de55cb7217dcd6b700954a11dd32662c8e0f76f2ddf",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "ileak_ext_a",
+      "unit": "A",
+      "limits": null,
+      "status": "error",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": null,
+        "margin": null
+      }
+    },
+    {
+      "name": "ileak_leg_a",
+      "unit": "A",
+      "limits": null,
+      "status": "error",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": null,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "tt/novdd/-40C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "tt/novdd/27C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "tt/novdd/125C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/-40C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/27C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/125C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/-40C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/27C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/125C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/-40C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/27C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/125C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/-40C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/27C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/125C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "error",
+      "runtime_s": 0.0,
+      "measurements": [
+        {
+          "name": "ileak_ext_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": null,
+          "unit": "A",
+          "status": "error",
+          "margin": null
+        }
+      ],
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "batch_job_failed",
+          "message": "batch job klt-sim-7885478aebe0 finished 'failed' (job command exited 87): the job's klt reported: the fleet runner runs klt 0.5.0 but the submitting client is 0.7.0+g0301a1404ce8 -- the request was not run (update the runner image or use a compatible client)",
+          "runner_code": "batch_runner_version_mismatch",
+          "runner_klt_version": "0.5.0",
+          "client_klt_version": "0.7.0+g0301a1404ce8"
+        }
+      ],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}

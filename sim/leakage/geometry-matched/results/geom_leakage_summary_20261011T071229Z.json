@@ -1,0 +1,112 @@
+{
+  "issue": 149,
+  "comparison_label": "extracted drawn diffusion vs LEGACY TESTBENCH geometry (no ad/as/pd/ps)",
+  "n_points": 15,
+  "geometry": {
+    "l_um": 0.15,
+    "w_um": 0.42,
+    "ad_um2": 0.1974,
+    "as_um2": 0.1974,
+    "pd_um": 1.78,
+    "ps_um": 1.78
+  },
+  "geometry_units": {
+    "l,w,pd,ps": "um",
+    "ad,as": "um^2"
+  },
+  "extraction_input": {
+    "input_path": "layout/gain_cell_2t_array.extract.parasitics.json",
+    "input_sha256": "sha256:ea8fc16347c6537ed4a05200b11e773c07193baed4369466568492cf96198973",
+    "device_names": [
+      "$1",
+      "$11",
+      "$13",
+      "$15",
+      "$17",
+      "$19",
+      "$21",
+      "$23",
+      "$25",
+      "$27",
+      "$29",
+      "$3",
+      "$31",
+      "$5",
+      "$7",
+      "$9"
+    ]
+  },
+  "worst_case_extracted": {
+    "corner": "sf",
+    "temp_c": 125,
+    "i_extracted_a": 1.0924e-10,
+    "i_historical_legacy_geom_a": 9.89888e-11,
+    "ratio_vs_control": 1.103559,
+    "ratio_vs_historical": 1.103559
+  },
+  "max_ratio_vs_control": {
+    "corner": "ss",
+    "temp_c": 125,
+    "ratio": 5.554287
+  },
+  "min_ratio_vs_control": {
+    "corner": "tt",
+    "temp_c": -40,
+    "ratio": 0.994475
+  },
+  "engine_confound": {
+    "report_engine": "ngspice",
+    "report_engine_version": "46",
+    "historical_ngspice": [
+      "** ngspice-47 : Circuit level simulation program"
+    ],
+    "note": "ratio_vs_control isolates geometry (same batch, same engine/PDK); ratio_vs_historical additionally includes any engine-version difference"
+  },
+  "pdk_open_pdks_commit": "c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+  "batch": {
+    "provider": "aws-batch-fleet",
+    "job_id": "klt-sim-75726efdccab",
+    "bucket": "2am-batch-jobs-221082181346",
+    "region": "us-east-1",
+    "instance_id": "i-0af436be1fab25e8b",
+    "instance_type": "c7i.4xlarge",
+    "availability_zone": "us-east-1c",
+    "ami_id": "ami-0e40e3245f1923ac8",
+    "lifecycle": "spot",
+    "spot": true,
+    "state": "done",
+    "exit_code": "0",
+    "concurrency": "1",
+    "physical_cores": "8",
+    "elapsed_seconds": 101
+  },
+  "models_lib_sha256": "48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+  "netlist_sha256_reported": "cbb18456bf618f88b7baf0dbcffc3153d67063d0bfac8bb2732422966c9b57fd",
+  "klt_provenance": {
+    "klt_version": "0.6.0",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    },
+    "deck": {
+      "name": "sky130.lib.spice",
+      "content_hash": "sha256:48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:cbb18456bf618f88b7baf0dbcffc3153d67063d0bfac8bb2732422966c9b57fd",
+      "role": "netlist"
+    }
+  },
+  "files": {
+    "deck_sha256": "sha256:cbb18456bf618f88b7baf0dbcffc3153d67063d0bfac8bb2732422966c9b57fd",
+    "request_sha256": "sha256:3fb01615eea542d5ebefabaa8084fd5d50993996b8ae1e501466325f82df7a73",
+    "report": "sim/leakage/geometry-matched/results/klt_report_20261011T071229Z.json",
+    "report_sha256": "sha256:ce2c217b8bf04e1a1dbefc7f55464b772f9f8d52de8bf5878efb1f6c9475d9b9",
+    "points_csv": "sim/leakage/geometry-matched/results/geom_leakage_points_20261011T071229Z.csv",
+    "legacy_csv": "sim/leakage/results/leakage_results.csv",
+    "legacy_csv_sha256": "sha256:3de1ebf4e6db4111de66d1003c7ea0179bd7eebcc018a36434ee1631eb0321e1"
+  }
+}
