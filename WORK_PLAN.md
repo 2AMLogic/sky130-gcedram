@@ -10,6 +10,7 @@ Judge-approved PRs stuck under a `loom:operator` merge-risk hold — implementat
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
 
 ## Operator Priority
 
@@ -27,7 +28,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#149**: Geometry-matched access-device leakage: re-measure with extracted AD/AS/PD/PS (testbench passes none)
+_None._
 
 ## PRs Awaiting Review
 
@@ -42,6 +43,7 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
 
 ## Proposed
 
@@ -68,12 +70,12 @@ Issues carrying `loom:curated`.
 
 | Tier | Count |
 |------|-------|
-| Operator merge-risk holds | 3 |
+| Operator merge-risk holds | 4 |
 | Operator priority | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 3 |
+| Approved PRs awaiting merge | 4 |
 | Curated | 6 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
