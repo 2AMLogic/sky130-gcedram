@@ -19,7 +19,7 @@ Stdlib Python plus `git` only; no PDK, ngspice or klt.
 file or editing the inventory in the same PR cannot remove its protection):
 
 1. every tracked file under `sim/` with a directory component named
-   `results` -- currently `sim/*/results/` and
+   `results` -- currently `sim/*/results/` (including `sim/sense-stage/results/`) and
    `sim/loaded-column/cold-corner/results/` (CSV results plus the two
    `summary_*.json` files);
 2. any path listed in
@@ -55,10 +55,13 @@ never reported as a pass.
 
 **No bypass.** There is no label, commit marker, flag or environment
 variable that skips the check. To correct a finding, leave the existing
-evidence committed as-is and add a **new** evidence file with a correction
-record citing the original (correction-record policy: issue #68). CI runs
-the checker as committed on the base branch when it exists there, so a PR
-cannot weaken the check that judges it.
+evidence committed as-is and add a **new** evidence file plus a correction
+record citing the original (see [Correcting recorded evidence](#correcting-recorded-evidence-issue-68)).
+CI runs the checker as committed on the base branch when it exists there, so
+changing `sim/check_append_only.py` in a PR does not change the check applied
+to that PR. Edits to `.github/workflows/evidence-checks.yml` itself still
+require review: the workflow runs from the PR's own merge ref under the
+`pull_request` event.
 
 Invocation (exactly what CI runs, from the repository root, with full
 history fetched):
@@ -67,6 +70,119 @@ history fetched):
 python3 -I sim/check_append_only.py --base <BASE_SHA> --head <HEAD_SHA>
 python3 -I sim/test_append_only.py   # temporary-Git-repo regression fixtures
 ```
+
+## Correcting recorded evidence (issue #68)
+
+This is the **sole** correction mechanism. It adds files; it never edits
+history. The guard above ([#67](#append-only-evidence-guard-issue-67))
+stays in force and has no bypass, so a correction that touches the original
+fails CI by design.
+
+**Rules**
+
+1. Never rewrite, truncate, delete, rename or move the original artifact.
+   It stays at its path with its bytes unchanged, so the incorrect finding
+   remains inspectable.
+2. Add a **new** evidence artifact (the corrected results, under a
+   `results/` directory, at a new path) and a **new** correction write-up
+   (`CORRECTION-<NNNN>-<slug>.md`, next to the original's `README.md`) in the
+   same PR.
+3. The write-up uses the template below. Every field is required; write
+   `none` or `n/a` with a reason rather than omitting one.
+4. Corrected numbers are only ever produced by a committed, reproducible
+   run against the stock pinned PDK. Hand-edited numbers are not evidence.
+5. A correction does not change any spec by itself (see Authorization).
+
+**Template** (copy into `CORRECTION-<NNNN>-<slug>.md`)
+
+```markdown
+# Correction <NNNN>: <short title>
+
+## Original (preserved, unmodified)
+- Path: <repo path of the original artifact>
+- Commit: <full SHA that introduced it>
+- Blob hash: <output of `git rev-parse <commit>:<path>`>
+
+## Incorrect finding
+<What the original stated or implied, quoted or cited by row/field.>
+
+## Reason
+<Root cause: wrong bias, unit error, stale model pin, bad parse, ...>
+
+## Corrected artifact
+- Path: <new repo path, distinct from the original>
+- Commit: <SHA of the PR commit adding it>
+- Blob hash: <`git rev-parse <commit>:<path>`>
+
+## Reproduction command
+<Exact command(s) from the repository root, pinned PDK/tool versions,
+and which corners/temperatures it covers.>
+
+## Consequences for dependent claims
+| Dependent claim / document | Affected? | Action |
+| --- | --- | --- |
+| <e.g. spec/..., README number, downstream result> | yes/no | <none / spec change proposed in #N> |
+```
+
+**Authorization**
+
+| Change | Who approves | How |
+| --- | --- | --- |
+| Adding corrected evidence and the write-up | normal PR review | ordinary reviewer approval of the PR |
+| Any change to a specification or ratified claim | existing two-key process | a `spec/` decision record, ratified by the EE and market keys (`ratification/`) |
+
+A correction PR may *propose* a spec change in the "Consequences" table and
+link to a separate decision record. Until that record is ratified, the
+ratified claim stands and the correction is documented as pending. Agents
+cannot self-authorize a spec relaxation, and a correction must never be used
+to make results pass a spec by changing the spec (`CLAUDE.md`).
+
+**Worked example -- ILLUSTRATIVE ONLY.** Every path, hash and number below is
+fabricated to show the shape of a correction. None of it is a measured
+result and none of it is committed as evidence in this repository.
+
+Suppose `sim/example/results/example_results.csv` (commit `aaaa111`, blob
+`1111111`) reported a leakage of `9.9e-12 A` at `sf/125 C` because of a unit
+error. The correcting PR contains additions only:
+
+```text
+ sim/example/results/example_results.csv                 (unchanged, original kept)
+A sim/example/results/example_results_corr0001.csv       (new: corrected rows)
+A sim/example/CORRECTION-0001-leakage-units.md           (new: write-up)
+```
+
+and the write-up reads:
+
+```markdown
+# Correction 0001: leakage unit error (ILLUSTRATIVE)
+
+## Original (preserved, unmodified)
+- Path: sim/example/results/example_results.csv
+- Commit: aaaa111... (fabricated)
+- Blob hash: 1111111... (fabricated)
+
+## Incorrect finding
+Row `sf,125` reports 9.9e-12 A (fabricated).
+
+## Reason
+Value was scaled per micron twice (fabricated).
+
+## Corrected artifact
+- Path: sim/example/results/example_results_corr0001.csv
+- Commit: bbbb222... (fabricated)
+- Blob hash: 2222222... (fabricated)
+
+## Reproduction command
+python3 sim/example/run_example.py --out sim/example/results/example_results_corr0001.csv
+
+## Consequences for dependent claims
+| spec/retention-refresh-budget.md | yes | none applied; change proposed
+in a separate spec decision record, pending two-key ratification |
+```
+
+Reviewers verify with `git diff --name-status BASE...HEAD`: evidence paths
+show only `A`, never `M`, `D` or `R`, and `python3 -I sim/check_append_only.py`
+passes.
 
 ## `leakage/` -- access-device off-state leakage (issue #2)
 
@@ -152,6 +268,78 @@ stress/limit inventory, the sense input contract and the pinned primary
 source; the decision record is PROPOSED, not ratified
 ([`spec/supply-reliability-decision-PROPOSED.md`](../spec/supply-reliability-decision-PROPOSED.md)).
 Check: `python3 sim/loaded-column/cold-corner/check_evidence_index.py`.
+
+## `sense-stage/` -- single-ended latch sense stage at the restricted corners (issue #60)
+
+Characterizes a first-pass latch sense stage driven per
+[`SENSE_INPUT_CONTRACT.md`](loaded-column/cold-corner/SENSE_INPUT_CONTRACT.md)
+over exactly the corners and temperatures of the **PROPOSED, unratified**
+restricted range ([`spec/operating-range-decision-PROPOSED.md`](../spec/operating-range-decision-PROPOSED.md):
+tt/ss/ff/sf/fs at 27 C and 125 C, 1.8 V). The 10-corner grid is one
+`klt sim` batch request. Reports minimum resolvable `delta_V` and sense time
+per corner, and a FINDING on the `VDD`/2 assumption in `retention/` (no spec
+edited). See [`sense-stage/README.md`](sense-stage/README.md).
+
+```bash
+python3 -I sim/sense-stage/gen_sense_stage.py
+python3 -I sim/sense-stage/test_sense_stage.py
+```
+
+## `refresh-replay/` -- phase_seq RTL strobes replayed in the refresh-op circuit (issue #128)
+
+Exports the edges of one `phase_seq` REFRESH, converts them to PWL (explicit pin map, explicit latch-hold
+adapter) and replays them over 5 corners x {27, 125} C in the `sim/refresh-op` circuit, next to the matched
+analog baseline and two write-back negative controls. Result: the RTL waveform does **not** restore at
+any of the 10 corners; failure preserved, contract unchanged. See [`refresh-replay/README.md`](refresh-replay/README.md).
+
+## `refresh-op/` -- closed-loop row refresh operation, measured `t_row_refresh_op` (issue #110)
+
+One transient per corner runs a full refresh of a row of the loaded 4-row
+column with the provisional sense stage: precharge, RWL select, latch enable,
+latch complement node drives WBL, WWL write-back pulse, release. Sweeps the
+sense time and the write-back pulse width, finds the shortest pair that
+restores the cell for stored '1' and '0' at the 10 PROPOSED restricted
+corners, and appends a measured-`t_row_refresh_op` overhead record to
+`refresh-overhead/results/`. See [`refresh-op/README.md`](refresh-op/README.md).
+
+```bash
+python3 -I sim/refresh-op/gen_refresh_op.py
+python3 -I sim/refresh-op/test_refresh_op.py
+```
+
+## `write-disturb/` -- disturb of unselected and half-selected cells in the extracted 4x4 array (issue #98)
+
+Epic #24 item 6. Ten instances of the committed **extracted** 4x4 array
+([`layout/gain_cell_2t_array.extract.parasitics.spice`](../layout/gain_cell_2t_array.extract.parasitics.spice))
+are driven with one wordline pulse (half-select, both data polarities) and
+with 147 back-to-back writes (the most a 34 ns scheduler could issue in the
+5.03 us ratified window), against no-toggle controls and a deliberately leaky
+negative control, over the PROPOSED restricted range (tt/ss/ff/sf/fs at
+27 C and 125 C, 1.8 V; one `klt sim` batch request). Disturb is reported as a
+fraction of `delta_V` = 0.9 V and as equivalent retention loss; the ratified
+spec and refresh bound are not touched. See
+[`write-disturb/README.md`](write-disturb/README.md).
+
+```bash
+python3 -I sim/write-disturb/gen_write_disturb.py
+python3 -I sim/write-disturb/test_write_disturb.py
+```
+
+## `refresh-energy/` -- ideal-driver array-boundary refresh energy and standby power of the extracted 4x4 array (issue #115)
+
+Epic #24 item 6. Replays the #110 refresh operation (10 ns sense, 10 ns
+write-back; no latch) on row 0 of the committed **extracted** 4x4 array with
+one ideal source per array port, integrates every port's signed power, and
+subtracts a matched idle control, for four data patterns at the 10 PROPOSED
+restricted corners (two `klt sim` batch requests: the grid, and the same grid
+at a 4x finer step for convergence). A partial cost under stated assumptions,
+not complete refresh energy, not macro power and not an SRAM comparison. See
+[`refresh-energy/README.md`](refresh-energy/README.md).
+
+```bash
+python3 -I sim/refresh-energy/gen_refresh_energy.py
+python3 -I sim/refresh-energy/test_refresh_energy.py
+```
 
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)
 

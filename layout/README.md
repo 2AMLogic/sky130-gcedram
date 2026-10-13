@@ -269,6 +269,9 @@ still out of scope here.
 | [`gain_cell_2t_array.gds`](gain_cell_2t_array.gds) | The array layout -- the top cell (`gain_cell_2t_array_<R>x<C>_layout_0`) this issue delivers. |
 | [`gain_cell_2t_array.lvs_reference.spice`](gain_cell_2t_array.lvs_reference.spice) | **Generated** (not hand-transcribed) plain-element LVS reference netlist -- `array_topology.py --emit lvs-reference` mechanically replicates `design/gain_cell_2t.spice`'s two-device subcircuit `N_ROWS x N_COLS` times with the same row/column bus net renaming the compose request uses, mirroring [`design/regen_netlist.sh`](../design/regen_netlist.sh)'s and [`gain_cell_2t.lvs_reference.spice`](gain_cell_2t.lvs_reference.spice)'s own precedent (a generated/transcribed check fixture, never a second hand-authored design source). Carries a sha256 provenance header against `design/gain_cell_2t.spice`, same convention as `design/gain_cell_2t.spice`'s own header. |
 | [`gain_cell_2t_array.lvs.request.json`](gain_cell_2t_array.lvs.request.json), [`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json), [`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json) | Captured results of the informal `klt drc`/`klt lvs` iteration -- see below. Informal evidence, not a formal macro-level sign-off record (that is #24 item 5). |
+| [`gain_cell_2t_array.extract.parasitics.spice`](gain_cell_2t_array.extract.parasitics.spice) / [`.json`](gain_cell_2t_array.extract.parasitics.json) | Issue #80: `klt extract --parasitics` of the committed `4x4` GDS, every signal net named `--critical-net`. See "Array bitline/wordline/storage-node parasitics (issue #80)" below. |
+| [`gain_cell_2t_array.parasitics.summary.json`](gain_cell_2t_array.parasitics.summary.json) | Issue #80: per-net table, comparison against the 10 fF `C_RBL` and 0.605354 fF `C_SN` values, and the row-count scaling fit. Written by [`array_parasitics.py`](array_parasitics.py). |
+| [`extract_array_parasitics.sh`](extract_array_parasitics.sh) | Issue #80: regenerates the three files above. It also rebuilds `2x4`/`4x4`/`8x4` arrays in a scratch directory for the scaling fit. |
 
 ### Array dimensions chosen, and why
 
@@ -333,19 +336,137 @@ class `nfet`, matching `2 * N_ROWS * N_COLS = 2*4*4 = 32`.
 
 ### Regenerating the array layout
 
-Same prerequisites as the single-cell layout above (`klt` on `PATH`,
-`source design/env.sh`):
+Prerequisites: `source design/env.sh` (PDK at the pinned open_pdks commit)
+and the two pinned klt toolchains below. Since issue #91 the script does
+**not** use `klt` from `PATH`. See "Reproducing the committed array" next.
 
 ```bash
+# One-time: create the pinned toolchain venvs (under .toolchains/, gitignored)
+python3 layout/generation_toolchain.py install --role generation
+python3 layout/generation_toolchain.py install --role check
+
 # Regenerate every gain_cell_2t_array* artifact in place (default 4x4):
 ./layout/generate_array.sh
 
-# Check-only mode (scratch dir, does not touch committed files):
-./layout/generate_array.sh --check
+# Check-only mode (scratch dir, does not touch committed files): compares the
+# regenerated geometry/connectivity with the committed 4x4 AND gates on
+# routing/DRC/LVS/ERC. --record writes the run record.
+./layout/generate_array.sh --check [--record PATH]
 
-# A different array size (only 2x2/4x4 verified as of this commit):
+# A different array size (only 2x2/4x4 verified as of #34). This validates
+# the generated size only; it does not reproduce the committed 4x4 baseline.
 N_ROWS=2 N_COLS=2 ./layout/generate_array.sh --check
 ```
+
+### Reproducing the committed array (issue #91)
+
+The committed `gain_cell_2t_array.gds` (sha256 `4a1155...d4cd`) was built
+in #34 with a klt that the scripts never recorded. The DRC/LVS reports
+committed with it said `0.4.0`, and later ones said `0.6.0`, but neither
+release reproduces it:
+
+| Generation toolchain (KLayout 0.30.12) | `gain_cell_2t_array.gds` vs committed |
+|---|---|
+| PyPI `klayout-tools==0.4.0` | fails: `mos_array` has no `add_guard_ring` parameter |
+| PyPI `0.5.0` / `0.6.0` | 24 met1 cross-block route segments drawn 140 nm wide, committed 170 nm |
+| PyPI `0.7.0` | as above, plus every licon/mcon cut 0.17 um, committed 0.22 um |
+| git `5826244d` (parent of the #1620 width change) | GDS byte-identical; `_mos.gds` has extra PCell context params |
+| **git `2dd24b09e756`** | **all 7 compared artifacts byte-identical** |
+
+The cause is two documented generator changes in klayout-tools, not
+nondeterminism. klayout-tools #1620 (in 0.5.0) gave
+`cross_block_layer_role` legs their own width, which defaults to the
+layer minimum. klayout-tools #2594 (in 0.7.0) clamps sky130 licon/mcon cuts
+to 0.17 um. The extra `_mos.gds` PCell parameters come from klayout-tools
+#1577/#1580. The pin is therefore the last revision before #1577:
+
+- **generation** (`klt gen`, `klt gen-compose`): klayout-tools
+  `2dd24b09e7569581297aabf9738594e9791210f1` (package version 0.4.0) with
+  `klayout==0.30.12`. With `klayout==0.30.10` the array GDS still matches,
+  but `_mos.gds` does not (PCell context serialization), so KLayout is pinned
+  too.
+- **check** (`klt drc`, `klt lvs`, `klt erc`): klayout-tools
+  `c622e8addb362491664d44ba4d717f354ca88bbd` (0.6.0) with `klayout==0.30.12`.
+  This is the same revision `.github/workflows/signoff.yml` grades with, and
+  the one the committed DRC/LVS/ERC reports record. klt 0.7.0 cannot run
+  this ERC spec at all: it rejects the spec's `_comment` key (klayout-tools
+  #2822).
+- **PDK**: sky130A at open_pdks `c6d73a35...` (`docs/pdk-pin.md`), read from
+  `$PDK_ROOT/$PDK/SOURCES`.
+
+Both pins live in [`generation-toolchain.json`](generation-toolchain.json).
+[`generation_toolchain.py`](generation_toolchain.py) checks them before
+`generate_array.sh` or `extract_array_parasitics.sh` writes anything. It
+probes the interpreter's installed `klayout-tools` commit (from pip's
+`direct_url.json`), its package version and its `klayout` version. If the
+toolchain is missing or different, the script exits 2, prints the expected
+and actual values plus the install command, and writes nothing. Set
+`GCEDRAM_KLT_GENERATION_PYTHON` / `GCEDRAM_KLT_CHECK_PYTHON` to use an
+existing environment instead of the default `.toolchains/` venvs; it still
+has to pass the same identity check. To set one up by hand:
+
+```bash
+uv venv .toolchains/klt-generation-2dd24b09e756-klayout-0.30.12
+uv pip install --python .toolchains/klt-generation-2dd24b09e756-klayout-0.30.12/bin/python \
+  "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@2dd24b09e7569581297aabf9738594e9791210f1" \
+  "klayout==0.30.12"
+```
+
+**What `--check` compares**
+([`compare_array_layout.py`](compare_array_layout.py)), at the committed
+4x4 size only:
+
+- **Geometry and labels**: `gain_cell_2t_array.gds` and
+  `gain_cell_2t_array_mos.gds`. Every BOUNDARY, PATH, BOX, TEXT, SREF and
+  AREF element is compared record by record: layer, datatype, every vertex,
+  path width, text string and position, transforms and properties (including
+  PCell context). Structure names and the library units are compared too.
+- **Connectivity**: the generator reports `gain_cell_2t_array.layout.json`
+  (per-net pins, legs, route status and length, unrouted nets) and
+  `gain_cell_2t_array_mos.json` (ports, device count), compared as parsed
+  JSON. The connectivity inputs `gain_cell_2t_array.layout.request.json`,
+  `gain_cell_2t_array.lvs_reference.spice` and
+  `gain_cell_2t_array.lvs.request.json` are compared exactly. LVS `match`
+  against the reference is still required on top.
+- **Normalization, and nothing else**: GDS BGNLIB/BGNSTR timestamps,
+  element order within a structure (compared as a multiset, so a duplicate
+  or missing element still fails), null padding after ENDLIB, and JSON
+  whitespace/key order. Nothing is merged, snapped or rounded.
+- Raw sha256 hashes are reported separately from the canonical comparison.
+  A timestamp-only change shows as "raw differs, MATCH".
+
+Any difference fails `--check`, even when routing, DRC, LVS and ERC all
+pass. As a negative control, `main`'s old status-only `--check` run with
+klt 0.7.0 passed routing, DRC (`clean`) and LVS (`match`) on the drifted
+geometry. It then crashed at ERC on the `_comment` key. At other sizes
+(`N_ROWS`/`N_COLS` not 4x4) there is no committed baseline. The comparison
+is skipped, and the script says that it only validated the generated size.
+
+**Reproduction run** (committed:
+[`results/generation_reproduction_20261011.json`](results/generation_reproduction_20261011.json),
+from `./layout/generate_array.sh --check --record ...`): it records the
+source commit, both toolchain identities, the PDK identity, every klt
+command, the full comparison and the statuses. All 7 artifacts are
+byte-identical (comparison `match`). Routing is complete, DRC is `clean`,
+LVS is `match` and ERC is `clean`. In a kept scratch copy of the same run, the
+regenerated `gain_cell_2t_array.drc.result.json` and `.lvs.result.json` were
+also byte-identical to the committed reports. The ERC report differed only in
+its `file`/`spec` path fields, because scratch runs use cwd-relative paths. No
+committed layout, evidence or manifest file is changed by issue #91.
+
+Fixtures, with no klt or PDK needed:
+`python3 -I layout/test_generation_reproducibility.py`. They cover a moved
+vertex, a route width or layer change, a renamed or moved label, a moved
+instance, deleted and duplicated elements, changed units, a changed pin
+connection or route length in the report, and timestamp-only, reorder-only
+and padding-only changes that must still match. They also cover absent,
+mismatched and wrong-role toolchains and a mismatched PDK, with both scripts
+exiting before any file under `layout/` changes. The fixtures also check that
+the check pin equals `signoff.yml`'s `KLT_REV` and that the PDK pin equals
+`sim/_evidence_common.py`.
+
+The single-cell `generate.sh` is not covered by this pin; it is outside
+#91's scope.
 
 ### Informal DRC/LVS iteration (not a formal sign-off), `4x4`
 
@@ -485,3 +606,240 @@ filed against [2AMLogic/klayout-tools](https://github.com/2AMLogic/klayout-tools
   records this was not derivable from a value `klt gen-compose` exposes to
   a caller, itself an instance of the gap those two upstream issues
   describe.
+
+## Array bitline/wordline/storage-node parasitics (issue #80)
+
+This is an extraction of the committed `4x4` array. It changes no layout.
+Its job is to replace the read-bitline load that the sense path currently
+assumes with an extracted number, and to check the storage-node value in
+the array. It does **not** edit the sense input contract, the sense-stage
+deck, or any spec file. Re-running the sense stage with the extracted load
+is a separate follow-up.
+
+```bash
+source design/env.sh
+./layout/extract_array_parasitics.sh
+# same, writing the extraction + summary to a scratch dir instead of layout/
+# (issue #91; needs the pinned generation/check toolchains, see above):
+./layout/extract_array_parasitics.sh --out-dir /tmp/array-parasitics
+# freshness of the committed extraction, without re-running (repo root):
+klt extract --check layout/gain_cell_2t_array.extract.parasitics.json
+```
+
+Part 1 runs this against the committed `gain_cell_2t_array.gds`:
+
+```
+klt extract layout/gain_cell_2t_array.gds --deck sky130 \
+  --top gain_cell_2t_array_4x4_layout_0 --parasitics \
+  --critical-net wl_0 ... --critical-net sn_3_3    # all 32 signal nets
+  -o layout/gain_cell_2t_array.extract.parasitics.spice --format json
+```
+
+Every `wl_<r>`, `rwl_<r>`, `bl_<c>`, `rbl_<c>` and `sn_<r>_<c>` net is named
+`--critical-net`. That way the lateral coupling pass covers every
+signal-net pair, not just the storage node as in the single-cell run (#7).
+The run used klt `0.7.0+gd1e9e119331f` (KLayout 0.30.12). Status is
+`extracted` with 32 devices, all `nfet`, and no warnings. The input hash
+`sha256:4a1155...d4cd` matches the committed GDS, the same hash the ERC
+report records.
+
+**Convention.** `total = ground + every coupling capacitor reported on the
+net`. This is the same sum `sim/retention/derive_retention.py`'s
+`load_extracted_c_sn()` uses. Counting coupling as load assumes the
+neighbouring nets are quiet, which slightly overstates the load. The
+extractor also adds lateral coupling on top of the substrate fringe term
+instead of subtracting it, so the coupling column leans pessimistic.
+**These are wiring parasitics only.** `by_layer` lists poly, li1 (`metal0`)
+and met1 (`metal1`), and no diffusion. Device junction and gate
+capacitance are not included here. They come from the extracted device
+cards (`AD/AS/PD/PS`, `W/L`) and the BSIM model at simulation time.
+
+### Per-column bitlines (`4x4`)
+
+| Net | Ground (fF) | Coupling (fF) | Total (fF) | Lumped R (ohm) |
+|---|---|---|---|---|
+| `rbl_0`, `rbl_1`, `rbl_2` | 0.581168 | 0.278011 | **0.859179** | 385.481 |
+| `rbl_3` (array edge) | 0.596076 | 0.102204 | 0.698280 | 385.481 |
+| `bl_0` (array edge) | 0.596076 | 0.115821 | 0.711897 | 385.481 |
+| `bl_1`, `bl_2`, `bl_3` | 0.581168 | 0.291628 | 0.872796 | 385.481 |
+
+The largest single coupling on an interior `rbl_<c>` is 0.129795 fF to the
+next column's write bitline `bl_<c+1>`. The two are adjacent li1 column
+buses. The rest is 4 x 0.019738 fF to `rwl_*`, 0.01071 + 2 x 0.024327 fF to
+three of its column's `sn_*`, and 3 x 0.0033 fF to `wl_*`.
+
+### Per-row wordlines (`4x4`, 4 columns per row)
+
+| Net | Ground (fF) | Coupling (fF) | Total (fF) | Lumped R (ohm) |
+|---|---|---|---|---|
+| `wl_0` | 1.909279 | 0.189768 | 2.099047 | 434.2748 |
+| `wl_1`, `wl_2` | 1.909279 | 0.180892 | 2.090171 | 434.2748 |
+| `wl_3` (array edge) | 1.913750 | 0.063784 | 1.977534 | 434.2748 |
+| `rwl_0` .. `rwl_3` | 1.187129 | 0.166126 | 1.353255 | 57.8391 |
+
+The ground term of `wl_<r>` splits into 0.695682 fF poly (the gates'
+poly runs), 0.299611 fF li1 and about 0.914 fF met1. `rwl_<r>` has no poly
+term: 0.299611 fF li1 and 0.887517 fF met1. Wordline loads grow with
+`N_COLS`, not `N_ROWS`. Only `N_COLS = 4` was extracted, so no column-count
+scaling is reported.
+
+### Comparison with the `C_RBL` = 10 fF assumption
+
+[`sim/sense-stage/gen_sense_stage.py`](../sim/sense-stage/gen_sense_stage.py)
+line 46 sets `C_RBL_F = 10e-15`, labelled "ASSUMPTION (contract; not
+extracted)". That deck puts the four rows' `M_RD` devices on the read
+bitline as explicit transistors and adds `C_RBL` as a lumped capacitor
+beside them. So the extracted quantity to compare against is the
+**wiring** load, which is what this table reports.
+
+- **Extracted, 4 rows: worst-case `rbl_<c>` total is 0.859179 fF**
+  (0.581168 fF ground + 0.278011 fF coupling). That is **0.086x the
+  assumption**, about 11.6 times smaller. Ground capacitance alone is
+  0.058x.
+- So, for the 4-row column the contract studies, the 10 fF value is not
+  supported by extraction. It overstates the read-bitline wiring load by
+  about an order of magnitude. Which way that moves each sense result
+  (separation, decision time, the ss/-40 C sensitivity the contract notes)
+  can only be settled by re-running those decks. That re-run is the
+  follow-up and is not done here.
+- Device junction caveat. The extracted `M_RD`/`M_WR` cards carry the
+  drawn diffusion, `AD = AS = 0.1974 um^2` and `PD = PS = 1.78 um`, in all
+  32 devices and in the single cell. `design/gain_cell_2t.spice`, whose
+  cards the sense and loaded-column decks reuse, sets
+  `ad = as = 0.1218 um^2` and `pd = ps = 1.42 um`. So the layout draws
+  about 62% more drain/source junction area per device than the decks
+  model.
+  This is a **finding**, not a correction made here. It affects the
+  device-side bitline load and the `sn` junction alike.
+
+### Row-count scaling (`N_COLS = 4`)
+
+Part 2 of the script rebuilds `2x4`, `4x4` and `8x4` arrays in a scratch
+directory with `generate_array.sh`'s exact recipe (`array_topology.py` ->
+`klt gen mos_array` -> `klt gen-compose`). Each build must pass
+`unrouted_nets: []`, DRC `clean` and LVS `match` before it is extracted
+with the same flags. Only the reduced numbers are committed, in
+`gain_cell_2t_array.parasitics.summary.json` `row_scaling`; the scratch
+layouts are not. Worst-column `rbl` totals:
+
+| `N_ROWS` | Ground (fF) | Coupling (fF) | Total (fF) | Source |
+|---|---|---|---|---|
+| 2 | 0.245560 | 0.095871 | 0.341431 | extracted (scratch) |
+| 4 | 0.583799 | 0.269889 | 0.853688 | extracted (scratch) |
+| 8 | 1.260277 | 0.617925 | 1.878202 | extracted (scratch) |
+
+The three points sit on a straight line (residual below 1e-6 fF):
+**+0.169120 fF ground and +0.256128 fF total per row**. The intercepts are
+-0.092679 and -0.170826 fF. They are slightly negative because the bus
+end stubs are shorter than one row pitch, so they are fit constants, not
+physical components. `bl` has the same numbers.
+
+Why scratch `4x4` differs from the committed one: a fresh `4x4` built with
+the current klt is not geometrically identical to the committed GDS (input
+hash `5d5609...` vs `4a1155...`). The largest net-total difference between
+the two is 0.061 fF. Interior `rbl` is 0.853688 vs 0.859179 fF, and the
+committed `rwl` met1 run is slightly shorter. The committed `4x4` numbers
+above are the evidence. The scratch set is used only for the per-row slope.
+
+**Issue #91 update (the historical numbers above are kept).** The
+difference came from the generator version (see "Reproducing the committed
+array"). The script now builds the scaling set with the pinned generation
+toolchain, gates it with the pinned check toolchain, and fails unless the
+scratch `4x4` geometry and connectivity match the committed array. Extraction
+still runs on its own toolchain (`KLT_EXTRACT`, default `klt` on `PATH`). The
+generation pin predates the extraction features this script uses, and the
+committed extraction records `0.7.0+gd1e9e119331f`. A re-run on 2026-10-11 with
+`./layout/extract_array_parasitics.sh --out-dir <scratch>` (extraction klt
+`0.7.0+g0d0312b30708`) gave these results:
+
+- Part 1 on the committed GDS: `parasitics` and `devices` identical to the
+  committed `gain_cell_2t_array.extract.parasitics.json`. Only
+  `netlist_path` and `provenance` differ.
+- Scratch `4x4` vs committed: max net-total difference **0.0 fF**
+  (historically 0.061 fF).
+- Pinned-geometry scaling, worst `rbl` total: 0.343980 / 0.859179 /
+  1.889578 fF at 2 / 4 / 8 rows. The fit is **+0.257600 fF total and
+  +0.168415 fF ground per row**, against +0.256128 / +0.169120 in the
+  committed summary. Wiring alone reaches 10 fF at about 39.5 rows
+  (committed: 39.7).
+
+The committed `gain_cell_2t_array.parasitics.summary.json` is **not**
+replaced. Its `row_scaling` block still comes from the klt-0.7.0-drawn
+scratch arrays, which is a retained historical mismatch of under 0.6% in
+the per-row slope. The re-run's output is committed separately as
+[`results/parasitics_summary_pinned_generation_20261011.json`](results/parasitics_summary_pinned_generation_20261011.json).
+Its `source.extraction`/`netlist` paths point at the scratch out-dir. That
+file's part-1 extraction matched the committed one, as stated above. Moving
+consumers to the pinned-geometry slope would be a separate, explicitly scoped
+evidence refresh.
+
+**Extrapolation (ASSUMPTION, not extracted).** This applies the linear
+fit beyond `N_ROWS = 8` and assumes the column keeps this exact bus
+geometry: an li1 column bus at the same pitch, with no strapping,
+segmenting, column mux or periphery wiring. A macro is not required to
+keep any of that. Wiring only:
+
+| `N_ROWS` | Worst `rbl` total, wiring only (fF) -- ASSUMPTION |
+|---|---|
+| 16 | 3.93 |
+| 32 | 8.03 |
+| 64 | 16.22 |
+| 128 | 32.61 |
+| 256 | 65.40 |
+
+Under this assumption, wiring alone reaches 10 fF at about 40 rows. This
+is not a ratified `N_rows`. `spec/retention-refresh-budget.md` Section 7
+leaves it unratified, and nothing here changes that.
+
+### Storage node in the array vs the single cell (finding)
+
+The single-cell `C_SN` that retention uses is **0.605354 fF**
+(`gain_cell_2t.extract.parasitics.json`, issue #7). The same convention
+applied in the array gives:
+
+| | Ground (fF) | Coupling (fF) | Total (fF) | vs 0.605354 fF |
+|---|---|---|---|---|
+| `sn_<r>_<c>`, range over 16 cells | 0.430576 -- 0.433689 | 0.040446 -- 0.071424 | **0.473620 -- 0.502000** | **-21.8% to -17.1%** |
+
+**Finding: array-context `C_SN` is 17--22% lower than the single-cell
+value used by retention.** The `by_layer` split explains the gap.
+
+- Single cell: 0.173920 fF poly + 0.149806 fF li1 + 0.262764 fF met1.
+  `sn` crosses a 1.0 um gap between the device block and the tap block on
+  met1.
+- Array: the same 0.173920 fF poly + about 0.257--0.260 fF li1, and no
+  met1. `sn` is a short local li1 jog.
+
+Re-running the single-cell extraction with today's klt reproduces
+0.605354 fF exactly, so tool-version drift is ruled out. The difference
+comes from routing, not from the extractor. Retention is proportional to
+`C_SN` at fixed leakage and fixed sense margin, so an array-built bitcell
+would retain proportionally shorter. **Nothing is re-ratified here.**
+`derive_retention.py` still reads the single-cell file, and whether
+retention should move to an array-context value is a separate decision
+for `spec/`. Both numbers are wiring-only, like the bitline numbers above.
+The `M_WR` drain junction and the `M_RD` gate are evaluated by the device
+models, and the AD/PD mismatch noted above applies to them too.
+
+**Follow-up (issue #89).** A reproducible all-node reduction and a
+capacitance-only retention comparison now exist:
+[`sim/retention/compare_array_c_sn.py`](../sim/retention/compare_array_c_sn.py)
+and its committed snapshot under `sim/retention/results/`. The limiting
+node is `sn_3_3`, at 0.782x the single-cell value. The trace also found
+that the leakage testbench passes no `AD/AS/PD/PS`, so the leakage used
+neither the schematic nor the extracted geometry. The proposed (not
+ratified) decision on which inputs an array retention study should use is
+[`spec/retention-refresh-budget.md`](../spec/retention-refresh-budget.md)
+Section 9.
+
+### klayout-tools friction (issue #80)
+
+Giving every signal net lateral coupling took 32 repeated `--critical-net`
+flags for `4x4` and 56 for `8x4`. The script generates them with a shell
+function. `--critical-net`/`--parasitics-net` take exact names only: no
+pattern and no all-nets selector. An unmatched name is only a warning, so
+a typo in a long hand-written list silently drops a net. Filed generically
+as
+[2AMLogic/klayout-tools#2974](https://github.com/2AMLogic/klayout-tools/issues/2974).
+Everything else (`--parasitics`, `by_layer`, `coupled[]`, `--check`)
+behaved as documented.

@@ -14,7 +14,10 @@ has no prior xschem usage to pattern-match against.
 |---|---|
 | [`gain_cell_2t.sch`](gain_cell_2t.sch) | xschem schematic: the ratified 2T gain-cell bitcell (see "Topology" below). |
 | [`gain_cell_2t.spice`](gain_cell_2t.spice) | SPICE netlist **derived** from the schematic above via [`regen_netlist.sh`](regen_netlist.sh) -- not hand-written. Carries a provenance header (sha256 of the source `.sch`). |
-| [`regen_netlist.sh`](regen_netlist.sh) | Regenerates the netlist from the schematic (`--check` verifies the committed netlist is not stale). This is the "reproducible on design change" mechanism. |
+| [`sense_latch.sch`](sense_latch.sch) / [`sense_latch.spice`](sense_latch.spice) | xschem schematic and derived netlist (same provenance-header convention) of the sense latch with footer/header (issue #109); see "Sense latch" below. |
+| [`regen_netlist.sh`](regen_netlist.sh) | Regenerates both netlists from their schematics (`--check` verifies each committed netlist is not stale). This is the "reproducible on design change" mechanism. |
+| [`normalize_netlist.py`](normalize_netlist.py) | Evaluates xschem `expr()` geometry params and rewraps lines, so the netlist is identical across xschem versions (3.4.4 leaves them unevaluated). |
+| [`test_sense_latch.py`](test_sense_latch.py) | Stdlib drift test: the latch devices in `sense_latch.spice` must equal those in `sim/sense-stage/sense_stage.spice`. |
 | [`xschemrc`](xschemrc) | Project-local xschem config: resolves the sky130 PDK's symbol library without depending on `~/.xschem`. |
 | [`env.sh`](env.sh) | Exports `PDK_ROOT`/`PDK` for interactive `xschem` sessions and for `regen_netlist.sh`. |
 
@@ -120,7 +123,8 @@ volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
 # 2. Export PDK_ROOT / PDK (defaults to ~/.volare / sky130A if unset):
 source design/env.sh
 
-# 3. Regenerate design/gain_cell_2t.spice from design/gain_cell_2t.sch:
+# 3. Regenerate design/gain_cell_2t.spice and design/sense_latch.spice
+#    from their .sch sources:
 ./design/regen_netlist.sh
 
 # 4. Verify the committed netlist is not stale relative to the schematic
@@ -140,6 +144,33 @@ Interactive editing:
 source design/env.sh
 xschem --rcfile design/xschemrc design/gain_cell_2t.sch
 ```
+
+## Sense latch (issue #109)
+
+[`sense_latch.sch`](sense_latch.sch) is the design source of record for the
+latch sense stage that `sim/sense-stage/`, `sim/sense-mismatch/` and
+`sim/loaded-column/` characterize (previously it existed only as generated
+SPICE under `sim/`). Ports: `rbl`, `ref`, `en`, `enb`, `vdd` (global `GND`);
+`vn`/`vp` are internal virtual rails. The ideal precharge switch and the
+matched dummy reference are **testbench elements and are not part of this
+cell**.
+
+| Device | Type | W (um) | L (um) | D | G | S | B |
+|---|---|---|---|---|---|---|---|
+| `MN1` | nfet_01v8 (latch) | 1.0 | 0.15 | `rbl` | `ref` | `vn` | GND |
+| `MN2` | nfet_01v8 (latch) | 1.0 | 0.15 | `ref` | `rbl` | `vn` | GND |
+| `MP1` | pfet_01v8 (latch) | 2.0 | 0.15 | `rbl` | `ref` | `vp` | `vdd` |
+| `MP2` | pfet_01v8 (latch) | 2.0 | 0.15 | `ref` | `rbl` | `vp` | `vdd` |
+| `MNF` | nfet_01v8 (footer) | 2.0 | 0.15 | `vn` | `en` | GND | GND |
+| `MPH` | pfet_01v8 (header) | 4.0 | 0.15 | `vp` | `enb` | `vdd` | `vdd` |
+
+**These sizes are provisional first-pass choices, not optimized.** They are
+frozen exactly as `sim/sense-stage/gen_sense_stage.py` instantiates them so
+provenance is fixed; this schematic makes no sizing claim, and a later
+sizing issue may change them. `python3 -I design/test_sense_latch.py`
+fails if the derived netlist and the sense-stage deck (names, model, W/L,
+nets) ever diverge. In the deck, per-instance nets carry an `_<instance>`
+suffix and ground is `0` (schematic `GND`); the test normalizes both.
 
 ## What's out of scope here
 

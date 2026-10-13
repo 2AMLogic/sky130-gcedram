@@ -1,0 +1,4933 @@
+{
+ "netlist": "refresh_energy.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 45n 0 20p uic"
+ },
+ "measurements": [
+  {
+   "name": "en_vpre0_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_act_z INTEG v(pn_vpre0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_act_z INTEG v(pg_vpre0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_act_z INTEG v(pr_vpre0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_act_z INTEG i(vpre0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_act_z INTEG v(pn_vpre1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_act_z INTEG v(pg_vpre1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_act_z INTEG v(pr_vpre1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_act_z INTEG i(vpre1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_act_z INTEG v(pn_vpre2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_act_z INTEG v(pg_vpre2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_act_z INTEG v(pr_vpre2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_act_z INTEG i(vpre2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_act_z INTEG v(pn_vpre3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_act_z INTEG v(pg_vpre3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_act_z INTEG v(pr_vpre3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_act_z INTEG i(vpre3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_act_z INTEG v(pn_vwbl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_act_z INTEG v(pg_vwbl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_act_z INTEG v(pr_vwbl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_act_z INTEG i(vwbl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_act_z INTEG v(pn_vwbl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_act_z INTEG v(pg_vwbl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_act_z INTEG v(pr_vwbl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_act_z INTEG i(vwbl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_act_z INTEG v(pn_vwbl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_act_z INTEG v(pg_vwbl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_act_z INTEG v(pr_vwbl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_act_z INTEG i(vwbl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_act_z INTEG v(pn_vwbl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_act_z INTEG v(pg_vwbl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_act_z INTEG v(pr_vwbl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_act_z INTEG i(vwbl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_act_z INTEG v(pn_vrwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_act_z INTEG v(pg_vrwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_act_z INTEG v(pr_vrwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_act_z INTEG i(vrwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_act_z INTEG v(pn_vrwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_act_z INTEG v(pg_vrwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_act_z INTEG v(pr_vrwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_act_z INTEG i(vrwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_act_z INTEG v(pn_vrwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_act_z INTEG v(pg_vrwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_act_z INTEG v(pr_vrwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_act_z INTEG i(vrwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_act_z INTEG v(pn_vrwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_act_z INTEG v(pg_vrwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_act_z INTEG v(pr_vrwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_act_z INTEG i(vrwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_act_z INTEG v(pn_vwwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_act_z INTEG v(pg_vwwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_act_z INTEG v(pr_vwwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_act_z INTEG i(vwwl0_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_act_z INTEG v(pn_vwwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_act_z INTEG v(pg_vwwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_act_z INTEG v(pr_vwwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_act_z INTEG i(vwwl1_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_act_z INTEG v(pn_vwwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_act_z INTEG v(pg_vwwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_act_z INTEG v(pr_vwwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_act_z INTEG i(vwwl2_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_act_z INTEG v(pn_vwwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_act_z INTEG v(pg_vwwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_act_z INTEG v(pr_vwwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_act_z INTEG i(vwwl3_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_act_z INTEG v(pn_vbody_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_act_z INTEG v(pg_vbody_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_act_z INTEG v(pr_vbody_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_act_z INTEG i(vbody_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_act_z",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_act_z INTEG v(pn_vsub_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_act_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_act_z INTEG v(pg_vsub_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_act_z",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_act_z INTEG v(pr_vsub_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_act_z",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_act_z INTEG i(vsub_act_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_act_z_00",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_00 FIND v(sn_0_0_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_00",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_00 FIND v(sn_0_0_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_01",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_01 FIND v(sn_0_1_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_01",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_01 FIND v(sn_0_1_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_02",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_02 FIND v(sn_0_2_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_02",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_02 FIND v(sn_0_2_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_03",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_03 FIND v(sn_0_3_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_03",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_03 FIND v(sn_0_3_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_10",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_10 FIND v(sn_1_0_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_10",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_10 FIND v(sn_1_0_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_11",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_11 FIND v(sn_1_1_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_11",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_11 FIND v(sn_1_1_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_12",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_12 FIND v(sn_1_2_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_12",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_12 FIND v(sn_1_2_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_13",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_13 FIND v(sn_1_3_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_13",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_13 FIND v(sn_1_3_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_20",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_20 FIND v(sn_2_0_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_20",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_20 FIND v(sn_2_0_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_21",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_21 FIND v(sn_2_1_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_21",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_21 FIND v(sn_2_1_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_22",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_22 FIND v(sn_2_2_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_22",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_22 FIND v(sn_2_2_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_23",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_23 FIND v(sn_2_3_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_23",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_23 FIND v(sn_2_3_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_30",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_30 FIND v(sn_3_0_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_30",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_30 FIND v(sn_3_0_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_31",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_31 FIND v(sn_3_1_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_31",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_31 FIND v(sn_3_1_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_32",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_32 FIND v(sn_3_2_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_32",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_32 FIND v(sn_3_2_act_z) AT=34n"
+  },
+  {
+   "name": "sna_act_z_33",
+   "unit": "V",
+   "spice": ".meas tran sna_act_z_33 FIND v(sn_3_3_act_z) AT=5n"
+  },
+  {
+   "name": "snb_act_z_33",
+   "unit": "V",
+   "spice": ".meas tran snb_act_z_33 FIND v(sn_3_3_act_z) AT=34n"
+  },
+  {
+   "name": "rbs_act_z_0",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_z_0 FIND v(rbl_0_act_z) AT=19n"
+  },
+  {
+   "name": "snr_act_z_0",
+   "unit": "V",
+   "spice": ".meas tran snr_act_z_0 FIND v(sn_0_0_act_z) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_z_1",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_z_1 FIND v(rbl_1_act_z) AT=19n"
+  },
+  {
+   "name": "snr_act_z_1",
+   "unit": "V",
+   "spice": ".meas tran snr_act_z_1 FIND v(sn_0_1_act_z) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_z_2",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_z_2 FIND v(rbl_2_act_z) AT=19n"
+  },
+  {
+   "name": "snr_act_z_2",
+   "unit": "V",
+   "spice": ".meas tran snr_act_z_2 FIND v(sn_0_2_act_z) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_z_3",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_z_3 FIND v(rbl_3_act_z) AT=19n"
+  },
+  {
+   "name": "snr_act_z_3",
+   "unit": "V",
+   "spice": ".meas tran snr_act_z_3 FIND v(sn_0_3_act_z) AT=19.9n"
+  },
+  {
+   "name": "en_vpre0_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_act_o INTEG v(pn_vpre0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_act_o INTEG v(pg_vpre0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_act_o INTEG v(pr_vpre0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_act_o INTEG i(vpre0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_act_o INTEG v(pn_vpre1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_act_o INTEG v(pg_vpre1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_act_o INTEG v(pr_vpre1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_act_o INTEG i(vpre1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_act_o INTEG v(pn_vpre2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_act_o INTEG v(pg_vpre2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_act_o INTEG v(pr_vpre2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_act_o INTEG i(vpre2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_act_o INTEG v(pn_vpre3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_act_o INTEG v(pg_vpre3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_act_o INTEG v(pr_vpre3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_act_o INTEG i(vpre3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_act_o INTEG v(pn_vwbl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_act_o INTEG v(pg_vwbl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_act_o INTEG v(pr_vwbl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_act_o INTEG i(vwbl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_act_o INTEG v(pn_vwbl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_act_o INTEG v(pg_vwbl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_act_o INTEG v(pr_vwbl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_act_o INTEG i(vwbl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_act_o INTEG v(pn_vwbl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_act_o INTEG v(pg_vwbl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_act_o INTEG v(pr_vwbl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_act_o INTEG i(vwbl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_act_o INTEG v(pn_vwbl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_act_o INTEG v(pg_vwbl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_act_o INTEG v(pr_vwbl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_act_o INTEG i(vwbl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_act_o INTEG v(pn_vrwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_act_o INTEG v(pg_vrwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_act_o INTEG v(pr_vrwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_act_o INTEG i(vrwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_act_o INTEG v(pn_vrwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_act_o INTEG v(pg_vrwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_act_o INTEG v(pr_vrwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_act_o INTEG i(vrwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_act_o INTEG v(pn_vrwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_act_o INTEG v(pg_vrwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_act_o INTEG v(pr_vrwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_act_o INTEG i(vrwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_act_o INTEG v(pn_vrwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_act_o INTEG v(pg_vrwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_act_o INTEG v(pr_vrwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_act_o INTEG i(vrwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_act_o INTEG v(pn_vwwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_act_o INTEG v(pg_vwwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_act_o INTEG v(pr_vwwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_act_o INTEG i(vwwl0_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_act_o INTEG v(pn_vwwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_act_o INTEG v(pg_vwwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_act_o INTEG v(pr_vwwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_act_o INTEG i(vwwl1_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_act_o INTEG v(pn_vwwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_act_o INTEG v(pg_vwwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_act_o INTEG v(pr_vwwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_act_o INTEG i(vwwl2_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_act_o INTEG v(pn_vwwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_act_o INTEG v(pg_vwwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_act_o INTEG v(pr_vwwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_act_o INTEG i(vwwl3_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_act_o INTEG v(pn_vbody_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_act_o INTEG v(pg_vbody_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_act_o INTEG v(pr_vbody_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_act_o INTEG i(vbody_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_act_o",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_act_o INTEG v(pn_vsub_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_act_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_act_o INTEG v(pg_vsub_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_act_o",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_act_o INTEG v(pr_vsub_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_act_o",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_act_o INTEG i(vsub_act_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_act_o_00",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_00 FIND v(sn_0_0_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_00",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_00 FIND v(sn_0_0_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_01",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_01 FIND v(sn_0_1_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_01",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_01 FIND v(sn_0_1_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_02",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_02 FIND v(sn_0_2_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_02",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_02 FIND v(sn_0_2_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_03",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_03 FIND v(sn_0_3_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_03",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_03 FIND v(sn_0_3_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_10",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_10 FIND v(sn_1_0_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_10",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_10 FIND v(sn_1_0_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_11",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_11 FIND v(sn_1_1_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_11",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_11 FIND v(sn_1_1_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_12",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_12 FIND v(sn_1_2_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_12",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_12 FIND v(sn_1_2_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_13",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_13 FIND v(sn_1_3_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_13",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_13 FIND v(sn_1_3_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_20",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_20 FIND v(sn_2_0_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_20",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_20 FIND v(sn_2_0_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_21",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_21 FIND v(sn_2_1_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_21",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_21 FIND v(sn_2_1_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_22",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_22 FIND v(sn_2_2_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_22",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_22 FIND v(sn_2_2_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_23",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_23 FIND v(sn_2_3_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_23",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_23 FIND v(sn_2_3_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_30",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_30 FIND v(sn_3_0_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_30",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_30 FIND v(sn_3_0_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_31",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_31 FIND v(sn_3_1_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_31",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_31 FIND v(sn_3_1_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_32",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_32 FIND v(sn_3_2_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_32",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_32 FIND v(sn_3_2_act_o) AT=34n"
+  },
+  {
+   "name": "sna_act_o_33",
+   "unit": "V",
+   "spice": ".meas tran sna_act_o_33 FIND v(sn_3_3_act_o) AT=5n"
+  },
+  {
+   "name": "snb_act_o_33",
+   "unit": "V",
+   "spice": ".meas tran snb_act_o_33 FIND v(sn_3_3_act_o) AT=34n"
+  },
+  {
+   "name": "rbs_act_o_0",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_o_0 FIND v(rbl_0_act_o) AT=19n"
+  },
+  {
+   "name": "snr_act_o_0",
+   "unit": "V",
+   "spice": ".meas tran snr_act_o_0 FIND v(sn_0_0_act_o) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_o_1",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_o_1 FIND v(rbl_1_act_o) AT=19n"
+  },
+  {
+   "name": "snr_act_o_1",
+   "unit": "V",
+   "spice": ".meas tran snr_act_o_1 FIND v(sn_0_1_act_o) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_o_2",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_o_2 FIND v(rbl_2_act_o) AT=19n"
+  },
+  {
+   "name": "snr_act_o_2",
+   "unit": "V",
+   "spice": ".meas tran snr_act_o_2 FIND v(sn_0_2_act_o) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_o_3",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_o_3 FIND v(rbl_3_act_o) AT=19n"
+  },
+  {
+   "name": "snr_act_o_3",
+   "unit": "V",
+   "spice": ".meas tran snr_act_o_3 FIND v(sn_0_3_act_o) AT=19.9n"
+  },
+  {
+   "name": "en_vpre0_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_act_c INTEG v(pn_vpre0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_act_c INTEG v(pg_vpre0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_act_c INTEG v(pr_vpre0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_act_c INTEG i(vpre0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_act_c INTEG v(pn_vpre1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_act_c INTEG v(pg_vpre1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_act_c INTEG v(pr_vpre1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_act_c INTEG i(vpre1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_act_c INTEG v(pn_vpre2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_act_c INTEG v(pg_vpre2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_act_c INTEG v(pr_vpre2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_act_c INTEG i(vpre2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_act_c INTEG v(pn_vpre3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_act_c INTEG v(pg_vpre3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_act_c INTEG v(pr_vpre3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_act_c INTEG i(vpre3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_act_c INTEG v(pn_vwbl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_act_c INTEG v(pg_vwbl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_act_c INTEG v(pr_vwbl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_act_c INTEG i(vwbl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_act_c INTEG v(pn_vwbl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_act_c INTEG v(pg_vwbl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_act_c INTEG v(pr_vwbl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_act_c INTEG i(vwbl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_act_c INTEG v(pn_vwbl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_act_c INTEG v(pg_vwbl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_act_c INTEG v(pr_vwbl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_act_c INTEG i(vwbl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_act_c INTEG v(pn_vwbl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_act_c INTEG v(pg_vwbl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_act_c INTEG v(pr_vwbl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_act_c INTEG i(vwbl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_act_c INTEG v(pn_vrwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_act_c INTEG v(pg_vrwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_act_c INTEG v(pr_vrwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_act_c INTEG i(vrwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_act_c INTEG v(pn_vrwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_act_c INTEG v(pg_vrwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_act_c INTEG v(pr_vrwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_act_c INTEG i(vrwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_act_c INTEG v(pn_vrwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_act_c INTEG v(pg_vrwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_act_c INTEG v(pr_vrwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_act_c INTEG i(vrwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_act_c INTEG v(pn_vrwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_act_c INTEG v(pg_vrwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_act_c INTEG v(pr_vrwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_act_c INTEG i(vrwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_act_c INTEG v(pn_vwwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_act_c INTEG v(pg_vwwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_act_c INTEG v(pr_vwwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_act_c INTEG i(vwwl0_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_act_c INTEG v(pn_vwwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_act_c INTEG v(pg_vwwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_act_c INTEG v(pr_vwwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_act_c INTEG i(vwwl1_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_act_c INTEG v(pn_vwwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_act_c INTEG v(pg_vwwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_act_c INTEG v(pr_vwwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_act_c INTEG i(vwwl2_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_act_c INTEG v(pn_vwwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_act_c INTEG v(pg_vwwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_act_c INTEG v(pr_vwwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_act_c INTEG i(vwwl3_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_act_c INTEG v(pn_vbody_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_act_c INTEG v(pg_vbody_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_act_c INTEG v(pr_vbody_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_act_c INTEG i(vbody_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_act_c",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_act_c INTEG v(pn_vsub_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_act_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_act_c INTEG v(pg_vsub_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_act_c",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_act_c INTEG v(pr_vsub_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_act_c",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_act_c INTEG i(vsub_act_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_act_c_00",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_00 FIND v(sn_0_0_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_00",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_00 FIND v(sn_0_0_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_01",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_01 FIND v(sn_0_1_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_01",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_01 FIND v(sn_0_1_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_02",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_02 FIND v(sn_0_2_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_02",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_02 FIND v(sn_0_2_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_03",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_03 FIND v(sn_0_3_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_03",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_03 FIND v(sn_0_3_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_10",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_10 FIND v(sn_1_0_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_10",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_10 FIND v(sn_1_0_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_11",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_11 FIND v(sn_1_1_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_11",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_11 FIND v(sn_1_1_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_12",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_12 FIND v(sn_1_2_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_12",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_12 FIND v(sn_1_2_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_13",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_13 FIND v(sn_1_3_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_13",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_13 FIND v(sn_1_3_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_20",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_20 FIND v(sn_2_0_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_20",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_20 FIND v(sn_2_0_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_21",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_21 FIND v(sn_2_1_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_21",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_21 FIND v(sn_2_1_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_22",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_22 FIND v(sn_2_2_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_22",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_22 FIND v(sn_2_2_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_23",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_23 FIND v(sn_2_3_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_23",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_23 FIND v(sn_2_3_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_30",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_30 FIND v(sn_3_0_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_30",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_30 FIND v(sn_3_0_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_31",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_31 FIND v(sn_3_1_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_31",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_31 FIND v(sn_3_1_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_32",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_32 FIND v(sn_3_2_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_32",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_32 FIND v(sn_3_2_act_c) AT=34n"
+  },
+  {
+   "name": "sna_act_c_33",
+   "unit": "V",
+   "spice": ".meas tran sna_act_c_33 FIND v(sn_3_3_act_c) AT=5n"
+  },
+  {
+   "name": "snb_act_c_33",
+   "unit": "V",
+   "spice": ".meas tran snb_act_c_33 FIND v(sn_3_3_act_c) AT=34n"
+  },
+  {
+   "name": "rbs_act_c_0",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_c_0 FIND v(rbl_0_act_c) AT=19n"
+  },
+  {
+   "name": "snr_act_c_0",
+   "unit": "V",
+   "spice": ".meas tran snr_act_c_0 FIND v(sn_0_0_act_c) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_c_1",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_c_1 FIND v(rbl_1_act_c) AT=19n"
+  },
+  {
+   "name": "snr_act_c_1",
+   "unit": "V",
+   "spice": ".meas tran snr_act_c_1 FIND v(sn_0_1_act_c) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_c_2",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_c_2 FIND v(rbl_2_act_c) AT=19n"
+  },
+  {
+   "name": "snr_act_c_2",
+   "unit": "V",
+   "spice": ".meas tran snr_act_c_2 FIND v(sn_0_2_act_c) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_c_3",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_c_3 FIND v(rbl_3_act_c) AT=19n"
+  },
+  {
+   "name": "snr_act_c_3",
+   "unit": "V",
+   "spice": ".meas tran snr_act_c_3 FIND v(sn_0_3_act_c) AT=19.9n"
+  },
+  {
+   "name": "en_vpre0_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_act_i INTEG v(pn_vpre0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_act_i INTEG v(pg_vpre0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_act_i INTEG v(pr_vpre0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_act_i INTEG i(vpre0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_act_i INTEG v(pn_vpre1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_act_i INTEG v(pg_vpre1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_act_i INTEG v(pr_vpre1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_act_i INTEG i(vpre1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_act_i INTEG v(pn_vpre2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_act_i INTEG v(pg_vpre2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_act_i INTEG v(pr_vpre2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_act_i INTEG i(vpre2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_act_i INTEG v(pn_vpre3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_act_i INTEG v(pg_vpre3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_act_i INTEG v(pr_vpre3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_act_i INTEG i(vpre3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_act_i INTEG v(pn_vwbl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_act_i INTEG v(pg_vwbl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_act_i INTEG v(pr_vwbl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_act_i INTEG i(vwbl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_act_i INTEG v(pn_vwbl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_act_i INTEG v(pg_vwbl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_act_i INTEG v(pr_vwbl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_act_i INTEG i(vwbl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_act_i INTEG v(pn_vwbl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_act_i INTEG v(pg_vwbl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_act_i INTEG v(pr_vwbl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_act_i INTEG i(vwbl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_act_i INTEG v(pn_vwbl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_act_i INTEG v(pg_vwbl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_act_i INTEG v(pr_vwbl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_act_i INTEG i(vwbl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_act_i INTEG v(pn_vrwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_act_i INTEG v(pg_vrwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_act_i INTEG v(pr_vrwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_act_i INTEG i(vrwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_act_i INTEG v(pn_vrwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_act_i INTEG v(pg_vrwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_act_i INTEG v(pr_vrwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_act_i INTEG i(vrwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_act_i INTEG v(pn_vrwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_act_i INTEG v(pg_vrwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_act_i INTEG v(pr_vrwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_act_i INTEG i(vrwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_act_i INTEG v(pn_vrwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_act_i INTEG v(pg_vrwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_act_i INTEG v(pr_vrwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_act_i INTEG i(vrwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_act_i INTEG v(pn_vwwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_act_i INTEG v(pg_vwwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_act_i INTEG v(pr_vwwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_act_i INTEG i(vwwl0_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_act_i INTEG v(pn_vwwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_act_i INTEG v(pg_vwwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_act_i INTEG v(pr_vwwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_act_i INTEG i(vwwl1_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_act_i INTEG v(pn_vwwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_act_i INTEG v(pg_vwwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_act_i INTEG v(pr_vwwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_act_i INTEG i(vwwl2_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_act_i INTEG v(pn_vwwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_act_i INTEG v(pg_vwwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_act_i INTEG v(pr_vwwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_act_i INTEG i(vwwl3_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_act_i INTEG v(pn_vbody_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_act_i INTEG v(pg_vbody_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_act_i INTEG v(pr_vbody_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_act_i INTEG i(vbody_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_act_i",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_act_i INTEG v(pn_vsub_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_act_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_act_i INTEG v(pg_vsub_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_act_i",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_act_i INTEG v(pr_vsub_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_act_i",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_act_i INTEG i(vsub_act_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_act_i_00",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_00 FIND v(sn_0_0_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_00",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_00 FIND v(sn_0_0_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_01",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_01 FIND v(sn_0_1_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_01",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_01 FIND v(sn_0_1_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_02",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_02 FIND v(sn_0_2_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_02",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_02 FIND v(sn_0_2_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_03",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_03 FIND v(sn_0_3_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_03",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_03 FIND v(sn_0_3_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_10",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_10 FIND v(sn_1_0_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_10",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_10 FIND v(sn_1_0_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_11",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_11 FIND v(sn_1_1_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_11",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_11 FIND v(sn_1_1_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_12",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_12 FIND v(sn_1_2_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_12",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_12 FIND v(sn_1_2_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_13",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_13 FIND v(sn_1_3_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_13",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_13 FIND v(sn_1_3_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_20",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_20 FIND v(sn_2_0_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_20",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_20 FIND v(sn_2_0_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_21",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_21 FIND v(sn_2_1_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_21",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_21 FIND v(sn_2_1_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_22",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_22 FIND v(sn_2_2_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_22",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_22 FIND v(sn_2_2_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_23",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_23 FIND v(sn_2_3_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_23",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_23 FIND v(sn_2_3_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_30",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_30 FIND v(sn_3_0_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_30",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_30 FIND v(sn_3_0_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_31",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_31 FIND v(sn_3_1_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_31",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_31 FIND v(sn_3_1_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_32",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_32 FIND v(sn_3_2_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_32",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_32 FIND v(sn_3_2_act_i) AT=34n"
+  },
+  {
+   "name": "sna_act_i_33",
+   "unit": "V",
+   "spice": ".meas tran sna_act_i_33 FIND v(sn_3_3_act_i) AT=5n"
+  },
+  {
+   "name": "snb_act_i_33",
+   "unit": "V",
+   "spice": ".meas tran snb_act_i_33 FIND v(sn_3_3_act_i) AT=34n"
+  },
+  {
+   "name": "rbs_act_i_0",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_i_0 FIND v(rbl_0_act_i) AT=19n"
+  },
+  {
+   "name": "snr_act_i_0",
+   "unit": "V",
+   "spice": ".meas tran snr_act_i_0 FIND v(sn_0_0_act_i) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_i_1",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_i_1 FIND v(rbl_1_act_i) AT=19n"
+  },
+  {
+   "name": "snr_act_i_1",
+   "unit": "V",
+   "spice": ".meas tran snr_act_i_1 FIND v(sn_0_1_act_i) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_i_2",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_i_2 FIND v(rbl_2_act_i) AT=19n"
+  },
+  {
+   "name": "snr_act_i_2",
+   "unit": "V",
+   "spice": ".meas tran snr_act_i_2 FIND v(sn_0_2_act_i) AT=19.9n"
+  },
+  {
+   "name": "rbs_act_i_3",
+   "unit": "V",
+   "spice": ".meas tran rbs_act_i_3 FIND v(rbl_3_act_i) AT=19n"
+  },
+  {
+   "name": "snr_act_i_3",
+   "unit": "V",
+   "spice": ".meas tran snr_act_i_3 FIND v(sn_0_3_act_i) AT=19.9n"
+  },
+  {
+   "name": "en_vpre0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_idl_z INTEG v(pn_vpre0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_idl_z INTEG v(pg_vpre0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_idl_z INTEG v(pr_vpre0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_idl_z INTEG i(vpre0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_idl_z INTEG v(pn_vpre1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_idl_z INTEG v(pg_vpre1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_idl_z INTEG v(pr_vpre1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_idl_z INTEG i(vpre1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_idl_z INTEG v(pn_vpre2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_idl_z INTEG v(pg_vpre2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_idl_z INTEG v(pr_vpre2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_idl_z INTEG i(vpre2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_idl_z INTEG v(pn_vpre3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_idl_z INTEG v(pg_vpre3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_idl_z INTEG v(pr_vpre3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_idl_z INTEG i(vpre3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_idl_z INTEG v(pn_vwbl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_idl_z INTEG v(pg_vwbl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_idl_z INTEG v(pr_vwbl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_idl_z INTEG i(vwbl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_idl_z INTEG v(pn_vwbl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_idl_z INTEG v(pg_vwbl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_idl_z INTEG v(pr_vwbl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_idl_z INTEG i(vwbl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_idl_z INTEG v(pn_vwbl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_idl_z INTEG v(pg_vwbl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_idl_z INTEG v(pr_vwbl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_idl_z INTEG i(vwbl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_idl_z INTEG v(pn_vwbl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_idl_z INTEG v(pg_vwbl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_idl_z INTEG v(pr_vwbl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_idl_z INTEG i(vwbl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_idl_z INTEG v(pn_vrwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_idl_z INTEG v(pg_vrwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_idl_z INTEG v(pr_vrwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_idl_z INTEG i(vrwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_idl_z INTEG v(pn_vrwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_idl_z INTEG v(pg_vrwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_idl_z INTEG v(pr_vrwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_idl_z INTEG i(vrwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_idl_z INTEG v(pn_vrwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_idl_z INTEG v(pg_vrwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_idl_z INTEG v(pr_vrwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_idl_z INTEG i(vrwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_idl_z INTEG v(pn_vrwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_idl_z INTEG v(pg_vrwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_idl_z INTEG v(pr_vrwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_idl_z INTEG i(vrwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_idl_z INTEG v(pn_vwwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_idl_z INTEG v(pg_vwwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_idl_z INTEG v(pr_vwwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_idl_z INTEG i(vwwl0_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_idl_z INTEG v(pn_vwwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_idl_z INTEG v(pg_vwwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_idl_z INTEG v(pr_vwwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_idl_z INTEG i(vwwl1_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_idl_z INTEG v(pn_vwwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_idl_z INTEG v(pg_vwwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_idl_z INTEG v(pr_vwwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_idl_z INTEG i(vwwl2_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_idl_z INTEG v(pn_vwwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_idl_z INTEG v(pg_vwwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_idl_z INTEG v(pr_vwwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_idl_z INTEG i(vwwl3_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_idl_z INTEG v(pn_vbody_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_idl_z INTEG v(pg_vbody_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_idl_z INTEG v(pr_vbody_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_idl_z INTEG i(vbody_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_idl_z",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_idl_z INTEG v(pn_vsub_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_idl_z",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_idl_z INTEG v(pg_vsub_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_idl_z",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_idl_z INTEG v(pr_vsub_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_idl_z",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_idl_z INTEG i(vsub_idl_z) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_idl_z_00",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_00 FIND v(sn_0_0_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_00",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_00 FIND v(sn_0_0_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_01",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_01 FIND v(sn_0_1_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_01",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_01 FIND v(sn_0_1_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_02",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_02 FIND v(sn_0_2_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_02",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_02 FIND v(sn_0_2_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_03",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_03 FIND v(sn_0_3_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_03",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_03 FIND v(sn_0_3_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_10",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_10 FIND v(sn_1_0_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_10",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_10 FIND v(sn_1_0_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_11",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_11 FIND v(sn_1_1_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_11",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_11 FIND v(sn_1_1_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_12",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_12 FIND v(sn_1_2_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_12",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_12 FIND v(sn_1_2_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_13",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_13 FIND v(sn_1_3_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_13",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_13 FIND v(sn_1_3_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_20",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_20 FIND v(sn_2_0_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_20",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_20 FIND v(sn_2_0_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_21",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_21 FIND v(sn_2_1_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_21",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_21 FIND v(sn_2_1_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_22",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_22 FIND v(sn_2_2_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_22",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_22 FIND v(sn_2_2_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_23",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_23 FIND v(sn_2_3_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_23",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_23 FIND v(sn_2_3_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_30",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_30 FIND v(sn_3_0_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_30",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_30 FIND v(sn_3_0_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_31",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_31 FIND v(sn_3_1_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_31",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_31 FIND v(sn_3_1_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_32",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_32 FIND v(sn_3_2_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_32",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_32 FIND v(sn_3_2_idl_z) AT=34n"
+  },
+  {
+   "name": "sna_idl_z_33",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_z_33 FIND v(sn_3_3_idl_z) AT=5n"
+  },
+  {
+   "name": "snb_idl_z_33",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_z_33 FIND v(sn_3_3_idl_z) AT=34n"
+  },
+  {
+   "name": "en_vpre0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_idl_o INTEG v(pn_vpre0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_idl_o INTEG v(pg_vpre0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_idl_o INTEG v(pr_vpre0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_idl_o INTEG i(vpre0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_idl_o INTEG v(pn_vpre1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_idl_o INTEG v(pg_vpre1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_idl_o INTEG v(pr_vpre1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_idl_o INTEG i(vpre1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_idl_o INTEG v(pn_vpre2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_idl_o INTEG v(pg_vpre2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_idl_o INTEG v(pr_vpre2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_idl_o INTEG i(vpre2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_idl_o INTEG v(pn_vpre3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_idl_o INTEG v(pg_vpre3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_idl_o INTEG v(pr_vpre3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_idl_o INTEG i(vpre3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_idl_o INTEG v(pn_vwbl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_idl_o INTEG v(pg_vwbl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_idl_o INTEG v(pr_vwbl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_idl_o INTEG i(vwbl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_idl_o INTEG v(pn_vwbl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_idl_o INTEG v(pg_vwbl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_idl_o INTEG v(pr_vwbl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_idl_o INTEG i(vwbl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_idl_o INTEG v(pn_vwbl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_idl_o INTEG v(pg_vwbl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_idl_o INTEG v(pr_vwbl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_idl_o INTEG i(vwbl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_idl_o INTEG v(pn_vwbl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_idl_o INTEG v(pg_vwbl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_idl_o INTEG v(pr_vwbl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_idl_o INTEG i(vwbl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_idl_o INTEG v(pn_vrwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_idl_o INTEG v(pg_vrwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_idl_o INTEG v(pr_vrwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_idl_o INTEG i(vrwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_idl_o INTEG v(pn_vrwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_idl_o INTEG v(pg_vrwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_idl_o INTEG v(pr_vrwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_idl_o INTEG i(vrwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_idl_o INTEG v(pn_vrwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_idl_o INTEG v(pg_vrwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_idl_o INTEG v(pr_vrwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_idl_o INTEG i(vrwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_idl_o INTEG v(pn_vrwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_idl_o INTEG v(pg_vrwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_idl_o INTEG v(pr_vrwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_idl_o INTEG i(vrwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_idl_o INTEG v(pn_vwwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_idl_o INTEG v(pg_vwwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_idl_o INTEG v(pr_vwwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_idl_o INTEG i(vwwl0_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_idl_o INTEG v(pn_vwwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_idl_o INTEG v(pg_vwwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_idl_o INTEG v(pr_vwwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_idl_o INTEG i(vwwl1_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_idl_o INTEG v(pn_vwwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_idl_o INTEG v(pg_vwwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_idl_o INTEG v(pr_vwwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_idl_o INTEG i(vwwl2_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_idl_o INTEG v(pn_vwwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_idl_o INTEG v(pg_vwwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_idl_o INTEG v(pr_vwwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_idl_o INTEG i(vwwl3_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_idl_o INTEG v(pn_vbody_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_idl_o INTEG v(pg_vbody_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_idl_o INTEG v(pr_vbody_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_idl_o INTEG i(vbody_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_idl_o",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_idl_o INTEG v(pn_vsub_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_idl_o",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_idl_o INTEG v(pg_vsub_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_idl_o",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_idl_o INTEG v(pr_vsub_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_idl_o",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_idl_o INTEG i(vsub_idl_o) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_idl_o_00",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_00 FIND v(sn_0_0_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_00",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_00 FIND v(sn_0_0_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_01",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_01 FIND v(sn_0_1_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_01",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_01 FIND v(sn_0_1_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_02",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_02 FIND v(sn_0_2_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_02",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_02 FIND v(sn_0_2_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_03",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_03 FIND v(sn_0_3_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_03",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_03 FIND v(sn_0_3_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_10",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_10 FIND v(sn_1_0_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_10",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_10 FIND v(sn_1_0_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_11",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_11 FIND v(sn_1_1_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_11",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_11 FIND v(sn_1_1_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_12",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_12 FIND v(sn_1_2_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_12",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_12 FIND v(sn_1_2_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_13",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_13 FIND v(sn_1_3_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_13",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_13 FIND v(sn_1_3_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_20",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_20 FIND v(sn_2_0_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_20",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_20 FIND v(sn_2_0_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_21",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_21 FIND v(sn_2_1_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_21",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_21 FIND v(sn_2_1_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_22",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_22 FIND v(sn_2_2_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_22",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_22 FIND v(sn_2_2_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_23",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_23 FIND v(sn_2_3_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_23",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_23 FIND v(sn_2_3_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_30",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_30 FIND v(sn_3_0_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_30",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_30 FIND v(sn_3_0_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_31",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_31 FIND v(sn_3_1_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_31",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_31 FIND v(sn_3_1_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_32",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_32 FIND v(sn_3_2_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_32",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_32 FIND v(sn_3_2_idl_o) AT=34n"
+  },
+  {
+   "name": "sna_idl_o_33",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_o_33 FIND v(sn_3_3_idl_o) AT=5n"
+  },
+  {
+   "name": "snb_idl_o_33",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_o_33 FIND v(sn_3_3_idl_o) AT=34n"
+  },
+  {
+   "name": "en_vpre0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_idl_c INTEG v(pn_vpre0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_idl_c INTEG v(pg_vpre0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_idl_c INTEG v(pr_vpre0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_idl_c INTEG i(vpre0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_idl_c INTEG v(pn_vpre1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_idl_c INTEG v(pg_vpre1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_idl_c INTEG v(pr_vpre1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_idl_c INTEG i(vpre1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_idl_c INTEG v(pn_vpre2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_idl_c INTEG v(pg_vpre2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_idl_c INTEG v(pr_vpre2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_idl_c INTEG i(vpre2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_idl_c INTEG v(pn_vpre3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_idl_c INTEG v(pg_vpre3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_idl_c INTEG v(pr_vpre3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_idl_c INTEG i(vpre3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_idl_c INTEG v(pn_vwbl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_idl_c INTEG v(pg_vwbl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_idl_c INTEG v(pr_vwbl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_idl_c INTEG i(vwbl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_idl_c INTEG v(pn_vwbl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_idl_c INTEG v(pg_vwbl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_idl_c INTEG v(pr_vwbl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_idl_c INTEG i(vwbl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_idl_c INTEG v(pn_vwbl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_idl_c INTEG v(pg_vwbl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_idl_c INTEG v(pr_vwbl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_idl_c INTEG i(vwbl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_idl_c INTEG v(pn_vwbl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_idl_c INTEG v(pg_vwbl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_idl_c INTEG v(pr_vwbl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_idl_c INTEG i(vwbl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_idl_c INTEG v(pn_vrwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_idl_c INTEG v(pg_vrwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_idl_c INTEG v(pr_vrwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_idl_c INTEG i(vrwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_idl_c INTEG v(pn_vrwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_idl_c INTEG v(pg_vrwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_idl_c INTEG v(pr_vrwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_idl_c INTEG i(vrwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_idl_c INTEG v(pn_vrwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_idl_c INTEG v(pg_vrwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_idl_c INTEG v(pr_vrwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_idl_c INTEG i(vrwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_idl_c INTEG v(pn_vrwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_idl_c INTEG v(pg_vrwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_idl_c INTEG v(pr_vrwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_idl_c INTEG i(vrwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_idl_c INTEG v(pn_vwwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_idl_c INTEG v(pg_vwwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_idl_c INTEG v(pr_vwwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_idl_c INTEG i(vwwl0_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_idl_c INTEG v(pn_vwwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_idl_c INTEG v(pg_vwwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_idl_c INTEG v(pr_vwwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_idl_c INTEG i(vwwl1_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_idl_c INTEG v(pn_vwwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_idl_c INTEG v(pg_vwwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_idl_c INTEG v(pr_vwwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_idl_c INTEG i(vwwl2_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_idl_c INTEG v(pn_vwwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_idl_c INTEG v(pg_vwwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_idl_c INTEG v(pr_vwwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_idl_c INTEG i(vwwl3_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_idl_c INTEG v(pn_vbody_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_idl_c INTEG v(pg_vbody_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_idl_c INTEG v(pr_vbody_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_idl_c INTEG i(vbody_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_idl_c",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_idl_c INTEG v(pn_vsub_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_idl_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_idl_c INTEG v(pg_vsub_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_idl_c",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_idl_c INTEG v(pr_vsub_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_idl_c",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_idl_c INTEG i(vsub_idl_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_idl_c_00",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_00 FIND v(sn_0_0_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_00",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_00 FIND v(sn_0_0_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_01",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_01 FIND v(sn_0_1_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_01",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_01 FIND v(sn_0_1_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_02",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_02 FIND v(sn_0_2_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_02",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_02 FIND v(sn_0_2_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_03",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_03 FIND v(sn_0_3_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_03",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_03 FIND v(sn_0_3_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_10",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_10 FIND v(sn_1_0_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_10",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_10 FIND v(sn_1_0_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_11",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_11 FIND v(sn_1_1_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_11",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_11 FIND v(sn_1_1_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_12",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_12 FIND v(sn_1_2_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_12",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_12 FIND v(sn_1_2_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_13",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_13 FIND v(sn_1_3_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_13",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_13 FIND v(sn_1_3_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_20",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_20 FIND v(sn_2_0_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_20",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_20 FIND v(sn_2_0_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_21",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_21 FIND v(sn_2_1_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_21",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_21 FIND v(sn_2_1_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_22",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_22 FIND v(sn_2_2_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_22",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_22 FIND v(sn_2_2_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_23",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_23 FIND v(sn_2_3_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_23",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_23 FIND v(sn_2_3_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_30",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_30 FIND v(sn_3_0_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_30",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_30 FIND v(sn_3_0_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_31",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_31 FIND v(sn_3_1_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_31",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_31 FIND v(sn_3_1_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_32",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_32 FIND v(sn_3_2_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_32",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_32 FIND v(sn_3_2_idl_c) AT=34n"
+  },
+  {
+   "name": "sna_idl_c_33",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_c_33 FIND v(sn_3_3_idl_c) AT=5n"
+  },
+  {
+   "name": "snb_idl_c_33",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_c_33 FIND v(sn_3_3_idl_c) AT=34n"
+  },
+  {
+   "name": "en_vpre0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_idl_i INTEG v(pn_vpre0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_idl_i INTEG v(pg_vpre0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_idl_i INTEG v(pr_vpre0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_idl_i INTEG i(vpre0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_idl_i INTEG v(pn_vpre1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_idl_i INTEG v(pg_vpre1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_idl_i INTEG v(pr_vpre1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_idl_i INTEG i(vpre1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_idl_i INTEG v(pn_vpre2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_idl_i INTEG v(pg_vpre2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_idl_i INTEG v(pr_vpre2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_idl_i INTEG i(vpre2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_idl_i INTEG v(pn_vpre3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_idl_i INTEG v(pg_vpre3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_idl_i INTEG v(pr_vpre3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_idl_i INTEG i(vpre3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_idl_i INTEG v(pn_vwbl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_idl_i INTEG v(pg_vwbl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_idl_i INTEG v(pr_vwbl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_idl_i INTEG i(vwbl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_idl_i INTEG v(pn_vwbl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_idl_i INTEG v(pg_vwbl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_idl_i INTEG v(pr_vwbl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_idl_i INTEG i(vwbl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_idl_i INTEG v(pn_vwbl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_idl_i INTEG v(pg_vwbl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_idl_i INTEG v(pr_vwbl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_idl_i INTEG i(vwbl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_idl_i INTEG v(pn_vwbl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_idl_i INTEG v(pg_vwbl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_idl_i INTEG v(pr_vwbl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_idl_i INTEG i(vwbl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_idl_i INTEG v(pn_vrwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_idl_i INTEG v(pg_vrwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_idl_i INTEG v(pr_vrwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_idl_i INTEG i(vrwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_idl_i INTEG v(pn_vrwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_idl_i INTEG v(pg_vrwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_idl_i INTEG v(pr_vrwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_idl_i INTEG i(vrwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_idl_i INTEG v(pn_vrwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_idl_i INTEG v(pg_vrwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_idl_i INTEG v(pr_vrwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_idl_i INTEG i(vrwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_idl_i INTEG v(pn_vrwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_idl_i INTEG v(pg_vrwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_idl_i INTEG v(pr_vrwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_idl_i INTEG i(vrwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_idl_i INTEG v(pn_vwwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_idl_i INTEG v(pg_vwwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_idl_i INTEG v(pr_vwwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_idl_i INTEG i(vwwl0_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_idl_i INTEG v(pn_vwwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_idl_i INTEG v(pg_vwwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_idl_i INTEG v(pr_vwwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_idl_i INTEG i(vwwl1_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_idl_i INTEG v(pn_vwwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_idl_i INTEG v(pg_vwwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_idl_i INTEG v(pr_vwwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_idl_i INTEG i(vwwl2_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_idl_i INTEG v(pn_vwwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_idl_i INTEG v(pg_vwwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_idl_i INTEG v(pr_vwwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_idl_i INTEG i(vwwl3_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_idl_i INTEG v(pn_vbody_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_idl_i INTEG v(pg_vbody_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_idl_i INTEG v(pr_vbody_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_idl_i INTEG i(vbody_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_idl_i",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_idl_i INTEG v(pn_vsub_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_idl_i",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_idl_i INTEG v(pg_vsub_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_idl_i",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_idl_i INTEG v(pr_vsub_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_idl_i",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_idl_i INTEG i(vsub_idl_i) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_idl_i_00",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_00 FIND v(sn_0_0_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_00",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_00 FIND v(sn_0_0_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_01",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_01 FIND v(sn_0_1_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_01",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_01 FIND v(sn_0_1_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_02",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_02 FIND v(sn_0_2_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_02",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_02 FIND v(sn_0_2_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_03",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_03 FIND v(sn_0_3_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_03",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_03 FIND v(sn_0_3_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_10",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_10 FIND v(sn_1_0_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_10",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_10 FIND v(sn_1_0_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_11",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_11 FIND v(sn_1_1_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_11",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_11 FIND v(sn_1_1_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_12",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_12 FIND v(sn_1_2_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_12",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_12 FIND v(sn_1_2_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_13",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_13 FIND v(sn_1_3_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_13",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_13 FIND v(sn_1_3_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_20",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_20 FIND v(sn_2_0_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_20",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_20 FIND v(sn_2_0_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_21",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_21 FIND v(sn_2_1_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_21",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_21 FIND v(sn_2_1_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_22",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_22 FIND v(sn_2_2_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_22",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_22 FIND v(sn_2_2_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_23",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_23 FIND v(sn_2_3_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_23",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_23 FIND v(sn_2_3_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_30",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_30 FIND v(sn_3_0_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_30",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_30 FIND v(sn_3_0_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_31",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_31 FIND v(sn_3_1_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_31",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_31 FIND v(sn_3_1_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_32",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_32 FIND v(sn_3_2_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_32",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_32 FIND v(sn_3_2_idl_i) AT=34n"
+  },
+  {
+   "name": "sna_idl_i_33",
+   "unit": "V",
+   "spice": ".meas tran sna_idl_i_33 FIND v(sn_3_3_idl_i) AT=5n"
+  },
+  {
+   "name": "snb_idl_i_33",
+   "unit": "V",
+   "spice": ".meas tran snb_idl_i_33 FIND v(sn_3_3_idl_i) AT=34n"
+  },
+  {
+   "name": "en_vpre0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre0_nop_c INTEG v(pn_vpre0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre0_nop_c INTEG v(pg_vpre0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre0_nop_c INTEG v(pr_vpre0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre0_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre0_nop_c INTEG i(vpre0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre1_nop_c INTEG v(pn_vpre1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre1_nop_c INTEG v(pg_vpre1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre1_nop_c INTEG v(pr_vpre1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre1_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre1_nop_c INTEG i(vpre1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre2_nop_c INTEG v(pn_vpre2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre2_nop_c INTEG v(pg_vpre2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre2_nop_c INTEG v(pr_vpre2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre2_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre2_nop_c INTEG i(vpre2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vpre3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vpre3_nop_c INTEG v(pn_vpre3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vpre3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vpre3_nop_c INTEG v(pg_vpre3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vpre3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vpre3_nop_c INTEG v(pr_vpre3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vpre3_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vpre3_nop_c INTEG i(vpre3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl0_nop_c INTEG v(pn_vwbl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl0_nop_c INTEG v(pg_vwbl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl0_nop_c INTEG v(pr_vwbl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl0_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl0_nop_c INTEG i(vwbl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl1_nop_c INTEG v(pn_vwbl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl1_nop_c INTEG v(pg_vwbl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl1_nop_c INTEG v(pr_vwbl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl1_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl1_nop_c INTEG i(vwbl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl2_nop_c INTEG v(pn_vwbl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl2_nop_c INTEG v(pg_vwbl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl2_nop_c INTEG v(pr_vwbl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl2_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl2_nop_c INTEG i(vwbl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwbl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwbl3_nop_c INTEG v(pn_vwbl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwbl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwbl3_nop_c INTEG v(pg_vwbl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwbl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwbl3_nop_c INTEG v(pr_vwbl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwbl3_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwbl3_nop_c INTEG i(vwbl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl0_nop_c INTEG v(pn_vrwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl0_nop_c INTEG v(pg_vrwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl0_nop_c INTEG v(pr_vrwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl0_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl0_nop_c INTEG i(vrwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl1_nop_c INTEG v(pn_vrwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl1_nop_c INTEG v(pg_vrwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl1_nop_c INTEG v(pr_vrwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl1_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl1_nop_c INTEG i(vrwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl2_nop_c INTEG v(pn_vrwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl2_nop_c INTEG v(pg_vrwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl2_nop_c INTEG v(pr_vrwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl2_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl2_nop_c INTEG i(vrwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vrwl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vrwl3_nop_c INTEG v(pn_vrwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vrwl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vrwl3_nop_c INTEG v(pg_vrwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vrwl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vrwl3_nop_c INTEG v(pr_vrwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vrwl3_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vrwl3_nop_c INTEG i(vrwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl0_nop_c INTEG v(pn_vwwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl0_nop_c INTEG v(pg_vwwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl0_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl0_nop_c INTEG v(pr_vwwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl0_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl0_nop_c INTEG i(vwwl0_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl1_nop_c INTEG v(pn_vwwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl1_nop_c INTEG v(pg_vwwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl1_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl1_nop_c INTEG v(pr_vwwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl1_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl1_nop_c INTEG i(vwwl1_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl2_nop_c INTEG v(pn_vwwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl2_nop_c INTEG v(pg_vwwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl2_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl2_nop_c INTEG v(pr_vwwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl2_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl2_nop_c INTEG i(vwwl2_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vwwl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vwwl3_nop_c INTEG v(pn_vwwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vwwl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vwwl3_nop_c INTEG v(pg_vwwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vwwl3_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vwwl3_nop_c INTEG v(pr_vwwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vwwl3_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vwwl3_nop_c INTEG i(vwwl3_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vbody_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vbody_nop_c INTEG v(pn_vbody_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vbody_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vbody_nop_c INTEG v(pg_vbody_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vbody_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vbody_nop_c INTEG v(pr_vbody_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vbody_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vbody_nop_c INTEG i(vbody_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "en_vsub_nop_c",
+   "unit": "J",
+   "spice": ".meas tran en_vsub_nop_c INTEG v(pn_vsub_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "eg_vsub_nop_c",
+   "unit": "J",
+   "spice": ".meas tran eg_vsub_nop_c INTEG v(pg_vsub_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "er_vsub_nop_c",
+   "unit": "J",
+   "spice": ".meas tran er_vsub_nop_c INTEG v(pr_vsub_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "q_vsub_nop_c",
+   "unit": "C",
+   "spice": ".meas tran q_vsub_nop_c INTEG i(vsub_nop_c) FROM=5n TO=34n"
+  },
+  {
+   "name": "sna_nop_c_00",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_00 FIND v(sn_0_0_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_00",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_00 FIND v(sn_0_0_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_01",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_01 FIND v(sn_0_1_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_01",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_01 FIND v(sn_0_1_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_02",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_02 FIND v(sn_0_2_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_02",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_02 FIND v(sn_0_2_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_03",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_03 FIND v(sn_0_3_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_03",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_03 FIND v(sn_0_3_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_10",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_10 FIND v(sn_1_0_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_10",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_10 FIND v(sn_1_0_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_11",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_11 FIND v(sn_1_1_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_11",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_11 FIND v(sn_1_1_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_12",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_12 FIND v(sn_1_2_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_12",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_12 FIND v(sn_1_2_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_13",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_13 FIND v(sn_1_3_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_13",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_13 FIND v(sn_1_3_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_20",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_20 FIND v(sn_2_0_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_20",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_20 FIND v(sn_2_0_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_21",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_21 FIND v(sn_2_1_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_21",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_21 FIND v(sn_2_1_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_22",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_22 FIND v(sn_2_2_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_22",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_22 FIND v(sn_2_2_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_23",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_23 FIND v(sn_2_3_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_23",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_23 FIND v(sn_2_3_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_30",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_30 FIND v(sn_3_0_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_30",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_30 FIND v(sn_3_0_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_31",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_31 FIND v(sn_3_1_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_31",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_31 FIND v(sn_3_1_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_32",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_32 FIND v(sn_3_2_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_32",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_32 FIND v(sn_3_2_nop_c) AT=34n"
+  },
+  {
+   "name": "sna_nop_c_33",
+   "unit": "V",
+   "spice": ".meas tran sna_nop_c_33 FIND v(sn_3_3_nop_c) AT=5n"
+  },
+  {
+   "name": "snb_nop_c_33",
+   "unit": "V",
+   "spice": ".meas tran snb_nop_c_33 FIND v(sn_3_3_nop_c) AT=34n"
+  },
+  {
+   "name": "rbs_nop_c_0",
+   "unit": "V",
+   "spice": ".meas tran rbs_nop_c_0 FIND v(rbl_0_nop_c) AT=19n"
+  },
+  {
+   "name": "snr_nop_c_0",
+   "unit": "V",
+   "spice": ".meas tran snr_nop_c_0 FIND v(sn_0_0_nop_c) AT=19.9n"
+  },
+  {
+   "name": "rbs_nop_c_1",
+   "unit": "V",
+   "spice": ".meas tran rbs_nop_c_1 FIND v(rbl_1_nop_c) AT=19n"
+  },
+  {
+   "name": "snr_nop_c_1",
+   "unit": "V",
+   "spice": ".meas tran snr_nop_c_1 FIND v(sn_0_1_nop_c) AT=19.9n"
+  },
+  {
+   "name": "rbs_nop_c_2",
+   "unit": "V",
+   "spice": ".meas tran rbs_nop_c_2 FIND v(rbl_2_nop_c) AT=19n"
+  },
+  {
+   "name": "snr_nop_c_2",
+   "unit": "V",
+   "spice": ".meas tran snr_nop_c_2 FIND v(sn_0_2_nop_c) AT=19.9n"
+  },
+  {
+   "name": "rbs_nop_c_3",
+   "unit": "V",
+   "spice": ".meas tran rbs_nop_c_3 FIND v(rbl_3_nop_c) AT=19n"
+  },
+  {
+   "name": "snr_nop_c_3",
+   "unit": "V",
+   "spice": ".meas tran snr_nop_c_3 FIND v(sn_0_3_nop_c) AT=19.9n"
+  },
+  {
+   "name": "snref_0",
+   "unit": "V",
+   "spice": ".meas tran snref_0 FIND v(sn_0_0_refw) AT=44n"
+  },
+  {
+   "name": "snref_1",
+   "unit": "V",
+   "spice": ".meas tran snref_1 FIND v(sn_0_1_refw) AT=44n"
+  },
+  {
+   "name": "snref_2",
+   "unit": "V",
+   "spice": ".meas tran snref_2 FIND v(sn_0_2_refw) AT=44n"
+  },
+  {
+   "name": "snref_3",
+   "unit": "V",
+   "spice": ".meas tran snref_3 FIND v(sn_0_3_refw) AT=44n"
+  }
+ ],
+ "options": {
+  "timeout_s": 3600,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}

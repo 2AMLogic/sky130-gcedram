@@ -1,0 +1,60 @@
+name: digital-regressions
+
+# Behavioral Verilog regressions (issue #105): refresh scheduler, SPI control
+# and control integration, each with its mutation suite, run serially under a
+# pinned Icarus Verilog built from source (digital/ci/install_iverilog.sh).
+# Behavioral regression only: not physical CDC, synthesis, timing or macro
+# sign-off. Read-only token, no secrets; fork PRs run via `pull_request`.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  digital-regressions:
+    runs-on: ubuntu-latest
+    # Measured uncached hosted run: 16m38s (build 2m21s, regressions 13m51s;
+    # see digital/ci/README.md). Provisional bound, ~2.7x headroom.
+    timeout-minutes: 45
+    env:
+      IVERILOG_PREFIX: ${{ github.workspace }}/.iverilog-prefix
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Key = pinned rev (hash of the installer, which holds the commit) + OS/arch.
+      - name: Cache pinned Icarus Verilog
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.IVERILOG_PREFIX }}
+          key: iverilog-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('digital/ci/install_iverilog.sh') }}
+
+      - name: Install build dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gperf bison flex g++ make
+
+      - name: Build pinned Icarus Verilog
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: digital/ci/install_iverilog.sh "$IVERILOG_PREFIX" "$RUNNER_TEMP/iverilog-build"
+
+      - name: Put pinned simulator on PATH
+        run: echo "$IVERILOG_PREFIX/bin" >> "$GITHUB_PATH"
+
+      - name: Behavioral regressions (serial)
+        run: digital/ci/run_digital_regressions.sh "$RUNNER_TEMP/digital-logs"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: digital-regression-logs
+          path: ${{ runner.temp }}/digital-logs
+          if-no-files-found: warn

@@ -88,3 +88,12 @@ python3 sim/refresh-overhead/test_refresh_overhead.py
 
 Re-running appends only keys not already present; existing rows are never
 rewritten (append-only evidence).
+
+## Appended record: measured `t_row_refresh_op` (issue #110)
+
+The scenarios above are unchanged (their phases remain ASSUMPTION). A later,
+separate record feeds the **measured** slowest-corner value from
+[`sim/refresh-op`](../refresh-op/README.md) into the same Section 7 formula:
+`python3 -I sim/refresh-overhead/eval_measured_t_row.py sim/refresh-op/results/refresh_op_summary_<RUN_ID>.json`
+appends to `results/refresh_overhead_measured.csv` (new file; the two CSVs
+above are not touched). Results and caveats are in the `refresh-op` README.

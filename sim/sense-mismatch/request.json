@@ -1,0 +1,2310 @@
+{
+ "netlist": "sense_mismatch.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt_mm",
+   "fs_mm",
+   "ss_mm",
+   "sf_mm"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "exclude": [
+  {
+   "process": "tt_mm",
+   "temperature_c": 125
+  },
+  {
+   "process": "fs_mm",
+   "temperature_c": 125
+  },
+  {
+   "process": "ss_mm",
+   "temperature_c": 27
+  },
+  {
+   "process": "sf_mm",
+   "temperature_c": 27
+  }
+ ],
+ "monte_carlo": {
+  "n": 40,
+  "seed": 2026100981,
+  "vary": "mismatch",
+  "quantiles": [
+   2.5,
+   50,
+   97.5
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 30n 0 50p uic"
+ },
+ "measurements": [
+  {
+   "name": "din_sz000_0",
+   "unit": "V",
+   "spice": ".meas tran din_sz000_0 FIND v(d_sz000_0) AT=20n"
+  },
+  {
+   "name": "dend_sz000_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sz000_0 FIND v(d_sz000_0) AT=30n"
+  },
+  {
+   "name": "tdec_sz000_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sz000_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sz000_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sz000_1",
+   "unit": "V",
+   "spice": ".meas tran din_sz000_1 FIND v(d_sz000_1) AT=20n"
+  },
+  {
+   "name": "dend_sz000_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sz000_1 FIND v(d_sz000_1) AT=30n"
+  },
+  {
+   "name": "tdec_sz000_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sz000_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sz000_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sz000_2",
+   "unit": "V",
+   "spice": ".meas tran din_sz000_2 FIND v(d_sz000_2) AT=20n"
+  },
+  {
+   "name": "dend_sz000_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sz000_2 FIND v(d_sz000_2) AT=30n"
+  },
+  {
+   "name": "tdec_sz000_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sz000_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sz000_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sz000_3",
+   "unit": "V",
+   "spice": ".meas tran din_sz000_3 FIND v(d_sz000_3) AT=20n"
+  },
+  {
+   "name": "dend_sz000_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sz000_3 FIND v(d_sz000_3) AT=30n"
+  },
+  {
+   "name": "tdec_sz000_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sz000_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sz000_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sz000_4",
+   "unit": "V",
+   "spice": ".meas tran din_sz000_4 FIND v(d_sz000_4) AT=20n"
+  },
+  {
+   "name": "dend_sz000_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sz000_4 FIND v(d_sz000_4) AT=30n"
+  },
+  {
+   "name": "tdec_sz000_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sz000_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sz000_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sz000_5",
+   "unit": "V",
+   "spice": ".meas tran din_sz000_5 FIND v(d_sz000_5) AT=20n"
+  },
+  {
+   "name": "dend_sz000_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sz000_5 FIND v(d_sz000_5) AT=30n"
+  },
+  {
+   "name": "tdec_sz000_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sz000_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sz000_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp002_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp002_0 FIND v(d_sp002_0) AT=20n"
+  },
+  {
+   "name": "dend_sp002_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp002_0 FIND v(d_sp002_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp002_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp002_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp002_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp002_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp002_1 FIND v(d_sp002_1) AT=20n"
+  },
+  {
+   "name": "dend_sp002_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp002_1 FIND v(d_sp002_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp002_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp002_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp002_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp002_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp002_2 FIND v(d_sp002_2) AT=20n"
+  },
+  {
+   "name": "dend_sp002_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp002_2 FIND v(d_sp002_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp002_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp002_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp002_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp002_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp002_3 FIND v(d_sp002_3) AT=20n"
+  },
+  {
+   "name": "dend_sp002_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp002_3 FIND v(d_sp002_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp002_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp002_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp002_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp002_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp002_4 FIND v(d_sp002_4) AT=20n"
+  },
+  {
+   "name": "dend_sp002_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp002_4 FIND v(d_sp002_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp002_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp002_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp002_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp002_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp002_5 FIND v(d_sp002_5) AT=20n"
+  },
+  {
+   "name": "dend_sp002_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp002_5 FIND v(d_sp002_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp002_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp002_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp002_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm002_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm002_0 FIND v(d_sm002_0) AT=20n"
+  },
+  {
+   "name": "dend_sm002_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm002_0 FIND v(d_sm002_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm002_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm002_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm002_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm002_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm002_1 FIND v(d_sm002_1) AT=20n"
+  },
+  {
+   "name": "dend_sm002_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm002_1 FIND v(d_sm002_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm002_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm002_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm002_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm002_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm002_2 FIND v(d_sm002_2) AT=20n"
+  },
+  {
+   "name": "dend_sm002_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm002_2 FIND v(d_sm002_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm002_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm002_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm002_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm002_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm002_3 FIND v(d_sm002_3) AT=20n"
+  },
+  {
+   "name": "dend_sm002_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm002_3 FIND v(d_sm002_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm002_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm002_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm002_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm002_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm002_4 FIND v(d_sm002_4) AT=20n"
+  },
+  {
+   "name": "dend_sm002_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm002_4 FIND v(d_sm002_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm002_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm002_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm002_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm002_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm002_5 FIND v(d_sm002_5) AT=20n"
+  },
+  {
+   "name": "dend_sm002_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm002_5 FIND v(d_sm002_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm002_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm002_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm002_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp005_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp005_0 FIND v(d_sp005_0) AT=20n"
+  },
+  {
+   "name": "dend_sp005_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp005_0 FIND v(d_sp005_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp005_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp005_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp005_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp005_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp005_1 FIND v(d_sp005_1) AT=20n"
+  },
+  {
+   "name": "dend_sp005_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp005_1 FIND v(d_sp005_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp005_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp005_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp005_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp005_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp005_2 FIND v(d_sp005_2) AT=20n"
+  },
+  {
+   "name": "dend_sp005_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp005_2 FIND v(d_sp005_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp005_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp005_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp005_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp005_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp005_3 FIND v(d_sp005_3) AT=20n"
+  },
+  {
+   "name": "dend_sp005_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp005_3 FIND v(d_sp005_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp005_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp005_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp005_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp005_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp005_4 FIND v(d_sp005_4) AT=20n"
+  },
+  {
+   "name": "dend_sp005_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp005_4 FIND v(d_sp005_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp005_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp005_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp005_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp005_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp005_5 FIND v(d_sp005_5) AT=20n"
+  },
+  {
+   "name": "dend_sp005_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp005_5 FIND v(d_sp005_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp005_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp005_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp005_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm005_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm005_0 FIND v(d_sm005_0) AT=20n"
+  },
+  {
+   "name": "dend_sm005_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm005_0 FIND v(d_sm005_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm005_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm005_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm005_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm005_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm005_1 FIND v(d_sm005_1) AT=20n"
+  },
+  {
+   "name": "dend_sm005_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm005_1 FIND v(d_sm005_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm005_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm005_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm005_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm005_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm005_2 FIND v(d_sm005_2) AT=20n"
+  },
+  {
+   "name": "dend_sm005_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm005_2 FIND v(d_sm005_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm005_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm005_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm005_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm005_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm005_3 FIND v(d_sm005_3) AT=20n"
+  },
+  {
+   "name": "dend_sm005_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm005_3 FIND v(d_sm005_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm005_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm005_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm005_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm005_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm005_4 FIND v(d_sm005_4) AT=20n"
+  },
+  {
+   "name": "dend_sm005_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm005_4 FIND v(d_sm005_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm005_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm005_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm005_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm005_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm005_5 FIND v(d_sm005_5) AT=20n"
+  },
+  {
+   "name": "dend_sm005_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm005_5 FIND v(d_sm005_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm005_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm005_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm005_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp010_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp010_0 FIND v(d_sp010_0) AT=20n"
+  },
+  {
+   "name": "dend_sp010_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp010_0 FIND v(d_sp010_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp010_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp010_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp010_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp010_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp010_1 FIND v(d_sp010_1) AT=20n"
+  },
+  {
+   "name": "dend_sp010_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp010_1 FIND v(d_sp010_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp010_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp010_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp010_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp010_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp010_2 FIND v(d_sp010_2) AT=20n"
+  },
+  {
+   "name": "dend_sp010_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp010_2 FIND v(d_sp010_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp010_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp010_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp010_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp010_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp010_3 FIND v(d_sp010_3) AT=20n"
+  },
+  {
+   "name": "dend_sp010_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp010_3 FIND v(d_sp010_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp010_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp010_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp010_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp010_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp010_4 FIND v(d_sp010_4) AT=20n"
+  },
+  {
+   "name": "dend_sp010_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp010_4 FIND v(d_sp010_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp010_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp010_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp010_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp010_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp010_5 FIND v(d_sp010_5) AT=20n"
+  },
+  {
+   "name": "dend_sp010_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp010_5 FIND v(d_sp010_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp010_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp010_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp010_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm010_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm010_0 FIND v(d_sm010_0) AT=20n"
+  },
+  {
+   "name": "dend_sm010_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm010_0 FIND v(d_sm010_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm010_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm010_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm010_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm010_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm010_1 FIND v(d_sm010_1) AT=20n"
+  },
+  {
+   "name": "dend_sm010_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm010_1 FIND v(d_sm010_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm010_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm010_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm010_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm010_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm010_2 FIND v(d_sm010_2) AT=20n"
+  },
+  {
+   "name": "dend_sm010_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm010_2 FIND v(d_sm010_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm010_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm010_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm010_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm010_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm010_3 FIND v(d_sm010_3) AT=20n"
+  },
+  {
+   "name": "dend_sm010_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm010_3 FIND v(d_sm010_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm010_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm010_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm010_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm010_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm010_4 FIND v(d_sm010_4) AT=20n"
+  },
+  {
+   "name": "dend_sm010_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm010_4 FIND v(d_sm010_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm010_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm010_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm010_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm010_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm010_5 FIND v(d_sm010_5) AT=20n"
+  },
+  {
+   "name": "dend_sm010_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm010_5 FIND v(d_sm010_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm010_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm010_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm010_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp015_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp015_0 FIND v(d_sp015_0) AT=20n"
+  },
+  {
+   "name": "dend_sp015_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp015_0 FIND v(d_sp015_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp015_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp015_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp015_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp015_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp015_1 FIND v(d_sp015_1) AT=20n"
+  },
+  {
+   "name": "dend_sp015_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp015_1 FIND v(d_sp015_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp015_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp015_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp015_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp015_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp015_2 FIND v(d_sp015_2) AT=20n"
+  },
+  {
+   "name": "dend_sp015_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp015_2 FIND v(d_sp015_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp015_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp015_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp015_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp015_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp015_3 FIND v(d_sp015_3) AT=20n"
+  },
+  {
+   "name": "dend_sp015_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp015_3 FIND v(d_sp015_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp015_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp015_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp015_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp015_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp015_4 FIND v(d_sp015_4) AT=20n"
+  },
+  {
+   "name": "dend_sp015_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp015_4 FIND v(d_sp015_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp015_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp015_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp015_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp015_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp015_5 FIND v(d_sp015_5) AT=20n"
+  },
+  {
+   "name": "dend_sp015_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp015_5 FIND v(d_sp015_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp015_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp015_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp015_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm015_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm015_0 FIND v(d_sm015_0) AT=20n"
+  },
+  {
+   "name": "dend_sm015_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm015_0 FIND v(d_sm015_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm015_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm015_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm015_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm015_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm015_1 FIND v(d_sm015_1) AT=20n"
+  },
+  {
+   "name": "dend_sm015_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm015_1 FIND v(d_sm015_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm015_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm015_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm015_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm015_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm015_2 FIND v(d_sm015_2) AT=20n"
+  },
+  {
+   "name": "dend_sm015_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm015_2 FIND v(d_sm015_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm015_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm015_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm015_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm015_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm015_3 FIND v(d_sm015_3) AT=20n"
+  },
+  {
+   "name": "dend_sm015_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm015_3 FIND v(d_sm015_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm015_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm015_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm015_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm015_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm015_4 FIND v(d_sm015_4) AT=20n"
+  },
+  {
+   "name": "dend_sm015_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm015_4 FIND v(d_sm015_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm015_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm015_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm015_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm015_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm015_5 FIND v(d_sm015_5) AT=20n"
+  },
+  {
+   "name": "dend_sm015_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm015_5 FIND v(d_sm015_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm015_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm015_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm015_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp020_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp020_0 FIND v(d_sp020_0) AT=20n"
+  },
+  {
+   "name": "dend_sp020_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp020_0 FIND v(d_sp020_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp020_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp020_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp020_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp020_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp020_1 FIND v(d_sp020_1) AT=20n"
+  },
+  {
+   "name": "dend_sp020_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp020_1 FIND v(d_sp020_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp020_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp020_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp020_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp020_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp020_2 FIND v(d_sp020_2) AT=20n"
+  },
+  {
+   "name": "dend_sp020_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp020_2 FIND v(d_sp020_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp020_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp020_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp020_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp020_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp020_3 FIND v(d_sp020_3) AT=20n"
+  },
+  {
+   "name": "dend_sp020_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp020_3 FIND v(d_sp020_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp020_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp020_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp020_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp020_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp020_4 FIND v(d_sp020_4) AT=20n"
+  },
+  {
+   "name": "dend_sp020_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp020_4 FIND v(d_sp020_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp020_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp020_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp020_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp020_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp020_5 FIND v(d_sp020_5) AT=20n"
+  },
+  {
+   "name": "dend_sp020_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp020_5 FIND v(d_sp020_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp020_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp020_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp020_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm020_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm020_0 FIND v(d_sm020_0) AT=20n"
+  },
+  {
+   "name": "dend_sm020_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm020_0 FIND v(d_sm020_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm020_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm020_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm020_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm020_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm020_1 FIND v(d_sm020_1) AT=20n"
+  },
+  {
+   "name": "dend_sm020_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm020_1 FIND v(d_sm020_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm020_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm020_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm020_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm020_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm020_2 FIND v(d_sm020_2) AT=20n"
+  },
+  {
+   "name": "dend_sm020_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm020_2 FIND v(d_sm020_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm020_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm020_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm020_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm020_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm020_3 FIND v(d_sm020_3) AT=20n"
+  },
+  {
+   "name": "dend_sm020_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm020_3 FIND v(d_sm020_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm020_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm020_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm020_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm020_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm020_4 FIND v(d_sm020_4) AT=20n"
+  },
+  {
+   "name": "dend_sm020_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm020_4 FIND v(d_sm020_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm020_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm020_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm020_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm020_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm020_5 FIND v(d_sm020_5) AT=20n"
+  },
+  {
+   "name": "dend_sm020_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm020_5 FIND v(d_sm020_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm020_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm020_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm020_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp030_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp030_0 FIND v(d_sp030_0) AT=20n"
+  },
+  {
+   "name": "dend_sp030_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp030_0 FIND v(d_sp030_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp030_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp030_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp030_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp030_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp030_1 FIND v(d_sp030_1) AT=20n"
+  },
+  {
+   "name": "dend_sp030_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp030_1 FIND v(d_sp030_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp030_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp030_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp030_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp030_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp030_2 FIND v(d_sp030_2) AT=20n"
+  },
+  {
+   "name": "dend_sp030_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp030_2 FIND v(d_sp030_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp030_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp030_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp030_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp030_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp030_3 FIND v(d_sp030_3) AT=20n"
+  },
+  {
+   "name": "dend_sp030_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp030_3 FIND v(d_sp030_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp030_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp030_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp030_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp030_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp030_4 FIND v(d_sp030_4) AT=20n"
+  },
+  {
+   "name": "dend_sp030_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp030_4 FIND v(d_sp030_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp030_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp030_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp030_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp030_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp030_5 FIND v(d_sp030_5) AT=20n"
+  },
+  {
+   "name": "dend_sp030_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp030_5 FIND v(d_sp030_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp030_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp030_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp030_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm030_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm030_0 FIND v(d_sm030_0) AT=20n"
+  },
+  {
+   "name": "dend_sm030_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm030_0 FIND v(d_sm030_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm030_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm030_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm030_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm030_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm030_1 FIND v(d_sm030_1) AT=20n"
+  },
+  {
+   "name": "dend_sm030_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm030_1 FIND v(d_sm030_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm030_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm030_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm030_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm030_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm030_2 FIND v(d_sm030_2) AT=20n"
+  },
+  {
+   "name": "dend_sm030_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm030_2 FIND v(d_sm030_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm030_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm030_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm030_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm030_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm030_3 FIND v(d_sm030_3) AT=20n"
+  },
+  {
+   "name": "dend_sm030_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm030_3 FIND v(d_sm030_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm030_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm030_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm030_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm030_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm030_4 FIND v(d_sm030_4) AT=20n"
+  },
+  {
+   "name": "dend_sm030_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm030_4 FIND v(d_sm030_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm030_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm030_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm030_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm030_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm030_5 FIND v(d_sm030_5) AT=20n"
+  },
+  {
+   "name": "dend_sm030_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm030_5 FIND v(d_sm030_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm030_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm030_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm030_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp040_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp040_0 FIND v(d_sp040_0) AT=20n"
+  },
+  {
+   "name": "dend_sp040_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp040_0 FIND v(d_sp040_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp040_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp040_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp040_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp040_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp040_1 FIND v(d_sp040_1) AT=20n"
+  },
+  {
+   "name": "dend_sp040_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp040_1 FIND v(d_sp040_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp040_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp040_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp040_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp040_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp040_2 FIND v(d_sp040_2) AT=20n"
+  },
+  {
+   "name": "dend_sp040_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp040_2 FIND v(d_sp040_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp040_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp040_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp040_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp040_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp040_3 FIND v(d_sp040_3) AT=20n"
+  },
+  {
+   "name": "dend_sp040_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp040_3 FIND v(d_sp040_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp040_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp040_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp040_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp040_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp040_4 FIND v(d_sp040_4) AT=20n"
+  },
+  {
+   "name": "dend_sp040_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp040_4 FIND v(d_sp040_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp040_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp040_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp040_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp040_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp040_5 FIND v(d_sp040_5) AT=20n"
+  },
+  {
+   "name": "dend_sp040_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp040_5 FIND v(d_sp040_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp040_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp040_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp040_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm040_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm040_0 FIND v(d_sm040_0) AT=20n"
+  },
+  {
+   "name": "dend_sm040_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm040_0 FIND v(d_sm040_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm040_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm040_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm040_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm040_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm040_1 FIND v(d_sm040_1) AT=20n"
+  },
+  {
+   "name": "dend_sm040_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm040_1 FIND v(d_sm040_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm040_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm040_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm040_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm040_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm040_2 FIND v(d_sm040_2) AT=20n"
+  },
+  {
+   "name": "dend_sm040_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm040_2 FIND v(d_sm040_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm040_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm040_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm040_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm040_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm040_3 FIND v(d_sm040_3) AT=20n"
+  },
+  {
+   "name": "dend_sm040_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm040_3 FIND v(d_sm040_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm040_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm040_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm040_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm040_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm040_4 FIND v(d_sm040_4) AT=20n"
+  },
+  {
+   "name": "dend_sm040_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm040_4 FIND v(d_sm040_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm040_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm040_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm040_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm040_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm040_5 FIND v(d_sm040_5) AT=20n"
+  },
+  {
+   "name": "dend_sm040_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm040_5 FIND v(d_sm040_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm040_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm040_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm040_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp050_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp050_0 FIND v(d_sp050_0) AT=20n"
+  },
+  {
+   "name": "dend_sp050_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp050_0 FIND v(d_sp050_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp050_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp050_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp050_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp050_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp050_1 FIND v(d_sp050_1) AT=20n"
+  },
+  {
+   "name": "dend_sp050_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp050_1 FIND v(d_sp050_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp050_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp050_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp050_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp050_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp050_2 FIND v(d_sp050_2) AT=20n"
+  },
+  {
+   "name": "dend_sp050_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp050_2 FIND v(d_sp050_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp050_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp050_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp050_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp050_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp050_3 FIND v(d_sp050_3) AT=20n"
+  },
+  {
+   "name": "dend_sp050_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp050_3 FIND v(d_sp050_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp050_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp050_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp050_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp050_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp050_4 FIND v(d_sp050_4) AT=20n"
+  },
+  {
+   "name": "dend_sp050_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp050_4 FIND v(d_sp050_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp050_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp050_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp050_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp050_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp050_5 FIND v(d_sp050_5) AT=20n"
+  },
+  {
+   "name": "dend_sp050_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp050_5 FIND v(d_sp050_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp050_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp050_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp050_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm050_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm050_0 FIND v(d_sm050_0) AT=20n"
+  },
+  {
+   "name": "dend_sm050_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm050_0 FIND v(d_sm050_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm050_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm050_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm050_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm050_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm050_1 FIND v(d_sm050_1) AT=20n"
+  },
+  {
+   "name": "dend_sm050_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm050_1 FIND v(d_sm050_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm050_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm050_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm050_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm050_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm050_2 FIND v(d_sm050_2) AT=20n"
+  },
+  {
+   "name": "dend_sm050_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm050_2 FIND v(d_sm050_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm050_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm050_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm050_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm050_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm050_3 FIND v(d_sm050_3) AT=20n"
+  },
+  {
+   "name": "dend_sm050_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm050_3 FIND v(d_sm050_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm050_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm050_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm050_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm050_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm050_4 FIND v(d_sm050_4) AT=20n"
+  },
+  {
+   "name": "dend_sm050_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm050_4 FIND v(d_sm050_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm050_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm050_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm050_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm050_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm050_5 FIND v(d_sm050_5) AT=20n"
+  },
+  {
+   "name": "dend_sm050_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm050_5 FIND v(d_sm050_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm050_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm050_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm050_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp060_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp060_0 FIND v(d_sp060_0) AT=20n"
+  },
+  {
+   "name": "dend_sp060_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp060_0 FIND v(d_sp060_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp060_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp060_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp060_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp060_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp060_1 FIND v(d_sp060_1) AT=20n"
+  },
+  {
+   "name": "dend_sp060_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp060_1 FIND v(d_sp060_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp060_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp060_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp060_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp060_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp060_2 FIND v(d_sp060_2) AT=20n"
+  },
+  {
+   "name": "dend_sp060_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp060_2 FIND v(d_sp060_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp060_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp060_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp060_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp060_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp060_3 FIND v(d_sp060_3) AT=20n"
+  },
+  {
+   "name": "dend_sp060_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp060_3 FIND v(d_sp060_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp060_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp060_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp060_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp060_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp060_4 FIND v(d_sp060_4) AT=20n"
+  },
+  {
+   "name": "dend_sp060_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp060_4 FIND v(d_sp060_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp060_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp060_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp060_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp060_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp060_5 FIND v(d_sp060_5) AT=20n"
+  },
+  {
+   "name": "dend_sp060_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp060_5 FIND v(d_sp060_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp060_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp060_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp060_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm060_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm060_0 FIND v(d_sm060_0) AT=20n"
+  },
+  {
+   "name": "dend_sm060_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm060_0 FIND v(d_sm060_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm060_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm060_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm060_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm060_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm060_1 FIND v(d_sm060_1) AT=20n"
+  },
+  {
+   "name": "dend_sm060_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm060_1 FIND v(d_sm060_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm060_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm060_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm060_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm060_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm060_2 FIND v(d_sm060_2) AT=20n"
+  },
+  {
+   "name": "dend_sm060_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm060_2 FIND v(d_sm060_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm060_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm060_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm060_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm060_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm060_3 FIND v(d_sm060_3) AT=20n"
+  },
+  {
+   "name": "dend_sm060_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm060_3 FIND v(d_sm060_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm060_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm060_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm060_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm060_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm060_4 FIND v(d_sm060_4) AT=20n"
+  },
+  {
+   "name": "dend_sm060_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm060_4 FIND v(d_sm060_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm060_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm060_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm060_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm060_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm060_5 FIND v(d_sm060_5) AT=20n"
+  },
+  {
+   "name": "dend_sm060_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm060_5 FIND v(d_sm060_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm060_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm060_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm060_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp080_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp080_0 FIND v(d_sp080_0) AT=20n"
+  },
+  {
+   "name": "dend_sp080_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp080_0 FIND v(d_sp080_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp080_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp080_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp080_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp080_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp080_1 FIND v(d_sp080_1) AT=20n"
+  },
+  {
+   "name": "dend_sp080_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp080_1 FIND v(d_sp080_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp080_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp080_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp080_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp080_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp080_2 FIND v(d_sp080_2) AT=20n"
+  },
+  {
+   "name": "dend_sp080_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp080_2 FIND v(d_sp080_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp080_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp080_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp080_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp080_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp080_3 FIND v(d_sp080_3) AT=20n"
+  },
+  {
+   "name": "dend_sp080_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp080_3 FIND v(d_sp080_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp080_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp080_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp080_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp080_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp080_4 FIND v(d_sp080_4) AT=20n"
+  },
+  {
+   "name": "dend_sp080_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp080_4 FIND v(d_sp080_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp080_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp080_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp080_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp080_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp080_5 FIND v(d_sp080_5) AT=20n"
+  },
+  {
+   "name": "dend_sp080_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp080_5 FIND v(d_sp080_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp080_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp080_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp080_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm080_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm080_0 FIND v(d_sm080_0) AT=20n"
+  },
+  {
+   "name": "dend_sm080_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm080_0 FIND v(d_sm080_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm080_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm080_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm080_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm080_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm080_1 FIND v(d_sm080_1) AT=20n"
+  },
+  {
+   "name": "dend_sm080_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm080_1 FIND v(d_sm080_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm080_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm080_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm080_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm080_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm080_2 FIND v(d_sm080_2) AT=20n"
+  },
+  {
+   "name": "dend_sm080_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm080_2 FIND v(d_sm080_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm080_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm080_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm080_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm080_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm080_3 FIND v(d_sm080_3) AT=20n"
+  },
+  {
+   "name": "dend_sm080_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm080_3 FIND v(d_sm080_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm080_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm080_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm080_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm080_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm080_4 FIND v(d_sm080_4) AT=20n"
+  },
+  {
+   "name": "dend_sm080_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm080_4 FIND v(d_sm080_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm080_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm080_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm080_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm080_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm080_5 FIND v(d_sm080_5) AT=20n"
+  },
+  {
+   "name": "dend_sm080_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm080_5 FIND v(d_sm080_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm080_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm080_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm080_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp100_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp100_0 FIND v(d_sp100_0) AT=20n"
+  },
+  {
+   "name": "dend_sp100_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp100_0 FIND v(d_sp100_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp100_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp100_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp100_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp100_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp100_1 FIND v(d_sp100_1) AT=20n"
+  },
+  {
+   "name": "dend_sp100_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp100_1 FIND v(d_sp100_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp100_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp100_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp100_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp100_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp100_2 FIND v(d_sp100_2) AT=20n"
+  },
+  {
+   "name": "dend_sp100_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp100_2 FIND v(d_sp100_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp100_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp100_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp100_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp100_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp100_3 FIND v(d_sp100_3) AT=20n"
+  },
+  {
+   "name": "dend_sp100_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp100_3 FIND v(d_sp100_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp100_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp100_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp100_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp100_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp100_4 FIND v(d_sp100_4) AT=20n"
+  },
+  {
+   "name": "dend_sp100_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp100_4 FIND v(d_sp100_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp100_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp100_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp100_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp100_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp100_5 FIND v(d_sp100_5) AT=20n"
+  },
+  {
+   "name": "dend_sp100_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp100_5 FIND v(d_sp100_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp100_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp100_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp100_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm100_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm100_0 FIND v(d_sm100_0) AT=20n"
+  },
+  {
+   "name": "dend_sm100_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm100_0 FIND v(d_sm100_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm100_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm100_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm100_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm100_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm100_1 FIND v(d_sm100_1) AT=20n"
+  },
+  {
+   "name": "dend_sm100_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm100_1 FIND v(d_sm100_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm100_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm100_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm100_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm100_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm100_2 FIND v(d_sm100_2) AT=20n"
+  },
+  {
+   "name": "dend_sm100_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm100_2 FIND v(d_sm100_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm100_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm100_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm100_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm100_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm100_3 FIND v(d_sm100_3) AT=20n"
+  },
+  {
+   "name": "dend_sm100_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm100_3 FIND v(d_sm100_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm100_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm100_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm100_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm100_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm100_4 FIND v(d_sm100_4) AT=20n"
+  },
+  {
+   "name": "dend_sm100_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm100_4 FIND v(d_sm100_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm100_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm100_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm100_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm100_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm100_5 FIND v(d_sm100_5) AT=20n"
+  },
+  {
+   "name": "dend_sm100_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm100_5 FIND v(d_sm100_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm100_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm100_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm100_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp150_0",
+   "unit": "V",
+   "spice": ".meas tran din_sp150_0 FIND v(d_sp150_0) AT=20n"
+  },
+  {
+   "name": "dend_sp150_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sp150_0 FIND v(d_sp150_0) AT=30n"
+  },
+  {
+   "name": "tdec_sp150_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp150_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp150_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp150_1",
+   "unit": "V",
+   "spice": ".meas tran din_sp150_1 FIND v(d_sp150_1) AT=20n"
+  },
+  {
+   "name": "dend_sp150_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sp150_1 FIND v(d_sp150_1) AT=30n"
+  },
+  {
+   "name": "tdec_sp150_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp150_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp150_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp150_2",
+   "unit": "V",
+   "spice": ".meas tran din_sp150_2 FIND v(d_sp150_2) AT=20n"
+  },
+  {
+   "name": "dend_sp150_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sp150_2 FIND v(d_sp150_2) AT=30n"
+  },
+  {
+   "name": "tdec_sp150_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp150_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp150_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp150_3",
+   "unit": "V",
+   "spice": ".meas tran din_sp150_3 FIND v(d_sp150_3) AT=20n"
+  },
+  {
+   "name": "dend_sp150_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sp150_3 FIND v(d_sp150_3) AT=30n"
+  },
+  {
+   "name": "tdec_sp150_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp150_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp150_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp150_4",
+   "unit": "V",
+   "spice": ".meas tran din_sp150_4 FIND v(d_sp150_4) AT=20n"
+  },
+  {
+   "name": "dend_sp150_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sp150_4 FIND v(d_sp150_4) AT=30n"
+  },
+  {
+   "name": "tdec_sp150_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp150_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp150_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sp150_5",
+   "unit": "V",
+   "spice": ".meas tran din_sp150_5 FIND v(d_sp150_5) AT=20n"
+  },
+  {
+   "name": "dend_sp150_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sp150_5 FIND v(d_sp150_5) AT=30n"
+  },
+  {
+   "name": "tdec_sp150_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sp150_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sp150_5) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm150_0",
+   "unit": "V",
+   "spice": ".meas tran din_sm150_0 FIND v(d_sm150_0) AT=20n"
+  },
+  {
+   "name": "dend_sm150_0",
+   "unit": "V",
+   "spice": ".meas tran dend_sm150_0 FIND v(d_sm150_0) AT=30n"
+  },
+  {
+   "name": "tdec_sm150_0",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm150_0 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm150_0) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm150_1",
+   "unit": "V",
+   "spice": ".meas tran din_sm150_1 FIND v(d_sm150_1) AT=20n"
+  },
+  {
+   "name": "dend_sm150_1",
+   "unit": "V",
+   "spice": ".meas tran dend_sm150_1 FIND v(d_sm150_1) AT=30n"
+  },
+  {
+   "name": "tdec_sm150_1",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm150_1 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm150_1) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm150_2",
+   "unit": "V",
+   "spice": ".meas tran din_sm150_2 FIND v(d_sm150_2) AT=20n"
+  },
+  {
+   "name": "dend_sm150_2",
+   "unit": "V",
+   "spice": ".meas tran dend_sm150_2 FIND v(d_sm150_2) AT=30n"
+  },
+  {
+   "name": "tdec_sm150_2",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm150_2 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm150_2) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm150_3",
+   "unit": "V",
+   "spice": ".meas tran din_sm150_3 FIND v(d_sm150_3) AT=20n"
+  },
+  {
+   "name": "dend_sm150_3",
+   "unit": "V",
+   "spice": ".meas tran dend_sm150_3 FIND v(d_sm150_3) AT=30n"
+  },
+  {
+   "name": "tdec_sm150_3",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm150_3 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm150_3) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm150_4",
+   "unit": "V",
+   "spice": ".meas tran din_sm150_4 FIND v(d_sm150_4) AT=20n"
+  },
+  {
+   "name": "dend_sm150_4",
+   "unit": "V",
+   "spice": ".meas tran dend_sm150_4 FIND v(d_sm150_4) AT=30n"
+  },
+  {
+   "name": "tdec_sm150_4",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm150_4 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm150_4) VAL=0.9 RISE=1"
+  },
+  {
+   "name": "din_sm150_5",
+   "unit": "V",
+   "spice": ".meas tran din_sm150_5 FIND v(d_sm150_5) AT=20n"
+  },
+  {
+   "name": "dend_sm150_5",
+   "unit": "V",
+   "spice": ".meas tran dend_sm150_5 FIND v(d_sm150_5) AT=30n"
+  },
+  {
+   "name": "tdec_sm150_5",
+   "unit": "s",
+   "spice": ".meas tran tdec_sm150_5 TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_sm150_5) VAL=0.9 RISE=1"
+  }
+ ],
+ "options": {
+  "timeout_s": 900,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}

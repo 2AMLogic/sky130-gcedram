@@ -40,8 +40,41 @@ jobs:
       - name: Evidence index check
         run: python3 -I sim/loaded-column/cold-corner/check_evidence_index.py
 
+      - name: Sense-stage checks
+        run: python3 -I sim/sense-stage/test_sense_stage.py
+
+      - name: Refresh-operation (sense + write-back) checks
+        run: python3 -I sim/refresh-op/test_refresh_op.py
+
+      - name: RTL-strobe replay (converter, consistency check, analysis) checks
+        run: python3 -I sim/refresh-replay/test_refresh_replay.py
+
+      - name: Refresh-replay matched initialization controls (issue #139) checks
+        run: python3 -I sim/refresh-replay/test_init_control.py
+
+      - name: Refresh energy / standby power checks
+        run: python3 -I sim/refresh-energy/test_refresh_energy.py
+
+      - name: Sense-latch design-vs-deck drift check
+        run: python3 -I design/test_sense_latch.py
+
+      - name: Sense-stage mismatch (Monte Carlo) checks
+        run: python3 -I sim/sense-mismatch/test_sense_mismatch.py
+
+      - name: Write-disturb checks
+        run: python3 -I sim/write-disturb/test_write_disturb.py
+
       - name: Append-only guard fixture tests
         run: python3 -I sim/test_append_only.py
+
+      - name: Array-context C_SN comparison (issue #89) checks
+        run: python3 -I sim/retention/test_compare_array_c_sn.py
+
+      - name: Array generation pin and baseline comparison (issue #91) checks
+        run: python3 -I layout/test_generation_reproducibility.py
+
+      - name: Geometry-matched access leakage (issue #149) checks
+        run: python3 -I sim/leakage/test_geometry_leakage.py
 
       - name: Refresh-overhead arithmetic tests
         run: python3 -I sim/refresh-overhead/test_refresh_overhead.py
@@ -78,9 +111,12 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
-          # Prefer the checker as committed on the base branch so a PR cannot
-          # weaken the check that judges it; fall back to the PR's copy only
-          # when the base does not have one yet (the PR introducing it).
+          # Prefer the checker as committed on the base branch, so changing
+          # sim/check_append_only.py in a PR does not change the check applied
+          # to that PR; fall back to the PR's copy only when the base does not
+          # have one yet (the PR introducing it). Edits to this workflow file
+          # still require review: it runs from the PR's own merge ref under
+          # the pull_request event.
           checker="$RUNNER_TEMP/check_append_only.py"
           if git cat-file -e "${BASE_SHA}:sim/check_append_only.py" 2>/dev/null; then
             git show "${BASE_SHA}:sim/check_append_only.py" > "$checker"

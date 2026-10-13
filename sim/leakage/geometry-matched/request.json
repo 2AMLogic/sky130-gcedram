@@ -1,0 +1,48 @@
+{
+  "netlist": "access_leakage_geom.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/combined/sky130.lib.spice"
+  },
+  "corners": {
+    "process": [
+      "tt",
+      "ss",
+      "ff",
+      "sf",
+      "fs"
+    ],
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "vsn_ext 1.8 1.9 0.1"
+  },
+  "measurements": [
+    {
+      "name": "ileak_ext_a",
+      "unit": "A",
+      "spice": ".meas dc ileak_ext_a FIND v(iabs_ext) AT=1.8"
+    },
+    {
+      "name": "ileak_leg_a",
+      "unit": "A",
+      "spice": ".meas dc ileak_leg_a FIND v(iabs_leg) AT=1.8"
+    }
+  ],
+  "options": {
+    "timeout_s": 600,
+    "keep_artifacts": false,
+    "waveforms": false,
+    "ngspice_init": [
+      "set measureprec=12",
+      "set numdgt=12"
+    ]
+  }
+}

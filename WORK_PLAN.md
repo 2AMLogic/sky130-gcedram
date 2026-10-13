@@ -7,7 +7,10 @@ This roadmap is generated from current GitHub label state by the Loom Guide role
 
 Judge-approved PRs stuck under a `loom:operator` merge-risk hold — implementation work is done, only a human merge decision is missing.
 
-_None._
+- **#76**: ci: run refresh-overhead and evidence_common tests (#73)
+- **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
+- **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
 
 ## Operator Priority
 
@@ -37,17 +40,26 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#76**: ci: run refresh-overhead and evidence_common tests (#73)
+- **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
+- **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
 
 ## Proposed
 
 Issues carrying `loom:curated`.
 
 - **#24**: Build the full gain-cell eDRAM macro (array + sense amp + refresh controller + SPI) to reach Chipalooza sign-off bar *(curated)*
+- **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead *(curated)*
+- **#88**: Re-run sense-stage and loaded-column with the extracted 4-row C_RBL (0.86 fF vs assumed 10 fF) *(curated)*
+- **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
+- **#114**: Design the column periphery (precharge, write driver, column select) to replace ideal sources in the read/write studies *(curated)*
+- **#149**: Geometry-matched access-device leakage: re-measure with extracted AD/AS/PD/PS (testbench passes none) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
-_None._
+- **#94**: Characterize write-hold-sense trajectories and mixed neighbor patterns at the refresh deadline *(architect)*
+- **#147**: Characterize data preservation across repeated closed-loop refresh cycles *(architect)*
 
 ## Epics
 
@@ -58,13 +70,13 @@ _None._
 
 | Tier | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
+| Operator merge-risk holds | 4 |
 | Operator priority | 0 |
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 0 |
-| Curated | 1 |
-| Architect / Hermit proposals | 0 |
+| Approved PRs awaiting merge | 4 |
+| Curated | 6 |
+| Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->

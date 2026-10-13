@@ -1,0 +1,162 @@
+# run_tests.sh 2026-10-10 iverilog: Icarus Verilog version 13.0 (stable) (v13_0)
+[anchored scen=0]
+KIND READ    launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=87
+KIND WRITE   launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=79
+KIND REFRESH launches=32 completed=32 lost=0 abandoned=0 skew=32 dur=34..34 d_lastact=1..1 d_busyfall=1..1 d_done=1..1 next_launch_margin_min=0
+CONFLICT: SKEW 32 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[anchored scen=1]
+KIND READ    launches=62 completed=62 lost=0 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=20
+KIND WRITE   launches=49 completed=49 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=32 completed=32 lost=0 abandoned=0 skew=32 dur=34..34 d_lastact=1..1 d_busyfall=1..1 d_done=1..1 next_launch_margin_min=0
+CONFLICT: SKEW 32 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[anchored scen=2]
+KIND READ    launches=131 completed=131 lost=0 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=20
+KIND WRITE   launches=116 completed=116 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=96 completed=96 lost=0 abandoned=0 skew=96 dur=34..34 d_lastact=1..1 d_busyfall=1..1 d_done=1..1 next_launch_margin_min=0
+CONFLICT: SKEW 96 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[anchored scen=3]
+KIND READ    launches=129 completed=129 lost=0 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=20
+KIND WRITE   launches=142 completed=141 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=287 completed=287 lost=0 abandoned=0 skew=287 dur=34..34 d_lastact=1..1 d_busyfall=1..1 d_done=1..1 next_launch_margin_min=0
+CONFLICT: SKEW 287 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[anchored scen=4]
+KIND READ    launches=22 completed=22 lost=0 abandoned=1 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=14
+KIND WRITE   launches=27 completed=26 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=66 completed=65 lost=0 abandoned=1 skew=65 dur=34..34 d_lastact=1..1 d_busyfall=1..1 d_done=1..1 next_launch_margin_min=0
+CONFLICT: SKEW 65 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[gap1 scen=0]
+KIND READ    launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=16..16 d_lastact=-20..-20 d_busyfall=-17..-17 d_done=-17..-17 next_launch_margin_min=85
+KIND WRITE   launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=23..23 d_lastact=-10..-10 d_busyfall=-10..-10 d_done=-10..-10 next_launch_margin_min=78
+KIND REFRESH launches=32 completed=16 lost=16 abandoned=0 skew=16 dur=37..37 d_lastact=4..4 d_busyfall=4..4 d_done=4..4 next_launch_margin_min=-3
+CONFLICT: LOST 16 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 16 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[gap1 scen=1]
+KIND READ    launches=62 completed=62 lost=0 abandoned=0 skew=0 dur=16..16 d_lastact=-20..-20 d_busyfall=-17..-17 d_done=-17..-17 next_launch_margin_min=18
+KIND WRITE   launches=49 completed=49 lost=0 abandoned=0 skew=0 dur=23..23 d_lastact=-10..-10 d_busyfall=-10..-10 d_done=-10..-10 next_launch_margin_min=11
+KIND REFRESH launches=32 completed=16 lost=16 abandoned=0 skew=16 dur=37..37 d_lastact=4..4 d_busyfall=4..4 d_done=4..4 next_launch_margin_min=-3
+CONFLICT: LOST 16 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 16 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[gap1 scen=2]
+KIND READ    launches=131 completed=131 lost=0 abandoned=0 skew=0 dur=16..16 d_lastact=-20..-20 d_busyfall=-17..-17 d_done=-17..-17 next_launch_margin_min=18
+KIND WRITE   launches=116 completed=116 lost=0 abandoned=0 skew=0 dur=23..23 d_lastact=-10..-10 d_busyfall=-10..-10 d_done=-10..-10 next_launch_margin_min=11
+KIND REFRESH launches=96 completed=48 lost=48 abandoned=0 skew=48 dur=37..37 d_lastact=4..4 d_busyfall=4..4 d_done=4..4 next_launch_margin_min=-3
+CONFLICT: LOST 48 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 48 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[gap1 scen=3]
+KIND READ    launches=129 completed=128 lost=1 abandoned=0 skew=0 dur=16..16 d_lastact=-20..-20 d_busyfall=-17..-17 d_done=-17..-17 next_launch_margin_min=18
+KIND WRITE   launches=142 completed=141 lost=0 abandoned=0 skew=0 dur=23..23 d_lastact=-10..-10 d_busyfall=-10..-10 d_done=-10..-10 next_launch_margin_min=11
+KIND REFRESH launches=287 completed=144 lost=143 abandoned=0 skew=144 dur=37..37 d_lastact=4..4 d_busyfall=4..4 d_done=4..4 next_launch_margin_min=-3
+CONFLICT: LOST 144 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 144 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[gap1 scen=4]
+KIND READ    launches=22 completed=22 lost=0 abandoned=1 skew=0 dur=16..16 d_lastact=-20..-20 d_busyfall=-17..-17 d_done=-17..-17 next_launch_margin_min=12
+KIND WRITE   launches=27 completed=26 lost=0 abandoned=0 skew=0 dur=23..23 d_lastact=-10..-10 d_busyfall=-10..-10 d_done=-10..-10 next_launch_margin_min=11
+KIND REFRESH launches=66 completed=33 lost=33 abandoned=1 skew=33 dur=37..37 d_lastact=4..4 d_busyfall=4..4 d_done=4..4 next_launch_margin_min=-3
+CONFLICT: LOST 33 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 33 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[full_read_pulse scen=0]
+KIND READ    launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=24..24 d_lastact=-11..-11 d_busyfall=-9..-9 d_done=-9..-9 next_launch_margin_min=77
+KIND WRITE   launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=79
+KIND REFRESH launches=32 completed=16 lost=16 abandoned=0 skew=16 dur=44..44 d_lastact=11..11 d_busyfall=11..11 d_done=11..11 next_launch_margin_min=-10
+CONFLICT: LOST 16 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 16 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[full_read_pulse scen=1]
+KIND READ    launches=62 completed=62 lost=0 abandoned=0 skew=0 dur=24..24 d_lastact=-11..-11 d_busyfall=-9..-9 d_done=-9..-9 next_launch_margin_min=10
+KIND WRITE   launches=49 completed=49 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=32 completed=16 lost=16 abandoned=0 skew=16 dur=44..44 d_lastact=11..11 d_busyfall=11..11 d_done=11..11 next_launch_margin_min=-10
+CONFLICT: LOST 16 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 16 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[full_read_pulse scen=2]
+KIND READ    launches=131 completed=131 lost=0 abandoned=0 skew=0 dur=24..24 d_lastact=-11..-11 d_busyfall=-9..-9 d_done=-9..-9 next_launch_margin_min=10
+KIND WRITE   launches=116 completed=116 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=96 completed=48 lost=48 abandoned=0 skew=48 dur=44..44 d_lastact=11..11 d_busyfall=11..11 d_done=11..11 next_launch_margin_min=-10
+CONFLICT: LOST 48 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 48 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[full_read_pulse scen=3]
+KIND READ    launches=129 completed=128 lost=1 abandoned=0 skew=0 dur=24..24 d_lastact=-11..-11 d_busyfall=-9..-9 d_done=-9..-9 next_launch_margin_min=10
+KIND WRITE   launches=142 completed=141 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=287 completed=144 lost=143 abandoned=0 skew=144 dur=44..44 d_lastact=11..11 d_busyfall=11..11 d_done=11..11 next_launch_margin_min=-10
+CONFLICT: LOST 144 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 144 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[full_read_pulse scen=4]
+KIND READ    launches=22 completed=21 lost=0 abandoned=1 skew=0 dur=24..24 d_lastact=-11..-11 d_busyfall=-9..-9 d_done=-9..-9 next_launch_margin_min=10
+KIND WRITE   launches=27 completed=26 lost=0 abandoned=0 skew=0 dur=22..22 d_lastact=-11..-11 d_busyfall=-11..-11 d_done=-11..-11 next_launch_margin_min=12
+KIND REFRESH launches=66 completed=33 lost=33 abandoned=1 skew=33 dur=44..44 d_lastact=11..11 d_busyfall=11..11 d_done=11..11 next_launch_margin_min=-10
+CONFLICT: LOST 33 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 33 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[fast scen=0]
+KIND READ    launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=7..7 d_lastact=-27..-27 d_busyfall=-26..-26 d_done=-26..-26 next_launch_margin_min=94
+KIND WRITE   launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=6..6 d_lastact=-27..-27 d_busyfall=-27..-27 d_done=-27..-27 next_launch_margin_min=95
+KIND REFRESH launches=32 completed=32 lost=0 abandoned=0 skew=0 dur=12..12 d_lastact=-21..-21 d_busyfall=-21..-21 d_done=-21..-21 next_launch_margin_min=22
+TB_RESULT: PASS (violations=0)
+[fast scen=1]
+KIND READ    launches=62 completed=62 lost=0 abandoned=0 skew=0 dur=7..7 d_lastact=-27..-27 d_busyfall=-26..-26 d_done=-26..-26 next_launch_margin_min=27
+KIND WRITE   launches=49 completed=49 lost=0 abandoned=0 skew=0 dur=6..6 d_lastact=-27..-27 d_busyfall=-27..-27 d_done=-27..-27 next_launch_margin_min=28
+KIND REFRESH launches=32 completed=32 lost=0 abandoned=0 skew=0 dur=12..12 d_lastact=-21..-21 d_busyfall=-21..-21 d_done=-21..-21 next_launch_margin_min=22
+TB_RESULT: PASS (violations=0)
+[fast scen=2]
+KIND READ    launches=131 completed=131 lost=0 abandoned=0 skew=0 dur=7..7 d_lastact=-27..-27 d_busyfall=-26..-26 d_done=-26..-26 next_launch_margin_min=27
+KIND WRITE   launches=116 completed=116 lost=0 abandoned=0 skew=0 dur=6..6 d_lastact=-27..-27 d_busyfall=-27..-27 d_done=-27..-27 next_launch_margin_min=28
+KIND REFRESH launches=96 completed=96 lost=0 abandoned=0 skew=0 dur=12..12 d_lastact=-21..-21 d_busyfall=-21..-21 d_done=-21..-21 next_launch_margin_min=22
+TB_RESULT: PASS (violations=0)
+[fast scen=3]
+KIND READ    launches=129 completed=129 lost=0 abandoned=0 skew=0 dur=7..7 d_lastact=-27..-27 d_busyfall=-26..-26 d_done=-26..-26 next_launch_margin_min=27
+KIND WRITE   launches=142 completed=141 lost=0 abandoned=0 skew=0 dur=6..6 d_lastact=-27..-27 d_busyfall=-27..-27 d_done=-27..-27 next_launch_margin_min=28
+KIND REFRESH launches=287 completed=287 lost=0 abandoned=0 skew=0 dur=12..12 d_lastact=-21..-21 d_busyfall=-21..-21 d_done=-21..-21 next_launch_margin_min=22
+TB_RESULT: PASS (violations=0)
+[fast scen=4]
+KIND READ    launches=22 completed=22 lost=0 abandoned=1 skew=0 dur=7..7 d_lastact=-27..-27 d_busyfall=-26..-26 d_done=-26..-26 next_launch_margin_min=21
+KIND WRITE   launches=27 completed=27 lost=0 abandoned=0 skew=0 dur=6..6 d_lastact=-27..-27 d_busyfall=-27..-27 d_done=-27..-27 next_launch_margin_min=28
+KIND REFRESH launches=66 completed=66 lost=0 abandoned=1 skew=0 dur=12..12 d_lastact=-21..-21 d_busyfall=-21..-21 d_done=-21..-21 next_launch_margin_min=4
+TB_RESULT: PASS (violations=0)
+[mismatch scen=0]
+KIND READ    launches=2 completed=2 lost=0 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=87
+KIND WRITE   launches=2 completed=2 lost=0 abandoned=0 skew=2 dur=42..42 d_lastact=9..9 d_busyfall=9..9 d_done=9..9 next_launch_margin_min=59
+KIND REFRESH launches=32 completed=16 lost=16 abandoned=0 skew=16 dur=54..54 d_lastact=21..21 d_busyfall=21..21 d_done=21..21 next_launch_margin_min=-20
+CONFLICT: LOST 16 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 18 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[mismatch scen=1]
+KIND READ    launches=62 completed=47 lost=15 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=20
+KIND WRITE   launches=49 completed=32 lost=17 abandoned=0 skew=32 dur=42..42 d_lastact=9..9 d_busyfall=9..9 d_done=9..9 next_launch_margin_min=-8
+KIND REFRESH launches=32 completed=16 lost=16 abandoned=0 skew=16 dur=54..54 d_lastact=21..21 d_busyfall=21..21 d_done=21..21 next_launch_margin_min=-20
+CONFLICT: LOST 48 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 48 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[mismatch scen=2]
+KIND READ    launches=131 completed=93 lost=38 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=20
+KIND WRITE   launches=116 completed=77 lost=39 abandoned=0 skew=77 dur=42..42 d_lastact=9..9 d_busyfall=9..9 d_done=9..9 next_launch_margin_min=-8
+KIND REFRESH launches=96 completed=48 lost=48 abandoned=0 skew=48 dur=54..54 d_lastact=21..21 d_busyfall=21..21 d_done=21..21 next_launch_margin_min=-20
+CONFLICT: LOST 125 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 125 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[mismatch scen=3]
+KIND READ    launches=129 completed=85 lost=44 abandoned=0 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=20
+KIND WRITE   launches=142 completed=92 lost=49 abandoned=0 skew=92 dur=42..42 d_lastact=9..9 d_busyfall=9..9 d_done=9..9 next_launch_margin_min=-8
+KIND REFRESH launches=287 completed=144 lost=143 abandoned=0 skew=144 dur=54..54 d_lastact=21..21 d_busyfall=21..21 d_done=21..21 next_launch_margin_min=-20
+CONFLICT: LOST 236 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 236 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+[mismatch scen=4]
+KIND READ    launches=22 completed=14 lost=8 abandoned=1 skew=0 dur=14..14 d_lastact=-21..-21 d_busyfall=-19..-19 d_done=-19..-19 next_launch_margin_min=14
+KIND WRITE   launches=27 completed=17 lost=9 abandoned=0 skew=17 dur=42..42 d_lastact=9..9 d_busyfall=9..9 d_done=9..9 next_launch_margin_min=-8
+KIND REFRESH launches=66 completed=32 lost=33 abandoned=2 skew=32 dur=54..54 d_lastact=21..21 d_busyfall=21..21 d_done=21..21 next_launch_margin_min=-20
+CONFLICT: LOST 50 launch(es) arrived while phase_seq was busy (next launch before phase completion; start ignored, operation never executed)
+CONFLICT: SKEW 49 accepted op(s) ended after the scheduler's busy fall / done (d_lastact/d_busyfall/d_done > 0)
+TB_RESULT: PASS (violations=0)
+ALL PASS

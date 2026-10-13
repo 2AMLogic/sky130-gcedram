@@ -1,0 +1,36 @@
+* sense_latch.spice -- sense-latch netlist (latch + footer/header), derived (issue #109).
+* Regenerate with: ./design/regen_netlist.sh (requires PDK_ROOT/PDK, see
+* design/README.md). --check verifies this file is not stale relative to
+* a fresh regeneration from design/sense_latch.sch -- staleness is failure.
+*
+* Provenance: sha256 of the source schematic this netlist derives from
+* (reproduce with: sha256sum design/sense_latch.sch). This is the
+* file-content hash, not a git commit reference, so it stays meaningful
+* in a shallow clone and does not drift when an unrelated commit
+* elsewhere touches HEAD.
+*   design/sense_latch.sch: sha256:73732b9391242c0bc8676376c6bbdb33d37a0ca9ac438f12ea106d83d5976e54
+*
+* Every device instance below is one of {sky130_fd_pr__nfet_01v8, sky130_fd_pr__pfet_01v8} --
+* mechanically by this script, not by review alone.
+** sch_path: design/sense_latch.sch
+**.subckt sense_latch rbl ref en enb vdd
+*.iopin rbl
+*.iopin ref
+*.ipin en
+*.ipin enb
+*.iopin vdd
+XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29
++ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
+XMN2 ref rbl vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29
++ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1
+XMP1 rbl ref vp vdd sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145
++ nrs=0.145 sa=0 sb=0 sd=0 mult=1 m=1
+XMP2 ref rbl vp vdd sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145
++ nrs=0.145 sa=0 sb=0 sd=0 mult=1 m=1
+XMNF vn en GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145
++ nrs=0.145 sa=0 sb=0 sd=0 mult=1 m=1
+XMPH vp enb vdd vdd sky130_fd_pr__pfet_01v8 L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725
++ nrs=0.0725 sa=0 sb=0 sd=0 mult=1 m=1
+**.ends
+.GLOBAL GND
+.end

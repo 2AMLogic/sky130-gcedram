@@ -1,0 +1,14 @@
+baseline: PASS
+MUTANT bl_released_early: killed (16 violations shown)
+MUTANT done_never_pulses: killed (16 violations shown)
+MUTANT precharge_overlaps_rwl: killed (4 violations shown)
+MUTANT refresh_drops_precharge: killed (4 violations shown)
+MUTANT refresh_drops_sense: killed (8 violations shown)
+MUTANT refresh_drops_writeback: killed (16 violations shown)
+MUTANT sense_before_rwl: killed (16 violations shown)
+MUTANT sense_window_one_short: killed (16 violations shown)
+MUTANT start_while_busy_ignored_unflagged: killed (12 violations shown)
+MUTANT writeback_before_sense_done: killed (16 violations shown)
+MUTANT wwl_overlaps_rwl: killed (8 violations shown)
+MUTANT wwl_overlaps_sense: killed (16 violations shown)
+MUTATION CHECK PASS

@@ -1,0 +1,127 @@
+== 1. SPI -> scheduler -> sequencer positive matrix ==
+[ratified anchored sclk_half_ps=3700 phase_ps=130 traffic=3 fast=0]
+CONFIG: INTERVAL=5029 floor=1178 T_ROW=35 T_ACC=23 GUARD_EFF=35 D_REF=34 D_RD=14 D_WR=22 sclk_half_ps=3700 phase_ps=130 traffic=3
+OBS: launches=14043 executed=14037 (read=4895 write=4879 refresh=4263) abandoned_by_reset=5 resets=6
+OBS: seq_busy_len read=14 write=22 refresh=34 ; sched_busy_len access=23 refresh=35
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=8 write=0 refresh=0
+OBS: min deadline slack=26 max row age=4992 (ratified bound 5029) ; sweep accept->sweep_done max=1176 (bound 1184)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=32 longest transition above new value=1175 (bound 1184) ; ivl accepted=23 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=317 findings=0 cycles=388147
+TB_RESULT: PASS
+[ratified anchored sclk_half_ps=370 phase_ps=610 traffic=3 fast=1]
+CONFIG: INTERVAL=5029 floor=1178 T_ROW=35 T_ACC=23 GUARD_EFF=35 D_REF=34 D_RD=14 D_WR=22 sclk_half_ps=370 phase_ps=610 traffic=3
+OBS: launches=6180 executed=6177 (read=2058 write=2096 refresh=2023) abandoned_by_reset=3 resets=3
+OBS: seq_busy_len read=14 write=22 refresh=34 ; sched_busy_len access=23 refresh=35
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=8 write=0 refresh=0
+OBS: min deadline slack=26 max row age=4992 (ratified bound 5029) ; sweep accept->sweep_done max=1176 (bound 1184)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1174 (bound 1184) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=172558
+TB_RESULT: PASS
+[ratified anchored sclk_half_ps=500 phase_ps=0 traffic=3 fast=1]
+CONFIG: INTERVAL=5029 floor=1178 T_ROW=35 T_ACC=23 GUARD_EFF=35 D_REF=34 D_RD=14 D_WR=22 sclk_half_ps=500 phase_ps=0 traffic=3
+OBS: launches=6206 executed=6202 (read=2125 write=2050 refresh=2027) abandoned_by_reset=3 resets=3
+OBS: seq_busy_len read=14 write=22 refresh=34 ; sched_busy_len access=23 refresh=35
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=8 write=0 refresh=0
+OBS: min deadline slack=26 max row age=4992 (ratified bound 5029) ; sweep accept->sweep_done max=1161 (bound 1184)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1177 (bound 1184) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=173229
+TB_RESULT: PASS
+[ratified anchored sclk_half_ps=10000 phase_ps=500 traffic=1 fast=1]
+CONFIG: INTERVAL=5029 floor=1178 T_ROW=35 T_ACC=23 GUARD_EFF=35 D_REF=34 D_RD=14 D_WR=22 sclk_half_ps=10000 phase_ps=500 traffic=1
+OBS: launches=8326 executed=8323 (read=5407 write=0 refresh=2916) abandoned_by_reset=2 resets=3
+OBS: seq_busy_len read=14 write=0 refresh=34 ; sched_busy_len access=23 refresh=35
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=8 write=1073741824 refresh=0
+OBS: min deadline slack=26 max row age=4992 (ratified bound 5029) ; sweep accept->sweep_done max=1167 (bound 1184)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1174 (bound 1184) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=234760
+TB_RESULT: PASS
+[ratified anchored sclk_half_ps=1300 phase_ps=870 traffic=3 fast=1]
+CONFIG: INTERVAL=5029 floor=1178 T_ROW=35 T_ACC=23 GUARD_EFF=35 D_REF=34 D_RD=14 D_WR=22 sclk_half_ps=1300 phase_ps=870 traffic=3
+OBS: launches=6381 executed=6378 (read=2199 write=2102 refresh=2077) abandoned_by_reset=2 resets=3
+OBS: seq_busy_len read=14 write=22 refresh=34 ; sched_busy_len access=23 refresh=35
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=8 write=0 refresh=0
+OBS: min deadline slack=26 max row age=4992 (ratified bound 5029) ; sweep accept->sweep_done max=1175 (bound 1184)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1176 (bound 1184) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=178027
+TB_RESULT: PASS
+[extracted anchored sclk_half_ps=3700 phase_ps=130 traffic=3 fast=1]
+CONFIG: INTERVAL=2751 floor=1178 T_ROW=35 T_ACC=23 GUARD_EFF=35 D_REF=34 D_RD=14 D_WR=22 sclk_half_ps=3700 phase_ps=130 traffic=3
+OBS: launches=4592 executed=4588 (read=1058 write=1085 refresh=2445) abandoned_by_reset=3 resets=3
+OBS: seq_busy_len read=14 write=22 refresh=34 ; sched_busy_len access=23 refresh=35
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=8 write=0 refresh=0
+OBS: min deadline slack=26 max row age=2712 (ratified bound 2751) ; sweep accept->sweep_done max=1178 (bound 1184)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1176 (bound 1184) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=139504
+TB_RESULT: PASS
+[extracted anchored sclk_half_ps=500 phase_ps=0 traffic=3 fast=1]
+CONFIG: INTERVAL=2751 floor=1178 T_ROW=35 T_ACC=23 GUARD_EFF=35 D_REF=34 D_RD=14 D_WR=22 sclk_half_ps=500 phase_ps=0 traffic=3
+OBS: launches=3937 executed=3933 (read=925 write=944 refresh=2064) abandoned_by_reset=3 resets=3
+OBS: seq_busy_len read=14 write=22 refresh=34 ; sched_busy_len access=23 refresh=35
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=8 write=0 refresh=0
+OBS: min deadline slack=26 max row age=2712 (ratified bound 2751) ; sweep accept->sweep_done max=1176 (bound 1184)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1176 (bound 1184) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=119224
+TB_RESULT: PASS
+[ratified gap1 sclk_half_ps=3700 phase_ps=130 traffic=3 fast=1]
+CONFIG: INTERVAL=5029 floor=1275 T_ROW=38 T_ACC=24 GUARD_EFF=35 D_REF=37 D_RD=16 D_WR=23 sclk_half_ps=3700 phase_ps=130 traffic=3
+OBS: launches=6594 executed=6590 (read=2134 write=2216 refresh=2240) abandoned_by_reset=3 resets=3
+OBS: seq_busy_len read=16 write=23 refresh=37 ; sched_busy_len access=24 refresh=38
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=7 write=0 refresh=0
+OBS: min deadline slack=27 max row age=4973 (ratified bound 5029) ; sweep accept->sweep_done max=1270 (bound 1281)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1274 (bound 1281) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=196174
+TB_RESULT: PASS
+[ratified fast sclk_half_ps=370 phase_ps=610 traffic=3 fast=1]
+CONFIG: INTERVAL=5029 floor=459 T_ROW=13 T_ACC=8 GUARD_EFF=35 D_REF=12 D_RD=7 D_WR=6 sclk_half_ps=370 phase_ps=610 traffic=3
+OBS: launches=14657 executed=14654 (read=6336 write=6221 refresh=2097) abandoned_by_reset=3 resets=3
+OBS: seq_busy_len read=7 write=6 refresh=12 ; sched_busy_len access=8 refresh=13
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=0 write=1 refresh=0
+OBS: min deadline slack=11 max row age=4993 (ratified bound 5029) ; sweep accept->sweep_done max=457 (bound 465)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=457 (bound 465) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=142380
+TB_RESULT: PASS
+[ratified full_read_pulse sclk_half_ps=1300 phase_ps=870 traffic=3 fast=1]
+CONFIG: INTERVAL=5029 floor=1500 T_ROW=45 T_ACC=25 GUARD_EFF=35 D_REF=44 D_RD=24 D_WR=22 sclk_half_ps=1300 phase_ps=870 traffic=3
+OBS: launches=5788 executed=5784 (read=1859 write=1869 refresh=2056) abandoned_by_reset=3 resets=3
+OBS: seq_busy_len read=24 write=22 refresh=44 ; sched_busy_len access=25 refresh=45
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=0 write=2 refresh=0
+OBS: min deadline slack=28 max row age=4982 (ratified bound 5029) ; sweep accept->sweep_done max=1485 (bound 1506)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1497 (bound 1506) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=191609
+TB_RESULT: PASS
+[extracted mismatch sclk_half_ps=3700 phase_ps=130 traffic=3 fast=1]
+CONFIG: INTERVAL=2751 floor=1838 T_ROW=55 T_ACC=43 GUARD_EFF=35 D_REF=54 D_RD=14 D_WR=42 sclk_half_ps=3700 phase_ps=130 traffic=3
+OBS: launches=3190 executed=3187 (read=372 write=388 refresh=2427) abandoned_by_reset=2 resets=3
+OBS: seq_busy_len read=14 write=42 refresh=54 ; sched_busy_len access=43 refresh=55
+OBS: launch->sequencer latency min=1 max=1 ; min(sched fall - seq fall) read=28 write=0 refresh=0
+OBS: min deadline slack=35 max row age=2716 (ratified bound 2751) ; sweep accept->sweep_done max=1822 (bound 1844)
+OBS: max SPI commit->applied=4 cycles (bound 6) ; shortenings=15 longest transition above new value=1836 (bound 1844) ; ivl accepted=14 rejected=5 ; sweeps=4 done=3 cancelled_by_reset=1
+SUMMARY: checks=201 findings=0 cycles=169403
+TB_RESULT: PASS
+== 2. infeasible combination must be rejected ==
+[ratified huge] python: INFEASIBLE: set=huge MIN_INTERVAL=5468 INTERVAL=5029 (T_ROW=165 T_ACC=153)
+[ratified huge bench] refresh_sched_rt: INFEASIBLE parameters (N_ROWS*T_ROW+T_ACC+GUARD > INTERVAL or INTERVAL > 16 bit)
+[ratified huge bench] expected rejection observed
+[extracted huge] python: INFEASIBLE: set=huge MIN_INTERVAL=5468 INTERVAL=2751 (T_ROW=165 T_ACC=153)
+[extracted huge bench] refresh_sched_rt: INFEASIBLE parameters (N_ROWS*T_ROW+T_ACC+GUARD > INTERVAL or INTERVAL > 16 bit)
+[extracted huge bench] expected rejection observed
+== 3. negative controls (must FAIL for the intended reason) ==
+[neg dropped_refresh_launch gate=0] failed as required: FINDING DROPPED_LAUNCH: a=6 b=2 (cycle 218)
+[neg dropped_access_launch gate=0] failed as required: FINDING DROPPED_LAUNCH: a=23 b=0 (cycle 1802)
+[neg dropped_refresh_launch_gap1 gate=0] failed as required: FINDING DROPPED_LAUNCH: a=19 b=2 (cycle 743)
+[neg wrong_row_launch gate=0] failed as required: FINDING ROW_UNSTABLE: a=7 b=6 (cycle 218)
+[neg stretched_start gate=0] failed as required: FINDING START_IGNORED: a=219 b=0 (cycle 219)
+[neg row_budget_minus1 gate=1] failed as required: CONFIG_REJECT: scheduler T_ROW 34 below derived 35
+[neg row_budget_minus1 gate=0] failed as required: FINDING BUDGET_UNDER: a=34 b=2 (cycle 35)
+[neg row_budget_minus1_gap1 gate=1] failed as required: CONFIG_REJECT: scheduler T_ROW 37 below derived 38
+[neg row_budget_minus1_gap1 gate=0] failed as required: FINDING BUDGET_UNDER: a=37 b=2 (cycle 38)
+[neg acc_budget_minus1 gate=1] failed as required: CONFIG_REJECT: scheduler T_ACC 22 below derived 23
+[neg acc_budget_minus1 gate=0] failed as required: FINDING BUDGET_UNDER: a=22 b=1 (cycle 1175)
+[neg acc_budget_minus1_mismatch gate=1] failed as required: CONFIG_REJECT: scheduler T_ACC 42 below derived 43
+[neg acc_budget_minus1_mismatch gate=0] failed as required: FINDING BUDGET_UNDER: a=42 b=1 (cycle 1835)
+[neg stale34_full_read_pulse gate=1] failed as required: CONFIG_REJECT: scheduler T_ROW 34 below derived 45
+[neg stale34_full_read_pulse gate=0] failed as required: FINDING BUDGET_UNDER: a=34 b=2 (cycle 35)
+[neg legacy_floor_no_decision_cycle gate=1] failed as required: CONFIG_REJECT: gc_ctrl_top floor 1145 != derived 1178
+[neg legacy_floor_no_decision_cycle gate=0] failed as required: FINDING CHECK_ivl_l_readback: got 99 expected a5 (cycle 2354)
+ALL PASS
+exit=0

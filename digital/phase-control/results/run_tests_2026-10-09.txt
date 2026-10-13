@@ -1,0 +1,17 @@
+[anchored gap=0]
+INFO: cycles READ=14 WRITE=22 REFRESH=34 (T_ROW=34 T_ACC=34)
+CONFLICT: REFRESH needs 34 cycles == T_ROW=34 (zero slack)
+TB_RESULT: PASS
+[anchored gap=1]
+INFO: cycles READ=16 WRITE=23 REFRESH=37 (T_ROW=34 T_ACC=34)
+CONFLICT: REFRESH needs 37 cycles > scheduler T_ROW=34 (op_done would precede last phase)
+TB_RESULT: PASS
+[fast gap=0]
+INFO: cycles READ=7 WRITE=6 REFRESH=12 (T_ROW=34 T_ACC=34)
+CONFLICT: REFRESH needs 12 cycles < T_ROW=34 (22 cycles unused slack)
+TB_RESULT: PASS
+[fast gap=1]
+INFO: cycles READ=9 WRITE=7 REFRESH=15 (T_ROW=34 T_ACC=34)
+CONFLICT: REFRESH needs 15 cycles < T_ROW=34 (19 cycles unused slack)
+TB_RESULT: PASS
+ALL PASS

@@ -1,0 +1,3648 @@
+{
+ "netlist": "refresh_op.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 70n 0 50p uic"
+ },
+ "measurements": [
+  {
+   "name": "snend_op1_0900_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w0p2 FIND v(sn_op1_0900_s0p5_w0p2_0) AT=9.7n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w0p2 FIND v(sn_op1_0900_s0p5_w0p2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w0p2 FIND v(d_op1_0900_s0p5_w0p2) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w0p5 FIND v(sn_op1_0900_s0p5_w0p5_0) AT=10n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w0p5 FIND v(sn_op1_0900_s0p5_w0p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w0p5 FIND v(d_op1_0900_s0p5_w0p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w1 FIND v(sn_op1_0900_s0p5_w1_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w1 FIND v(sn_op1_0900_s0p5_w1_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w1 FIND v(d_op1_0900_s0p5_w1) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w2 FIND v(sn_op1_0900_s0p5_w2_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w2 FIND v(sn_op1_0900_s0p5_w2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w2 FIND v(d_op1_0900_s0p5_w2) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w3 FIND v(sn_op1_0900_s0p5_w3_0) AT=12.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w3 FIND v(sn_op1_0900_s0p5_w3_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w3 FIND v(d_op1_0900_s0p5_w3) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w5 FIND v(sn_op1_0900_s0p5_w5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w5 FIND v(sn_op1_0900_s0p5_w5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w5 FIND v(d_op1_0900_s0p5_w5) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w7p5 FIND v(sn_op1_0900_s0p5_w7p5_0) AT=17n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w7p5 FIND v(sn_op1_0900_s0p5_w7p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w7p5 FIND v(d_op1_0900_s0p5_w7p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w10 FIND v(sn_op1_0900_s0p5_w10_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w10 FIND v(sn_op1_0900_s0p5_w10_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w10 FIND v(d_op1_0900_s0p5_w10) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w15 FIND v(sn_op1_0900_s0p5_w15_0) AT=24.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w15 FIND v(sn_op1_0900_s0p5_w15_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w15 FIND v(d_op1_0900_s0p5_w15) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w20 FIND v(sn_op1_0900_s0p5_w20_0) AT=29.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w20 FIND v(sn_op1_0900_s0p5_w20_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w20 FIND v(d_op1_0900_s0p5_w20) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w30 FIND v(sn_op1_0900_s0p5_w30_0) AT=39.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w30 FIND v(sn_op1_0900_s0p5_w30_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w30 FIND v(d_op1_0900_s0p5_w30) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s0p5_w50 FIND v(sn_op1_0900_s0p5_w50_0) AT=59.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s0p5_w50 FIND v(sn_op1_0900_s0p5_w50_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_0900_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s0p5_w50 FIND v(d_op1_0900_s0p5_w50) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w0p2 FIND v(sn_op1_0900_s1_w0p2_0) AT=10.2n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w0p2 FIND v(sn_op1_0900_s1_w0p2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w0p2 FIND v(d_op1_0900_s1_w0p2) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w0p5 FIND v(sn_op1_0900_s1_w0p5_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w0p5 FIND v(sn_op1_0900_s1_w0p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w0p5 FIND v(d_op1_0900_s1_w0p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w1 FIND v(sn_op1_0900_s1_w1_0) AT=11n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w1 FIND v(sn_op1_0900_s1_w1_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w1 FIND v(d_op1_0900_s1_w1) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w2 FIND v(sn_op1_0900_s1_w2_0) AT=12n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w2 FIND v(sn_op1_0900_s1_w2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w2 FIND v(d_op1_0900_s1_w2) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w3 FIND v(sn_op1_0900_s1_w3_0) AT=13n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w3 FIND v(sn_op1_0900_s1_w3_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w3 FIND v(d_op1_0900_s1_w3) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w5 FIND v(sn_op1_0900_s1_w5_0) AT=15n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w5 FIND v(sn_op1_0900_s1_w5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w5 FIND v(d_op1_0900_s1_w5) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w7p5 FIND v(sn_op1_0900_s1_w7p5_0) AT=17.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w7p5 FIND v(sn_op1_0900_s1_w7p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w7p5 FIND v(d_op1_0900_s1_w7p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w10 FIND v(sn_op1_0900_s1_w10_0) AT=20n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w10 FIND v(sn_op1_0900_s1_w10_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w10 FIND v(d_op1_0900_s1_w10) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w15 FIND v(sn_op1_0900_s1_w15_0) AT=25n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w15 FIND v(sn_op1_0900_s1_w15_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w15 FIND v(d_op1_0900_s1_w15) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w20 FIND v(sn_op1_0900_s1_w20_0) AT=30n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w20 FIND v(sn_op1_0900_s1_w20_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w20 FIND v(d_op1_0900_s1_w20) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w30 FIND v(sn_op1_0900_s1_w30_0) AT=40n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w30 FIND v(sn_op1_0900_s1_w30_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w30 FIND v(d_op1_0900_s1_w30) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s1_w50 FIND v(sn_op1_0900_s1_w50_0) AT=60n"
+  },
+  {
+   "name": "snrd_op1_0900_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s1_w50 FIND v(sn_op1_0900_s1_w50_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_0900_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s1_w50 FIND v(d_op1_0900_s1_w50) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w0p2 FIND v(sn_op1_0900_s2_w0p2_0) AT=11.2n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w0p2 FIND v(sn_op1_0900_s2_w0p2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w0p2 FIND v(d_op1_0900_s2_w0p2) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w0p5 FIND v(sn_op1_0900_s2_w0p5_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w0p5 FIND v(sn_op1_0900_s2_w0p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w0p5 FIND v(d_op1_0900_s2_w0p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w1 FIND v(sn_op1_0900_s2_w1_0) AT=12n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w1 FIND v(sn_op1_0900_s2_w1_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w1 FIND v(d_op1_0900_s2_w1) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w2 FIND v(sn_op1_0900_s2_w2_0) AT=13n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w2 FIND v(sn_op1_0900_s2_w2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w2 FIND v(d_op1_0900_s2_w2) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w3 FIND v(sn_op1_0900_s2_w3_0) AT=14n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w3 FIND v(sn_op1_0900_s2_w3_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w3 FIND v(d_op1_0900_s2_w3) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w5 FIND v(sn_op1_0900_s2_w5_0) AT=16n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w5 FIND v(sn_op1_0900_s2_w5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w5 FIND v(d_op1_0900_s2_w5) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w7p5 FIND v(sn_op1_0900_s2_w7p5_0) AT=18.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w7p5 FIND v(sn_op1_0900_s2_w7p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w7p5 FIND v(d_op1_0900_s2_w7p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w10 FIND v(sn_op1_0900_s2_w10_0) AT=21n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w10 FIND v(sn_op1_0900_s2_w10_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w10 FIND v(d_op1_0900_s2_w10) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w15 FIND v(sn_op1_0900_s2_w15_0) AT=26n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w15 FIND v(sn_op1_0900_s2_w15_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w15 FIND v(d_op1_0900_s2_w15) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w20 FIND v(sn_op1_0900_s2_w20_0) AT=31n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w20 FIND v(sn_op1_0900_s2_w20_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w20 FIND v(d_op1_0900_s2_w20) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w30 FIND v(sn_op1_0900_s2_w30_0) AT=41n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w30 FIND v(sn_op1_0900_s2_w30_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w30 FIND v(d_op1_0900_s2_w30) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s2_w50 FIND v(sn_op1_0900_s2_w50_0) AT=61n"
+  },
+  {
+   "name": "snrd_op1_0900_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s2_w50 FIND v(sn_op1_0900_s2_w50_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_0900_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s2_w50 FIND v(d_op1_0900_s2_w50) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w0p2 FIND v(sn_op1_0900_s5_w0p2_0) AT=14.2n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w0p2 FIND v(sn_op1_0900_s5_w0p2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w0p2 FIND v(d_op1_0900_s5_w0p2) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w0p5 FIND v(sn_op1_0900_s5_w0p5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w0p5 FIND v(sn_op1_0900_s5_w0p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w0p5 FIND v(d_op1_0900_s5_w0p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w1 FIND v(sn_op1_0900_s5_w1_0) AT=15n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w1 FIND v(sn_op1_0900_s5_w1_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w1 FIND v(d_op1_0900_s5_w1) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w2 FIND v(sn_op1_0900_s5_w2_0) AT=16n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w2 FIND v(sn_op1_0900_s5_w2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w2 FIND v(d_op1_0900_s5_w2) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w3 FIND v(sn_op1_0900_s5_w3_0) AT=17n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w3 FIND v(sn_op1_0900_s5_w3_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w3 FIND v(d_op1_0900_s5_w3) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w5 FIND v(sn_op1_0900_s5_w5_0) AT=19n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w5 FIND v(sn_op1_0900_s5_w5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w5 FIND v(d_op1_0900_s5_w5) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w7p5 FIND v(sn_op1_0900_s5_w7p5_0) AT=21.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w7p5 FIND v(sn_op1_0900_s5_w7p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w7p5 FIND v(d_op1_0900_s5_w7p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w10 FIND v(sn_op1_0900_s5_w10_0) AT=24n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w10 FIND v(sn_op1_0900_s5_w10_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w10 FIND v(d_op1_0900_s5_w10) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w15 FIND v(sn_op1_0900_s5_w15_0) AT=29n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w15 FIND v(sn_op1_0900_s5_w15_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w15 FIND v(d_op1_0900_s5_w15) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w20 FIND v(sn_op1_0900_s5_w20_0) AT=34n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w20 FIND v(sn_op1_0900_s5_w20_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w20 FIND v(d_op1_0900_s5_w20) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w30 FIND v(sn_op1_0900_s5_w30_0) AT=44n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w30 FIND v(sn_op1_0900_s5_w30_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w30 FIND v(d_op1_0900_s5_w30) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s5_w50 FIND v(sn_op1_0900_s5_w50_0) AT=64n"
+  },
+  {
+   "name": "snrd_op1_0900_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s5_w50 FIND v(sn_op1_0900_s5_w50_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_0900_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s5_w50 FIND v(d_op1_0900_s5_w50) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w0p2 FIND v(sn_op1_0900_s10_w0p2_0) AT=19.2n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w0p2 FIND v(sn_op1_0900_s10_w0p2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w0p2 FIND v(d_op1_0900_s10_w0p2) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w0p5 FIND v(sn_op1_0900_s10_w0p5_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w0p5 FIND v(sn_op1_0900_s10_w0p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w0p5 FIND v(d_op1_0900_s10_w0p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w1 FIND v(sn_op1_0900_s10_w1_0) AT=20n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w1 FIND v(sn_op1_0900_s10_w1_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w1 FIND v(d_op1_0900_s10_w1) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w2 FIND v(sn_op1_0900_s10_w2_0) AT=21n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w2 FIND v(sn_op1_0900_s10_w2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w2 FIND v(d_op1_0900_s10_w2) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w3 FIND v(sn_op1_0900_s10_w3_0) AT=22n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w3 FIND v(sn_op1_0900_s10_w3_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w3 FIND v(d_op1_0900_s10_w3) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w5 FIND v(sn_op1_0900_s10_w5_0) AT=24n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w5 FIND v(sn_op1_0900_s10_w5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w5 FIND v(d_op1_0900_s10_w5) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w7p5 FIND v(sn_op1_0900_s10_w7p5_0) AT=26.5n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w7p5 FIND v(sn_op1_0900_s10_w7p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w7p5 FIND v(d_op1_0900_s10_w7p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w10 FIND v(sn_op1_0900_s10_w10_0) AT=29n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w10 FIND v(sn_op1_0900_s10_w10_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w10 FIND v(d_op1_0900_s10_w10) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w15 FIND v(sn_op1_0900_s10_w15_0) AT=34n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w15 FIND v(sn_op1_0900_s10_w15_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w15 FIND v(d_op1_0900_s10_w15) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w20 FIND v(sn_op1_0900_s10_w20_0) AT=39n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w20 FIND v(sn_op1_0900_s10_w20_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w20 FIND v(d_op1_0900_s10_w20) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w30 FIND v(sn_op1_0900_s10_w30_0) AT=49n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w30 FIND v(sn_op1_0900_s10_w30_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w30 FIND v(d_op1_0900_s10_w30) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_0900_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_0900_s10_w50 FIND v(sn_op1_0900_s10_w50_0) AT=69n"
+  },
+  {
+   "name": "snrd_op1_0900_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_0900_s10_w50 FIND v(sn_op1_0900_s10_w50_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_0900_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_0900_s10_w50 FIND v(d_op1_0900_s10_w50) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w0p2 FIND v(sn_op1_1000_s0p5_w0p2_0) AT=9.7n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w0p2 FIND v(sn_op1_1000_s0p5_w0p2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w0p2 FIND v(d_op1_1000_s0p5_w0p2) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w0p5 FIND v(sn_op1_1000_s0p5_w0p5_0) AT=10n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w0p5 FIND v(sn_op1_1000_s0p5_w0p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w0p5 FIND v(d_op1_1000_s0p5_w0p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w1 FIND v(sn_op1_1000_s0p5_w1_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w1 FIND v(sn_op1_1000_s0p5_w1_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w1 FIND v(d_op1_1000_s0p5_w1) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w2 FIND v(sn_op1_1000_s0p5_w2_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w2 FIND v(sn_op1_1000_s0p5_w2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w2 FIND v(d_op1_1000_s0p5_w2) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w3 FIND v(sn_op1_1000_s0p5_w3_0) AT=12.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w3 FIND v(sn_op1_1000_s0p5_w3_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w3 FIND v(d_op1_1000_s0p5_w3) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w5 FIND v(sn_op1_1000_s0p5_w5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w5 FIND v(sn_op1_1000_s0p5_w5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w5 FIND v(d_op1_1000_s0p5_w5) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w7p5 FIND v(sn_op1_1000_s0p5_w7p5_0) AT=17n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w7p5 FIND v(sn_op1_1000_s0p5_w7p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w7p5 FIND v(d_op1_1000_s0p5_w7p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w10 FIND v(sn_op1_1000_s0p5_w10_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w10 FIND v(sn_op1_1000_s0p5_w10_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w10 FIND v(d_op1_1000_s0p5_w10) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w15 FIND v(sn_op1_1000_s0p5_w15_0) AT=24.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w15 FIND v(sn_op1_1000_s0p5_w15_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w15 FIND v(d_op1_1000_s0p5_w15) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w20 FIND v(sn_op1_1000_s0p5_w20_0) AT=29.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w20 FIND v(sn_op1_1000_s0p5_w20_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w20 FIND v(d_op1_1000_s0p5_w20) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w30 FIND v(sn_op1_1000_s0p5_w30_0) AT=39.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w30 FIND v(sn_op1_1000_s0p5_w30_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w30 FIND v(d_op1_1000_s0p5_w30) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s0p5_w50 FIND v(sn_op1_1000_s0p5_w50_0) AT=59.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s0p5_w50 FIND v(sn_op1_1000_s0p5_w50_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op1_1000_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s0p5_w50 FIND v(d_op1_1000_s0p5_w50) AT=5.4n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w0p2 FIND v(sn_op1_1000_s1_w0p2_0) AT=10.2n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w0p2 FIND v(sn_op1_1000_s1_w0p2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w0p2 FIND v(d_op1_1000_s1_w0p2) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w0p5 FIND v(sn_op1_1000_s1_w0p5_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w0p5 FIND v(sn_op1_1000_s1_w0p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w0p5 FIND v(d_op1_1000_s1_w0p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w1 FIND v(sn_op1_1000_s1_w1_0) AT=11n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w1 FIND v(sn_op1_1000_s1_w1_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w1 FIND v(d_op1_1000_s1_w1) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w2 FIND v(sn_op1_1000_s1_w2_0) AT=12n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w2 FIND v(sn_op1_1000_s1_w2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w2 FIND v(d_op1_1000_s1_w2) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w3 FIND v(sn_op1_1000_s1_w3_0) AT=13n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w3 FIND v(sn_op1_1000_s1_w3_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w3 FIND v(d_op1_1000_s1_w3) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w5 FIND v(sn_op1_1000_s1_w5_0) AT=15n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w5 FIND v(sn_op1_1000_s1_w5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w5 FIND v(d_op1_1000_s1_w5) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w7p5 FIND v(sn_op1_1000_s1_w7p5_0) AT=17.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w7p5 FIND v(sn_op1_1000_s1_w7p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w7p5 FIND v(d_op1_1000_s1_w7p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w10 FIND v(sn_op1_1000_s1_w10_0) AT=20n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w10 FIND v(sn_op1_1000_s1_w10_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w10 FIND v(d_op1_1000_s1_w10) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w15 FIND v(sn_op1_1000_s1_w15_0) AT=25n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w15 FIND v(sn_op1_1000_s1_w15_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w15 FIND v(d_op1_1000_s1_w15) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w20 FIND v(sn_op1_1000_s1_w20_0) AT=30n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w20 FIND v(sn_op1_1000_s1_w20_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w20 FIND v(d_op1_1000_s1_w20) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w30 FIND v(sn_op1_1000_s1_w30_0) AT=40n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w30 FIND v(sn_op1_1000_s1_w30_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w30 FIND v(d_op1_1000_s1_w30) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s1_w50 FIND v(sn_op1_1000_s1_w50_0) AT=60n"
+  },
+  {
+   "name": "snrd_op1_1000_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s1_w50 FIND v(sn_op1_1000_s1_w50_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op1_1000_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s1_w50 FIND v(d_op1_1000_s1_w50) AT=5.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w0p2 FIND v(sn_op1_1000_s2_w0p2_0) AT=11.2n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w0p2 FIND v(sn_op1_1000_s2_w0p2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w0p2 FIND v(d_op1_1000_s2_w0p2) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w0p5 FIND v(sn_op1_1000_s2_w0p5_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w0p5 FIND v(sn_op1_1000_s2_w0p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w0p5 FIND v(d_op1_1000_s2_w0p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w1 FIND v(sn_op1_1000_s2_w1_0) AT=12n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w1 FIND v(sn_op1_1000_s2_w1_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w1 FIND v(d_op1_1000_s2_w1) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w2 FIND v(sn_op1_1000_s2_w2_0) AT=13n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w2 FIND v(sn_op1_1000_s2_w2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w2 FIND v(d_op1_1000_s2_w2) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w3 FIND v(sn_op1_1000_s2_w3_0) AT=14n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w3 FIND v(sn_op1_1000_s2_w3_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w3 FIND v(d_op1_1000_s2_w3) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w5 FIND v(sn_op1_1000_s2_w5_0) AT=16n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w5 FIND v(sn_op1_1000_s2_w5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w5 FIND v(d_op1_1000_s2_w5) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w7p5 FIND v(sn_op1_1000_s2_w7p5_0) AT=18.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w7p5 FIND v(sn_op1_1000_s2_w7p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w7p5 FIND v(d_op1_1000_s2_w7p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w10 FIND v(sn_op1_1000_s2_w10_0) AT=21n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w10 FIND v(sn_op1_1000_s2_w10_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w10 FIND v(d_op1_1000_s2_w10) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w15 FIND v(sn_op1_1000_s2_w15_0) AT=26n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w15 FIND v(sn_op1_1000_s2_w15_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w15 FIND v(d_op1_1000_s2_w15) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w20 FIND v(sn_op1_1000_s2_w20_0) AT=31n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w20 FIND v(sn_op1_1000_s2_w20_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w20 FIND v(d_op1_1000_s2_w20) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w30 FIND v(sn_op1_1000_s2_w30_0) AT=41n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w30 FIND v(sn_op1_1000_s2_w30_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w30 FIND v(d_op1_1000_s2_w30) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s2_w50 FIND v(sn_op1_1000_s2_w50_0) AT=61n"
+  },
+  {
+   "name": "snrd_op1_1000_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s2_w50 FIND v(sn_op1_1000_s2_w50_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op1_1000_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s2_w50 FIND v(d_op1_1000_s2_w50) AT=6.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w0p2 FIND v(sn_op1_1000_s5_w0p2_0) AT=14.2n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w0p2 FIND v(sn_op1_1000_s5_w0p2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w0p2 FIND v(d_op1_1000_s5_w0p2) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w0p5 FIND v(sn_op1_1000_s5_w0p5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w0p5 FIND v(sn_op1_1000_s5_w0p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w0p5 FIND v(d_op1_1000_s5_w0p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w1 FIND v(sn_op1_1000_s5_w1_0) AT=15n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w1 FIND v(sn_op1_1000_s5_w1_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w1 FIND v(d_op1_1000_s5_w1) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w2 FIND v(sn_op1_1000_s5_w2_0) AT=16n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w2 FIND v(sn_op1_1000_s5_w2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w2 FIND v(d_op1_1000_s5_w2) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w3 FIND v(sn_op1_1000_s5_w3_0) AT=17n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w3 FIND v(sn_op1_1000_s5_w3_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w3 FIND v(d_op1_1000_s5_w3) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w5 FIND v(sn_op1_1000_s5_w5_0) AT=19n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w5 FIND v(sn_op1_1000_s5_w5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w5 FIND v(d_op1_1000_s5_w5) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w7p5 FIND v(sn_op1_1000_s5_w7p5_0) AT=21.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w7p5 FIND v(sn_op1_1000_s5_w7p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w7p5 FIND v(d_op1_1000_s5_w7p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w10 FIND v(sn_op1_1000_s5_w10_0) AT=24n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w10 FIND v(sn_op1_1000_s5_w10_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w10 FIND v(d_op1_1000_s5_w10) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w15 FIND v(sn_op1_1000_s5_w15_0) AT=29n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w15 FIND v(sn_op1_1000_s5_w15_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w15 FIND v(d_op1_1000_s5_w15) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w20 FIND v(sn_op1_1000_s5_w20_0) AT=34n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w20 FIND v(sn_op1_1000_s5_w20_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w20 FIND v(d_op1_1000_s5_w20) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w30 FIND v(sn_op1_1000_s5_w30_0) AT=44n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w30 FIND v(sn_op1_1000_s5_w30_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w30 FIND v(d_op1_1000_s5_w30) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s5_w50 FIND v(sn_op1_1000_s5_w50_0) AT=64n"
+  },
+  {
+   "name": "snrd_op1_1000_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s5_w50 FIND v(sn_op1_1000_s5_w50_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op1_1000_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s5_w50 FIND v(d_op1_1000_s5_w50) AT=9.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w0p2 FIND v(sn_op1_1000_s10_w0p2_0) AT=19.2n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w0p2 FIND v(sn_op1_1000_s10_w0p2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w0p2 FIND v(d_op1_1000_s10_w0p2) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w0p5 FIND v(sn_op1_1000_s10_w0p5_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w0p5 FIND v(sn_op1_1000_s10_w0p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w0p5 FIND v(d_op1_1000_s10_w0p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w1 FIND v(sn_op1_1000_s10_w1_0) AT=20n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w1 FIND v(sn_op1_1000_s10_w1_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w1 FIND v(d_op1_1000_s10_w1) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w2 FIND v(sn_op1_1000_s10_w2_0) AT=21n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w2 FIND v(sn_op1_1000_s10_w2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w2 FIND v(d_op1_1000_s10_w2) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w3 FIND v(sn_op1_1000_s10_w3_0) AT=22n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w3 FIND v(sn_op1_1000_s10_w3_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w3 FIND v(d_op1_1000_s10_w3) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w5 FIND v(sn_op1_1000_s10_w5_0) AT=24n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w5 FIND v(sn_op1_1000_s10_w5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w5 FIND v(d_op1_1000_s10_w5) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w7p5 FIND v(sn_op1_1000_s10_w7p5_0) AT=26.5n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w7p5 FIND v(sn_op1_1000_s10_w7p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w7p5 FIND v(d_op1_1000_s10_w7p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w10 FIND v(sn_op1_1000_s10_w10_0) AT=29n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w10 FIND v(sn_op1_1000_s10_w10_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w10 FIND v(d_op1_1000_s10_w10) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w15 FIND v(sn_op1_1000_s10_w15_0) AT=34n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w15 FIND v(sn_op1_1000_s10_w15_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w15 FIND v(d_op1_1000_s10_w15) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w20 FIND v(sn_op1_1000_s10_w20_0) AT=39n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w20 FIND v(sn_op1_1000_s10_w20_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w20 FIND v(d_op1_1000_s10_w20) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w30 FIND v(sn_op1_1000_s10_w30_0) AT=49n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w30 FIND v(sn_op1_1000_s10_w30_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w30 FIND v(d_op1_1000_s10_w30) AT=14.9n"
+  },
+  {
+   "name": "snend_op1_1000_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op1_1000_s10_w50 FIND v(sn_op1_1000_s10_w50_0) AT=69n"
+  },
+  {
+   "name": "snrd_op1_1000_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op1_1000_s10_w50 FIND v(sn_op1_1000_s10_w50_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op1_1000_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op1_1000_s10_w50 FIND v(d_op1_1000_s10_w50) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w0p2 FIND v(sn_op0_n100_s0p5_w0p2_0) AT=9.7n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w0p2 FIND v(sn_op0_n100_s0p5_w0p2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w0p2 FIND v(d_op0_n100_s0p5_w0p2) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w0p5 FIND v(sn_op0_n100_s0p5_w0p5_0) AT=10n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w0p5 FIND v(sn_op0_n100_s0p5_w0p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w0p5 FIND v(d_op0_n100_s0p5_w0p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w1 FIND v(sn_op0_n100_s0p5_w1_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w1 FIND v(sn_op0_n100_s0p5_w1_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w1 FIND v(d_op0_n100_s0p5_w1) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w2 FIND v(sn_op0_n100_s0p5_w2_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w2 FIND v(sn_op0_n100_s0p5_w2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w2 FIND v(d_op0_n100_s0p5_w2) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w3 FIND v(sn_op0_n100_s0p5_w3_0) AT=12.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w3 FIND v(sn_op0_n100_s0p5_w3_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w3 FIND v(d_op0_n100_s0p5_w3) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w5 FIND v(sn_op0_n100_s0p5_w5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w5 FIND v(sn_op0_n100_s0p5_w5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w5 FIND v(d_op0_n100_s0p5_w5) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w7p5 FIND v(sn_op0_n100_s0p5_w7p5_0) AT=17n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w7p5 FIND v(sn_op0_n100_s0p5_w7p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w7p5 FIND v(d_op0_n100_s0p5_w7p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w10 FIND v(sn_op0_n100_s0p5_w10_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w10 FIND v(sn_op0_n100_s0p5_w10_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w10 FIND v(d_op0_n100_s0p5_w10) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w15 FIND v(sn_op0_n100_s0p5_w15_0) AT=24.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w15 FIND v(sn_op0_n100_s0p5_w15_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w15 FIND v(d_op0_n100_s0p5_w15) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w20 FIND v(sn_op0_n100_s0p5_w20_0) AT=29.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w20 FIND v(sn_op0_n100_s0p5_w20_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w20 FIND v(d_op0_n100_s0p5_w20) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w30 FIND v(sn_op0_n100_s0p5_w30_0) AT=39.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w30 FIND v(sn_op0_n100_s0p5_w30_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w30 FIND v(d_op0_n100_s0p5_w30) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s0p5_w50 FIND v(sn_op0_n100_s0p5_w50_0) AT=59.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s0p5_w50 FIND v(sn_op0_n100_s0p5_w50_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_n100_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s0p5_w50 FIND v(d_op0_n100_s0p5_w50) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w0p2 FIND v(sn_op0_n100_s1_w0p2_0) AT=10.2n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w0p2 FIND v(sn_op0_n100_s1_w0p2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w0p2 FIND v(d_op0_n100_s1_w0p2) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w0p5 FIND v(sn_op0_n100_s1_w0p5_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w0p5 FIND v(sn_op0_n100_s1_w0p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w0p5 FIND v(d_op0_n100_s1_w0p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w1 FIND v(sn_op0_n100_s1_w1_0) AT=11n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w1 FIND v(sn_op0_n100_s1_w1_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w1 FIND v(d_op0_n100_s1_w1) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w2 FIND v(sn_op0_n100_s1_w2_0) AT=12n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w2 FIND v(sn_op0_n100_s1_w2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w2 FIND v(d_op0_n100_s1_w2) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w3 FIND v(sn_op0_n100_s1_w3_0) AT=13n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w3 FIND v(sn_op0_n100_s1_w3_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w3 FIND v(d_op0_n100_s1_w3) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w5 FIND v(sn_op0_n100_s1_w5_0) AT=15n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w5 FIND v(sn_op0_n100_s1_w5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w5 FIND v(d_op0_n100_s1_w5) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w7p5 FIND v(sn_op0_n100_s1_w7p5_0) AT=17.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w7p5 FIND v(sn_op0_n100_s1_w7p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w7p5 FIND v(d_op0_n100_s1_w7p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w10 FIND v(sn_op0_n100_s1_w10_0) AT=20n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w10 FIND v(sn_op0_n100_s1_w10_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w10 FIND v(d_op0_n100_s1_w10) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w15 FIND v(sn_op0_n100_s1_w15_0) AT=25n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w15 FIND v(sn_op0_n100_s1_w15_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w15 FIND v(d_op0_n100_s1_w15) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w20 FIND v(sn_op0_n100_s1_w20_0) AT=30n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w20 FIND v(sn_op0_n100_s1_w20_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w20 FIND v(d_op0_n100_s1_w20) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w30 FIND v(sn_op0_n100_s1_w30_0) AT=40n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w30 FIND v(sn_op0_n100_s1_w30_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w30 FIND v(d_op0_n100_s1_w30) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s1_w50 FIND v(sn_op0_n100_s1_w50_0) AT=60n"
+  },
+  {
+   "name": "snrd_op0_n100_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s1_w50 FIND v(sn_op0_n100_s1_w50_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_n100_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s1_w50 FIND v(d_op0_n100_s1_w50) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w0p2 FIND v(sn_op0_n100_s2_w0p2_0) AT=11.2n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w0p2 FIND v(sn_op0_n100_s2_w0p2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w0p2 FIND v(d_op0_n100_s2_w0p2) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w0p5 FIND v(sn_op0_n100_s2_w0p5_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w0p5 FIND v(sn_op0_n100_s2_w0p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w0p5 FIND v(d_op0_n100_s2_w0p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w1 FIND v(sn_op0_n100_s2_w1_0) AT=12n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w1 FIND v(sn_op0_n100_s2_w1_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w1 FIND v(d_op0_n100_s2_w1) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w2 FIND v(sn_op0_n100_s2_w2_0) AT=13n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w2 FIND v(sn_op0_n100_s2_w2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w2 FIND v(d_op0_n100_s2_w2) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w3 FIND v(sn_op0_n100_s2_w3_0) AT=14n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w3 FIND v(sn_op0_n100_s2_w3_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w3 FIND v(d_op0_n100_s2_w3) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w5 FIND v(sn_op0_n100_s2_w5_0) AT=16n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w5 FIND v(sn_op0_n100_s2_w5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w5 FIND v(d_op0_n100_s2_w5) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w7p5 FIND v(sn_op0_n100_s2_w7p5_0) AT=18.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w7p5 FIND v(sn_op0_n100_s2_w7p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w7p5 FIND v(d_op0_n100_s2_w7p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w10 FIND v(sn_op0_n100_s2_w10_0) AT=21n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w10 FIND v(sn_op0_n100_s2_w10_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w10 FIND v(d_op0_n100_s2_w10) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w15 FIND v(sn_op0_n100_s2_w15_0) AT=26n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w15 FIND v(sn_op0_n100_s2_w15_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w15 FIND v(d_op0_n100_s2_w15) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w20 FIND v(sn_op0_n100_s2_w20_0) AT=31n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w20 FIND v(sn_op0_n100_s2_w20_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w20 FIND v(d_op0_n100_s2_w20) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w30 FIND v(sn_op0_n100_s2_w30_0) AT=41n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w30 FIND v(sn_op0_n100_s2_w30_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w30 FIND v(d_op0_n100_s2_w30) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s2_w50 FIND v(sn_op0_n100_s2_w50_0) AT=61n"
+  },
+  {
+   "name": "snrd_op0_n100_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s2_w50 FIND v(sn_op0_n100_s2_w50_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_n100_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s2_w50 FIND v(d_op0_n100_s2_w50) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w0p2 FIND v(sn_op0_n100_s5_w0p2_0) AT=14.2n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w0p2 FIND v(sn_op0_n100_s5_w0p2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w0p2 FIND v(d_op0_n100_s5_w0p2) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w0p5 FIND v(sn_op0_n100_s5_w0p5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w0p5 FIND v(sn_op0_n100_s5_w0p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w0p5 FIND v(d_op0_n100_s5_w0p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w1 FIND v(sn_op0_n100_s5_w1_0) AT=15n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w1 FIND v(sn_op0_n100_s5_w1_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w1 FIND v(d_op0_n100_s5_w1) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w2 FIND v(sn_op0_n100_s5_w2_0) AT=16n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w2 FIND v(sn_op0_n100_s5_w2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w2 FIND v(d_op0_n100_s5_w2) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w3 FIND v(sn_op0_n100_s5_w3_0) AT=17n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w3 FIND v(sn_op0_n100_s5_w3_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w3 FIND v(d_op0_n100_s5_w3) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w5 FIND v(sn_op0_n100_s5_w5_0) AT=19n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w5 FIND v(sn_op0_n100_s5_w5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w5 FIND v(d_op0_n100_s5_w5) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w7p5 FIND v(sn_op0_n100_s5_w7p5_0) AT=21.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w7p5 FIND v(sn_op0_n100_s5_w7p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w7p5 FIND v(d_op0_n100_s5_w7p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w10 FIND v(sn_op0_n100_s5_w10_0) AT=24n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w10 FIND v(sn_op0_n100_s5_w10_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w10 FIND v(d_op0_n100_s5_w10) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w15 FIND v(sn_op0_n100_s5_w15_0) AT=29n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w15 FIND v(sn_op0_n100_s5_w15_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w15 FIND v(d_op0_n100_s5_w15) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w20 FIND v(sn_op0_n100_s5_w20_0) AT=34n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w20 FIND v(sn_op0_n100_s5_w20_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w20 FIND v(d_op0_n100_s5_w20) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w30 FIND v(sn_op0_n100_s5_w30_0) AT=44n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w30 FIND v(sn_op0_n100_s5_w30_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w30 FIND v(d_op0_n100_s5_w30) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s5_w50 FIND v(sn_op0_n100_s5_w50_0) AT=64n"
+  },
+  {
+   "name": "snrd_op0_n100_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s5_w50 FIND v(sn_op0_n100_s5_w50_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_n100_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s5_w50 FIND v(d_op0_n100_s5_w50) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w0p2 FIND v(sn_op0_n100_s10_w0p2_0) AT=19.2n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w0p2 FIND v(sn_op0_n100_s10_w0p2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w0p2 FIND v(d_op0_n100_s10_w0p2) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w0p5 FIND v(sn_op0_n100_s10_w0p5_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w0p5 FIND v(sn_op0_n100_s10_w0p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w0p5 FIND v(d_op0_n100_s10_w0p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w1 FIND v(sn_op0_n100_s10_w1_0) AT=20n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w1 FIND v(sn_op0_n100_s10_w1_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w1 FIND v(d_op0_n100_s10_w1) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w2 FIND v(sn_op0_n100_s10_w2_0) AT=21n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w2 FIND v(sn_op0_n100_s10_w2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w2 FIND v(d_op0_n100_s10_w2) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w3 FIND v(sn_op0_n100_s10_w3_0) AT=22n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w3 FIND v(sn_op0_n100_s10_w3_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w3 FIND v(d_op0_n100_s10_w3) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w5 FIND v(sn_op0_n100_s10_w5_0) AT=24n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w5 FIND v(sn_op0_n100_s10_w5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w5 FIND v(d_op0_n100_s10_w5) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w7p5 FIND v(sn_op0_n100_s10_w7p5_0) AT=26.5n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w7p5 FIND v(sn_op0_n100_s10_w7p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w7p5 FIND v(d_op0_n100_s10_w7p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w10 FIND v(sn_op0_n100_s10_w10_0) AT=29n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w10 FIND v(sn_op0_n100_s10_w10_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w10 FIND v(d_op0_n100_s10_w10) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w15 FIND v(sn_op0_n100_s10_w15_0) AT=34n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w15 FIND v(sn_op0_n100_s10_w15_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w15 FIND v(d_op0_n100_s10_w15) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w20 FIND v(sn_op0_n100_s10_w20_0) AT=39n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w20 FIND v(sn_op0_n100_s10_w20_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w20 FIND v(d_op0_n100_s10_w20) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w30 FIND v(sn_op0_n100_s10_w30_0) AT=49n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w30 FIND v(sn_op0_n100_s10_w30_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w30 FIND v(d_op0_n100_s10_w30) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_n100_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_n100_s10_w50 FIND v(sn_op0_n100_s10_w50_0) AT=69n"
+  },
+  {
+   "name": "snrd_op0_n100_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_n100_s10_w50 FIND v(sn_op0_n100_s10_w50_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_n100_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_n100_s10_w50 FIND v(d_op0_n100_s10_w50) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w0p2 FIND v(sn_op0_0000_s0p5_w0p2_0) AT=9.7n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w0p2 FIND v(sn_op0_0000_s0p5_w0p2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w0p2 FIND v(d_op0_0000_s0p5_w0p2) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w0p5 FIND v(sn_op0_0000_s0p5_w0p5_0) AT=10n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w0p5 FIND v(sn_op0_0000_s0p5_w0p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w0p5 FIND v(d_op0_0000_s0p5_w0p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w1 FIND v(sn_op0_0000_s0p5_w1_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w1 FIND v(sn_op0_0000_s0p5_w1_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w1 FIND v(d_op0_0000_s0p5_w1) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w2 FIND v(sn_op0_0000_s0p5_w2_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w2 FIND v(sn_op0_0000_s0p5_w2_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w2 FIND v(d_op0_0000_s0p5_w2) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w3 FIND v(sn_op0_0000_s0p5_w3_0) AT=12.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w3 FIND v(sn_op0_0000_s0p5_w3_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w3 FIND v(d_op0_0000_s0p5_w3) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w5 FIND v(sn_op0_0000_s0p5_w5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w5 FIND v(sn_op0_0000_s0p5_w5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w5 FIND v(d_op0_0000_s0p5_w5) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w7p5 FIND v(sn_op0_0000_s0p5_w7p5_0) AT=17n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w7p5 FIND v(sn_op0_0000_s0p5_w7p5_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w7p5 FIND v(d_op0_0000_s0p5_w7p5) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w10 FIND v(sn_op0_0000_s0p5_w10_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w10 FIND v(sn_op0_0000_s0p5_w10_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w10 FIND v(d_op0_0000_s0p5_w10) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w15 FIND v(sn_op0_0000_s0p5_w15_0) AT=24.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w15 FIND v(sn_op0_0000_s0p5_w15_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w15 FIND v(d_op0_0000_s0p5_w15) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w20 FIND v(sn_op0_0000_s0p5_w20_0) AT=29.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w20 FIND v(sn_op0_0000_s0p5_w20_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w20 FIND v(d_op0_0000_s0p5_w20) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w30 FIND v(sn_op0_0000_s0p5_w30_0) AT=39.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w30 FIND v(sn_op0_0000_s0p5_w30_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w30 FIND v(d_op0_0000_s0p5_w30) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s0p5_w50 FIND v(sn_op0_0000_s0p5_w50_0) AT=59.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s0p5_w50 FIND v(sn_op0_0000_s0p5_w50_0) AT=5.4n"
+  },
+  {
+   "name": "dec_op0_0000_s0p5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s0p5_w50 FIND v(d_op0_0000_s0p5_w50) AT=5.4n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w0p2 FIND v(sn_op0_0000_s1_w0p2_0) AT=10.2n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w0p2 FIND v(sn_op0_0000_s1_w0p2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w0p2 FIND v(d_op0_0000_s1_w0p2) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w0p5 FIND v(sn_op0_0000_s1_w0p5_0) AT=10.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w0p5 FIND v(sn_op0_0000_s1_w0p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w0p5 FIND v(d_op0_0000_s1_w0p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w1 FIND v(sn_op0_0000_s1_w1_0) AT=11n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w1 FIND v(sn_op0_0000_s1_w1_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w1 FIND v(d_op0_0000_s1_w1) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w2 FIND v(sn_op0_0000_s1_w2_0) AT=12n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w2 FIND v(sn_op0_0000_s1_w2_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w2 FIND v(d_op0_0000_s1_w2) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w3 FIND v(sn_op0_0000_s1_w3_0) AT=13n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w3 FIND v(sn_op0_0000_s1_w3_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w3 FIND v(d_op0_0000_s1_w3) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w5 FIND v(sn_op0_0000_s1_w5_0) AT=15n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w5 FIND v(sn_op0_0000_s1_w5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w5 FIND v(d_op0_0000_s1_w5) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w7p5 FIND v(sn_op0_0000_s1_w7p5_0) AT=17.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w7p5 FIND v(sn_op0_0000_s1_w7p5_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w7p5 FIND v(d_op0_0000_s1_w7p5) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w10 FIND v(sn_op0_0000_s1_w10_0) AT=20n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w10 FIND v(sn_op0_0000_s1_w10_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w10 FIND v(d_op0_0000_s1_w10) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w15 FIND v(sn_op0_0000_s1_w15_0) AT=25n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w15 FIND v(sn_op0_0000_s1_w15_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w15 FIND v(d_op0_0000_s1_w15) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w20 FIND v(sn_op0_0000_s1_w20_0) AT=30n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w20 FIND v(sn_op0_0000_s1_w20_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w20 FIND v(d_op0_0000_s1_w20) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w30 FIND v(sn_op0_0000_s1_w30_0) AT=40n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w30 FIND v(sn_op0_0000_s1_w30_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w30 FIND v(d_op0_0000_s1_w30) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s1_w50 FIND v(sn_op0_0000_s1_w50_0) AT=60n"
+  },
+  {
+   "name": "snrd_op0_0000_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s1_w50 FIND v(sn_op0_0000_s1_w50_0) AT=5.9n"
+  },
+  {
+   "name": "dec_op0_0000_s1_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s1_w50 FIND v(d_op0_0000_s1_w50) AT=5.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w0p2 FIND v(sn_op0_0000_s2_w0p2_0) AT=11.2n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w0p2 FIND v(sn_op0_0000_s2_w0p2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w0p2 FIND v(d_op0_0000_s2_w0p2) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w0p5 FIND v(sn_op0_0000_s2_w0p5_0) AT=11.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w0p5 FIND v(sn_op0_0000_s2_w0p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w0p5 FIND v(d_op0_0000_s2_w0p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w1 FIND v(sn_op0_0000_s2_w1_0) AT=12n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w1 FIND v(sn_op0_0000_s2_w1_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w1 FIND v(d_op0_0000_s2_w1) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w2 FIND v(sn_op0_0000_s2_w2_0) AT=13n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w2 FIND v(sn_op0_0000_s2_w2_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w2 FIND v(d_op0_0000_s2_w2) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w3 FIND v(sn_op0_0000_s2_w3_0) AT=14n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w3 FIND v(sn_op0_0000_s2_w3_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w3 FIND v(d_op0_0000_s2_w3) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w5 FIND v(sn_op0_0000_s2_w5_0) AT=16n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w5 FIND v(sn_op0_0000_s2_w5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w5 FIND v(d_op0_0000_s2_w5) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w7p5 FIND v(sn_op0_0000_s2_w7p5_0) AT=18.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w7p5 FIND v(sn_op0_0000_s2_w7p5_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w7p5 FIND v(d_op0_0000_s2_w7p5) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w10 FIND v(sn_op0_0000_s2_w10_0) AT=21n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w10 FIND v(sn_op0_0000_s2_w10_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w10 FIND v(d_op0_0000_s2_w10) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w15 FIND v(sn_op0_0000_s2_w15_0) AT=26n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w15 FIND v(sn_op0_0000_s2_w15_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w15 FIND v(d_op0_0000_s2_w15) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w20 FIND v(sn_op0_0000_s2_w20_0) AT=31n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w20 FIND v(sn_op0_0000_s2_w20_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w20 FIND v(d_op0_0000_s2_w20) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w30 FIND v(sn_op0_0000_s2_w30_0) AT=41n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w30 FIND v(sn_op0_0000_s2_w30_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w30 FIND v(d_op0_0000_s2_w30) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s2_w50 FIND v(sn_op0_0000_s2_w50_0) AT=61n"
+  },
+  {
+   "name": "snrd_op0_0000_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s2_w50 FIND v(sn_op0_0000_s2_w50_0) AT=6.9n"
+  },
+  {
+   "name": "dec_op0_0000_s2_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s2_w50 FIND v(d_op0_0000_s2_w50) AT=6.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w0p2 FIND v(sn_op0_0000_s5_w0p2_0) AT=14.2n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w0p2 FIND v(sn_op0_0000_s5_w0p2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w0p2 FIND v(d_op0_0000_s5_w0p2) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w0p5 FIND v(sn_op0_0000_s5_w0p5_0) AT=14.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w0p5 FIND v(sn_op0_0000_s5_w0p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w0p5 FIND v(d_op0_0000_s5_w0p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w1 FIND v(sn_op0_0000_s5_w1_0) AT=15n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w1 FIND v(sn_op0_0000_s5_w1_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w1 FIND v(d_op0_0000_s5_w1) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w2 FIND v(sn_op0_0000_s5_w2_0) AT=16n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w2 FIND v(sn_op0_0000_s5_w2_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w2 FIND v(d_op0_0000_s5_w2) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w3 FIND v(sn_op0_0000_s5_w3_0) AT=17n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w3 FIND v(sn_op0_0000_s5_w3_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w3 FIND v(d_op0_0000_s5_w3) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w5 FIND v(sn_op0_0000_s5_w5_0) AT=19n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w5 FIND v(sn_op0_0000_s5_w5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w5 FIND v(d_op0_0000_s5_w5) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w7p5 FIND v(sn_op0_0000_s5_w7p5_0) AT=21.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w7p5 FIND v(sn_op0_0000_s5_w7p5_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w7p5 FIND v(d_op0_0000_s5_w7p5) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w10 FIND v(sn_op0_0000_s5_w10_0) AT=24n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w10 FIND v(sn_op0_0000_s5_w10_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w10 FIND v(d_op0_0000_s5_w10) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w15 FIND v(sn_op0_0000_s5_w15_0) AT=29n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w15 FIND v(sn_op0_0000_s5_w15_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w15 FIND v(d_op0_0000_s5_w15) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w20 FIND v(sn_op0_0000_s5_w20_0) AT=34n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w20 FIND v(sn_op0_0000_s5_w20_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w20 FIND v(d_op0_0000_s5_w20) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w30 FIND v(sn_op0_0000_s5_w30_0) AT=44n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w30 FIND v(sn_op0_0000_s5_w30_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w30 FIND v(d_op0_0000_s5_w30) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s5_w50 FIND v(sn_op0_0000_s5_w50_0) AT=64n"
+  },
+  {
+   "name": "snrd_op0_0000_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s5_w50 FIND v(sn_op0_0000_s5_w50_0) AT=9.9n"
+  },
+  {
+   "name": "dec_op0_0000_s5_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s5_w50 FIND v(d_op0_0000_s5_w50) AT=9.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w0p2 FIND v(sn_op0_0000_s10_w0p2_0) AT=19.2n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w0p2 FIND v(sn_op0_0000_s10_w0p2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w0p2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w0p2 FIND v(d_op0_0000_s10_w0p2) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w0p5 FIND v(sn_op0_0000_s10_w0p5_0) AT=19.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w0p5 FIND v(sn_op0_0000_s10_w0p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w0p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w0p5 FIND v(d_op0_0000_s10_w0p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w1 FIND v(sn_op0_0000_s10_w1_0) AT=20n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w1 FIND v(sn_op0_0000_s10_w1_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w1",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w1 FIND v(d_op0_0000_s10_w1) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w2 FIND v(sn_op0_0000_s10_w2_0) AT=21n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w2 FIND v(sn_op0_0000_s10_w2_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w2",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w2 FIND v(d_op0_0000_s10_w2) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w3 FIND v(sn_op0_0000_s10_w3_0) AT=22n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w3 FIND v(sn_op0_0000_s10_w3_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w3",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w3 FIND v(d_op0_0000_s10_w3) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w5 FIND v(sn_op0_0000_s10_w5_0) AT=24n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w5 FIND v(sn_op0_0000_s10_w5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w5 FIND v(d_op0_0000_s10_w5) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w7p5 FIND v(sn_op0_0000_s10_w7p5_0) AT=26.5n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w7p5 FIND v(sn_op0_0000_s10_w7p5_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w7p5",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w7p5 FIND v(d_op0_0000_s10_w7p5) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w10 FIND v(sn_op0_0000_s10_w10_0) AT=29n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w10 FIND v(sn_op0_0000_s10_w10_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w10",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w10 FIND v(d_op0_0000_s10_w10) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w15 FIND v(sn_op0_0000_s10_w15_0) AT=34n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w15 FIND v(sn_op0_0000_s10_w15_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w15",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w15 FIND v(d_op0_0000_s10_w15) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w20 FIND v(sn_op0_0000_s10_w20_0) AT=39n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w20 FIND v(sn_op0_0000_s10_w20_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w20",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w20 FIND v(d_op0_0000_s10_w20) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w30 FIND v(sn_op0_0000_s10_w30_0) AT=49n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w30 FIND v(sn_op0_0000_s10_w30_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w30",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w30 FIND v(d_op0_0000_s10_w30) AT=14.9n"
+  },
+  {
+   "name": "snend_op0_0000_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snend_op0_0000_s10_w50 FIND v(sn_op0_0000_s10_w50_0) AT=69n"
+  },
+  {
+   "name": "snrd_op0_0000_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran snrd_op0_0000_s10_w50 FIND v(sn_op0_0000_s10_w50_0) AT=14.9n"
+  },
+  {
+   "name": "dec_op0_0000_s10_w50",
+   "unit": "V",
+   "spice": ".meas tran dec_op0_0000_s10_w50 FIND v(d_op0_0000_s10_w50) AT=14.9n"
+  },
+  {
+   "name": "snend_refw",
+   "unit": "V",
+   "spice": ".meas tran snend_refw FIND v(sn_refw_0) AT=39n"
+  },
+  {
+   "name": "snrd_refw",
+   "unit": "V",
+   "spice": ".meas tran snrd_refw FIND v(sn_refw_0) AT=14.9n"
+  },
+  {
+   "name": "dec_refw",
+   "unit": "V",
+   "spice": ".meas tran dec_refw FIND v(d_refw) AT=14.9n"
+  }
+ ],
+ "options": {
+  "timeout_s": 1800,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}
