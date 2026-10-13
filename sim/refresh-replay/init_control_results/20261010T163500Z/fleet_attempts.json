@@ -1,0 +1,12 @@
+{
+ "note": "One klt sim batch request for this study; first and only submission. No local simulation of the grid and no local fallback. The only local run was a single-corner (tt/27 C, --backend local) probe of an earlier identical-structure scratch deck used to check the probes; it is not recorded as a result.",
+ "attempts": [
+  {
+   "n": 1,
+   "client": "uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json",
+   "result": "job klt-sim-525deb23471f done, 10/10 corners pass, 110 s, m6i.4xlarge spot (us-east-1b)",
+   "recorded_report": "klt_report.json.gz",
+   "report_channel": "stdout (redirected); bucket name redacted"
+  }
+ ]
+}

@@ -26,5 +26,11 @@ run phase-control-tests "$root/digital/phase-control/run_tests.sh"
 run phase-control-mutation "$root/digital/phase-control/run_mutation.sh"
 # Includes its own mutation suite (run_mutation.sh) by default.
 run control-integration "$root/digital/control-integration/run_tests.sh"
+run sched-phase-integration-tests "$root/digital/sched-phase-integration/run_tests.sh"
+run sched-phase-integration-mutation "$root/digital/sched-phase-integration/run_mutation.sh"
+run sched-phase-coupled-tests "$root/digital/sched-phase-integration/run_coupled.sh"
+run sched-phase-coupled-mutation "$root/digital/sched-phase-integration/run_coupled_mutation.sh"
+run spi-sched-phase-tests "$root/digital/spi-sched-phase-integration/run_tests.sh"
+run spi-sched-phase-mutation "$root/digital/spi-sched-phase-integration/run_mutation.sh"
 echo "overall: $([ $fail -eq 0 ] && echo PASS || echo FAIL)" | tee -a "$logs/summary.txt"
 exit $fail

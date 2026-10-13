@@ -1,0 +1,11 @@
+{
+ "note": "Four batch submissions in total for this study; only the last is recorded as a result (all others used earlier revisions of the generator and are superseded, with reports not committed). (1) jobs klt-sim-2480fb15ca17 and klt-sim-96abb903ed99: an earlier whole study whose finite-resistance instances had an explicit initial condition on the RWL pin that the legacy controls lack, which changed the effective stored level before the read (README); discarded. (2) job klt-sim-a0ce12190c1f: an id containing an upper-case letter ('r1M') made the fleet runner (case-sensitive match of .meas names against ngspice's lower-cased output, klayout-tools#2914, already filed) return 'no value' for those 12 instances and grade all 10 corners 'error' (state failed, exit_code 4); ids lower-cased, test added. (3) job klt-sim-c8004da21637: 10/10 corners pass, but its `.meas WHEN ... RISE=1` pin-release crossings of series-R instances locked onto the t = 0 start-up charge of the unclamped pin; replaced by sampled pin voltages. (4) this run. No grid was run locally. Single-corner (tt/27 C) local runs of small subset decks and of the failed full deck were used only to diagnose and are not recorded as results.",
+ "attempts": [
+  {
+   "n": 4,
+   "client": "uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json",
+   "result": "job klt-sim-7e6455aebff7 done, 10/10 corners pass, 649 s, c7i.4xlarge spot (us-east-1b)",
+   "recorded_report": "klt_report.json.gz"
+  }
+ ]
+}

@@ -1,0 +1,1157 @@
+{
+ "op1_0900_baseline_analog": {
+  "variant": "baseline_analog",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op1_1000_baseline_analog": {
+  "variant": "baseline_analog",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op0_n100_baseline_analog": {
+  "variant": "baseline_analog",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op0_0000_baseline_analog": {
+  "variant": "baseline_analog",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op1_0900_rtl_raw": {
+  "variant": "rtl_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op1_1000_rtl_raw": {
+  "variant": "rtl_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op0_n100_rtl_raw": {
+  "variant": "rtl_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op0_0000_rtl_raw": {
+  "variant": "rtl_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op1_0900_rtl_hold": {
+  "variant": "rtl_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op1_1000_rtl_hold": {
+  "variant": "rtl_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op0_n100_rtl_hold": {
+  "variant": "rtl_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op0_0000_rtl_hold": {
+  "variant": "rtl_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ },
+ "op1_0900_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ]
+   }
+  ]
+ },
+ "op1_1000_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ]
+   }
+  ]
+ },
+ "op0_n100_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ]
+   }
+  ]
+ },
+ "op0_0000_neg_missing_wb": {
+  "variant": "neg_missing_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 0,
+    "expected": [
+     12.0,
+     1
+    ]
+   },
+   {
+    "kind": "omitted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ]
+   }
+  ]
+ },
+ "op1_0900_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -19.8
+   },
+   {
+    "kind": "shifted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -21.8
+   }
+  ]
+ },
+ "op1_1000_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -19.8
+   },
+   {
+    "kind": "shifted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -21.8
+   }
+  ]
+ },
+ "op0_n100_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -19.8
+   },
+   {
+    "kind": "shifted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -21.8
+   }
+  ]
+ },
+ "op0_0000_neg_short_wb": {
+  "variant": "neg_short_wb",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "wwl_en",
+    "index": 1,
+    "expected": [
+     32.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -19.8
+   },
+   {
+    "kind": "shifted",
+    "signal": "bl_drive",
+    "index": 1,
+    "expected": [
+     34.0,
+     0
+    ],
+    "got": [
+     12.2,
+     0
+    ],
+    "delta_ns": -21.8
+   }
+  ]
+ },
+ "op1_0900_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_rwl_late_raw": {
+  "variant": "rwl_late_raw",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_raw",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_rwl_late_hold": {
+  "variant": "rwl_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0
+   },
+   "observed": [
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_latch_early_hold": {
+  "variant": "latch_early_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 30.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 30.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_latch_late_hold": {
+  "variant": "latch_late_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": [],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_0900_combined_hold": {
+  "variant": "combined_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op1_1000_combined_hold": {
+  "variant": "combined_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_n100_combined_hold": {
+  "variant": "combined_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "op0_0000_combined_hold": {
+  "variant": "combined_hold",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": false,
+  "trace_findings": [
+   {
+    "kind": "shifted",
+    "signal": "rwl_sel",
+    "index": 1,
+    "expected": [
+     12.0,
+     0
+    ],
+    "got": [
+     34.0,
+     0
+    ],
+    "delta_ns": 22.0
+   },
+   {
+    "kind": "reordered",
+    "detail": "same edges, different cross-signal order"
+   }
+  ],
+  "experiment_diff": {
+   "parent": "rtl_hold",
+   "intended": {
+    "rwls": 34.0,
+    "en": 36.0
+   },
+   "observed": [
+    {
+     "node": "en",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 34.0,
+     "to_ns": 36.0,
+     "value": 0
+    },
+    {
+     "node": "rwls",
+     "kind": "shifted",
+     "index": 1,
+     "from_ns": 12.0,
+     "to_ns": 34.0,
+     "value": 0
+    }
+   ],
+   "only_intended_edges": true
+  }
+ },
+ "refw": {
+  "variant": "reference_write",
+  "deck_matches_trace": true,
+  "deck_findings": [],
+  "trace_matches_golden_rtl": true,
+  "trace_findings": []
+ }
+}

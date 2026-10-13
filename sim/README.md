@@ -58,7 +58,10 @@ variable that skips the check. To correct a finding, leave the existing
 evidence committed as-is and add a **new** evidence file plus a correction
 record citing the original (see [Correcting recorded evidence](#correcting-recorded-evidence-issue-68)).
 CI runs the checker as committed on the base branch when it exists there, so
-a PR cannot weaken the check that judges it.
+changing `sim/check_append_only.py` in a PR does not change the check applied
+to that PR. Edits to `.github/workflows/evidence-checks.yml` itself still
+require review: the workflow runs from the PR's own merge ref under the
+`pull_request` event.
 
 Invocation (exactly what CI runs, from the repository root, with full
 history fetched):
@@ -282,6 +285,28 @@ python3 -I sim/sense-stage/gen_sense_stage.py
 python3 -I sim/sense-stage/test_sense_stage.py
 ```
 
+## `refresh-replay/` -- phase_seq RTL strobes replayed in the refresh-op circuit (issue #128)
+
+Exports the edges of one `phase_seq` REFRESH, converts them to PWL (explicit pin map, explicit latch-hold
+adapter) and replays them over 5 corners x {27, 125} C in the `sim/refresh-op` circuit, next to the matched
+analog baseline and two write-back negative controls. Result: the RTL waveform does **not** restore at
+any of the 10 corners; failure preserved, contract unchanged. See [`refresh-replay/README.md`](refresh-replay/README.md).
+
+## `refresh-op/` -- closed-loop row refresh operation, measured `t_row_refresh_op` (issue #110)
+
+One transient per corner runs a full refresh of a row of the loaded 4-row
+column with the provisional sense stage: precharge, RWL select, latch enable,
+latch complement node drives WBL, WWL write-back pulse, release. Sweeps the
+sense time and the write-back pulse width, finds the shortest pair that
+restores the cell for stored '1' and '0' at the 10 PROPOSED restricted
+corners, and appends a measured-`t_row_refresh_op` overhead record to
+`refresh-overhead/results/`. See [`refresh-op/README.md`](refresh-op/README.md).
+
+```bash
+python3 -I sim/refresh-op/gen_refresh_op.py
+python3 -I sim/refresh-op/test_refresh_op.py
+```
+
 ## `write-disturb/` -- disturb of unselected and half-selected cells in the extracted 4x4 array (issue #98)
 
 Epic #24 item 6. Ten instances of the committed **extracted** 4x4 array
@@ -298,6 +323,22 @@ spec and refresh bound are not touched. See
 ```bash
 python3 -I sim/write-disturb/gen_write_disturb.py
 python3 -I sim/write-disturb/test_write_disturb.py
+```
+
+## `refresh-energy/` -- ideal-driver array-boundary refresh energy and standby power of the extracted 4x4 array (issue #115)
+
+Epic #24 item 6. Replays the #110 refresh operation (10 ns sense, 10 ns
+write-back; no latch) on row 0 of the committed **extracted** 4x4 array with
+one ideal source per array port, integrates every port's signed power, and
+subtracts a matched idle control, for four data patterns at the 10 PROPOSED
+restricted corners (two `klt sim` batch requests: the grid, and the same grid
+at a 4x finer step for convergence). A partial cost under stated assumptions,
+not complete refresh energy, not macro power and not an SRAM comparison. See
+[`refresh-energy/README.md`](refresh-energy/README.md).
+
+```bash
+python3 -I sim/refresh-energy/gen_refresh_energy.py
+python3 -I sim/refresh-energy/test_refresh_energy.py
 ```
 
 ## `bitcell-transient/` -- 2T-min bitcell write / read / hold transient (issue #27)

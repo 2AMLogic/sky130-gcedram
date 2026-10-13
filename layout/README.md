@@ -336,19 +336,137 @@ class `nfet`, matching `2 * N_ROWS * N_COLS = 2*4*4 = 32`.
 
 ### Regenerating the array layout
 
-Same prerequisites as the single-cell layout above (`klt` on `PATH`,
-`source design/env.sh`):
+Prerequisites: `source design/env.sh` (PDK at the pinned open_pdks commit)
+and the two pinned klt toolchains below. Since issue #91 the script does
+**not** use `klt` from `PATH`. See "Reproducing the committed array" next.
 
 ```bash
+# One-time: create the pinned toolchain venvs (under .toolchains/, gitignored)
+python3 layout/generation_toolchain.py install --role generation
+python3 layout/generation_toolchain.py install --role check
+
 # Regenerate every gain_cell_2t_array* artifact in place (default 4x4):
 ./layout/generate_array.sh
 
-# Check-only mode (scratch dir, does not touch committed files):
-./layout/generate_array.sh --check
+# Check-only mode (scratch dir, does not touch committed files): compares the
+# regenerated geometry/connectivity with the committed 4x4 AND gates on
+# routing/DRC/LVS/ERC. --record writes the run record.
+./layout/generate_array.sh --check [--record PATH]
 
-# A different array size (only 2x2/4x4 verified as of this commit):
+# A different array size (only 2x2/4x4 verified as of #34). This validates
+# the generated size only; it does not reproduce the committed 4x4 baseline.
 N_ROWS=2 N_COLS=2 ./layout/generate_array.sh --check
 ```
+
+### Reproducing the committed array (issue #91)
+
+The committed `gain_cell_2t_array.gds` (sha256 `4a1155...d4cd`) was built
+in #34 with a klt that the scripts never recorded. The DRC/LVS reports
+committed with it said `0.4.0`, and later ones said `0.6.0`, but neither
+release reproduces it:
+
+| Generation toolchain (KLayout 0.30.12) | `gain_cell_2t_array.gds` vs committed |
+|---|---|
+| PyPI `klayout-tools==0.4.0` | fails: `mos_array` has no `add_guard_ring` parameter |
+| PyPI `0.5.0` / `0.6.0` | 24 met1 cross-block route segments drawn 140 nm wide, committed 170 nm |
+| PyPI `0.7.0` | as above, plus every licon/mcon cut 0.17 um, committed 0.22 um |
+| git `5826244d` (parent of the #1620 width change) | GDS byte-identical; `_mos.gds` has extra PCell context params |
+| **git `2dd24b09e756`** | **all 7 compared artifacts byte-identical** |
+
+The cause is two documented generator changes in klayout-tools, not
+nondeterminism. klayout-tools #1620 (in 0.5.0) gave
+`cross_block_layer_role` legs their own width, which defaults to the
+layer minimum. klayout-tools #2594 (in 0.7.0) clamps sky130 licon/mcon cuts
+to 0.17 um. The extra `_mos.gds` PCell parameters come from klayout-tools
+#1577/#1580. The pin is therefore the last revision before #1577:
+
+- **generation** (`klt gen`, `klt gen-compose`): klayout-tools
+  `2dd24b09e7569581297aabf9738594e9791210f1` (package version 0.4.0) with
+  `klayout==0.30.12`. With `klayout==0.30.10` the array GDS still matches,
+  but `_mos.gds` does not (PCell context serialization), so KLayout is pinned
+  too.
+- **check** (`klt drc`, `klt lvs`, `klt erc`): klayout-tools
+  `c622e8addb362491664d44ba4d717f354ca88bbd` (0.6.0) with `klayout==0.30.12`.
+  This is the same revision `.github/workflows/signoff.yml` grades with, and
+  the one the committed DRC/LVS/ERC reports record. klt 0.7.0 cannot run
+  this ERC spec at all: it rejects the spec's `_comment` key (klayout-tools
+  #2822).
+- **PDK**: sky130A at open_pdks `c6d73a35...` (`docs/pdk-pin.md`), read from
+  `$PDK_ROOT/$PDK/SOURCES`.
+
+Both pins live in [`generation-toolchain.json`](generation-toolchain.json).
+[`generation_toolchain.py`](generation_toolchain.py) checks them before
+`generate_array.sh` or `extract_array_parasitics.sh` writes anything. It
+probes the interpreter's installed `klayout-tools` commit (from pip's
+`direct_url.json`), its package version and its `klayout` version. If the
+toolchain is missing or different, the script exits 2, prints the expected
+and actual values plus the install command, and writes nothing. Set
+`GCEDRAM_KLT_GENERATION_PYTHON` / `GCEDRAM_KLT_CHECK_PYTHON` to use an
+existing environment instead of the default `.toolchains/` venvs; it still
+has to pass the same identity check. To set one up by hand:
+
+```bash
+uv venv .toolchains/klt-generation-2dd24b09e756-klayout-0.30.12
+uv pip install --python .toolchains/klt-generation-2dd24b09e756-klayout-0.30.12/bin/python \
+  "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@2dd24b09e7569581297aabf9738594e9791210f1" \
+  "klayout==0.30.12"
+```
+
+**What `--check` compares**
+([`compare_array_layout.py`](compare_array_layout.py)), at the committed
+4x4 size only:
+
+- **Geometry and labels**: `gain_cell_2t_array.gds` and
+  `gain_cell_2t_array_mos.gds`. Every BOUNDARY, PATH, BOX, TEXT, SREF and
+  AREF element is compared record by record: layer, datatype, every vertex,
+  path width, text string and position, transforms and properties (including
+  PCell context). Structure names and the library units are compared too.
+- **Connectivity**: the generator reports `gain_cell_2t_array.layout.json`
+  (per-net pins, legs, route status and length, unrouted nets) and
+  `gain_cell_2t_array_mos.json` (ports, device count), compared as parsed
+  JSON. The connectivity inputs `gain_cell_2t_array.layout.request.json`,
+  `gain_cell_2t_array.lvs_reference.spice` and
+  `gain_cell_2t_array.lvs.request.json` are compared exactly. LVS `match`
+  against the reference is still required on top.
+- **Normalization, and nothing else**: GDS BGNLIB/BGNSTR timestamps,
+  element order within a structure (compared as a multiset, so a duplicate
+  or missing element still fails), null padding after ENDLIB, and JSON
+  whitespace/key order. Nothing is merged, snapped or rounded.
+- Raw sha256 hashes are reported separately from the canonical comparison.
+  A timestamp-only change shows as "raw differs, MATCH".
+
+Any difference fails `--check`, even when routing, DRC, LVS and ERC all
+pass. As a negative control, `main`'s old status-only `--check` run with
+klt 0.7.0 passed routing, DRC (`clean`) and LVS (`match`) on the drifted
+geometry. It then crashed at ERC on the `_comment` key. At other sizes
+(`N_ROWS`/`N_COLS` not 4x4) there is no committed baseline. The comparison
+is skipped, and the script says that it only validated the generated size.
+
+**Reproduction run** (committed:
+[`results/generation_reproduction_20261011.json`](results/generation_reproduction_20261011.json),
+from `./layout/generate_array.sh --check --record ...`): it records the
+source commit, both toolchain identities, the PDK identity, every klt
+command, the full comparison and the statuses. All 7 artifacts are
+byte-identical (comparison `match`). Routing is complete, DRC is `clean`,
+LVS is `match` and ERC is `clean`. In a kept scratch copy of the same run, the
+regenerated `gain_cell_2t_array.drc.result.json` and `.lvs.result.json` were
+also byte-identical to the committed reports. The ERC report differed only in
+its `file`/`spec` path fields, because scratch runs use cwd-relative paths. No
+committed layout, evidence or manifest file is changed by issue #91.
+
+Fixtures, with no klt or PDK needed:
+`python3 -I layout/test_generation_reproducibility.py`. They cover a moved
+vertex, a route width or layer change, a renamed or moved label, a moved
+instance, deleted and duplicated elements, changed units, a changed pin
+connection or route length in the report, and timestamp-only, reorder-only
+and padding-only changes that must still match. They also cover absent,
+mismatched and wrong-role toolchains and a mismatched PDK, with both scripts
+exiting before any file under `layout/` changes. The fixtures also check that
+the check pin equals `signoff.yml`'s `KLT_REV` and that the PDK pin equals
+`sim/_evidence_common.py`.
+
+The single-cell `generate.sh` is not covered by this pin; it is outside
+#91's scope.
 
 ### Informal DRC/LVS iteration (not a formal sign-off), `4x4`
 
@@ -501,6 +619,9 @@ is a separate follow-up.
 ```bash
 source design/env.sh
 ./layout/extract_array_parasitics.sh
+# same, writing the extraction + summary to a scratch dir instead of layout/
+# (issue #91; needs the pinned generation/check toolchains, see above):
+./layout/extract_array_parasitics.sh --out-dir /tmp/array-parasitics
 # freshness of the committed extraction, without re-running (repo root):
 klt extract --check layout/gain_cell_2t_array.extract.parasitics.json
 ```
@@ -620,6 +741,38 @@ the two is 0.061 fF. Interior `rbl` is 0.853688 vs 0.859179 fF, and the
 committed `rwl` met1 run is slightly shorter. The committed `4x4` numbers
 above are the evidence. The scratch set is used only for the per-row slope.
 
+**Issue #91 update (the historical numbers above are kept).** The
+difference came from the generator version (see "Reproducing the committed
+array"). The script now builds the scaling set with the pinned generation
+toolchain, gates it with the pinned check toolchain, and fails unless the
+scratch `4x4` geometry and connectivity match the committed array. Extraction
+still runs on its own toolchain (`KLT_EXTRACT`, default `klt` on `PATH`). The
+generation pin predates the extraction features this script uses, and the
+committed extraction records `0.7.0+gd1e9e119331f`. A re-run on 2026-10-11 with
+`./layout/extract_array_parasitics.sh --out-dir <scratch>` (extraction klt
+`0.7.0+g0d0312b30708`) gave these results:
+
+- Part 1 on the committed GDS: `parasitics` and `devices` identical to the
+  committed `gain_cell_2t_array.extract.parasitics.json`. Only
+  `netlist_path` and `provenance` differ.
+- Scratch `4x4` vs committed: max net-total difference **0.0 fF**
+  (historically 0.061 fF).
+- Pinned-geometry scaling, worst `rbl` total: 0.343980 / 0.859179 /
+  1.889578 fF at 2 / 4 / 8 rows. The fit is **+0.257600 fF total and
+  +0.168415 fF ground per row**, against +0.256128 / +0.169120 in the
+  committed summary. Wiring alone reaches 10 fF at about 39.5 rows
+  (committed: 39.7).
+
+The committed `gain_cell_2t_array.parasitics.summary.json` is **not**
+replaced. Its `row_scaling` block still comes from the klt-0.7.0-drawn
+scratch arrays, which is a retained historical mismatch of under 0.6% in
+the per-row slope. The re-run's output is committed separately as
+[`results/parasitics_summary_pinned_generation_20261011.json`](results/parasitics_summary_pinned_generation_20261011.json).
+Its `source.extraction`/`netlist` paths point at the scratch out-dir. That
+file's part-1 extraction matched the committed one, as stated above. Moving
+consumers to the pinned-geometry slope would be a separate, explicitly scoped
+evidence refresh.
+
 **Extrapolation (ASSUMPTION, not extracted).** This applies the linear
 fit beyond `N_ROWS = 8` and assumes the column keeps this exact bus
 geometry: an li1 column bus at the same pitch, with no strapping,
@@ -667,6 +820,17 @@ retention should move to an array-context value is a separate decision
 for `spec/`. Both numbers are wiring-only, like the bitline numbers above.
 The `M_WR` drain junction and the `M_RD` gate are evaluated by the device
 models, and the AD/PD mismatch noted above applies to them too.
+
+**Follow-up (issue #89).** A reproducible all-node reduction and a
+capacitance-only retention comparison now exist:
+[`sim/retention/compare_array_c_sn.py`](../sim/retention/compare_array_c_sn.py)
+and its committed snapshot under `sim/retention/results/`. The limiting
+node is `sn_3_3`, at 0.782x the single-cell value. The trace also found
+that the leakage testbench passes no `AD/AS/PD/PS`, so the leakage used
+neither the schematic nor the extracted geometry. The proposed (not
+ratified) decision on which inputs an array retention study should use is
+[`spec/retention-refresh-budget.md`](../spec/retention-refresh-budget.md)
+Section 9.
 
 ### klayout-tools friction (issue #80)
 

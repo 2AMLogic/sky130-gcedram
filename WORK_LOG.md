@@ -2,8 +2,54 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-11
+
+- **Issue #156** (closed): Guard telemetry: retain confinement for unresolved scratch writes
+- **Issue #157** (closed): Define the physical SPI crossing and reset architecture before controller synthesis
+- **PR #158**: docs(digital): PROPOSED SPI crossing and reset architecture with protocol model (#157)
+- **Issue #91** (closed): Committed 4x4 array GDS no longer reproduces from generate_array.sh with current klt (0.6.0 vs 0.7.0 geometry drift)
+- **PR #153**: feat(layout): pin the array generation toolchain and compare --check output with the committed 4x4
+- **Issue #146** (closed): Integrate live SPI configuration with the duration-coupled phase sequencer
+- **PR #151**: feat(digital): SPI-configured scheduler driving the phase sequencer (#146)
+- **Issue #89** (closed): Array-context storage-node capacitance is 17-22% below the single-cell C_SN used by retention
+- **PR #150**: Array-context C_SN comparison and proposed retention-input decision (#89)
+
+### 2026-10-10
+
+- **PR #145**: test: include all evidence-checks suites in npm test
+- **Issue #78** (closed): CI: npm test omits six evidence-checks suites
+- **Issue #143** (closed): Auditor: retain gh-api-rawfield-body-literal-at guard
+- **PR #142**: Revalidate refresh sense evidence with matched physical initialization controls (#139)
+- **Issue #139** (closed): Revalidate refresh sense evidence with matched physical initialization controls
+- **Issue #132** (closed): Auditor guard review: worktree-write-confinement-unresolved-var
+- **Issue #138** (closed): Couple scheduler budgets to phase durations and verify executed-refresh deadlines
+- **PR #140**: Couple scheduler budgets to phase durations and verify executed-refresh deadlines (#138)
+- **PR #137**: feat(sim): RWL driver slew/impedance/release-delay sensitivity of late-RWL refresh restoration (#134)
+- **Issue #134** (closed): Characterize late-RWL refresh restoration sensitivity to driver slew and impedance
+- **PR #136**: feat(digital): scheduler-to-phase-sequencer integration harness and timing report
+- **Issue #135** (closed): Verify scheduler-to-phase-sequencer launch and completion timing in a behavioral integration harness
+- **PR #133**: feat(sim): refresh-replay RWL/latch release-order attribution experiment
+- **Issue #131** (closed): Isolate refresh restoration failure with controlled RWL and latch release-order experiments
+- **PR #129**: feat(sim): replay phase_seq RTL strobes in refresh-op circuit (RTL waveform fails restoration)
+- **Issue #128** (closed): Replay phase-sequencer RTL strobes in SPICE to test refresh waveform compatibility
+- **PR #126**: docs(sim): narrow 'a PR cannot weaken the check' claim
+- **Issue #72** (closed): docs(sim): narrow 'a PR cannot weaken the check' claim for the append-only guard
+- **Issue #115** (closed): Quantify refresh energy and standby power of the 2T array at the PVT corners
+- **PR #124**: feat(sim): array-boundary refresh energy and standby power of the extracted 4x4 array
+- **Issue #119** (closed): Auditor: retain rm-scope rejection for custom-template mktemp cleanup
+- **Issue #104** (closed): Auditor: worktree confinement rejects scratch-directory layout validation with shell variables
+- **Issue #62** (closed): CI: enforce append-only sim/ results mechanically
+- **Issue #110** (closed): Measure t_row_refresh_op with a closed-loop sense and write-back refresh operation
+- **PR #122**: sim: closed-loop refresh operation, measured t_row_refresh_op (#110)
+
 ### 2026-10-09
 
+- **Issue #92** (closed): Add a reproducible local auditor bootstrap for Python and pinned Icarus Verilog
+- **PR #116**: feat(ci): local auditor bootstrap for pinned Icarus Verilog
+- **Issue #108** (closed): Define the digital-to-analog phase-control contract with an ordering-checked sequencer model
+- **PR #113**: feat(digital): analog phase-control contract, sequencer and mutation suite
+- **Issue #109** (closed): Commit the sense latch as a design source (schematic and derived netlist) tied to the sense-stage deck
+- **PR #112**: design: sense latch schematic + derived netlist tied to sense-stage deck (#109)
 - **Issue #105** (closed): CI: run behavioral SPI and refresh Verilog regressions with a pinned simulator
 - **PR #106**: CI: run behavioral SPI and refresh Verilog regressions with pinned Icarus (#105)
 - **Issue #68** (closed): docs: define provenance and review for appended evidence corrections

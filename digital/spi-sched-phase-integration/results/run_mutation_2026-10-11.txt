@@ -1,0 +1,35 @@
+baseline: PASS
+MUTANT spi_floor_not_passed (gate on): killed (first: CONFIG_REJECT: SPI slave floor 1 != derived 1178)
+MUTANT spi_floor_not_passed (gate bypassed, dynamic scoreboard only): killed (first: FINDING CFG_REJECT: a=2224 b=0 (cycle 2224))
+MUTANT stale_floor_in_ctrl_top (gate on): killed (first: CONFIG_REJECT: gc_ctrl_top floor 1124 != derived 1178)
+MUTANT stale_floor_in_ctrl_top (gate bypassed, dynamic scoreboard only): killed (first: FINDING CFG_REJECT: a=2224 b=0 (cycle 2224))
+MUTANT xstatus_swapped (gate on): killed (first: FINDING CHECK_xstat_rst: got 2 expected 1 (cycle 1963))
+MUTANT wrapper_stale_guard (gate on): killed (first: CONFIG_REJECT: gc_ctrl_top floor 1145 != derived 1178)
+MUTANT wrapper_stale_guard (gate bypassed, dynamic scoreboard only): killed (first: FINDING CHECK_ivl_l_readback: got 99 expected a5 (cycle 2354))
+MUTANT xfer_drops_enable (gate on): killed (first: FINDING DATA_LOST_FLAG: a=0 b=1 (cycle 123181))
+MUTANT xfer_drops_interval (gate on): killed (first: FINDING CFG_REJECT: a=1313 b=0 (cycle 1313))
+MUTANT xfer_drops_sweep (gate on): killed (first: FINDING CHECK_busy_after_sweep_accept: got 0 expected 1 (cycle 121739))
+MUTANT sched_ignores_applied_interval (gate on): killed (first: FINDING NOT_APPLIED: a=5029 b=1178 (cycle 4981))
+MUTANT sched_never_sets_data_lost (gate on): killed (first: FINDING DATA_LOST_FLAG: a=0 b=1 (cycle 123181))
+MUTANT sched_no_reinit_sweep (gate on): killed (first: FINDING REARM: a=1185 b=0 (cycle 127358))
+MUTANT sched_refresh_ok_early (gate on): killed (first: FINDING CHECK_refresh_ok_low_after_reset: got 1 expected 0 (cycle 0))
+MUTANT sched_refreshes_while_disabled (gate on): killed (first: FINDING REFRESH_WHILE_DISABLED: a=124369 b=123174 (cycle 124369))
+MUTANT sched_sweep_short (gate on): killed (first: FINDING SWEEP_DONE_BEFORE_ROWS: a=122640 b=0 (cycle 122640))
+MUTANT sched_completes_early (gate on): killed (first: FINDING BUDGET_UNDER: a=34 b=2 (cycle 35))
+MUTANT sched_completes_early (gate bypassed, dynamic scoreboard only): killed (first: FINDING BUDGET_UNDER: a=34 b=2 (cycle 35))
+MUTANT stale_urgent_threshold (gate on): killed (first: FINDING DEADLINE: a=0 b=5030 (cycle 5085))
+MUTANT spi_upper_bound_off_by_one (gate on): killed (first: FINDING CHECK_ivl_l_readback: got 9b expected a5 (cycle 16107))
+MUTANT spi_floor_off_by_one (gate on): killed (first: FINDING CHECK_ivl_l_readback: got a5 expected 9a (cycle 5107))
+MUTANT spi_sweep_accepted_while_busy (gate on): killed (first: FINDING SWEEP_ACCEPT_WHILE_PENDING: a=2 b=121606 (cycle 121996))
+MUTANT sequencer_longer_than_budget (gate on): killed (first: FINDING BUDGET_UNDER: a=35 b=2 (cycle 36))
+MUTANT sequencer_ignores_refresh_start (gate on): killed (first: FINDING DROPPED_LAUNCH: a=0 b=2 (cycle 2))
+MUTANT adapter_drops_refresh_launch: killed (first: FINDING DROPPED_LAUNCH: a=6 b=2 (cycle 218))
+MUTANT adapter_drops_access_launch: killed (first: FINDING DROPPED_LAUNCH: a=23 b=0 (cycle 1802))
+MUTANT adapter_wrong_row: killed (first: FINDING ROW_UNSTABLE: a=7 b=6 (cycle 218))
+MUTANT adapter_stretches_start: killed (first: FINDING START_IGNORED: a=219 b=0 (cycle 219))
+MUTATION CHECK PASS
+rc=0
+
+real	2m48.190s
+user	2m46.889s
+sys	0m1.050s

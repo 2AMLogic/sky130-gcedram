@@ -1,0 +1,559 @@
+{
+ "schema": "gcedram.array_c_sn_comparison/1",
+ "issue": 89,
+ "label": "CAPACITANCE-ONLY SENSITIVITY: array-context C_SN at unchanged leakage (leakage testbench geometry) and unchanged sense-margin ASSUMPTION. Not measured array retention, not geometry-matched, not dynamic, not a ratified value, not an array guarantee.",
+ "generated_utc": "2026-10-11T02:05:47+00:00",
+ "repo_git_sha": "fb02960",
+ "convention": "total_ff = ground_ff + sum(coupled[].capacitance_ff), read with derive_retention.load_extracted_c_sn() for both reports. Wiring parasitics only (poly/li1/met1): the M_RD gate and M_WR drain junction capacitance are NOT in either number (layout/README.md, issue #80 'Convention').",
+ "inputs": {
+  "array_report": {
+   "path": "layout/gain_cell_2t_array.extract.parasitics.json",
+   "sha256": "sha256:ea8fc16347c6537ed4a05200b11e773c07193baed4369466568492cf96198973",
+   "top": "gain_cell_2t_array_4x4_layout_0",
+   "klt_version": "0.7.0+gd1e9e119331f",
+   "klayout_version": "0.30.12",
+   "deck_content_hash": "sha256:f8f2c3f48eada473dc34a7a8926c0b04fef446fb351a70a636ce43a9ca9c70ba",
+   "input_content_hash": "sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd",
+   "netlist_sha256": "dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33"
+  },
+  "single_cell_report": {
+   "path": "layout/gain_cell_2t.extract.parasitics.json",
+   "sha256": "sha256:d88ae041f04c469eb39cb54f6eff70e1e7f0b5109e9d53e23d90c6710aaab233",
+   "top": "gain_cell_2t_layout_0",
+   "klt_version": "0.3.0",
+   "klayout_version": "0.30.10",
+   "deck_content_hash": "sha256:2e78949d63f03012c505528158948a250e18c2c21c8710c85a23a8243649f4d0",
+   "input_content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259",
+   "netlist_sha256": "093697fb0ac3734e67b1d00f2f0f423a9b3e0a62170b58805484bd08cd7b5283"
+  },
+  "retention_csv_rows": [
+   "sim/retention/results/retention_results.csv:2",
+   "sim/retention/results/retention_results.csv:4"
+  ]
+ },
+ "single_cell": {
+  "net": "sn",
+  "ground_ff": 0.58649,
+  "coupling_ff": 0.018864,
+  "total_ff": 0.605354,
+  "coupled_ff": {
+   "bl": 0.01071,
+   "rwl": 0.008154
+  }
+ },
+ "array": {
+  "node_count": 16,
+  "limiting_node": "sn_3_3",
+  "limiting_rule": "minimum total_ff (rounded to 1e-9 fF); ties broken by (row, col) ascending. Smallest C_SN = shortest retention at fixed leakage/margin.",
+  "nodes_tied_at_minimum": [
+   "sn_3_3"
+  ],
+  "max_node": "sn_1_1",
+  "nodes_tied_at_maximum": [
+   "sn_1_1",
+   "sn_1_2",
+   "sn_2_1",
+   "sn_2_2"
+  ],
+  "total_ff": {
+   "min": 0.47362,
+   "max": 0.502,
+   "mean": 0.491171,
+   "median": 0.4946445
+  },
+  "ground_ff": {
+   "min": 0.430576,
+   "max": 0.433689
+  },
+  "coupling_ff": {
+   "min": 0.040446,
+   "max": 0.071424
+  },
+  "coupling_fraction_of_total": {
+   "min": 0.085305,
+   "max": 0.142279
+  },
+  "nodes": [
+   {
+    "net": "sn_0_0",
+    "ground_ff": 0.433689,
+    "coupling_ff": 0.051156,
+    "total_ff": 0.484845,
+    "coupled_ff": {
+     "bl_0": 0.01071,
+     "rbl_0": 0.01071,
+     "rwl_0": 0.010072,
+     "wl_0": 0.019664
+    },
+    "row": 0,
+    "col": 0
+   },
+   {
+    "net": "sn_0_1",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.060766,
+    "total_ff": 0.491342,
+    "coupled_ff": {
+     "bl_1": 0.01071,
+     "rbl_1": 0.01071,
+     "rwl_0": 0.019682,
+     "wl_0": 0.019664
+    },
+    "row": 0,
+    "col": 1
+   },
+   {
+    "net": "sn_0_2",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.060766,
+    "total_ff": 0.491342,
+    "coupled_ff": {
+     "bl_2": 0.01071,
+     "rbl_2": 0.01071,
+     "rwl_0": 0.019682,
+     "wl_0": 0.019664
+    },
+    "row": 0,
+    "col": 2
+   },
+   {
+    "net": "sn_0_3",
+    "ground_ff": 0.432518,
+    "coupling_ff": 0.05477,
+    "total_ff": 0.487288,
+    "coupled_ff": {
+     "bl_3": 0.01071,
+     "rbl_3": 0.01071,
+     "rwl_0": 0.019682,
+     "wl_0": 0.013668
+    },
+    "row": 0,
+    "col": 3
+   },
+   {
+    "net": "sn_1_0",
+    "ground_ff": 0.433689,
+    "coupling_ff": 0.064773,
+    "total_ff": 0.498462,
+    "coupled_ff": {
+     "bl_0": 0.01071,
+     "rbl_0": 0.024327,
+     "rwl_1": 0.010072,
+     "wl_1": 0.019664
+    },
+    "row": 1,
+    "col": 0
+   },
+   {
+    "net": "sn_1_1",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.071424,
+    "total_ff": 0.502,
+    "coupled_ff": {
+     "bl_1": 0.01071,
+     "rbl_1": 0.024327,
+     "rwl_1": 0.019682,
+     "wl_1": 0.016705
+    },
+    "row": 1,
+    "col": 1
+   },
+   {
+    "net": "sn_1_2",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.071424,
+    "total_ff": 0.502,
+    "coupled_ff": {
+     "bl_2": 0.01071,
+     "rbl_2": 0.024327,
+     "rwl_1": 0.019682,
+     "wl_1": 0.016705
+    },
+    "row": 1,
+    "col": 2
+   },
+   {
+    "net": "sn_1_3",
+    "ground_ff": 0.432518,
+    "coupling_ff": 0.065429,
+    "total_ff": 0.497947,
+    "coupled_ff": {
+     "bl_3": 0.01071,
+     "rbl_3": 0.024327,
+     "rwl_1": 0.019682,
+     "wl_1": 0.01071
+    },
+    "row": 1,
+    "col": 3
+   },
+   {
+    "net": "sn_2_0",
+    "ground_ff": 0.433689,
+    "coupling_ff": 0.064773,
+    "total_ff": 0.498462,
+    "coupled_ff": {
+     "bl_0": 0.01071,
+     "rbl_0": 0.024327,
+     "rwl_2": 0.010072,
+     "wl_2": 0.019664
+    },
+    "row": 2,
+    "col": 0
+   },
+   {
+    "net": "sn_2_1",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.071424,
+    "total_ff": 0.502,
+    "coupled_ff": {
+     "bl_1": 0.01071,
+     "rbl_1": 0.024327,
+     "rwl_2": 0.019682,
+     "wl_2": 0.016705
+    },
+    "row": 2,
+    "col": 1
+   },
+   {
+    "net": "sn_2_2",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.071424,
+    "total_ff": 0.502,
+    "coupled_ff": {
+     "bl_2": 0.01071,
+     "rbl_2": 0.024327,
+     "rwl_2": 0.019682,
+     "wl_2": 0.016705
+    },
+    "row": 2,
+    "col": 2
+   },
+   {
+    "net": "sn_2_3",
+    "ground_ff": 0.432518,
+    "coupling_ff": 0.065429,
+    "total_ff": 0.497947,
+    "coupled_ff": {
+     "bl_3": 0.01071,
+     "rbl_3": 0.024327,
+     "rwl_2": 0.019682,
+     "wl_2": 0.01071
+    },
+    "row": 2,
+    "col": 3
+   },
+   {
+    "net": "sn_3_0",
+    "ground_ff": 0.433689,
+    "coupling_ff": 0.040446,
+    "total_ff": 0.474135,
+    "coupled_ff": {
+     "bl_0": 0.01071,
+     "rwl_3": 0.010072,
+     "wl_3": 0.019664
+    },
+    "row": 3,
+    "col": 0
+   },
+   {
+    "net": "sn_3_1",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.047097,
+    "total_ff": 0.477673,
+    "coupled_ff": {
+     "bl_1": 0.01071,
+     "rwl_3": 0.019682,
+     "wl_3": 0.016705
+    },
+    "row": 3,
+    "col": 1
+   },
+   {
+    "net": "sn_3_2",
+    "ground_ff": 0.430576,
+    "coupling_ff": 0.047097,
+    "total_ff": 0.477673,
+    "coupled_ff": {
+     "bl_2": 0.01071,
+     "rwl_3": 0.019682,
+     "wl_3": 0.016705
+    },
+    "row": 3,
+    "col": 2
+   },
+   {
+    "net": "sn_3_3",
+    "ground_ff": 0.432518,
+    "coupling_ff": 0.041102,
+    "total_ff": 0.47362,
+    "coupled_ff": {
+     "bl_3": 0.01071,
+     "rwl_3": 0.019682,
+     "wl_3": 0.01071
+    },
+    "row": 3,
+    "col": 3
+   }
+  ]
+ },
+ "retention": {
+  "ratified_prelayout": {
+   "source": "sim/retention/results/retention_results.csv:2",
+   "line_sha256": "sha256:b3c7da945be5b92a736a635abd669acf637e9ecb0b62ccae51c7532bee16998f",
+   "timestamp_utc": "2026-08-20T22:38:54+00:00",
+   "repo_git_sha": "46c07a4",
+   "leakage_source_row": "corner=sf,temp_c=125",
+   "leakage_ileak_a": 9.89888e-11,
+   "c_storage_node_ff": 1.106463,
+   "delta_v_sense_margin_v_ASSUMPTION": 0.9,
+   "retention_time_s": 1.005989e-05,
+   "status": "RATIFIED (spec/retention-refresh-budget.md Section 5); unchanged here",
+   "c_sn_kind": "ASSUMPTION (2.0x margin over computed C_gate)"
+  },
+  "isolated_cell_extracted": {
+   "source": "sim/retention/results/retention_results.csv:4",
+   "line_sha256": "sha256:2fd6ac11cd8f3d9a5e7431611c9bdf3dde01af9d501f3060b4b72355abafac98",
+   "timestamp_utc": "2026-08-25T02:22:39+00:00",
+   "repo_git_sha": "07612be",
+   "leakage_source_row": "corner=sf,temp_c=125",
+   "leakage_ileak_a": 9.89888e-11,
+   "c_storage_node_ff": 0.605354,
+   "delta_v_sense_margin_v_ASSUMPTION": 0.9,
+   "retention_time_s": 5.503841e-06,
+   "status": "isolated-cell EXTRACTED estimate (issue #7); not ratified",
+   "c_sn_kind": "EXTRACTED, layout/gain_cell_2t.extract.parasitics.json net 'sn'"
+  },
+  "array_capacitance_only_sensitivity": {
+   "label": "CAPACITANCE-ONLY SENSITIVITY: array-context C_SN at unchanged leakage (leakage testbench geometry) and unchanged sense-margin ASSUMPTION. Not measured array retention, not geometry-matched, not dynamic, not a ratified value, not an array guarantee.",
+   "formula": "t_array = t_single * (C_array / C_single) = C_array * delta_V / I_leak (same I_leak, delta_V as the isolated-cell row)",
+   "units": {
+    "c": "fF",
+    "ratio": "dimensionless",
+    "t": "s (and us)"
+   },
+   "leakage_ileak_a": 9.89888e-11,
+   "leakage_source_row": "corner=sf,temp_c=125",
+   "delta_v_sense_margin_v_ASSUMPTION": 0.9,
+   "isolated_cell_retention_s_recomputed": 5.503841e-06,
+   "limiting_node": "sn_3_3",
+   "at_limiting_node": {
+    "c_sn_ff": 0.47362,
+    "ratio_c_array_over_c_single": 0.782385,
+    "relative_delta": -0.217615,
+    "retention_time_s": 4.306124e-06,
+    "retention_time_us": 4.3061
+   },
+   "at_max_node": {
+    "c_sn_ff": 0.502,
+    "ratio_c_array_over_c_single": 0.829267,
+    "relative_delta": -0.170733,
+    "retention_time_s": 4.564153e-06,
+    "retention_time_us": 4.5642
+   },
+   "per_node": {
+    "sn_0_0": {
+     "c_sn_ff": 0.484845,
+     "ratio_c_array_over_c_single": 0.800928,
+     "relative_delta": -0.199072,
+     "retention_time_s": 4.408181e-06,
+     "retention_time_us": 4.4082
+    },
+    "sn_0_1": {
+     "c_sn_ff": 0.491342,
+     "ratio_c_array_over_c_single": 0.811661,
+     "relative_delta": -0.188339,
+     "retention_time_s": 4.467251e-06,
+     "retention_time_us": 4.4673
+    },
+    "sn_0_2": {
+     "c_sn_ff": 0.491342,
+     "ratio_c_array_over_c_single": 0.811661,
+     "relative_delta": -0.188339,
+     "retention_time_s": 4.467251e-06,
+     "retention_time_us": 4.4673
+    },
+    "sn_0_3": {
+     "c_sn_ff": 0.487288,
+     "ratio_c_array_over_c_single": 0.804964,
+     "relative_delta": -0.195036,
+     "retention_time_s": 4.430392e-06,
+     "retention_time_us": 4.4304
+    },
+    "sn_1_0": {
+     "c_sn_ff": 0.498462,
+     "ratio_c_array_over_c_single": 0.823422,
+     "relative_delta": -0.176578,
+     "retention_time_s": 4.531985e-06,
+     "retention_time_us": 4.532
+    },
+    "sn_1_1": {
+     "c_sn_ff": 0.502,
+     "ratio_c_array_over_c_single": 0.829267,
+     "relative_delta": -0.170733,
+     "retention_time_s": 4.564153e-06,
+     "retention_time_us": 4.5642
+    },
+    "sn_1_2": {
+     "c_sn_ff": 0.502,
+     "ratio_c_array_over_c_single": 0.829267,
+     "relative_delta": -0.170733,
+     "retention_time_s": 4.564153e-06,
+     "retention_time_us": 4.5642
+    },
+    "sn_1_3": {
+     "c_sn_ff": 0.497947,
+     "ratio_c_array_over_c_single": 0.822572,
+     "relative_delta": -0.177428,
+     "retention_time_s": 4.527303e-06,
+     "retention_time_us": 4.5273
+    },
+    "sn_2_0": {
+     "c_sn_ff": 0.498462,
+     "ratio_c_array_over_c_single": 0.823422,
+     "relative_delta": -0.176578,
+     "retention_time_s": 4.531985e-06,
+     "retention_time_us": 4.532
+    },
+    "sn_2_1": {
+     "c_sn_ff": 0.502,
+     "ratio_c_array_over_c_single": 0.829267,
+     "relative_delta": -0.170733,
+     "retention_time_s": 4.564153e-06,
+     "retention_time_us": 4.5642
+    },
+    "sn_2_2": {
+     "c_sn_ff": 0.502,
+     "ratio_c_array_over_c_single": 0.829267,
+     "relative_delta": -0.170733,
+     "retention_time_s": 4.564153e-06,
+     "retention_time_us": 4.5642
+    },
+    "sn_2_3": {
+     "c_sn_ff": 0.497947,
+     "ratio_c_array_over_c_single": 0.822572,
+     "relative_delta": -0.177428,
+     "retention_time_s": 4.527303e-06,
+     "retention_time_us": 4.5273
+    },
+    "sn_3_0": {
+     "c_sn_ff": 0.474135,
+     "ratio_c_array_over_c_single": 0.783236,
+     "relative_delta": -0.216764,
+     "retention_time_s": 4.310806e-06,
+     "retention_time_us": 4.3108
+    },
+    "sn_3_1": {
+     "c_sn_ff": 0.477673,
+     "ratio_c_array_over_c_single": 0.78908,
+     "relative_delta": -0.21092,
+     "retention_time_s": 4.342973e-06,
+     "retention_time_us": 4.343
+    },
+    "sn_3_2": {
+     "c_sn_ff": 0.477673,
+     "ratio_c_array_over_c_single": 0.78908,
+     "relative_delta": -0.21092,
+     "retention_time_s": 4.342973e-06,
+     "retention_time_us": 4.343
+    },
+    "sn_3_3": {
+     "c_sn_ff": 0.47362,
+     "ratio_c_array_over_c_single": 0.782385,
+     "relative_delta": -0.217615,
+     "retention_time_s": 4.306124e-06,
+     "retention_time_us": 4.3061
+    }
+   },
+   "ground_only_reference": {
+    "note": "Coupling counted as load assumes quiet neighbours (far terminal held at a fixed potential). This reference drops coupling entirely to show how much of the array C_SN rests on that assumption. It is not a bound: a switching neighbour injects charge through the coupling capacitor (a disturb, characterized by #94), which no static capacitance value represents.",
+    "min_ground_ff": 0.430576,
+    "ratio_min_ground_over_c_single": 0.71128,
+    "retention_time_us": 3.9148
+   }
+  },
+  "array_vs_ratified_context_only": {
+   "note": "For context only. Not a revision of Section 5: the ratified value uses an assumed C_SN.",
+   "ratio_t_limiting_over_t_ratified": 0.428049
+  }
+ },
+ "leakage_geometry_trace": {
+  "leakage_testbench": {
+   "source": "sim/leakage/tb_access_leakage.spice.tmpl",
+   "sha256": "sha256:c79f2c956e0ee4835985504ab84c8386e80bf798b90588bcc0e925087546b364",
+   "instance": "xdut",
+   "w_um": 0.42,
+   "l_um": 0.15,
+   "ad": null,
+   "as": null,
+   "pd": null,
+   "ps": null,
+   "diffusion_geometry_passed": [],
+   "note": "No AD/AS/PD/PS on the xdut card, so the shipped sky130_fd_pr__nfet_01v8 subcircuit wrapper's own defaults apply (see sim/retention/README.md 'Array-context C_SN' for the PDK source line). The measured I_leak therefore does not use either the schematic or the extracted diffusion geometry."
+  },
+  "schematic_netlist": {
+   "source": "design/gain_cell_2t.spice",
+   "sha256": "sha256:1dbe6c519b96d651264ef30c736f62188b1c8728833fdd77ac60a9703e8aa05a",
+   "XM_WR": {
+    "ad": 0.1218,
+    "as": 0.1218,
+    "pd": 1.42,
+    "ps": 1.42
+   },
+   "XM_RD": {
+    "ad": 0.1218,
+    "as": 0.1218,
+    "pd": 1.42,
+    "ps": 1.42
+   }
+  },
+  "extracted_array": {
+   "write_device_drain_on_sn": [
+    {
+     "ad": 0.1974,
+     "as": 0.1974,
+     "pd": 1.78,
+     "ps": 1.78
+    }
+   ],
+   "read_device_gate_on_sn": [
+    {
+     "ad": 0.1974,
+     "as": 0.1974,
+     "pd": 1.78,
+     "ps": 1.78
+    }
+   ]
+  },
+  "extracted_single_cell": {
+   "write_device_drain_on_sn": [
+    {
+     "ad": 0.1974,
+     "as": 0.1974,
+     "pd": 1.78,
+     "ps": 1.78
+    }
+   ],
+   "read_device_gate_on_sn": [
+    {
+     "ad": 0.1974,
+     "as": 0.1974,
+     "pd": 1.78,
+     "ps": 1.78
+    }
+   ]
+  },
+  "extracted_over_schematic_write_device": {
+   "ad_ratio": 1.62069,
+   "pd_ratio": 1.253521
+  },
+  "geometry_matched_leakage_evidence_committed": false
+ },
+ "limitations": [
+  "Capacitance-only: I_leak is the leakage-testbench value (no diffusion geometry passed), not geometry-matched to the extracted AD/AS/PD/PS.",
+  "Wiring-only C_SN convention: device gate/junction capacitance excluded from both single-cell and array numbers.",
+  "Quiet-neighbour coupling: coupling capacitors counted as load to a fixed far terminal; dynamic neighbour switching is #94.",
+  "4x4 array only, committed GDS (input hash above); regenerated geometry (#91) needs re-extraction and a new comparison file.",
+  "Constant-current decay and delta_V = VDD/2 are the existing ASSUMPTIONS of sim/retention/README.md.",
+  "Single worst-case PVT point (the isolated-cell row's leakage corner); no mismatch."
+ ]
+}

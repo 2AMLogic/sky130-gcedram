@@ -1,0 +1,460 @@
+{
+ "op1_0900_baseline_analog": {
+  "regime": "legacy",
+  "base": "baseline_analog",
+  "variant": "baseline_analog",
+  "legacy_instance": "op1_0900_baseline_analog",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op1_1000_baseline_analog": {
+  "regime": "legacy",
+  "base": "baseline_analog",
+  "variant": "baseline_analog",
+  "legacy_instance": "op1_1000_baseline_analog",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op0_n100_baseline_analog": {
+  "regime": "legacy",
+  "base": "baseline_analog",
+  "variant": "baseline_analog",
+  "legacy_instance": "op0_n100_baseline_analog",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op0_0000_baseline_analog": {
+  "regime": "legacy",
+  "base": "baseline_analog",
+  "variant": "baseline_analog",
+  "legacy_instance": "op0_0000_baseline_analog",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op1_0900_rtl_hold": {
+  "regime": "legacy",
+  "base": "rtl_hold",
+  "variant": "rtl_hold",
+  "legacy_instance": "op1_0900_rtl_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op1_1000_rtl_hold": {
+  "regime": "legacy",
+  "base": "rtl_hold",
+  "variant": "rtl_hold",
+  "legacy_instance": "op1_1000_rtl_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op0_n100_rtl_hold": {
+  "regime": "legacy",
+  "base": "rtl_hold",
+  "variant": "rtl_hold",
+  "legacy_instance": "op0_n100_rtl_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op0_0000_rtl_hold": {
+  "regime": "legacy",
+  "base": "rtl_hold",
+  "variant": "rtl_hold",
+  "legacy_instance": "op0_0000_rtl_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ },
+ "op1_0900_rwl_late_hold": {
+  "regime": "legacy",
+  "base": "rwl_late_hold",
+  "variant": "rwl_late_hold",
+  "legacy_instance": "op1_0900_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op1_1000_rwl_late_hold": {
+  "regime": "legacy",
+  "base": "rwl_late_hold",
+  "variant": "rwl_late_hold",
+  "legacy_instance": "op1_1000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op0_n100_rwl_late_hold": {
+  "regime": "legacy",
+  "base": "rwl_late_hold",
+  "variant": "rwl_late_hold",
+  "legacy_instance": "op0_n100_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op0_0000_rwl_late_hold": {
+  "regime": "legacy",
+  "base": "rwl_late_hold",
+  "variant": "rwl_late_hold",
+  "legacy_instance": "op0_0000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op1_0900_neg_missing_wb": {
+  "regime": "legacy",
+  "base": "neg_missing_wb",
+  "variant": "neg_missing_wb",
+  "legacy_instance": "op1_0900_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op1_1000_neg_missing_wb": {
+  "regime": "legacy",
+  "base": "neg_missing_wb",
+  "variant": "neg_missing_wb",
+  "legacy_instance": "op1_1000_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op0_n100_neg_missing_wb": {
+  "regime": "legacy",
+  "base": "neg_missing_wb",
+  "variant": "neg_missing_wb",
+  "legacy_instance": "op0_n100_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op0_0000_neg_missing_wb": {
+  "regime": "legacy",
+  "base": "neg_missing_wb",
+  "variant": "neg_missing_wb",
+  "legacy_instance": "op0_0000_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": false
+ },
+ "op1_0900_pic_baseline_analog": {
+  "regime": "pin_ic",
+  "base": "baseline_analog",
+  "variant": "pic_baseline_analog",
+  "legacy_instance": "op1_0900_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pic_baseline_analog": {
+  "regime": "pin_ic",
+  "base": "baseline_analog",
+  "variant": "pic_baseline_analog",
+  "legacy_instance": "op1_1000_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pic_baseline_analog": {
+  "regime": "pin_ic",
+  "base": "baseline_analog",
+  "variant": "pic_baseline_analog",
+  "legacy_instance": "op0_n100_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pic_baseline_analog": {
+  "regime": "pin_ic",
+  "base": "baseline_analog",
+  "variant": "pic_baseline_analog",
+  "legacy_instance": "op0_0000_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pic_rtl_hold": {
+  "regime": "pin_ic",
+  "base": "rtl_hold",
+  "variant": "pic_rtl_hold",
+  "legacy_instance": "op1_0900_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pic_rtl_hold": {
+  "regime": "pin_ic",
+  "base": "rtl_hold",
+  "variant": "pic_rtl_hold",
+  "legacy_instance": "op1_1000_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pic_rtl_hold": {
+  "regime": "pin_ic",
+  "base": "rtl_hold",
+  "variant": "pic_rtl_hold",
+  "legacy_instance": "op0_n100_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pic_rtl_hold": {
+  "regime": "pin_ic",
+  "base": "rtl_hold",
+  "variant": "pic_rtl_hold",
+  "legacy_instance": "op0_0000_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pic_rwl_late_hold": {
+  "regime": "pin_ic",
+  "base": "rwl_late_hold",
+  "variant": "pic_rwl_late_hold",
+  "legacy_instance": "op1_0900_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pic_rwl_late_hold": {
+  "regime": "pin_ic",
+  "base": "rwl_late_hold",
+  "variant": "pic_rwl_late_hold",
+  "legacy_instance": "op1_1000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pic_rwl_late_hold": {
+  "regime": "pin_ic",
+  "base": "rwl_late_hold",
+  "variant": "pic_rwl_late_hold",
+  "legacy_instance": "op0_n100_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pic_rwl_late_hold": {
+  "regime": "pin_ic",
+  "base": "rwl_late_hold",
+  "variant": "pic_rwl_late_hold",
+  "legacy_instance": "op0_0000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pic_neg_missing_wb": {
+  "regime": "pin_ic",
+  "base": "neg_missing_wb",
+  "variant": "pic_neg_missing_wb",
+  "legacy_instance": "op1_0900_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pic_neg_missing_wb": {
+  "regime": "pin_ic",
+  "base": "neg_missing_wb",
+  "variant": "pic_neg_missing_wb",
+  "legacy_instance": "op1_1000_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pic_neg_missing_wb": {
+  "regime": "pin_ic",
+  "base": "neg_missing_wb",
+  "variant": "pic_neg_missing_wb",
+  "legacy_instance": "op0_n100_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pic_neg_missing_wb": {
+  "regime": "pin_ic",
+  "base": "neg_missing_wb",
+  "variant": "pic_neg_missing_wb",
+  "legacy_instance": "op0_0000_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pw_baseline_analog": {
+  "regime": "physical",
+  "base": "baseline_analog",
+  "variant": "pw_baseline_analog",
+  "legacy_instance": "op1_0900_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pw_baseline_analog": {
+  "regime": "physical",
+  "base": "baseline_analog",
+  "variant": "pw_baseline_analog",
+  "legacy_instance": "op1_1000_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pw_baseline_analog": {
+  "regime": "physical",
+  "base": "baseline_analog",
+  "variant": "pw_baseline_analog",
+  "legacy_instance": "op0_n100_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pw_baseline_analog": {
+  "regime": "physical",
+  "base": "baseline_analog",
+  "variant": "pw_baseline_analog",
+  "legacy_instance": "op0_0000_baseline_analog",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pw_rtl_hold": {
+  "regime": "physical",
+  "base": "rtl_hold",
+  "variant": "pw_rtl_hold",
+  "legacy_instance": "op1_0900_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pw_rtl_hold": {
+  "regime": "physical",
+  "base": "rtl_hold",
+  "variant": "pw_rtl_hold",
+  "legacy_instance": "op1_1000_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pw_rtl_hold": {
+  "regime": "physical",
+  "base": "rtl_hold",
+  "variant": "pw_rtl_hold",
+  "legacy_instance": "op0_n100_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pw_rtl_hold": {
+  "regime": "physical",
+  "base": "rtl_hold",
+  "variant": "pw_rtl_hold",
+  "legacy_instance": "op0_0000_rtl_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pw_rwl_late_hold",
+  "legacy_instance": "op1_0900_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pw_rwl_late_hold",
+  "legacy_instance": "op1_1000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pw_rwl_late_hold",
+  "legacy_instance": "op0_n100_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pw_rwl_late_hold",
+  "legacy_instance": "op0_0000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pw_neg_missing_wb": {
+  "regime": "physical",
+  "base": "neg_missing_wb",
+  "variant": "pw_neg_missing_wb",
+  "legacy_instance": "op1_0900_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pw_neg_missing_wb": {
+  "regime": "physical",
+  "base": "neg_missing_wb",
+  "variant": "pw_neg_missing_wb",
+  "legacy_instance": "op1_1000_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pw_neg_missing_wb": {
+  "regime": "physical",
+  "base": "neg_missing_wb",
+  "variant": "pw_neg_missing_wb",
+  "legacy_instance": "op0_n100_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pw_neg_missing_wb": {
+  "regime": "physical",
+  "base": "neg_missing_wb",
+  "variant": "pw_neg_missing_wb",
+  "legacy_instance": "op0_0000_neg_missing_wb",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_0900_pwnw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pwnw_rwl_late_hold",
+  "legacy_instance": "op1_0900_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op1_1000_pwnw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pwnw_rwl_late_hold",
+  "legacy_instance": "op1_1000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_n100_pwnw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pwnw_rwl_late_hold",
+  "legacy_instance": "op0_n100_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "op0_0000_pwnw_rwl_late_hold": {
+  "regime": "physical",
+  "base": "rwl_late_hold",
+  "variant": "pwnw_rwl_late_hold",
+  "legacy_instance": "op0_0000_rwl_late_hold",
+  "declared_changes_only": true,
+  "findings": []
+ },
+ "refw": {
+  "regime": "legacy",
+  "base": "reference_write",
+  "variant": "reference_write",
+  "legacy_instance": "refw",
+  "declared_changes_only": true,
+  "findings": [],
+  "deck_matches_trace": true,
+  "trace_matches_golden_rtl": true
+ }
+}

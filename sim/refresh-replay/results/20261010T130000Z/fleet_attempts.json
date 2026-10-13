@@ -1,0 +1,6 @@
+{
+ "note": "Single batch submission of the exact generated request; no refusals, no retries, no local fallback, no local probe.",
+ "attempts": [
+  {"n": 1, "client": "uvx --from klayout-tools==0.6.0 klt sim --backend batch", "result": "job klt-sim-b8ad51731243 done, 10/10 corners pass, 95 s, c7i.4xlarge spot (us-east-1d)", "recorded_report": "klt_report.json.gz"}
+ ]
+}
