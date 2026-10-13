@@ -72,6 +72,9 @@ jobs:
       - name: Array generation pin and baseline comparison (issue #91) checks
         run: python3 -I layout/test_generation_reproducibility.py
 
+      - name: Geometry-matched access leakage (issue #149) checks
+        run: python3 -I sim/leakage/test_geometry_leakage.py
+
   append-only:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

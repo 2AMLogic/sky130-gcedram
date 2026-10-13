@@ -390,7 +390,9 @@ The trace found two further facts, both of which bear on the decision:
 1. **Geometry-matched leakage.** Re-run the access-device leakage over the
    same 15 PVT points with `ad = as = 0.1974`, `pd = ps = 1.78`, committed
    as new append-only evidence. Submit it as a `klt sim` corner request,
-   not a hand-run grid. Tracked in #149.
+   not a hand-run grid. Tracked in #149. *Status: measured and committed* in
+   `sim/leakage/geometry-matched/` (sf / 125 C worst case 1.0924e-10 A, +10.4 % vs the
+   legacy-geometry number); this remains PROPOSED input, no ratified value changed.
 2. **A node-capacitance convention that includes device capacitance.**
    Either evaluate `C_SN` with the device model on the extracted array
    netlist (for example, the hold-droop slope at the storage node), or
