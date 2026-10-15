@@ -65,7 +65,9 @@ FIELDS = EXTRA + list(R.FIELDS)
 
 def write_gz(path: Path, text: str) -> None:
     """Deterministic gzip (no name, mtime 0) so a re-run reproduces the bytes."""
-    with path.open("wb") as raw, gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as gz:
+    with path.open("wb") as raw, gzip.GzipFile(
+        filename="", mode="wb", fileobj=raw, compresslevel=9, mtime=0
+    ) as gz:
         gz.write(text.encode())
 
 

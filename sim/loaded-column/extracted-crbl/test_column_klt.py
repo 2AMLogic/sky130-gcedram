@@ -197,7 +197,11 @@ class Committed(unittest.TestCase):
                 want = json.loads((run / "summary.json").read_text())
                 self.assertEqual(rc, 1 if want["errors"] else 0)
                 for n in ("cases.csv.gz", "summary.json"):
-                    self.assertEqual((d / n).read_bytes(), (run / n).read_bytes(), f"{run.name}/{n}")
+                    # Compare decompressed content: the raw .gz bytes depend on the
+                    # runner's zlib/Python build, not on the evidence.
+                    got = X.read_gz(d / n) if n.endswith(".gz") else (d / n).read_text()
+                    want_txt = X.read_gz(run / n) if n.endswith(".gz") else (run / n).read_text()
+                    self.assertEqual(got, want_txt, f"{run.name}/{n}")
 
     def test_refuses_to_overwrite(self):
         self.assertEqual(X.analyze(RUNS[-1]), 2)
