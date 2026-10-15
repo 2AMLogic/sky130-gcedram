@@ -13,7 +13,7 @@
 _gcedram_env_self="${BASH_SOURCE[0]:-${(%):-%x}}"
 _gcedram_design_dir="$(cd "$(dirname "${_gcedram_env_self}")" && pwd)"
 
-export PDK_ROOT="${PDK_ROOT:-$HOME/.volare}"
+export PDK_ROOT="${PDK_ROOT:-$HOME/.ciel}"
 export PDK="${PDK:-sky130A}"
 
 if [[ -f "${PDK_ROOT}/${PDK}/libs.tech/xschem/xschemrc" ]]; then

@@ -1,15 +1,15 @@
 # sky130 PDK version pin
 
 Every schematic, netlist, layout, and testbench in this repo resolves the
-sky130 PDK from the **same** `open_pdks`/`volare` pin:
+sky130 PDK from the **same** `open_pdks`/`ciel` pin:
 
 | Field | Value |
 |---|---|
 | `family` | `sky130` |
 | `variant` | `sky130A` |
-| `open_pdks_commit` | `c6d73a35f524070e85faff4a6a9eef49553ebc2b` |
-| `install_command` | `volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b` |
-| default `PDK_ROOT` | `~/.volare` |
+| `open_pdks_commit` | `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` |
+| `install_command` | `pip install ciel==2.6.1` then `ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` |
+| default `PDK_ROOT` | `~/.ciel` |
 
 ## Why one pin, everywhere
 
@@ -41,8 +41,13 @@ script that needs the pin (`sim/leakage/run_leakage_sweep.py`,
 `sim/retention/derive_retention.py`) imports them from there rather than
 redefining its own copy. `resolve_pdk_root()` in the same module resolves
 `PDK_ROOT` from an explicit CLI flag, else the `PDK_ROOT` environment
-variable, else the `~/.volare` default above — also shared by all three
-scripts.
+variable, else the `~/.ciel` default above — also shared by all three
+scripts. `~/.volare` (the retired volare root) is never searched. The same
+module's `pdk_revision_problems()` reads the resolved tree's
+`<variant>/SOURCES` `open_pdks` line and the env checks (`check_ngspice_available()`,
+`derive_retention.py --check-env`) fail with a visible mismatch if it is not the
+pin above (or `SOURCES` is missing), so a stray tree at another revision cannot
+be used silently.
 
 **Shell/Tcl (design-side mirror):** [`design/env.sh`](../design/env.sh) and
 [`design/xschemrc`](../design/xschemrc) restate the same `PDK_ROOT`/`PDK`
@@ -90,3 +95,16 @@ per-testbench `DEFAULT_PDK_VARIANT` constants (plus a third, unused, in
 their rationale folded into this document; the Python-side constants were
 collapsed into the single `sim/_evidence_common.py` source above. The
 pinned values themselves were not changed by that consolidation.
+
+### Re-pin to `f6eeac7` (issue #165)
+
+The fleet moved sky130/gf180mcu from `c6d73a35f524070e85faff4a6a9eef49553ebc2b`
+(installed with volare, whose release feed stopped in Aug 2025) to
+`f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, installed with ciel 2.6.1; the default
+`PDK_ROOT` moved from `~/.volare` to `~/.ciel`. Records produced under
+`c6d73a3` (`sim/**/results/`, manifests/summaries, `layout/*.json` outputs,
+"measured at" notes) are append-only and keep naming that revision; their
+re-qualification and supersession marking are tracked in #166.
+`sim/loaded-column/cold-corner/check_evidence_index.py` keeps `c6d73a3` as its
+*evidence-era* constant (it validates the committed index) and skips its
+installed-tree hash check when the installed PDK is a different revision.

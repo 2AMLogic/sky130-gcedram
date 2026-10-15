@@ -122,16 +122,17 @@ the worst-case temperature corner, not typicals." All 15 points are in
 
 ## Reproducing this testbench
 
-Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
+Requires a stock `open_pdks` sky130 install (via `ciel`, pinned in
 [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)) and `ngspice` on `PATH`.
 No local model edits.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
-volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
+pip install ciel==2.6.1
+ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
-# 2. Point PDK_ROOT at your volare root if it isn't ~/.volare:
-export PDK_ROOT=~/.volare   # default; only needed if you installed elsewhere
+# 2. Point PDK_ROOT at your ciel root if it isn't ~/.ciel:
+export PDK_ROOT=~/.ciel   # default; only needed if you installed elsewhere
 
 # 3. Check the environment resolves correctly:
 python3 sim/leakage/run_leakage_sweep.py --check-env
@@ -156,7 +157,7 @@ Useful flags:
 ```bash
 python3 sim/leakage/run_leakage_sweep.py --corners tt --temps-c 27   # single point
 python3 sim/leakage/run_leakage_sweep.py --dry-run                   # render netlists, don't simulate
-python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.volare --pdk sky130A
+python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.ciel --pdk sky130A
 ```
 
 ## Geometry-matched re-measurement (issue #149)

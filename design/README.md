@@ -115,14 +115,15 @@ written.
 
 ## Regenerating the netlist
 
-Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
+Requires a stock `open_pdks` sky130 install (via `ciel`, pinned in
 [`docs/pdk-pin.md`](../docs/pdk-pin.md)) and `xschem` on `PATH`.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
-volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
+pip install ciel==2.6.1
+ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
-# 2. Export PDK_ROOT / PDK (defaults to ~/.volare / sky130A if unset):
+# 2. Export PDK_ROOT / PDK (defaults to ~/.ciel / sky130A if unset):
 source design/env.sh
 
 # 3. Regenerate design/gain_cell_2t.spice and design/sense_latch.spice

@@ -47,7 +47,7 @@ is not a result":
 Usage:
     python3 sim/retention/derive_retention.py
     python3 sim/retention/derive_retention.py --check-env
-    python3 sim/retention/derive_retention.py --pdk-root /path/to/.volare
+    python3 sim/retention/derive_retention.py --pdk-root /path/to/.ciel
 
 Stdlib only, no virtualenv required. Reads (never modifies)
 sim/leakage/results/leakage_results.csv, the shipped sky130 PDK model card
@@ -79,8 +79,9 @@ REPO_ROOT = SIM_RETENTION_DIR.parent.parent
 
 sys.path.insert(0, str(SIM_RETENTION_DIR.parent))
 from _evidence_common import (
-    PDK_OPEN_PDKS_COMMIT,
+    PDK_INSTALL_HINT,
     append_result,
+    check_pdk_revision,
     repo_git_sha,
     resolve_pdk_root,
 )
@@ -324,13 +325,16 @@ def check_env(leakage_csv: Path, model_file: Path) -> bool:
         ok = False
     if not model_file.is_file():
         print(f"ERROR: sky130 model card not found: {model_file}", file=sys.stderr)
+        print(PDK_INSTALL_HINT, file=sys.stderr)
         print(
-            "  Install a stock PDK with volare, e.g.:\n"
-            f"    volare enable --pdk sky130 {PDK_OPEN_PDKS_COMMIT}\n"
-            "  or set PDK_ROOT to an existing open_pdks sky130A/sky130B install.",
+            "  or set PDK_ROOT to an open_pdks sky130A/sky130B install at that revision.",
             file=sys.stderr,
         )
         ok = False
+    else:
+        # model_file = <pdk_root>/<variant>/libs.ref/sky130_fd_pr/spice/<file>
+        variant_dir = model_file.parents[len(Path(MODEL_REL_DIR).parts)]
+        ok = check_pdk_revision(variant_dir) and ok
     for geometry_name, source in EXTRACTED_C_SN_SOURCES.items():
         if not source["extract_json"].is_file():
             print(
@@ -348,7 +352,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--pdk-root",
         default=None,
-        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.volare)",
+        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.ciel)",
     )
     parser.add_argument(
         "--pdk-model-variant",

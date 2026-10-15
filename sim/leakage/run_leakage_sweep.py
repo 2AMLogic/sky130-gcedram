@@ -13,12 +13,12 @@ number is derived (see #3).
 Usage:
     python3 sim/leakage/run_leakage_sweep.py
     python3 sim/leakage/run_leakage_sweep.py --check-env
-    python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.volare
+    python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.ciel
     python3 sim/leakage/run_leakage_sweep.py --dry-run
 
 Stdlib only, no virtualenv required. Uses ONLY the shipped sky130 PDK
 model library resolved below -- no local model edits, no uncommitted
-.include paths. Requires `ngspice` on PATH and a stock volare/open_pdks
+.include paths. Requires `ngspice` on PATH and a stock ciel/open_pdks
 sky130A install (see sim/README.md for the install command).
 
 This script never overwrites sim/leakage/results/leakage_results.csv --
@@ -128,7 +128,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--pdk-root",
         default=None,
-        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.volare)",
+        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.ciel)",
     )
     parser.add_argument(
         "--pdk", default=DEFAULT_PDK_VARIANT, help="PDK variant dir (default: sky130A)"
