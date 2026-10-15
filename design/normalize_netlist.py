@@ -5,7 +5,8 @@ xschem 3.4.7 evaluates the sky130 symbol's ``expr('...')`` geometry
 parameters (ad/as/pd/ps/nrd/nrs) while netlisting; older xschem (e.g. 3.4.4)
 emits them verbatim. This evaluates any leftover ``expr('...')`` so the
 committed netlist is identical regardless of xschem version, then rewraps
-continuation lines with one fixed rule (start a new ``+`` line once the
+every long device card (not only those that held an expr()) with one fixed
+rule, so xschem 3.4.4 and 3.4.7 agree byte for byte (start a new ``+`` line once the
 current line is >= 100 chars). Usage: normalize_netlist.py IN OUT
 """
 import re
@@ -36,9 +37,10 @@ def main(src, dst):
             logical.append(ln)
     out = []
     for ln in logical:
-        if "expr('" in ln:
+        if "expr('" in ln or (ln[:1].isalpha() and len(ln) >= 100):
             params = dict(re.findall(r"\b(\w+)=([0-9.eE+\-]+)\b", ln))
-            ln = EXPR.sub(lambda m: f"{m.group(1)}={_fmt(_eval(m.group(2), params))}", ln)
+            if "expr('" in ln:
+                ln = EXPR.sub(lambda m: f"{m.group(1)}={_fmt(_eval(m.group(2), params))}", ln)
             toks = TOKEN.findall(ln)
             cur, rows = toks[0], []
             for t in toks[1:]:
