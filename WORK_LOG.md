@@ -4,6 +4,9 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-15
 
+- **PR #176**: docs(pdk): use direct stamped-file counts and add helper row in requalification inventory
+- **Issue #175** (closed): docs(pdk): reconcile stamped-file counts in pdk-requalification-inventory.md
+- **PR #173**: docs(pdk): inventory reference records to re-qualify under open_pdks f6eeac7
 - **PR #167**: feat(pdk): re-pin open_pdks to f6eeac7 via ciel and verify PDK revision on resolve
 - **Issue #165** (closed): Re-pin open_pdks to f6eeac7 (ciel) — fleet retires volare c6d73a3
 - **Issue #117** (closed): Isolation-gate sizing and offset study: stored-'1' sense input erodes at fs/27 C with the #114 column slice
