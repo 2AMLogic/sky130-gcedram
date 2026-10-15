@@ -26,6 +26,8 @@ external access. Nothing below makes this macro an SRAM replacement.
 | `t_row_refresh_op` phases (precharge, sense, write-back pulse, bl-release guard) | **ASSUMPTION** | durations borrowed from deck settings in [`sim/bitcell-transient`](../bitcell-transient/README.md) (20 ns write / read pulse) and [`sim/loaded-column`](../loaded-column/README.md) (2 ns precharge lead, `t_sense` 10 ns, 2 ns bl release); those are themselves declared test choices, and no refresh controller or sense amp exists |
 | `N_rows` | **ASSUMPTION** | array not designed |
 
+> Cross-reference (issue #114): a designed precharge/write-driver/isolation slice now exists ([`design/column_periphery.sch`](../../design/column_periphery.sch)); its precharge settling (0.29-1.62 ns across the restricted corners) is measured against the 2 ns `anchored` precharge phase in [`sim/column-periphery`](../column-periphery/README.md). The phase durations in this README remain the borrowed ASSUMPTIONs; no sense-amp-timing or refresh-controller phase is derived from the slice.
+
 The retention CSV is append-only and has two `2T-min` worst-case rows, so
 both are evaluated: the 2026-08-20 row (ASSUMED `C_SN`, 10.06 us -> 5.03 us
 interval; **the value the spec ratifies**) and the later 2026-08-25 row

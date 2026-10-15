@@ -1,0 +1,193 @@
+{
+ "netlist": "column_periphery.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 90n 0 50p uic"
+ },
+ "measurements": [
+  {
+   "name": "tpre_ideal_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_ideal_w1 WHEN v(rbl_ideal_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_ideal_w1 FIND v(rbl_ideal_w1) AT=58n"
+  },
+  {
+   "name": "sn_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_ideal_w1 FIND v(sn_ideal_w1_0) AT=45n"
+  },
+  {
+   "name": "din_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran din_ideal_w1 FIND v(d_ideal_w1) AT=70n"
+  },
+  {
+   "name": "dend_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_ideal_w1 FIND v(d_ideal_w1) AT=90n"
+  },
+  {
+   "name": "tdec_ideal_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_ideal_w1 WHEN v(dabs_ideal_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_ideal_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_ideal_w0 WHEN v(rbl_ideal_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_ideal_w0 FIND v(rbl_ideal_w0) AT=58n"
+  },
+  {
+   "name": "sn_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_ideal_w0 FIND v(sn_ideal_w0_0) AT=45n"
+  },
+  {
+   "name": "din_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran din_ideal_w0 FIND v(d_ideal_w0) AT=70n"
+  },
+  {
+   "name": "dend_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_ideal_w0 FIND v(d_ideal_w0) AT=90n"
+  },
+  {
+   "name": "tdec_ideal_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_ideal_w0 WHEN v(dabs_ideal_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_real_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_real_w1 WHEN v(rbl_real_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_real_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_real_w1 FIND v(rbl_real_w1) AT=58n"
+  },
+  {
+   "name": "sn_real_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_real_w1 FIND v(sn_real_w1_0) AT=45n"
+  },
+  {
+   "name": "din_real_w1",
+   "unit": "V",
+   "spice": ".meas tran din_real_w1 FIND v(d_real_w1) AT=70n"
+  },
+  {
+   "name": "dend_real_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_real_w1 FIND v(d_real_w1) AT=90n"
+  },
+  {
+   "name": "tdec_real_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_real_w1 WHEN v(dabs_real_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_real_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_real_w0 WHEN v(rbl_real_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_real_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_real_w0 FIND v(rbl_real_w0) AT=58n"
+  },
+  {
+   "name": "sn_real_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_real_w0 FIND v(sn_real_w0_0) AT=45n"
+  },
+  {
+   "name": "din_real_w0",
+   "unit": "V",
+   "spice": ".meas tran din_real_w0 FIND v(d_real_w0) AT=70n"
+  },
+  {
+   "name": "dend_real_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_real_w0 FIND v(d_real_w0) AT=90n"
+  },
+  {
+   "name": "tdec_real_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_real_w0 WHEN v(dabs_real_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_sw_0100",
+   "unit": "s",
+   "spice": ".meas tran tpre_sw_0100 WHEN v(rbl_sw_0100)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_sw_0100",
+   "unit": "V",
+   "spice": ".meas tran vrel_sw_0100 FIND v(rbl_sw_0100) AT=58n"
+  },
+  {
+   "name": "tpre_sw_0200",
+   "unit": "s",
+   "spice": ".meas tran tpre_sw_0200 WHEN v(rbl_sw_0200)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_sw_0200",
+   "unit": "V",
+   "spice": ".meas tran vrel_sw_0200 FIND v(rbl_sw_0200) AT=58n"
+  },
+  {
+   "name": "tpre_sw_0400",
+   "unit": "s",
+   "spice": ".meas tran tpre_sw_0400 WHEN v(rbl_sw_0400)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_sw_0400",
+   "unit": "V",
+   "spice": ".meas tran vrel_sw_0400 FIND v(rbl_sw_0400) AT=58n"
+  },
+  {
+   "name": "tpre_sw_0800",
+   "unit": "s",
+   "spice": ".meas tran tpre_sw_0800 WHEN v(rbl_sw_0800)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_sw_0800",
+   "unit": "V",
+   "spice": ".meas tran vrel_sw_0800 FIND v(rbl_sw_0800) AT=58n"
+  }
+ ],
+ "options": {
+  "timeout_s": 900,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}
