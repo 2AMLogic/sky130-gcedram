@@ -1,0 +1,5923 @@
+{
+ "netlist": "isolation_study.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 90n 0 50p uic"
+ },
+ "measurements": [
+  {
+   "name": "sn_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_ideal_w1 FIND v(sn_ideal_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_ideal_w1 MIN v(sn_ideal_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran din_ideal_w1 FIND v(d_ideal_w1) AT=70n"
+  },
+  {
+   "name": "dend_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_ideal_w1 FIND v(d_ideal_w1) AT=90n"
+  },
+  {
+   "name": "tdec_ideal_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_ideal_w1 WHEN v(dabs_ideal_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_ideal_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_ideal_w1 WHEN v(rbl_ideal_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_ideal_w1 FIND v(rbl_ideal_w1) AT=58n"
+  },
+  {
+   "name": "dpost_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_ideal_w1 FIND v(rbl_ideal_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_ideal_w1 FIND v(rbl_ideal_w1) AT=58n"
+  },
+  {
+   "name": "dpre_ideal_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_ideal_w1 FIND v(d_ideal_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_ideal_w0 FIND v(sn_ideal_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_ideal_w0 MIN v(sn_ideal_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran din_ideal_w0 FIND v(d_ideal_w0) AT=70n"
+  },
+  {
+   "name": "dend_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_ideal_w0 FIND v(d_ideal_w0) AT=90n"
+  },
+  {
+   "name": "tdec_ideal_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_ideal_w0 WHEN v(dabs_ideal_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_ideal_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_ideal_w0 WHEN v(rbl_ideal_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_ideal_w0 FIND v(rbl_ideal_w0) AT=58n"
+  },
+  {
+   "name": "dpost_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_ideal_w0 FIND v(rbl_ideal_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_ideal_w0 FIND v(rbl_ideal_w0) AT=58n"
+  },
+  {
+   "name": "dpre_ideal_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_ideal_w0 FIND v(d_ideal_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i00_w1 FIND v(sn_i00_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i00_w1 MIN v(sn_i00_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i00_w1 FIND v(d_i00_w1) AT=70n"
+  },
+  {
+   "name": "dend_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i00_w1 FIND v(d_i00_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i00_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i00_w1 WHEN v(dabs_i00_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i00_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i00_w1 WHEN v(rbl_i00_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i00_w1 FIND v(rbl_i00_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i00_w1 FIND v(rbl_i00_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i00_w1 FIND v(rbl_i00_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i00_w1 FIND v(d_i00_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i00_w0 FIND v(sn_i00_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i00_w0 MIN v(sn_i00_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i00_w0 FIND v(d_i00_w0) AT=70n"
+  },
+  {
+   "name": "dend_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i00_w0 FIND v(d_i00_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i00_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i00_w0 WHEN v(dabs_i00_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i00_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i00_w0 WHEN v(rbl_i00_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i00_w0 FIND v(rbl_i00_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i00_w0 FIND v(rbl_i00_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i00_w0 FIND v(rbl_i00_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i00_w0 FIND v(d_i00_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i01_w1 FIND v(sn_i01_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i01_w1 MIN v(sn_i01_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i01_w1 FIND v(d_i01_w1) AT=70n"
+  },
+  {
+   "name": "dend_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i01_w1 FIND v(d_i01_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i01_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i01_w1 WHEN v(dabs_i01_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i01_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i01_w1 WHEN v(rbl_i01_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i01_w1 FIND v(rbl_i01_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i01_w1 FIND v(rbl_i01_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i01_w1 FIND v(rbl_i01_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i01_w1 FIND v(d_i01_w1) AT=69.9n"
+  },
+  {
+   "name": "sn_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i01_w0 FIND v(sn_i01_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i01_w0 MIN v(sn_i01_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i01_w0 FIND v(d_i01_w0) AT=70n"
+  },
+  {
+   "name": "dend_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i01_w0 FIND v(d_i01_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i01_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i01_w0 WHEN v(dabs_i01_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i01_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i01_w0 WHEN v(rbl_i01_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i01_w0 FIND v(rbl_i01_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i01_w0 FIND v(rbl_i01_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i01_w0 FIND v(rbl_i01_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i01_w0 FIND v(d_i01_w0) AT=69.9n"
+  },
+  {
+   "name": "sn_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i02_w1 FIND v(sn_i02_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i02_w1 MIN v(sn_i02_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i02_w1 FIND v(d_i02_w1) AT=70n"
+  },
+  {
+   "name": "dend_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i02_w1 FIND v(d_i02_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i02_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i02_w1 WHEN v(dabs_i02_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i02_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i02_w1 WHEN v(rbl_i02_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i02_w1 FIND v(rbl_i02_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i02_w1 FIND v(rbl_i02_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i02_w1 FIND v(rbl_i02_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i02_w1 FIND v(d_i02_w1) AT=69n"
+  },
+  {
+   "name": "sn_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i02_w0 FIND v(sn_i02_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i02_w0 MIN v(sn_i02_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i02_w0 FIND v(d_i02_w0) AT=70n"
+  },
+  {
+   "name": "dend_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i02_w0 FIND v(d_i02_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i02_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i02_w0 WHEN v(dabs_i02_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i02_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i02_w0 WHEN v(rbl_i02_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i02_w0 FIND v(rbl_i02_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i02_w0 FIND v(rbl_i02_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i02_w0 FIND v(rbl_i02_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i02_w0 FIND v(d_i02_w0) AT=69n"
+  },
+  {
+   "name": "sn_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i03_w1 FIND v(sn_i03_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i03_w1 MIN v(sn_i03_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i03_w1 FIND v(d_i03_w1) AT=70n"
+  },
+  {
+   "name": "dend_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i03_w1 FIND v(d_i03_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i03_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i03_w1 WHEN v(dabs_i03_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i03_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i03_w1 WHEN v(rbl_i03_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i03_w1 FIND v(rbl_i03_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i03_w1 FIND v(rbl_i03_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i03_w1 FIND v(rbl_i03_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i03_w1 FIND v(d_i03_w1) AT=68n"
+  },
+  {
+   "name": "sn_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i03_w0 FIND v(sn_i03_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i03_w0 MIN v(sn_i03_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i03_w0 FIND v(d_i03_w0) AT=70n"
+  },
+  {
+   "name": "dend_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i03_w0 FIND v(d_i03_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i03_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i03_w0 WHEN v(dabs_i03_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i03_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i03_w0 WHEN v(rbl_i03_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i03_w0 FIND v(rbl_i03_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i03_w0 FIND v(rbl_i03_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i03_w0 FIND v(rbl_i03_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i03_w0 FIND v(d_i03_w0) AT=68n"
+  },
+  {
+   "name": "sn_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i04_w1 FIND v(sn_i04_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i04_w1 MIN v(sn_i04_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i04_w1 FIND v(d_i04_w1) AT=70n"
+  },
+  {
+   "name": "dend_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i04_w1 FIND v(d_i04_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i04_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i04_w1 WHEN v(dabs_i04_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i04_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i04_w1 WHEN v(rbl_i04_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i04_w1 FIND v(rbl_i04_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i04_w1 FIND v(rbl_i04_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i04_w1 FIND v(rbl_i04_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i04_w1 FIND v(d_i04_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i04_w0 FIND v(sn_i04_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i04_w0 MIN v(sn_i04_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i04_w0 FIND v(d_i04_w0) AT=70n"
+  },
+  {
+   "name": "dend_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i04_w0 FIND v(d_i04_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i04_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i04_w0 WHEN v(dabs_i04_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i04_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i04_w0 WHEN v(rbl_i04_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i04_w0 FIND v(rbl_i04_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i04_w0 FIND v(rbl_i04_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i04_w0 FIND v(rbl_i04_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i04_w0 FIND v(d_i04_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i05_w1 FIND v(sn_i05_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i05_w1 MIN v(sn_i05_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i05_w1 FIND v(d_i05_w1) AT=70n"
+  },
+  {
+   "name": "dend_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i05_w1 FIND v(d_i05_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i05_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i05_w1 WHEN v(dabs_i05_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i05_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i05_w1 WHEN v(rbl_i05_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i05_w1 FIND v(rbl_i05_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i05_w1 FIND v(rbl_i05_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i05_w1 FIND v(rbl_i05_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i05_w1 FIND v(d_i05_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i05_w0 FIND v(sn_i05_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i05_w0 MIN v(sn_i05_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i05_w0 FIND v(d_i05_w0) AT=70n"
+  },
+  {
+   "name": "dend_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i05_w0 FIND v(d_i05_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i05_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i05_w0 WHEN v(dabs_i05_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i05_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i05_w0 WHEN v(rbl_i05_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i05_w0 FIND v(rbl_i05_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i05_w0 FIND v(rbl_i05_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i05_w0 FIND v(rbl_i05_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i05_w0 FIND v(d_i05_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i06_w1 FIND v(sn_i06_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i06_w1 MIN v(sn_i06_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i06_w1 FIND v(d_i06_w1) AT=70n"
+  },
+  {
+   "name": "dend_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i06_w1 FIND v(d_i06_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i06_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i06_w1 WHEN v(dabs_i06_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i06_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i06_w1 WHEN v(rbl_i06_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i06_w1 FIND v(rbl_i06_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i06_w1 FIND v(rbl_i06_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i06_w1 FIND v(rbl_i06_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i06_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i06_w1 FIND v(d_i06_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i06_w0 FIND v(sn_i06_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i06_w0 MIN v(sn_i06_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i06_w0 FIND v(d_i06_w0) AT=70n"
+  },
+  {
+   "name": "dend_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i06_w0 FIND v(d_i06_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i06_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i06_w0 WHEN v(dabs_i06_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i06_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i06_w0 WHEN v(rbl_i06_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i06_w0 FIND v(rbl_i06_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i06_w0 FIND v(rbl_i06_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i06_w0 FIND v(rbl_i06_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i06_w0 FIND v(d_i06_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i07_w1 FIND v(sn_i07_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i07_w1 MIN v(sn_i07_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i07_w1 FIND v(d_i07_w1) AT=70n"
+  },
+  {
+   "name": "dend_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i07_w1 FIND v(d_i07_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i07_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i07_w1 WHEN v(dabs_i07_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i07_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i07_w1 WHEN v(rbl_i07_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i07_w1 FIND v(rbl_i07_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i07_w1 FIND v(rbl_i07_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i07_w1 FIND v(rbl_i07_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i07_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i07_w1 FIND v(d_i07_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i07_w0 FIND v(sn_i07_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i07_w0 MIN v(sn_i07_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i07_w0 FIND v(d_i07_w0) AT=70n"
+  },
+  {
+   "name": "dend_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i07_w0 FIND v(d_i07_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i07_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i07_w0 WHEN v(dabs_i07_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i07_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i07_w0 WHEN v(rbl_i07_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i07_w0 FIND v(rbl_i07_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i07_w0 FIND v(rbl_i07_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i07_w0 FIND v(rbl_i07_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i07_w0 FIND v(d_i07_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i08_w1 FIND v(sn_i08_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i08_w1 MIN v(sn_i08_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i08_w1 FIND v(d_i08_w1) AT=70n"
+  },
+  {
+   "name": "dend_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i08_w1 FIND v(d_i08_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i08_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i08_w1 WHEN v(dabs_i08_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i08_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i08_w1 WHEN v(rbl_i08_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i08_w1 FIND v(rbl_i08_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i08_w1 FIND v(rbl_i08_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i08_w1 FIND v(rbl_i08_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i08_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i08_w1 FIND v(d_i08_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i08_w0 FIND v(sn_i08_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i08_w0 MIN v(sn_i08_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i08_w0 FIND v(d_i08_w0) AT=70n"
+  },
+  {
+   "name": "dend_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i08_w0 FIND v(d_i08_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i08_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i08_w0 WHEN v(dabs_i08_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i08_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i08_w0 WHEN v(rbl_i08_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i08_w0 FIND v(rbl_i08_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i08_w0 FIND v(rbl_i08_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i08_w0 FIND v(rbl_i08_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i08_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i08_w0 FIND v(d_i08_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i09_w1 FIND v(sn_i09_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i09_w1 MIN v(sn_i09_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i09_w1 FIND v(d_i09_w1) AT=70n"
+  },
+  {
+   "name": "dend_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i09_w1 FIND v(d_i09_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i09_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i09_w1 WHEN v(dabs_i09_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i09_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i09_w1 WHEN v(rbl_i09_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i09_w1 FIND v(rbl_i09_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i09_w1 FIND v(rbl_i09_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i09_w1 FIND v(rbl_i09_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i09_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i09_w1 FIND v(d_i09_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i09_w0 FIND v(sn_i09_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i09_w0 MIN v(sn_i09_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i09_w0 FIND v(d_i09_w0) AT=70n"
+  },
+  {
+   "name": "dend_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i09_w0 FIND v(d_i09_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i09_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i09_w0 WHEN v(dabs_i09_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i09_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i09_w0 WHEN v(rbl_i09_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i09_w0 FIND v(rbl_i09_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i09_w0 FIND v(rbl_i09_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i09_w0 FIND v(rbl_i09_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i09_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i09_w0 FIND v(d_i09_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i10_w1 FIND v(sn_i10_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i10_w1 MIN v(sn_i10_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i10_w1 FIND v(d_i10_w1) AT=70n"
+  },
+  {
+   "name": "dend_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i10_w1 FIND v(d_i10_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i10_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i10_w1 WHEN v(dabs_i10_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i10_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i10_w1 WHEN v(rbl_i10_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i10_w1 FIND v(rbl_i10_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i10_w1 FIND v(rbl_i10_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i10_w1 FIND v(rbl_i10_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i10_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i10_w1 FIND v(d_i10_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i10_w0 FIND v(sn_i10_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i10_w0 MIN v(sn_i10_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i10_w0 FIND v(d_i10_w0) AT=70n"
+  },
+  {
+   "name": "dend_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i10_w0 FIND v(d_i10_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i10_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i10_w0 WHEN v(dabs_i10_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i10_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i10_w0 WHEN v(rbl_i10_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i10_w0 FIND v(rbl_i10_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i10_w0 FIND v(rbl_i10_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i10_w0 FIND v(rbl_i10_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i10_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i10_w0 FIND v(d_i10_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i11_w1 FIND v(sn_i11_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i11_w1 MIN v(sn_i11_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i11_w1 FIND v(d_i11_w1) AT=70n"
+  },
+  {
+   "name": "dend_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i11_w1 FIND v(d_i11_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i11_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i11_w1 WHEN v(dabs_i11_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i11_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i11_w1 WHEN v(rbl_i11_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i11_w1 FIND v(rbl_i11_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i11_w1 FIND v(rbl_i11_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i11_w1 FIND v(rbl_i11_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i11_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i11_w1 FIND v(d_i11_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i11_w0 FIND v(sn_i11_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i11_w0 MIN v(sn_i11_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i11_w0 FIND v(d_i11_w0) AT=70n"
+  },
+  {
+   "name": "dend_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i11_w0 FIND v(d_i11_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i11_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i11_w0 WHEN v(dabs_i11_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i11_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i11_w0 WHEN v(rbl_i11_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i11_w0 FIND v(rbl_i11_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i11_w0 FIND v(rbl_i11_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i11_w0 FIND v(rbl_i11_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i11_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i11_w0 FIND v(d_i11_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i12_w1 FIND v(sn_i12_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i12_w1 MIN v(sn_i12_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i12_w1 FIND v(d_i12_w1) AT=70n"
+  },
+  {
+   "name": "dend_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i12_w1 FIND v(d_i12_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i12_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i12_w1 WHEN v(dabs_i12_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i12_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i12_w1 WHEN v(rbl_i12_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i12_w1 FIND v(rbl_i12_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i12_w1 FIND v(rbl_i12_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i12_w1 FIND v(rbl_i12_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i12_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i12_w1 FIND v(d_i12_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i12_w0 FIND v(sn_i12_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i12_w0 MIN v(sn_i12_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i12_w0 FIND v(d_i12_w0) AT=70n"
+  },
+  {
+   "name": "dend_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i12_w0 FIND v(d_i12_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i12_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i12_w0 WHEN v(dabs_i12_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i12_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i12_w0 WHEN v(rbl_i12_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i12_w0 FIND v(rbl_i12_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i12_w0 FIND v(rbl_i12_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i12_w0 FIND v(rbl_i12_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i12_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i12_w0 FIND v(d_i12_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i13_w1 FIND v(sn_i13_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i13_w1 MIN v(sn_i13_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i13_w1 FIND v(d_i13_w1) AT=70n"
+  },
+  {
+   "name": "dend_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i13_w1 FIND v(d_i13_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i13_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i13_w1 WHEN v(dabs_i13_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i13_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i13_w1 WHEN v(rbl_i13_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i13_w1 FIND v(rbl_i13_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i13_w1 FIND v(rbl_i13_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i13_w1 FIND v(rbl_i13_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i13_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i13_w1 FIND v(d_i13_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i13_w0 FIND v(sn_i13_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i13_w0 MIN v(sn_i13_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i13_w0 FIND v(d_i13_w0) AT=70n"
+  },
+  {
+   "name": "dend_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i13_w0 FIND v(d_i13_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i13_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i13_w0 WHEN v(dabs_i13_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i13_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i13_w0 WHEN v(rbl_i13_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i13_w0 FIND v(rbl_i13_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i13_w0 FIND v(rbl_i13_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i13_w0 FIND v(rbl_i13_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i13_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i13_w0 FIND v(d_i13_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i14_w1 FIND v(sn_i14_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i14_w1 MIN v(sn_i14_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i14_w1 FIND v(d_i14_w1) AT=70n"
+  },
+  {
+   "name": "dend_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i14_w1 FIND v(d_i14_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i14_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i14_w1 WHEN v(dabs_i14_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i14_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i14_w1 WHEN v(rbl_i14_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i14_w1 FIND v(rbl_i14_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i14_w1 FIND v(rbl_i14_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i14_w1 FIND v(rbl_i14_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i14_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i14_w1 FIND v(d_i14_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i14_w0 FIND v(sn_i14_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i14_w0 MIN v(sn_i14_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i14_w0 FIND v(d_i14_w0) AT=70n"
+  },
+  {
+   "name": "dend_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i14_w0 FIND v(d_i14_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i14_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i14_w0 WHEN v(dabs_i14_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i14_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i14_w0 WHEN v(rbl_i14_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i14_w0 FIND v(rbl_i14_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i14_w0 FIND v(rbl_i14_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i14_w0 FIND v(rbl_i14_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i14_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i14_w0 FIND v(d_i14_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_i15_w1 FIND v(sn_i15_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_i15_w1 MIN v(sn_i15_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran din_i15_w1 FIND v(d_i15_w1) AT=70n"
+  },
+  {
+   "name": "dend_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_i15_w1 FIND v(d_i15_w1) AT=90n"
+  },
+  {
+   "name": "tdec_i15_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_i15_w1 WHEN v(dabs_i15_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i15_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_i15_w1 WHEN v(rbl_i15_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_i15_w1 FIND v(rbl_i15_w1) AT=58n"
+  },
+  {
+   "name": "dpost_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_i15_w1 FIND v(rbl_i15_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_i15_w1 FIND v(rbl_i15_w1) AT=58n"
+  },
+  {
+   "name": "dpre_i15_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_i15_w1 FIND v(d_i15_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_i15_w0 FIND v(sn_i15_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_i15_w0 MIN v(sn_i15_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran din_i15_w0 FIND v(d_i15_w0) AT=70n"
+  },
+  {
+   "name": "dend_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_i15_w0 FIND v(d_i15_w0) AT=90n"
+  },
+  {
+   "name": "tdec_i15_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_i15_w0 WHEN v(dabs_i15_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_i15_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_i15_w0 WHEN v(rbl_i15_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_i15_w0 FIND v(rbl_i15_w0) AT=58n"
+  },
+  {
+   "name": "dpost_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_i15_w0 FIND v(rbl_i15_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_i15_w0 FIND v(rbl_i15_w0) AT=58n"
+  },
+  {
+   "name": "dpre_i15_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_i15_w0 FIND v(d_i15_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m00_w1 FIND v(sn_m00_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m00_w1 MIN v(sn_m00_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m00_w1 FIND v(d_m00_w1) AT=70n"
+  },
+  {
+   "name": "dend_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m00_w1 FIND v(d_m00_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m00_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m00_w1 WHEN v(dabs_m00_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m00_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m00_w1 WHEN v(rbl_m00_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m00_w1 FIND v(rbl_m00_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m00_w1 FIND v(rbl_m00_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m00_w1 FIND v(rbl_m00_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m00_w1 FIND v(d_m00_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m00_w0 FIND v(sn_m00_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m00_w0 MIN v(sn_m00_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m00_w0 FIND v(d_m00_w0) AT=70n"
+  },
+  {
+   "name": "dend_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m00_w0 FIND v(d_m00_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m00_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m00_w0 WHEN v(dabs_m00_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m00_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m00_w0 WHEN v(rbl_m00_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m00_w0 FIND v(rbl_m00_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m00_w0 FIND v(rbl_m00_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m00_w0 FIND v(rbl_m00_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m00_w0 FIND v(d_m00_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m01_w1 FIND v(sn_m01_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m01_w1 MIN v(sn_m01_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m01_w1 FIND v(d_m01_w1) AT=70n"
+  },
+  {
+   "name": "dend_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m01_w1 FIND v(d_m01_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m01_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m01_w1 WHEN v(dabs_m01_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m01_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m01_w1 WHEN v(rbl_m01_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m01_w1 FIND v(rbl_m01_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m01_w1 FIND v(rbl_m01_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m01_w1 FIND v(rbl_m01_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m01_w1 FIND v(d_m01_w1) AT=69.9n"
+  },
+  {
+   "name": "sn_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m01_w0 FIND v(sn_m01_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m01_w0 MIN v(sn_m01_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m01_w0 FIND v(d_m01_w0) AT=70n"
+  },
+  {
+   "name": "dend_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m01_w0 FIND v(d_m01_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m01_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m01_w0 WHEN v(dabs_m01_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m01_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m01_w0 WHEN v(rbl_m01_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m01_w0 FIND v(rbl_m01_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m01_w0 FIND v(rbl_m01_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m01_w0 FIND v(rbl_m01_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m01_w0 FIND v(d_m01_w0) AT=69.9n"
+  },
+  {
+   "name": "sn_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m02_w1 FIND v(sn_m02_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m02_w1 MIN v(sn_m02_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m02_w1 FIND v(d_m02_w1) AT=70n"
+  },
+  {
+   "name": "dend_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m02_w1 FIND v(d_m02_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m02_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m02_w1 WHEN v(dabs_m02_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m02_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m02_w1 WHEN v(rbl_m02_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m02_w1 FIND v(rbl_m02_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m02_w1 FIND v(rbl_m02_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m02_w1 FIND v(rbl_m02_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m02_w1 FIND v(d_m02_w1) AT=69n"
+  },
+  {
+   "name": "sn_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m02_w0 FIND v(sn_m02_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m02_w0 MIN v(sn_m02_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m02_w0 FIND v(d_m02_w0) AT=70n"
+  },
+  {
+   "name": "dend_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m02_w0 FIND v(d_m02_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m02_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m02_w0 WHEN v(dabs_m02_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m02_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m02_w0 WHEN v(rbl_m02_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m02_w0 FIND v(rbl_m02_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m02_w0 FIND v(rbl_m02_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m02_w0 FIND v(rbl_m02_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m02_w0 FIND v(d_m02_w0) AT=69n"
+  },
+  {
+   "name": "sn_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m03_w1 FIND v(sn_m03_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m03_w1 MIN v(sn_m03_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m03_w1 FIND v(d_m03_w1) AT=70n"
+  },
+  {
+   "name": "dend_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m03_w1 FIND v(d_m03_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m03_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m03_w1 WHEN v(dabs_m03_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m03_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m03_w1 WHEN v(rbl_m03_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m03_w1 FIND v(rbl_m03_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m03_w1 FIND v(rbl_m03_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m03_w1 FIND v(rbl_m03_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m03_w1 FIND v(d_m03_w1) AT=68n"
+  },
+  {
+   "name": "sn_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m03_w0 FIND v(sn_m03_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m03_w0 MIN v(sn_m03_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m03_w0 FIND v(d_m03_w0) AT=70n"
+  },
+  {
+   "name": "dend_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m03_w0 FIND v(d_m03_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m03_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m03_w0 WHEN v(dabs_m03_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m03_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m03_w0 WHEN v(rbl_m03_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m03_w0 FIND v(rbl_m03_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m03_w0 FIND v(rbl_m03_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m03_w0 FIND v(rbl_m03_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m03_w0 FIND v(d_m03_w0) AT=68n"
+  },
+  {
+   "name": "sn_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m04_w1 FIND v(sn_m04_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m04_w1 MIN v(sn_m04_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m04_w1 FIND v(d_m04_w1) AT=70n"
+  },
+  {
+   "name": "dend_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m04_w1 FIND v(d_m04_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m04_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m04_w1 WHEN v(dabs_m04_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m04_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m04_w1 WHEN v(rbl_m04_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m04_w1 FIND v(rbl_m04_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m04_w1 FIND v(rbl_m04_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m04_w1 FIND v(rbl_m04_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m04_w1 FIND v(d_m04_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m04_w0 FIND v(sn_m04_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m04_w0 MIN v(sn_m04_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m04_w0 FIND v(d_m04_w0) AT=70n"
+  },
+  {
+   "name": "dend_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m04_w0 FIND v(d_m04_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m04_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m04_w0 WHEN v(dabs_m04_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m04_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m04_w0 WHEN v(rbl_m04_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m04_w0 FIND v(rbl_m04_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m04_w0 FIND v(rbl_m04_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m04_w0 FIND v(rbl_m04_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m04_w0 FIND v(d_m04_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m05_w1 FIND v(sn_m05_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m05_w1 MIN v(sn_m05_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m05_w1 FIND v(d_m05_w1) AT=70n"
+  },
+  {
+   "name": "dend_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m05_w1 FIND v(d_m05_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m05_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m05_w1 WHEN v(dabs_m05_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m05_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m05_w1 WHEN v(rbl_m05_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m05_w1 FIND v(rbl_m05_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m05_w1 FIND v(rbl_m05_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m05_w1 FIND v(rbl_m05_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m05_w1 FIND v(d_m05_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m05_w0 FIND v(sn_m05_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m05_w0 MIN v(sn_m05_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m05_w0 FIND v(d_m05_w0) AT=70n"
+  },
+  {
+   "name": "dend_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m05_w0 FIND v(d_m05_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m05_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m05_w0 WHEN v(dabs_m05_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m05_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m05_w0 WHEN v(rbl_m05_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m05_w0 FIND v(rbl_m05_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m05_w0 FIND v(rbl_m05_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m05_w0 FIND v(rbl_m05_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m05_w0 FIND v(d_m05_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m06_w1 FIND v(sn_m06_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m06_w1 MIN v(sn_m06_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m06_w1 FIND v(d_m06_w1) AT=70n"
+  },
+  {
+   "name": "dend_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m06_w1 FIND v(d_m06_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m06_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m06_w1 WHEN v(dabs_m06_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m06_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m06_w1 WHEN v(rbl_m06_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m06_w1 FIND v(rbl_m06_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m06_w1 FIND v(rbl_m06_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m06_w1 FIND v(rbl_m06_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m06_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m06_w1 FIND v(d_m06_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m06_w0 FIND v(sn_m06_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m06_w0 MIN v(sn_m06_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m06_w0 FIND v(d_m06_w0) AT=70n"
+  },
+  {
+   "name": "dend_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m06_w0 FIND v(d_m06_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m06_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m06_w0 WHEN v(dabs_m06_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m06_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m06_w0 WHEN v(rbl_m06_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m06_w0 FIND v(rbl_m06_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m06_w0 FIND v(rbl_m06_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m06_w0 FIND v(rbl_m06_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m06_w0 FIND v(d_m06_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m07_w1 FIND v(sn_m07_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m07_w1 MIN v(sn_m07_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m07_w1 FIND v(d_m07_w1) AT=70n"
+  },
+  {
+   "name": "dend_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m07_w1 FIND v(d_m07_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m07_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m07_w1 WHEN v(dabs_m07_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m07_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m07_w1 WHEN v(rbl_m07_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m07_w1 FIND v(rbl_m07_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m07_w1 FIND v(rbl_m07_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m07_w1 FIND v(rbl_m07_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m07_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m07_w1 FIND v(d_m07_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m07_w0 FIND v(sn_m07_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m07_w0 MIN v(sn_m07_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m07_w0 FIND v(d_m07_w0) AT=70n"
+  },
+  {
+   "name": "dend_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m07_w0 FIND v(d_m07_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m07_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m07_w0 WHEN v(dabs_m07_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m07_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m07_w0 WHEN v(rbl_m07_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m07_w0 FIND v(rbl_m07_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m07_w0 FIND v(rbl_m07_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m07_w0 FIND v(rbl_m07_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m07_w0 FIND v(d_m07_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m08_w1 FIND v(sn_m08_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m08_w1 MIN v(sn_m08_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m08_w1 FIND v(d_m08_w1) AT=70n"
+  },
+  {
+   "name": "dend_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m08_w1 FIND v(d_m08_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m08_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m08_w1 WHEN v(dabs_m08_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m08_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m08_w1 WHEN v(rbl_m08_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m08_w1 FIND v(rbl_m08_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m08_w1 FIND v(rbl_m08_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m08_w1 FIND v(rbl_m08_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m08_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m08_w1 FIND v(d_m08_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m08_w0 FIND v(sn_m08_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m08_w0 MIN v(sn_m08_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m08_w0 FIND v(d_m08_w0) AT=70n"
+  },
+  {
+   "name": "dend_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m08_w0 FIND v(d_m08_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m08_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m08_w0 WHEN v(dabs_m08_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m08_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m08_w0 WHEN v(rbl_m08_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m08_w0 FIND v(rbl_m08_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m08_w0 FIND v(rbl_m08_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m08_w0 FIND v(rbl_m08_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m08_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m08_w0 FIND v(d_m08_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m09_w1 FIND v(sn_m09_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m09_w1 MIN v(sn_m09_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m09_w1 FIND v(d_m09_w1) AT=70n"
+  },
+  {
+   "name": "dend_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m09_w1 FIND v(d_m09_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m09_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m09_w1 WHEN v(dabs_m09_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m09_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m09_w1 WHEN v(rbl_m09_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m09_w1 FIND v(rbl_m09_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m09_w1 FIND v(rbl_m09_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m09_w1 FIND v(rbl_m09_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m09_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m09_w1 FIND v(d_m09_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m09_w0 FIND v(sn_m09_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m09_w0 MIN v(sn_m09_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m09_w0 FIND v(d_m09_w0) AT=70n"
+  },
+  {
+   "name": "dend_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m09_w0 FIND v(d_m09_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m09_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m09_w0 WHEN v(dabs_m09_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m09_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m09_w0 WHEN v(rbl_m09_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m09_w0 FIND v(rbl_m09_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m09_w0 FIND v(rbl_m09_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m09_w0 FIND v(rbl_m09_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m09_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m09_w0 FIND v(d_m09_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m10_w1 FIND v(sn_m10_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m10_w1 MIN v(sn_m10_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m10_w1 FIND v(d_m10_w1) AT=70n"
+  },
+  {
+   "name": "dend_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m10_w1 FIND v(d_m10_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m10_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m10_w1 WHEN v(dabs_m10_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m10_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m10_w1 WHEN v(rbl_m10_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m10_w1 FIND v(rbl_m10_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m10_w1 FIND v(rbl_m10_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m10_w1 FIND v(rbl_m10_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m10_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m10_w1 FIND v(d_m10_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m10_w0 FIND v(sn_m10_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m10_w0 MIN v(sn_m10_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m10_w0 FIND v(d_m10_w0) AT=70n"
+  },
+  {
+   "name": "dend_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m10_w0 FIND v(d_m10_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m10_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m10_w0 WHEN v(dabs_m10_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m10_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m10_w0 WHEN v(rbl_m10_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m10_w0 FIND v(rbl_m10_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m10_w0 FIND v(rbl_m10_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m10_w0 FIND v(rbl_m10_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m10_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m10_w0 FIND v(d_m10_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m11_w1 FIND v(sn_m11_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m11_w1 MIN v(sn_m11_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m11_w1 FIND v(d_m11_w1) AT=70n"
+  },
+  {
+   "name": "dend_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m11_w1 FIND v(d_m11_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m11_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m11_w1 WHEN v(dabs_m11_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m11_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m11_w1 WHEN v(rbl_m11_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m11_w1 FIND v(rbl_m11_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m11_w1 FIND v(rbl_m11_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m11_w1 FIND v(rbl_m11_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m11_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m11_w1 FIND v(d_m11_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m11_w0 FIND v(sn_m11_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m11_w0 MIN v(sn_m11_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m11_w0 FIND v(d_m11_w0) AT=70n"
+  },
+  {
+   "name": "dend_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m11_w0 FIND v(d_m11_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m11_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m11_w0 WHEN v(dabs_m11_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m11_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m11_w0 WHEN v(rbl_m11_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m11_w0 FIND v(rbl_m11_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m11_w0 FIND v(rbl_m11_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m11_w0 FIND v(rbl_m11_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m11_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m11_w0 FIND v(d_m11_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m12_w1 FIND v(sn_m12_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m12_w1 MIN v(sn_m12_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m12_w1 FIND v(d_m12_w1) AT=70n"
+  },
+  {
+   "name": "dend_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m12_w1 FIND v(d_m12_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m12_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m12_w1 WHEN v(dabs_m12_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m12_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m12_w1 WHEN v(rbl_m12_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m12_w1 FIND v(rbl_m12_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m12_w1 FIND v(rbl_m12_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m12_w1 FIND v(rbl_m12_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m12_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m12_w1 FIND v(d_m12_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m12_w0 FIND v(sn_m12_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m12_w0 MIN v(sn_m12_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m12_w0 FIND v(d_m12_w0) AT=70n"
+  },
+  {
+   "name": "dend_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m12_w0 FIND v(d_m12_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m12_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m12_w0 WHEN v(dabs_m12_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m12_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m12_w0 WHEN v(rbl_m12_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m12_w0 FIND v(rbl_m12_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m12_w0 FIND v(rbl_m12_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m12_w0 FIND v(rbl_m12_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m12_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m12_w0 FIND v(d_m12_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m13_w1 FIND v(sn_m13_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m13_w1 MIN v(sn_m13_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m13_w1 FIND v(d_m13_w1) AT=70n"
+  },
+  {
+   "name": "dend_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m13_w1 FIND v(d_m13_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m13_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m13_w1 WHEN v(dabs_m13_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m13_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m13_w1 WHEN v(rbl_m13_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m13_w1 FIND v(rbl_m13_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m13_w1 FIND v(rbl_m13_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m13_w1 FIND v(rbl_m13_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m13_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m13_w1 FIND v(d_m13_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m13_w0 FIND v(sn_m13_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m13_w0 MIN v(sn_m13_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m13_w0 FIND v(d_m13_w0) AT=70n"
+  },
+  {
+   "name": "dend_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m13_w0 FIND v(d_m13_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m13_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m13_w0 WHEN v(dabs_m13_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m13_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m13_w0 WHEN v(rbl_m13_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m13_w0 FIND v(rbl_m13_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m13_w0 FIND v(rbl_m13_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m13_w0 FIND v(rbl_m13_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m13_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m13_w0 FIND v(d_m13_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m14_w1 FIND v(sn_m14_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m14_w1 MIN v(sn_m14_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m14_w1 FIND v(d_m14_w1) AT=70n"
+  },
+  {
+   "name": "dend_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m14_w1 FIND v(d_m14_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m14_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m14_w1 WHEN v(dabs_m14_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m14_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m14_w1 WHEN v(rbl_m14_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m14_w1 FIND v(rbl_m14_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m14_w1 FIND v(rbl_m14_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m14_w1 FIND v(rbl_m14_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m14_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m14_w1 FIND v(d_m14_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m14_w0 FIND v(sn_m14_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m14_w0 MIN v(sn_m14_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m14_w0 FIND v(d_m14_w0) AT=70n"
+  },
+  {
+   "name": "dend_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m14_w0 FIND v(d_m14_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m14_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m14_w0 WHEN v(dabs_m14_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m14_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m14_w0 WHEN v(rbl_m14_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m14_w0 FIND v(rbl_m14_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m14_w0 FIND v(rbl_m14_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m14_w0 FIND v(rbl_m14_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m14_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m14_w0 FIND v(d_m14_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_m15_w1 FIND v(sn_m15_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_m15_w1 MIN v(sn_m15_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran din_m15_w1 FIND v(d_m15_w1) AT=70n"
+  },
+  {
+   "name": "dend_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_m15_w1 FIND v(d_m15_w1) AT=90n"
+  },
+  {
+   "name": "tdec_m15_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_m15_w1 WHEN v(dabs_m15_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m15_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_m15_w1 WHEN v(rbl_m15_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_m15_w1 FIND v(rbl_m15_w1) AT=58n"
+  },
+  {
+   "name": "dpost_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_m15_w1 FIND v(rbl_m15_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_m15_w1 FIND v(rbl_m15_w1) AT=58n"
+  },
+  {
+   "name": "dpre_m15_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_m15_w1 FIND v(d_m15_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_m15_w0 FIND v(sn_m15_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_m15_w0 MIN v(sn_m15_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran din_m15_w0 FIND v(d_m15_w0) AT=70n"
+  },
+  {
+   "name": "dend_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_m15_w0 FIND v(d_m15_w0) AT=90n"
+  },
+  {
+   "name": "tdec_m15_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_m15_w0 WHEN v(dabs_m15_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_m15_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_m15_w0 WHEN v(rbl_m15_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_m15_w0 FIND v(rbl_m15_w0) AT=58n"
+  },
+  {
+   "name": "dpost_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_m15_w0 FIND v(rbl_m15_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_m15_w0 FIND v(rbl_m15_w0) AT=58n"
+  },
+  {
+   "name": "dpre_m15_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_m15_w0 FIND v(d_m15_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p00_w1 FIND v(sn_p00_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p00_w1 MIN v(sn_p00_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p00_w1 FIND v(d_p00_w1) AT=70n"
+  },
+  {
+   "name": "dend_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p00_w1 FIND v(d_p00_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p00_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p00_w1 WHEN v(dabs_p00_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p00_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p00_w1 WHEN v(rbl_p00_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p00_w1 FIND v(rbl_p00_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p00_w1 FIND v(rbl_p00_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p00_w1 FIND v(rbl_p00_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p00_w1 FIND v(d_p00_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p00_w0 FIND v(sn_p00_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p00_w0 MIN v(sn_p00_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p00_w0 FIND v(d_p00_w0) AT=70n"
+  },
+  {
+   "name": "dend_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p00_w0 FIND v(d_p00_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p00_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p00_w0 WHEN v(dabs_p00_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p00_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p00_w0 WHEN v(rbl_p00_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p00_w0 FIND v(rbl_p00_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p00_w0 FIND v(rbl_p00_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p00_w0 FIND v(rbl_p00_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p00_w0 FIND v(d_p00_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p01_w1 FIND v(sn_p01_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p01_w1 MIN v(sn_p01_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p01_w1 FIND v(d_p01_w1) AT=70n"
+  },
+  {
+   "name": "dend_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p01_w1 FIND v(d_p01_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p01_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p01_w1 WHEN v(dabs_p01_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p01_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p01_w1 WHEN v(rbl_p01_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p01_w1 FIND v(rbl_p01_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p01_w1 FIND v(rbl_p01_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p01_w1 FIND v(rbl_p01_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p01_w1 FIND v(d_p01_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p01_w0 FIND v(sn_p01_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p01_w0 MIN v(sn_p01_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p01_w0 FIND v(d_p01_w0) AT=70n"
+  },
+  {
+   "name": "dend_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p01_w0 FIND v(d_p01_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p01_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p01_w0 WHEN v(dabs_p01_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p01_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p01_w0 WHEN v(rbl_p01_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p01_w0 FIND v(rbl_p01_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p01_w0 FIND v(rbl_p01_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p01_w0 FIND v(rbl_p01_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p01_w0 FIND v(d_p01_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p02_w1 FIND v(sn_p02_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p02_w1 MIN v(sn_p02_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p02_w1 FIND v(d_p02_w1) AT=70n"
+  },
+  {
+   "name": "dend_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p02_w1 FIND v(d_p02_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p02_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p02_w1 WHEN v(dabs_p02_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p02_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p02_w1 WHEN v(rbl_p02_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p02_w1 FIND v(rbl_p02_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p02_w1 FIND v(rbl_p02_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p02_w1 FIND v(rbl_p02_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p02_w1 FIND v(d_p02_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p02_w0 FIND v(sn_p02_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p02_w0 MIN v(sn_p02_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p02_w0 FIND v(d_p02_w0) AT=70n"
+  },
+  {
+   "name": "dend_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p02_w0 FIND v(d_p02_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p02_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p02_w0 WHEN v(dabs_p02_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p02_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p02_w0 WHEN v(rbl_p02_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p02_w0 FIND v(rbl_p02_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p02_w0 FIND v(rbl_p02_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p02_w0 FIND v(rbl_p02_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p02_w0 FIND v(d_p02_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p03_w1 FIND v(sn_p03_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p03_w1 MIN v(sn_p03_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p03_w1 FIND v(d_p03_w1) AT=70n"
+  },
+  {
+   "name": "dend_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p03_w1 FIND v(d_p03_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p03_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p03_w1 WHEN v(dabs_p03_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p03_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p03_w1 WHEN v(rbl_p03_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p03_w1 FIND v(rbl_p03_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p03_w1 FIND v(rbl_p03_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p03_w1 FIND v(rbl_p03_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p03_w1 FIND v(d_p03_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p03_w0 FIND v(sn_p03_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p03_w0 MIN v(sn_p03_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p03_w0 FIND v(d_p03_w0) AT=70n"
+  },
+  {
+   "name": "dend_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p03_w0 FIND v(d_p03_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p03_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p03_w0 WHEN v(dabs_p03_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p03_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p03_w0 WHEN v(rbl_p03_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p03_w0 FIND v(rbl_p03_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p03_w0 FIND v(rbl_p03_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p03_w0 FIND v(rbl_p03_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p03_w0 FIND v(d_p03_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p04_w1 FIND v(sn_p04_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p04_w1 MIN v(sn_p04_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p04_w1 FIND v(d_p04_w1) AT=70n"
+  },
+  {
+   "name": "dend_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p04_w1 FIND v(d_p04_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p04_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p04_w1 WHEN v(dabs_p04_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p04_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p04_w1 WHEN v(rbl_p04_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p04_w1 FIND v(rbl_p04_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p04_w1 FIND v(rbl_p04_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p04_w1 FIND v(rbl_p04_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p04_w1 FIND v(d_p04_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p04_w0 FIND v(sn_p04_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p04_w0 MIN v(sn_p04_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p04_w0 FIND v(d_p04_w0) AT=70n"
+  },
+  {
+   "name": "dend_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p04_w0 FIND v(d_p04_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p04_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p04_w0 WHEN v(dabs_p04_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p04_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p04_w0 WHEN v(rbl_p04_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p04_w0 FIND v(rbl_p04_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p04_w0 FIND v(rbl_p04_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p04_w0 FIND v(rbl_p04_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p04_w0 FIND v(d_p04_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p05_w1 FIND v(sn_p05_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p05_w1 MIN v(sn_p05_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p05_w1 FIND v(d_p05_w1) AT=70n"
+  },
+  {
+   "name": "dend_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p05_w1 FIND v(d_p05_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p05_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p05_w1 WHEN v(dabs_p05_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p05_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p05_w1 WHEN v(rbl_p05_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p05_w1 FIND v(rbl_p05_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p05_w1 FIND v(rbl_p05_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p05_w1 FIND v(rbl_p05_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p05_w1 FIND v(d_p05_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p05_w0 FIND v(sn_p05_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p05_w0 MIN v(sn_p05_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p05_w0 FIND v(d_p05_w0) AT=70n"
+  },
+  {
+   "name": "dend_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p05_w0 FIND v(d_p05_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p05_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p05_w0 WHEN v(dabs_p05_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p05_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p05_w0 WHEN v(rbl_p05_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p05_w0 FIND v(rbl_p05_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p05_w0 FIND v(rbl_p05_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p05_w0 FIND v(rbl_p05_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p05_w0 FIND v(d_p05_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p06_w1 FIND v(sn_p06_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p06_w1 MIN v(sn_p06_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p06_w1 FIND v(d_p06_w1) AT=70n"
+  },
+  {
+   "name": "dend_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p06_w1 FIND v(d_p06_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p06_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p06_w1 WHEN v(dabs_p06_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p06_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p06_w1 WHEN v(rbl_p06_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p06_w1 FIND v(rbl_p06_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p06_w1 FIND v(rbl_p06_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p06_w1 FIND v(rbl_p06_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p06_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p06_w1 FIND v(d_p06_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p06_w0 FIND v(sn_p06_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p06_w0 MIN v(sn_p06_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p06_w0 FIND v(d_p06_w0) AT=70n"
+  },
+  {
+   "name": "dend_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p06_w0 FIND v(d_p06_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p06_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p06_w0 WHEN v(dabs_p06_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p06_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p06_w0 WHEN v(rbl_p06_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p06_w0 FIND v(rbl_p06_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p06_w0 FIND v(rbl_p06_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p06_w0 FIND v(rbl_p06_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p06_w0 FIND v(d_p06_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p07_w1 FIND v(sn_p07_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p07_w1 MIN v(sn_p07_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p07_w1 FIND v(d_p07_w1) AT=70n"
+  },
+  {
+   "name": "dend_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p07_w1 FIND v(d_p07_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p07_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p07_w1 WHEN v(dabs_p07_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p07_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p07_w1 WHEN v(rbl_p07_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p07_w1 FIND v(rbl_p07_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p07_w1 FIND v(rbl_p07_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p07_w1 FIND v(rbl_p07_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p07_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p07_w1 FIND v(d_p07_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p07_w0 FIND v(sn_p07_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p07_w0 MIN v(sn_p07_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p07_w0 FIND v(d_p07_w0) AT=70n"
+  },
+  {
+   "name": "dend_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p07_w0 FIND v(d_p07_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p07_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p07_w0 WHEN v(dabs_p07_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p07_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p07_w0 WHEN v(rbl_p07_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p07_w0 FIND v(rbl_p07_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p07_w0 FIND v(rbl_p07_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p07_w0 FIND v(rbl_p07_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p07_w0 FIND v(d_p07_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_p08_w1 FIND v(sn_p08_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_p08_w1 MIN v(sn_p08_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran din_p08_w1 FIND v(d_p08_w1) AT=70n"
+  },
+  {
+   "name": "dend_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_p08_w1 FIND v(d_p08_w1) AT=90n"
+  },
+  {
+   "name": "tdec_p08_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_p08_w1 WHEN v(dabs_p08_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p08_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_p08_w1 WHEN v(rbl_p08_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_p08_w1 FIND v(rbl_p08_w1) AT=58n"
+  },
+  {
+   "name": "dpost_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_p08_w1 FIND v(rbl_p08_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_p08_w1 FIND v(rbl_p08_w1) AT=58n"
+  },
+  {
+   "name": "dpre_p08_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_p08_w1 FIND v(d_p08_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_p08_w0 FIND v(sn_p08_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_p08_w0 MIN v(sn_p08_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran din_p08_w0 FIND v(d_p08_w0) AT=70n"
+  },
+  {
+   "name": "dend_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_p08_w0 FIND v(d_p08_w0) AT=90n"
+  },
+  {
+   "name": "tdec_p08_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_p08_w0 WHEN v(dabs_p08_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_p08_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_p08_w0 WHEN v(rbl_p08_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_p08_w0 FIND v(rbl_p08_w0) AT=58n"
+  },
+  {
+   "name": "dpost_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_p08_w0 FIND v(rbl_p08_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_p08_w0 FIND v(rbl_p08_w0) AT=58n"
+  },
+  {
+   "name": "dpre_p08_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_p08_w0 FIND v(d_p08_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_c00_w1 FIND v(sn_c00_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_c00_w1 MIN v(sn_c00_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran din_c00_w1 FIND v(d_c00_w1) AT=70n"
+  },
+  {
+   "name": "dend_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_c00_w1 FIND v(d_c00_w1) AT=90n"
+  },
+  {
+   "name": "tdec_c00_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_c00_w1 WHEN v(dabs_c00_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c00_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_c00_w1 WHEN v(rbl_c00_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_c00_w1 FIND v(rbl_c00_w1) AT=58n"
+  },
+  {
+   "name": "dpost_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_c00_w1 FIND v(rbl_c00_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_c00_w1 FIND v(rbl_c00_w1) AT=58n"
+  },
+  {
+   "name": "dpre_c00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_c00_w1 FIND v(d_c00_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_c00_w0 FIND v(sn_c00_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_c00_w0 MIN v(sn_c00_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran din_c00_w0 FIND v(d_c00_w0) AT=70n"
+  },
+  {
+   "name": "dend_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_c00_w0 FIND v(d_c00_w0) AT=90n"
+  },
+  {
+   "name": "tdec_c00_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_c00_w0 WHEN v(dabs_c00_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c00_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_c00_w0 WHEN v(rbl_c00_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_c00_w0 FIND v(rbl_c00_w0) AT=58n"
+  },
+  {
+   "name": "dpost_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_c00_w0 FIND v(rbl_c00_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_c00_w0 FIND v(rbl_c00_w0) AT=58n"
+  },
+  {
+   "name": "dpre_c00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_c00_w0 FIND v(d_c00_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_c01_w1 FIND v(sn_c01_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_c01_w1 MIN v(sn_c01_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran din_c01_w1 FIND v(d_c01_w1) AT=70n"
+  },
+  {
+   "name": "dend_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_c01_w1 FIND v(d_c01_w1) AT=90n"
+  },
+  {
+   "name": "tdec_c01_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_c01_w1 WHEN v(dabs_c01_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c01_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_c01_w1 WHEN v(rbl_c01_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_c01_w1 FIND v(rbl_c01_w1) AT=58n"
+  },
+  {
+   "name": "dpost_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_c01_w1 FIND v(rbl_c01_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_c01_w1 FIND v(rbl_c01_w1) AT=58n"
+  },
+  {
+   "name": "dpre_c01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_c01_w1 FIND v(d_c01_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_c01_w0 FIND v(sn_c01_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_c01_w0 MIN v(sn_c01_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran din_c01_w0 FIND v(d_c01_w0) AT=70n"
+  },
+  {
+   "name": "dend_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_c01_w0 FIND v(d_c01_w0) AT=90n"
+  },
+  {
+   "name": "tdec_c01_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_c01_w0 WHEN v(dabs_c01_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c01_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_c01_w0 WHEN v(rbl_c01_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_c01_w0 FIND v(rbl_c01_w0) AT=58n"
+  },
+  {
+   "name": "dpost_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_c01_w0 FIND v(rbl_c01_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_c01_w0 FIND v(rbl_c01_w0) AT=58n"
+  },
+  {
+   "name": "dpre_c01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_c01_w0 FIND v(d_c01_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_c02_w1 FIND v(sn_c02_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_c02_w1 MIN v(sn_c02_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran din_c02_w1 FIND v(d_c02_w1) AT=70n"
+  },
+  {
+   "name": "dend_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_c02_w1 FIND v(d_c02_w1) AT=90n"
+  },
+  {
+   "name": "tdec_c02_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_c02_w1 WHEN v(dabs_c02_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c02_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_c02_w1 WHEN v(rbl_c02_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_c02_w1 FIND v(rbl_c02_w1) AT=58n"
+  },
+  {
+   "name": "dpost_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_c02_w1 FIND v(rbl_c02_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_c02_w1 FIND v(rbl_c02_w1) AT=58n"
+  },
+  {
+   "name": "dpre_c02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_c02_w1 FIND v(d_c02_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_c02_w0 FIND v(sn_c02_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_c02_w0 MIN v(sn_c02_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran din_c02_w0 FIND v(d_c02_w0) AT=70n"
+  },
+  {
+   "name": "dend_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_c02_w0 FIND v(d_c02_w0) AT=90n"
+  },
+  {
+   "name": "tdec_c02_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_c02_w0 WHEN v(dabs_c02_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c02_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_c02_w0 WHEN v(rbl_c02_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_c02_w0 FIND v(rbl_c02_w0) AT=58n"
+  },
+  {
+   "name": "dpost_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_c02_w0 FIND v(rbl_c02_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_c02_w0 FIND v(rbl_c02_w0) AT=58n"
+  },
+  {
+   "name": "dpre_c02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_c02_w0 FIND v(d_c02_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_c03_w1 FIND v(sn_c03_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_c03_w1 MIN v(sn_c03_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran din_c03_w1 FIND v(d_c03_w1) AT=70n"
+  },
+  {
+   "name": "dend_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_c03_w1 FIND v(d_c03_w1) AT=90n"
+  },
+  {
+   "name": "tdec_c03_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_c03_w1 WHEN v(dabs_c03_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c03_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_c03_w1 WHEN v(rbl_c03_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_c03_w1 FIND v(rbl_c03_w1) AT=58n"
+  },
+  {
+   "name": "dpost_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_c03_w1 FIND v(rbl_c03_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_c03_w1 FIND v(rbl_c03_w1) AT=58n"
+  },
+  {
+   "name": "dpre_c03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_c03_w1 FIND v(d_c03_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_c03_w0 FIND v(sn_c03_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_c03_w0 MIN v(sn_c03_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran din_c03_w0 FIND v(d_c03_w0) AT=70n"
+  },
+  {
+   "name": "dend_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_c03_w0 FIND v(d_c03_w0) AT=90n"
+  },
+  {
+   "name": "tdec_c03_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_c03_w0 WHEN v(dabs_c03_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c03_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_c03_w0 WHEN v(rbl_c03_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_c03_w0 FIND v(rbl_c03_w0) AT=58n"
+  },
+  {
+   "name": "dpost_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_c03_w0 FIND v(rbl_c03_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_c03_w0 FIND v(rbl_c03_w0) AT=58n"
+  },
+  {
+   "name": "dpre_c03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_c03_w0 FIND v(d_c03_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_c04_w1 FIND v(sn_c04_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_c04_w1 MIN v(sn_c04_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran din_c04_w1 FIND v(d_c04_w1) AT=70n"
+  },
+  {
+   "name": "dend_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_c04_w1 FIND v(d_c04_w1) AT=90n"
+  },
+  {
+   "name": "tdec_c04_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_c04_w1 WHEN v(dabs_c04_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c04_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_c04_w1 WHEN v(rbl_c04_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_c04_w1 FIND v(rbl_c04_w1) AT=58n"
+  },
+  {
+   "name": "dpost_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_c04_w1 FIND v(rbl_c04_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_c04_w1 FIND v(rbl_c04_w1) AT=58n"
+  },
+  {
+   "name": "dpre_c04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_c04_w1 FIND v(d_c04_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_c04_w0 FIND v(sn_c04_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_c04_w0 MIN v(sn_c04_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran din_c04_w0 FIND v(d_c04_w0) AT=70n"
+  },
+  {
+   "name": "dend_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_c04_w0 FIND v(d_c04_w0) AT=90n"
+  },
+  {
+   "name": "tdec_c04_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_c04_w0 WHEN v(dabs_c04_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c04_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_c04_w0 WHEN v(rbl_c04_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_c04_w0 FIND v(rbl_c04_w0) AT=58n"
+  },
+  {
+   "name": "dpost_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_c04_w0 FIND v(rbl_c04_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_c04_w0 FIND v(rbl_c04_w0) AT=58n"
+  },
+  {
+   "name": "dpre_c04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_c04_w0 FIND v(d_c04_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_c05_w1 FIND v(sn_c05_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_c05_w1 MIN v(sn_c05_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran din_c05_w1 FIND v(d_c05_w1) AT=70n"
+  },
+  {
+   "name": "dend_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_c05_w1 FIND v(d_c05_w1) AT=90n"
+  },
+  {
+   "name": "tdec_c05_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_c05_w1 WHEN v(dabs_c05_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c05_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_c05_w1 WHEN v(rbl_c05_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_c05_w1 FIND v(rbl_c05_w1) AT=58n"
+  },
+  {
+   "name": "dpost_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_c05_w1 FIND v(rbl_c05_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_c05_w1 FIND v(rbl_c05_w1) AT=58n"
+  },
+  {
+   "name": "dpre_c05_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_c05_w1 FIND v(d_c05_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_c05_w0 FIND v(sn_c05_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_c05_w0 MIN v(sn_c05_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran din_c05_w0 FIND v(d_c05_w0) AT=70n"
+  },
+  {
+   "name": "dend_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_c05_w0 FIND v(d_c05_w0) AT=90n"
+  },
+  {
+   "name": "tdec_c05_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_c05_w0 WHEN v(dabs_c05_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_c05_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_c05_w0 WHEN v(rbl_c05_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_c05_w0 FIND v(rbl_c05_w0) AT=58n"
+  },
+  {
+   "name": "dpost_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_c05_w0 FIND v(rbl_c05_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_c05_w0 FIND v(rbl_c05_w0) AT=58n"
+  },
+  {
+   "name": "dpre_c05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_c05_w0 FIND v(d_c05_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_f00_w1 FIND v(sn_f00_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_f00_w1 MIN v(sn_f00_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran din_f00_w1 FIND v(d_f00_w1) AT=70n"
+  },
+  {
+   "name": "dend_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_f00_w1 FIND v(d_f00_w1) AT=90n"
+  },
+  {
+   "name": "tdec_f00_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_f00_w1 WHEN v(dabs_f00_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f00_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_f00_w1 WHEN v(rbl_f00_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_f00_w1 FIND v(rbl_f00_w1) AT=58n"
+  },
+  {
+   "name": "dpost_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_f00_w1 FIND v(rbl_f00_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_f00_w1 FIND v(rbl_f00_w1) AT=58n"
+  },
+  {
+   "name": "dpre_f00_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_f00_w1 FIND v(d_f00_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_f00_w0 FIND v(sn_f00_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_f00_w0 MIN v(sn_f00_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran din_f00_w0 FIND v(d_f00_w0) AT=70n"
+  },
+  {
+   "name": "dend_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_f00_w0 FIND v(d_f00_w0) AT=90n"
+  },
+  {
+   "name": "tdec_f00_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_f00_w0 WHEN v(dabs_f00_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f00_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_f00_w0 WHEN v(rbl_f00_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_f00_w0 FIND v(rbl_f00_w0) AT=58n"
+  },
+  {
+   "name": "dpost_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_f00_w0 FIND v(rbl_f00_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_f00_w0 FIND v(rbl_f00_w0) AT=58n"
+  },
+  {
+   "name": "dpre_f00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_f00_w0 FIND v(d_f00_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_f01_w1 FIND v(sn_f01_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_f01_w1 MIN v(sn_f01_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran din_f01_w1 FIND v(d_f01_w1) AT=70n"
+  },
+  {
+   "name": "dend_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_f01_w1 FIND v(d_f01_w1) AT=90n"
+  },
+  {
+   "name": "tdec_f01_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_f01_w1 WHEN v(dabs_f01_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f01_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_f01_w1 WHEN v(rbl_f01_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_f01_w1 FIND v(rbl_f01_w1) AT=58n"
+  },
+  {
+   "name": "dpost_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_f01_w1 FIND v(rbl_f01_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_f01_w1 FIND v(rbl_f01_w1) AT=58n"
+  },
+  {
+   "name": "dpre_f01_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_f01_w1 FIND v(d_f01_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_f01_w0 FIND v(sn_f01_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_f01_w0 MIN v(sn_f01_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran din_f01_w0 FIND v(d_f01_w0) AT=70n"
+  },
+  {
+   "name": "dend_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_f01_w0 FIND v(d_f01_w0) AT=90n"
+  },
+  {
+   "name": "tdec_f01_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_f01_w0 WHEN v(dabs_f01_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f01_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_f01_w0 WHEN v(rbl_f01_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_f01_w0 FIND v(rbl_f01_w0) AT=58n"
+  },
+  {
+   "name": "dpost_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_f01_w0 FIND v(rbl_f01_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_f01_w0 FIND v(rbl_f01_w0) AT=58n"
+  },
+  {
+   "name": "dpre_f01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_f01_w0 FIND v(d_f01_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_f02_w1 FIND v(sn_f02_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_f02_w1 MIN v(sn_f02_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran din_f02_w1 FIND v(d_f02_w1) AT=70n"
+  },
+  {
+   "name": "dend_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_f02_w1 FIND v(d_f02_w1) AT=90n"
+  },
+  {
+   "name": "tdec_f02_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_f02_w1 WHEN v(dabs_f02_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f02_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_f02_w1 WHEN v(rbl_f02_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_f02_w1 FIND v(rbl_f02_w1) AT=58n"
+  },
+  {
+   "name": "dpost_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_f02_w1 FIND v(rbl_f02_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_f02_w1 FIND v(rbl_f02_w1) AT=58n"
+  },
+  {
+   "name": "dpre_f02_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_f02_w1 FIND v(d_f02_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_f02_w0 FIND v(sn_f02_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_f02_w0 MIN v(sn_f02_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran din_f02_w0 FIND v(d_f02_w0) AT=70n"
+  },
+  {
+   "name": "dend_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_f02_w0 FIND v(d_f02_w0) AT=90n"
+  },
+  {
+   "name": "tdec_f02_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_f02_w0 WHEN v(dabs_f02_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f02_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_f02_w0 WHEN v(rbl_f02_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_f02_w0 FIND v(rbl_f02_w0) AT=58n"
+  },
+  {
+   "name": "dpost_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_f02_w0 FIND v(rbl_f02_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_f02_w0 FIND v(rbl_f02_w0) AT=58n"
+  },
+  {
+   "name": "dpre_f02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_f02_w0 FIND v(d_f02_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_f03_w1 FIND v(sn_f03_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_f03_w1 MIN v(sn_f03_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran din_f03_w1 FIND v(d_f03_w1) AT=70n"
+  },
+  {
+   "name": "dend_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_f03_w1 FIND v(d_f03_w1) AT=90n"
+  },
+  {
+   "name": "tdec_f03_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_f03_w1 WHEN v(dabs_f03_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f03_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_f03_w1 WHEN v(rbl_f03_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_f03_w1 FIND v(rbl_f03_w1) AT=58n"
+  },
+  {
+   "name": "dpost_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_f03_w1 FIND v(rbl_f03_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_f03_w1 FIND v(rbl_f03_w1) AT=58n"
+  },
+  {
+   "name": "dpre_f03_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_f03_w1 FIND v(d_f03_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_f03_w0 FIND v(sn_f03_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_f03_w0 MIN v(sn_f03_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran din_f03_w0 FIND v(d_f03_w0) AT=70n"
+  },
+  {
+   "name": "dend_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_f03_w0 FIND v(d_f03_w0) AT=90n"
+  },
+  {
+   "name": "tdec_f03_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_f03_w0 WHEN v(dabs_f03_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f03_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_f03_w0 WHEN v(rbl_f03_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_f03_w0 FIND v(rbl_f03_w0) AT=58n"
+  },
+  {
+   "name": "dpost_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_f03_w0 FIND v(rbl_f03_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_f03_w0 FIND v(rbl_f03_w0) AT=58n"
+  },
+  {
+   "name": "dpre_f03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_f03_w0 FIND v(d_f03_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran sn_f04_w1 FIND v(sn_f04_w1_0) AT=45n"
+  },
+  {
+   "name": "snmin_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran snmin_f04_w1 MIN v(sn_f04_w1_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran din_f04_w1 FIND v(d_f04_w1) AT=70n"
+  },
+  {
+   "name": "dend_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran dend_f04_w1 FIND v(d_f04_w1) AT=90n"
+  },
+  {
+   "name": "tdec_f04_w1",
+   "unit": "s",
+   "spice": ".meas tran tdec_f04_w1 WHEN v(dabs_f04_w1)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f04_w1",
+   "unit": "s",
+   "spice": ".meas tran tpre_f04_w1 WHEN v(rbl_f04_w1)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran vrel_f04_w1 FIND v(rbl_f04_w1) AT=58n"
+  },
+  {
+   "name": "dpost_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpost_f04_w1 FIND v(rbl_f04_w1) AT=59.9n"
+  },
+  {
+   "name": "rpre_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran rpre_f04_w1 FIND v(rbl_f04_w1) AT=58n"
+  },
+  {
+   "name": "dpre_f04_w1",
+   "unit": "V",
+   "spice": ".meas tran dpre_f04_w1 FIND v(d_f04_w1) AT=69.5n"
+  },
+  {
+   "name": "sn_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_f04_w0 FIND v(sn_f04_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_f04_w0 MIN v(sn_f04_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran din_f04_w0 FIND v(d_f04_w0) AT=70n"
+  },
+  {
+   "name": "dend_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_f04_w0 FIND v(d_f04_w0) AT=90n"
+  },
+  {
+   "name": "tdec_f04_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_f04_w0 WHEN v(dabs_f04_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_f04_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_f04_w0 WHEN v(rbl_f04_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_f04_w0 FIND v(rbl_f04_w0) AT=58n"
+  },
+  {
+   "name": "dpost_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_f04_w0 FIND v(rbl_f04_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_f04_w0 FIND v(rbl_f04_w0) AT=58n"
+  },
+  {
+   "name": "dpre_f04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_f04_w0 FIND v(d_f04_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d00_w0 FIND v(sn_d00_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d00_w0 MIN v(sn_d00_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d00_w0 FIND v(d_d00_w0) AT=70n"
+  },
+  {
+   "name": "dend_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d00_w0 FIND v(d_d00_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d00_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d00_w0 WHEN v(dabs_d00_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d00_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d00_w0 WHEN v(rbl_d00_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d00_w0 FIND v(rbl_d00_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d00_w0 FIND v(rbl_d00_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d00_w0 FIND v(rbl_d00_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d00_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d00_w0 FIND v(d_d00_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d01_w0 FIND v(sn_d01_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d01_w0 MIN v(sn_d01_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d01_w0 FIND v(d_d01_w0) AT=70n"
+  },
+  {
+   "name": "dend_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d01_w0 FIND v(d_d01_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d01_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d01_w0 WHEN v(dabs_d01_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d01_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d01_w0 WHEN v(rbl_d01_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d01_w0 FIND v(rbl_d01_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d01_w0 FIND v(rbl_d01_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d01_w0 FIND v(rbl_d01_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d01_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d01_w0 FIND v(d_d01_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d02_w0 FIND v(sn_d02_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d02_w0 MIN v(sn_d02_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d02_w0 FIND v(d_d02_w0) AT=70n"
+  },
+  {
+   "name": "dend_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d02_w0 FIND v(d_d02_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d02_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d02_w0 WHEN v(dabs_d02_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d02_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d02_w0 WHEN v(rbl_d02_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d02_w0 FIND v(rbl_d02_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d02_w0 FIND v(rbl_d02_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d02_w0 FIND v(rbl_d02_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d02_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d02_w0 FIND v(d_d02_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d03_w0 FIND v(sn_d03_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d03_w0 MIN v(sn_d03_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d03_w0 FIND v(d_d03_w0) AT=70n"
+  },
+  {
+   "name": "dend_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d03_w0 FIND v(d_d03_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d03_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d03_w0 WHEN v(dabs_d03_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d03_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d03_w0 WHEN v(rbl_d03_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d03_w0 FIND v(rbl_d03_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d03_w0 FIND v(rbl_d03_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d03_w0 FIND v(rbl_d03_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d03_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d03_w0 FIND v(d_d03_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d04_w0 FIND v(sn_d04_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d04_w0 MIN v(sn_d04_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d04_w0 FIND v(d_d04_w0) AT=70n"
+  },
+  {
+   "name": "dend_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d04_w0 FIND v(d_d04_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d04_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d04_w0 WHEN v(dabs_d04_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d04_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d04_w0 WHEN v(rbl_d04_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d04_w0 FIND v(rbl_d04_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d04_w0 FIND v(rbl_d04_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d04_w0 FIND v(rbl_d04_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d04_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d04_w0 FIND v(d_d04_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d05_w0 FIND v(sn_d05_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d05_w0 MIN v(sn_d05_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d05_w0 FIND v(d_d05_w0) AT=70n"
+  },
+  {
+   "name": "dend_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d05_w0 FIND v(d_d05_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d05_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d05_w0 WHEN v(dabs_d05_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d05_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d05_w0 WHEN v(rbl_d05_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d05_w0 FIND v(rbl_d05_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d05_w0 FIND v(rbl_d05_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d05_w0 FIND v(rbl_d05_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d05_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d05_w0 FIND v(d_d05_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d06_w0 FIND v(sn_d06_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d06_w0 MIN v(sn_d06_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d06_w0 FIND v(d_d06_w0) AT=70n"
+  },
+  {
+   "name": "dend_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d06_w0 FIND v(d_d06_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d06_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d06_w0 WHEN v(dabs_d06_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d06_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d06_w0 WHEN v(rbl_d06_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d06_w0 FIND v(rbl_d06_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d06_w0 FIND v(rbl_d06_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d06_w0 FIND v(rbl_d06_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d06_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d06_w0 FIND v(d_d06_w0) AT=69.5n"
+  },
+  {
+   "name": "sn_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran sn_d07_w0 FIND v(sn_d07_w0_0) AT=45n"
+  },
+  {
+   "name": "snmin_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran snmin_d07_w0 MIN v(sn_d07_w0_0) FROM=32n TO=45n"
+  },
+  {
+   "name": "din_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran din_d07_w0 FIND v(d_d07_w0) AT=70n"
+  },
+  {
+   "name": "dend_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran dend_d07_w0 FIND v(d_d07_w0) AT=90n"
+  },
+  {
+   "name": "tdec_d07_w0",
+   "unit": "s",
+   "spice": ".meas tran tdec_d07_w0 WHEN v(dabs_d07_w0)=0.9 RISE=1 TD=70n"
+  },
+  {
+   "name": "tpre_d07_w0",
+   "unit": "s",
+   "spice": ".meas tran tpre_d07_w0 WHEN v(rbl_d07_w0)=0.89 RISE=1"
+  },
+  {
+   "name": "vrel_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran vrel_d07_w0 FIND v(rbl_d07_w0) AT=58n"
+  },
+  {
+   "name": "dpost_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpost_d07_w0 FIND v(rbl_d07_w0) AT=59.9n"
+  },
+  {
+   "name": "rpre_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran rpre_d07_w0 FIND v(rbl_d07_w0) AT=58n"
+  },
+  {
+   "name": "dpre_d07_w0",
+   "unit": "V",
+   "spice": ".meas tran dpre_d07_w0 FIND v(d_d07_w0) AT=69.5n"
+  },
+  {
+   "name": "vcp1_cp_f00",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_f00 FIND v(rbl_cp_f00) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_f00",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_f00 FIND v(rbl_cp_f00) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_f03",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_f03 FIND v(rbl_cp_f03) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_f03",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_f03 FIND v(rbl_cp_f03) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_f01",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_f01 FIND v(rbl_cp_f01) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_f01",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_f01 FIND v(rbl_cp_f01) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_c04",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_c04 FIND v(rbl_cp_c04) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_c04",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_c04 FIND v(rbl_cp_c04) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_c03",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_c03 FIND v(rbl_cp_c03) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_c03",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_c03 FIND v(rbl_cp_c03) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_c05",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_c05 FIND v(rbl_cp_c05) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_c05",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_c05 FIND v(rbl_cp_c05) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i00",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i00 FIND v(rbl_cp_i00) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i00",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i00 FIND v(rbl_cp_i00) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i04",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i04 FIND v(rbl_cp_i04) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i04",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i04 FIND v(rbl_cp_i04) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i05",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i05 FIND v(rbl_cp_i05) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i05",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i05 FIND v(rbl_cp_i05) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i06",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i06 FIND v(rbl_cp_i06) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i06",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i06 FIND v(rbl_cp_i06) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i07",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i07 FIND v(rbl_cp_i07) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i07",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i07 FIND v(rbl_cp_i07) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i08",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i08 FIND v(rbl_cp_i08) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i08",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i08 FIND v(rbl_cp_i08) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i09",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i09 FIND v(rbl_cp_i09) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i09",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i09 FIND v(rbl_cp_i09) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i10",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i10 FIND v(rbl_cp_i10) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i10",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i10 FIND v(rbl_cp_i10) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i11",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i11 FIND v(rbl_cp_i11) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i11",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i11 FIND v(rbl_cp_i11) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_i15",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_i15 FIND v(rbl_cp_i15) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_i15",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_i15 FIND v(rbl_cp_i15) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_p02",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_p02 FIND v(rbl_cp_p02) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_p02",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_p02 FIND v(rbl_cp_p02) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_p03",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_p03 FIND v(rbl_cp_p03) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_p03",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_p03 FIND v(rbl_cp_p03) AT=15n"
+  },
+  {
+   "name": "vcp1_cp_p04",
+   "unit": "V",
+   "spice": ".meas tran vcp1_cp_p04 FIND v(rbl_cp_p04) AT=5n"
+  },
+  {
+   "name": "vcp2_cp_p04",
+   "unit": "V",
+   "spice": ".meas tran vcp2_cp_p04 FIND v(rbl_cp_p04) AT=15n"
+  }
+ ],
+ "options": {
+  "timeout_s": 900,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}

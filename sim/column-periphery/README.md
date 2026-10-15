@@ -223,3 +223,144 @@ What the delta says:
 * The isolation timing (0.5 ns before enable) and the 10 mV settle tolerance
   are assumptions; the gate sizes other than `MPPRE` were not swept.
 * One column of four rows; all rows at one stored level (STUDY-ASSUMPTION).
+
+## Issue #117: isolation-gate sizing, reference-side matching, driver sizing and offset
+
+Follow-up to the finding above (stored-'1' `din` eroded at fs/27 C and ss/27 C,
+write-'0' undershoot deeper than the ideal source). New run ids, nothing above
+was edited. **The sizes quoted in "Sizing rationale" for the isolation gate
+(nfet 1.0 / pfet 2.0) and the write driver are superseded** by the schematic
+now in `design/column_periphery.sch` (final point `f00`, below).
+
+Files (all new):
+
+* `gen_isolation_study.py` -> `isolation_study.spice` + `request_isolation.json` (global-corner sweep,
+  52 variants x 2 data values + ideal controls, 10 corners) and `isolation_mc.spice` +
+  `request_isolation_mc.json` (Monte Carlo on `ideal` / `i00` (the #114 slice) / `f00`).
+  `gen_column_periphery.py` now holds the frozen #114 slice cards (`SLICE_114_CARDS`) so the #114 deck
+  stays reproducible from the design #114 simulated; the schematic has moved on.
+* `analyze_isolation_study.py` reduces a report to `isolation[_mc]_points_<RUN>.csv` and
+  `isolation[_mc]_summary_<RUN>.json` (refuses to overwrite).
+* Results: `results/isolation_klt_report_20261015T080004Z.json` (sweep, fleet job `klt-sim-b172041b161b`,
+  10/10 corners), `results/isolation_mc_klt_report_20261015T084700Z.json.gz` (MC, fleet job
+  `klt-sim-568d0e135a5e`, c7i.8xlarge spot, 873 s, 160/160 units pass), plus their points/summary files.
+  Bucket name redacted in both. Both submitted once as `klt sim` on the batch backend; nothing looped
+  locally (a single-corner local debug probe was run while building the deck; not recorded).
+  The MC submit emitted the client warning that the serial job bound (160 units x 3000 s) exceeds the
+  fleet 3600 s ceiling; the job completed in 873 s regardless, so no sharding was needed.
+
+### What the sweep found (mechanism)
+
+Hypothesis from #114 was charge injection of the rbl isolation pair versus the dummy gate. The sweep
+(`i*` isolation width/lead/dummy-scale, `p*` precharge release, `m*` matched reference precharge,
+`c*` combinations, `d*` write driver) refutes it as the dominant cause:
+
+* Isolation timing (lead 0.1 .. 2 ns), isolation widths (0.42 .. 2.0 um, nfet-only, pfet-only, TG) and
+  dummy scale (0.5 .. 1.5x) move fs/27 C `din` for '1' only between -0.034 and +0.009 V (baseline
+  -0.019 V); none restores the ideal -0.120 V. Wider gates are worse (`i07`: +0.006 V), narrower
+  slightly better.
+* The large lever is the **reference side**: #114's bench gave the reference an ideal switch, so the
+  real rbl carried the precharge pfet's release disturbance with no counterpart on `ref`. Giving `ref`
+  a matched precharge pfet (a dummy reference column has one; `XMPPREF`, now in the schematic with a
+  `vref` pin) cancels most of it: `m00` fs/27 C `din` -0.076 V, ss/27 C -0.334 V, at the baseline
+  isolation. Dummy switches on rbl alone (`p04`, `p05`) only reach -0.037 / -0.029 V.
+* Remaining lever: the nfet-only 0.42 um isolation gate (passes the 0.9 V precharge level, no pfet to
+  inject opposite charge) and a bigger precharge pfet (5 um, so settling stays <= 2 ns).
+* Write driver: stack `MND1/MND2` 4.0 um, `MNI` 2.0 um (was 0.5 / 0.42) pulls the write-'0' undershoot in
+  to within 5 mV of the ideal source; 8.0 / 4.0 (`d06`) to within 3 mV (see below).
+
+### Final point `f00` versus ideal source, all ten corners (sweep run `20261015T080004Z`)
+
+`din` for stored '1' (mV; more negative = more signal; "shortfall" = f00 - ideal, positive is worse
+than ideal) and the write-'0' minimum on the storage node (floor -135 mV):
+
+| corner | ideal din '1' | #114 slice din '1' | f00 din '1' | f00 shortfall | ideal snmin '0' | #114 snmin '0' | f00 snmin '0' | f00 margin to floor |
+|---|---|---|---|---|---|---|---|---|
+| ff/27C | -305.9 | -337.1 | -382.1 | -76.1 | -128.4 | -148.6 | -132.3 | +2.7 |
+| ff/125C | -371.7 | -420.9 | -471.0 | -99.3 | -122.2 | -141.6 | -126.3 | +8.7 |
+| **fs/27C** | -119.9 | -18.9 | **-101.5** | **+18.4** | -121.9 | -144.2 | -127.1 | +7.9 |
+| fs/125C | -379.7 | -432.9 | -488.2 | -108.5 | -130.5 | -151.3 | -136.2 | **-1.2** |
+| sf/27C | -304.9 | -321.8 | -362.5 | -57.6 | -119.8 | -137.2 | -122.9 | +12.1 |
+| sf/125C | -309.4 | -343.2 | -390.7 | -81.2 | -111.3 | -132.4 | -115.0 | +20.0 |
+| **ss/27C** | -326.1 | -289.4 | **-369.5** | **-43.4** | -128.2 | -150.4 | -133.5 | +1.5 |
+| ss/125C | -362.0 | -404.7 | -451.8 | -89.8 | -134.7 | -154.5 | -140.2 | **-5.2** |
+| tt/27C | -328.8 | -355.6 | -399.3 | -70.5 | -129.0 | -151.2 | -133.9 | +1.1 |
+| tt/125C | -360.9 | -408.3 | -453.6 | -92.6 | -128.5 | -148.2 | -133.3 | +1.7 |
+
+All #114 compliance gates (settle <= 2 ns, release within 10 mV, correct decision, within 5 ns) hold at
+all ten corners, both data values (worst settle 1.80 ns, sf/27 C, stored 0). Worst-case 125 C corners retained.
+
+### Acceptance reading
+
+1. **din '1' at ss/27 C: met** (-369.5 mV against ideal -326.1 mV, 43 mV better). **At fs/27 C: not met,
+   closed from a 101 mV shortfall to 18 mV** (-101.5 mV against ideal -119.9 mV); the 18 mV is the
+   written trade-off, with its sized evidence:
+   * Every `f00` stored-'1' input is at least 101 mV, five times the best case of #114's 19 mV, and
+     9 of 10 corners exceed 360 mV.
+   * The residual 18 mV is a property of the ideal-source reference: `f04` (array-side `rbl`
+     capacitance 6.26 fF so total rbl load is 10 fF with the 3.74 fF periphery, the "C_RBL is the
+     total" reading of the 10 fF assumption, pending #88) gives fs/27 C -131 mV, a shortfall of
+     -11 mV, i.e. met. The load definition is #88's to settle; this study does not choose it.
+   * Matching the reference side costs a second 5 um precharge pfet per column and a `vref` rail.
+2. **Offset (Monte Carlo)** below.
+3. **Write-'0' undershoot against -135 mV: met at 8 of 10 corners, not at fs/125 C (-136.2 mV, 1.2 mV
+   short) and ss/125 C (-140.2 mV, 5.2 mV short).** The ideal source itself is only 0.3 mV inside the
+   floor at ss/125 C (-134.7 mV) and 4.5 mV inside at fs/125 C, so there is essentially no budget for
+   any real driver at the two worst-case corners. Driver sweep (worst over ten corners): #114 driver
+   -154.5 mV (9 corners below floor), 2.0/1.0 um -144.7 mV, **4.0/2.0 um (chosen) -140.2 mV**,
+   8.0/4.0 um -137.6 mV (only ss/125 C below floor, by 2.6 mV). Larger stacks cost area on every
+   column for a few mV and still do not reach the floor at ss/125 C, so 4.0/2.0 um is kept. The
+   residual shortfall is reported, not hidden: the contract floor in `SENSE_INPUT_CONTRACT.md` is
+   unchanged, and accepting 1.2 / 5.2 mV at two 125 C corners, or tightening the write-'0' level by
+   other means, is a spec decision (needs a decision record under `spec/`), not made here.
+
+### Monte Carlo: offset contributed by the isolation pair (run `20261015T084700Z`)
+
+`klt sim` with `monte_carlo` n = 40, seed 2026101517, `vary: mismatch`, 4 replicas per sample
+(160 independent instances per cell), PDK `_mm` sections at the four `sim/sense-mismatch` corners
+(tt/27, fs/27, ss/125, sf/125). Instances: `ideal` (latch directly on rbl, the control), `i00` (the #114
+slice), `f00` (final).
+
+The stored-'1' `din` spread is dominated by the **cell** read-device mismatch (ideal source: sigma(din)
+= 51 .. 153 mV, which is not an isolation effect and is the same in every variant). The isolation pair's
+own contribution is isolated by `ddin = din - dpre`, the change from just before the isolation gates
+close to the latch enable, and is cleanest for stored '0' (read device off):
+
+| corner | sigma(ddin '0') ideal | #114 slice | **f00** | mean ddin '0' f00 | sigma(ddin '1') f00 (ideal) | latch sigma, sense-mismatch | RSS of latch sigma and f00 '0' |
+|---|---|---|---|---|---|---|---|
+| tt_mm/27C | 0.02 mV | 2.39 mV | **2.42 mV** | +3.2 mV | 2.41 mV (0.63) | 17.7 mV | 17.9 mV |
+| fs_mm/27C | 0.01 mV | 2.83 mV | **1.50 mV** | +1.6 mV | 8.87 mV (3.40) | 16.3 mV | 16.4 mV |
+| ss_mm/125C | 0.02 mV | 2.65 mV | **2.17 mV** | +2.7 mV | 2.80 mV (0.52) | 17.6 mV | 17.7 mV |
+| sf_mm/125C | 0.02 mV | 2.99 mV | **2.33 mV** | +3.4 mV | 2.06 mV (0.09) | 19.2 mV | 19.3 mV |
+
+* The final isolation pair adds a **random offset of 1.5 .. 2.4 mV sigma** (at most 2.8 mV in '1' outside
+  fs/27 C) and a **systematic shift of +1.6 .. +3.4 mV** for '0' (`ddin` mean) and -6.9 .. -15.2 mV for
+  '1' (the helpful sign: more signal). Added in quadrature to the 16.3 .. 19.2 mV latch sigma of
+  `sim/sense-mismatch` the total moves by <= 0.2 mV: **the isolation pair is not an offset budget
+  issue.** Against #114's slice the random closing spread is unchanged or smaller, and the stored-'1'
+  spread at fs/27 C falls from 26.3 mV to 8.9 mV (the part of that above ideal's 3.4 mV is the
+  residual cell-signal movement during the 0.5 ns lead at the lowest-signal corner).
+* **Open finding, not diagnosed: fs_mm/27 C stored-'0' tail.** In `f00`, 4 of 160 stored-'0' instances at
+  fs_mm/27 C have a pre-isolation difference `dpre` far from the ~97 mV median (-255, -227, -101, -70 mV)
+  and 5 of 160 decide wrongly (sigma(din '0') 44 mV, against 3.0 mV for `i00` and 0.4 mV for ideal).
+  The other three MC corners show no such tail for '0' (0 wrong decisions of 160 each), and the
+  deterministic global fs/27 C corner is clean. The effect is already present in `dpre`, i.e. before the
+  isolation gates close; a likely candidate is the rbl / ref precharge settling of the matched 5 um
+  pfets under mismatch at slow-pfet fast-nfet, which the global corners (settle 1.80 ns worst, budget 2 ns)
+  do not stress, but this was not verified. Treat `f00` as **not yet MC-robust at fs_mm/27 C** until that
+  is understood.
+* Stored-'1' wrong decisions at fs_mm/27 C (ideal 38/160, `i00` 79/160, `f00` 48/160) are a cell
+  read-signal-versus-mismatch fact of this corner at the 10 fF load (the ideal source already fails on 24%),
+  not a slice effect; `f00` is better than `i00` and close to ideal. The other three corners have no
+  wrong decisions for either data value.
+* No yield or BER claim is made from n = 40 x 4 draws; sigma intervals are in the summary JSON (normal-theory
+  95 % CI).
+
+### Limits of this addition
+
+* The matched reference-side precharge is an architectural change (extra pfet and `vref` rail per
+  column), judged by the testbench's one-reference-column model; layout cost is not estimated.
+* `C_RBL` is still the 10 fF assumption (extracted load pending #88); `f04` shows the fs/27 C result
+  depends on how that load is read.
+* Write-'0' floor residual at two 125 C corners (above); the spec is untouched.
+* MC covers four corners and one slice instance structure; the fs_mm/27 C stored-'0' tail is open.
