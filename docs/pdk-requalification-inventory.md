@@ -5,11 +5,18 @@ simulation was run and no existing record was edited.** All `c6d73a3`
 records stay byte-identical (append-only, `sim/check_append_only.py`, #67);
 re-qualification adds *new* records and supersession notes.
 
-Measured with `grep -rl c6d73a3 sim layout` on `main` @ `30c8ad8`
+Measured with `grep -rl c6d73a3 sim layout` on `main` @ `bea81bb`
 (47 stamped files); "cited by" is a `grep -rl <dir>` over `spec/`,
 `block-manifest*.json` and
 `sim/loaded-column/cold-corner/EVIDENCE_INDEX.md`. Re-derive the counts
 before acting on them.
+
+**Count convention:** "Stamped files" are *direct* counts. Each stamped file
+is counted in exactly one row: the row of its nearest listed ancestor
+directory, so unlisted subdirectories (`results/`, `sources/`, dated run
+directories) roll up into their parent row and nested rows (e.g.
+`geometry-matched`) are excluded from their parent. The column therefore sums
+to 47, the `grep -rl c6d73a3 sim layout | wc -l` total.
 
 ## Table
 
@@ -19,11 +26,11 @@ re-run; "historical" = not cited, marked superseded only.
 
 | Group | Directory | Stamped files | Cited by | Disposition |
 |---|---|---|---|---|
-| G1 (retention chain, #168) | `sim/leakage` | 6 | `retention-refresh-budget.md`, `retention-literature-crosscheck.md` | Reference: re-run first |
+| G1 (retention chain, #168) | `sim/leakage` | 3 | `retention-refresh-budget.md`, `retention-literature-crosscheck.md` | Reference: re-run first |
 | G1 | `sim/leakage/geometry-matched` | 3 | `retention-refresh-budget.md` | Reference: re-run |
 | G1 | `sim/bitcell-transient` | 2 | none (cross-checks `sim/leakage`, see `docs/pdk-pin.md`) | Reference for the chain: re-run |
 | G1 | `sim/retention` | 1 | `retention-refresh-budget.md`, `spec/README.md`, crosscheck | Reference: re-derive after leakage; no retention number is re-cited before this |
-| G2 (loaded column, #169) | `sim/loaded-column` | 11 | PROPOSED decision records, `EVIDENCE_INDEX.md` | Reference: re-run |
+| G2 (loaded column, #169) | `sim/loaded-column` | 3 | PROPOSED decision records, `EVIDENCE_INDEX.md` | Reference: re-run |
 | G2 | `sim/loaded-column/cold-corner` | 8 | PROPOSED decision records, `EVIDENCE_INDEX.md` | Reference: re-run; supersession entry goes in `EVIDENCE_INDEX.md` |
 | G3 (sense path, #170) | `sim/sense-stage` | 3 | `macro-pass-conditions-PROPOSED.md` | Reference: re-run |
 | G3 | `sim/column-periphery` | 4 | none | Historical unless a spec cites it by the time of re-run |
@@ -32,6 +39,7 @@ re-run; "historical" = not cited, marked superseded only.
 | G4 (refresh, #171) | `sim/refresh-replay` | 10 | none | Historical |
 | G4 | `sim/refresh-overhead` | 0 | `density-vs-sram.md`, `macro-pass-conditions-PROPOSED.md` | Reference, but consumes other groups' numbers: re-evaluate after G1-G3 |
 | G4 | `sim/refresh-energy`, `sim/refresh-op` | 0 | none | Not stamped `c6d73a3`; check their stamps before marking |
+| Shared helper | `sim/test_evidence_common.py` | 1 | none (shared helper of the evidence tests, carries the stamp in its fixtures) | Reference: its `c6d73a3` stamps are test-fixture data; update only if the evidence-test contract changes, not per re-run |
 | G5 (layout, #172) | `layout`, `layout/results` | 7 | both manifests, most specs | Reference: DRC/LVS/ERC results are tool-run, not PDK-model-run; decide per record whether a `f6eeac7` re-run is meaningful |
 
 Six or more reference studies span G1-G5, so per the Champion/Curator
