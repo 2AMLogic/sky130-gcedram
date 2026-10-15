@@ -43,6 +43,34 @@ from derive_retention import load_extracted_c_sn  # noqa: E402
 NETLIST_PATH = HERE / "column_periphery.spice"
 REQUEST_PATH = HERE / "request.json"
 DESIGN = REPO / "design"
+# The slice device cards exactly as design/column_periphery.spice had them when issue #114 recorded its
+# evidence (sha256 of the schematic then: 8f90e5e3...). design/column_periphery.sch has since been
+# revised (issue #117), so this generator no longer reads it: the #114 deck and request must stay
+# reproducible from the design #114 actually simulated. design/test_column_periphery.py checks the
+# recorded deck against the revised schematic only where they still coincide.
+SLICE_114_CARDS: dict[str, tuple[list[str], str, str]] = {
+    "MPPRE": (['rbl', 'pre_b', 'vpre', 'vpre'], "sky130_fd_pr__pfet_01v8",
+        "L=0.15 W=4 nf=1 ad=1.16 as=1.16 pd=8.58 ps=8.58 nrd=0.0725 nrs=0.0725 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MPU1": (['x', 'dinb', 'vdd', 'vdd'], "sky130_fd_pr__pfet_01v8",
+        "L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MPU2": (['wbl', 'wenb', 'x', 'vdd'], "sky130_fd_pr__pfet_01v8",
+        "L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MND2": (['wbl', 'wen', 'y', 'GND'], "sky130_fd_pr__nfet_01v8",
+        "L=0.15 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MND1": (['y', 'dinb', 'GND', 'GND'], "sky130_fd_pr__nfet_01v8",
+        "L=0.15 W=0.5 nf=1 ad=0.145 as=0.145 pd=1.58 ps=1.58 nrd=0.58 nrs=0.58 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MNI": (['wbl', 'wenb', 'GND', 'GND'], "sky130_fd_pr__nfet_01v8",
+        "L=0.15 W=0.42 nf=1 ad=0.1218 as=0.1218 pd=1.42 ps=1.42 nrd=0.69047619047619 nrs=0.69047619047619 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MNS": (['sbl', 'sel', 'rbl', 'GND'], "sky130_fd_pr__nfet_01v8",
+        "L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MPS": (['sbl', 'selb', 'rbl', 'vdd'], "sky130_fd_pr__pfet_01v8",
+        "L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MNSR": (['sref', 'sel', 'ref', 'GND'], "sky130_fd_pr__nfet_01v8",
+        "L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1"),
+    "MPSR": (['sref', 'selb', 'ref', 'vdd'], "sky130_fd_pr__pfet_01v8",
+        "L=0.15 W=2 nf=1 ad=0.58 as=0.58 pd=4.58 ps=4.58 nrd=0.145 nrs=0.145 sa=0 sb=0 sd=0 mult=1 m=1"),
+}
+
 EXTRACT_JSON = REPO / "layout" / "gain_cell_2t.extract.parasitics.json"
 
 # ---- scope: restricted range of the PROPOSED record (nothing outside it) ----
@@ -132,7 +160,7 @@ def instances() -> list[dict]:
 def build_netlist(c_sn_f: float) -> str:
     cell = parse_cards(DESIGN / "gain_cell_2t.spice")
     latch = parse_cards(DESIGN / "sense_latch.spice")
-    per = parse_cards(DESIGN / "column_periphery.spice")
+    per = SLICE_114_CARDS
     wr_m, wr_p = cell["M_WR"][1], cell["M_WR"][2]
     rd_m, rd_p = cell["M_RD"][1], cell["M_RD"][2]
     pts = instances()

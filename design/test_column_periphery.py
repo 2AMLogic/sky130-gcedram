@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Stdlib-only drift check: design/column_periphery.spice vs the comparison deck (issue #114).
+"""Stdlib-only drift check: design/column_periphery.spice vs the comparison decks (issues #114, #117).
 
-Every `real_*` / `sw_*` instance block of sim/column-periphery/column_periphery.spice
-must instantiate exactly the devices of the schematic-derived netlist
-design/column_periphery.spice (names, model, W/L, nets and every geometry
-parameter: nf, ad/as, pd/ps, nrd/nrs, sa/sb/sd, m); the sweep instances
-may differ only in the precharge device width and its width-dependent geometry
-(single-finger rule ad=as=0.29W, pd=ps=2(W+0.29), nrd=nrs=0.29/W). The latch devices of every
-instance must equal design/sense_latch.spice. No xschem, ngspice or PDK needed.
+* The FINAL variant (`f00_*`) of sim/column-periphery/isolation_study.spice must instantiate exactly
+  the devices of the schematic-derived netlist design/column_periphery.spice (names, model, W/L,
+  nets and every geometry parameter: nf, ad/as, pd/ps, nrd/nrs, sa/sb/sd, m).
+* The #114 evidence deck sim/column-periphery/column_periphery.spice is frozen evidence of the
+  first-pass slice, which the schematic no longer equals (issue #117 resized it). It is checked
+  against itself (every real_* instance identical; sweep instances differ only in the precharge
+  width and its width-dependent geometry) and the study's baseline variant (`i00_*`) must equal it,
+  so the baseline of the sweep cannot drift from what #114 recorded.
+* The latch devices of every instance must equal design/sense_latch.spice.
+No xschem, ngspice or PDK needed.
 
 Run: python3 -I design/test_column_periphery.py
 """
@@ -25,9 +28,11 @@ NETLIST = HERE / "column_periphery.spice"
 LATCH = HERE / "sense_latch.spice"
 DECK = REPO / "sim" / "column-periphery" / "column_periphery.spice"
 
-PERIPHERY_DEVICES = ("MPPRE", "MPU1", "MPU2", "MND2", "MND1", "MNI", "MNS", "MPS", "MNSR", "MPSR")
+PERIPHERY_DEVICES = ("MPPRE", "MPPREF", "MPU1", "MPU2", "MND2", "MND1", "MNI", "MNS", "MNSR")
+BASELINE_114_DEVICES = ("MPPRE", "MPU1", "MPU2", "MND2", "MND1", "MNI", "MNS", "MPS", "MNSR", "MPSR")
+STUDY = REPO / "sim" / "column-periphery" / "isolation_study.spice"
 LATCH_DEVICES = ("MN1", "MN2", "MP1", "MP2", "MNF", "MPH")
-SHARED = {"pcb": "pre_b", "prea": "vpre", "dinb1": "dinb", "dinb0": "dinb", "0": "GND",
+SHARED = {"pref": "vref", "pcb": "pre_b", "prea": "vpre", "dinb1": "dinb", "dinb0": "dinb", "0": "GND",
           "wen": "wen", "wenb": "wenb", "sel": "sel", "selb": "selb", "vdd": "vdd",
           "en": "en", "enb": "enb"}
 LOCAL = ("rbl", "sbl", "ref", "sref", "wbl", "x", "y", "vn", "vp")
@@ -74,6 +79,7 @@ def resized(dev: dict, w_um: float) -> dict:
 def canon(net: str, inst: str | None) -> str:
     if inst and net.endswith("_" + inst):
         net = net[: -len(inst) - 1]
+    net = re.sub(r"^(pcb|selb?)_\d+$", r"\1", net)  # per-edge-time control copies in the study deck
     return SHARED.get(net, net) if inst else {"GND": "GND", "0": "GND"}.get(net, net)
 
 
@@ -88,13 +94,13 @@ def netlist_devices(path: Path, names):
     return devs
 
 
-def deck_devices(names):
+def deck_devices(names, path=DECK):
     """{instance: {device: parsed}} for the given device names."""
     pat = re.compile(r"X(%s)_(\w+) " % "|".join(names))
     inst: dict[str, dict] = {}
-    for ln in logical_lines(DECK.read_text()):
+    for ln in logical_lines(path.read_text()):
         m = pat.match(ln)
-        if not m:
+        if not m or m.group(2).startswith("cp_"):
             continue
         d = parse_device(ln)
         d["nets"] = tuple(canon(n, m.group(2)) for n in d["nets"])
@@ -114,20 +120,42 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
     def test_netlist_has_no_testbench_elements(self):
         self.assertNotRegex(NETLIST.read_text(), r"(?m)^[SVRC]\w* ")
 
-    def test_real_and_sweep_instances_equal_schematic(self):
+    def test_final_study_instances_equal_schematic(self):
         sch = netlist_devices(NETLIST, PERIPHERY_DEVICES)
-        inst = deck_devices(PERIPHERY_DEVICES)
-        self.assertTrue(any(k.startswith("real_") for k in inst))
-        self.assertTrue(any(k.startswith("sw_") for k in inst))
-        self.assertFalse(any(k.startswith("ideal_") for k in inst), "ideal instances must not carry the slice")
-        for name, devs in inst.items():
+        inst = deck_devices(PERIPHERY_DEVICES, STUDY)
+        finals = {k: v for k, v in inst.items() if k.startswith("f00_")}
+        self.assertEqual(sorted(finals), ["f00_w0", "f00_w1"])
+        for name, devs in finals.items():
             with self.subTest(instance=name):
                 self.assertEqual(sorted(devs), sorted(PERIPHERY_DEVICES))
                 for dev in PERIPHERY_DEVICES:
-                    want = dict(sch[dev])
+                    self.assertEqual(devs[dev], sch[dev], f"{dev} in {name} drifted from design/column_periphery.sch")
+
+    def test_study_baseline_equals_114_deck(self):
+        base = deck_devices(BASELINE_114_DEVICES)["real_w1"]
+        got = deck_devices(BASELINE_114_DEVICES, STUDY)
+        for name in ("i00_w1", "i00_w0"):
+            with self.subTest(instance=name):
+                for dev in BASELINE_114_DEVICES:
+                    want = dict(base[dev])
+                    if name.endswith("_w0") and "dinb" in want["nets"]:
+                        pass  # dinb1/dinb0 both canonicalise to dinb
+                    self.assertEqual(got[name][dev], want, f"{dev} in {name} drifted from the #114 baseline")
+
+    def test_114_deck_is_self_consistent(self):
+        inst = deck_devices(BASELINE_114_DEVICES)
+        self.assertTrue(any(k.startswith("real_") for k in inst))
+        self.assertTrue(any(k.startswith("sw_") for k in inst))
+        self.assertFalse(any(k.startswith("ideal_") for k in inst), "ideal instances must not carry the slice")
+        base = inst["real_w1"]
+        for name, devs in inst.items():
+            with self.subTest(instance=name):
+                self.assertEqual(sorted(devs), sorted(BASELINE_114_DEVICES))
+                for dev in BASELINE_114_DEVICES:
+                    want = dict(base[dev])
                     if name.startswith("sw_") and dev == "MPPRE":
-                        want = resized(sch[dev], int(name.split("_")[1]) / 100)
-                    self.assertEqual(devs[dev], want, f"{dev} in {name} drifted from design/column_periphery.sch")
+                        want = resized(base[dev], int(name.split("_")[1]) / 100)
+                    self.assertEqual(devs[dev], want, f"{dev} in {name}")
 
     def test_parser_keeps_full_geometry(self):
         mp = netlist_devices(NETLIST, PERIPHERY_DEVICES)["MPPRE"]
@@ -167,7 +195,23 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
 
     def test_precharge_well_is_on_the_precharge_rail(self):
         # documented in the schematic header: MPPRE body = vpre, not vdd
-        self.assertEqual(netlist_devices(NETLIST, PERIPHERY_DEVICES)["MPPRE"]["nets"][3], "vpre")
+        devs = netlist_devices(NETLIST, PERIPHERY_DEVICES)
+        self.assertEqual(devs["MPPRE"]["nets"][3], "vpre")
+        self.assertEqual(devs["MPPREF"]["nets"][3], "vref")
+
+    def test_reference_precharge_is_a_copy_of_the_bitline_precharge(self):
+        devs = netlist_devices(NETLIST, PERIPHERY_DEVICES)
+        a, b = dict(devs["MPPRE"]), dict(devs["MPPREF"])
+        self.assertEqual(a.pop("nets"), ("rbl", "pre_b", "vpre", "vpre"))
+        self.assertEqual(b.pop("nets"), ("ref", "pre_b", "vref", "vref"))
+        self.assertEqual(a, b)
+
+    def test_final_isolation_is_nfet_only_and_dummy_matched(self):
+        devs = netlist_devices(NETLIST, PERIPHERY_DEVICES)
+        self.assertNotIn("MPS", devs)
+        self.assertEqual(devs["MNS"]["W"], devs["MNSR"]["W"])
+        self.assertEqual(devs["MNS"]["nets"], ("sbl", "sel", "rbl", "GND"))
+        self.assertEqual(devs["MNSR"]["nets"], ("sref", "sel", "ref", "GND"))
 
 
 if __name__ == "__main__":
