@@ -2,6 +2,18 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-15
+
+- **Issue #117** (closed): Isolation-gate sizing and offset study: stored-'1' sense input erodes at fs/27 C with the #114 column slice
+- **PR #160**: Isolation-gate, reference-matching and driver sweep with MC offset (#117)
+- **Issue #114** (closed): Design the column periphery (precharge, write driver, column select) to replace ideal sources in the read/write studies
+- **PR #118**: design: column-periphery slice and ideal-vs-real comparison (#114)
+
+### 2026-10-13
+
+- **Issue #149** (closed): Geometry-matched access-device leakage: re-measure with extracted AD/AS/PD/PS (testbench passes none)
+- **PR #155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
+
 ### 2026-10-11
 
 - **Issue #156** (closed): Guard telemetry: retain confinement for unresolved scratch writes
