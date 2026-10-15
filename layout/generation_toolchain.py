@@ -198,7 +198,7 @@ def pdk_problems(cfg: dict[str, Any], ident: dict[str, Any]) -> list[str]:
     if ident.get("open_pdks_commit") != exp["open_pdks_commit"]:
         problems.append(
             f"open_pdks commit ({ident.get('sources_file')}): expected {exp['open_pdks_commit']}, "
-            f"actual {ident.get('open_pdks_commit')}  -- fix: volare enable --pdk sky130 {exp['open_pdks_commit']}"
+            f"actual {ident.get('open_pdks_commit')}  -- fix: pip install ciel==2.6.1; ciel enable --pdk-family sky130 -l sky130_fd_pr {exp['open_pdks_commit']}"
         )
     return problems
 

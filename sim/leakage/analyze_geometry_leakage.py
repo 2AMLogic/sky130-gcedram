@@ -180,10 +180,17 @@ def summarize(rows: list[dict], report: dict, geom_info: dict, paths: dict) -> d
     }
 
 
+# open_pdks revision of the committed geometry-matched batch (append-only
+# evidence, produced before the repo's forward pin moved to f6eeac7 in #165).
+# This reducer binds a klt report to the revision it was run under, so it
+# stays on the batch's own revision rather than following the forward pin;
+# re-running the study under the forward pin (#166) updates it alongside the
+# new report.
+EVIDENCE_OPEN_PDKS = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+
+
 def G_pin() -> str:
-    sys.path.insert(0, str(HERE.parent))
-    from _evidence_common import PDK_OPEN_PDKS_COMMIT
-    return PDK_OPEN_PDKS_COMMIT
+    return EVIDENCE_OPEN_PDKS
 
 
 def main(argv: list[str] | None = None) -> int:

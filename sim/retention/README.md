@@ -248,7 +248,7 @@ explicit, not a defect to be explained away.
 
 ## Reproducing this derivation
 
-Requires a stock `open_pdks` sky130 install (via `volare`, same pin as
+Requires a stock `open_pdks` sky130 install (via `ciel`, same pin as
 [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)), the leakage results already recorded in
 `sim/leakage/results/leakage_results.csv`, and (for the `2T-min`
 extraction path) the committed
@@ -260,10 +260,11 @@ capacitance" above for the command that produced it).
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
-volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
+pip install ciel==2.6.1
+ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
-# 2. Point PDK_ROOT at your volare root if it isn't ~/.volare:
-export PDK_ROOT=~/.volare   # default; only needed if you installed elsewhere
+# 2. Point PDK_ROOT at your ciel root if it isn't ~/.ciel:
+export PDK_ROOT=~/.ciel   # default; only needed if you installed elsewhere
 
 # 3. Check inputs resolve:
 python3 sim/retention/derive_retention.py --check-env

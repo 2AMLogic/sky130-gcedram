@@ -402,7 +402,7 @@ class ToolchainGuard(Tmp):
     def test_pdk_mismatch(self):
         pdk_root, pdk = fake_pdk(self.dir, "f" * 40)
         problems = T.pdk_problems(CFG, T.pdk_identity(pdk_root, pdk))
-        self.assertTrue(any("expected c6d73a35" in p and "volare enable" in p for p in problems))
+        self.assertTrue(any("expected f6eeac7d" in p and "ciel enable" in p for p in problems))
         self.assertTrue(T.pdk_problems(CFG, T.pdk_identity(None, None)))
         self.assertTrue(T.pdk_problems(CFG, T.pdk_identity(str(self.dir / "none"), "sky130A")))
 
