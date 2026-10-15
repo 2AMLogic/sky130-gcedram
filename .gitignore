@@ -16,6 +16,8 @@ design/build/
 flow/build/
 # local klt install, created by the setup script
 .venv/
+# pinned layout-generation/check klt venvs (layout/generation_toolchain.py install)
+.toolchains/
 # >>> loom-managed (do not edit) >>>
 # Loom runtime state (don't commit these)
 .loom-in-use
@@ -44,6 +46,7 @@ flow/build/
 .loom/claims/
 .loom/locks/
 .loom/signals/
+.loom/sweep-dispatch-tap/
 .loom/status/
 .loom/retry-state/
 .loom/exit-codes/
@@ -52,6 +55,8 @@ flow/build/
 .loom/targets/
 .loom/target*/
 .cargo-target*/
+.loom-target/
+/target-*/
 .loom/state/*
 !.loom/state/detect-unlabeled-epics-dismissed
 .loom/stats/

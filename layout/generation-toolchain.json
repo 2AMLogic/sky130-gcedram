@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "description": "Pinned toolchains for layout/generate_array.sh and the scaling builds in layout/extract_array_parasitics.sh (issue #91). Read by layout/generation_toolchain.py; see layout/README.md 'Reproducing the committed array (issue #91)'.",
+  "toolchains": {
+    "generation": {
+      "purpose": "klt gen mos_array + klt gen-compose: writes gain_cell_2t_array_mos.{gds,json} and gain_cell_2t_array.{gds,layout.json}",
+      "klayout_tools": {
+        "git_url": "https://github.com/2AMLogic/klayout-tools",
+        "commit": "2dd24b09e7569581297aabf9738594e9791210f1",
+        "package_version": "0.4.0"
+      },
+      "klayout": "0.30.12",
+      "verified": "Scratch regeneration of the default 4x4 with this pair reproduces all five committed generation outputs byte-for-byte (gain_cell_2t_array.gds sha256 4a11550681e5...d4cd). See layout/results/generation_reproduction_20261011.json."
+    },
+    "check": {
+      "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools revision as .github/workflows/signoff.yml KLT_REV, which produced the committed array DRC/LVS/ERC reports (klt_version 0.6.0).",
+      "klayout_tools": {
+        "git_url": "https://github.com/2AMLogic/klayout-tools",
+        "commit": "c622e8addb362491664d44ba4d717f354ca88bbd",
+        "package_version": "0.6.0"
+      },
+      "klayout": "0.30.12"
+    }
+  },
+  "pdk": {
+    "variant": "sky130A",
+    "open_pdks_commit": "c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+    "note": "Must equal sim/_evidence_common.py PDK_OPEN_PDKS_COMMIT and docs/pdk-pin.md (checked by layout/test_generation_reproducibility.py)."
+  }
+}

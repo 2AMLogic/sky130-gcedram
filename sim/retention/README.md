@@ -368,7 +368,15 @@ current, so the committed `I_leak` most likely **understates** the leakage
 of the drawn device, and every retention figure in this file is optimistic
 in that respect. Changing `C_SN` alone does not fix this.
 
-**Missing evidence before any array estimate can be adopted:** a leakage
+**Update (issue #149): the geometry-matched leakage sweep is now committed**
+as new evidence, [`sim/leakage/geometry-matched/`](../leakage/README.md) "Geometry-matched
+re-measurement (issue #149)" (batch job `klt-sim-75726efdccab`, run `20261011T071229Z`).
+Measured worst case sf / 125 C: 1.0924e-10 A vs the 9.89888e-11 A used above
+(+10.4 %); the largest ratio is ss / 125 C (5.55x) at a much smaller absolute current.
+The estimates in this file still use the historical legacy-geometry number and are
+**unchanged**; adopting the new input is spec Section 9.6.1 (PROPOSED).
+
+*Original statement of the missing evidence (now supplied):* a leakage
 sweep using the extracted geometry (`ad = as = 0.1974`, `pd = ps = 1.78`)
 over the same 15 PVT points, committed as new append-only evidence. It
 should be submitted as a `klt sim` corner request, not a hand-run grid. Tracked in #149.
