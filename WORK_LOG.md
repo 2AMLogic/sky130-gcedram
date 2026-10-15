@@ -4,6 +4,8 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-15
 
+- **PR #167**: feat(pdk): re-pin open_pdks to f6eeac7 via ciel and verify PDK revision on resolve
+- **Issue #165** (closed): Re-pin open_pdks to f6eeac7 (ciel) — fleet retires volare c6d73a3
 - **Issue #117** (closed): Isolation-gate sizing and offset study: stored-'1' sense input erodes at fs/27 C with the #114 column slice
 - **PR #160**: Isolation-gate, reference-matching and driver sweep with MC offset (#117)
 - **Issue #114** (closed): Design the column periphery (precharge, write driver, column select) to replace ideal sources in the read/write studies
