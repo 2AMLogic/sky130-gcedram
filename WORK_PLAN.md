@@ -27,7 +27,7 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#166**: Re-qualify reference records under open_pdks f6eeac7 and mark c6d73a3 records superseded
 
 ## In Progress
 
@@ -39,7 +39,7 @@ Issues currently being built (`loom:building`).
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#173**: docs(pdk): inventory reference records to re-qualify under open_pdks f6eeac7
 
 ## Approved (Awaiting Merge)
 
@@ -57,6 +57,7 @@ Issues carrying `loom:curated`.
 - **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead *(curated)*
 - **#88**: Re-run sense-stage and loaded-column with the extracted 4-row C_RBL (0.86 fF vs assumed 10 fF) *(curated)*
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
+- **#166**: Re-qualify reference records under open_pdks f6eeac7 and mark c6d73a3 records superseded *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -75,11 +76,11 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 3 |
 | Very important | 0 |
 | Important | 1 |
-| Ready (`loom:issue`) | 0 |
+| Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 0 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 3 |
-| Curated | 4 |
+| Curated | 5 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
