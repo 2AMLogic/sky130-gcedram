@@ -5,18 +5,23 @@ This roadmap is generated from current GitHub label state by the Loom Guide role
 <!-- guide:plan-body:start -->
 ## Operator Attention: Merge-Risk-Hold Pileup
 
-Judge-approved PRs stuck under a `loom:operator` merge-risk hold — implementation work is done, only a human merge decision is missing.
+Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
-- **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
-- **#155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
+- **#162**: layout: add reproducible compact 2T bitcell variants (1.95 and 1.40 um^2 drawn pitch)
 
-## Operator Priority
+## Very Important
 
-Issues the operator starred (`loom:operator-priority`); land these first.
+`loom:very-important` (one counts per workspace); every stage takes these first.
 
 _None._
+
+## Important
+
+`loom:important`; taken before unlabelled work.
+
+- **#88**: Re-run sense-stage and loaded-column with the extracted 4-row C_RBL (0.86 fF vs assumed 10 fF)
 
 ## Ready
 
@@ -28,7 +33,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
 
 ## PRs Awaiting Review
 
@@ -41,9 +46,8 @@ _None._
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
-- **#118**: design: column-periphery slice and ideal-vs-real comparison (#114)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
-- **#155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
+- **#162**: layout: add reproducible compact 2T bitcell variants (1.95 and 1.40 um^2 drawn pitch)
 
 ## Proposed
 
@@ -53,8 +57,6 @@ Issues carrying `loom:curated`.
 - **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead *(curated)*
 - **#88**: Re-run sense-stage and loaded-column with the extracted 4-row C_RBL (0.86 fF vs assumed 10 fF) *(curated)*
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
-- **#114**: Design the column periphery (precharge, write driver, column select) to replace ideal sources in the read/write studies *(curated)*
-- **#149**: Geometry-matched access-device leakage: re-measure with extracted AD/AS/PD/PS (testbench passes none) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -68,15 +70,16 @@ Issues carrying `loom:curated`.
 
 ## Backlog Balance
 
-| Tier | Count |
+| Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 4 |
-| Operator priority | 0 |
+| Operator merge-risk holds | 3 |
+| Very important | 0 |
+| Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 0 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 4 |
-| Curated | 6 |
+| Approved PRs awaiting merge | 3 |
+| Curated | 4 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
