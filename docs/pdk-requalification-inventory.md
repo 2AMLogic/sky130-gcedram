@@ -40,7 +40,7 @@ re-run; "historical" = not cited, marked superseded only.
 | G4 | `sim/refresh-overhead` | 0 | `density-vs-sram.md`, `macro-pass-conditions-PROPOSED.md` | Reference, but consumes other groups' numbers: re-evaluate after G1-G3 |
 | G4 | `sim/refresh-energy`, `sim/refresh-op` | 0 | none | Not stamped `c6d73a3`; check their stamps before marking |
 | Shared helper | `sim/test_evidence_common.py` | 1 | none (shared helper of the evidence tests, carries the stamp in its fixtures) | Reference: its `c6d73a3` stamps are test-fixture data; update only if the evidence-test contract changes, not per re-run |
-| G5 (layout, #172) | `layout`, `layout/results` | 7 | both manifests, most specs | Reference: DRC/LVS/ERC results are tool-run, not PDK-model-run; decide per record whether a `f6eeac7` re-run is meaningful |
+| G5 (layout, #172) | `layout`, `layout/results` | 7 | both manifests, most specs | Reference: DRC/LVS/ERC results are tool-run, not PDK-model-run. Re-qualified 2026-10-16 (#172): no status or hash changed, only the `pdk.version` stamp in two generator reports; see `layout/results/pdk_requalification_f6eeac7_20261016.md` |
 
 Six or more reference studies span G1-G5, so per the Champion/Curator
 guidance on #166 the work is split per group rather than landed as one
