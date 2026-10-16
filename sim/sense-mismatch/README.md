@@ -268,3 +268,5 @@ or the operating range needs a decision record.
 
 Selecting `_mm` sections and seeding samples worked as documented. The
 fleet accepted client 0.6.0 (no version skew this time).
+
+> Historical (open_pdks `c6d73a3`): not re-run under `f6eeac7`; no spec citation (issue #170, see `docs/pdk-requalification-inventory.md`).

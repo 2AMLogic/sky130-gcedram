@@ -96,10 +96,48 @@ edit these.
 * `sense_points_20261009T131831Z.csv` 980 rows (10 corners x 98 instances)
 * `sense_summary_20261009T131831Z.json` per-corner metrics, assumptions, claims flags
 
+**Superseded** for the spec-cited record by run `20261016T072807Z` under `f6eeac7` (see "Re-qualification under `f6eeac7`" below); this run is kept unedited as history.
+
 Reproduce: `python3 -I sim/sense-stage/gen_sense_stage.py`, then
 `uvx --from klayout-tools==0.6.0 klt sim --format json sim/sense-stage/request.json > sim/sense-stage/results/klt_report_<NEW_RUN_ID>.json`
 (`KLT_SIM_BACKEND=batch`; 0.6.0 is the newest client the fleet runner
 accepted on 2026-10-09), then `analyze_sense_stage.py` on that report.
+
+## Re-qualification under `f6eeac7` (issue #170, run `20261016T072807Z`)
+
+Supersedes run `20261009T131831Z` (open_pdks `c6d73a3`) for the spec-cited
+sense-stage evidence. The old run's files are untouched and remain as the
+historical record.
+
+* Request: `request.json` unchanged, one `klt sim` request, 10 corners,
+  batch fleet (`uvx --from klayout-tools==0.6.0 klt sim`, `KLT_SIM_BACKEND=batch`).
+  Fleet job **`klt-sim-c7d335a7bfdc`** (m7i.4xlarge, spot, `done`, 119 s).
+  10/10 corners pass. Earlier same-day submits failed at the fleet's
+  `BATCH_MAX_CONCURRENT_INSTANCES=8` cap (no results, nothing committed).
+* Files: `results/klt_report_20261016T072807Z.json`,
+  `results/sense_points_20261016T072807Z.csv`, `results/sense_summary_20261016T072807Z.json`
+  (bucket name redacted as before).
+* **PDK revision.** The report's `provenance.pdk` records
+  `open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, source
+  `search root: ~/.ciel` (old run: `c6d73a35...`, `~/.volare`). That
+  stamp is written by the runner that ran the job (the submitting host has no
+  `~/.ciel` tree), so it is the evidence that the fleet used `f6eeac7`.
+  Caveat: `models_lib_sha256` / `deck.content_hash` is **identical** to the
+  old run (`48de7c67...133c84`). It hashes only the top-level
+  `sky130.lib.spice`, so it does not distinguish the two revisions; the
+  included device model files are not hashed separately by klt.
+* **Simulator.** `engine_version` is `46` in both runs, and klt 0.6.0 /
+  KLayout 0.30.12 are the same, so there is no simulator delta to separate
+  from the PDK change. Netlist sha256 is unchanged (`4cd2834d...530ff0`).
+* **Before/after.** Every per-corner quantity is identical to run
+  `20261009T131831Z`: `sense_points_20261016T072807Z.csv` is byte-identical to the old
+  CSV (980 rows), and `sense_summary_20261016T072807Z.json` differs only in run id, fleet
+  job id and instance type. So for all 10 corners the min resolved delta_V
+  bracket, `t_dec` at 1 mV, and the end-to-end lowest resolving stored-'1'
+  level (table above) have delta = 0; no result moved, so no follow-up issue
+  or decision record is needed and no spec threshold is touched. Only the
+  per-corner `runtime_s` fields differ (21-24 s, host-speed noise).
+* Reproduce: as in "Evidence" above with a new run id.
 
 ## Results
 
