@@ -396,6 +396,28 @@ committed file. That covers a changed report, a changed hash, or a changed
 baseline row. A regenerated array GDS (#91) needs a new extraction and a
 new comparison file. Do not edit this one.
 
+## Re-derivation under open_pdks `f6eeac7` (issue #168)
+
+`derive_retention.py` now reads only leakage rows stamped with the current pin (`PDK_OPEN_PDKS_COMMIT`) and
+refuses to run if there are none, so a retention number can never be a maximum over a mix of pins. Each new row's
+`notes` cites the leakage row it used (pin, timestamp, simulator, batch job id). It was re-run against the
+`f6eeac7` leakage block from `sim/leakage/` (batch job `klt-sim-c2ed3f15ab70`); worst case is again `sf` / 125 C,
+`I_leak = 9.898880e-11 A`. `C_SN` is the same labelled ASSUMPTION (`3T-min`, 4.0 x C_gate) or the same extracted
+value (`2T-min`, 0.605354 fF), `delta_V = 0.9 V` ASSUMED.
+
+| Geometry | `c6d73a3` chain | `f6eeac7` chain |
+|---|---|---|
+| `2T-min` (extracted `C_SN`) | 5.503841e-06 s | 5.503841e-06 s |
+| `3T-min` (assumed `C_SN`) | 2.011978e-05 s | 2.011978e-05 s |
+
+No change (delta 0). The ratified ~10.06 us in `spec/retention-refresh-budget.md` is unchanged; that section
+gets a supersession note only. The bitcell-transient cross-check is **not** yet re-run under `f6eeac7`
+(tracked in #182), so the retention chain here is re-derived from leakage but its
+transient cross-check still rests on `c6d73a3`.
+
+`compare_array_c_sn.py --check` / `build()` take `retention_as_of` so a committed comparison JSON reproduces against
+the CSV as it stood when generated, ignoring rows appended later.
+
 ## Follow-up (out of scope here)
 
 - **`3T-min` post-layout parasitic re-derivation**: if a `3T-min` layout

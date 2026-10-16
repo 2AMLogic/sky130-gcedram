@@ -30,6 +30,9 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import gen_geometry_leakage as G  # noqa: E402
 
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import PDK_OPEN_PDKS_COMMIT  # noqa: E402
+
 LEGACY_CSV = HERE / "results" / "leakage_results.csv"
 BIAS = {"vgs_v": 0.0, "vds_v": G.VDD_V, "vbs_v": 0.0}
 
@@ -180,13 +183,11 @@ def summarize(rows: list[dict], report: dict, geom_info: dict, paths: dict) -> d
     }
 
 
-# open_pdks revision of the committed geometry-matched batch (append-only
-# evidence, produced before the repo's forward pin moved to f6eeac7 in #165).
-# This reducer binds a klt report to the revision it was run under, so it
-# stays on the batch's own revision rather than following the forward pin;
-# re-running the study under the forward pin (#166) updates it alongside the
-# new report.
-EVIDENCE_OPEN_PDKS = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+# open_pdks revision this reducer binds a klt report to: the repo's forward pin
+# (docs/pdk-pin.md), since the study was re-run under it (#168). The earlier
+# c6d73a3 batch (20261011T071229Z) is committed append-only evidence and was
+# reduced under its own revision before this change; it is not re-reduced.
+EVIDENCE_OPEN_PDKS = PDK_OPEN_PDKS_COMMIT
 
 
 def G_pin() -> str:
