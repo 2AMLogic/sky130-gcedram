@@ -365,4 +365,4 @@ close to the latch enable, and is cleanest for stored '0' (read device off):
 * Write-'0' floor residual at two 125 C corners (above); the spec is untouched.
 * MC covers four corners and one slice instance structure; the fs_mm/27 C stored-'0' tail is open.
 
-> Historical (open_pdks \`c6d73a3\`): not re-run under \`f6eeac7\`; no spec citation (issue #170, see \`docs/pdk-requalification-inventory.md\`).
+> Historical (open_pdks `c6d73a3`): not re-run under `f6eeac7`; no spec citation (issue #170, see `docs/pdk-requalification-inventory.md`).
