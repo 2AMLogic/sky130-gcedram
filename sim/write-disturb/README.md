@@ -271,3 +271,5 @@ cold (-40 C) corner; no assessment of the negative-undershoot of stored '0'
 beyond the first checkpoint. Nothing here ratifies the proposed range or
 changes the 5.03 us refresh bound; any change that follows from the sf/125 C
 flag needs a decision record in `spec/`.
+
+> Historical (open_pdks \`c6d73a3\`): not re-run under \`f6eeac7\`; no spec citation (issue #170, see \`docs/pdk-requalification-inventory.md\`).
