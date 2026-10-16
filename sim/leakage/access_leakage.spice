@@ -1,0 +1,9 @@
+* access_leakage.spice -- CIRCUIT BODY for `klt sim` (issue #168, G1 re-qualification).
+* Same device and bias as tb_access_leakage.spice.tmpl (sky130_fd_pr__nfet_01v8, W=0.42 L=0.15,
+* gate = source = body = 0 V, drain/storage node = VDD). No .control/.end; the PDK .lib/.temp
+* cards are appended per corner by klt. |I(vsn)| is exposed as a node voltage (1 V per A) so a
+* .meas card can read it; the dc sweep steps vsn 1.8 -> 1.9 V and the observation is AT=1.8 V.
+.param VDD = 1.8
+vsn sn 0 dc {VDD}
+xdut sn 0 0 0 sky130_fd_pr__nfet_01v8 l=0.15 w=0.42
+biabs iabs 0 v=abs(i(vsn))

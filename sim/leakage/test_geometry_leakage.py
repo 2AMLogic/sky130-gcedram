@@ -119,6 +119,10 @@ class Geometry(unittest.TestCase):
             self.assertNotIn(k, xdut)
 
 
+def current_pin_report(rep):
+    return (rep.get("provenance", {}).get("pdk", {}).get("version") == f"open_pdks {A.G_pin()}")
+
+
 class Analysis(unittest.TestCase):
     def test_ok(self):
         pts = A.extract_points(synth_report())
@@ -164,10 +168,15 @@ class Analysis(unittest.TestCase):
         A.check_deck_matches_geometry(G.load_geometry()["geometry"])
 
     def test_committed_report_passes_identity(self):
+        # Reports from an earlier open_pdks revision (c6d73a3 batch) are append-only
+        # evidence reduced under their own revision; only current-pin reports are re-bound.
+        checked = 0
         for p in RES.glob("klt_report_*.json"):
             rep = json.loads(p.read_text())
-            if rep.get("status") == "pass":
+            if rep.get("status") == "pass" and current_pin_report(rep):
                 A.check_identity(rep)
+                checked += 1
+        self.assertTrue(checked, "no committed report under the current PDK pin")
 
     def test_baseline_ambiguity_and_selection(self):
         extra = [dict(legacy_rows()[0], timestamp_utc="T1", ileak_a="3.0e-11")]
@@ -197,15 +206,18 @@ class Analysis(unittest.TestCase):
         self.assertEqual((s["worst_case_extracted"]["corner"], s["worst_case_extracted"]["temp_c"]), ("ss", 27))
 
     def test_committed_results_reproduce(self):
-        reports = sorted(p for p in RES.glob("klt_report_*.json") if json.loads(p.read_text()).get("status") == "pass")
-        self.assertTrue(reports, "no successful committed report")
+        reports = sorted(p for p in RES.glob("klt_report_*.json")
+                         if (lambda r: r.get("status") == "pass" and current_pin_report(r))(json.loads(p.read_text())))
+        self.assertTrue(reports, "no successful committed report under the current PDK pin")
         for rep_path in reports:
             run = rep_path.stem.split("klt_report_", 1)[1]
             rep = json.loads(rep_path.read_text())
             self.assertEqual(rep["corner_count"], 15)
-            rows = A.build_rows(A.extract_points(rep), A.load_legacy(), P)
             with (RES / f"geom_leakage_points_{run}.csv").open(newline="") as f:
                 committed = list(csv.DictReader(f))
+            baseline_ts = {r["historical_timestamp_utc"] for r in committed}
+            self.assertEqual(len(baseline_ts), 1)
+            rows = A.build_rows(A.extract_points(rep), A.load_legacy(), P, baseline_ts.pop())
             self.assertEqual([{k: str(v) for k, v in r.items()} for r in rows], committed)
             summ = json.loads((RES / f"geom_leakage_summary_{run}.json").read_text())
             self.assertEqual(summ["n_points"], 15)

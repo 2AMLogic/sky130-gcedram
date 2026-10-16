@@ -80,6 +80,7 @@ REPO_ROOT = SIM_RETENTION_DIR.parent.parent
 sys.path.insert(0, str(SIM_RETENTION_DIR.parent))
 from _evidence_common import (
     PDK_INSTALL_HINT,
+    PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_pdk_revision,
     repo_git_sha,
@@ -242,6 +243,15 @@ def load_worst_case_leakage(leakage_csv: Path) -> dict:
         rows = list(csv.DictReader(f))
     if not rows:
         raise RuntimeError(f"leakage results file is empty: {leakage_csv}")
+    # The leakage CSV is append-only and holds one block of rows per open_pdks
+    # pin. Only rows stamped with the current pin (docs/pdk-pin.md) may feed a
+    # retention number -- never the maximum over a mix of pins (issue #168).
+    rows = [r for r in rows if r.get("pdk_open_pdks_commit") == PDK_OPEN_PDKS_COMMIT]
+    if not rows:
+        raise RuntimeError(
+            f"no rows stamped pdk_open_pdks_commit={PDK_OPEN_PDKS_COMMIT} in {leakage_csv} -- "
+            "re-run the leakage grid under the current pin first (sim/leakage/README.md)"
+        )
     return max(rows, key=lambda r: float(r["ileak_a"]))
 
 
@@ -415,6 +425,13 @@ def main(argv: list[str] | None = None) -> int:
         timespec="seconds"
     )
 
+    leakage_prov = (
+        f"leakage input: leakage_results.csv row stamped "
+        f"pdk_open_pdks_commit={worst['pdk_open_pdks_commit']}, "
+        f"timestamp_utc={worst['timestamp_utc']}, {worst['ngspice_version']}"
+        + (f", {worst['notes']}" if worst.get("notes") else "")
+        + "."
+    )
     print(
         f"Worst-case leakage input (from {leakage_csv.name}): "
         f"corner={corner} temp_c={temp_c} ileak_a={ileak_a:.6e} A "
@@ -479,6 +496,7 @@ def main(argv: list[str] | None = None) -> int:
             margin_factor_field = margin_factor
             notes = ""
 
+        notes = f"{leakage_prov} {notes}".strip()
         row = {
             "timestamp_utc": timestamp,
             "repo_git_sha": sha,

@@ -277,7 +277,8 @@ class CommittedInputs(unittest.TestCase):
         for f in files:
             with self.subTest(f=f.name):
                 committed = json.loads(f.read_text())
-                self.assertEqual(C.strip_volatile(committed), json.loads(json.dumps(C.strip_volatile(self.doc))))
+                doc = C.build(retention_as_of=committed["generated_utc"])
+                self.assertEqual(C.strip_volatile(committed), json.loads(json.dumps(C.strip_volatile(doc))))
 
     def test_check_cli(self):
         files = committed_comparisons()

@@ -684,3 +684,10 @@ reading `notes`: `c_sn_ff`/`c_sn_source` for `--c-sn-ff`, `tmax_s` for
 The PDK version pin (same `open_pdks` commit as `sim/leakage/` and
 `design/`) and the corner/temperature grid are documented in
 [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md), not a local `pdk.json`.
+
+## Re-qualification under open_pdks `f6eeac7` (issue #168): NOT yet done
+
+The records here are all `c6d73a3`. The re-run is deferred: this driver sizes a hold window per
+(corner, temperature, stored value) from the leakage rows, grows it and retries, and reduces `wrdata` waveforms
+in Python, so it does not map onto a single `klt sim` corner request. Expressing it as batch requests needs a
+per-point window design and `.meas`-based reductions with their own convergence check; that is tracked in #182. Until then nothing in this directory may be cited as a `f6eeac7` result.
