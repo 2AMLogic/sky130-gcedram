@@ -4,6 +4,9 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-16
 
+- **PR #181**: sim: re-qualify sense-stage under open_pdks f6eeac7 (results unchanged)
+- **Issue #170** (closed): Re-qualify G3 sense-path records under open_pdks f6eeac7
+- **PR #183**: feat(sim): re-qualify G1 leakage and retention chain under open_pdks f6eeac7
 - **PR #178**: docs(layout): re-qualify G5 layout and sign-off records under open_pdks f6eeac7
 - **Issue #172** (closed): Re-verify G5 layout and sign-off evidence under open_pdks f6eeac7
 

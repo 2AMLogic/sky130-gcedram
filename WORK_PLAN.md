@@ -34,8 +34,6 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
-- **#170**: Re-qualify G3 sense-path records under open_pdks f6eeac7
-- **#172**: Re-verify G5 layout and sign-off evidence under open_pdks f6eeac7
 
 ## PRs Awaiting Review
 
@@ -61,8 +59,6 @@ Issues carrying `loom:curated`.
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
 - **#166**: Re-qualify reference records under open_pdks f6eeac7 and mark c6d73a3 records superseded *(curated)*
 - **#168**: Re-qualify G1 retention chain (leakage, bitcell-transient, retention) under open_pdks f6eeac7 *(curated)*
-- **#170**: Re-qualify G3 sense-path records under open_pdks f6eeac7 *(curated)*
-- **#172**: Re-verify G5 layout and sign-off evidence under open_pdks f6eeac7 *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -82,10 +78,10 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 3 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 3 |
-| Curated | 8 |
+| Curated | 6 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
