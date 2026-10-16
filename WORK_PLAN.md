@@ -27,7 +27,7 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-- **#166**: Re-qualify reference records under open_pdks f6eeac7 and mark c6d73a3 records superseded
+_None._
 
 ## In Progress
 
@@ -39,7 +39,7 @@ Issues currently being built (`loom:building`).
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#173**: docs(pdk): inventory reference records to re-qualify under open_pdks f6eeac7
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -76,9 +76,9 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 3 |
 | Very important | 0 |
 | Important | 1 |
-| Ready (`loom:issue`) | 1 |
+| Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 1 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 3 |
 | Curated | 5 |
 | Architect / Hermit proposals | 2 |
