@@ -2,6 +2,11 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-16
+
+- **PR #178**: docs(layout): re-qualify G5 layout and sign-off records under open_pdks f6eeac7
+- **Issue #172** (closed): Re-verify G5 layout and sign-off evidence under open_pdks f6eeac7
+
 ### 2026-10-15
 
 - **PR #176**: docs(pdk): use direct stamped-file counts and add helper row in requalification inventory
