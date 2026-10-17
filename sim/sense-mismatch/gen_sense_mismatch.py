@@ -38,6 +38,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as G  # noqa: E402
+sys.path.insert(0, str(REPO / "sim"))
+from klt_request import build_request as klt_request, mc_block  # noqa: E402
 
 STAGE_NETLIST_PATH = HERE / "sense_mismatch.spice"
 STAGE_REQUEST_PATH = HERE / "request.json"
@@ -246,22 +248,8 @@ def _corners(cs: list[tuple[str, int]]) -> tuple[dict, list[dict]]:
 
 def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict]) -> dict:
     corners, excl = _corners(cs)
-    req = {
-        "netlist": netlist,
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": corners,
-    }
-    if excl:
-        req["exclude"] = excl
-    req.update({
-        "monte_carlo": {"n": n_mc, "seed": MC_SEED, "vary": "mismatch", "quantiles": [2.5, 50, 97.5]},
-        "analysis": {"kind": "tran", "args": f"10p {G._fmt(T_STOP_S * 1e9)}n 0 50p uic"},
-        "measurements": meas,
-        "options": {"timeout_s": 900, "keep_artifacts": False, "waveforms": False},
-    })
-    return req
+    return klt_request(netlist, corners, f"10p {G._fmt(T_STOP_S * 1e9)}n 0 50p uic", meas, 900,
+                       exclude=excl, monte_carlo=mc_block(n_mc, MC_SEED))
 
 
 def build_stage_request() -> dict:
