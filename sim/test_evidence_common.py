@@ -142,5 +142,22 @@ class Decided(unittest.TestCase):
         self.assertEqual(C.decided(0.0, 0.9), "unresolved")
 
 
+class LoadJson(unittest.TestCase):
+    def test_plain_and_gzip(self):
+        import gzip
+        import json
+
+        doc = {"corners": [{"name": "tt", "v": 1.5}]}
+        with tempfile.TemporaryDirectory() as d:
+            plain = Path(d) / "klt_report.json"
+            plain.write_text(json.dumps(doc))
+            gz = Path(d) / "klt_report.json.gz"
+            with gzip.open(gz, "wt") as fh:
+                json.dump(doc, fh)
+            self.assertEqual(C.load_json(plain), doc)
+            self.assertEqual(C.load_json(gz), doc)
+            self.assertEqual(C.load_json(str(gz)), doc)
+
+
 if __name__ == "__main__":
     unittest.main()

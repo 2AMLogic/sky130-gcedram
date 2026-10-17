@@ -37,7 +37,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gzip
 import json
 import math
 import re
@@ -49,6 +48,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 from _evidence_common import decided as _decided  # noqa: E402
+from _evidence_common import load_json as read_json  # noqa: E402
 import gen_isolation_study as S  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
 
@@ -64,12 +64,6 @@ N01 = NormalDist()
 
 def corner_key(c: dict) -> tuple[str, int]:
     return c["process"], int(c["temperature_c"])
-
-
-def read_json(path: Path) -> dict:
-    opener = gzip.open if path.suffix == ".gz" else open
-    with opener(path, "rt") as f:
-        return json.load(f)
 
 
 def meas_of(c: dict) -> dict[str, float | None]:

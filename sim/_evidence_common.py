@@ -17,7 +17,9 @@ from __future__ import annotations
 
 import bisect
 import csv
+import gzip
 import hashlib
+import json
 import os
 import re
 import subprocess
@@ -228,6 +230,15 @@ def sha256_hex(path: Path) -> str:
 def sha256_prefixed(path: Path) -> str:
     """`"sha256:"`-prefixed SHA-256 digest of a file's bytes."""
     return "sha256:" + sha256_hex(path)
+
+
+def load_json(path: Path):
+    """Parse a JSON report, gzip-decompressing when the file name ends in
+    `.gz` (klt reports are committed as `.json` or `.json.gz`)."""
+    path = Path(path)
+    opener = gzip.open if path.name.endswith(".gz") else open
+    with opener(path, "rt") as fh:
+        return json.load(fh)
 
 
 def decided(dend: float | None, threshold_v: float) -> str:
