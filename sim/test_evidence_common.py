@@ -123,5 +123,24 @@ class PdkRevision(unittest.TestCase):
             self.assertEqual(C.pdk_revision_problems(v), [])
 
 
+class Sha256(unittest.TestCase):
+    def test_hex_and_prefixed(self):
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "x"
+            f.write_bytes(b"abc")
+            h = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+            self.assertEqual(C.sha256_hex(f), h)
+            self.assertEqual(C.sha256_prefixed(f), "sha256:" + h)
+
+
+class Decided(unittest.TestCase):
+    def test_classification_and_edges(self):
+        self.assertEqual(C.decided(None, 0.9), "none")
+        self.assertEqual(C.decided(-0.9, 0.9), "1")
+        self.assertEqual(C.decided(0.9, 0.9), "0")
+        self.assertEqual(C.decided(-0.89, 0.9), "unresolved")
+        self.assertEqual(C.decided(0.0, 0.9), "unresolved")
+
+
 if __name__ == "__main__":
     unittest.main()

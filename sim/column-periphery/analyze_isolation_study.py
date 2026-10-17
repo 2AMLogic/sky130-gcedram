@@ -47,6 +47,8 @@ from statistics import NormalDist
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import decided as _decided  # noqa: E402
 import gen_isolation_study as S  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
 
@@ -84,9 +86,7 @@ def load(report: Path) -> dict[tuple[str, int], dict[str, float | None]]:
 
 
 def decided(dend: float | None) -> str:
-    if dend is None:
-        return "none"
-    return "1" if dend <= -RESOLVE_V else "0" if dend >= RESOLVE_V else "unresolved"
+    return _decided(dend, RESOLVE_V)
 
 
 def inst_metrics(m: dict, n: str) -> dict:

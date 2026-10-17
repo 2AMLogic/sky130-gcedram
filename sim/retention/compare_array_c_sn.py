@@ -55,6 +55,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import sha256_prefixed  # noqa: E402
 import derive_retention as DR  # noqa: E402  (reuse the default reader)
 
 REPO_ROOT = DR.REPO_ROOT
@@ -106,7 +108,7 @@ def rel(path: Path) -> str:
 def sha256_file(path: Path) -> str:
     if not Path(path).is_file():
         raise ComparisonError(f"input not found: {path}")
-    return "sha256:" + hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    return sha256_prefixed(path)
 
 
 def sha256_text(text: str) -> str:

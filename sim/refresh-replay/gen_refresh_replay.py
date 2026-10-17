@@ -35,6 +35,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import sha256_hex as sha256  # noqa: E402
 import replay_lib as L  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
 import gen_sense_stage as S  # noqa: E402
@@ -67,10 +68,6 @@ SN_DEC_LEAD_NS = 0.1       # decision / pre-read probes this long before the ref
 POST_LAG_NS = 0.2          # "immediately after" an edge: just past the 0.1 ns ramp (#131 probes)
 SETTLE_EXTRA_NS = 8.0      # extra late-settle probe, this long after the restore-measurement point (#131)
 STROBES = list(L.PIN_MAP)
-
-
-def sha256(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def baseline_trace() -> dict:
