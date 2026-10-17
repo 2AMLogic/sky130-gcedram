@@ -4,6 +4,8 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-17
 
+- **PR #193**: refactor: share mutation-check harness across digital run_mutation.sh scripts
+- **Issue #191** (closed): Consolidate duplicated mutation-harness loop across digital/*/run_mutation.sh
 - **PR #188**: refactor(sim): share gzip-aware JSON report loader via _evidence_common
 - **Issue #187** (closed): Consolidate 6 copies of the gzip-aware JSON report loader into _evidence_common
 - **PR #186**: refactor(sim): share sha256 and decided() helpers via _evidence_common
