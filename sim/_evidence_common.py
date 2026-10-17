@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import bisect
 import csv
+import hashlib
 import os
 import re
 import subprocess
@@ -217,6 +218,30 @@ def append_result(results_csv: Path, csv_fields: list[str], row: dict) -> None:
         if write_header:
             writer.writeheader()
         writer.writerow(row)
+
+
+def sha256_hex(path: Path) -> str:
+    """Bare hex SHA-256 digest of a file's bytes."""
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def sha256_prefixed(path: Path) -> str:
+    """`"sha256:"`-prefixed SHA-256 digest of a file's bytes."""
+    return "sha256:" + sha256_hex(path)
+
+
+def decided(dend: float | None, threshold_v: float) -> str:
+    """Classify a sense-amp differential into the recorded bit: `"1"` if
+    dend <= -threshold_v, `"0"` if dend >= +threshold_v, `"unresolved"`
+    between, `"none"` when there is no measurement. Shared so a
+    threshold-edge fix reaches every bench at once."""
+    if dend is None:
+        return "none"
+    if dend <= -threshold_v:
+        return "1"
+    if dend >= threshold_v:
+        return "0"
+    return "unresolved"
 
 
 # --------------------------------------------------------------------------

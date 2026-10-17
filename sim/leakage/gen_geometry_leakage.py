@@ -30,7 +30,6 @@ Re-run after editing; ``test_geometry_leakage.py`` fails if committed files are 
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import sys
@@ -38,6 +37,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import sha256_prefixed as sha256_file  # noqa: E402
 OUT = HERE / "geometry-matched"
 DECK_PATH = OUT / "access_leakage_geom.spice"
 REQUEST_PATH = OUT / "request.json"
@@ -60,10 +61,6 @@ PARAM_KEYS = ("l_um", "w_um", "ad_um2", "as_um2", "pd_um", "ps_um")
 
 class GeometryError(ValueError):
     pass
-
-
-def sha256_file(path: Path) -> str:
-    return "sha256:" + hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def select_access_devices(extraction: dict) -> list[dict]:

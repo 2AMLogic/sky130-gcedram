@@ -34,6 +34,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import decided as _decided  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
 
 SETTLE_BUDGET_S = G.T_PRE_BUDGET_S
@@ -71,9 +73,7 @@ def derived(m: dict, n: str) -> dict:
 
 
 def decided(dend: float | None) -> str:
-    if dend is None:
-        return "none"
-    return "1" if dend <= -RESOLVE_V else "0" if dend >= RESOLVE_V else "unresolved"
+    return _decided(dend, RESOLVE_V)
 
 
 def compliance(r1: dict, r0: dict) -> dict:

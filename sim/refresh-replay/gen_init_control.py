@@ -38,6 +38,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 
@@ -289,10 +291,6 @@ def verify(deck: str, insts: list[dict]) -> dict:
                     f.append(dict(kind="source_not_legacy_shifted_plus_declared", source=pre, got=[gi, ge], expected=[li, exp]))
         res[n] = dict(regime=i["regime"], base=i["base"], variant=i["variant"], legacy_instance=leg["name"], declared_changes_only=not f, findings=f)
     return res
-
-
-def sha(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def main(argv=None) -> int:

@@ -17,6 +17,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
+sys.path.insert(0, str(ROOT / "sim"))
+from _evidence_common import sha256_hex as sha  # noqa: E402
 RES = HERE / "results"
 
 DOCS = [
@@ -49,10 +51,6 @@ def check(ok: bool, msg: str) -> None:
     print(("PASS " if ok else "FAIL ") + msg)
     if not ok:
         fails.append(msg)
-
-
-def sha(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def close(a: float, b: float, tol: float = 6e-4) -> bool:

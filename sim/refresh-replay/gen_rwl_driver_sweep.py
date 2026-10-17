@@ -31,6 +31,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 
@@ -315,10 +317,6 @@ def verify_sweep(deck: str, allinst: list[dict]) -> dict:
             slew_ns=pt["slew_ns"], r_ohm=pt["r_ohm"], rwl_release_ns=declared_release), declared_changes_only=not findings,
             findings=findings)
     return res
-
-
-def sha(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def main(argv=None) -> int:

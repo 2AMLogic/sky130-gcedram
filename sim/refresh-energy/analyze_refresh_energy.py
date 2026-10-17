@@ -37,7 +37,6 @@ from __future__ import annotations
 import argparse
 import csv
 import gzip
-import hashlib
 import json
 import math
 import re
@@ -47,6 +46,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import sha256_hex as sha256_file  # noqa: E402
 sys.path.insert(0, str(REPO / "sim" / "refresh-overhead"))
 import gen_refresh_energy as G  # noqa: E402
 import refresh_overhead as RO  # noqa: E402
@@ -429,10 +430,6 @@ def scaling_rows(pts: list[dict], ivs: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------------------
 # provenance
 # ---------------------------------------------------------------------------
-def sha256_file(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
-
-
 def boundary_inventory() -> dict:
     srcs = []
     for stem, role, idx in G.source_roles():
