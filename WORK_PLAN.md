@@ -59,6 +59,7 @@ Issues carrying `loom:curated`.
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet *(curated)*
 - **#166**: Re-qualify reference records under open_pdks f6eeac7 and mark c6d73a3 records superseded *(curated)*
 - **#168**: Re-qualify G1 retention chain (leakage, bitcell-transient, retention) under open_pdks f6eeac7 *(curated)*
+- **#192**: Cite the analog partition's T1 items 1, 2, 9 and 10 with artifact-anchored evidence *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -81,7 +82,7 @@ Issues carrying `loom:curated`.
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 3 |
-| Curated | 6 |
+| Curated | 7 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
