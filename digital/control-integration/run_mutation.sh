@@ -8,7 +8,8 @@
 # phase 0.13 ns, saturating reads.
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+source "$here/../ci/mutation_lib.sh"
+mutation_init
 cfg=(ratified 3700 130 1 0)
 
 "$here/sim_one.sh" "${cfg[@]}" > "$tmp/base.log" 2>&1 || { cat "$tmp/base.log"; echo "baseline does not pass"; exit 2; }
@@ -35,13 +36,7 @@ for m in "${mutants[@]}"; do
   IFS='|' read -r name file orig mut <<< "$m"
   d="$tmp/$name"; mkdir -p "$d"
   cp "$here/cfg_xfer.v" "$here/refresh_sched_rt.v" "$here/gc_ctrl_top.v" "$d/"
-  if ! python3 -I -c '
-import sys, pathlib
-p = pathlib.Path(sys.argv[1]); s = p.read_text()
-if s.count(sys.argv[2]) != 1: sys.exit(1)
-p.write_text(s.replace(sys.argv[2], sys.argv[3]))' "$d/$file" "$orig" "$mut"; then
-    echo "MUTANT $name: anchor not found exactly once in $file"; rc=1; continue
-  fi
+  mutation_anchor_apply "$name" "$d" "$file" "$orig" "$mut" || { rc=1; continue; }
   if SRC_DIR="$d" "$here/sim_one.sh" "${cfg[@]}" > "$d/log" 2>&1; then
     echo "MUTANT $name: SURVIVED (bench is too weak)"; rc=1
   else
