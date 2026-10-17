@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "issue": 100,
+  "generated_utc": "2026-10-15T09:15:35Z",
+  "klt_version_on_host": "klt 0.7.1.dev499+g1724fa083353",
+  "inputs": {
+    "layout_json_sha256": "d43e2ebf3f0b36920c9e815ff78d9193b2900bdaabc4aa99f7f5c6848cd96880",
+    "mos_json_sha256": "62ee4639aebd8050a7d6815971c43270ff0cc513d23d2247fda8a0badbfd67d1",
+    "gds_sha256": "a3c80d4d0aa4fba1a31cb2091b30e2f5cf865e9994a3dcf501484726606acc99",
+    "paths": [
+      "layout/compact/gain_cell_2t_v1_array.layout.json",
+      "layout/compact/gain_cell_2t_v1_array_mos.json",
+      "layout/compact/gain_cell_2t_v1_array.gds"
+    ],
+    "pdk": {
+      "name": "sky130A",
+      "variant": "sky130A"
+    },
+    "note": "areas are computed from committed artifacts; klt is not invoked. If the array GDS is regenerated (issue #91), re-run into a new result file."
+  },
+  "array": {
+    "rows": 4,
+    "cols": 4,
+    "bits": 16,
+    "bbox_um": [
+      5.8,
+      9.52
+    ],
+    "gds_extents_um": [
+      5.8,
+      9.52
+    ],
+    "gds_extents_match_layout_json": true
+  },
+  "a_drawn_bitcell_pitch": {
+    "pitch_x_um": 0.985,
+    "pitch_y_um": 1.98,
+    "area_um2": 1.9503
+  },
+  "b_array_per_bit_with_shared_tap": {
+    "array_area_um2": 55.216,
+    "um2_per_bit": 3.451,
+    "tap_ring_area_um2": 24.0112,
+    "ring_free_core_area_um2": 30.4128,
+    "core_um2_per_bit": 1.9008,
+    "tap_ring_only_area_um2": 24.8032,
+    "edge_overhead_um2": -0.792,
+    "note_variant": "tap_ring_area_um2 above = bbox - bits x (a): the tap ring plus edge_overhead_um2 (core - bits x (a)). Positive edge overhead = array-edge devices with no mirrored partner; negative = the trailing half-gap after the last row/column that a bbox does not include",
+    "note": "one tap ring around a 16-bit array is a worst-case overhead that shrinks with array size; the ring-free limit is (a)"
+  },
+  "c_extrapolated_macro_per_bit": {
+    "kind": "ASSUMPTION-driven extrapolation, not a layout",
+    "assumption": "periphery (sense/drivers/refresh/decode/routing) occupies a fraction f of macro area; no periphery is designed. macro/bit = array/bit / (1 - f)",
+    "nominal": {
+      "periphery_fraction": 0.3,
+      "macro_um2_per_bit_ring_free_limit": 2.7861,
+      "macro_um2_per_bit_4x4_with_ring": 4.93
+    },
+    "sensitivity": [
+      {
+        "periphery_fraction": 0.1,
+        "macro_um2_per_bit_ring_free_limit": 2.167,
+        "macro_um2_per_bit_4x4_with_ring": 3.8344
+      },
+      {
+        "periphery_fraction": 0.2,
+        "macro_um2_per_bit_ring_free_limit": 2.4379,
+        "macro_um2_per_bit_4x4_with_ring": 4.3138
+      },
+      {
+        "periphery_fraction": 0.3,
+        "macro_um2_per_bit_ring_free_limit": 2.7861,
+        "macro_um2_per_bit_4x4_with_ring": 4.93
+      },
+      {
+        "periphery_fraction": 0.4,
+        "macro_um2_per_bit_ring_free_limit": 3.2505,
+        "macro_um2_per_bit_4x4_with_ring": 5.7517
+      },
+      {
+        "periphery_fraction": 0.5,
+        "macro_um2_per_bit_ring_free_limit": 3.9006,
+        "macro_um2_per_bit_4x4_with_ring": 6.902
+      }
+    ]
+  },
+  "sram_comparators": [
+    {
+      "id": "sky130_fd_bd_sram__sram_sp_cell_opt1",
+      "role": "primary: the single-port 6T cell OpenRAM's sky130 port instantiates (technology/sky130/custom/sky130_bitcell.py, version='opt1')",
+      "width_um": 1.31,
+      "height_um": 1.58,
+      "source_url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram/blob/main/cells/sram_sp_cell_opt1/sky130_fd_bd_sram__sram_sp_cell_opt1.magic.lef (SIZE line)",
+      "openram_ref": "https://github.com/VLSIDA/OpenRAM/blob/stable/technology/sky130/custom/sky130_bitcell.py (OpenRAM v1.2.48 release 2024-01-21; stable branch checked 2026-10-09)",
+      "process_rules": "SRAM-specific (foundry-special SRAM design rules)",
+      "area_um2": 2.0698,
+      "kind": "quoted-not-measured",
+      "retrieved": "2026-10-09",
+      "source_commit": "be33adbcf188fdeab5c061699847d9d440f7a084 (2021-10-20)",
+      "ratios": {
+        "drawn_pitch_2T_over_sram": 0.942,
+        "array_4x4_with_ring_2T_over_sram": 1.667,
+        "note": ">1 means the 2T cell is LARGER than the SRAM cell"
+      }
+    },
+    {
+      "id": "sky130_fd_bd_sram__openram_sp_cell",
+      "role": "smaller variant of the same family (no extra dummy-edge width)",
+      "width_um": 1.2,
+      "height_um": 1.58,
+      "source_url": "https://github.com/google/skywater-pdk-libs-sky130_fd_bd_sram/blob/main/cells/openram_sp_cell/sky130_fd_bd_sram__openram_sp_cell.magic.lef (SIZE line)",
+      "openram_ref": null,
+      "process_rules": "SRAM-specific (foundry-special SRAM design rules)",
+      "area_um2": 1.896,
+      "kind": "quoted-not-measured",
+      "retrieved": "2026-10-09",
+      "source_commit": "be33adbcf188fdeab5c061699847d9d440f7a084 (2021-10-20)",
+      "ratios": {
+        "drawn_pitch_2T_over_sram": 1.029,
+        "array_4x4_with_ring_2T_over_sram": 1.82,
+        "note": ">1 means the 2T cell is LARGER than the SRAM cell"
+      }
+    }
+  ],
+  "verdict": {
+    "primary_comparator_um2": 2.0698,
+    "drawn_pitch_ratio": 0.942,
+    "array_4x4_ratio": 1.667,
+    "macro_nominal_ratio_ring_free": 1.346,
+    "2T_beats_sram_cell_on_area": true,
+    "caveat": "SRAM figures use SRAM-specific rules; the 2T cell is drawn in plain logic rules. No public logic-rule 6T sky130 figure was verified, so none is quoted. SRAM is static; this cell needs refresh (sim/refresh-overhead/README.md)."
+  }
+}

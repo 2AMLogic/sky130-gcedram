@@ -28,3 +28,7 @@ sim/refresh-energy/results/refresh_energy_summary_20261010T055142Z.json
 # sim/retention (issue #89): array-context C_SN capacitance-only comparison.
 # Inside a `results` directory (already protected); listed to register it.
 sim/retention/results/array_c_sn_comparison_20261011T020547Z.json
+#
+# layout/compact (issue #100): bitcell-compaction density results.
+layout/results/density_20261015_v1.json
+layout/results/density_20261015_v2.json
