@@ -34,12 +34,13 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
+- **#197**: Consolidate anchor-style mutant helpers left over after #191 (3 run_mutation scripts)
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#199**: refactor: share anchor-mutant helpers across integration mutation scripts
 
 ## Approved (Awaiting Merge)
 
@@ -79,8 +80,8 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 0 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 3 |
 | Curated | 7 |
 | Architect / Hermit proposals | 2 |
