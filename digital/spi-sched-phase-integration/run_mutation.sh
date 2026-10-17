@@ -19,7 +19,8 @@
 # Exit 0 only if the baseline passes and every mutant is killed.
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+source "$here/../ci/mutation_lib.sh"
+mutation_init
 one="ratified anchored 3700 130 3 1"
 MATRIX="$one" "$here/run_tests.sh" --no-negative >"$tmp/base.log" 2>&1 || { cat "$tmp/base.log"; echo "baseline does not pass"; exit 2; }
 echo "baseline: PASS"
@@ -32,11 +33,7 @@ overlay() {  # dir
   cp "$here"/../sched-phase-integration/launch_adapter.v "$1/sched-phase-integration/"
   cp "$here"/spi_sched_phase_top.v "$1/spi-sched-phase-integration/"
 }
-verdict() {  # name log status
-  if [ "$3" = 0 ]; then echo "MUTANT $1: SURVIVED (bench is too weak)"; rc=1
-  elif grep -qE '^(FINDING|CONFIG_REJECT)' "$2"; then echo "MUTANT $1: killed (first: $(grep -m1 -E '^(FINDING|CONFIG_REJECT)' "$2"))"
-  else echo "MUTANT $1: failed WITHOUT a finding (compile error?)"; rc=1; fi
-}
+verdict() { mutation_verdict "$1" "$2" "$3" '^(FINDING|CONFIG_REJECT)'; }
 # name ~ file (relative to digital/) ~ original ~ mutated ~ set ~ gate-bypass-too (1/0)
 mutants=(
   "spi_floor_not_passed~control-integration/gc_ctrl_top.v~.MIN_INTERVAL(MIN_INTERVAL)~.MIN_INTERVAL(1)~anchored~1"
@@ -67,13 +64,7 @@ for m in "${mutants[@]}"; do
   [ -n "${ONLY:-}" ] && ! [[ "$m" =~ $ONLY ]] && continue
   IFS='~' read -r name file orig mut set bypass <<< "$m"
   d="$tmp/$name"; overlay "$d"
-  if ! python3 -I -c '
-import sys, pathlib
-p = pathlib.Path(sys.argv[1]); s = p.read_text()
-if s.count(sys.argv[2]) != 1: sys.exit(1)
-p.write_text(s.replace(sys.argv[2], sys.argv[3]))' "$d/$file" "$orig" "$mut"; then
-    echo "MUTANT $name: anchor not found exactly once in $file"; rc=1; continue
-  fi
+  mutation_anchor_apply "$name" "$d" "$file" "$orig" "$mut" || { rc=1; continue; }
   run_mut "$d" "$set" 1 "$d/log"; verdict "$name (gate on)" "$d/log" $?
   if [ "$bypass" = 1 ]; then
     run_mut "$d" "$set" 0 "$d/log0"; verdict "$name (gate bypassed, dynamic scoreboard only)" "$d/log0" $?
