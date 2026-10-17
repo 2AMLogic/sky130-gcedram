@@ -2,6 +2,11 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-17
+
+- **PR #186**: refactor(sim): share sha256 and decided() helpers via _evidence_common
+- **Issue #185** (closed): Consolidate duplicated sha256 and decided() helpers into sim/_evidence_common.py
+
 ### 2026-10-16
 
 - **PR #181**: sim: re-qualify sense-stage under open_pdks f6eeac7 (results unchanged)
