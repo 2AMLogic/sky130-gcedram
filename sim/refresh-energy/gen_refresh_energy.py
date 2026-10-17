@@ -45,6 +45,8 @@ sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "write-disturb"))
 import gen_refresh_op as G  # noqa: E402  (#110 operation reference)
 import gen_write_disturb as WD  # noqa: E402  (extracted-array parser)
+sys.path.insert(0, str(REPO / "sim"))
+from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "refresh_energy.spice"
 REQUEST_PATH = HERE / "request.json"
@@ -385,17 +387,9 @@ def build_measurements() -> list[dict]:
 
 
 def build_request(tmax_s: float) -> dict:
-    return {
-        "netlist": "refresh_energy.spice",
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-        "analysis": {"kind": "tran",
-                     "args": f"{_fmt(TRAN_STEP_S * 1e12)}p {_fmt(T_STOP_S * 1e9)}n 0 {_fmt(tmax_s * 1e12)}p uic"},
-        "measurements": build_measurements(),
-        "options": {"timeout_s": 3600, "keep_artifacts": False, "waveforms": False},
-    }
+    return klt_request("refresh_energy.spice", {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
+                       f"{_fmt(TRAN_STEP_S * 1e12)}p {_fmt(T_STOP_S * 1e9)}n 0 {_fmt(tmax_s * 1e12)}p uic",
+                       build_measurements(), 3600)
 
 
 def render() -> tuple[str, str, str]:

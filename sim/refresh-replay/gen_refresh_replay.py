@@ -36,6 +36,7 @@ sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 sys.path.insert(0, str(REPO / "sim"))
 from _evidence_common import sha256_hex as sha256  # noqa: E402
+from klt_request import build_request as klt_request  # noqa: E402
 import replay_lib as L  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
 import gen_sense_stage as S  # noqa: E402
@@ -276,11 +277,8 @@ def build_request(insts: list[dict]) -> dict:
             {"name": f"snset_{n}", "unit": "V", "spice": f".meas tran snset_{n} FIND v(sn_{n}_0) AT={p['t_settle_ns']:.6g}n"},
             {"name": f"dend_{n}", "unit": "V", "spice": f".meas tran dend_{n} FIND v(d_{n}) AT={p['t_meas_ns']:.6g}n"},
         ]
-    return {"netlist": "refresh_replay.spice", "engine": "ngspice", "backend": "batch",
-            "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-            "corners": {"process": G.PROCESS_CORNERS, "temperature_c": G.TEMPS_C},
-            "analysis": {"kind": "tran", "args": f"10p {t_stop_ns(insts):.6g}n 0 50p uic"},
-            "measurements": meas, "options": {"timeout_s": 1800, "keep_artifacts": False, "waveforms": False}}
+    return klt_request("refresh_replay.spice", {"process": G.PROCESS_CORNERS, "temperature_c": G.TEMPS_C},
+                       f"10p {t_stop_ns(insts):.6g}n 0 50p uic", meas, 1800)
 
 
 def verify_deck(deck: str, insts: list[dict], golden: dict) -> dict:

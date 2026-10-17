@@ -39,6 +39,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
+sys.path.insert(0, str(REPO / "sim"))
+from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "column_periphery.spice"
 REQUEST_PATH = HERE / "request.json"
@@ -293,16 +295,8 @@ def build_request() -> dict:
             {"name": f"tdec_{n}", "unit": "s",
              "spice": f".meas tran tdec_{n} WHEN v(dabs_{n})=0.9 RISE=1 TD={f(T_EN_S)}n"},
         ]
-    return {
-        "netlist": "column_periphery.spice",
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-        "analysis": {"kind": "tran", "args": f"10p {f(T_STOP_S)}n 0 50p uic"},
-        "measurements": meas,
-        "options": {"timeout_s": 900, "keep_artifacts": False, "waveforms": False},
-    }
+    return klt_request("column_periphery.spice", {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
+                       f"10p {f(T_STOP_S)}n 0 50p uic", meas, 900)
 
 
 def render() -> tuple[str, str]:

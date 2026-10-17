@@ -41,6 +41,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import gen_column_periphery as G  # noqa: E402
+sys.path.insert(0, str(HERE.parent))
+from klt_request import build_request as klt_request, mc_block  # noqa: E402
 
 STUDY_NETLIST = HERE / "isolation_study.spice"
 STUDY_REQUEST = HERE / "request_isolation.json"
@@ -414,20 +416,11 @@ def build_request(points: list[dict], netlist: str, mc: bool) -> dict:
         else:
             meas.append({"name": f"dpre_{n}", "unit": "V",
                          "spice": f".meas tran dpre_{n} FIND v(d_{n}) AT={f(G.T_EN_S - WN_LEAD_IDEAL)}n"})
-    req = {
-        "netlist": netlist,
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": {"process": MC_CORNERS if mc else G.PROCESS_CORNERS, "temperature_c": G.TEMPS_C},
-    }
-    if mc:
-        req["exclude"] = [{"process": p, "temperature_c": t} for p, t in MC_EXCLUDE]
-        req["monte_carlo"] = {"n": MC_N, "seed": MC_SEED, "vary": "mismatch", "quantiles": [2.5, 50, 97.5]}
-    req["analysis"] = {"kind": "tran", "args": f"10p {f(G.T_STOP_S)}n 0 50p uic"}
-    req["measurements"] = meas
-    req["options"] = {"timeout_s": 900 if not mc else 3000, "keep_artifacts": False, "waveforms": False}
-    return req
+    return klt_request(
+        netlist, {"process": MC_CORNERS if mc else G.PROCESS_CORNERS, "temperature_c": G.TEMPS_C},
+        f"10p {f(G.T_STOP_S)}n 0 50p uic", meas, 900 if not mc else 3000,
+        exclude=[{"process": p, "temperature_c": t} for p, t in MC_EXCLUDE] if mc else None,
+        monte_carlo=mc_block(MC_N, MC_SEED) if mc else None)
 
 
 WN_LEAD_IDEAL = LEAD0  # the ideal control's dpre is read at the baseline isolation instant
