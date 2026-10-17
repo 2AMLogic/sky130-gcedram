@@ -34,13 +34,12 @@ _None._
 Issues currently being built (`loom:building`).
 
 - **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
-- **#187**: Consolidate 6 copies of the gzip-aware JSON report loader into _evidence_common
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#188**: refactor(sim): share gzip-aware JSON report loader via _evidence_common
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -79,8 +78,8 @@ Issues carrying `loom:curated`.
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 3 |
 | Curated | 6 |
 | Architect / Hermit proposals | 2 |
