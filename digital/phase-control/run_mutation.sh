@@ -4,9 +4,9 @@
 # really changed the source.
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
-"$here/run_tests.sh" >/dev/null || { echo "baseline does not pass"; exit 2; }
-echo "baseline: PASS"
+source "$here/../ci/mutation_lib.sh"
+mutation_init
+mutation_baseline "$here/run_tests.sh"
 declare -A M
 M[precharge_overlaps_rwl]='s/(assign pre_en   = )\(st == S_PRE\);/\1(st == S_PRE) || (st == S_SENSE);/'
 M[sense_before_rwl]='s/(assign sense_en = )\(st == S_SENSE\) && \(cnt == 0\);/\1(st == S_PRE) || ((st == S_SENSE) \&\& (cnt == 0));/'
@@ -20,17 +20,7 @@ M[sense_window_one_short]='s/S_SENSE: dur = P_SENSE;/S_SENSE: dur = P_SENSE - 1;
 M[bl_released_early]='s/\(kind_q != K_READ && \(st == S_GUARD/(1'"'"'b0 \&\& (st == S_GUARD/'
 M[start_while_busy_ignored_unflagged]='s/if \(start\) start_ignored <= 1.b1;/if (0) start_ignored <= 1'"'"'b1;/'
 M[done_never_pulses]='s/st <= S_IDLE; done <= 1.b1; end/st <= S_IDLE; end/'
-rc=0
-for name in $(printf '%s\n' "${!M[@]}" | sort); do
-  sed -E "${M[$name]}" "$here/phase_seq.v" > "$tmp/$name.v"
-  if cmp -s "$tmp/$name.v" "$here/phase_seq.v"; then echo "MUTANT $name: sed did not change the source"; rc=1; continue; fi
-  if "$here/run_tests.sh" "$tmp/$name.v" >"$tmp/$name.log" 2>&1; then
-    echo "MUTANT $name: SURVIVED (testbench is too weak)"; rc=1
-  elif grep -q 'VIOLATION' "$tmp/$name.log"; then
-    echo "MUTANT $name: killed ($(grep -c VIOLATION "$tmp/$name.log") violations shown)"
-  else
-    echo "MUTANT $name: failed WITHOUT a bench violation (compile error?)"; rc=1
-  fi
-done
-[ "$rc" = 0 ] && echo "MUTATION CHECK PASS" || echo "MUTATION CHECK FAIL"
-exit "$rc"
+MUT_SORT=1
+MUT_KILL_PATTERN=VIOLATION
+mutant_run() { "$here/run_tests.sh" "$1" >"$2" 2>&1; }
+mutation_sed_check "$here/phase_seq.v"
