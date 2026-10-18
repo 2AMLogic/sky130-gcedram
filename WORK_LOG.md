@@ -4,6 +4,8 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-17
 
+- **PR #199**: refactor: share anchor-mutant helpers across integration mutation scripts
+- **Issue #197** (closed): Consolidate anchor-style mutant helpers left over after #191 (3 run_mutation scripts)
 - **PR #198**: refactor: share klt sim request skeleton across sim generators
 - **Issue #196** (closed): Consolidate duplicated klt sim request skeleton across 9 sim gen_ scripts
 - **PR #193**: refactor: share mutation-check harness across digital run_mutation.sh scripts
