@@ -500,7 +500,7 @@ hold** under either reading, and closing the gap needs evidence this issue does 
 quiet neighbours are the existing ASSUMPTIONS.
 
 **No spec file, README density requirement or ratified value was changed.** Per the issue and CLAUDE.md the
-shortfall is reported as an operator decision (filed with this PR).
+shortfall is reported as an operator decision (filed as #208).
 
 ### Array parasitics (`layout/results/compact_parasitics_20261020T171849Z.json`), 4 rows x 4 columns, worst net, fF
 
