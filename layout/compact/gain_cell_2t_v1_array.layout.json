@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "generator": "layout/compact/gen_compact.py",
+  "variant": "v1",
+  "cell_name": "gain_cell_2t_v1_array_4x4_layout_0",
+  "gds_path": "gain_cell_2t_v1_array.gds",
+  "pdk": {
+    "name": "sky130A",
+    "variant": "sky130A"
+  },
+  "bbox_um": {
+    "x0": -1.065,
+    "y0": -0.935,
+    "x1": 4.735,
+    "y1": 8.585
+  },
+  "core_bbox_um": {
+    "x0": -0.145,
+    "y0": -0.015,
+    "x1": 3.815,
+    "y1": 7.665
+  },
+  "ring": true
+}

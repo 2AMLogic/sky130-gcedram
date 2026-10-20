@@ -81,6 +81,9 @@ jobs:
       - name: Geometry-matched access leakage (issue #149) checks
         run: python3 -I sim/leakage/test_geometry_leakage.py
 
+      - name: Bitcell compaction variants (issue #100) consistency checks
+        run: python3 -I layout/compact/test_compact.py
+
   append-only:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

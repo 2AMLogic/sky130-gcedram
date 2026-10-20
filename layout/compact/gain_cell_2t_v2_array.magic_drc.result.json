@@ -1,0 +1,12 @@
+{
+  "tool": "magic drc(full), sky130A tech file from the pinned PDK",
+  "gds": "gain_cell_2t_v2_array.gds",
+  "top": "gain_cell_2t_v2_array_4x4_layout_0",
+  "check_only_synthetic_layers": [
+    "nsdm 93/44 = diff+0.125",
+    "psdm 94/20 = tap+0.125",
+    "npc 95/20 = poly licon+0.1"
+  ],
+  "rules_fired": {},
+  "total": 0
+}

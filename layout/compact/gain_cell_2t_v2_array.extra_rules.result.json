@@ -1,0 +1,15 @@
+{
+  "gds": "gain_cell_2t_v2_array.gds",
+  "violations": {
+    "licon.stray (licon on neither diff nor poly)": 0,
+    "poly.4 poly-diff spacing < 0.075": 0,
+    "poly.7 gate endcap < 0.13": 0,
+    "licon.2 licon spacing < 0.17": 0,
+    "licon.5 diff enclosure of licon < 0.04": 0,
+    "licon.5c diff end enclosure (y) < 0.06": 0,
+    "licon.8 poly enclosure of poly licon < 0.08 (opposite pair)": 0,
+    "licon.11 diff-licon to gate spacing < 0.055": 0,
+    "licon.14 poly-licon to diff spacing < 0.19": 0
+  },
+  "total": 0
+}
