@@ -4,6 +4,8 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-20
 
+- **PR #209**: feat: re-characterise C_SN, parasitics and leakage for the compact bitcell layouts
+- **Issue #161** (closed): Re-characterise C_SN and array parasitics for the compact bitcell layouts from #100
 - **PR #162**: layout: add reproducible compact 2T bitcell variants (1.95 and 1.40 um^2 drawn pitch)
 - **Issue #100** (closed): Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
 
