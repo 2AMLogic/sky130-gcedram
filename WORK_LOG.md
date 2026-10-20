@@ -2,6 +2,11 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-20
+
+- **PR #162**: layout: add reproducible compact 2T bitcell variants (1.95 and 1.40 um^2 drawn pitch)
+- **Issue #100** (closed): Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
+
 ### 2026-10-17
 
 - **PR #199**: refactor: share anchor-mutant helpers across integration mutation scripts
