@@ -28,14 +28,14 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
+- **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
 - **#168**: Re-qualify G1 retention chain (leakage, bitcell-transient, retention) under open_pdks f6eeac7
-
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-- **#100**: Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
+_None._
 
 ## PRs Awaiting Review
 
@@ -80,8 +80,8 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 3 |
 | Very important | 0 |
 | Important | 2 |
-| Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 1 |
+| Ready (`loom:issue`) | 2 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 3 |
 | Curated | 7 |
