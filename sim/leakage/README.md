@@ -297,6 +297,7 @@ apart. Confirming the fleet's PDK revision is a fleet-image question (see the PR
 | `gen_geometry_leakage.py`, `geometry-matched/` | Issue #149: geometry-matched deck + `klt sim` batch request generated from the extraction |
 | `analyze_geometry_leakage.py`, `test_geometry_leakage.py` | Report reducer / comparison and its stdlib tests |
 | `geometry-matched/results/` | Append-only raw batch report and derived comparison for #149 |
+| `compact_geometry_leakage.py`, `compact-geometry/` | Issue #161: the same study for the compact layouts of #100 (deck + `klt sim` batch request generated from the three extractions; reducer; append-only `results/`). Summary of findings in `sim/retention/README.md` "Compact-layout re-characterisation" |
 
 The PDK version pin and corner/temperature set this testbench targets are
 documented in [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md) (imported at
