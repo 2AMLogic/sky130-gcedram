@@ -9,6 +9,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#214**: feat(sim): device-inclusive C_SN of the compact v2 array
 
 ## Very Important
 
@@ -48,6 +49,7 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#214**: feat(sim): device-inclusive C_SN of the compact v2 array
 
 ## Proposed
 
@@ -75,13 +77,13 @@ Issues carrying `loom:curated`.
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 2 |
+| Operator merge-risk holds | 3 |
 | Very important | 1 |
 | Important | 1 |
 | Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
+| Approved PRs awaiting merge | 3 |
 | Curated | 7 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
