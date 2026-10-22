@@ -1,0 +1,2538 @@
+{
+ "netlist": "compact_device_c_sn.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   -40,
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "10p 300n 0 100p uic"
+ },
+ "measurements": [
+  {
+   "name": "t_a_n7_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_1000 WHEN v(n7_a_n7)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n7_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_900 WHEN v(n7_a_n7)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n7_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_800 WHEN v(n7_a_n7)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n7_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_700 WHEN v(n7_a_n7)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n7_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_600 WHEN v(n7_a_n7)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n7_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_500 WHEN v(n7_a_n7)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n7_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_400 WHEN v(n7_a_n7)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n7_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_300 WHEN v(n7_a_n7)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n7_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_200 WHEN v(n7_a_n7)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n7_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n7_100 WHEN v(n7_a_n7)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n8_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_1000 WHEN v(n8_a_n8)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n8_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_900 WHEN v(n8_a_n8)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n8_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_800 WHEN v(n8_a_n8)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n8_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_700 WHEN v(n8_a_n8)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n8_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_600 WHEN v(n8_a_n8)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n8_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_500 WHEN v(n8_a_n8)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n8_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_400 WHEN v(n8_a_n8)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n8_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_300 WHEN v(n8_a_n8)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n8_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_200 WHEN v(n8_a_n8)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n8_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n8_100 WHEN v(n8_a_n8)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n9_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_1000 WHEN v(n9_a_n9)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n9_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_900 WHEN v(n9_a_n9)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n9_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_800 WHEN v(n9_a_n9)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n9_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_700 WHEN v(n9_a_n9)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n9_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_600 WHEN v(n9_a_n9)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n9_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_500 WHEN v(n9_a_n9)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n9_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_400 WHEN v(n9_a_n9)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n9_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_300 WHEN v(n9_a_n9)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n9_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_200 WHEN v(n9_a_n9)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n9_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n9_100 WHEN v(n9_a_n9)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n10_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_1000 WHEN v(n10_a_n10)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n10_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_900 WHEN v(n10_a_n10)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n10_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_800 WHEN v(n10_a_n10)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n10_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_700 WHEN v(n10_a_n10)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n10_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_600 WHEN v(n10_a_n10)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n10_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_500 WHEN v(n10_a_n10)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n10_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_400 WHEN v(n10_a_n10)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n10_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_300 WHEN v(n10_a_n10)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n10_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_200 WHEN v(n10_a_n10)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n10_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n10_100 WHEN v(n10_a_n10)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n17_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_1000 WHEN v(n17_a_n17)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n17_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_900 WHEN v(n17_a_n17)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n17_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_800 WHEN v(n17_a_n17)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n17_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_700 WHEN v(n17_a_n17)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n17_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_600 WHEN v(n17_a_n17)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n17_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_500 WHEN v(n17_a_n17)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n17_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_400 WHEN v(n17_a_n17)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n17_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_300 WHEN v(n17_a_n17)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n17_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_200 WHEN v(n17_a_n17)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n17_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n17_100 WHEN v(n17_a_n17)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n18_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_1000 WHEN v(n18_a_n18)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n18_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_900 WHEN v(n18_a_n18)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n18_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_800 WHEN v(n18_a_n18)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n18_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_700 WHEN v(n18_a_n18)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n18_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_600 WHEN v(n18_a_n18)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n18_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_500 WHEN v(n18_a_n18)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n18_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_400 WHEN v(n18_a_n18)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n18_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_300 WHEN v(n18_a_n18)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n18_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_200 WHEN v(n18_a_n18)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n18_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n18_100 WHEN v(n18_a_n18)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n19_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_1000 WHEN v(n19_a_n19)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n19_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_900 WHEN v(n19_a_n19)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n19_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_800 WHEN v(n19_a_n19)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n19_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_700 WHEN v(n19_a_n19)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n19_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_600 WHEN v(n19_a_n19)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n19_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_500 WHEN v(n19_a_n19)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n19_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_400 WHEN v(n19_a_n19)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n19_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_300 WHEN v(n19_a_n19)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n19_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_200 WHEN v(n19_a_n19)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n19_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n19_100 WHEN v(n19_a_n19)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n20_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_1000 WHEN v(n20_a_n20)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n20_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_900 WHEN v(n20_a_n20)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n20_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_800 WHEN v(n20_a_n20)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n20_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_700 WHEN v(n20_a_n20)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n20_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_600 WHEN v(n20_a_n20)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n20_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_500 WHEN v(n20_a_n20)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n20_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_400 WHEN v(n20_a_n20)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n20_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_300 WHEN v(n20_a_n20)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n20_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_200 WHEN v(n20_a_n20)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n20_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n20_100 WHEN v(n20_a_n20)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n22_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_1000 WHEN v(n22_a_n22)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n22_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_900 WHEN v(n22_a_n22)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n22_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_800 WHEN v(n22_a_n22)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n22_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_700 WHEN v(n22_a_n22)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n22_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_600 WHEN v(n22_a_n22)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n22_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_500 WHEN v(n22_a_n22)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n22_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_400 WHEN v(n22_a_n22)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n22_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_300 WHEN v(n22_a_n22)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n22_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_200 WHEN v(n22_a_n22)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n22_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n22_100 WHEN v(n22_a_n22)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n23_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_1000 WHEN v(n23_a_n23)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n23_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_900 WHEN v(n23_a_n23)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n23_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_800 WHEN v(n23_a_n23)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n23_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_700 WHEN v(n23_a_n23)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n23_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_600 WHEN v(n23_a_n23)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n23_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_500 WHEN v(n23_a_n23)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n23_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_400 WHEN v(n23_a_n23)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n23_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_300 WHEN v(n23_a_n23)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n23_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_200 WHEN v(n23_a_n23)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n23_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n23_100 WHEN v(n23_a_n23)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n24_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_1000 WHEN v(n24_a_n24)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n24_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_900 WHEN v(n24_a_n24)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n24_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_800 WHEN v(n24_a_n24)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n24_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_700 WHEN v(n24_a_n24)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n24_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_600 WHEN v(n24_a_n24)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n24_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_500 WHEN v(n24_a_n24)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n24_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_400 WHEN v(n24_a_n24)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n24_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_300 WHEN v(n24_a_n24)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n24_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_200 WHEN v(n24_a_n24)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n24_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n24_100 WHEN v(n24_a_n24)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n25_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_1000 WHEN v(n25_a_n25)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n25_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_900 WHEN v(n25_a_n25)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n25_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_800 WHEN v(n25_a_n25)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n25_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_700 WHEN v(n25_a_n25)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n25_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_600 WHEN v(n25_a_n25)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n25_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_500 WHEN v(n25_a_n25)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n25_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_400 WHEN v(n25_a_n25)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n25_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_300 WHEN v(n25_a_n25)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n25_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_200 WHEN v(n25_a_n25)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n25_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n25_100 WHEN v(n25_a_n25)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n29_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_1000 WHEN v(n29_a_n29)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n29_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_900 WHEN v(n29_a_n29)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n29_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_800 WHEN v(n29_a_n29)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n29_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_700 WHEN v(n29_a_n29)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n29_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_600 WHEN v(n29_a_n29)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n29_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_500 WHEN v(n29_a_n29)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n29_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_400 WHEN v(n29_a_n29)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n29_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_300 WHEN v(n29_a_n29)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n29_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_200 WHEN v(n29_a_n29)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n29_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n29_100 WHEN v(n29_a_n29)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n30_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_1000 WHEN v(n30_a_n30)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n30_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_900 WHEN v(n30_a_n30)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n30_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_800 WHEN v(n30_a_n30)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n30_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_700 WHEN v(n30_a_n30)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n30_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_600 WHEN v(n30_a_n30)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n30_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_500 WHEN v(n30_a_n30)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n30_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_400 WHEN v(n30_a_n30)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n30_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_300 WHEN v(n30_a_n30)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n30_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_200 WHEN v(n30_a_n30)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n30_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n30_100 WHEN v(n30_a_n30)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n31_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_1000 WHEN v(n31_a_n31)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n31_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_900 WHEN v(n31_a_n31)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n31_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_800 WHEN v(n31_a_n31)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n31_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_700 WHEN v(n31_a_n31)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n31_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_600 WHEN v(n31_a_n31)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n31_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_500 WHEN v(n31_a_n31)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n31_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_400 WHEN v(n31_a_n31)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n31_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_300 WHEN v(n31_a_n31)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n31_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_200 WHEN v(n31_a_n31)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n31_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n31_100 WHEN v(n31_a_n31)=0.1 FALL=1"
+  },
+  {
+   "name": "t_a_n32_1000",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_1000 WHEN v(n32_a_n32)=1 FALL=1"
+  },
+  {
+   "name": "t_a_n32_900",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_900 WHEN v(n32_a_n32)=0.9 FALL=1"
+  },
+  {
+   "name": "t_a_n32_800",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_800 WHEN v(n32_a_n32)=0.8 FALL=1"
+  },
+  {
+   "name": "t_a_n32_700",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_700 WHEN v(n32_a_n32)=0.7 FALL=1"
+  },
+  {
+   "name": "t_a_n32_600",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_600 WHEN v(n32_a_n32)=0.6 FALL=1"
+  },
+  {
+   "name": "t_a_n32_500",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_500 WHEN v(n32_a_n32)=0.5 FALL=1"
+  },
+  {
+   "name": "t_a_n32_400",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_400 WHEN v(n32_a_n32)=0.4 FALL=1"
+  },
+  {
+   "name": "t_a_n32_300",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_300 WHEN v(n32_a_n32)=0.3 FALL=1"
+  },
+  {
+   "name": "t_a_n32_200",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_200 WHEN v(n32_a_n32)=0.2 FALL=1"
+  },
+  {
+   "name": "t_a_n32_100",
+   "unit": "s",
+   "spice": ".meas tran t_a_n32_100 WHEN v(n32_a_n32)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n7_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_1000 WHEN v(n7_p_n7)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n7_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_900 WHEN v(n7_p_n7)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n7_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_800 WHEN v(n7_p_n7)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n7_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_700 WHEN v(n7_p_n7)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n7_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_600 WHEN v(n7_p_n7)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n7_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_500 WHEN v(n7_p_n7)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n7_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_400 WHEN v(n7_p_n7)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n7_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_300 WHEN v(n7_p_n7)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n7_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_200 WHEN v(n7_p_n7)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n7_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n7_100 WHEN v(n7_p_n7)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n8_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_1000 WHEN v(n8_p_n8)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n8_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_900 WHEN v(n8_p_n8)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n8_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_800 WHEN v(n8_p_n8)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n8_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_700 WHEN v(n8_p_n8)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n8_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_600 WHEN v(n8_p_n8)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n8_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_500 WHEN v(n8_p_n8)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n8_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_400 WHEN v(n8_p_n8)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n8_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_300 WHEN v(n8_p_n8)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n8_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_200 WHEN v(n8_p_n8)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n8_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n8_100 WHEN v(n8_p_n8)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n9_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_1000 WHEN v(n9_p_n9)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n9_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_900 WHEN v(n9_p_n9)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n9_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_800 WHEN v(n9_p_n9)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n9_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_700 WHEN v(n9_p_n9)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n9_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_600 WHEN v(n9_p_n9)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n9_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_500 WHEN v(n9_p_n9)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n9_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_400 WHEN v(n9_p_n9)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n9_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_300 WHEN v(n9_p_n9)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n9_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_200 WHEN v(n9_p_n9)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n9_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n9_100 WHEN v(n9_p_n9)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n10_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_1000 WHEN v(n10_p_n10)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n10_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_900 WHEN v(n10_p_n10)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n10_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_800 WHEN v(n10_p_n10)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n10_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_700 WHEN v(n10_p_n10)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n10_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_600 WHEN v(n10_p_n10)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n10_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_500 WHEN v(n10_p_n10)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n10_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_400 WHEN v(n10_p_n10)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n10_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_300 WHEN v(n10_p_n10)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n10_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_200 WHEN v(n10_p_n10)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n10_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n10_100 WHEN v(n10_p_n10)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n17_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_1000 WHEN v(n17_p_n17)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n17_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_900 WHEN v(n17_p_n17)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n17_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_800 WHEN v(n17_p_n17)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n17_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_700 WHEN v(n17_p_n17)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n17_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_600 WHEN v(n17_p_n17)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n17_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_500 WHEN v(n17_p_n17)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n17_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_400 WHEN v(n17_p_n17)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n17_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_300 WHEN v(n17_p_n17)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n17_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_200 WHEN v(n17_p_n17)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n17_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n17_100 WHEN v(n17_p_n17)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n18_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_1000 WHEN v(n18_p_n18)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n18_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_900 WHEN v(n18_p_n18)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n18_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_800 WHEN v(n18_p_n18)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n18_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_700 WHEN v(n18_p_n18)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n18_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_600 WHEN v(n18_p_n18)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n18_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_500 WHEN v(n18_p_n18)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n18_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_400 WHEN v(n18_p_n18)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n18_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_300 WHEN v(n18_p_n18)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n18_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_200 WHEN v(n18_p_n18)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n18_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n18_100 WHEN v(n18_p_n18)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n19_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_1000 WHEN v(n19_p_n19)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n19_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_900 WHEN v(n19_p_n19)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n19_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_800 WHEN v(n19_p_n19)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n19_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_700 WHEN v(n19_p_n19)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n19_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_600 WHEN v(n19_p_n19)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n19_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_500 WHEN v(n19_p_n19)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n19_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_400 WHEN v(n19_p_n19)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n19_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_300 WHEN v(n19_p_n19)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n19_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_200 WHEN v(n19_p_n19)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n19_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n19_100 WHEN v(n19_p_n19)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n20_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_1000 WHEN v(n20_p_n20)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n20_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_900 WHEN v(n20_p_n20)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n20_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_800 WHEN v(n20_p_n20)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n20_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_700 WHEN v(n20_p_n20)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n20_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_600 WHEN v(n20_p_n20)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n20_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_500 WHEN v(n20_p_n20)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n20_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_400 WHEN v(n20_p_n20)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n20_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_300 WHEN v(n20_p_n20)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n20_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_200 WHEN v(n20_p_n20)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n20_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n20_100 WHEN v(n20_p_n20)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n22_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_1000 WHEN v(n22_p_n22)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n22_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_900 WHEN v(n22_p_n22)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n22_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_800 WHEN v(n22_p_n22)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n22_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_700 WHEN v(n22_p_n22)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n22_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_600 WHEN v(n22_p_n22)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n22_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_500 WHEN v(n22_p_n22)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n22_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_400 WHEN v(n22_p_n22)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n22_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_300 WHEN v(n22_p_n22)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n22_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_200 WHEN v(n22_p_n22)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n22_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n22_100 WHEN v(n22_p_n22)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n23_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_1000 WHEN v(n23_p_n23)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n23_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_900 WHEN v(n23_p_n23)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n23_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_800 WHEN v(n23_p_n23)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n23_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_700 WHEN v(n23_p_n23)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n23_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_600 WHEN v(n23_p_n23)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n23_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_500 WHEN v(n23_p_n23)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n23_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_400 WHEN v(n23_p_n23)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n23_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_300 WHEN v(n23_p_n23)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n23_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_200 WHEN v(n23_p_n23)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n23_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n23_100 WHEN v(n23_p_n23)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n24_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_1000 WHEN v(n24_p_n24)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n24_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_900 WHEN v(n24_p_n24)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n24_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_800 WHEN v(n24_p_n24)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n24_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_700 WHEN v(n24_p_n24)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n24_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_600 WHEN v(n24_p_n24)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n24_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_500 WHEN v(n24_p_n24)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n24_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_400 WHEN v(n24_p_n24)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n24_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_300 WHEN v(n24_p_n24)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n24_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_200 WHEN v(n24_p_n24)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n24_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n24_100 WHEN v(n24_p_n24)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n25_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_1000 WHEN v(n25_p_n25)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n25_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_900 WHEN v(n25_p_n25)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n25_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_800 WHEN v(n25_p_n25)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n25_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_700 WHEN v(n25_p_n25)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n25_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_600 WHEN v(n25_p_n25)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n25_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_500 WHEN v(n25_p_n25)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n25_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_400 WHEN v(n25_p_n25)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n25_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_300 WHEN v(n25_p_n25)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n25_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_200 WHEN v(n25_p_n25)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n25_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n25_100 WHEN v(n25_p_n25)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n29_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_1000 WHEN v(n29_p_n29)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n29_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_900 WHEN v(n29_p_n29)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n29_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_800 WHEN v(n29_p_n29)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n29_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_700 WHEN v(n29_p_n29)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n29_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_600 WHEN v(n29_p_n29)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n29_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_500 WHEN v(n29_p_n29)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n29_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_400 WHEN v(n29_p_n29)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n29_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_300 WHEN v(n29_p_n29)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n29_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_200 WHEN v(n29_p_n29)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n29_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n29_100 WHEN v(n29_p_n29)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n30_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_1000 WHEN v(n30_p_n30)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n30_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_900 WHEN v(n30_p_n30)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n30_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_800 WHEN v(n30_p_n30)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n30_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_700 WHEN v(n30_p_n30)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n30_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_600 WHEN v(n30_p_n30)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n30_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_500 WHEN v(n30_p_n30)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n30_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_400 WHEN v(n30_p_n30)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n30_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_300 WHEN v(n30_p_n30)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n30_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_200 WHEN v(n30_p_n30)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n30_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n30_100 WHEN v(n30_p_n30)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n31_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_1000 WHEN v(n31_p_n31)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n31_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_900 WHEN v(n31_p_n31)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n31_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_800 WHEN v(n31_p_n31)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n31_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_700 WHEN v(n31_p_n31)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n31_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_600 WHEN v(n31_p_n31)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n31_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_500 WHEN v(n31_p_n31)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n31_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_400 WHEN v(n31_p_n31)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n31_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_300 WHEN v(n31_p_n31)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n31_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_200 WHEN v(n31_p_n31)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n31_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n31_100 WHEN v(n31_p_n31)=0.1 FALL=1"
+  },
+  {
+   "name": "t_p_n32_1000",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_1000 WHEN v(n32_p_n32)=1 FALL=1"
+  },
+  {
+   "name": "t_p_n32_900",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_900 WHEN v(n32_p_n32)=0.9 FALL=1"
+  },
+  {
+   "name": "t_p_n32_800",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_800 WHEN v(n32_p_n32)=0.8 FALL=1"
+  },
+  {
+   "name": "t_p_n32_700",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_700 WHEN v(n32_p_n32)=0.7 FALL=1"
+  },
+  {
+   "name": "t_p_n32_600",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_600 WHEN v(n32_p_n32)=0.6 FALL=1"
+  },
+  {
+   "name": "t_p_n32_500",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_500 WHEN v(n32_p_n32)=0.5 FALL=1"
+  },
+  {
+   "name": "t_p_n32_400",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_400 WHEN v(n32_p_n32)=0.4 FALL=1"
+  },
+  {
+   "name": "t_p_n32_300",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_300 WHEN v(n32_p_n32)=0.3 FALL=1"
+  },
+  {
+   "name": "t_p_n32_200",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_200 WHEN v(n32_p_n32)=0.2 FALL=1"
+  },
+  {
+   "name": "t_p_n32_100",
+   "unit": "s",
+   "spice": ".meas tran t_p_n32_100 WHEN v(n32_p_n32)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n7_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_1000 WHEN v(n7_b_n7)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n7_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_900 WHEN v(n7_b_n7)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n7_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_800 WHEN v(n7_b_n7)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n7_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_700 WHEN v(n7_b_n7)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n7_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_600 WHEN v(n7_b_n7)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n7_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_500 WHEN v(n7_b_n7)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n7_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_400 WHEN v(n7_b_n7)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n7_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_300 WHEN v(n7_b_n7)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n7_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_200 WHEN v(n7_b_n7)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n7_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n7_100 WHEN v(n7_b_n7)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n8_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_1000 WHEN v(n8_b_n8)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n8_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_900 WHEN v(n8_b_n8)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n8_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_800 WHEN v(n8_b_n8)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n8_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_700 WHEN v(n8_b_n8)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n8_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_600 WHEN v(n8_b_n8)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n8_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_500 WHEN v(n8_b_n8)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n8_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_400 WHEN v(n8_b_n8)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n8_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_300 WHEN v(n8_b_n8)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n8_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_200 WHEN v(n8_b_n8)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n8_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n8_100 WHEN v(n8_b_n8)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n9_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_1000 WHEN v(n9_b_n9)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n9_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_900 WHEN v(n9_b_n9)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n9_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_800 WHEN v(n9_b_n9)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n9_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_700 WHEN v(n9_b_n9)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n9_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_600 WHEN v(n9_b_n9)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n9_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_500 WHEN v(n9_b_n9)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n9_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_400 WHEN v(n9_b_n9)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n9_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_300 WHEN v(n9_b_n9)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n9_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_200 WHEN v(n9_b_n9)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n9_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n9_100 WHEN v(n9_b_n9)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n10_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_1000 WHEN v(n10_b_n10)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n10_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_900 WHEN v(n10_b_n10)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n10_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_800 WHEN v(n10_b_n10)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n10_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_700 WHEN v(n10_b_n10)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n10_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_600 WHEN v(n10_b_n10)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n10_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_500 WHEN v(n10_b_n10)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n10_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_400 WHEN v(n10_b_n10)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n10_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_300 WHEN v(n10_b_n10)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n10_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_200 WHEN v(n10_b_n10)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n10_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n10_100 WHEN v(n10_b_n10)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n17_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_1000 WHEN v(n17_b_n17)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n17_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_900 WHEN v(n17_b_n17)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n17_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_800 WHEN v(n17_b_n17)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n17_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_700 WHEN v(n17_b_n17)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n17_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_600 WHEN v(n17_b_n17)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n17_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_500 WHEN v(n17_b_n17)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n17_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_400 WHEN v(n17_b_n17)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n17_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_300 WHEN v(n17_b_n17)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n17_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_200 WHEN v(n17_b_n17)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n17_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n17_100 WHEN v(n17_b_n17)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n18_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_1000 WHEN v(n18_b_n18)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n18_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_900 WHEN v(n18_b_n18)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n18_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_800 WHEN v(n18_b_n18)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n18_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_700 WHEN v(n18_b_n18)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n18_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_600 WHEN v(n18_b_n18)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n18_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_500 WHEN v(n18_b_n18)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n18_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_400 WHEN v(n18_b_n18)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n18_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_300 WHEN v(n18_b_n18)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n18_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_200 WHEN v(n18_b_n18)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n18_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n18_100 WHEN v(n18_b_n18)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n19_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_1000 WHEN v(n19_b_n19)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n19_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_900 WHEN v(n19_b_n19)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n19_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_800 WHEN v(n19_b_n19)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n19_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_700 WHEN v(n19_b_n19)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n19_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_600 WHEN v(n19_b_n19)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n19_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_500 WHEN v(n19_b_n19)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n19_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_400 WHEN v(n19_b_n19)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n19_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_300 WHEN v(n19_b_n19)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n19_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_200 WHEN v(n19_b_n19)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n19_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n19_100 WHEN v(n19_b_n19)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n20_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_1000 WHEN v(n20_b_n20)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n20_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_900 WHEN v(n20_b_n20)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n20_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_800 WHEN v(n20_b_n20)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n20_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_700 WHEN v(n20_b_n20)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n20_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_600 WHEN v(n20_b_n20)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n20_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_500 WHEN v(n20_b_n20)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n20_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_400 WHEN v(n20_b_n20)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n20_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_300 WHEN v(n20_b_n20)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n20_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_200 WHEN v(n20_b_n20)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n20_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n20_100 WHEN v(n20_b_n20)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n22_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_1000 WHEN v(n22_b_n22)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n22_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_900 WHEN v(n22_b_n22)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n22_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_800 WHEN v(n22_b_n22)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n22_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_700 WHEN v(n22_b_n22)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n22_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_600 WHEN v(n22_b_n22)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n22_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_500 WHEN v(n22_b_n22)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n22_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_400 WHEN v(n22_b_n22)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n22_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_300 WHEN v(n22_b_n22)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n22_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_200 WHEN v(n22_b_n22)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n22_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n22_100 WHEN v(n22_b_n22)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n23_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_1000 WHEN v(n23_b_n23)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n23_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_900 WHEN v(n23_b_n23)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n23_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_800 WHEN v(n23_b_n23)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n23_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_700 WHEN v(n23_b_n23)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n23_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_600 WHEN v(n23_b_n23)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n23_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_500 WHEN v(n23_b_n23)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n23_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_400 WHEN v(n23_b_n23)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n23_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_300 WHEN v(n23_b_n23)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n23_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_200 WHEN v(n23_b_n23)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n23_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n23_100 WHEN v(n23_b_n23)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n24_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_1000 WHEN v(n24_b_n24)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n24_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_900 WHEN v(n24_b_n24)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n24_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_800 WHEN v(n24_b_n24)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n24_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_700 WHEN v(n24_b_n24)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n24_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_600 WHEN v(n24_b_n24)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n24_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_500 WHEN v(n24_b_n24)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n24_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_400 WHEN v(n24_b_n24)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n24_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_300 WHEN v(n24_b_n24)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n24_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_200 WHEN v(n24_b_n24)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n24_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n24_100 WHEN v(n24_b_n24)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n25_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_1000 WHEN v(n25_b_n25)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n25_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_900 WHEN v(n25_b_n25)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n25_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_800 WHEN v(n25_b_n25)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n25_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_700 WHEN v(n25_b_n25)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n25_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_600 WHEN v(n25_b_n25)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n25_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_500 WHEN v(n25_b_n25)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n25_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_400 WHEN v(n25_b_n25)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n25_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_300 WHEN v(n25_b_n25)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n25_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_200 WHEN v(n25_b_n25)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n25_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n25_100 WHEN v(n25_b_n25)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n29_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_1000 WHEN v(n29_b_n29)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n29_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_900 WHEN v(n29_b_n29)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n29_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_800 WHEN v(n29_b_n29)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n29_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_700 WHEN v(n29_b_n29)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n29_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_600 WHEN v(n29_b_n29)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n29_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_500 WHEN v(n29_b_n29)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n29_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_400 WHEN v(n29_b_n29)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n29_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_300 WHEN v(n29_b_n29)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n29_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_200 WHEN v(n29_b_n29)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n29_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n29_100 WHEN v(n29_b_n29)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n30_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_1000 WHEN v(n30_b_n30)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n30_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_900 WHEN v(n30_b_n30)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n30_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_800 WHEN v(n30_b_n30)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n30_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_700 WHEN v(n30_b_n30)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n30_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_600 WHEN v(n30_b_n30)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n30_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_500 WHEN v(n30_b_n30)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n30_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_400 WHEN v(n30_b_n30)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n30_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_300 WHEN v(n30_b_n30)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n30_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_200 WHEN v(n30_b_n30)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n30_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n30_100 WHEN v(n30_b_n30)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n31_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_1000 WHEN v(n31_b_n31)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n31_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_900 WHEN v(n31_b_n31)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n31_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_800 WHEN v(n31_b_n31)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n31_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_700 WHEN v(n31_b_n31)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n31_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_600 WHEN v(n31_b_n31)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n31_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_500 WHEN v(n31_b_n31)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n31_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_400 WHEN v(n31_b_n31)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n31_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_300 WHEN v(n31_b_n31)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n31_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_200 WHEN v(n31_b_n31)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n31_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n31_100 WHEN v(n31_b_n31)=0.1 FALL=1"
+  },
+  {
+   "name": "t_b_n32_1000",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_1000 WHEN v(n32_b_n32)=1 FALL=1"
+  },
+  {
+   "name": "t_b_n32_900",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_900 WHEN v(n32_b_n32)=0.9 FALL=1"
+  },
+  {
+   "name": "t_b_n32_800",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_800 WHEN v(n32_b_n32)=0.8 FALL=1"
+  },
+  {
+   "name": "t_b_n32_700",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_700 WHEN v(n32_b_n32)=0.7 FALL=1"
+  },
+  {
+   "name": "t_b_n32_600",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_600 WHEN v(n32_b_n32)=0.6 FALL=1"
+  },
+  {
+   "name": "t_b_n32_500",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_500 WHEN v(n32_b_n32)=0.5 FALL=1"
+  },
+  {
+   "name": "t_b_n32_400",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_400 WHEN v(n32_b_n32)=0.4 FALL=1"
+  },
+  {
+   "name": "t_b_n32_300",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_300 WHEN v(n32_b_n32)=0.3 FALL=1"
+  },
+  {
+   "name": "t_b_n32_200",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_200 WHEN v(n32_b_n32)=0.2 FALL=1"
+  },
+  {
+   "name": "t_b_n32_100",
+   "unit": "s",
+   "spice": ".meas tran t_b_n32_100 WHEN v(n32_b_n32)=0.1 FALL=1"
+  },
+  {
+   "name": "t_rate_1000",
+   "unit": "s",
+   "spice": ".meas tran t_rate_1000 WHEN v(n20_rate)=1 FALL=1"
+  },
+  {
+   "name": "t_rate_900",
+   "unit": "s",
+   "spice": ".meas tran t_rate_900 WHEN v(n20_rate)=0.9 FALL=1"
+  },
+  {
+   "name": "t_rate_800",
+   "unit": "s",
+   "spice": ".meas tran t_rate_800 WHEN v(n20_rate)=0.8 FALL=1"
+  },
+  {
+   "name": "t_rate_700",
+   "unit": "s",
+   "spice": ".meas tran t_rate_700 WHEN v(n20_rate)=0.7 FALL=1"
+  },
+  {
+   "name": "t_rate_600",
+   "unit": "s",
+   "spice": ".meas tran t_rate_600 WHEN v(n20_rate)=0.6 FALL=1"
+  },
+  {
+   "name": "t_rate_500",
+   "unit": "s",
+   "spice": ".meas tran t_rate_500 WHEN v(n20_rate)=0.5 FALL=1"
+  },
+  {
+   "name": "t_rate_400",
+   "unit": "s",
+   "spice": ".meas tran t_rate_400 WHEN v(n20_rate)=0.4 FALL=1"
+  },
+  {
+   "name": "t_rate_300",
+   "unit": "s",
+   "spice": ".meas tran t_rate_300 WHEN v(n20_rate)=0.3 FALL=1"
+  },
+  {
+   "name": "t_rate_200",
+   "unit": "s",
+   "spice": ".meas tran t_rate_200 WHEN v(n20_rate)=0.2 FALL=1"
+  },
+  {
+   "name": "t_rate_100",
+   "unit": "s",
+   "spice": ".meas tran t_rate_100 WHEN v(n20_rate)=0.1 FALL=1"
+  },
+  {
+   "name": "t_ctl_1000",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_1000 WHEN v(ctl_hub)=1 FALL=1"
+  },
+  {
+   "name": "t_ctl_900",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_900 WHEN v(ctl_hub)=0.9 FALL=1"
+  },
+  {
+   "name": "t_ctl_800",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_800 WHEN v(ctl_hub)=0.8 FALL=1"
+  },
+  {
+   "name": "t_ctl_700",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_700 WHEN v(ctl_hub)=0.7 FALL=1"
+  },
+  {
+   "name": "t_ctl_600",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_600 WHEN v(ctl_hub)=0.6 FALL=1"
+  },
+  {
+   "name": "t_ctl_500",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_500 WHEN v(ctl_hub)=0.5 FALL=1"
+  },
+  {
+   "name": "t_ctl_400",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_400 WHEN v(ctl_hub)=0.4 FALL=1"
+  },
+  {
+   "name": "t_ctl_300",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_300 WHEN v(ctl_hub)=0.3 FALL=1"
+  },
+  {
+   "name": "t_ctl_200",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_200 WHEN v(ctl_hub)=0.2 FALL=1"
+  },
+  {
+   "name": "t_ctl_100",
+   "unit": "s",
+   "spice": ".meas tran t_ctl_100 WHEN v(ctl_hub)=0.1 FALL=1"
+  }
+ ],
+ "options": {
+  "timeout_s": 3600,
+  "keep_artifacts": false,
+  "waveforms": false,
+  "ngspice_init": [
+   "set measureprec=12",
+   "set numdgt=12"
+  ]
+ }
+}
