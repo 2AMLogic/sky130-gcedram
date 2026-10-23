@@ -47,6 +47,10 @@ import gen_column_klt as G  # noqa: E402
 import run_loaded_column as R  # noqa: E402
 import variants as VV  # noqa: E402
 
+# Evidence-era pin: the open_pdks revision the committed fleet runs were
+# produced under (append-only; NOT the repo's forward pin in docs/pdk-pin.md).
+EVIDENCE_OPEN_PDKS = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+
 RESULTS = HERE / "results"
 PHASE2_CSV = LC_DIR / "results" / "loaded_column_results.csv"
 PHASE2_RUN_ID = AV.PHASE2_RUN_ID
@@ -125,7 +129,7 @@ def case_rows(rep: dict, run_id: str) -> list[dict]:
                 "corner_status": c["status"],
                 "run_id": run_id, "timestamp_utc": run_id,
                 "repo_git_sha": f"deck sha256 {env.get('netlist_sha256', '')[:16]}",
-                "pdk_open_pdks_commit": R.PDK_OPEN_PDKS_COMMIT,
+                "pdk_open_pdks_commit": EVIDENCE_OPEN_PDKS,
                 "ngspice_version": f"ngspice-{env.get('engine_version', '')}",
                 "corner": c["process"], "temp_c": str(c["temperature_c"]), "age_label": age,
                 "sel_row": str(sel), "stored_value": str(bits[sel]),
