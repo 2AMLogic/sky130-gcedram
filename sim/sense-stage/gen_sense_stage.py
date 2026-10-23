@@ -30,6 +30,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
+sys.path.insert(0, str(REPO / "sim"))
+from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "sense_stage.spice"
 REQUEST_PATH = HERE / "request.json"
@@ -276,16 +278,9 @@ def build_request(variant: str | None = None) -> dict:
             {"name": f"tdec_{n}", "unit": "s",
              "spice": f".meas tran tdec_{n} TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_{n}) VAL=0.9 RISE=1"},
         ]
-    return {
-        "netlist": variant_paths(variant)[0].name,
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-        "analysis": {"kind": "tran", "args": f"10p {t_stop_ns}n 0 50p uic"},
-        "measurements": meas,
-        "options": {"timeout_s": 900, "keep_artifacts": False, "waveforms": False},
-    }
+    return klt_request(variant_paths(variant)[0].name,
+                       {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
+                       f"10p {t_stop_ns}n 0 50p uic", meas, 900)
 
 
 def render(variant: str | None = None) -> tuple[str, str]:

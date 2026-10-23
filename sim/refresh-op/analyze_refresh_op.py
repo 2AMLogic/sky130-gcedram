@@ -30,7 +30,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gzip
 import json
 import sys
 from pathlib import Path
@@ -38,6 +37,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import decided as _decided  # noqa: E402
+from _evidence_common import load_json  # noqa: E402
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_refresh_op as G  # noqa: E402
 import analyze_sense_stage as SS  # noqa: E402
@@ -50,14 +52,8 @@ CONTRACT_SENSE_S = 10e-9       # sense-stage contract: latch enable 10 ns after 
 THRESHOLD_3C = 0.50            # 3c overhead limit (ASSUMPTION in spec/macro-pass-conditions-PROPOSED.md)
 
 
-def decided(d: float | None) -> str:
-    if d is None:
-        return "none"
-    if d <= -DECIDE_V:
-        return "1"
-    if d >= DECIDE_V:
-        return "0"
-    return "unresolved"
+def decided(dend: float | None) -> str:
+    return _decided(dend, DECIDE_V)
 
 
 def restored(kind: str, dec: float | None, snend: float | None, sn_ref: float | None, frac: float) -> bool:
@@ -168,9 +164,7 @@ def main(argv: list[str] | None = None) -> int:
     name = a.report.name
     stem = name[:-len(".json.gz")] if name.endswith(".json.gz") else a.report.stem
     run_id = stem.split("klt_report_", 1)[1]
-    opener = gzip.open if name.endswith(".gz") else open
-    with opener(a.report, "rt") as fh:
-        rep = json.load(fh)
+    rep = load_json(a.report)
     pts_csv = a.report.with_name(f"refresh_op_points_{run_id}.csv")
     sum_json = a.report.with_name(f"refresh_op_summary_{run_id}.json")
     for p in (pts_csv, sum_json):

@@ -17,6 +17,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
+sys.path.insert(0, str(ROOT / "sim"))
+from _evidence_common import sha256_hex as sha  # noqa: E402
 RES = HERE / "results"
 
 DOCS = [
@@ -28,7 +30,12 @@ DOCS = [
     HERE / "sources" / "reliability-search-log-issue51.md",
     HERE.parent / "extracted-crbl" / "README.md",
 ]
+# Evidence-era pin: the open_pdks revision the committed records in this
+# directory were produced under (append-only; NOT the repo's forward pin in
+# docs/pdk-pin.md). Re-qualification under the forward pin is #166.
 OPEN_PDKS = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+# Forward pin (docs/pdk-pin.md, sim/_evidence_common.py), post re-pin #165.
+FORWARD_OPEN_PDKS = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
 HASHES = {
     "summary_20261005T145658Z.json": "5c449e87c4b492d8a746a7e5edbdf1f247204b57e4ea87b10112570b85d15df4",
     "pass_fail_20261005T145658Z.csv": "42fc77a6d56f82822520ecbc5bd0d0fcb7905e88eeadcedd698885f0a202ae99",
@@ -45,10 +52,6 @@ def check(ok: bool, msg: str) -> None:
     print(("PASS " if ok else "FAIL ") + msg)
     if not ok:
         fails.append(msg)
-
-
-def sha(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def close(a: float, b: float, tol: float = 6e-4) -> bool:
@@ -73,12 +76,15 @@ def links() -> None:
 
 def pins() -> None:
     for name, p in {
-        "docs/pdk-pin.md": ROOT / "docs" / "pdk-pin.md",
-        "sim/_evidence_common.py": ROOT / "sim" / "_evidence_common.py",
         "cold-corner README": HERE / "README.md",
         "EVIDENCE_INDEX.md": HERE / "EVIDENCE_INDEX.md",
     }.items():
         check(OPEN_PDKS in p.read_text(), f"open_pdks pin present in {name}")
+    for name, p in {
+        "docs/pdk-pin.md": ROOT / "docs" / "pdk-pin.md",
+        "sim/_evidence_common.py": ROOT / "sim" / "_evidence_common.py",
+    }.items():
+        check(FORWARD_OPEN_PDKS in p.read_text(), f"forward open_pdks pin present in {name}")
     for f, h in HASHES.items():
         check(sha(RES / f) == h, f"sha256 {f}")
     for f, n in MIN_ROWS.items():
@@ -91,9 +97,14 @@ def pins() -> None:
         got = sum(1 for r in rr if r["run_id"] == rid)
         check(got == n, f"run {rid} has {got} rows (expect {n})")
     check(all(r["pdk_open_pdks_commit"] == OPEN_PDKS for r in rr), "every variant row carries the open_pdks pin")
-    root = Path(os.environ.get("PDK_ROOT", "~/.volare")).expanduser() / "sky130A"
+    root = Path(os.environ.get("PDK_ROOT", "~/.ciel")).expanduser() / "sky130A"
     src, lib = root / "SOURCES", root / "libs.tech/combined/sky130.lib.spice"
-    if src.exists():
+    if src.exists() and OPEN_PDKS not in src.read_text():
+        print(
+            f"SKIP installed PDK at {root} is not the evidence-era open_pdks {OPEN_PDKS[:8]}; "
+            "installed-tree hash check applies only to that revision (see docs/pdk-pin.md)"
+        )
+    elif src.exists():
         check(OPEN_PDKS in src.read_text(), "installed PDK SOURCES matches pin")
         check(sha(lib) == LIB_SHA, "installed model library sha256 matches the recorded one")
     else:

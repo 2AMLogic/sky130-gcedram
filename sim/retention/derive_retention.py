@@ -47,7 +47,7 @@ is not a result":
 Usage:
     python3 sim/retention/derive_retention.py
     python3 sim/retention/derive_retention.py --check-env
-    python3 sim/retention/derive_retention.py --pdk-root /path/to/.volare
+    python3 sim/retention/derive_retention.py --pdk-root /path/to/.ciel
 
 Stdlib only, no virtualenv required. Reads (never modifies)
 sim/leakage/results/leakage_results.csv, the shipped sky130 PDK model card
@@ -79,8 +79,10 @@ REPO_ROOT = SIM_RETENTION_DIR.parent.parent
 
 sys.path.insert(0, str(SIM_RETENTION_DIR.parent))
 from _evidence_common import (
+    PDK_INSTALL_HINT,
     PDK_OPEN_PDKS_COMMIT,
     append_result,
+    check_pdk_revision,
     repo_git_sha,
     resolve_pdk_root,
 )
@@ -241,6 +243,15 @@ def load_worst_case_leakage(leakage_csv: Path) -> dict:
         rows = list(csv.DictReader(f))
     if not rows:
         raise RuntimeError(f"leakage results file is empty: {leakage_csv}")
+    # The leakage CSV is append-only and holds one block of rows per open_pdks
+    # pin. Only rows stamped with the current pin (docs/pdk-pin.md) may feed a
+    # retention number -- never the maximum over a mix of pins (issue #168).
+    rows = [r for r in rows if r.get("pdk_open_pdks_commit") == PDK_OPEN_PDKS_COMMIT]
+    if not rows:
+        raise RuntimeError(
+            f"no rows stamped pdk_open_pdks_commit={PDK_OPEN_PDKS_COMMIT} in {leakage_csv} -- "
+            "re-run the leakage grid under the current pin first (sim/leakage/README.md)"
+        )
     return max(rows, key=lambda r: float(r["ileak_a"]))
 
 
@@ -324,13 +335,16 @@ def check_env(leakage_csv: Path, model_file: Path) -> bool:
         ok = False
     if not model_file.is_file():
         print(f"ERROR: sky130 model card not found: {model_file}", file=sys.stderr)
+        print(PDK_INSTALL_HINT, file=sys.stderr)
         print(
-            "  Install a stock PDK with volare, e.g.:\n"
-            f"    volare enable --pdk sky130 {PDK_OPEN_PDKS_COMMIT}\n"
-            "  or set PDK_ROOT to an existing open_pdks sky130A/sky130B install.",
+            "  or set PDK_ROOT to an open_pdks sky130A/sky130B install at that revision.",
             file=sys.stderr,
         )
         ok = False
+    else:
+        # model_file = <pdk_root>/<variant>/libs.ref/sky130_fd_pr/spice/<file>
+        variant_dir = model_file.parents[len(Path(MODEL_REL_DIR).parts)]
+        ok = check_pdk_revision(variant_dir) and ok
     for geometry_name, source in EXTRACTED_C_SN_SOURCES.items():
         if not source["extract_json"].is_file():
             print(
@@ -348,7 +362,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--pdk-root",
         default=None,
-        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.volare)",
+        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.ciel)",
     )
     parser.add_argument(
         "--pdk-model-variant",
@@ -411,6 +425,13 @@ def main(argv: list[str] | None = None) -> int:
         timespec="seconds"
     )
 
+    leakage_prov = (
+        f"leakage input: leakage_results.csv row stamped "
+        f"pdk_open_pdks_commit={worst['pdk_open_pdks_commit']}, "
+        f"timestamp_utc={worst['timestamp_utc']}, {worst['ngspice_version']}"
+        + (f", {worst['notes']}" if worst.get("notes") else "")
+        + "."
+    )
     print(
         f"Worst-case leakage input (from {leakage_csv.name}): "
         f"corner={corner} temp_c={temp_c} ileak_a={ileak_a:.6e} A "
@@ -475,6 +496,7 @@ def main(argv: list[str] | None = None) -> int:
             margin_factor_field = margin_factor
             notes = ""
 
+        notes = f"{leakage_prov} {notes}".strip()
         row = {
             "timestamp_utc": timestamp,
             "repo_git_sha": sha,

@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gzip
 import hashlib
 import json
 import sys
@@ -28,8 +27,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
+from _evidence_common import load_json  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 
 BUDGET_NS = 34.0
@@ -39,12 +40,6 @@ PRIMARY = AR.PRIMARY_FRAC
 PRIOR_SUMMARY = HERE / "results" / "20261010T130000Z" / "summary.json"
 REPRO_TOL_V = 0.005         # control SN_end reproduction vs the recorded #131 run (same circuit; different deck size -> solver step choice)
 N_TRAJ = 7
-
-
-def load_json(p: Path):
-    opener = gzip.open if p.name.endswith(".gz") else open
-    with opener(p, "rt") as fh:
-        return json.load(fh)
 
 
 def ns(x):

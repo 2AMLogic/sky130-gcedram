@@ -15,7 +15,8 @@
 # Exit 0 only if the baseline passes and every mutant is killed.
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+source "$here/../ci/mutation_lib.sh"
+mutation_init
 export BASES=ratified
 SETS=anchored SCENS="1" "$here/run_coupled.sh" --no-negative >"$tmp/base.log" 2>&1 || { cat "$tmp/base.log"; echo "baseline does not pass"; exit 2; }
 echo "baseline: PASS"
@@ -27,11 +28,7 @@ overlay() {  # dir
   cp "$here"/../spi-control/spi_slave.v "$1/spi-control/"
   cp "$here"/launch_adapter.v "$here"/coupled_top.v "$1/sched-phase-integration/"
 }
-verdict() {  # name log status
-  if [ "$3" = 0 ]; then echo "MUTANT $1: SURVIVED (bench is too weak)"; rc=1
-  elif grep -qE '^(VIOLATION|CONFIG_REJECT)' "$2"; then echo "MUTANT $1: killed (first: $(grep -m1 -E '^(VIOLATION|CONFIG_REJECT)' "$2"))"
-  else echo "MUTANT $1: failed WITHOUT a finding (compile error?)"; rc=1; fi
-}
+verdict() { mutation_verdict "$1" "$2" "$3" '^(VIOLATION|CONFIG_REJECT)'; }
 # name ~ file (relative to digital/) ~ original ~ mutated ~ set ~ scens ~ gate-bypass-too (1/0)
 mutants=(
   "sched_completes_early~control-integration/refresh_sched_rt.v~if (cnt == 1) begin~if (cnt == 2) begin~anchored~1~1"
@@ -53,13 +50,7 @@ run_mut() {  # d set scens chk log
 for m in "${mutants[@]}"; do
   IFS='~' read -r name file orig mut set scens bypass <<< "$m"
   d="$tmp/$name"; overlay "$d"
-  if ! python3 -I -c '
-import sys, pathlib
-p = pathlib.Path(sys.argv[1]); s = p.read_text()
-if s.count(sys.argv[2]) != 1: sys.exit(1)
-p.write_text(s.replace(sys.argv[2], sys.argv[3]))' "$d/$file" "$orig" "$mut"; then
-    echo "MUTANT $name: anchor not found exactly once in $file"; rc=1; continue
-  fi
+  mutation_anchor_apply "$name" "$d" "$file" "$orig" "$mut" || { rc=1; continue; }
   run_mut "$d" "$set" "$scens" 1 "$d/log"; verdict "$name (gate on)" "$d/log" $?
   if [ "$bypass" = 1 ]; then
     run_mut "$d" "$set" "$scens" 0 "$d/log0"; verdict "$name (gate bypassed, dynamic monitors only)" "$d/log0" $?

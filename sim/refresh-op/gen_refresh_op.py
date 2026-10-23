@@ -29,6 +29,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as S  # noqa: E402
+sys.path.insert(0, str(REPO / "sim"))
+from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "refresh_op.spice"
 REQUEST_PATH = HERE / "request.json"
@@ -224,16 +226,8 @@ def build_request() -> dict:
             {"name": f"dec_{n}", "unit": "V",
              "spice": f".meas tran dec_{n} FIND v(d_{n}) AT={(p['t_on'] - 0.1e-9) * 1e9:.6g}n"},
         ]
-    return {
-        "netlist": "refresh_op.spice",
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-        "analysis": {"kind": "tran", "args": f"10p {t_stop_s() * 1e9:.6g}n 0 50p uic"},
-        "measurements": meas,
-        "options": {"timeout_s": 1800, "keep_artifacts": False, "waveforms": False},
-    }
+    return klt_request("refresh_op.spice", {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
+                       f"10p {t_stop_s() * 1e9:.6g}n 0 50p uic", meas, 1800)
 
 
 def render() -> tuple[str, str]:

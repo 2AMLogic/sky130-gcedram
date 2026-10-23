@@ -1,0 +1,7 @@
+{
+  "tool": "klayout -b -r sky130A_mr.drc (feol, beol, offgrid enabled)",
+  "gds": "gain_cell_2t_v1_array.gds",
+  "top": "gain_cell_2t_v1_array_4x4_layout_0",
+  "rules_fired": {},
+  "total": 0
+}

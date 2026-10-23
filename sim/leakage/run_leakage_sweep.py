@@ -13,12 +13,18 @@ number is derived (see #3).
 Usage:
     python3 sim/leakage/run_leakage_sweep.py
     python3 sim/leakage/run_leakage_sweep.py --check-env
-    python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.volare
+    python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.ciel
     python3 sim/leakage/run_leakage_sweep.py --dry-run
+    python3 sim/leakage/run_leakage_sweep.py --from-klt-report \
+        sim/leakage/results/klt_report_<RUN_ID>.json
+
+`--from-klt-report` (issue #168) appends rows from a `klt sim` corner-request
+report (sim/leakage/request.json, backend `batch`) instead of looping
+`ngspice -b` locally; it runs no simulation itself.
 
 Stdlib only, no virtualenv required. Uses ONLY the shipped sky130 PDK
 model library resolved below -- no local model edits, no uncommitted
-.include paths. Requires `ngspice` on PATH and a stock volare/open_pdks
+.include paths. Requires `ngspice` on PATH and a stock ciel/open_pdks
 sky130A install (see sim/README.md for the install command).
 
 This script never overwrites sim/leakage/results/leakage_results.csv --
@@ -30,6 +36,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import json
 import os
 import re
 import subprocess
@@ -123,12 +130,59 @@ def run_one(ngspice_lib: Path, corner: str, temp_c: int) -> float:
             pass
 
 
+def rows_from_klt_report(report_path: Path) -> list[dict]:
+    """Convert a `klt sim` report for sim/leakage/request.json into CSV rows.
+
+    Every corner must have passed with an `ileak_a` measurement; anything
+    else raises rather than writing a partial grid. The simulator version and
+    batch job id come from the report, not from this host's ngspice."""
+    report = json.loads(report_path.read_text())
+    if report.get("status") != "pass" or report.get("errored") or report.get("failed"):
+        raise RuntimeError(
+            f"{report_path}: report status={report.get('status')!r} "
+            f"failed={report.get('failed')} errored={report.get('errored')}; refusing to append"
+        )
+    env = report["environment"]
+    remote = env.get("remote") or {}
+    job_id = remote.get("job_id", "unknown")
+    note = (
+        f"klt sim batch job {job_id}; ngspice-{env.get('engine_version', 'unknown')}; "
+        f"report {report_path.name}"
+    )
+    sha = repo_git_sha(SIM_LEAKAGE_DIR)
+    timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    rows = []
+    for corner in report["corners"]:
+        meas = {m["name"]: m["value"] for m in corner["measurements"]}
+        if corner["status"] != "pass" or "ileak_a" not in meas:
+            raise RuntimeError(f"{report_path}: corner {corner.get('corner_id')} has no passing ileak_a")
+        rows.append(
+            {
+                "timestamp_utc": timestamp,
+                "repo_git_sha": sha,
+                "pdk_open_pdks_commit": PDK_OPEN_PDKS_COMMIT,
+                "corner": corner["process"],
+                "temp_c": int(corner["temperature_c"]),
+                "device": DEVICE,
+                "w_um": W_UM,
+                "l_um": L_UM,
+                "vgs_v": 0.0,
+                "vds_v": VDD,
+                "vbs_v": 0.0,
+                "ileak_a": f"{meas['ileak_a']:.6e}",
+                "ngspice_version": f"ngspice-{env.get('engine_version', 'unknown')} (klt sim batch)",
+                "notes": note,
+            }
+        )
+    return rows
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--pdk-root",
         default=None,
-        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.volare)",
+        help="Override PDK_ROOT (default: $PDK_ROOT or ~/.ciel)",
     )
     parser.add_argument(
         "--pdk", default=DEFAULT_PDK_VARIANT, help="PDK variant dir (default: sky130A)"
@@ -153,7 +207,20 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Render netlists but do not invoke ngspice",
     )
+    parser.add_argument(
+        "--from-klt-report",
+        default=None,
+        metavar="REPORT",
+        help="Append rows from a klt sim batch report (request.json) and exit; runs no simulation",
+    )
     args = parser.parse_args(argv)
+
+    if args.from_klt_report:
+        rows = rows_from_klt_report(Path(args.from_klt_report))
+        for row in rows:
+            append_result(RESULTS_CSV, CSV_FIELDS, row)
+        print(f"Appended {len(rows)} rows to {RESULTS_CSV}")
+        return 0
 
     pdk_root = resolve_pdk_root(args.pdk_root)
     ngspice_lib = resolve_ngspice_lib(pdk_root, args.pdk)

@@ -45,6 +45,14 @@ sign-off evidence, and it does not change any provisional timing value.
    driving the launch adapter and phase sequencer under saturated foreground
    traffic, issue #146; several minutes, see its README for measured times)
 
+The `refresh-scheduler`, `spi-control` and `phase-control` `run_mutation.sh`
+scripts share one harness, `digital/ci/mutation_lib.sh` (tmp dir, baseline gate,
+sed apply + "did not change the source" guard, killed/SURVIVED report, exit
+status). Each script supplies its mutant table and a `mutant_run` hook;
+`phase-control` also sets `MUT_KILL_PATTERN=VIOLATION` so a failure without a
+bench violation (e.g. a compile error) is not counted as a kill. The integration
+scripts use different runners and keep their own loops.
+
 Every suite runs even if an earlier one fails (so all logs exist); the driver
 exits non-zero if any failed, which fails the job. Compile errors, a failing
 baseline or an undetected mutant make the individual script exit non-zero.

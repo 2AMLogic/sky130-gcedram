@@ -17,6 +17,9 @@ from __future__ import annotations
 
 import bisect
 import csv
+import gzip
+import hashlib
+import json
 import os
 import re
 import subprocess
@@ -43,17 +46,35 @@ DEFAULT_PDK_VARIANT = "sky130A"
 DEFAULT_NGSPICE_LIB_REL = "libs.tech/combined/sky130.lib.spice"
 
 # The open_pdks commit the shipped model library is pinned to, quoted in
-# the install hint `check_ngspice_available()` prints on failure.
-PDK_OPEN_PDKS_COMMIT = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+# the install hint and revision check `check_ngspice_available()` runs.
+PDK_OPEN_PDKS_COMMIT = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+
+
+# Default PDK root: where `ciel enable` installs (`~/.ciel/<variant>`). The
+# retired volare root (`~/.volare`) is deliberately never searched -- a
+# leftover tree there is at a different open_pdks revision.
+DEFAULT_PDK_ROOT = "~/.ciel"
+
+# The retired volare PDK root; only named in diagnostics, never resolved to.
+STRAY_PDK_ROOT = "~/.volare"
+
+PDK_INSTALL_HINT = (
+    "  Install the pinned PDK with ciel, e.g.:\n"
+    "    pip install ciel==2.6.1\n"
+    f"    ciel enable --pdk-family sky130 -l sky130_fd_pr {PDK_OPEN_PDKS_COMMIT}"
+)
 
 
 def resolve_pdk_root(
     cli_pdk_root: str | None,
     env_var: str = "PDK_ROOT",
-    default: str = "~/.volare",
+    default: str = DEFAULT_PDK_ROOT,
 ) -> Path:
     """Resolve the sky130 PDK root: an explicit CLI override, else the
-    named environment variable, else the given default."""
+    named environment variable, else the given default (`~/.ciel`).
+    `~/.volare` is never selected implicitly; the resolved tree's
+    open_pdks revision is verified against the pin by `pdk_revision_problems`
+    (called from the env checks)."""
     if cli_pdk_root:
         return Path(cli_pdk_root).expanduser()
     env_root = os.environ.get(env_var)
@@ -80,6 +101,55 @@ def repo_git_sha(cwd: Path) -> str:
         return "unknown"
 
 
+def read_open_pdks_commit(variant_dir: Path) -> str | None:
+    """open_pdks revision recorded in `<variant_dir>/SOURCES` (the
+    `open_pdks <sha>` line), or None if the file or the line is absent.
+    Same parse as `pdk_identity` in layout/generation_toolchain.py."""
+    sources = variant_dir / "SOURCES"
+    if not sources.is_file():
+        return None
+    for line in sources.read_text(errors="replace").splitlines():
+        parts = line.split()
+        if len(parts) >= 2 and parts[0] == "open_pdks":
+            return parts[1]
+    return None
+
+
+def pdk_revision_problems(
+    variant_dir: Path, expected: str = PDK_OPEN_PDKS_COMMIT
+) -> list[str]:
+    """Mismatch messages (empty list = the installed variant tree is at the
+    pinned open_pdks revision). Missing `SOURCES` is a failure, not a pass:
+    an unidentifiable tree cannot back an evidence record."""
+    actual = read_open_pdks_commit(variant_dir)
+    if actual == expected:
+        return []
+    sources = variant_dir / "SOURCES"
+    if actual is None:
+        found = (
+            f"no `open_pdks <sha>` line in {sources}"
+            if sources.is_file()
+            else f"{sources} not found"
+        )
+        return [f"cannot verify the PDK revision: {found}"]
+    return [f"PDK revision mismatch ({sources}): expected open_pdks {expected}, actual {actual}"]
+
+
+def check_pdk_revision(variant_dir: Path) -> bool:
+    """Print `pdk_revision_problems` plus the install hint to stderr;
+    True if the tree is at the pin."""
+    problems = pdk_revision_problems(variant_dir)
+    for p in problems:
+        print(f"ERROR: {p}", file=sys.stderr)
+    if problems:
+        print(PDK_INSTALL_HINT, file=sys.stderr)
+        print(
+            "  or set PDK_ROOT to an open_pdks sky130A install at that revision.",
+            file=sys.stderr,
+        )
+    return not problems
+
+
 def resolve_ngspice_lib(pdk_root: Path, variant: str) -> Path:
     """Resolve the combined sky130 ngspice model library path for a given
     PDK root and variant (e.g. "sky130A")."""
@@ -97,13 +167,21 @@ def check_ngspice_available(ngspice_lib: Path) -> bool:
             f"ERROR: sky130 ngspice model library not found: {ngspice_lib}",
             file=sys.stderr,
         )
+        print(PDK_INSTALL_HINT, file=sys.stderr)
         print(
-            "  Install a stock PDK with volare, e.g.:\n"
-            f"    volare enable --pdk sky130 {PDK_OPEN_PDKS_COMMIT}\n"
-            "  or set PDK_ROOT to an existing open_pdks sky130A install.",
+            "  or set PDK_ROOT to an open_pdks sky130A install at that revision.",
             file=sys.stderr,
         )
+        if Path(STRAY_PDK_ROOT).expanduser().is_dir():
+            print(
+                f"  NOTE: {STRAY_PDK_ROOT} exists but is not searched (retired volare root).",
+                file=sys.stderr,
+            )
         ok = False
+    else:
+        # lib = <pdk_root>/<variant>/libs.tech/combined/sky130.lib.spice
+        variant_dir = ngspice_lib.parents[len(Path(DEFAULT_NGSPICE_LIB_REL).parts) - 1]
+        ok = check_pdk_revision(variant_dir)
     if not which("ngspice"):
         print("ERROR: `ngspice` not found on PATH.", file=sys.stderr)
         ok = False
@@ -142,6 +220,39 @@ def append_result(results_csv: Path, csv_fields: list[str], row: dict) -> None:
         if write_header:
             writer.writeheader()
         writer.writerow(row)
+
+
+def sha256_hex(path: Path) -> str:
+    """Bare hex SHA-256 digest of a file's bytes."""
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def sha256_prefixed(path: Path) -> str:
+    """`"sha256:"`-prefixed SHA-256 digest of a file's bytes."""
+    return "sha256:" + sha256_hex(path)
+
+
+def load_json(path: Path):
+    """Parse a JSON report, gzip-decompressing when the file name ends in
+    `.gz` (klt reports are committed as `.json` or `.json.gz`)."""
+    path = Path(path)
+    opener = gzip.open if path.name.endswith(".gz") else open
+    with opener(path, "rt") as fh:
+        return json.load(fh)
+
+
+def decided(dend: float | None, threshold_v: float) -> str:
+    """Classify a sense-amp differential into the recorded bit: `"1"` if
+    dend <= -threshold_v, `"0"` if dend >= +threshold_v, `"unresolved"`
+    between, `"none"` when there is no measurement. Shared so a
+    threshold-edge fix reaches every bench at once."""
+    if dend is None:
+        return "none"
+    if dend <= -threshold_v:
+        return "1"
+    if dend >= threshold_v:
+        return "0"
+    return "unresolved"
 
 
 # --------------------------------------------------------------------------

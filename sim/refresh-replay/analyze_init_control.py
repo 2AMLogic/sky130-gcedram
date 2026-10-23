@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gzip
 import hashlib
 import json
 import sys
@@ -28,8 +27,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
+from _evidence_common import load_json  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 
 FRACS = AR.FRACS
@@ -43,12 +44,6 @@ SENSE_FAMILY = {"baseline_analog": "analog_sense_timing"}      # every other bas
 DOCUMENTED_PIC_SENSE_FAIL = {("ss", 27), ("fs", 27)}           # README #134: stored-'1' 0.9 V sensed wrongly with the pin IC
 DOCUMENTED_UPLIFT_V = (0.07, 0.12)                             # README #134: legacy pre-read 'about 0.07-0.12 V above its label'
 DOCUMENTED_PIC_DROP_V = (-0.26, -0.12)                         # README #134: pin-IC pre-read minus legacy
-
-
-def load_json(p: Path):
-    opener = gzip.open if p.name.endswith(".gz") else open
-    with opener(p, "rt") as fh:
-        return json.load(fh)
 
 
 def pat(kind: str, sn: float) -> str:
