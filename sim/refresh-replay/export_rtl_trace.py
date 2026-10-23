@@ -8,7 +8,6 @@ Usage: export_rtl_trace.py OUT.json [--pre N --sense N --wb N --guard N --gap N 
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import subprocess
 import sys
@@ -19,11 +18,9 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 PC = REPO / "digital" / "phase-control"
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import sha256_hex as sha256  # noqa: E402
 import replay_lib as L  # noqa: E402
-
-
-def sha256(p: Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def export(pre=2, sense=10, wb=20, guard=2, gap=0, kind=2) -> dict:

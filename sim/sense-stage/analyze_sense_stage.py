@@ -37,6 +37,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import decided as _decided  # noqa: E402
 import gen_sense_stage as G  # noqa: E402
 
 T_WINDOW_S = 5e-9              # ASSUMPTION: decision must complete within 5 ns of enable
@@ -65,13 +67,7 @@ def point(kind: str, meas: dict, name: str) -> dict:
 
 
 def decided(dend: float | None) -> str:
-    if dend is None:
-        return "none"
-    if dend <= -RESOLVE_V:
-        return "1"
-    if dend >= RESOLVE_V:
-        return "0"
-    return "unresolved"
+    return _decided(dend, RESOLVE_V)
 
 
 def resolves(p: dict, expect: str) -> bool:

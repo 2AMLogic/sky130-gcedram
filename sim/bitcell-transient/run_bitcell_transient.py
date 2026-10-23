@@ -21,7 +21,7 @@ Usage:
 
 Stdlib only, no virtualenv required. Uses ONLY the shipped sky130 PDK
 model library resolved below -- no local model edits, no uncommitted
-.include paths. Requires `ngspice` on PATH and a stock volare/open_pdks
+.include paths. Requires `ngspice` on PATH and a stock ciel/open_pdks
 sky130A install (see sim/README.md for the install command).
 
 Provenance/append-only handling is NOT reimplemented here: `resolve_pdk_root`,

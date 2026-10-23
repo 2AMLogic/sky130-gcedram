@@ -30,7 +30,6 @@ Re-run after editing; ``test_geometry_leakage.py`` fails if committed files are 
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 import sys
@@ -38,6 +37,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import sha256_prefixed as sha256_file  # noqa: E402
+from klt_request import build_request as klt_request  # noqa: E402
 OUT = HERE / "geometry-matched"
 DECK_PATH = OUT / "access_leakage_geom.spice"
 REQUEST_PATH = OUT / "request.json"
@@ -60,10 +62,6 @@ PARAM_KEYS = ("l_um", "w_um", "ad_um2", "as_um2", "pd_um", "ps_um")
 
 class GeometryError(ValueError):
     pass
-
-
-def sha256_file(path: Path) -> str:
-    return "sha256:" + hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def select_access_devices(extraction: dict) -> list[dict]:
@@ -153,23 +151,15 @@ biabs_leg iabs_leg 0 v=abs(i(vsn_leg))
 
 
 def build_request() -> dict:
-    return {
-        "netlist": DECK_PATH.name,
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": {"process": list(PROCESS_CORNERS), "temperature_c": list(TEMPS_C)},
-        # A one-point DC sweep at the storage-node bias (VDD) is used instead of ``op`` +
-        # ``measurements[].expr``: the fleet runner image (klt 0.5.0) and the older clients
-        # compatible with it only accept ``.meas`` cards (see README, first batch attempt).
-        "analysis": {"kind": "dc", "args": "vsn_ext 1.8 1.9 0.1"},
-        "measurements": [
-            {"name": MEAS_EXT, "unit": "A", "spice": f".meas dc {MEAS_EXT} FIND v(iabs_ext) AT=1.8"},
-            {"name": MEAS_LEG, "unit": "A", "spice": f".meas dc {MEAS_LEG} FIND v(iabs_leg) AT=1.8"},
-        ],
-        "options": {"timeout_s": 600, "keep_artifacts": False, "waveforms": False,
-                    "ngspice_init": ["set measureprec=12", "set numdgt=12"]},
-    }
+    # A one-point DC sweep at the storage-node bias (VDD) is used instead of ``op`` +
+    # ``measurements[].expr``: the fleet runner image (klt 0.5.0) and the older clients
+    # compatible with it only accept ``.meas`` cards (see README, first batch attempt).
+    return klt_request(
+        DECK_PATH.name, {"process": list(PROCESS_CORNERS), "temperature_c": list(TEMPS_C)},
+        "vsn_ext 1.8 1.9 0.1",
+        [{"name": MEAS_EXT, "unit": "A", "spice": f".meas dc {MEAS_EXT} FIND v(iabs_ext) AT=1.8"},
+         {"name": MEAS_LEG, "unit": "A", "spice": f".meas dc {MEAS_LEG} FIND v(iabs_leg) AT=1.8"}],
+        600, kind="dc", extra_options={"ngspice_init": ["set measureprec=12", "set numdgt=12"]})
 
 
 def render_request() -> str:

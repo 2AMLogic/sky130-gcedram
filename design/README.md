@@ -15,8 +15,8 @@ has no prior xschem usage to pattern-match against.
 | [`gain_cell_2t.sch`](gain_cell_2t.sch) | xschem schematic: the ratified 2T gain-cell bitcell (see "Topology" below). |
 | [`gain_cell_2t.spice`](gain_cell_2t.spice) | SPICE netlist **derived** from the schematic above via [`regen_netlist.sh`](regen_netlist.sh) -- not hand-written. Carries a provenance header (sha256 of the source `.sch`). |
 | [`sense_latch.sch`](sense_latch.sch) / [`sense_latch.spice`](sense_latch.spice) | xschem schematic and derived netlist (same provenance-header convention) of the sense latch with footer/header (issue #109); see "Sense latch" below. |
-| [`column_periphery.sch`](column_periphery.sch) / [`column_periphery.spice`](column_periphery.spice) | xschem schematic and derived netlist (issue #114) of the column-periphery slice: RBL precharge PMOS, WBL write driver, rbl/ref isolation gates. Sizing rationale and the ideal-vs-real comparison: [`sim/column-periphery/README.md`](../sim/column-periphery/README.md). |
-| [`test_column_periphery.py`](test_column_periphery.py) | Stdlib drift test: the slice and latch devices in every `real_*`/`sw_*` instance of the comparison deck must equal `column_periphery.spice` / `sense_latch.spice`; the netlist provenance hash must match the schematic. |
+| [`column_periphery.sch`](column_periphery.sch) / [`column_periphery.spice`](column_periphery.spice) | xschem schematic and derived netlist (issue #114, revised by #117) of the column-periphery slice: RBL and reference-side precharge PMOS, WBL write driver, rbl/ref nfet isolation gates. Sizing rationale, the ideal-vs-real comparison and the #117 isolation/driver sweep: [`sim/column-periphery/README.md`](../sim/column-periphery/README.md). |
+| [`test_column_periphery.py`](test_column_periphery.py) | Stdlib drift test: the slice devices of the final variant (`f00_*`) of the #117 study deck must equal `column_periphery.spice`; the study baseline (`i00_*`) must equal the frozen #114 deck (which the revised schematic no longer equals); the latch devices of every instance must equal `sense_latch.sch`'s netlist; the netlist provenance hash must match the schematic. |
 | [`regen_netlist.sh`](regen_netlist.sh) | Regenerates every netlist (bitcell, sense latch, column periphery) from its schematic (`--check` verifies each committed netlist is not stale). This is the "reproducible on design change" mechanism. |
 | [`normalize_netlist.py`](normalize_netlist.py) | Evaluates xschem `expr()` geometry params and rewraps lines, so the netlist is identical across xschem versions (3.4.4 leaves them unevaluated). |
 | [`test_sense_latch.py`](test_sense_latch.py) | Stdlib drift test: the latch devices in `sense_latch.spice` must equal those in `sim/sense-stage/sense_stage.spice`. |
@@ -115,14 +115,15 @@ written.
 
 ## Regenerating the netlist
 
-Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
+Requires a stock `open_pdks` sky130 install (via `ciel`, pinned in
 [`docs/pdk-pin.md`](../docs/pdk-pin.md)) and `xschem` on `PATH`.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
-volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
+pip install ciel==2.6.1
+ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
-# 2. Export PDK_ROOT / PDK (defaults to ~/.volare / sky130A if unset):
+# 2. Export PDK_ROOT / PDK (defaults to ~/.ciel / sky130A if unset):
 source design/env.sh
 
 # 3. Regenerate design/gain_cell_2t.spice and design/sense_latch.spice

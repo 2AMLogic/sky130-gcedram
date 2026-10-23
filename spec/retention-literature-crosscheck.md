@@ -40,6 +40,10 @@ publication, publicly indexed, cited by DOI.
 
 ## This repo's derived numbers (recap, cited from #3)
 
+> **Supersession note (issue #168).** Re-derived under open_pdks `f6eeac7`: the numbers recapped below are
+> unchanged (see `sim/retention/README.md` "Re-derivation under open_pdks `f6eeac7`"). Nothing in this
+> cross-check is altered.
+
 From [`sim/retention/README.md`](../sim/retention/README.md) and
 [`sim/retention/results/retention_results.csv`](../sim/retention/results/retention_results.csv):
 

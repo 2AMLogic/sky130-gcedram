@@ -88,6 +88,15 @@ jobs:
       - name: Shared evidence helper tests
         run: python3 -I sim/test_evidence_common.py
 
+      - name: Bitcell compaction variants (issue #100) consistency checks
+        run: python3 -I layout/compact/test_compact.py
+
+      - name: Compact-layout parasitics, leakage and retention-budget (issue #161) checks
+        run: python3 -I sim/retention/test_compare_compact_c_sn.py
+
+      - name: Device-inclusive compact C_SN (issue #208) checks
+        run: python3 -I sim/retention/test_compact_device_c_sn.py
+
   append-only:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest

@@ -1,0 +1,2713 @@
+{
+ "schema": "gcedram.compact_parasitics/1",
+ "issue": 161,
+ "label": "Extracted WIRING parasitics of the 4-row x 4-column arrays, compact layouts (#100) vs the uniform grid (#80). Wiring only: diffusion-junction and gate capacitance are not included. Not a macro-level number; 4 rows only.",
+ "generated_utc": "2026-10-20T17:18:49+00:00",
+ "convention": "total_ff = ground_ff + sum(coupled[].capacitance_ff) per net, as array_parasitics.net_entry / derive_retention.load_extracted_c_sn(). Lateral coupling covers pairs touching a --critical-net; for the compact layouts that includes the anonymous storage-node nets (--critical-net-pattern '\\$*'), so the comparison is like-for-like.",
+ "klt_version_note": "The uniform-grid extraction was made with klt 0.7.0; re-extracting it with the klt used for the compact layouts reproduced every net's total capacitance and resistance exactly.",
+ "layouts": {
+  "uniform_grid": {
+   "source": {
+    "extraction": "layout/gain_cell_2t_array.extract.parasitics.json",
+    "extraction_sha256": "sha256:ea8fc16347c6537ed4a05200b11e773c07193baed4369466568492cf96198973",
+    "gds": "layout/gain_cell_2t_array.gds",
+    "gds_sha256": "sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd",
+    "top": "gain_cell_2t_array_4x4_layout_0",
+    "device_count": 32,
+    "klt_version": "0.7.0+gd1e9e119331f",
+    "klayout_version": "0.30.12",
+    "critical_nets": [
+     "wl_0",
+     "rwl_0",
+     "wl_1",
+     "rwl_1",
+     "wl_2",
+     "rwl_2",
+     "wl_3",
+     "rwl_3",
+     "bl_0",
+     "rbl_0",
+     "bl_1",
+     "rbl_1",
+     "bl_2",
+     "rbl_2",
+     "bl_3",
+     "rbl_3",
+     "sn_0_0",
+     "sn_0_1",
+     "sn_0_2",
+     "sn_0_3",
+     "sn_1_0",
+     "sn_1_1",
+     "sn_1_2",
+     "sn_1_3",
+     "sn_2_0",
+     "sn_2_1",
+     "sn_2_2",
+     "sn_2_3",
+     "sn_3_0",
+     "sn_3_1",
+     "sn_3_2",
+     "sn_3_3"
+    ],
+    "warnings": []
+   },
+   "rbl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 0.69828,
+     "max": 0.859179,
+     "mean": 0.818954,
+     "max_net": "rbl_2"
+    },
+    "ground_ff": {
+     "min": 0.581168,
+     "max": 0.596076,
+     "mean": 0.584895,
+     "max_net": "rbl_3"
+    },
+    "coupling_ff": {
+     "min": 0.102204,
+     "max": 0.278011,
+     "mean": 0.234059,
+     "max_net": "rbl_2"
+    },
+    "resistance_ohm": {
+     "min": 385.481,
+     "max": 385.481,
+     "mean": 385.481,
+     "max_net": "rbl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.581168
+    }
+   },
+   "bl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 0.711897,
+     "max": 0.872796,
+     "mean": 0.832571,
+     "max_net": "bl_3"
+    },
+    "ground_ff": {
+     "min": 0.581168,
+     "max": 0.596076,
+     "mean": 0.584895,
+     "max_net": "bl_0"
+    },
+    "coupling_ff": {
+     "min": 0.115821,
+     "max": 0.291628,
+     "mean": 0.247676,
+     "max_net": "bl_3"
+    },
+    "resistance_ohm": {
+     "min": 385.481,
+     "max": 385.481,
+     "mean": 385.481,
+     "max_net": "bl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.581168
+    }
+   },
+   "wl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 1.977534,
+     "max": 2.099047,
+     "mean": 2.064231,
+     "max_net": "wl_0"
+    },
+    "ground_ff": {
+     "min": 1.909279,
+     "max": 1.91375,
+     "mean": 1.910397,
+     "max_net": "wl_3"
+    },
+    "coupling_ff": {
+     "min": 0.063784,
+     "max": 0.189768,
+     "mean": 0.153834,
+     "max_net": "wl_0"
+    },
+    "resistance_ohm": {
+     "min": 434.2748,
+     "max": 434.2748,
+     "mean": 434.2748,
+     "max_net": "wl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "poly": 0.695682,
+     "metal0": 0.299611,
+     "metal1": 0.913986
+    }
+   },
+   "rwl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 1.353255,
+     "max": 1.353255,
+     "mean": 1.353255,
+     "max_net": "rwl_3"
+    },
+    "ground_ff": {
+     "min": 1.187129,
+     "max": 1.187129,
+     "mean": 1.187129,
+     "max_net": "rwl_3"
+    },
+    "coupling_ff": {
+     "min": 0.166126,
+     "max": 0.166126,
+     "mean": 0.166126,
+     "max_net": "rwl_3"
+    },
+    "resistance_ohm": {
+     "min": 57.8391,
+     "max": 57.8391,
+     "mean": 57.8391,
+     "max_net": "rwl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.299611,
+     "metal1": 0.887517
+    }
+   },
+   "storage_node": {
+    "nets": [
+     "sn_0_0",
+     "sn_0_1",
+     "sn_0_2",
+     "sn_0_3",
+     "sn_1_0",
+     "sn_1_1",
+     "sn_1_2",
+     "sn_1_3",
+     "sn_2_0",
+     "sn_2_1",
+     "sn_2_2",
+     "sn_2_3",
+     "sn_3_0",
+     "sn_3_1",
+     "sn_3_2",
+     "sn_3_3"
+    ],
+    "total_ff": {
+     "min": 0.47362,
+     "max": 0.502,
+     "mean": 0.491171,
+     "max_net": "sn_2_2"
+    },
+    "ground_ff": {
+     "min": 0.430576,
+     "max": 0.433689,
+     "mean": 0.43184,
+     "max_net": "sn_3_0"
+    },
+    "coupling_ff": {
+     "min": 0.040446,
+     "max": 0.071424,
+     "mean": 0.059331,
+     "max_net": "sn_2_2"
+    },
+    "per_node": {
+     "sn_0_0": {
+      "ground_ff": 0.433689,
+      "coupling_ff": 0.051156,
+      "total_ff": 0.484845,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.259769
+      },
+      "coupled_ff": {
+       "bl_0": 0.01071,
+       "rbl_0": 0.01071,
+       "rwl_0": 0.010072,
+       "wl_0": 0.019664
+      }
+     },
+     "sn_0_1": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.060766,
+      "total_ff": 0.491342,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_1": 0.01071,
+       "rbl_1": 0.01071,
+       "rwl_0": 0.019682,
+       "wl_0": 0.019664
+      }
+     },
+     "sn_0_2": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.060766,
+      "total_ff": 0.491342,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_2": 0.01071,
+       "rbl_2": 0.01071,
+       "rwl_0": 0.019682,
+       "wl_0": 0.019664
+      }
+     },
+     "sn_0_3": {
+      "ground_ff": 0.432518,
+      "coupling_ff": 0.05477,
+      "total_ff": 0.487288,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.258598
+      },
+      "coupled_ff": {
+       "bl_3": 0.01071,
+       "rbl_3": 0.01071,
+       "rwl_0": 0.019682,
+       "wl_0": 0.013668
+      }
+     },
+     "sn_1_0": {
+      "ground_ff": 0.433689,
+      "coupling_ff": 0.064773,
+      "total_ff": 0.498462,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.259769
+      },
+      "coupled_ff": {
+       "bl_0": 0.01071,
+       "rbl_0": 0.024327,
+       "rwl_1": 0.010072,
+       "wl_1": 0.019664
+      }
+     },
+     "sn_1_1": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.071424,
+      "total_ff": 0.502,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_1": 0.01071,
+       "rbl_1": 0.024327,
+       "rwl_1": 0.019682,
+       "wl_1": 0.016705
+      }
+     },
+     "sn_1_2": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.071424,
+      "total_ff": 0.502,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_2": 0.01071,
+       "rbl_2": 0.024327,
+       "rwl_1": 0.019682,
+       "wl_1": 0.016705
+      }
+     },
+     "sn_1_3": {
+      "ground_ff": 0.432518,
+      "coupling_ff": 0.065429,
+      "total_ff": 0.497947,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.258598
+      },
+      "coupled_ff": {
+       "bl_3": 0.01071,
+       "rbl_3": 0.024327,
+       "rwl_1": 0.019682,
+       "wl_1": 0.01071
+      }
+     },
+     "sn_2_0": {
+      "ground_ff": 0.433689,
+      "coupling_ff": 0.064773,
+      "total_ff": 0.498462,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.259769
+      },
+      "coupled_ff": {
+       "bl_0": 0.01071,
+       "rbl_0": 0.024327,
+       "rwl_2": 0.010072,
+       "wl_2": 0.019664
+      }
+     },
+     "sn_2_1": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.071424,
+      "total_ff": 0.502,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_1": 0.01071,
+       "rbl_1": 0.024327,
+       "rwl_2": 0.019682,
+       "wl_2": 0.016705
+      }
+     },
+     "sn_2_2": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.071424,
+      "total_ff": 0.502,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_2": 0.01071,
+       "rbl_2": 0.024327,
+       "rwl_2": 0.019682,
+       "wl_2": 0.016705
+      }
+     },
+     "sn_2_3": {
+      "ground_ff": 0.432518,
+      "coupling_ff": 0.065429,
+      "total_ff": 0.497947,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.258598
+      },
+      "coupled_ff": {
+       "bl_3": 0.01071,
+       "rbl_3": 0.024327,
+       "rwl_2": 0.019682,
+       "wl_2": 0.01071
+      }
+     },
+     "sn_3_0": {
+      "ground_ff": 0.433689,
+      "coupling_ff": 0.040446,
+      "total_ff": 0.474135,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.259769
+      },
+      "coupled_ff": {
+       "bl_0": 0.01071,
+       "rwl_3": 0.010072,
+       "wl_3": 0.019664
+      }
+     },
+     "sn_3_1": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.047097,
+      "total_ff": 0.477673,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_1": 0.01071,
+       "rwl_3": 0.019682,
+       "wl_3": 0.016705
+      }
+     },
+     "sn_3_2": {
+      "ground_ff": 0.430576,
+      "coupling_ff": 0.047097,
+      "total_ff": 0.477673,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.256655
+      },
+      "coupled_ff": {
+       "bl_2": 0.01071,
+       "rwl_3": 0.019682,
+       "wl_3": 0.016705
+      }
+     },
+     "sn_3_3": {
+      "ground_ff": 0.432518,
+      "coupling_ff": 0.041102,
+      "total_ff": 0.47362,
+      "resistance_ohm": 250.2452,
+      "by_layer_ground_ff": {
+       "poly": 0.17392,
+       "metal0": 0.258598
+      },
+      "coupled_ff": {
+       "bl_3": 0.01071,
+       "rwl_3": 0.019682,
+       "wl_3": 0.01071
+      }
+     }
+    }
+   },
+   "wordline_resistance": {
+    "extractor_reported": {
+     "model": "klt lumped STAR: resistance_ohm = sum of per-gate-terminal leg resistances to a hub (rc_model=lumped); NOT an end-to-end line resistance",
+     "nets": {
+      "wl_0": {
+       "resistance_ohm": 434.2748,
+       "terminal_legs_ohm": [
+        54.2843,
+        54.2844,
+        162.853,
+        162.853
+       ],
+       "by_layer": [
+        "poly",
+        "metal0",
+        "metal1"
+       ]
+      },
+      "wl_1": {
+       "resistance_ohm": 434.2748,
+       "terminal_legs_ohm": [
+        162.853,
+        54.2843,
+        54.2844,
+        162.853
+       ],
+       "by_layer": [
+        "poly",
+        "metal0",
+        "metal1"
+       ]
+      },
+      "wl_2": {
+       "resistance_ohm": 434.2748,
+       "terminal_legs_ohm": [
+        54.2843,
+        54.2844,
+        162.853,
+        162.853
+       ],
+       "by_layer": [
+        "poly",
+        "metal0",
+        "metal1"
+       ]
+      },
+      "wl_3": {
+       "resistance_ohm": 434.2748,
+       "terminal_legs_ohm": [
+        162.853,
+        54.2843,
+        54.2844,
+        162.853
+       ],
+       "by_layer": [
+        "poly",
+        "metal0",
+        "metal1"
+       ]
+      }
+     }
+    }
+   },
+   "per_net": {
+    "rbl": {
+     "rbl_0": {
+      "ground_ff": 0.581168,
+      "coupling_ff": 0.278011,
+      "total_ff": 0.859179,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.581168
+      },
+      "coupled_ff": {
+       "bl_1": 0.129795,
+       "rwl_0": 0.019738,
+       "rwl_1": 0.019738,
+       "rwl_2": 0.019738,
+       "rwl_3": 0.019738,
+       "sn_0_0": 0.01071,
+       "sn_1_0": 0.024327,
+       "sn_2_0": 0.024327,
+       "wl_0": 0.0033,
+       "wl_1": 0.0033,
+       "wl_2": 0.0033
+      }
+     },
+     "rbl_1": {
+      "ground_ff": 0.581168,
+      "coupling_ff": 0.278011,
+      "total_ff": 0.859179,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.581168
+      },
+      "coupled_ff": {
+       "bl_2": 0.129795,
+       "rwl_0": 0.019738,
+       "rwl_1": 0.019738,
+       "rwl_2": 0.019738,
+       "rwl_3": 0.019738,
+       "sn_0_1": 0.01071,
+       "sn_1_1": 0.024327,
+       "sn_2_1": 0.024327,
+       "wl_0": 0.0033,
+       "wl_1": 0.0033,
+       "wl_2": 0.0033
+      }
+     },
+     "rbl_2": {
+      "ground_ff": 0.581168,
+      "coupling_ff": 0.278011,
+      "total_ff": 0.859179,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.581168
+      },
+      "coupled_ff": {
+       "bl_3": 0.129795,
+       "rwl_0": 0.019738,
+       "rwl_1": 0.019738,
+       "rwl_2": 0.019738,
+       "rwl_3": 0.019738,
+       "sn_0_2": 0.01071,
+       "sn_1_2": 0.024327,
+       "sn_2_2": 0.024327,
+       "wl_0": 0.0033,
+       "wl_1": 0.0033,
+       "wl_2": 0.0033
+      }
+     },
+     "rbl_3": {
+      "ground_ff": 0.596076,
+      "coupling_ff": 0.102204,
+      "total_ff": 0.69828,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.596076
+      },
+      "coupled_ff": {
+       "rwl_0": 0.01071,
+       "rwl_1": 0.01071,
+       "rwl_2": 0.01071,
+       "rwl_3": 0.01071,
+       "sn_0_3": 0.01071,
+       "sn_1_3": 0.024327,
+       "sn_2_3": 0.024327
+      }
+     }
+    },
+    "bl": {
+     "bl_0": {
+      "ground_ff": 0.596076,
+      "coupling_ff": 0.115821,
+      "total_ff": 0.711897,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.596076
+      },
+      "coupled_ff": {
+       "sn_0_0": 0.01071,
+       "sn_1_0": 0.01071,
+       "sn_2_0": 0.01071,
+       "sn_3_0": 0.01071,
+       "wl_0": 0.024327,
+       "wl_1": 0.024327,
+       "wl_2": 0.024327
+      }
+     },
+     "bl_1": {
+      "ground_ff": 0.581168,
+      "coupling_ff": 0.291628,
+      "total_ff": 0.872796,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.581168
+      },
+      "coupled_ff": {
+       "rbl_0": 0.129795,
+       "rwl_0": 0.009028,
+       "rwl_1": 0.009028,
+       "rwl_2": 0.009028,
+       "rwl_3": 0.009028,
+       "sn_0_1": 0.01071,
+       "sn_1_1": 0.01071,
+       "sn_2_1": 0.01071,
+       "sn_3_1": 0.01071,
+       "wl_0": 0.027627,
+       "wl_1": 0.027627,
+       "wl_2": 0.027627
+      }
+     },
+     "bl_2": {
+      "ground_ff": 0.581168,
+      "coupling_ff": 0.291628,
+      "total_ff": 0.872796,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.581168
+      },
+      "coupled_ff": {
+       "rbl_1": 0.129795,
+       "rwl_0": 0.009028,
+       "rwl_1": 0.009028,
+       "rwl_2": 0.009028,
+       "rwl_3": 0.009028,
+       "sn_0_2": 0.01071,
+       "sn_1_2": 0.01071,
+       "sn_2_2": 0.01071,
+       "sn_3_2": 0.01071,
+       "wl_0": 0.027627,
+       "wl_1": 0.027627,
+       "wl_2": 0.027627
+      }
+     },
+     "bl_3": {
+      "ground_ff": 0.581168,
+      "coupling_ff": 0.291628,
+      "total_ff": 0.872796,
+      "resistance_ohm": 385.481,
+      "by_layer_ground_ff": {
+       "metal0": 0.581168
+      },
+      "coupled_ff": {
+       "rbl_2": 0.129795,
+       "rwl_0": 0.009028,
+       "rwl_1": 0.009028,
+       "rwl_2": 0.009028,
+       "rwl_3": 0.009028,
+       "sn_0_3": 0.01071,
+       "sn_1_3": 0.01071,
+       "sn_2_3": 0.01071,
+       "sn_3_3": 0.01071,
+       "wl_0": 0.027627,
+       "wl_1": 0.027627,
+       "wl_2": 0.027627
+      }
+     }
+    },
+    "wl": {
+     "wl_0": {
+      "ground_ff": 1.909279,
+      "coupling_ff": 0.189768,
+      "total_ff": 2.099047,
+      "resistance_ohm": 434.2748,
+      "by_layer_ground_ff": {
+       "poly": 0.695682,
+       "metal0": 0.299611,
+       "metal1": 0.913986
+      },
+      "coupled_ff": {
+       "bl_0": 0.024327,
+       "bl_1": 0.027627,
+       "bl_2": 0.027627,
+       "bl_3": 0.027627,
+       "rbl_0": 0.0033,
+       "rbl_1": 0.0033,
+       "rbl_2": 0.0033,
+       "sn_0_0": 0.019664,
+       "sn_0_1": 0.019664,
+       "sn_0_2": 0.019664,
+       "sn_0_3": 0.013668
+      }
+     },
+     "wl_1": {
+      "ground_ff": 1.909279,
+      "coupling_ff": 0.180892,
+      "total_ff": 2.090171,
+      "resistance_ohm": 434.2748,
+      "by_layer_ground_ff": {
+       "poly": 0.695682,
+       "metal0": 0.299611,
+       "metal1": 0.913986
+      },
+      "coupled_ff": {
+       "bl_0": 0.024327,
+       "bl_1": 0.027627,
+       "bl_2": 0.027627,
+       "bl_3": 0.027627,
+       "rbl_0": 0.0033,
+       "rbl_1": 0.0033,
+       "rbl_2": 0.0033,
+       "sn_1_0": 0.019664,
+       "sn_1_1": 0.016705,
+       "sn_1_2": 0.016705,
+       "sn_1_3": 0.01071
+      }
+     },
+     "wl_2": {
+      "ground_ff": 1.909279,
+      "coupling_ff": 0.180892,
+      "total_ff": 2.090171,
+      "resistance_ohm": 434.2748,
+      "by_layer_ground_ff": {
+       "poly": 0.695682,
+       "metal0": 0.299611,
+       "metal1": 0.913986
+      },
+      "coupled_ff": {
+       "bl_0": 0.024327,
+       "bl_1": 0.027627,
+       "bl_2": 0.027627,
+       "bl_3": 0.027627,
+       "rbl_0": 0.0033,
+       "rbl_1": 0.0033,
+       "rbl_2": 0.0033,
+       "sn_2_0": 0.019664,
+       "sn_2_1": 0.016705,
+       "sn_2_2": 0.016705,
+       "sn_2_3": 0.01071
+      }
+     },
+     "wl_3": {
+      "ground_ff": 1.91375,
+      "coupling_ff": 0.063784,
+      "total_ff": 1.977534,
+      "resistance_ohm": 434.2748,
+      "by_layer_ground_ff": {
+       "poly": 0.695682,
+       "metal0": 0.299611,
+       "metal1": 0.918457
+      },
+      "coupled_ff": {
+       "sn_3_0": 0.019664,
+       "sn_3_1": 0.016705,
+       "sn_3_2": 0.016705,
+       "sn_3_3": 0.01071
+      }
+     }
+    },
+    "rwl": {
+     "rwl_0": {
+      "ground_ff": 1.187129,
+      "coupling_ff": 0.166126,
+      "total_ff": 1.353255,
+      "resistance_ohm": 57.8391,
+      "by_layer_ground_ff": {
+       "metal0": 0.299611,
+       "metal1": 0.887517
+      },
+      "coupled_ff": {
+       "bl_1": 0.009028,
+       "bl_2": 0.009028,
+       "bl_3": 0.009028,
+       "rbl_0": 0.019738,
+       "rbl_1": 0.019738,
+       "rbl_2": 0.019738,
+       "rbl_3": 0.01071,
+       "sn_0_0": 0.010072,
+       "sn_0_1": 0.019682,
+       "sn_0_2": 0.019682,
+       "sn_0_3": 0.019682
+      }
+     },
+     "rwl_1": {
+      "ground_ff": 1.187129,
+      "coupling_ff": 0.166126,
+      "total_ff": 1.353255,
+      "resistance_ohm": 57.8391,
+      "by_layer_ground_ff": {
+       "metal0": 0.299611,
+       "metal1": 0.887517
+      },
+      "coupled_ff": {
+       "bl_1": 0.009028,
+       "bl_2": 0.009028,
+       "bl_3": 0.009028,
+       "rbl_0": 0.019738,
+       "rbl_1": 0.019738,
+       "rbl_2": 0.019738,
+       "rbl_3": 0.01071,
+       "sn_1_0": 0.010072,
+       "sn_1_1": 0.019682,
+       "sn_1_2": 0.019682,
+       "sn_1_3": 0.019682
+      }
+     },
+     "rwl_2": {
+      "ground_ff": 1.187129,
+      "coupling_ff": 0.166126,
+      "total_ff": 1.353255,
+      "resistance_ohm": 57.8391,
+      "by_layer_ground_ff": {
+       "metal0": 0.299611,
+       "metal1": 0.887517
+      },
+      "coupled_ff": {
+       "bl_1": 0.009028,
+       "bl_2": 0.009028,
+       "bl_3": 0.009028,
+       "rbl_0": 0.019738,
+       "rbl_1": 0.019738,
+       "rbl_2": 0.019738,
+       "rbl_3": 0.01071,
+       "sn_2_0": 0.010072,
+       "sn_2_1": 0.019682,
+       "sn_2_2": 0.019682,
+       "sn_2_3": 0.019682
+      }
+     },
+     "rwl_3": {
+      "ground_ff": 1.187129,
+      "coupling_ff": 0.166126,
+      "total_ff": 1.353255,
+      "resistance_ohm": 57.8391,
+      "by_layer_ground_ff": {
+       "metal0": 0.299611,
+       "metal1": 0.887517
+      },
+      "coupled_ff": {
+       "bl_1": 0.009028,
+       "bl_2": 0.009028,
+       "bl_3": 0.009028,
+       "rbl_0": 0.019738,
+       "rbl_1": 0.019738,
+       "rbl_2": 0.019738,
+       "rbl_3": 0.01071,
+       "sn_3_0": 0.010072,
+       "sn_3_1": 0.019682,
+       "sn_3_2": 0.019682,
+       "sn_3_3": 0.019682
+      }
+     }
+    }
+   }
+  },
+  "compact_v2": {
+   "source": {
+    "extraction": "layout/compact/gain_cell_2t_v2_array.extract.parasitics.json",
+    "extraction_sha256": "sha256:78002e584616a1034a91aedd390e00e427b062a7b7fc92dccd390f07ee561212",
+    "gds": "layout/compact/gain_cell_2t_v2_array.gds",
+    "gds_sha256": "sha256:f9f61745ede84fdce2cbdaf68fed5ba8785cef1b500ea40dd75a2cbb579c678b",
+    "top": "gain_cell_2t_v2_array_4x4_layout_0",
+    "device_count": 32,
+    "klt_version": "0.7.1.dev2264+gcba5e957d9ed",
+    "klayout_version": "0.30.12",
+    "critical_nets": [
+     "\\$10",
+     "\\$17",
+     "\\$18",
+     "\\$19",
+     "\\$20",
+     "\\$22",
+     "\\$23",
+     "\\$24",
+     "\\$25",
+     "\\$29",
+     "\\$30",
+     "\\$31",
+     "\\$32",
+     "\\$7",
+     "\\$8",
+     "\\$9",
+     "bl_0",
+     "bl_1",
+     "bl_2",
+     "bl_3",
+     "rbl_0",
+     "rbl_1",
+     "rbl_2",
+     "rbl_3",
+     "rwl_0",
+     "rwl_1",
+     "rwl_2",
+     "rwl_3",
+     "wl_0",
+     "wl_1",
+     "wl_2",
+     "wl_3"
+    ],
+    "warnings": []
+   },
+   "rbl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 1.274207,
+     "max": 1.534113,
+     "mean": 1.460557,
+     "max_net": "rbl_2"
+    },
+    "ground_ff": {
+     "min": 0.914472,
+     "max": 0.917566,
+     "mean": 0.915245,
+     "max_net": "rbl_3"
+    },
+    "coupling_ff": {
+     "min": 0.356641,
+     "max": 0.619641,
+     "mean": 0.545311,
+     "max_net": "rbl_2"
+    },
+    "resistance_ohm": {
+     "min": 79.109,
+     "max": 79.109,
+     "mean": 79.109,
+     "max_net": "rbl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.128327,
+     "metal1": 0.289183,
+     "metal2": 0.496961
+    }
+   },
+   "bl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 0.700784,
+     "max": 0.864084,
+     "mean": 0.823259,
+     "max_net": "bl_3"
+    },
+    "ground_ff": {
+     "min": 0.452661,
+     "max": 0.452661,
+     "mean": 0.452661,
+     "max_net": "bl_3"
+    },
+    "coupling_ff": {
+     "min": 0.248123,
+     "max": 0.411423,
+     "mean": 0.370598,
+     "max_net": "bl_3"
+    },
+    "resistance_ohm": {
+     "min": 51.521,
+     "max": 51.521,
+     "mean": 51.521,
+     "max_net": "bl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.085551,
+     "metal1": 0.098412,
+     "metal2": 0.268698
+    }
+   },
+   "wl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 0.330388,
+     "max": 0.330388,
+     "mean": 0.330388,
+     "max_net": "wl_3"
+    },
+    "ground_ff": {
+     "min": 0.330388,
+     "max": 0.330388,
+     "mean": 0.330388,
+     "max_net": "wl_3"
+    },
+    "coupling_ff": {
+     "min": 0,
+     "max": 0,
+     "mean": 0.0,
+     "max_net": "wl_3"
+    },
+    "resistance_ohm": {
+     "min": 655.8908,
+     "max": 655.8908,
+     "mean": 655.8908,
+     "max_net": "wl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "poly": 0.330388
+    }
+   },
+   "rwl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 0.733376,
+     "max": 0.780991,
+     "mean": 0.760938,
+     "max_net": "rwl_2"
+    },
+    "ground_ff": {
+     "min": 0.511719,
+     "max": 0.519495,
+     "mean": 0.515607,
+     "max_net": "rwl_3"
+    },
+    "coupling_ff": {
+     "min": 0.213881,
+     "max": 0.269272,
+     "mean": 0.245331,
+     "max_net": "rwl_2"
+    },
+    "resistance_ohm": {
+     "min": 102.0315,
+     "max": 102.0315,
+     "mean": 102.0315,
+     "max_net": "rwl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.171103,
+     "metal1": 0.340616
+    }
+   },
+   "storage_node": {
+    "nets": [
+     "\\$10",
+     "\\$17",
+     "\\$18",
+     "\\$19",
+     "\\$20",
+     "\\$22",
+     "\\$23",
+     "\\$24",
+     "\\$25",
+     "\\$29",
+     "\\$30",
+     "\\$31",
+     "\\$32",
+     "\\$7",
+     "\\$8",
+     "\\$9"
+    ],
+    "total_ff": {
+     "min": 0.316892,
+     "max": 0.334888,
+     "mean": 0.327283,
+     "max_net": "\\$9"
+    },
+    "ground_ff": {
+     "min": 0.291528,
+     "max": 0.291622,
+     "mean": 0.291552,
+     "max_net": "\\$32"
+    },
+    "coupling_ff": {
+     "min": 0.02527,
+     "max": 0.04336,
+     "mean": 0.035732,
+     "max_net": "\\$9"
+    },
+    "per_node": {
+     "\\$10": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.028534,
+      "total_ff": 0.320156,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$9": 0.0102,
+       "bl_3": 0.013999,
+       "rwl_0": 0.004335
+      }
+     },
+     "\\$17": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.031809,
+      "total_ff": 0.323337,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$18": 0.0102,
+       "bl_0": 0.008415,
+       "rwl_1": 0.013194
+      }
+     },
+     "\\$18": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.042009,
+      "total_ff": 0.333537,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$17": 0.0102,
+       "\\$19": 0.0102,
+       "bl_1": 0.008415,
+       "rwl_1": 0.013194
+      }
+     },
+     "\\$19": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.042009,
+      "total_ff": 0.333537,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$18": 0.0102,
+       "\\$20": 0.0102,
+       "bl_2": 0.008415,
+       "rwl_1": 0.013194
+      }
+     },
+     "\\$20": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.02527,
+      "total_ff": 0.316892,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$19": 0.0102,
+       "bl_3": 0.008415,
+       "rwl_1": 0.006655
+      }
+     },
+     "\\$22": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.031809,
+      "total_ff": 0.323337,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$23": 0.0102,
+       "bl_0": 0.008415,
+       "rwl_2": 0.013194
+      }
+     },
+     "\\$23": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.042009,
+      "total_ff": 0.333537,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$22": 0.0102,
+       "\\$24": 0.0102,
+       "bl_1": 0.008415,
+       "rwl_2": 0.013194
+      }
+     },
+     "\\$24": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.042009,
+      "total_ff": 0.333537,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$23": 0.0102,
+       "\\$25": 0.0102,
+       "bl_2": 0.008415,
+       "rwl_2": 0.013194
+      }
+     },
+     "\\$25": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.02527,
+      "total_ff": 0.316892,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$24": 0.0102,
+       "bl_3": 0.008415,
+       "rwl_2": 0.006655
+      }
+     },
+     "\\$29": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.031809,
+      "total_ff": 0.323337,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$30": 0.0102,
+       "bl_0": 0.008415,
+       "rwl_3": 0.013194
+      }
+     },
+     "\\$30": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.042009,
+      "total_ff": 0.333537,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$29": 0.0102,
+       "\\$31": 0.0102,
+       "bl_1": 0.008415,
+       "rwl_3": 0.013194
+      }
+     },
+     "\\$31": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.042009,
+      "total_ff": 0.333537,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$30": 0.0102,
+       "\\$32": 0.0102,
+       "bl_2": 0.008415,
+       "rwl_3": 0.013194
+      }
+     },
+     "\\$32": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.02527,
+      "total_ff": 0.316892,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$31": 0.0102,
+       "bl_3": 0.008415,
+       "rwl_3": 0.006655
+      }
+     },
+     "\\$7": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.03316,
+      "total_ff": 0.324688,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$8": 0.0102,
+       "bl_0": 0.013999,
+       "rwl_0": 0.008961
+      }
+     },
+     "\\$8": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.04336,
+      "total_ff": 0.334888,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$7": 0.0102,
+       "\\$9": 0.0102,
+       "bl_1": 0.013999,
+       "rwl_0": 0.008961
+      }
+     },
+     "\\$9": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.04336,
+      "total_ff": 0.334888,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$10": 0.0102,
+       "\\$8": 0.0102,
+       "bl_2": 0.013999,
+       "rwl_0": 0.008961
+      }
+     }
+    }
+   },
+   "wordline_resistance": {
+    "extractor_reported": {
+     "model": "klt lumped STAR: resistance_ohm = sum of per-gate-terminal leg resistances to a hub (rc_model=lumped); NOT an end-to-end line resistance",
+     "nets": {
+      "wl_0": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        245.959,
+        81.9864,
+        81.9863
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      },
+      "wl_1": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        81.9863,
+        81.9864,
+        245.959
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      },
+      "wl_2": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        81.9863,
+        81.9864,
+        245.959
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      },
+      "wl_3": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        81.9864,
+        81.9863,
+        245.959
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      }
+     }
+    },
+    "hand_end_to_end_poly": {
+     "label": "HAND CALCULATION from drawn GDS geometry x PDK rp1; not an extractor output",
+     "rsh_ohm_per_sq_source": "sky130A libs.tech/ngspice/r+c/res_{low,typical,high}__cap_typical.spice rp1",
+     "rsh_ohm_per_sq": {
+      "low": 44.0,
+      "typical": 48.2,
+      "high": 55.8
+     },
+     "drawn_poly_line": {
+      "wl_0": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      },
+      "wl_1": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      },
+      "wl_2": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      },
+      "wl_3": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      }
+     },
+     "end_to_end_ohm": {
+      "wl_0": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      },
+      "wl_1": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      },
+      "wl_2": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      },
+      "wl_3": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      }
+     }
+    }
+   },
+   "per_net": {
+    "rbl": {
+     "rbl_0": {
+      "ground_ff": 0.914472,
+      "coupling_ff": 0.585321,
+      "total_ff": 1.499793,
+      "resistance_ohm": 79.109,
+      "by_layer_ground_ff": {
+       "metal0": 0.128327,
+       "metal1": 0.289183,
+       "metal2": 0.496961
+      },
+      "coupled_ff": {
+       "bl_0": 0.188693,
+       "bl_1": 0.1633,
+       "rbl_1": 0.03432,
+       "rwl_0": 0.049752,
+       "rwl_1": 0.049752,
+       "rwl_2": 0.049752,
+       "rwl_3": 0.049752
+      }
+     },
+     "rbl_1": {
+      "ground_ff": 0.914472,
+      "coupling_ff": 0.619641,
+      "total_ff": 1.534113,
+      "resistance_ohm": 79.109,
+      "by_layer_ground_ff": {
+       "metal0": 0.128327,
+       "metal1": 0.289183,
+       "metal2": 0.496961
+      },
+      "coupled_ff": {
+       "bl_1": 0.188693,
+       "bl_2": 0.1633,
+       "rbl_0": 0.03432,
+       "rbl_2": 0.03432,
+       "rwl_0": 0.049752,
+       "rwl_1": 0.049752,
+       "rwl_2": 0.049752,
+       "rwl_3": 0.049752
+      }
+     },
+     "rbl_2": {
+      "ground_ff": 0.914472,
+      "coupling_ff": 0.619641,
+      "total_ff": 1.534113,
+      "resistance_ohm": 79.109,
+      "by_layer_ground_ff": {
+       "metal0": 0.128327,
+       "metal1": 0.289183,
+       "metal2": 0.496961
+      },
+      "coupled_ff": {
+       "bl_2": 0.188693,
+       "bl_3": 0.1633,
+       "rbl_1": 0.03432,
+       "rbl_3": 0.03432,
+       "rwl_0": 0.049752,
+       "rwl_1": 0.049752,
+       "rwl_2": 0.049752,
+       "rwl_3": 0.049752
+      }
+     },
+     "rbl_3": {
+      "ground_ff": 0.917566,
+      "coupling_ff": 0.356641,
+      "total_ff": 1.274207,
+      "resistance_ohm": 79.109,
+      "by_layer_ground_ff": {
+       "metal0": 0.128327,
+       "metal1": 0.289183,
+       "metal2": 0.500055
+      },
+      "coupled_ff": {
+       "bl_3": 0.188693,
+       "rbl_2": 0.03432,
+       "rwl_0": 0.033407,
+       "rwl_1": 0.033407,
+       "rwl_2": 0.033407,
+       "rwl_3": 0.033407
+      }
+     }
+    },
+    "bl": {
+     "bl_0": {
+      "ground_ff": 0.452661,
+      "coupling_ff": 0.248123,
+      "total_ff": 0.700784,
+      "resistance_ohm": 51.521,
+      "by_layer_ground_ff": {
+       "metal0": 0.085551,
+       "metal1": 0.098412,
+       "metal2": 0.268698
+      },
+      "coupled_ff": {
+       "\\$17": 0.008415,
+       "\\$22": 0.008415,
+       "\\$29": 0.008415,
+       "\\$7": 0.013999,
+       "rbl_0": 0.188693,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093
+      }
+     },
+     "bl_1": {
+      "ground_ff": 0.452661,
+      "coupling_ff": 0.411423,
+      "total_ff": 0.864084,
+      "resistance_ohm": 51.521,
+      "by_layer_ground_ff": {
+       "metal0": 0.085551,
+       "metal1": 0.098412,
+       "metal2": 0.268698
+      },
+      "coupled_ff": {
+       "\\$18": 0.008415,
+       "\\$23": 0.008415,
+       "\\$30": 0.008415,
+       "\\$8": 0.013999,
+       "rbl_0": 0.1633,
+       "rbl_1": 0.188693,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093
+      }
+     },
+     "bl_2": {
+      "ground_ff": 0.452661,
+      "coupling_ff": 0.411423,
+      "total_ff": 0.864084,
+      "resistance_ohm": 51.521,
+      "by_layer_ground_ff": {
+       "metal0": 0.085551,
+       "metal1": 0.098412,
+       "metal2": 0.268698
+      },
+      "coupled_ff": {
+       "\\$19": 0.008415,
+       "\\$24": 0.008415,
+       "\\$31": 0.008415,
+       "\\$9": 0.013999,
+       "rbl_1": 0.1633,
+       "rbl_2": 0.188693,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093
+      }
+     },
+     "bl_3": {
+      "ground_ff": 0.452661,
+      "coupling_ff": 0.411423,
+      "total_ff": 0.864084,
+      "resistance_ohm": 51.521,
+      "by_layer_ground_ff": {
+       "metal0": 0.085551,
+       "metal1": 0.098412,
+       "metal2": 0.268698
+      },
+      "coupled_ff": {
+       "\\$10": 0.013999,
+       "\\$20": 0.008415,
+       "\\$25": 0.008415,
+       "\\$32": 0.008415,
+       "rbl_2": 0.1633,
+       "rbl_3": 0.188693,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093
+      }
+     }
+    },
+    "wl": {
+     "wl_0": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     },
+     "wl_1": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     },
+     "wl_2": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     },
+     "wl_3": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     }
+    },
+    "rwl": {
+     "rwl_0": {
+      "ground_ff": 0.519495,
+      "coupling_ff": 0.213881,
+      "total_ff": 0.733376,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.348392
+      },
+      "coupled_ff": {
+       "\\$10": 0.004335,
+       "\\$7": 0.008961,
+       "\\$8": 0.008961,
+       "\\$9": 0.008961,
+       "rbl_0": 0.049752,
+       "rbl_1": 0.049752,
+       "rbl_2": 0.049752,
+       "rbl_3": 0.033407
+      }
+     },
+     "rwl_1": {
+      "ground_ff": 0.511719,
+      "coupling_ff": 0.269272,
+      "total_ff": 0.780991,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.340616
+      },
+      "coupled_ff": {
+       "\\$17": 0.013194,
+       "\\$18": 0.013194,
+       "\\$19": 0.013194,
+       "\\$20": 0.006655,
+       "bl_0": 0.010093,
+       "bl_1": 0.010093,
+       "bl_2": 0.010093,
+       "bl_3": 0.010093,
+       "rbl_0": 0.049752,
+       "rbl_1": 0.049752,
+       "rbl_2": 0.049752,
+       "rbl_3": 0.033407
+      }
+     },
+     "rwl_2": {
+      "ground_ff": 0.511719,
+      "coupling_ff": 0.269272,
+      "total_ff": 0.780991,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.340616
+      },
+      "coupled_ff": {
+       "\\$22": 0.013194,
+       "\\$23": 0.013194,
+       "\\$24": 0.013194,
+       "\\$25": 0.006655,
+       "bl_0": 0.010093,
+       "bl_1": 0.010093,
+       "bl_2": 0.010093,
+       "bl_3": 0.010093,
+       "rbl_0": 0.049752,
+       "rbl_1": 0.049752,
+       "rbl_2": 0.049752,
+       "rbl_3": 0.033407
+      }
+     },
+     "rwl_3": {
+      "ground_ff": 0.519495,
+      "coupling_ff": 0.2289,
+      "total_ff": 0.748395,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.348392
+      },
+      "coupled_ff": {
+       "\\$29": 0.013194,
+       "\\$30": 0.013194,
+       "\\$31": 0.013194,
+       "\\$32": 0.006655,
+       "rbl_0": 0.049752,
+       "rbl_1": 0.049752,
+       "rbl_2": 0.049752,
+       "rbl_3": 0.033407
+      }
+     }
+    }
+   }
+  },
+  "compact_v1": {
+   "source": {
+    "extraction": "layout/compact/gain_cell_2t_v1_array.extract.parasitics.json",
+    "extraction_sha256": "sha256:c757d8c970f9e549b695e914737bf81c9092bf157e9116490d994f36e8350c75",
+    "gds": "layout/compact/gain_cell_2t_v1_array.gds",
+    "gds_sha256": "sha256:a3c80d4d0aa4fba1a31cb2091b30e2f5cf865e9994a3dcf501484726606acc99",
+    "top": "gain_cell_2t_v1_array_4x4_layout_0",
+    "device_count": 32,
+    "klt_version": "0.7.1.dev2264+gcba5e957d9ed",
+    "klayout_version": "0.30.12",
+    "critical_nets": [
+     "\\$10",
+     "\\$17",
+     "\\$18",
+     "\\$19",
+     "\\$21",
+     "\\$23",
+     "\\$24",
+     "\\$26",
+     "\\$27",
+     "\\$29",
+     "\\$30",
+     "\\$31",
+     "\\$32",
+     "\\$7",
+     "\\$8",
+     "\\$9",
+     "bl_0",
+     "bl_1",
+     "bl_2",
+     "bl_3",
+     "rbl_0",
+     "rbl_1",
+     "rbl_2",
+     "rbl_3",
+     "rwl_0",
+     "rwl_1",
+     "rwl_2",
+     "rwl_3",
+     "wl_0",
+     "wl_1",
+     "wl_2",
+     "wl_3"
+    ],
+    "warnings": []
+   },
+   "rbl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 1.536281,
+     "max": 1.883834,
+     "mean": 1.785506,
+     "max_net": "rbl_2"
+    },
+    "ground_ff": {
+     "min": 1.071994,
+     "max": 1.074314,
+     "mean": 1.072574,
+     "max_net": "rbl_3"
+    },
+    "coupling_ff": {
+     "min": 0.461967,
+     "max": 0.81184,
+     "mean": 0.712932,
+     "max_net": "rbl_2"
+    },
+    "resistance_ohm": {
+     "min": 104.6421,
+     "max": 104.6421,
+     "mean": 104.6421,
+     "max_net": "rbl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.171103,
+     "metal1": 0.382338,
+     "metal2": 0.518553
+    }
+   },
+   "bl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 1.232986,
+     "max": 1.477636,
+     "mean": 1.416473,
+     "max_net": "bl_3"
+    },
+    "ground_ff": {
+     "min": 0.880884,
+     "max": 0.880884,
+     "mean": 0.880884,
+     "max_net": "bl_3"
+    },
+    "coupling_ff": {
+     "min": 0.352102,
+     "max": 0.596752,
+     "mean": 0.535589,
+     "max_net": "bl_3"
+    },
+    "resistance_ohm": {
+     "min": 103.0132,
+     "max": 103.0132,
+     "mean": 103.0132,
+     "max_net": "bl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.171103,
+     "metal1": 0.196824,
+     "metal2": 0.512956
+    }
+   },
+   "wl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 0.330388,
+     "max": 0.330388,
+     "mean": 0.330388,
+     "max_net": "wl_3"
+    },
+    "ground_ff": {
+     "min": 0.330388,
+     "max": 0.330388,
+     "mean": 0.330388,
+     "max_net": "wl_3"
+    },
+    "coupling_ff": {
+     "min": 0,
+     "max": 0,
+     "mean": 0.0,
+     "max_net": "wl_3"
+    },
+    "resistance_ohm": {
+     "min": 655.8908,
+     "max": 655.8908,
+     "mean": 655.8908,
+     "max_net": "wl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "poly": 0.330388
+    }
+   },
+   "rwl": {
+    "nets": 4,
+    "total_ff": {
+     "min": 0.733376,
+     "max": 0.765972,
+     "mean": 0.75419,
+     "max_net": "rwl_2"
+    },
+    "ground_ff": {
+     "min": 0.511719,
+     "max": 0.519495,
+     "mean": 0.514468,
+     "max_net": "rwl_0"
+    },
+    "coupling_ff": {
+     "min": 0.213881,
+     "max": 0.254253,
+     "mean": 0.239722,
+     "max_net": "rwl_2"
+    },
+    "resistance_ohm": {
+     "min": 102.0315,
+     "max": 102.0315,
+     "mean": 102.0315,
+     "max_net": "rwl_3"
+    },
+    "worst_by_layer_ground_ff": {
+     "metal0": 0.171103,
+     "metal1": 0.340616
+    }
+   },
+   "storage_node": {
+    "nets": [
+     "\\$10",
+     "\\$17",
+     "\\$18",
+     "\\$19",
+     "\\$21",
+     "\\$23",
+     "\\$24",
+     "\\$26",
+     "\\$27",
+     "\\$29",
+     "\\$30",
+     "\\$31",
+     "\\$32",
+     "\\$7",
+     "\\$8",
+     "\\$9"
+    ],
+    "total_ff": {
+     "min": 0.308707,
+     "max": 0.329304,
+     "mean": 0.321535,
+     "max_net": "\\$31"
+    },
+    "ground_ff": {
+     "min": 0.291528,
+     "max": 0.291622,
+     "mean": 0.291552,
+     "max_net": "\\$8"
+    },
+    "coupling_ff": {
+     "min": 0.017085,
+     "max": 0.037776,
+     "mean": 0.029983,
+     "max_net": "\\$31"
+    },
+    "per_node": {
+     "\\$10": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.037495,
+      "total_ff": 0.329023,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$7": 0.004335,
+       "\\$9": 0.0102,
+       "bl_1": 0.013999,
+       "rwl_0": 0.008961
+      }
+     },
+     "\\$17": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.027576,
+      "total_ff": 0.319104,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$18": 0.0102,
+       "bl_0": 0.008415,
+       "rwl_1": 0.008961
+      }
+     },
+     "\\$18": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.037776,
+      "total_ff": 0.329304,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$17": 0.0102,
+       "\\$21": 0.0102,
+       "bl_1": 0.008415,
+       "rwl_1": 0.008961
+      }
+     },
+     "\\$19": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.017085,
+      "total_ff": 0.308707,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$21": 0.004335,
+       "bl_3": 0.008415,
+       "rwl_1": 0.004335
+      }
+     },
+     "\\$21": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.031911,
+      "total_ff": 0.323439,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$18": 0.0102,
+       "\\$19": 0.004335,
+       "bl_2": 0.008415,
+       "rwl_1": 0.008961
+      }
+     },
+     "\\$23": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.031911,
+      "total_ff": 0.323439,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$26": 0.004335,
+       "\\$27": 0.0102,
+       "bl_1": 0.008415,
+       "rwl_2": 0.008961
+      }
+     },
+     "\\$24": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.017085,
+      "total_ff": 0.308707,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$27": 0.004335,
+       "bl_3": 0.008415,
+       "rwl_2": 0.004335
+      }
+     },
+     "\\$26": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.021711,
+      "total_ff": 0.313239,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$23": 0.004335,
+       "bl_0": 0.008415,
+       "rwl_2": 0.008961
+      }
+     },
+     "\\$27": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.031911,
+      "total_ff": 0.323439,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$23": 0.0102,
+       "\\$24": 0.004335,
+       "bl_2": 0.008415,
+       "rwl_2": 0.008961
+      }
+     },
+     "\\$29": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.027576,
+      "total_ff": 0.319104,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$30": 0.0102,
+       "bl_0": 0.008415,
+       "rwl_3": 0.008961
+      }
+     },
+     "\\$30": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.037776,
+      "total_ff": 0.329304,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$29": 0.0102,
+       "\\$31": 0.0102,
+       "bl_1": 0.008415,
+       "rwl_3": 0.008961
+      }
+     },
+     "\\$31": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.037776,
+      "total_ff": 0.329304,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$30": 0.0102,
+       "\\$32": 0.0102,
+       "bl_2": 0.008415,
+       "rwl_3": 0.008961
+      }
+     },
+     "\\$32": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.02295,
+      "total_ff": 0.314572,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$31": 0.0102,
+       "bl_3": 0.008415,
+       "rwl_3": 0.004335
+      }
+     },
+     "\\$7": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.037495,
+      "total_ff": 0.329023,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$10": 0.004335,
+       "\\$8": 0.0102,
+       "bl_2": 0.013999,
+       "rwl_0": 0.008961
+      }
+     },
+     "\\$8": {
+      "ground_ff": 0.291622,
+      "coupling_ff": 0.028534,
+      "total_ff": 0.320156,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.113805
+      },
+      "coupled_ff": {
+       "\\$7": 0.0102,
+       "bl_3": 0.013999,
+       "rwl_0": 0.004335
+      }
+     },
+     "\\$9": {
+      "ground_ff": 0.291528,
+      "coupling_ff": 0.03316,
+      "total_ff": 0.324688,
+      "resistance_ohm": 366.1411,
+      "by_layer_ground_ff": {
+       "poly": 0.177818,
+       "metal0": 0.11371
+      },
+      "coupled_ff": {
+       "\\$10": 0.0102,
+       "bl_0": 0.013999,
+       "rwl_0": 0.008961
+      }
+     }
+    }
+   },
+   "wordline_resistance": {
+    "extractor_reported": {
+     "model": "klt lumped STAR: resistance_ohm = sum of per-gate-terminal leg resistances to a hub (rc_model=lumped); NOT an end-to-end line resistance",
+     "nets": {
+      "wl_0": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        81.9863,
+        81.9864,
+        245.959
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      },
+      "wl_1": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        81.9863,
+        81.9864,
+        245.959
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      },
+      "wl_2": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        81.9863,
+        81.9864,
+        245.959
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      },
+      "wl_3": {
+       "resistance_ohm": 655.8908,
+       "terminal_legs_ohm": [
+        245.959,
+        81.9863,
+        81.9864,
+        245.959
+       ],
+       "by_layer": [
+        "poly"
+       ]
+      }
+     }
+    },
+    "hand_end_to_end_poly": {
+     "label": "HAND CALCULATION from drawn GDS geometry x PDK rp1; not an extractor output",
+     "rsh_ohm_per_sq_source": "sky130A libs.tech/ngspice/r+c/res_{low,typical,high}__cap_typical.spice rp1",
+     "rsh_ohm_per_sq": {
+      "low": 44.0,
+      "typical": 48.2,
+      "high": 55.8
+     },
+     "drawn_poly_line": {
+      "wl_0": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      },
+      "wl_1": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      },
+      "wl_2": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      },
+      "wl_3": {
+       "length_um": 3.635,
+       "width_um": 0.15,
+       "squares": 24.233333
+      }
+     },
+     "end_to_end_ohm": {
+      "wl_0": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      },
+      "wl_1": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      },
+      "wl_2": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      },
+      "wl_3": {
+       "low": 1066.267,
+       "typical": 1168.047,
+       "high": 1352.22
+      }
+     }
+    }
+   },
+   "per_net": {
+    "rbl": {
+     "rbl_0": {
+      "ground_ff": 1.071994,
+      "coupling_ff": 0.76608,
+      "total_ff": 1.838074,
+      "resistance_ohm": 104.6421,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.382338,
+       "metal2": 0.518553
+      },
+      "coupled_ff": {
+       "bl_0": 0.282579,
+       "bl_1": 0.24465,
+       "rbl_1": 0.04576,
+       "rwl_0": 0.049752,
+       "rwl_1": 0.049752,
+       "rwl_2": 0.049752,
+       "rwl_3": 0.043835
+      }
+     },
+     "rbl_1": {
+      "ground_ff": 1.071994,
+      "coupling_ff": 0.81184,
+      "total_ff": 1.883834,
+      "resistance_ohm": 104.6421,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.382338,
+       "metal2": 0.518553
+      },
+      "coupled_ff": {
+       "bl_1": 0.282579,
+       "bl_2": 0.24465,
+       "rbl_0": 0.04576,
+       "rbl_2": 0.04576,
+       "rwl_0": 0.049752,
+       "rwl_1": 0.049752,
+       "rwl_2": 0.049752,
+       "rwl_3": 0.043835
+      }
+     },
+     "rbl_2": {
+      "ground_ff": 1.071994,
+      "coupling_ff": 0.81184,
+      "total_ff": 1.883834,
+      "resistance_ohm": 104.6421,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.382338,
+       "metal2": 0.518553
+      },
+      "coupled_ff": {
+       "bl_2": 0.282579,
+       "bl_3": 0.24465,
+       "rbl_1": 0.04576,
+       "rbl_3": 0.04576,
+       "rwl_0": 0.049752,
+       "rwl_1": 0.049752,
+       "rwl_2": 0.049752,
+       "rwl_3": 0.043835
+      }
+     },
+     "rbl_3": {
+      "ground_ff": 1.074314,
+      "coupling_ff": 0.461967,
+      "total_ff": 1.536281,
+      "resistance_ohm": 104.6421,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.382338,
+       "metal2": 0.520873
+      },
+      "coupled_ff": {
+       "bl_3": 0.282579,
+       "rbl_2": 0.04576,
+       "rwl_0": 0.033407,
+       "rwl_1": 0.033407,
+       "rwl_2": 0.033407,
+       "rwl_3": 0.033407
+      }
+     }
+    },
+    "bl": {
+     "bl_0": {
+      "ground_ff": 0.880884,
+      "coupling_ff": 0.352102,
+      "total_ff": 1.232986,
+      "resistance_ohm": 103.0132,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.196824,
+       "metal2": 0.512956
+      },
+      "coupled_ff": {
+       "\\$17": 0.008415,
+       "\\$26": 0.008415,
+       "\\$29": 0.008415,
+       "\\$9": 0.013999,
+       "rbl_0": 0.282579,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093,
+       "rwl_3": 0.010093
+      }
+     },
+     "bl_1": {
+      "ground_ff": 0.880884,
+      "coupling_ff": 0.596752,
+      "total_ff": 1.477636,
+      "resistance_ohm": 103.0132,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.196824,
+       "metal2": 0.512956
+      },
+      "coupled_ff": {
+       "\\$10": 0.013999,
+       "\\$18": 0.008415,
+       "\\$23": 0.008415,
+       "\\$30": 0.008415,
+       "rbl_0": 0.24465,
+       "rbl_1": 0.282579,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093,
+       "rwl_3": 0.010093
+      }
+     },
+     "bl_2": {
+      "ground_ff": 0.880884,
+      "coupling_ff": 0.596752,
+      "total_ff": 1.477636,
+      "resistance_ohm": 103.0132,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.196824,
+       "metal2": 0.512956
+      },
+      "coupled_ff": {
+       "\\$21": 0.008415,
+       "\\$27": 0.008415,
+       "\\$31": 0.008415,
+       "\\$7": 0.013999,
+       "rbl_1": 0.24465,
+       "rbl_2": 0.282579,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093,
+       "rwl_3": 0.010093
+      }
+     },
+     "bl_3": {
+      "ground_ff": 0.880884,
+      "coupling_ff": 0.596752,
+      "total_ff": 1.477636,
+      "resistance_ohm": 103.0132,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.196824,
+       "metal2": 0.512956
+      },
+      "coupled_ff": {
+       "\\$19": 0.008415,
+       "\\$24": 0.008415,
+       "\\$32": 0.008415,
+       "\\$8": 0.013999,
+       "rbl_2": 0.24465,
+       "rbl_3": 0.282579,
+       "rwl_1": 0.010093,
+       "rwl_2": 0.010093,
+       "rwl_3": 0.010093
+      }
+     }
+    },
+    "wl": {
+     "wl_0": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     },
+     "wl_1": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     },
+     "wl_2": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     },
+     "wl_3": {
+      "ground_ff": 0.330388,
+      "coupling_ff": 0,
+      "total_ff": 0.330388,
+      "resistance_ohm": 655.8908,
+      "by_layer_ground_ff": {
+       "poly": 0.330388
+      },
+      "coupled_ff": {}
+     }
+    },
+    "rwl": {
+     "rwl_0": {
+      "ground_ff": 0.519495,
+      "coupling_ff": 0.213881,
+      "total_ff": 0.733376,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.348392
+      },
+      "coupled_ff": {
+       "\\$10": 0.008961,
+       "\\$7": 0.008961,
+       "\\$8": 0.004335,
+       "\\$9": 0.008961,
+       "rbl_0": 0.049752,
+       "rbl_1": 0.049752,
+       "rbl_2": 0.049752,
+       "rbl_3": 0.033407
+      }
+     },
+     "rwl_1": {
+      "ground_ff": 0.511719,
+      "coupling_ff": 0.254253,
+      "total_ff": 0.765972,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.340616
+      },
+      "coupled_ff": {
+       "\\$17": 0.008961,
+       "\\$18": 0.008961,
+       "\\$19": 0.004335,
+       "\\$21": 0.008961,
+       "bl_0": 0.010093,
+       "bl_1": 0.010093,
+       "bl_2": 0.010093,
+       "bl_3": 0.010093,
+       "rbl_0": 0.049752,
+       "rbl_1": 0.049752,
+       "rbl_2": 0.049752,
+       "rbl_3": 0.033407
+      }
+     },
+     "rwl_2": {
+      "ground_ff": 0.511719,
+      "coupling_ff": 0.254253,
+      "total_ff": 0.765972,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.340616
+      },
+      "coupled_ff": {
+       "\\$23": 0.008961,
+       "\\$24": 0.004335,
+       "\\$26": 0.008961,
+       "\\$27": 0.008961,
+       "bl_0": 0.010093,
+       "bl_1": 0.010093,
+       "bl_2": 0.010093,
+       "bl_3": 0.010093,
+       "rbl_0": 0.049752,
+       "rbl_1": 0.049752,
+       "rbl_2": 0.049752,
+       "rbl_3": 0.033407
+      }
+     },
+     "rwl_3": {
+      "ground_ff": 0.51494,
+      "coupling_ff": 0.236502,
+      "total_ff": 0.751442,
+      "resistance_ohm": 102.0315,
+      "by_layer_ground_ff": {
+       "metal0": 0.171103,
+       "metal1": 0.343838
+      },
+      "coupled_ff": {
+       "\\$29": 0.008961,
+       "\\$30": 0.008961,
+       "\\$31": 0.008961,
+       "\\$32": 0.004335,
+       "bl_0": 0.010093,
+       "bl_1": 0.010093,
+       "bl_2": 0.010093,
+       "bl_3": 0.010093,
+       "rbl_0": 0.043835,
+       "rbl_1": 0.043835,
+       "rbl_2": 0.043835,
+       "rbl_3": 0.033407
+      }
+     }
+    }
+   }
+  }
+ },
+ "comparison_vs_uniform_grid": {
+  "compact_v2": {
+   "rbl_worst_total_ff": {
+    "uniform_grid": 0.859179,
+    "compact_v2": 1.534113,
+    "ratio": 1.785557
+   },
+   "bl_worst_total_ff": {
+    "uniform_grid": 0.872796,
+    "compact_v2": 0.864084,
+    "ratio": 0.990018
+   },
+   "wl_worst_total_ff": {
+    "uniform_grid": 2.099047,
+    "compact_v2": 0.330388,
+    "ratio": 0.157399
+   },
+   "rwl_worst_total_ff": {
+    "uniform_grid": 1.353255,
+    "compact_v2": 0.780991,
+    "ratio": 0.57712
+   },
+   "c_sn_min_total_ff": {
+    "uniform_grid": 0.47362,
+    "compact_v2": 0.316892,
+    "ratio": 0.669085
+   },
+   "c_sn_max_total_ff": {
+    "uniform_grid": 0.502,
+    "compact_v2": 0.334888,
+    "ratio": 0.667108
+   }
+  },
+  "compact_v1": {
+   "rbl_worst_total_ff": {
+    "uniform_grid": 0.859179,
+    "compact_v1": 1.883834,
+    "ratio": 2.192598
+   },
+   "bl_worst_total_ff": {
+    "uniform_grid": 0.872796,
+    "compact_v1": 1.477636,
+    "ratio": 1.692991
+   },
+   "wl_worst_total_ff": {
+    "uniform_grid": 2.099047,
+    "compact_v1": 0.330388,
+    "ratio": 0.157399
+   },
+   "rwl_worst_total_ff": {
+    "uniform_grid": 1.353255,
+    "compact_v1": 0.765972,
+    "ratio": 0.566022
+   },
+   "c_sn_min_total_ff": {
+    "uniform_grid": 0.47362,
+    "compact_v1": 0.308707,
+    "ratio": 0.651803
+   },
+   "c_sn_max_total_ff": {
+    "uniform_grid": 0.502,
+    "compact_v1": 0.329304,
+    "ratio": 0.655984
+   }
+  }
+ },
+ "c_rbl_assumption_ff": 10.0,
+ "c_rbl_assumption_source": "sim/sense-stage/gen_sense_stage.py:46 C_RBL_F = 10e-15 (ASSUMPTION; sim/loaded-column/cold-corner/SENSE_INPUT_CONTRACT.md)"
+}

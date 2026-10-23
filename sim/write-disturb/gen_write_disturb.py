@@ -47,6 +47,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
+sys.path.insert(0, str(REPO / "sim"))
+from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "write_disturb.spice"
 REQUEST_PATH = HERE / "request.json"
@@ -364,17 +366,8 @@ def build_request() -> dict:
                         meas.append({"name": nm, "unit": "V",
                                      "spice": f".meas tran {nm} FIND {node} AT={_fmt(checkpoint_time_s(n) * 1e9)}n"})
     stop = _fmt(T_STOP_S * 1e9)
-    return {
-        "netlist": "write_disturb.spice",
-        "engine": "ngspice",
-        "backend": "batch",
-        "models": {"pdk": "sky130A", "lib": "libs.tech/combined/sky130.lib.spice"},
-        "corners": {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-        "analysis": {"kind": "tran",
-                     "args": f"{_fmt(TRAN_STEP_S * 1e12)}p {stop}n 0 {_fmt(TRAN_MAX_S * 1e12)}p uic"},
-        "measurements": meas,
-        "options": {"timeout_s": 3600, "keep_artifacts": False, "waveforms": False},
-    }
+    return klt_request("write_disturb.spice", {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
+                       f"{_fmt(TRAN_STEP_S * 1e12)}p {stop}n 0 {_fmt(TRAN_MAX_S * 1e12)}p uic", meas, 3600)
 
 
 def render() -> tuple[str, str]:

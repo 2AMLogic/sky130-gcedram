@@ -92,6 +92,11 @@ neither is favored by this comparison.
 
 ## 5. Ratified retention time
 
+> **Supersession note (issue #168).** The leakage -> `C_SN` -> derivation chain was re-run under open_pdks
+> `f6eeac7` (current pin). Worst-case leakage (`sf`, 125 C, 9.898880e-11 A) and both retention numbers are
+> unchanged; see `sim/leakage/README.md` and `sim/retention/README.md` "Re-qualification" sections. The
+> bitcell-transient cross-check is not yet re-run under the new pin. The ratified value below is not altered.
+
 **The ratified retention time, at the worst-case corner, for the ratified
 topology (2T — see Section 6), is:**
 

@@ -2,6 +2,51 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-20
+
+- **PR #209**: feat: re-characterise C_SN, parasitics and leakage for the compact bitcell layouts
+- **Issue #161** (closed): Re-characterise C_SN and array parasitics for the compact bitcell layouts from #100
+- **PR #162**: layout: add reproducible compact 2T bitcell variants (1.95 and 1.40 um^2 drawn pitch)
+- **Issue #100** (closed): Decision: 2T bitcell is 2.4x larger than public sky130 6T SRAM cell; README density requirement unmet
+
+### 2026-10-17
+
+- **PR #199**: refactor: share anchor-mutant helpers across integration mutation scripts
+- **Issue #197** (closed): Consolidate anchor-style mutant helpers left over after #191 (3 run_mutation scripts)
+- **PR #198**: refactor: share klt sim request skeleton across sim generators
+- **Issue #196** (closed): Consolidate duplicated klt sim request skeleton across 9 sim gen_ scripts
+- **PR #193**: refactor: share mutation-check harness across digital run_mutation.sh scripts
+- **Issue #191** (closed): Consolidate duplicated mutation-harness loop across digital/*/run_mutation.sh
+- **PR #188**: refactor(sim): share gzip-aware JSON report loader via _evidence_common
+- **Issue #187** (closed): Consolidate 6 copies of the gzip-aware JSON report loader into _evidence_common
+- **PR #186**: refactor(sim): share sha256 and decided() helpers via _evidence_common
+- **Issue #185** (closed): Consolidate duplicated sha256 and decided() helpers into sim/_evidence_common.py
+
+### 2026-10-16
+
+- **PR #181**: sim: re-qualify sense-stage under open_pdks f6eeac7 (results unchanged)
+- **Issue #170** (closed): Re-qualify G3 sense-path records under open_pdks f6eeac7
+- **PR #183**: feat(sim): re-qualify G1 leakage and retention chain under open_pdks f6eeac7
+- **PR #178**: docs(layout): re-qualify G5 layout and sign-off records under open_pdks f6eeac7
+- **Issue #172** (closed): Re-verify G5 layout and sign-off evidence under open_pdks f6eeac7
+
+### 2026-10-15
+
+- **PR #176**: docs(pdk): use direct stamped-file counts and add helper row in requalification inventory
+- **Issue #175** (closed): docs(pdk): reconcile stamped-file counts in pdk-requalification-inventory.md
+- **PR #173**: docs(pdk): inventory reference records to re-qualify under open_pdks f6eeac7
+- **PR #167**: feat(pdk): re-pin open_pdks to f6eeac7 via ciel and verify PDK revision on resolve
+- **Issue #165** (closed): Re-pin open_pdks to f6eeac7 (ciel) — fleet retires volare c6d73a3
+- **Issue #117** (closed): Isolation-gate sizing and offset study: stored-'1' sense input erodes at fs/27 C with the #114 column slice
+- **PR #160**: Isolation-gate, reference-matching and driver sweep with MC offset (#117)
+- **Issue #114** (closed): Design the column periphery (precharge, write driver, column select) to replace ideal sources in the read/write studies
+- **PR #118**: design: column-periphery slice and ideal-vs-real comparison (#114)
+
+### 2026-10-13
+
+- **Issue #149** (closed): Geometry-matched access-device leakage: re-measure with extracted AD/AS/PD/PS (testbench passes none)
+- **PR #155**: feat(leakage): geometry-matched access-device leakage at extracted AD/AS/PD/PS (#149)
+
 ### 2026-10-11
 
 - **Issue #156** (closed): Guard telemetry: retain confinement for unresolved scratch writes

@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "kind": "gain_cell_2t_array generation reproduction record (issue #91)",
+  "recorded_at_utc": "2026-10-16T04:17:52Z",
+  "script": "layout/generate_array.sh",
+  "mode": "check",
+  "array": "4x4",
+  "baseline": "committed layout/ artifacts in the working tree",
+  "source": {
+    "commit": "631159b1dc183844c8881a71ef062ac8036d6829",
+    "dirty": false
+  },
+  "toolchains": {
+    "generation": {
+      "pin": {
+        "purpose": "klt gen mos_array + klt gen-compose: writes gain_cell_2t_array_mos.{gds,json} and gain_cell_2t_array.{gds,layout.json}",
+        "klayout_tools": {
+          "git_url": "https://github.com/2AMLogic/klayout-tools",
+          "commit": "2dd24b09e7569581297aabf9738594e9791210f1",
+          "package_version": "0.4.0"
+        },
+        "klayout": "0.30.12",
+        "verified": "Scratch regeneration of the default 4x4 with this pair reproduces all five committed generation outputs byte-for-byte (gain_cell_2t_array.gds sha256 4a11550681e5...d4cd). See layout/results/generation_reproduction_20261011.json."
+      },
+      "identity": {
+        "python_executable": "/home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-generation-2dd24b09e756-klayout-0.30.12/bin/python",
+        "python_version": "3.12.3",
+        "klayout_tools_version": "0.4.0",
+        "klayout_tools_commit": "2dd24b09e7569581297aabf9738594e9791210f1",
+        "klayout_tools_url": "https://github.com/2AMLogic/klayout-tools",
+        "klayout_version": "0.30.12",
+        "errors": [],
+        "klt_path": "/home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-generation-2dd24b09e756-klayout-0.30.12/bin/klt"
+      },
+      "error": null,
+      "matches_pin": true
+    },
+    "check": {
+      "pin": {
+        "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools revision as .github/workflows/signoff.yml KLT_REV, which produced the committed array DRC/LVS/ERC reports (klt_version 0.6.0).",
+        "klayout_tools": {
+          "git_url": "https://github.com/2AMLogic/klayout-tools",
+          "commit": "c622e8addb362491664d44ba4d717f354ca88bbd",
+          "package_version": "0.6.0"
+        },
+        "klayout": "0.30.12"
+      },
+      "identity": {
+        "python_executable": "/home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-check-c622e8addb36-klayout-0.30.12/bin/python",
+        "python_version": "3.12.3",
+        "klayout_tools_version": "0.6.0",
+        "klayout_tools_commit": "c622e8addb362491664d44ba4d717f354ca88bbd",
+        "klayout_tools_url": "https://github.com/2AMLogic/klayout-tools",
+        "klayout_version": "0.30.12",
+        "errors": [],
+        "klt_path": "/home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-check-c622e8addb36-klayout-0.30.12/bin/klt"
+      },
+      "error": null,
+      "matches_pin": true
+    }
+  },
+  "pdk": {
+    "pin": {
+      "variant": "sky130A",
+      "open_pdks_commit": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "note": "Must equal sim/_evidence_common.py PDK_OPEN_PDKS_COMMIT and docs/pdk-pin.md (checked by layout/test_generation_reproducibility.py)."
+    },
+    "identity": {
+      "pdk_root": "/home/ubuntu/.ciel",
+      "pdk": "sky130A",
+      "sources_file": "/home/ubuntu/.ciel/sky130A/SOURCES",
+      "open_pdks_commit": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    }
+  },
+  "commands": [
+    "(cd /tmp/tmp.qCq18isQXy && /home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-generation-2dd24b09e756-klayout-0.30.12/bin/klt gen mos_array --params $'{\\n  \"w_um\": 0.42,\\n  \"l_um\": 0.15,\\n  \"fingers\": 1,\\n  \"rows\": 4,\\n  \"cols\": 8,\\n  \"dummy\": 0,\\n  \"topology\": \"array\",\\n  \"flavor\": \"nfet\",\\n  \"gate_contact\": true,\\n  \"add_guard_ring\": true\\n}' --pdk sky130A --pdk-root /home/ubuntu/.ciel --cell-name gain_cell_2t_array_mos -o gain_cell_2t_array_mos.gds --format json)",
+    "(cd /tmp/tmp.qCq18isQXy && /home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-generation-2dd24b09e756-klayout-0.30.12/bin/klt gen-compose gain_cell_2t_array.layout.request.json --format json)",
+    "(cd /tmp/tmp.qCq18isQXy && /home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-check-c622e8addb36-klayout-0.30.12/bin/klt drc gain_cell_2t_array.gds --deck sky130 --format json)",
+    "(cd /tmp/tmp.qCq18isQXy && /home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-check-c622e8addb36-klayout-0.30.12/bin/klt lvs gain_cell_2t_array.lvs.request.json --format json)",
+    "(cd /tmp/tmp.qCq18isQXy && /home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/.toolchains/klt-check-c622e8addb36-klayout-0.30.12/bin/klt erc gain_cell_2t_array.gds erc-supply-spec.json --pdk sky130 --format json)"
+  ],
+  "statuses": {
+    "unrouted_nets": "[]",
+    "drc": "clean",
+    "lvs": "match",
+    "erc": "clean",
+    "comparison": "mismatch"
+  },
+  "comparison": {
+    "schema_version": 1,
+    "committed_dir": "/home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-172/layout",
+    "regenerated_dir": "/tmp/tmp.qCq18isQXy",
+    "normalization": [
+      "GDS BGNLIB/BGNSTR timestamp payloads ignored",
+      "element order within a GDS structure and structure order ignored (multiset comparison)",
+      "null padding after GDS ENDLIB ignored",
+      "JSON compared as parsed values (whitespace/key order ignored)"
+    ],
+    "artifacts": [
+      {
+        "artifact": "gain_cell_2t_array_mos.gds",
+        "kind": "gds",
+        "raw_sha256": {
+          "committed": "sha256:cb6ef1a4d955cace022e188147668fe66c00556dc23b3c0f833ff312aea4b644",
+          "regenerated": "sha256:cb6ef1a4d955cace022e188147668fe66c00556dc23b3c0f833ff312aea4b644"
+        },
+        "raw_identical": true,
+        "canonical_sha256": {
+          "committed": "sha256:39ed2ee7dba5fdc0a4d07c98ae762bc0baeb4fbc1a8f4c7a98e243acb4706c7a",
+          "regenerated": "sha256:39ed2ee7dba5fdc0a4d07c98ae762bc0baeb4fbc1a8f4c7a98e243acb4706c7a"
+        },
+        "match": true,
+        "differences": []
+      },
+      {
+        "artifact": "gain_cell_2t_array_mos.json",
+        "kind": "json",
+        "raw_sha256": {
+          "committed": "sha256:da9f9b44428f9beb8b9fcda14d20412f5aa48b6dedbdb486ee5c3d628411af29",
+          "regenerated": "sha256:79c0c06de5a3472e6a3f7aa95efecb16c5c619c032c046ddbdeca36bb239da4e"
+        },
+        "raw_identical": false,
+        "canonical_sha256": {
+          "committed": "sha256:486ee31fcb5d383fd0c4be0968e0ef86915a8ca559ca161950b6c7cca740807d",
+          "regenerated": "sha256:31c451fa33b95aa732c95db9ce86134a42e5ebf09f83422d2cd2359684a92508"
+        },
+        "match": false,
+        "differences": [
+          "$.pdk.version: committed 'open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b' vs regenerated 'open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7'"
+        ]
+      },
+      {
+        "artifact": "gain_cell_2t_array.layout.request.json",
+        "kind": "json",
+        "raw_sha256": {
+          "committed": "sha256:50a464865f35d2f93dcae14925176b725f4d3a04f0d9dcdb81cf922b6fb7304f",
+          "regenerated": "sha256:50a464865f35d2f93dcae14925176b725f4d3a04f0d9dcdb81cf922b6fb7304f"
+        },
+        "raw_identical": true,
+        "canonical_sha256": {
+          "committed": "sha256:da81b212a6a9ba27bb047885510bc620ff63032cd20cb32922d4d872130bfd57",
+          "regenerated": "sha256:da81b212a6a9ba27bb047885510bc620ff63032cd20cb32922d4d872130bfd57"
+        },
+        "match": true,
+        "differences": []
+      },
+      {
+        "artifact": "gain_cell_2t_array.gds",
+        "kind": "gds",
+        "raw_sha256": {
+          "committed": "sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd",
+          "regenerated": "sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd"
+        },
+        "raw_identical": true,
+        "canonical_sha256": {
+          "committed": "sha256:bd61b16d36a3ffcf53da405caa1935f316ae60ebb44b7e1b1bbb48031a16c0d9",
+          "regenerated": "sha256:bd61b16d36a3ffcf53da405caa1935f316ae60ebb44b7e1b1bbb48031a16c0d9"
+        },
+        "match": true,
+        "differences": []
+      },
+      {
+        "artifact": "gain_cell_2t_array.layout.json",
+        "kind": "json",
+        "raw_sha256": {
+          "committed": "sha256:b37aaccccd1cf0b03559196b1eca6969603f07f20ab964d8be23f0bac44016a3",
+          "regenerated": "sha256:23cb52d5e4d555413740fdf56e7330f5cc0f890467560ebe50a60a764e92cced"
+        },
+        "raw_identical": false,
+        "canonical_sha256": {
+          "committed": "sha256:0aee9a9cfa94e58d750a3ea4eda4b5f5fc89f29792b8e3e7ac9eb26fc510aed8",
+          "regenerated": "sha256:3d6b2a02f5de5c54520299e5d0f00f83d6d150243a1c838e0ea6547b3704efd9"
+        },
+        "match": false,
+        "differences": [
+          "$.pdk.version: committed 'open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b' vs regenerated 'open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7'"
+        ]
+      },
+      {
+        "artifact": "gain_cell_2t_array.lvs_reference.spice",
+        "kind": "text",
+        "raw_sha256": {
+          "committed": "sha256:61cba9ba976a309dbc116701732d33aa32bbcbe5881e3a6ae1c9cb1d884b65b7",
+          "regenerated": "sha256:61cba9ba976a309dbc116701732d33aa32bbcbe5881e3a6ae1c9cb1d884b65b7"
+        },
+        "raw_identical": true,
+        "match": true,
+        "differences": []
+      },
+      {
+        "artifact": "gain_cell_2t_array.lvs.request.json",
+        "kind": "json",
+        "raw_sha256": {
+          "committed": "sha256:279d2e49f30970c16433b0342b3e74178903a0291a757ac14982b3768e86cbae",
+          "regenerated": "sha256:279d2e49f30970c16433b0342b3e74178903a0291a757ac14982b3768e86cbae"
+        },
+        "raw_identical": true,
+        "canonical_sha256": {
+          "committed": "sha256:abc3fe5d8ba0c065e2741dbfbed086fbf732a844bf6e02b208644f98f1891088",
+          "regenerated": "sha256:abc3fe5d8ba0c065e2741dbfbed086fbf732a844bf6e02b208644f98f1891088"
+        },
+        "match": true,
+        "differences": []
+      }
+    ],
+    "result": "mismatch"
+  },
+  "result": "fail"
+}

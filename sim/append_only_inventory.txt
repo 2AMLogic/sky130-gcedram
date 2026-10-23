@@ -28,3 +28,20 @@ sim/refresh-energy/results/refresh_energy_summary_20261010T055142Z.json
 # sim/retention (issue #89): array-context C_SN capacitance-only comparison.
 # Inside a `results` directory (already protected); listed to register it.
 sim/retention/results/array_c_sn_comparison_20261011T020547Z.json
+#
+# layout/compact (issue #100): bitcell-compaction density results.
+layout/results/density_20261015_v1.json
+layout/results/density_20261015_v2.json
+#
+# issue #161: compact-layout (#100) parasitics, geometry-matched leakage and retention-budget re-check.
+# The sim/ files are inside `results` directories (already protected); listed to register them.
+layout/results/compact_parasitics_20261020T171849Z.json
+sim/leakage/compact-geometry/results/klt_report_20261020T1716Z.json
+sim/leakage/compact-geometry/results/compact_leakage_points_20261020T1716Z.csv
+sim/leakage/compact-geometry/results/compact_leakage_summary_20261020T1716Z.json
+sim/retention/results/compact_c_sn_20261020T172043Z.json
+#
+# issue #208: device-inclusive C_SN of the compact v2 array (measurement only; no ruling).
+# Inside `results` directories (already protected); listed to register them.
+sim/retention/results/klt_report_20261022T0533Z.json
+sim/retention/results/compact_device_c_sn_20261022T0533Z.json

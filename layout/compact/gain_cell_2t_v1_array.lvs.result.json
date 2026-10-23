@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "engine": "klayout",
+  "layout": "gain_cell_2t_v1_array.gds",
+  "reference": "gain_cell_2t_v1_array.lvs_reference.spice",
+  "top": "gain_cell_2t_v1_array_4x4_layout_0",
+  "reference_top": "GAIN_CELL_2T_V1_ARRAY_4X4",
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": false,
+    "combine_devices_per_circuit": null,
+    "flatten_layout": false,
+    "flatten_reference": false,
+    "netgen_setup": null,
+    "parameter_tolerance": null,
+    "compare_parameters": null,
+    "power_connectivity": null,
+    "supply_nets": [
+      "GND",
+      "VCC",
+      "VDD",
+      "VGND",
+      "VPWR",
+      "VSS"
+    ]
+  },
+  "hints_applied": null,
+  "status": "match",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "reference.form is 'plain-element', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": {
+    "status": "verified",
+    "reason": null,
+    "device_classes": [],
+    "device_count": 0,
+    "findings": [],
+    "finding_count": 0
+  },
+  "mismatch_count": 2,
+  "error_count": 0,
+  "category_counts": {
+    "topology": 2
+  },
+  "category_error_counts": {},
+  "counts": {
+    "nets": {
+      "layout": 33,
+      "reference": 33,
+      "matched": 33
+    },
+    "devices": {
+      "layout": 32,
+      "reference": 32,
+      "matched": 32
+    },
+    "pins": {
+      "layout": 17,
+      "reference": 16,
+      "matched": 17
+    }
+  },
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "pnp",
+    "sky130_fd_pr__model__cap_mim",
+    "sky130_fd_pr__model__cap_mim_m4",
+    "resistor"
+  ],
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.12",
+    "layout_sha256": "a3c80d4d0aa4fba1a31cb2091b30e2f5cf865e9994a3dcf501484726606acc99",
+    "reference_sha256": "6cee475fc8e3f00f7063b0685f57f88081501db8eb320534f4642df93db5ca51",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.6.0",
+    "klayout_version": "0.30.12",
+    "pdk": null,
+    "deck": {
+      "name": "sky130",
+      "content_hash": "sha256:a1d90e066e822d0a8f36e2d4f4969b83df4360692f689b5815be9c3f151f7c8e",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:a3c80d4d0aa4fba1a31cb2091b30e2f5cf865e9994a3dcf501484726606acc99",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": true
+  },
+  "mismatches": [
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch",
+      "side": "layout",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "topology",
+      "severity": "warning",
+      "description": "device class has no counterpart on the other side, but no devices of this class were extracted either -- not a real topology mismatch",
+      "side": "layout",
+      "net": null,
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "bl_0",
+      "reference": "BL_0",
+      "pin": true
+    },
+    {
+      "layout": "bl_1",
+      "reference": "BL_1",
+      "pin": true
+    },
+    {
+      "layout": "bl_2",
+      "reference": "BL_2",
+      "pin": true
+    },
+    {
+      "layout": "bl_3",
+      "reference": "BL_3",
+      "pin": true
+    },
+    {
+      "layout": "GND",
+      "reference": "GND",
+      "pin": true
+    },
+    {
+      "layout": "rbl_0",
+      "reference": "RBL_0",
+      "pin": true
+    },
+    {
+      "layout": "rbl_1",
+      "reference": "RBL_1",
+      "pin": true
+    },
+    {
+      "layout": "rbl_2",
+      "reference": "RBL_2",
+      "pin": true
+    },
+    {
+      "layout": "rbl_3",
+      "reference": "RBL_3",
+      "pin": true
+    },
+    {
+      "layout": "rwl_0",
+      "reference": "RWL_0",
+      "pin": true
+    },
+    {
+      "layout": "rwl_1",
+      "reference": "RWL_1",
+      "pin": true
+    },
+    {
+      "layout": "rwl_2",
+      "reference": "RWL_2",
+      "pin": true
+    },
+    {
+      "layout": "rwl_3",
+      "reference": "RWL_3",
+      "pin": true
+    },
+    {
+      "layout": "\\$9",
+      "reference": "SN_0_0",
+      "pin": false
+    },
+    {
+      "layout": "\\$10",
+      "reference": "SN_0_1",
+      "pin": false
+    },
+    {
+      "layout": "\\$7",
+      "reference": "SN_0_2",
+      "pin": false
+    },
+    {
+      "layout": "\\$8",
+      "reference": "SN_0_3",
+      "pin": false
+    },
+    {
+      "layout": "\\$17",
+      "reference": "SN_1_0",
+      "pin": false
+    },
+    {
+      "layout": "\\$18",
+      "reference": "SN_1_1",
+      "pin": false
+    },
+    {
+      "layout": "\\$21",
+      "reference": "SN_1_2",
+      "pin": false
+    },
+    {
+      "layout": "\\$19",
+      "reference": "SN_1_3",
+      "pin": false
+    },
+    {
+      "layout": "\\$26",
+      "reference": "SN_2_0",
+      "pin": false
+    },
+    {
+      "layout": "\\$23",
+      "reference": "SN_2_1",
+      "pin": false
+    },
+    {
+      "layout": "\\$27",
+      "reference": "SN_2_2",
+      "pin": false
+    },
+    {
+      "layout": "\\$24",
+      "reference": "SN_2_3",
+      "pin": false
+    },
+    {
+      "layout": "\\$29",
+      "reference": "SN_3_0",
+      "pin": false
+    },
+    {
+      "layout": "\\$30",
+      "reference": "SN_3_1",
+      "pin": false
+    },
+    {
+      "layout": "\\$31",
+      "reference": "SN_3_2",
+      "pin": false
+    },
+    {
+      "layout": "\\$32",
+      "reference": "SN_3_3",
+      "pin": false
+    },
+    {
+      "layout": "wl_0",
+      "reference": "WL_0",
+      "pin": true
+    },
+    {
+      "layout": "wl_1",
+      "reference": "WL_1",
+      "pin": true
+    },
+    {
+      "layout": "wl_2",
+      "reference": "WL_2",
+      "pin": true
+    },
+    {
+      "layout": "wl_3",
+      "reference": "WL_3",
+      "pin": true
+    }
+  ]
+}

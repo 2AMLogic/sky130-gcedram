@@ -612,17 +612,18 @@ deliberately untouched.
 
 ## Reproducing this testbench
 
-Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
+Requires a stock `open_pdks` sky130 install (via `ciel`, pinned in
 [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)) and `ngspice` on `PATH`.
 No local model edits, no uncommitted `.include` paths. Stdlib-only Python,
 no virtualenv.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
-volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
+pip install ciel==2.6.1
+ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
-# 2. Point PDK_ROOT at your volare root if it isn't ~/.volare:
-export PDK_ROOT=~/.volare   # default; only needed if you installed elsewhere
+# 2. Point PDK_ROOT at your ciel root if it isn't ~/.ciel:
+export PDK_ROOT=~/.ciel   # default; only needed if you installed elsewhere
 
 # 3. Check inputs resolve (ngspice, PDK model library, design netlist,
 #    extracted C_SN):
@@ -683,3 +684,10 @@ reading `notes`: `c_sn_ff`/`c_sn_source` for `--c-sn-ff`, `tmax_s` for
 The PDK version pin (same `open_pdks` commit as `sim/leakage/` and
 `design/`) and the corner/temperature grid are documented in
 [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md), not a local `pdk.json`.
+
+## Re-qualification under open_pdks `f6eeac7` (issue #168): NOT yet done
+
+The records here are all `c6d73a3`. The re-run is deferred: this driver sizes a hold window per
+(corner, temperature, stored value) from the leakage rows, grows it and retries, and reduces `wrdata` waveforms
+in Python, so it does not map onto a single `klt sim` corner request. Expressing it as batch requests needs a
+per-point window design and `.meas`-based reductions with their own convergence check; that is tracked in #182. Until then nothing in this directory may be cited as a `f6eeac7` result.

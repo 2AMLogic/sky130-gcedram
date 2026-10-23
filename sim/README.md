@@ -1,7 +1,7 @@
 # sim
 
 ngspice testbenches and PVT-corner results. Everything in this directory
-runs from a stock `open_pdks` sky130 install (via `volare`) -- no local
+runs from a stock `open_pdks` sky130 install (via `ciel`) -- no local
 model edits, no uncommitted `.include` paths. Results files are
 **append-only evidence** per `CLAUDE.md`: reruns append new rows, they
 never overwrite or truncate prior results.
@@ -198,7 +198,7 @@ instructions; raw results are in
 [`leakage/results/leakage_results.csv`](leakage/results/leakage_results.csv).
 
 Quick start (requires `ngspice` on `PATH` and the PDK pinned in
-[`../docs/pdk-pin.md`](../docs/pdk-pin.md) enabled via `volare`):
+[`../docs/pdk-pin.md`](../docs/pdk-pin.md) enabled via `ciel`):
 
 ```bash
 python3 sim/leakage/run_leakage_sweep.py --check-env
@@ -364,7 +364,7 @@ in
 [`bitcell-transient/results/bitcell_transient_results.csv`](bitcell-transient/results/bitcell_transient_results.csv).
 
 Quick start (requires `ngspice` on `PATH`, the PDK pinned in
-[`../docs/pdk-pin.md`](../docs/pdk-pin.md) enabled via `volare`, and the
+[`../docs/pdk-pin.md`](../docs/pdk-pin.md) enabled via `ciel`, and the
 leakage results above already committed -- the hold window is seeded from
 them):
 

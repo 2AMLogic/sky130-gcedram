@@ -50,6 +50,8 @@ from statistics import NormalDist
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import decided as _decided  # noqa: E402
 import gen_sense_mismatch as M  # noqa: E402
 import analyze_sense_stage as SS  # noqa: E402  (sim/sense-stage, on sys.path via gen_sense_mismatch)
 
@@ -217,13 +219,7 @@ def gof(groups: list[tuple[float, int, int]], mu_mv: float, sigma_mv: float) -> 
 
 # --------------------------------------------------------------- report I/O
 def decided(dend: float | None) -> str:
-    if dend is None:
-        return "none"
-    if dend <= -RESOLVE_V:
-        return "1"
-    if dend >= RESOLVE_V:
-        return "0"
-    return "unresolved"
+    return _decided(dend, RESOLVE_V)
 
 
 def sample_rows(rep: dict, kind: str) -> list[dict]:

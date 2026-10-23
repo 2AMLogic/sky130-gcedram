@@ -1,0 +1,1209 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/leakage/compact-geometry/access_leakage_compact.spice",
+    "scope": "repo"
+  },
+  "status": "pass",
+  "corner_count": 15,
+  "passed": 15,
+  "failed": 0,
+  "errored": 0,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {},
+    "by_severity": {},
+    "corners_with_diagnostics": 0
+  },
+  "metrics": {
+    "sim__corner__count": 15,
+    "sim__corner__passed_count": 15,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 0,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": "46",
+    "ngspice_binary": "/usr/local/bin/ngspice",
+    "engine_build": {
+      "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Wed Aug  5 10:12:28 UTC 2026\n******",
+      "binary_sha256": "c874869b16dc8a31cfa9d37d2b90a2a9e0e5b996f8e2535db89eb82855072931",
+      "probe": "ok",
+      "reason": null
+    },
+    "models_lib": {
+      "path": null,
+      "scope": "external"
+    },
+    "models_lib_sha256": "48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+    "models_lib_sha256_scope": "client",
+    "netlist_sha256": "c4971fd2df365723e9ce92aecd2aebc02aa680ae48e7bb69edb1d78065b8d032",
+    "netlist_closure": [
+      {
+        "path": "sim/leakage/compact-geometry/access_leakage_compact.spice",
+        "scope": "repo",
+        "sha256": "c4971fd2df365723e9ce92aecd2aebc02aa680ae48e7bb69edb1d78065b8d032"
+      }
+    ],
+    "netlist_identity": "sha256:09266f248978a0ea7130f807f15ad4e7b18089eb90cf2aef549b5958d4932aac",
+    "remote": {
+      "provider": "aws-batch-fleet",
+      "job_id": "klt-sim-d932937e59c3",
+      "region": "us-east-1",
+      "instance_id": "i-042d96b2e9a064d24",
+      "instance_type": "c7i.8xlarge",
+      "availability_zone": "us-east-1a",
+      "ami_id": "ami-0e0bec04ad8e81877",
+      "lifecycle": "spot",
+      "spot": true,
+      "state": "done",
+      "exit_code": "0",
+      "concurrency": "2",
+      "physical_cores": "16",
+      "elapsed_seconds": 40,
+      "client_submitted_at": "2026-10-20T17:15:13.399121Z",
+      "client_launched_at": "2026-10-20T17:15:34.813502Z",
+      "client_status_terminal_at": "2026-10-20T17:16:37.171216Z",
+      "client_collected_at": "2026-10-20T17:16:38.068344Z",
+      "runner_klt_version": "0.7.0",
+      "client_klt_version": "0.7.1.dev2264+gcba5e957d9ed",
+      "runner_compatibility": "match",
+      "runner_request_features": {
+        "required": [
+          "options.ngspice_init"
+        ],
+        "missing": [],
+        "status": "supported"
+      },
+      "worker_environment": {
+        "capture": "ok",
+        "simulator": {
+          "requested_binary": "ngspice",
+          "binary_source": "PATH",
+          "selected_path": "/usr/local/bin/ngspice",
+          "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Thu Oct  1 23:51:59 UTC 2026\n******\n",
+          "version_probe": "ok"
+        },
+        "pdk": {
+          "variant": "sky130A",
+          "root": "/opt/pdk",
+          "stamp_scheme": "sources-sha256",
+          "stamp_sha256": "d5ac52956829da3fee35d0b307d4e6cb83ae0e6535b56dba2eefed61cdffaf9b",
+          "stamp_text": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+          "models_staged": false
+        },
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8488C",
+        "omp_num_threads": null,
+        "image_manifest": null,
+        "model_inputs": null,
+        "diagnostics": [],
+        "pdk_stamp_comparison": {
+          "status": "mismatch",
+          "warning": "the worker's PDK revision stamp for sky130A differs from the one the submitter resolved locally; results may differ from a local run (a matching stamp would not prove identical models)"
+        },
+        "engine_build_comparison": {
+          "status": "mismatch",
+          "warning": "the worker's ngspice --version banner differs from the local binary's; build options (e.g. FFT linkage) may differ, so results derived from them can differ from a local run"
+        }
+      },
+      "runner_model_inputs": null,
+      "job_ceiling": {
+        "basis": "conservative_serial_bound",
+        "unit_count": 15,
+        "per_unit_timeout_s": 600,
+        "overhead_s": 120.0,
+        "job_bound_s": 9120.0,
+        "max_job_seconds": 3600.0,
+        "max_job_seconds_source": "fleet_config",
+        "exceeds_ceiling": true,
+        "check": "warn",
+        "max_units_per_job": 5,
+        "recommended_hosts": 3,
+        "warning": "batch job bound 9120s (options.timeout_s 600s x 15 units + 120s; a conservative fully-serial upper bound, not a runtime estimate) exceeds the fleet's whole-job ceiling of 3600s (max_job_seconds from fleet_config); a job still running at the ceiling is killed and every unit is reported batch_job_timeout. Set request.remote.hosts to at least 3 to run one job per shard of at most 5 units, each within the ceiling"
+      }
+    },
+    "engine_host": "worker",
+    "client_ngspice_binary": "/home/ubuntu/.local/bin/ngspice",
+    "backend": {
+      "resolved": "batch",
+      "source": "request",
+      "requested": "batch"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 15,
+    "measurements_declared": 4,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [
+      "measurement:[0,\"tt/novdd/-40C\",\"ileak_base_a\"]/observation",
+      "measurement:[0,\"tt/novdd/-40C\",\"ileak_leg_a\"]/observation",
+      "measurement:[0,\"tt/novdd/-40C\",\"ileak_v1_a\"]/observation",
+      "measurement:[0,\"tt/novdd/-40C\",\"ileak_v2_a\"]/observation",
+      "measurement:[1,\"tt/novdd/27C\",\"ileak_base_a\"]/observation",
+      "measurement:[1,\"tt/novdd/27C\",\"ileak_leg_a\"]/observation",
+      "measurement:[1,\"tt/novdd/27C\",\"ileak_v1_a\"]/observation",
+      "measurement:[1,\"tt/novdd/27C\",\"ileak_v2_a\"]/observation",
+      "measurement:[10,\"sf/novdd/27C\",\"ileak_base_a\"]/observation",
+      "measurement:[10,\"sf/novdd/27C\",\"ileak_leg_a\"]/observation",
+      "measurement:[10,\"sf/novdd/27C\",\"ileak_v1_a\"]/observation",
+      "measurement:[10,\"sf/novdd/27C\",\"ileak_v2_a\"]/observation",
+      "measurement:[11,\"sf/novdd/125C\",\"ileak_base_a\"]/observation",
+      "measurement:[11,\"sf/novdd/125C\",\"ileak_leg_a\"]/observation",
+      "measurement:[11,\"sf/novdd/125C\",\"ileak_v1_a\"]/observation",
+      "measurement:[11,\"sf/novdd/125C\",\"ileak_v2_a\"]/observation",
+      "measurement:[12,\"fs/novdd/-40C\",\"ileak_base_a\"]/observation",
+      "measurement:[12,\"fs/novdd/-40C\",\"ileak_leg_a\"]/observation",
+      "measurement:[12,\"fs/novdd/-40C\",\"ileak_v1_a\"]/observation",
+      "measurement:[12,\"fs/novdd/-40C\",\"ileak_v2_a\"]/observation",
+      "measurement:[13,\"fs/novdd/27C\",\"ileak_base_a\"]/observation",
+      "measurement:[13,\"fs/novdd/27C\",\"ileak_leg_a\"]/observation",
+      "measurement:[13,\"fs/novdd/27C\",\"ileak_v1_a\"]/observation",
+      "measurement:[13,\"fs/novdd/27C\",\"ileak_v2_a\"]/observation",
+      "measurement:[14,\"fs/novdd/125C\",\"ileak_base_a\"]/observation",
+      "measurement:[14,\"fs/novdd/125C\",\"ileak_leg_a\"]/observation",
+      "measurement:[14,\"fs/novdd/125C\",\"ileak_v1_a\"]/observation",
+      "measurement:[14,\"fs/novdd/125C\",\"ileak_v2_a\"]/observation",
+      "measurement:[2,\"tt/novdd/125C\",\"ileak_base_a\"]/observation",
+      "measurement:[2,\"tt/novdd/125C\",\"ileak_leg_a\"]/observation",
+      "measurement:[2,\"tt/novdd/125C\",\"ileak_v1_a\"]/observation",
+      "measurement:[2,\"tt/novdd/125C\",\"ileak_v2_a\"]/observation",
+      "measurement:[3,\"ss/novdd/-40C\",\"ileak_base_a\"]/observation",
+      "measurement:[3,\"ss/novdd/-40C\",\"ileak_leg_a\"]/observation",
+      "measurement:[3,\"ss/novdd/-40C\",\"ileak_v1_a\"]/observation",
+      "measurement:[3,\"ss/novdd/-40C\",\"ileak_v2_a\"]/observation",
+      "measurement:[4,\"ss/novdd/27C\",\"ileak_base_a\"]/observation",
+      "measurement:[4,\"ss/novdd/27C\",\"ileak_leg_a\"]/observation",
+      "measurement:[4,\"ss/novdd/27C\",\"ileak_v1_a\"]/observation",
+      "measurement:[4,\"ss/novdd/27C\",\"ileak_v2_a\"]/observation",
+      "measurement:[5,\"ss/novdd/125C\",\"ileak_base_a\"]/observation",
+      "measurement:[5,\"ss/novdd/125C\",\"ileak_leg_a\"]/observation",
+      "measurement:[5,\"ss/novdd/125C\",\"ileak_v1_a\"]/observation",
+      "measurement:[5,\"ss/novdd/125C\",\"ileak_v2_a\"]/observation",
+      "measurement:[6,\"ff/novdd/-40C\",\"ileak_base_a\"]/observation",
+      "measurement:[6,\"ff/novdd/-40C\",\"ileak_leg_a\"]/observation",
+      "measurement:[6,\"ff/novdd/-40C\",\"ileak_v1_a\"]/observation",
+      "measurement:[6,\"ff/novdd/-40C\",\"ileak_v2_a\"]/observation",
+      "measurement:[7,\"ff/novdd/27C\",\"ileak_base_a\"]/observation",
+      "measurement:[7,\"ff/novdd/27C\",\"ileak_leg_a\"]/observation",
+      "measurement:[7,\"ff/novdd/27C\",\"ileak_v1_a\"]/observation",
+      "measurement:[7,\"ff/novdd/27C\",\"ileak_v2_a\"]/observation",
+      "measurement:[8,\"ff/novdd/125C\",\"ileak_base_a\"]/observation",
+      "measurement:[8,\"ff/novdd/125C\",\"ileak_leg_a\"]/observation",
+      "measurement:[8,\"ff/novdd/125C\",\"ileak_v1_a\"]/observation",
+      "measurement:[8,\"ff/novdd/125C\",\"ileak_v2_a\"]/observation",
+      "measurement:[9,\"sf/novdd/-40C\",\"ileak_base_a\"]/observation",
+      "measurement:[9,\"sf/novdd/-40C\",\"ileak_leg_a\"]/observation",
+      "measurement:[9,\"sf/novdd/-40C\",\"ileak_v1_a\"]/observation",
+      "measurement:[9,\"sf/novdd/-40C\",\"ileak_v2_a\"]/observation"
+    ],
+    "skipped": [],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_base_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_leg_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_v1_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"ileak_v2_a\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "provenance": {
+    "klt_version": "0.7.1.dev2264+gcba5e957d9ed",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": {
+      "name": "sky130.lib.spice",
+      "content_hash": "sha256:48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:c4971fd2df365723e9ce92aecd2aebc02aa680ae48e7bb69edb1d78065b8d032",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "ileak_base_a",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": 1.800049692635e-12,
+        "margin": null
+      }
+    },
+    {
+      "name": "ileak_v2_a",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": 1.800049692635e-12,
+        "margin": null
+      }
+    },
+    {
+      "name": "ileak_v1_a",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": 1.800049692635e-12,
+        "margin": null
+      }
+    },
+    {
+      "name": "ileak_leg_a",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": 1.810052108198e-12,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "tt/novdd/-40C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 19.777,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.800049692635e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.800049692635e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.800049692635e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.810052108198e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "tt/novdd/27C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 19.822,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.836151022894e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.835847446285e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.835847446285e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.845209748885e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "tt/novdd/125C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 20.018,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 2.177177882423e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.848180983255e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.848180983255e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.152052064857e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/-40C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 19.87,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.800001120378e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.800001120378e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.800001120378e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.80999833177e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/27C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 19.917,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.801494717291e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.801192875406e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.801192875406e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.810555178006e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/125C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 19.815,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.250216770388e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 9.212198712194e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 9.212198712194e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 2.250907793488e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/-40C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 19.964,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.801088791997e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.801088791997e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.801088791997e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.811087738113e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/27C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 19.867,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 2.206079069422e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 2.205777227537e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 2.205777227537e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 2.215141264861e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/125C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 19.862,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 7.650930756997e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 7.321933857829e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 7.321933857829e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 6.625804939431e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/-40C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 19.678,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.802521673588e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.802521673588e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.802521673588e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.812524089151e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/27C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 19.764,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 2.545843744151e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 2.545543636989e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 2.545543636989e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 2.554904204866e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/125C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 19.663,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.092400597064e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.059500907147e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.059500907147e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 9.898879979597e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/-40C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 19.678,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.800001120378e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.800001120378e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.800001120378e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.810000066493e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/27C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 19.877,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.802580654187e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 1.802278812302e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 1.802278812302e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 1.811641114902e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/125C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 19.868,
+      "measurements": [
+        {
+          "name": "ileak_base_a",
+          "value": 1.301382092367e-11,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v2_a",
+          "value": 9.723851931986e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_v1_a",
+          "value": 9.723851931986e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "ileak_leg_a",
+          "value": 2.762561013281e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}

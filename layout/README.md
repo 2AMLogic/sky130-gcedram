@@ -107,7 +107,8 @@ pin as `design/`'s -- see [`docs/pdk-pin.md`](../docs/pdk-pin.md)):
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled) and
 #    export PDK_ROOT/PDK:
-volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
+pip install ciel==2.6.1
+ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 source design/env.sh
 
 # 2. Regenerate every layout/*.gds/*.json artifact in place:
@@ -391,7 +392,7 @@ to 0.17 um. The extra `_mos.gds` PCell parameters come from klayout-tools
   the one the committed DRC/LVS/ERC reports record. klt 0.7.0 cannot run
   this ERC spec at all: it rejects the spec's `_comment` key (klayout-tools
   #2822).
-- **PDK**: sky130A at open_pdks `c6d73a35...` (`docs/pdk-pin.md`), read from
+- **PDK**: sky130A at open_pdks `f6eeac7d...` (`docs/pdk-pin.md`), read from
   `$PDK_ROOT/$PDK/SOURCES`.
 
 Both pins live in [`generation-toolchain.json`](generation-toolchain.json).

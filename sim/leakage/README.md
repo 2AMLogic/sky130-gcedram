@@ -122,16 +122,17 @@ the worst-case temperature corner, not typicals." All 15 points are in
 
 ## Reproducing this testbench
 
-Requires a stock `open_pdks` sky130 install (via `volare`, pinned in
+Requires a stock `open_pdks` sky130 install (via `ciel`, pinned in
 [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md)) and `ngspice` on `PATH`.
 No local model edits.
 
 ```bash
 # 1. Install/enable the pinned PDK commit (skip if already enabled):
-volare enable --pdk sky130 c6d73a35f524070e85faff4a6a9eef49553ebc2b
+pip install ciel==2.6.1
+ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7
 
-# 2. Point PDK_ROOT at your volare root if it isn't ~/.volare:
-export PDK_ROOT=~/.volare   # default; only needed if you installed elsewhere
+# 2. Point PDK_ROOT at your ciel root if it isn't ~/.ciel:
+export PDK_ROOT=~/.ciel   # default; only needed if you installed elsewhere
 
 # 3. Check the environment resolves correctly:
 python3 sim/leakage/run_leakage_sweep.py --check-env
@@ -156,7 +157,7 @@ Useful flags:
 ```bash
 python3 sim/leakage/run_leakage_sweep.py --corners tt --temps-c 27   # single point
 python3 sim/leakage/run_leakage_sweep.py --dry-run                   # render netlists, don't simulate
-python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.volare --pdk sky130A
+python3 sim/leakage/run_leakage_sweep.py --pdk-root /path/to/.ciel --pdk sky130A
 ```
 
 ## Geometry-matched re-measurement (issue #149)
@@ -251,16 +252,52 @@ python3 -I sim/leakage/analyze_geometry_leakage.py sim/leakage/geometry-matched/
 python3 -I sim/leakage/test_geometry_leakage.py
 ```
 
+## Re-qualification under open_pdks `f6eeac7` (issue #168)
+
+The repo pin moved from `c6d73a3` to `f6eeac7` (`docs/pdk-pin.md`). The `c6d73a3` rows and reports above are
+unchanged append-only evidence; the grids were re-run as **new** records.
+
+* **Main grid** (5 corners x -40/27/125 C): `request.json` + `access_leakage.spice` (same device and bias as
+  `tb_access_leakage.spice.tmpl`, read as a one-point `dc` sweep with `.meas`), submitted with `klt sim --backend batch`.
+  Batch job `klt-sim-c2ed3f15ab70` (aws-batch-fleet, m7i.4xlarge, spot), ngspice 46, 15/15 corners passed. Raw
+  report `results/klt_report_20261016T0731Z.json`; 15 rows appended to `results/leakage_results.csv` by
+  `run_leakage_sweep.py --from-klt-report` (stamped `f6eeac7...`, simulator and job id in `notes`).
+  (A first `--submit-only` job, `klt-sim-7f47b694ed44`, completed but `klt sim` has no collect step for it, so
+  the same request was resubmitted in blocking mode; the earlier job is not used.)
+* **Geometry-matched grid**: existing `geometry-matched/request.json` re-run unchanged. Batch job
+  `klt-sim-62f31f610261`, ngspice 46, 15/15 passed; new `geom_leakage_*_20261016T0745Z.*` files next to the
+  `c6d73a3` ones. Reduced with `--baseline-timestamp 2026-08-20T21:10:17+00:00` (the historical `c6d73a3` CSV
+  rows, since the CSV now holds two blocks per point).
+* **Local single-corner probe** (tt, 27 C, ngspice 42, `--pdk-root` at the `f6eeac7` tree): `1.845210e-12 A`,
+  equal to the batch value for that point.
+
+Comparison to `c6d73a3` (ngspice-47 local run vs ngspice-46 fleet):
+
+| Quantity | `c6d73a3` | `f6eeac7` | Max relative change over 15 points |
+|---|---|---|---|
+| Worst-case leakage (sf, 125 C) | 9.89888e-11 A | 9.89888e-11 A | 1.7e-6 |
+| Geometry-matched extracted worst case (sf, 125 C) | 1.0924e-10 A | 1.0924e-10 A | 2.6e-6 |
+| Extracted / control, max (ss, 125 C) | 5.554287 | 5.554278 | n/a |
+
+No result moved beyond the studies' tolerance and no spec threshold changed. **Not confirmed:** which
+open_pdks revision the fleet image resolved. The klt report's `provenance.pdk` records the *client* `PDK_ROOT`
+(`f6eeac7`); the fleet image owns its own PDK resolution and `models_lib` scope is reported as `external`.
+The local `f6eeac7` probe agreeing to all printed digits, and the batch numbers matching `c6d73a3` this closely,
+mean the two revisions' models for this device are numerically indistinguishable here, so this check cannot tell them
+apart. Confirming the fleet's PDK revision is a fleet-image question (see the PR for #168).
+
 ## Files
 
 | Path | Purpose |
 |---|---|
 | `tb_access_leakage.spice.tmpl` | ngspice netlist template (corner/temp substituted at run time) |
 | `run_leakage_sweep.py` | Sweep driver: renders netlists, invokes `ngspice -b`, appends results |
+| `request.json`, `access_leakage.spice` | Issue #168: `klt sim` batch corner request for the main grid (`run_leakage_sweep.py --from-klt-report` appends its rows) |
 | `results/leakage_results.csv` | Append-only recorded results (raw current vs. corner/temperature) |
 | `gen_geometry_leakage.py`, `geometry-matched/` | Issue #149: geometry-matched deck + `klt sim` batch request generated from the extraction |
 | `analyze_geometry_leakage.py`, `test_geometry_leakage.py` | Report reducer / comparison and its stdlib tests |
 | `geometry-matched/results/` | Append-only raw batch report and derived comparison for #149 |
+| `compact_geometry_leakage.py`, `compact-geometry/` | Issue #161: the same study for the compact layouts of #100 (deck + `klt sim` batch request generated from the three extractions; reducer; append-only `results/`). Summary of findings in `sim/retention/README.md` "Compact-layout re-characterisation" |
 
 The PDK version pin and corner/temperature set this testbench targets are
 documented in [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md) (imported at

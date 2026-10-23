@@ -25,7 +25,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gzip
 import json
 import sys
 from pathlib import Path
@@ -33,8 +32,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
+from _evidence_common import load_json  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 
 BUDGET_CYCLES = 34             # provisional scheduler T_ROW (digital/refresh-scheduler), ASSUMPTION
@@ -44,12 +45,6 @@ PRIMARY = AR.PRIMARY_FRAC
 PRIOR_REPORT = REPO / "sim" / "refresh-op" / "results" / "klt_report_20261010T005003Z.json.gz"
 EXPERIMENT_NAMES = ("rwl_late_raw", "rwl_late_hold", "latch_early_hold", "latch_late_hold", "combined_hold")  # == gen EXPERIMENTS
 PRIOR_TOL_V = 0.01             # baseline vs prior sim/refresh-op report agreement (same circuit, same point)
-
-
-def load_json(p: Path):
-    opener = gzip.open if p.name.endswith(".gz") else open
-    with opener(p, "rt") as fh:
-        return json.load(fh)
 
 
 def duration_record(man_inst: dict, variant: str) -> dict:

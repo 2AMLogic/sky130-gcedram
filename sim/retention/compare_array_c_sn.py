@@ -55,6 +55,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
+from _evidence_common import sha256_prefixed  # noqa: E402
 import derive_retention as DR  # noqa: E402  (reuse the default reader)
 
 REPO_ROOT = DR.REPO_ROOT
@@ -106,7 +108,7 @@ def rel(path: Path) -> str:
 def sha256_file(path: Path) -> str:
     if not Path(path).is_file():
         raise ComparisonError(f"input not found: {path}")
-    return "sha256:" + hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    return sha256_prefixed(path)
 
 
 def sha256_text(text: str) -> str:
@@ -305,8 +307,14 @@ def read_csv_rows(path: Path) -> list[tuple[int, str, dict]]:
     return out
 
 
-def baseline_rows(csv_path: Path, single_total_ff: float, single_input_hash: str) -> dict:
-    rows = [r for r in read_csv_rows(csv_path) if r[2].get("geometry_name") == SINGLE_GEOMETRY]
+def baseline_rows(csv_path: Path, single_total_ff: float, single_input_hash: str,
+                  as_of: str | None = None) -> dict:
+    # `as_of` (ISO-8601 UTC) reproduces a committed comparison against the
+    # append-only CSV as it stood when that comparison was generated, ignoring
+    # rows appended later (e.g. the open_pdks re-qualification rows, #168).
+    rows = [r for r in read_csv_rows(csv_path)
+            if r[2].get("geometry_name") == SINGLE_GEOMETRY
+            and (as_of is None or r[2]["timestamp_utc"] <= as_of)]
     assumed = [r for r in rows if (r[2].get("c_storage_node_margin_factor_ASSUMPTION") or "").strip()]
     extracted = [
         r for r in rows
@@ -503,7 +511,7 @@ def geometry_trace(array_data: dict, single_data: dict) -> dict:
 # assemble
 # ---------------------------------------------------------------------------
 def build(array_report: Path = ARRAY_REPORT, retention_csv: Path = RETENTION_CSV,
-          single_source: dict | None = None) -> dict:
+          single_source: dict | None = None, retention_as_of: str | None = None) -> dict:
     single_source = single_source or DR.EXTRACTED_C_SN_SOURCES[SINGLE_GEOMETRY]
     single_path = Path(single_source["extract_json"])
     single_net = single_source["net"]
@@ -515,7 +523,8 @@ def build(array_report: Path = ARRAY_REPORT, retention_csv: Path = RETENTION_CSV
     array_data, nodes = reduce_array(array_report)
     dist = distribution(nodes)
 
-    base = baseline_rows(retention_csv, single["total_ff"], single_prov["input_content_hash"])
+    base = baseline_rows(retention_csv, single["total_ff"], single_prov["input_content_hash"],
+                         retention_as_of)
     ratified = describe_row(retention_csv, base["ratified"])
     isolated = describe_row(retention_csv, base["isolated"])
     sens = sensitivity(single["total_ff"], isolated, nodes, dist)
@@ -598,14 +607,14 @@ def main(argv: list[str] | None = None) -> int:
     g.add_argument("--check", metavar="FILE", help="recompute and compare with a committed comparison JSON")
     args = ap.parse_args(argv)
 
+    committed = json.loads(Path(args.check).read_text()) if args.check else None
     try:
-        doc = build()
+        doc = build(retention_as_of=committed["generated_utc"] if committed else None)
     except ComparisonError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
 
     if args.check:
-        committed = json.loads(Path(args.check).read_text())
         if strip_volatile(committed) != json.loads(json.dumps(strip_volatile(doc))):
             print(f"DRIFT: {args.check} does not match a recomputation from the committed inputs", file=sys.stderr)
             return 1

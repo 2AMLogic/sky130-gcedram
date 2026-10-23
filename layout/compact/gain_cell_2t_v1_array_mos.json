@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "generator": "layout/compact/gen_compact.py",
+  "device_count": 32,
+  "cell_pitch_um": {
+    "x": 0.985,
+    "y": 1.98,
+    "basis": "Stacked, unshared: WR and RD each get their own isolated vertical"
+  },
+  "ports": [
+    {
+      "name": "U0_S",
+      "x_um": 0.21,
+      "y_um": 1.565
+    },
+    {
+      "name": "U2_S",
+      "x_um": 1.195,
+      "y_um": 1.565
+    },
+    {
+      "name": "U4_S",
+      "x_um": 2.18,
+      "y_um": 1.565
+    },
+    {
+      "name": "U6_S",
+      "x_um": 3.165,
+      "y_um": 1.565
+    },
+    {
+      "name": "U8_S",
+      "x_um": 0.21,
+      "y_um": 3.545
+    },
+    {
+      "name": "U10_S",
+      "x_um": 1.195,
+      "y_um": 3.545
+    },
+    {
+      "name": "U12_S",
+      "x_um": 2.18,
+      "y_um": 3.545
+    },
+    {
+      "name": "U14_S",
+      "x_um": 3.165,
+      "y_um": 3.545
+    },
+    {
+      "name": "U16_S",
+      "x_um": 0.21,
+      "y_um": 5.525
+    },
+    {
+      "name": "U18_S",
+      "x_um": 1.195,
+      "y_um": 5.525
+    },
+    {
+      "name": "U20_S",
+      "x_um": 2.18,
+      "y_um": 5.525
+    },
+    {
+      "name": "U22_S",
+      "x_um": 3.165,
+      "y_um": 5.525
+    },
+    {
+      "name": "U24_S",
+      "x_um": 0.21,
+      "y_um": 7.505
+    },
+    {
+      "name": "U26_S",
+      "x_um": 1.195,
+      "y_um": 7.505
+    },
+    {
+      "name": "U28_S",
+      "x_um": 2.18,
+      "y_um": 7.505
+    },
+    {
+      "name": "U30_S",
+      "x_um": 3.165,
+      "y_um": 7.505
+    }
+  ]
+}
