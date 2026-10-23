@@ -40,3 +40,8 @@ sim/leakage/compact-geometry/results/klt_report_20261020T1716Z.json
 sim/leakage/compact-geometry/results/compact_leakage_points_20261020T1716Z.csv
 sim/leakage/compact-geometry/results/compact_leakage_summary_20261020T1716Z.json
 sim/retention/results/compact_c_sn_20261020T172043Z.json
+#
+# issue #208: device-inclusive C_SN of the compact v2 array (measurement only; no ruling).
+# Inside `results` directories (already protected); listed to register them.
+sim/retention/results/klt_report_20261022T0533Z.json
+sim/retention/results/compact_device_c_sn_20261022T0533Z.json

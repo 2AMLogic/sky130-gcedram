@@ -528,6 +528,61 @@ scaling of #88 was **not** redone for the compact layouts (out of scope), so no 
 The uniform grid straps its word line with li1/met1 (434.27 ohm star value, 2.10 fF); no hand end-to-end number is
 claimed for it.
 
+## Device-inclusive `C_SN` of the compact v2 array (issue #208)
+
+**MEASURED on the extracted netlist with the BSIM models in the loop. Measurement only: not a spec change, not a
+ratified value, and not a ruling on the retention budget -- that ruling stays with the operator.** Closes the
+measurement half of `spec/retention-refresh-budget.md` Section 9.6 item 2 for the compact v2 layout (#100, #161).
+
+Method (`compact_device_c_sn.py`): hold-droop slope, charge based. A known constant current (50 nA, 3-4 decades above
+the ~1e-10 A leakage) is drawn from one storage node of the extracted 4x4 v2 array (32 devices with drawn AD/AS/PD/PS,
+per-net R, ground and coupling C; generic `nfet` -> `sky130_fd_pr__nfet_01v8`) and the times to cross
+1.0, 0.9 ... 0.1 V are measured, so `C_eff = I * dt / 0.9 V` over exactly the ratified `delta_V = VDD/2` window from the
+assumed stored '1' (1.0 V). Large-signal, so nonlinear gate/junction capacitance is averaged over the window the
+derivation uses. Other storage nodes are ideal sources (quiet neighbours, the wiring-only convention); idle bias as in
+`sim/write-disturb` (wl = bl = 0 V, rwl = VDD, rbl = 0.9 V). All 16 nodes, 15 PVT points, one `klt sim` batch request
+(job `klt-sim-7a006c10f9c1`).
+
+**Double counting (Section 9.6 item 2).** Whether the extractor's `poly` ground term overlaps the read-gate channel is
+still unchecked, so it is bracketed instead of decided: variant `a` keeps the extracted wiring C and adds the devices
+(**upper** end, may count channel poly twice); variant `p` removes the probed node's *entire* extracted poly ground term
+(0.177818 fF) first (**lower** end, removes more than any overlap can). Variant `b` repeats `a` with the read-device
+terminals grounded (channel formed): a bias-sensitivity bound, not the idle bias.
+
+| `sf` / 125 C, limiting node `\$32` | `C_SN` (fF) | retention at `I_leak` = 1.0595e-10 A (us) |
+|---|---|---|
+| wiring only (#161) | 0.316892 | 2.69 |
+| **p: devices, extracted poly term removed (lower)** | **0.759248** | **6.45** |
+| **a: devices on top of extracted wiring (upper)** | **0.936930** | **7.96** |
+| b: as a, read terminals grounded (bounding bias) | 1.108658 | 9.42 |
+| #161 bounding scenario (wiring + full `C_gate`) | 0.870123 | 7.39 |
+| ratified (assumed `C_SN` 1.106463 fF) | -- | 10.06 |
+
+So the device-inclusive retention at the worst-case corner is **6.45-7.96 us** under the idle bias: below the ratified
+10.06 us (refresh interval at the 2x margin 3.2-4.0 us against 5.03 us) and, even in the bounding bias `b`, not back to
+10.06 us (it needs 1.184 fF). Variant `a` lies above the #161 bounding scenario because that scenario adds only the
+read-gate term and omits the write-device drain-junction and overlap capacitance. Across all 15 points `C_SN` spans
+0.755-0.874 fF (p) and 0.933-1.052 fF (a); `fs` is largest, `sf` smallest, and the limiting node is `\$32` at every point
+(the corner/temperature dependence of `C_SN` is a few percent; retention is dominated by `I_leak`). The per-0.1 V
+`C(V)` of the limiting node rises from 0.898 to 0.979 fF as the node falls (`a_limiting_c_vs_v_ff` in the JSON).
+
+Controls (same batch, same reducer): an ideal 1 fF capacitor reads 1.000000 fF at all 15 points; the limiting node at 1/5
+the current agrees within 0.31 % (`rate_check`); leakage biases the measured `C` low by at most 0.22 %. The result
+satisfies `wiring only <= p <= a` at every point.
+
+**Caveats.** `delta_V = VDD/2`, the stored level, ideal drivers, quiet neighbours and global corners only are
+ASSUMPTIONS; no mismatch, no neighbour switching (#94), no repeated refresh (#147), 4x4 array only (9.6 item 5).
+`I_leak` is the geometry-matched compact v2 leakage of #161 (open_pdks `f6eeac7`; if #168 changes it, restate the
+retention time, `C_SN` is unaffected). The batch worker reports its own PDK stamp (`open_pdks c6d73a3...`, `not_comparable`
+to the client's), and the request's `provenance.pdk` pins `f6eeac7`; the `sf`/125 C point was also run locally
+(`C` 0.9369 / 0.7592 / 1.1087 fF, identical to the batch values to the printed digits). Whether the extractor's poly term
+overlaps the channel is still not decided; the choice between `p` and `a` is left open.
+
+Reproduce: `python3 -I sim/retention/compact_device_c_sn.py gen`, `klt sim sim/retention/compact-device-c-sn/request.json
+--report-out sim/retention/results/klt_report_<RUN>.json`, `... reduce <report>`, `... --check results/compact_device_c_sn_<RUN>.json`;
+`python3 -I sim/retention/test_compact_device_c_sn.py` covers the reducer (known capacitor, charge-averaged nonlinear
+window), staleness of the committed deck and reproduction of the committed result.
+
 ## Follow-up (out of scope here)
 
 - **`3T-min` post-layout parasitic re-derivation**: if a `3T-min` layout
@@ -555,3 +610,5 @@ claimed for it.
 | `test_compare_array_c_sn.py` | Issue #89: focused stdlib tests (reduction, validation, ties, units, reproduction of the committed snapshot) |
 | `compare_compact_c_sn.py`, `results/compact_c_sn_*.json` | Issue #161: compact-layout (`layout/compact/`) `C_SN` and retention-budget re-check at geometry-matched leakage; append-only snapshots |
 | `test_compare_compact_c_sn.py` | Issue #161: stdlib tests (storage-node identification, orientation, reproduction of committed results) |
+| `compact_device_c_sn.py`, `compact-device-c-sn/`, `results/compact_device_c_sn_*.json`, `results/klt_report_*.json` | Issue #208: device-inclusive compact v2 `C_SN` (deck + `klt sim` request generator, reducer, committed batch report and result); measurement only |
+| `test_compact_device_c_sn.py` | Issue #208: stdlib tests (reducer, staleness, reproduction of the committed result) |
