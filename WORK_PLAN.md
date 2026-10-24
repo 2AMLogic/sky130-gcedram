@@ -31,6 +31,7 @@ Human-approved issues ready for implementation (`loom:issue`).
 
 Issues currently being built (`loom:building`).
 
+- **#218**: Adopt the common artifact store for sim evidence (manifests in git, bytes via klt artifact)
 - **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead
 - **#88**: Re-run sense-stage and loaded-column with the extracted 4-row C_RBL (0.86 fF vs assumed 10 fF)
 
@@ -45,6 +46,7 @@ PRs waiting on Judge (`loom:review-requested`).
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#219**: feat: store new run evidence in the fleet artifact store via manifests
 
 ## Proposed
 
@@ -56,6 +58,7 @@ Issues carrying `loom:curated`.
 - **#166**: Re-qualify reference records under open_pdks f6eeac7 and mark c6d73a3 records superseded *(curated)*
 - **#168**: Re-qualify G1 retention chain (leakage, bitcell-transient, retention) under open_pdks f6eeac7 *(curated)*
 - **#212**: Re-baseline layout DRC/LVS/ERC evidence under a klt rev with signoff --attest *(curated)*
+- **#218**: Adopt the common artifact store for sim evidence (manifests in git, bytes via klt artifact) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -75,10 +78,10 @@ Issues carrying `loom:curated`.
 | Very important | 1 |
 | Important | 1 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 1 |
-| Curated | 6 |
+| Approved PRs awaiting merge | 2 |
+| Curated | 7 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
