@@ -26,6 +26,7 @@ _None._
 Human-approved issues ready for implementation (`loom:issue`).
 
 - **#168**: Re-qualify G1 retention chain (leakage, bitcell-transient, retention) under open_pdks f6eeac7
+- **#208**: Operator decision: retention/refresh budget vs compact-layout C_SN (from #161)
 
 ## In Progress
 
@@ -77,7 +78,7 @@ Issues carrying `loom:curated`.
 | Operator merge-risk holds | 0 |
 | Very important | 1 |
 | Important | 1 |
-| Ready (`loom:issue`) | 1 |
+| Ready (`loom:issue`) | 2 |
 | In Progress (`loom:building`) | 3 |
 | PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 2 |
