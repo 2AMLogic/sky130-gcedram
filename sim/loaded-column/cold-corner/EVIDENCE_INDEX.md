@@ -85,3 +85,43 @@ are verified.
 **Verdict after #51**: still missing evidence. No primary reliability source
 was found for A or B. Outcome C remains the only option without a missing
 stress item; see the decision record section 8.
+
+## Issue #88 addendum: extracted `C_RBL` re-run (append-only)
+
+New simulation evidence on the ideal-periphery baseline. The sections above
+are unchanged, and nothing is ratified.
+
+| Item | File |
+|---|---|
+| Loaded-column re-run, write-up and harness | [`../extracted-crbl/README.md`](../extracted-crbl/README.md) |
+| Sense-stage re-run | [`../../sense-stage/README.md`](../../sense-stage/README.md) (section "Issue #88") |
+| Contract row (new dated section) | [`SENSE_INPUT_CONTRACT.md`](SENSE_INPUT_CONTRACT.md) "2026-10-11 addendum" |
+
+Pins:
+
+* `C_RBL` source: `layout/gain_cell_2t_array.parasitics.summary.json`
+  `comparison.c_rbl.extracted_4row_worst_total_ff` = 0.859179 fF. Extracted
+  netlist sha256 `dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33`.
+* Loaded column, run `20261011T015419Z`:
+  * `summary.json` SHA-256 `77d07c21bcf59aa3c5b81e64c2ceb90026e2ff79788c57a808d4acdd72efe464`;
+  * `cases.csv.gz` SHA-256 `48a83f9e2ef56f7f0617eb4c33d241215b35a0ccb549952c9138af8a71f3dbc4`;
+  * 10 fleet jobs, 8192 case rows.
+* Sense stage:
+  * `sense_summary_20261011T015836Z.json` SHA-256 `d171548c93997aa1bd1207f2511d2585eef33bdb1bef4b00781d9779214caa0b` (EXTRACTED-4-ROW);
+  * `sense_summary_20261011T020128Z.json` SHA-256 `5a913667308f99335046eb930ecfb5d655e30ba1bb508848ab382deab94a1bda` (2 fF);
+  * `sense_summary_20261011T020422Z.json` SHA-256 `39b06ab5d4acba1aa01af6b9b9b8ff5a73c049e87350825312c060a82ff03bad` (EXTRACTED-4-ROW + layout card).
+
+Check additions in `check_evidence_index.py` (`issue88()`):
+
+* the new links resolve;
+* the hashes above match;
+* the summary records an OK reproduction of the committed Phase 2 run and an
+  OK negative control;
+* every number quoted in the contract addendum matches the new summaries;
+* the original 10 fF contract row and the rules are still present.
+
+**Verdict after #88.** At the bounding extracted load the design-card column
+still fails fs/-40 C (0.075 V against the 0.1 V placeholder). ss/-40 C is no
+longer marginal. Only the layout-card variant passes the full grid, and only
+narrowly. The supply-option decision record is unaffected. Options A and B
+were not re-run.

@@ -57,6 +57,80 @@ class Generated(unittest.TestCase):
         self.assertTrue(all(m["name"] == m["name"].lower() for m in r["measurements"]))
 
 
+class Variants(unittest.TestCase):
+    """Issue #88: C_RBL / device-card variants; the default deck is untouched."""
+
+    def test_committed_variant_files_not_stale(self):
+        for v in G.variants():
+            net, req = G.render(v)
+            npath, rpath = G.variant_paths(v)
+            self.assertEqual(net, npath.read_text(), f"run gen_sense_stage.py --variant {v}")
+            self.assertEqual(req, rpath.read_text(), f"run gen_sense_stage.py --variant {v}")
+            self.assertEqual(json.loads(req)["netlist"], npath.name)
+
+    def test_extracted_c_rbl_is_the_cited_json_value_on_rbl_and_reference(self):
+        d = json.loads(G.PARASITICS_SUMMARY.read_text())
+        want_ff = d["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"]
+        self.assertAlmostEqual(want_ff, 0.859179, places=6)
+        self.assertEqual(d["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"],
+                         max(c["total_ff"] for c in d["per_column"]["rbl"].values()))
+        for v in ("crbl_ext4row", "crbl_ext4row_layoutcard"):
+            net, _ = G.render(v)
+            self.assertIn(f".param C_RBL   = {G._fmt(want_ff * 1e-15)}   $ EXTRACTED-4-ROW", net)
+            self.assertIn("STUDY-ASSUMPTION", net.split(".param C_RBL")[1].splitlines()[0])
+            crbl = [ln for ln in net.splitlines() if ln.startswith("crbl_")]
+            cref = [ln for ln in net.splitlines() if ln.startswith("cref_")]
+            self.assertEqual(len(crbl), len(G.instances()))
+            self.assertEqual(len(cref), len(G.instances()))
+            self.assertTrue(all(ln.split()[3] == "{C_RBL}" for ln in crbl + cref))
+            self.assertEqual(net.count(".param C_RBL"), 1)
+            self.assertNotIn("1e-14", net.split(".param C_RBL")[1].splitlines()[0])
+
+    def test_variant_changes_only_declared_lines(self):
+        base = G.NETLIST_PATH.read_text().splitlines()
+        for v, spec in G.variants().items():
+            net = G.render(v)[0].splitlines()
+            body_b, body_v = base[2:], net[3:]   # header comment lines differ by design
+            self.assertEqual(len(body_b), len(body_v))
+            diff = [(a, b) for a, b in zip(body_b, body_v) if a != b]
+            for a, b in diff:
+                if a.startswith(".param C_RBL"):
+                    continue
+                self.assertEqual(spec["card"], "layout", (a, b))
+                self.assertTrue(a.startswith(("XMWR_", "XMRD_")), a)
+                self.assertIn("ad=0.1974 as=0.1974 pd=1.78 ps=1.78", b)
+                self.assertIn("ad=0.1218 as=0.1218 pd=1.42 ps=1.42", a)
+            n_cell = sum(1 for ln in base if ln.startswith(("XMWR_", "XMRD_")))
+            self.assertEqual(len(diff), 1 + (n_cell if spec["card"] == "layout" else 0))
+
+    def test_default_output_unchanged_without_variant(self):
+        self.assertEqual(G.render(), G.render(None))
+        self.assertIn(".param C_RBL   = 1e-14   $ ASSUMPTION (contract; not extracted)", G.render()[0])
+        self.assertEqual(G.C_RBL_F, 10e-15)
+
+    def test_variant_summaries_ran_the_committed_variant_decks(self):
+        import hashlib
+        seen = set()
+        for s in RESULTS.glob("sense_summary_*.json"):
+            d = json.loads(s.read_text())
+            if "variant" not in d:
+                continue
+            v = d["variant"]["id"]
+            seen.add(v)
+            deck = G.variant_paths(v)[0]
+            self.assertEqual(hashlib.sha256(deck.read_bytes()).hexdigest(), d["netlist_sha256"], v)
+            self.assertAlmostEqual(d["assumptions"]["c_rbl_f"], G.variants()[v]["c_rbl_f"], delta=1e-24)
+            self.assertFalse(d["claims"]["n_rows_ratified"])
+        self.assertEqual(seen, set(G.variants()))
+
+    def test_analyzer_maps_report_netlist_to_variant(self):
+        self.assertIsNone(A.report_variant({"netlist": {"path": "sim/sense-stage/sense_stage.spice"}}))
+        self.assertIsNone(A.report_variant({}))
+        self.assertEqual(A.report_variant({"netlist": {"path": "sim/sense-stage/sense_stage_crbl_2f.spice"}}), "crbl_2f")
+        with self.assertRaises(ValueError):
+            A.report_variant({"netlist": {"path": "sim/sense-stage/sense_stage_bogus.spice"}})
+
+
 class Analysis(unittest.TestCase):
     def test_committed_summary_reproduces_from_committed_report(self):
         reports = sorted(RESULTS.glob("klt_report_*.json"))
