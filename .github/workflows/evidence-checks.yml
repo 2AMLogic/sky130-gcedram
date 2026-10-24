@@ -2,8 +2,9 @@ name: evidence-checks
 
 # Runs the stdlib-Python checks that guard the evidence chain: the
 # loaded-column analysis tests, the cold-corner variant tests, the
-# evidence-index consistency check, and the append-only evidence guard's
-# fixture suite. No ngspice, no klt, no network (check_evidence_index.py is
+# evidence-index consistency check, the append-only evidence guard's
+# fixture suite, the refresh-overhead arithmetic tests, and the shared
+# evidence-helper tests. No ngspice, no klt, no network (check_evidence_index.py is
 # run without --online). Keep this list in sync with the `test` script in
 # package.json.
 #
@@ -80,6 +81,12 @@ jobs:
 
       - name: Geometry-matched access leakage (issue #149) checks
         run: python3 -I sim/leakage/test_geometry_leakage.py
+
+      - name: Refresh-overhead arithmetic tests
+        run: python3 -I sim/refresh-overhead/test_refresh_overhead.py
+
+      - name: Shared evidence helper tests
+        run: python3 -I sim/test_evidence_common.py
 
       - name: Bitcell compaction variants (issue #100) consistency checks
         run: python3 -I layout/compact/test_compact.py
