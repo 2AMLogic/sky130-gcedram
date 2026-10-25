@@ -2,6 +2,10 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-23
+
+- **PR #214**: feat(sim): device-inclusive C_SN of the compact v2 array
+
 ### 2026-10-20
 
 - **PR #209**: feat: re-characterise C_SN, parasitics and leakage for the compact bitcell layouts
