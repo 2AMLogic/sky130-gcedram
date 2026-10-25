@@ -90,6 +90,12 @@ jobs:
       - name: Device-inclusive compact C_SN (issue #208) checks
         run: python3 -I sim/retention/test_compact_device_c_sn.py
 
+      - name: Shared klt request skeleton tests (issue #196)
+        run: python3 -I sim/test_klt_request.py
+
+      - name: Shared evidence helper tests
+        run: python3 -I sim/test_evidence_common.py
+
   append-only:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
