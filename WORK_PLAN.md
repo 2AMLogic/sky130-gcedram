@@ -9,6 +9,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
+- **#223**: docs(spec): propose shorter refresh interval on device-inclusive retention bound
 
 ## Very Important
 
@@ -42,7 +43,6 @@ Issues currently being built (`loom:building`).
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#223**: docs(spec): propose shorter refresh interval on device-inclusive retention bound
 - **#225**: ci: wire unlisted test suites into evidence-checks and npm test
 
 ## Approved (Awaiting Merge)
@@ -52,6 +52,7 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
 - **#219**: feat: store new run evidence in the fleet artifact store via manifests
+- **#223**: docs(spec): propose shorter refresh interval on device-inclusive retention bound
 
 ## Proposed
 
@@ -80,13 +81,13 @@ Issues carrying `loom:curated`.
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 2 |
+| Operator merge-risk holds | 3 |
 | Very important | 1 |
 | Important | 1 |
 | Ready (`loom:issue`) | 1 |
 | In Progress (`loom:building`) | 5 |
-| PRs awaiting review | 2 |
-| Approved PRs awaiting merge | 3 |
+| PRs awaiting review | 1 |
+| Approved PRs awaiting merge | 4 |
 | Curated | 8 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
