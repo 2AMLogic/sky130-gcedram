@@ -77,8 +77,28 @@ formula of Section 7 of the ratified record scales by the same factor; its
 percentage is given here. Issue #208's option text says "3x refresh
 bandwidth versus 10.06 us"; that compares a retention time with a refresh
 interval. On the like-for-like basis (refresh interval to refresh interval)
-the factor is 1.56x, and 3.1x is the ratio of the two *retention* times
-(10.06 / 6.45). The reviewers should rule on the 1.56x figure.
+the factor is 1.56x. The 3.1x figure is the mismatched comparison: it is the
+ratified retention time (10.06 us) divided by the new refresh interval
+(3.22 us), not a ratio of like quantities. Because interval = retention / 2,
+the ratio of the two retention times (10.06 / 6.45) is also 1.56x. The
+reviewers should rule on the 1.56x figure.
+
+**Scope of the ~3.22 us figure, and the 2x margin.** The ~3.22 us interval is
+a *necessary* upper bound at global corners with no local variation. The
+unchanged 2x margin does **not** cover access-device Vth mismatch, and its
+ratified rationale ("array-wide mismatch", Section 7 of the ratified record)
+is not carried forward onto this value. The pinned model text gives
+sigma(Vth) of about 55 mV for a 0.42/0.15 um `nfet_01v8`
+(`sim/sense-mismatch/README.md`, "Mismatch model availability"). At `sf` /
+125 C, kT/q is about 34.3 mV, and with an assumed slope factor n = 1.3-1.5 a
+1-sigma Vth shift multiplies subthreshold leakage by roughly 2.9-3.4x (a hand
+estimate from model text, not a simulation). The 2x margin is therefore
+consumed at about 0.56-0.65 sigma, and a 3-sigma cell leaks roughly 25-40x
+more. A macro refresh interval needs mismatch-inclusive leakage evidence (for
+example a leakage Monte Carlo of the access device at `sf_mm` / 125 C via the
+`klt sim` `monte_carlo` path, sized from its tail at the macro bit count) and
+is expected to be materially shorter than 3.22 us. That evidence is not part
+of this PR.
 
 What the proposal does **not** claim: that 6.45 us is the true retention. It
 is the low end of a bracket that still has an open question, on a single
@@ -93,14 +113,14 @@ further.
 | Option | Why not, on the committed evidence |
 |---|---|
 | (b) one more study to decide the poly double count | The bracket is 6.45-7.96 us. Deciding it moves the 2x-margin deadline from ~3.2 us to at most ~4.0 us, for another measurement round, and would still sit below the ratified 5.03 us. It stays available as a later tightening; (a) does not preclude it. |
-| (c) add explicit storage capacitance | Restoring 10.06 us needs about 0.3-0.4 fF more than the lower-bound `C_SN` (1.184 fF is the wiring-plus-gate scenario's requirement per `sim/retention/README.md`). It changes the cell, spends the density the compaction in #100 bought and reopens layout and the README density requirement. |
+| (c) add explicit storage capacitance | Restoring 10.06 us needs a `C_SN` of 1.184 fF at `I_leak` = 1.0595e-10 A (per `sim/retention/README.md`), about 0.43 fF above the lower bound `p` (0.759 fF) and about 0.25 fF above `a`, i.e. 0.25-0.43 fF across the bracket. It changes the cell, spends the density the compaction in #100 bought and reopens layout and the README density requirement. |
 | Keep 10.06 us unchanged | Not supported: the device-inclusive measurement is below it at every idle-bias case, and only the bounding bias `b` (9.42 us) approaches it without reaching it. |
 
 ## 6. If ratified, the edits that follow (not made by this PR)
 
 * `retention-refresh-budget.md` Section 5: worst-case retention ~6.45 us,
   with `C_SN` source changed from ASSUMPTION to the extracted
-  device-inclusive value; Section 7: refresh-interval upper bound ~3.22 us;
+  device-inclusive value; Section 7: refresh-interval upper bound ~3.22 us, scoped as a necessary global-corner bound that excludes mismatch, with the "array-wide mismatch" rationale for the 2x margin not carried forward (Section 4);
   supersession notes on the superseded figures.
 * A new append-only row in `retention_results.csv`. Existing rows are not
   edited.
@@ -113,7 +133,7 @@ Neither key is signed by this document or by #208.
 
 | Key | Required decision |
 |---|---|
-| `ee-key` | accept or reject the evidence in Section 3 as sufficient for a 6.45 us conservative bound; rule on using the lower end of the bracket while the double count is open; rule on the 2x refresh margin staying unchanged; confirm the 1.56x cost reading in Section 4 |
+| `ee-key` | accept or reject the evidence in Section 3 as sufficient for a 6.45 us conservative bound; rule on using the lower end of the bracket while the double count is open; rule on the 2x refresh margin staying unchanged, given that it does not absorb access-device Vth mismatch (Section 4); confirm the 1.56x cost reading in Section 4 |
 | `market-key` | accept or reject the claim consequence: a ~3.2 us worst-case refresh interval, 1.56x the previously ratified bandwidth, against the density position; confirm the macro is still not described as a drop-in SRAM replacement |
 | operator | after both keys: ratify or reject. `loom:operator` stays on the PR until then |
 
