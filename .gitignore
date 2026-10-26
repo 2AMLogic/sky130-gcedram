@@ -11,6 +11,9 @@ bsim4v5.out
 # (append-only record trail), so they escape the *.log rule.
 !sim/*/corners/**/*.log
 sim/build/
+# raw outputs staged for `sim/store_evidence.py` (issue #218); the bytes go to
+# the fleet artifact store, only manifests/artifacts/ is committed.
+evidence-scratch/
 design/build/
 # synthesis / P&R scratch
 flow/build/

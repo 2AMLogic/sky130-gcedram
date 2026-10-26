@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "sha256": "4d5748a1d2c8613491f974bc686014b62526d0ab67c67e42ee94fd0ef5892982",
+      "size": 60,
+      "kind": "evidence",
+      "producer": {
+        "tool": "klt",
+        "version": "0.7.1.dev2517+g6bb7cf233677",
+        "loom.repo": "2AMLogic/sky130-gcedram",
+        "commit": "1d49a3e1f9e0294854ef4e598fc13f40b3d6880b"
+      },
+      "uri": "artifact:evidence/2AMLogic__sky130-gcedram/4d/4d5748a1d2c8613491f974bc686014b62526d0ab67c67e42ee94fd0ef5892982",
+      "name": "artifact-store-smoke-20261023/smoke.txt",
+      "media_type": "text/plain"
+    }
+  ]
+}
