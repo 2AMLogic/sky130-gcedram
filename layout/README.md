@@ -150,7 +150,8 @@ verification pass (that is a separate, later T1 item). Captured by
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t.drc.result.json`](gain_cell_2t.drc.result.json)): `status:
-  "clean"`, `violation_count: 0`.
+  "violations"`, `violation_count: 34` under klt 0.8.0 (it was `clean`, 0, under
+  0.5.0) -- see "DRC under klt 0.8.0" below.
 - **`klt extract --deck sky130`**
   ([`gain_cell_2t.extract.json`](gain_cell_2t.extract.json) /
   [`.spice`](gain_cell_2t.extract.spice)): `device_count: 2`, both `nfet`,
@@ -386,12 +387,13 @@ to 0.17 um. The extra `_mos.gds` PCell parameters come from klayout-tools
   `klayout==0.30.12`. With `klayout==0.30.10` the array GDS still matches,
   but `_mos.gds` does not (PCell context serialization), so KLayout is pinned
   too.
-- **check** (`klt drc`, `klt lvs`, `klt erc`): klayout-tools
-  `c622e8addb362491664d44ba4d717f354ca88bbd` (0.6.0) with `klayout==0.30.12`.
-  This is the same revision `.github/workflows/signoff.yml` grades with, and
-  the one the committed DRC/LVS/ERC reports record. klt 0.7.0 cannot run
-  this ERC spec at all: it rejects the spec's `_comment` key (klayout-tools
-  #2822).
+- **check** (`klt drc`, `klt lvs`, `klt erc`): PyPI `klayout-tools==0.8.0`
+  with `klayout==0.30.12`. This is the same release `.github/workflows/signoff.yml`
+  grades with (`KLT_VERSION`), and the one the committed DRC/LVS/ERC reports
+  record. It is a release pin, so `generation_toolchain.py` checks the exact
+  package version and rejects a git install (no commit is probed). klt 0.7.0
+  could not run this ERC spec: it rejected the spec's `_comment` key
+  (klayout-tools #2822). 0.8.0 accepts it unchanged (measured, #242).
 - **PDK**: sky130A at open_pdks `f6eeac7d...` (`docs/pdk-pin.md`), read from
   `$PDK_ROOT/$PDK/SOURCES`.
 
@@ -463,7 +465,7 @@ connection or route length in the report, and timestamp-only, reorder-only
 and padding-only changes that must still match. They also cover absent,
 mismatched and wrong-role toolchains and a mismatched PDK, with both scripts
 exiting before any file under `layout/` changes. The fixtures also check that
-the check pin equals `signoff.yml`'s `KLT_REV` and that the PDK pin equals
+the check pin equals `signoff.yml`'s `KLT_VERSION` and that the PDK pin equals
 `sim/_evidence_common.py`.
 
 The single-cell `generate.sh` is not covered by this pin; it is outside
@@ -476,7 +478,8 @@ reported, signed-off verification pass (#24 item 5):
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)):
-  `status: "clean"`, `violation_count: 0`.
+  `status: "violations"`, `violation_count: 64` under klt 0.8.0 (it was
+  `clean`, 0, under 0.6.0) -- see "DRC under klt 0.8.0" below.
 - **`klt lvs`**
   ([`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json))
   against the generated
@@ -486,6 +489,26 @@ reported, signed-off verification pass (#24 item 5):
   `topology` entries for the deck's always-registered-but-unused `pfet`
   device class already documented above for the single cell -- not a real
   mismatch, not new to the array.
+
+### DRC under klt 0.8.0 (issue #242)
+
+Bumping the check toolchain from 0.6.0 to 0.8.0 re-ran DRC against the
+*unchanged* committed GDS and the verdict got worse; the reports record it as
+found, the layout and the spec were not touched to make it pass:
+
+| Report | 0.6.0 | 0.8.0 |
+|---|---|---|
+| `gain_cell_2t.drc.result.json` | clean, 0 | violations, 34: `licon1.ongrid.1` x32, `poly.endcap.diff.1` x2 |
+| `gain_cell_2t_array.drc.result.json` | clean, 0 | violations, 64: `licon1.ongrid.1` x32, `poly.endcap.diff.1` x32 |
+
+Both rules are new in the 0.8.0 deck (`licon1.ongrid.1` flags licon vertices
+off the 0.005 um grid, all in the generator-drawn `guard_ring`/`mos_array`
+cells). LVS stays `match` and ERC stays `clean`. As a result T1 item 3 (DRC)
+in `block-manifest.signoff.json` flips from `met` to `unmet`
+(`t1_met_count` 3 -> 2). `generate_array.sh` and `generate.sh` still require
+a `clean` DRC from the check toolchain, so their `--check` runs fail until the
+geometry is fixed or the finding is ruled on; that follow-up is not part of the
+pin bump.
 
 ### `klt erc` supply spec (structural power delivery, T1 item 11; issue #39)
 
@@ -502,8 +525,8 @@ debugging (issue #39). Two committed files:
   `ties[]` entry, `psub_guard_ring`. The spec's own `_comment` block
   justifies every entry.
 - **[`gain_cell_2t_array.erc.result.json`](gain_cell_2t_array.erc.result.json)** --
-  the run against the committed GDS, produced by klt v0.6.0
-  (`c622e8addb362491664d44ba4d717f354ca88bbd`) **from the repository root**
+  the run against the committed GDS, produced by klt v0.8.0
+  (PyPI `klayout-tools==0.8.0`, previously `c622e8addb36`/0.6.0) **from the repository root**
   (`klt signoff` re-reads the spec the report names relative to its own
   working directory, so the report must record `layout/erc-supply-spec.json`):
 
@@ -545,10 +568,11 @@ debugging (issue #39). Two committed files:
     the spec's content hash is pinned in `provenance.spec`.
 - **[`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json)**
   and **[`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)**
-  -- refreshed with klt v0.6.0 against the *unchanged* committed GDS
+  -- refreshed with klt v0.8.0 against the *unchanged* committed GDS
   (`klt lvs gain_cell_2t_array.lvs.request.json`, `klt drc
   gain_cell_2t_array.gds --deck sky130`, from `layout/`): LVS `match` with
-  `GND` paired, now carrying `provenance.input`; DRC `clean`.
+  `GND` paired, carrying `provenance.input`; DRC **`violations`** (64, see
+  "DRC under klt 0.8.0" below).
 
 #### Item 11 in the signoff record
 

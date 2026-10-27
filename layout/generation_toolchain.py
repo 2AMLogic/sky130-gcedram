@@ -15,7 +15,7 @@ Two toolchains, kept separate on purpose:
               reproduces the committed GDS byte-for-byte.
   check       `klt drc` / `klt lvs` / `klt erc` status gates. The revision
               that produced the committed DRC/LVS/ERC reports (the same one
-              `.github/workflows/signoff.yml` pins).
+              `.github/workflows/signoff.yml` pins; a PyPI release pin).
 
 Parasitic extraction is NOT pinned here: it has its own documented toolchain
 (see layout/README.md), and the generation revision predates extraction
@@ -105,7 +105,11 @@ def role_config(cfg: dict[str, Any], role: str) -> dict[str, Any]:
 
 def requirement_specs(rc: dict[str, Any]) -> list[str]:
     kt = rc["klayout_tools"]
-    return [f"klayout-tools @ git+{kt['git_url']}@{kt['commit']}", f"klayout=={rc['klayout']}"]
+    if "commit" in kt:
+        pin = f"klayout-tools @ git+{kt['git_url']}@{kt['commit']}"
+    else:  # release pin: PyPI install, pip records no direct_url.json commit
+        pin = f"klayout-tools=={kt['package_version']}"
+    return [pin, f"klayout=={rc['klayout']}"]
 
 
 def env_var_for(role: str) -> str:
@@ -115,7 +119,9 @@ def env_var_for(role: str) -> str:
 def default_venv(role: str, rc: dict[str, Any], env: dict[str, str] | None = None) -> Path:
     env = os.environ if env is None else env
     base = Path(env.get("GCEDRAM_TOOLCHAIN_DIR") or (REPO_ROOT / ".toolchains"))
-    return base / f"klt-{role}-{rc['klayout_tools']['commit'][:12]}-klayout-{rc['klayout']}"
+    kt = rc["klayout_tools"]
+    rev = kt["commit"][:12] if "commit" in kt else f"v{kt['package_version']}"
+    return base / f"klt-{role}-{rev}-klayout-{rc['klayout']}"
 
 
 def resolve_python(role: str, rc: dict[str, Any], env: dict[str, str] | None = None) -> tuple[str, str]:
@@ -160,8 +166,13 @@ def identity_problems(rc: dict[str, Any], ident: dict[str, Any]) -> list[str]:
     """Expected-vs-actual mismatches; empty list = toolchain matches the pin."""
     problems = list(ident.get("errors") or [])
     kt = rc["klayout_tools"]
-    checks = [
-        ("klayout-tools commit", kt["commit"], ident.get("klayout_tools_commit")),
+    checks = []
+    if "commit" in kt:  # a release (PyPI) pin has no commit to probe; the exact version is the identity
+        checks.append(("klayout-tools commit", kt["commit"], ident.get("klayout_tools_commit")))
+    elif ident.get("klayout_tools_commit"):
+        problems.append(f"klayout-tools is a git install ({ident['klayout_tools_commit']}), expected the "
+                        f"{kt['package_version']} release from PyPI")
+    checks += [
         ("klayout-tools package version", kt["package_version"], ident.get("klayout_tools_version")),
         ("klayout (KLayout Python module) version", rc["klayout"], ident.get("klayout_version")),
     ]

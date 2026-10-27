@@ -21,11 +21,12 @@ permissions:
   contents: read
 
 env:
-  # Pinned to the exact klayout-tools revision that graded the committed
-  # block-manifest.signoff.json (v0.6.0, per its source_doc_content_hash). Bump this
+  # Pinned to the exact klayout-tools release that graded the committed
+  # block-manifest.signoff.json (0.8.0, per its build.package_version). Bump this
   # pin deliberately, together with regenerating the record, so the pinned
-  # checklist and the committed evidence record move together.
-  KLT_REV: c622e8addb362491664d44ba4d717f354ca88bbd
+  # checklist and the committed evidence record move together. A PyPI pin: a
+  # git+...@<sha> build reports a dev version and would not satisfy ==0.8.0.
+  KLT_VERSION: "0.8.0"
 
 jobs:
   signoff:
@@ -36,7 +37,12 @@ jobs:
       - uses: astral-sh/setup-uv@v5
 
       - name: Install pinned klt
-        run: uv tool install "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@${KLT_REV}"
+        run: uv tool install "klayout-tools==${KLT_VERSION}"
+
+      - name: Verify the installed klt is the pinned release
+        run: |
+          klt --version
+          test "$(klt --version)" = "klt ${KLT_VERSION}"
 
       - name: Verify committed DRC/LVS reports are fresh against the current artifacts
         working-directory: layout

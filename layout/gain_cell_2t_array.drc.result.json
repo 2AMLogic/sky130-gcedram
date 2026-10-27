@@ -1,19 +1,1792 @@
 {
-  "schema_version": 2,
-  "file": "gain_cell_2t_array.gds",
+  "schema_version": 3,
+  "file": {
+    "path": "layout/gain_cell_2t_array.gds",
+    "scope": "repo"
+  },
   "deck": "sky130",
   "dbu_um": 0.001,
-  "status": "clean",
-  "violation_count": 0,
-  "rule_counts": {},
-  "metrics": {
-    "drc__error__count": 0
+  "status": "violations",
+  "violation_count": 64,
+  "rule_counts": {
+    "licon1.ongrid.1": 32,
+    "poly.endcap.diff.1": 32
   },
-  "violations": [],
+  "metrics": {
+    "drc__error__count": 64
+  },
+  "violations": [
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -970,
+        "bottom": 1727,
+        "right": -970,
+        "top": 1727
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -970,
+        "bottom": 1947,
+        "right": -970,
+        "top": 1947
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -970,
+        "bottom": 4213,
+        "right": -970,
+        "top": 4213
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -970,
+        "bottom": 4433,
+        "right": -970,
+        "top": 4433
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -750,
+        "bottom": 1727,
+        "right": -750,
+        "top": 1727
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -750,
+        "bottom": 1947,
+        "right": -750,
+        "top": 1947
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -750,
+        "bottom": 4213,
+        "right": -750,
+        "top": 4213
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": -750,
+        "bottom": 4433,
+        "right": -750,
+        "top": 4433
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3513,
+        "bottom": -970,
+        "right": 3513,
+        "top": -970
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3513,
+        "bottom": -750,
+        "right": 3513,
+        "top": -750
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3513,
+        "bottom": 6910,
+        "right": 3513,
+        "top": 6910
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3513,
+        "bottom": 7130,
+        "right": 3513,
+        "top": 7130
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3733,
+        "bottom": -970,
+        "right": 3733,
+        "top": -970
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3733,
+        "bottom": -750,
+        "right": 3733,
+        "top": -750
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3733,
+        "bottom": 6910,
+        "right": 3733,
+        "top": 6910
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3733,
+        "bottom": 7130,
+        "right": 3733,
+        "top": 7130
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7787,
+        "bottom": -970,
+        "right": 7787,
+        "top": -970
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7787,
+        "bottom": -750,
+        "right": 7787,
+        "top": -750
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7787,
+        "bottom": 6910,
+        "right": 7787,
+        "top": 6910
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7787,
+        "bottom": 7130,
+        "right": 7787,
+        "top": 7130
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 8007,
+        "bottom": -970,
+        "right": 8007,
+        "top": -970
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 8007,
+        "bottom": -750,
+        "right": 8007,
+        "top": -750
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 8007,
+        "bottom": 6910,
+        "right": 8007,
+        "top": 6910
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 8007,
+        "bottom": 7130,
+        "right": 8007,
+        "top": 7130
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12270,
+        "bottom": 1727,
+        "right": 12270,
+        "top": 1727
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12270,
+        "bottom": 1947,
+        "right": 12270,
+        "top": 1947
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12270,
+        "bottom": 4213,
+        "right": 12270,
+        "top": 4213
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12270,
+        "bottom": 4433,
+        "right": 12270,
+        "top": 4433
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12490,
+        "bottom": 1727,
+        "right": 12490,
+        "top": 1727
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12490,
+        "bottom": 1947,
+        "right": 12490,
+        "top": 1947
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12490,
+        "bottom": 4213,
+        "right": 12490,
+        "top": 4213
+      },
+      "polygon": null
+    },
+    {
+      "rule": "licon1.ongrid.1",
+      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
+      "check": "ongrid",
+      "layer": "licon1.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 12490,
+        "bottom": 4433,
+        "right": 12490,
+        "top": 4433
+      },
+      "polygon": null
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 470,
+        "bottom": -130,
+        "right": 620,
+        "top": 0
+      },
+      "polygon": [
+        [
+          470,
+          -130
+        ],
+        [
+          470,
+          0
+        ],
+        [
+          620,
+          0
+        ],
+        [
+          620,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 470,
+        "bottom": 1510,
+        "right": 620,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          470,
+          1510
+        ],
+        [
+          470,
+          1640
+        ],
+        [
+          620,
+          1640
+        ],
+        [
+          620,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 470,
+        "bottom": 3150,
+        "right": 620,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          470,
+          3150
+        ],
+        [
+          470,
+          3280
+        ],
+        [
+          620,
+          3280
+        ],
+        [
+          620,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 470,
+        "bottom": 4790,
+        "right": 620,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          470,
+          4790
+        ],
+        [
+          470,
+          4920
+        ],
+        [
+          620,
+          4920
+        ],
+        [
+          620,
+          4790
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 1960,
+        "bottom": -130,
+        "right": 2110,
+        "top": 0
+      },
+      "polygon": [
+        [
+          1960,
+          -130
+        ],
+        [
+          1960,
+          0
+        ],
+        [
+          2110,
+          0
+        ],
+        [
+          2110,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 1960,
+        "bottom": 1510,
+        "right": 2110,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          1960,
+          1510
+        ],
+        [
+          1960,
+          1640
+        ],
+        [
+          2110,
+          1640
+        ],
+        [
+          2110,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 1960,
+        "bottom": 3150,
+        "right": 2110,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          1960,
+          3150
+        ],
+        [
+          1960,
+          3280
+        ],
+        [
+          2110,
+          3280
+        ],
+        [
+          2110,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 1960,
+        "bottom": 4790,
+        "right": 2110,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          1960,
+          4790
+        ],
+        [
+          1960,
+          4920
+        ],
+        [
+          2110,
+          4920
+        ],
+        [
+          2110,
+          4790
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3450,
+        "bottom": -130,
+        "right": 3600,
+        "top": 0
+      },
+      "polygon": [
+        [
+          3450,
+          -130
+        ],
+        [
+          3450,
+          0
+        ],
+        [
+          3600,
+          0
+        ],
+        [
+          3600,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3450,
+        "bottom": 1510,
+        "right": 3600,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          3450,
+          1510
+        ],
+        [
+          3450,
+          1640
+        ],
+        [
+          3600,
+          1640
+        ],
+        [
+          3600,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3450,
+        "bottom": 3150,
+        "right": 3600,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          3450,
+          3150
+        ],
+        [
+          3450,
+          3280
+        ],
+        [
+          3600,
+          3280
+        ],
+        [
+          3600,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 3450,
+        "bottom": 4790,
+        "right": 3600,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          3450,
+          4790
+        ],
+        [
+          3450,
+          4920
+        ],
+        [
+          3600,
+          4920
+        ],
+        [
+          3600,
+          4790
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 4940,
+        "bottom": -130,
+        "right": 5090,
+        "top": 0
+      },
+      "polygon": [
+        [
+          4940,
+          -130
+        ],
+        [
+          4940,
+          0
+        ],
+        [
+          5090,
+          0
+        ],
+        [
+          5090,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 4940,
+        "bottom": 1510,
+        "right": 5090,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          4940,
+          1510
+        ],
+        [
+          4940,
+          1640
+        ],
+        [
+          5090,
+          1640
+        ],
+        [
+          5090,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 4940,
+        "bottom": 3150,
+        "right": 5090,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          4940,
+          3150
+        ],
+        [
+          4940,
+          3280
+        ],
+        [
+          5090,
+          3280
+        ],
+        [
+          5090,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 4940,
+        "bottom": 4790,
+        "right": 5090,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          4940,
+          4790
+        ],
+        [
+          4940,
+          4920
+        ],
+        [
+          5090,
+          4920
+        ],
+        [
+          5090,
+          4790
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 6430,
+        "bottom": -130,
+        "right": 6580,
+        "top": 0
+      },
+      "polygon": [
+        [
+          6430,
+          -130
+        ],
+        [
+          6430,
+          0
+        ],
+        [
+          6580,
+          0
+        ],
+        [
+          6580,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 6430,
+        "bottom": 1510,
+        "right": 6580,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          6430,
+          1510
+        ],
+        [
+          6430,
+          1640
+        ],
+        [
+          6580,
+          1640
+        ],
+        [
+          6580,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 6430,
+        "bottom": 3150,
+        "right": 6580,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          6430,
+          3150
+        ],
+        [
+          6430,
+          3280
+        ],
+        [
+          6580,
+          3280
+        ],
+        [
+          6580,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 6430,
+        "bottom": 4790,
+        "right": 6580,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          6430,
+          4790
+        ],
+        [
+          6430,
+          4920
+        ],
+        [
+          6580,
+          4920
+        ],
+        [
+          6580,
+          4790
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7920,
+        "bottom": -130,
+        "right": 8070,
+        "top": 0
+      },
+      "polygon": [
+        [
+          7920,
+          -130
+        ],
+        [
+          7920,
+          0
+        ],
+        [
+          8070,
+          0
+        ],
+        [
+          8070,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7920,
+        "bottom": 1510,
+        "right": 8070,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          7920,
+          1510
+        ],
+        [
+          7920,
+          1640
+        ],
+        [
+          8070,
+          1640
+        ],
+        [
+          8070,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7920,
+        "bottom": 3150,
+        "right": 8070,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          7920,
+          3150
+        ],
+        [
+          7920,
+          3280
+        ],
+        [
+          8070,
+          3280
+        ],
+        [
+          8070,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 7920,
+        "bottom": 4790,
+        "right": 8070,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          7920,
+          4790
+        ],
+        [
+          7920,
+          4920
+        ],
+        [
+          8070,
+          4920
+        ],
+        [
+          8070,
+          4790
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 9410,
+        "bottom": -130,
+        "right": 9560,
+        "top": 0
+      },
+      "polygon": [
+        [
+          9410,
+          -130
+        ],
+        [
+          9410,
+          0
+        ],
+        [
+          9560,
+          0
+        ],
+        [
+          9560,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 9410,
+        "bottom": 1510,
+        "right": 9560,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          9410,
+          1510
+        ],
+        [
+          9410,
+          1640
+        ],
+        [
+          9560,
+          1640
+        ],
+        [
+          9560,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 9410,
+        "bottom": 3150,
+        "right": 9560,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          9410,
+          3150
+        ],
+        [
+          9410,
+          3280
+        ],
+        [
+          9560,
+          3280
+        ],
+        [
+          9560,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 9410,
+        "bottom": 4790,
+        "right": 9560,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          9410,
+          4790
+        ],
+        [
+          9410,
+          4920
+        ],
+        [
+          9560,
+          4920
+        ],
+        [
+          9560,
+          4790
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 10900,
+        "bottom": -130,
+        "right": 11050,
+        "top": 0
+      },
+      "polygon": [
+        [
+          10900,
+          -130
+        ],
+        [
+          10900,
+          0
+        ],
+        [
+          11050,
+          0
+        ],
+        [
+          11050,
+          -130
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 10900,
+        "bottom": 1510,
+        "right": 11050,
+        "top": 1640
+      },
+      "polygon": [
+        [
+          10900,
+          1510
+        ],
+        [
+          10900,
+          1640
+        ],
+        [
+          11050,
+          1640
+        ],
+        [
+          11050,
+          1510
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 10900,
+        "bottom": 3150,
+        "right": 11050,
+        "top": 3280
+      },
+      "polygon": [
+        [
+          10900,
+          3150
+        ],
+        [
+          10900,
+          3280
+        ],
+        [
+          11050,
+          3280
+        ],
+        [
+          11050,
+          3150
+        ]
+      ]
+    },
+    {
+      "rule": "poly.endcap.diff.1",
+      "description": "minimum poly extension past diff at a gate (endcap)",
+      "check": "enclosed",
+      "layer": "diff.drawing",
+      "cell": "gain_cell_2t_array_4x4_layout_0",
+      "source_cell": "mos_array",
+      "source_path": [
+        "mos__gain_cell_2t_array_mos",
+        "mos_array"
+      ],
+      "bbox": {
+        "left": 10900,
+        "bottom": 4790,
+        "right": 11050,
+        "top": 4920
+      },
+      "polygon": [
+        [
+          10900,
+          4790
+        ],
+        [
+          10900,
+          4920
+        ],
+        [
+          11050,
+          4920
+        ],
+        [
+          11050,
+          4790
+        ]
+      ]
+    }
+  ],
   "coverage": {
     "deck_layers": [
+      "18/20",
+      "19/44",
+      "61/20",
+      "64/13",
+      "64/18",
       "64/20",
       "65/20",
+      "65/44",
       "66/20",
       "66/44",
       "67/20",
@@ -27,11 +1800,30 @@
       "71/20",
       "71/44",
       "72/20",
+      "74/21",
+      "74/22",
+      "75/20",
+      "76/20",
+      "76/44",
+      "78/44",
+      "79/20",
+      "80/20",
+      "81/125",
+      "82/64",
+      "86/20",
       "89/44",
-      "97/44"
+      "92/44",
+      "93/44",
+      "94/20",
+      "95/20",
+      "97/44",
+      "124/20",
+      "125/20",
+      "125/44"
     ],
     "layers_checked": [
       "65/20",
+      "65/44",
       "66/20",
       "66/44",
       "67/20",
@@ -39,26 +1831,45 @@
       "68/20"
     ],
     "layers_in_stream_without_rules": [
-      "65/44",
       "67/5",
       "68/5"
     ],
     "rules_checked": [
+      "diff.angle.1",
       "diff.enclosing.licon.1",
+      "diff.ongrid.1",
       "diff.width.1",
+      "li1.angle.1",
       "li1.enclosing.licon1.1",
+      "li1.ongrid.1",
       "li1.space.1",
       "li1.width.1",
+      "licon1.angle.1",
+      "licon1.ongrid.1",
+      "licon1.width.1",
+      "mcon.angle.1",
+      "mcon.ongrid.1",
       "mcon.space.1",
+      "mcon.width.1",
+      "met1.angle.1",
       "met1.area.1",
       "met1.enclosing.mcon.1",
       "met1.holes_area.1",
+      "met1.ongrid.1",
       "met1.space.1",
       "met1.width.1",
+      "poly.angle.1",
       "poly.enclosing.licon.1",
-      "poly.width.1"
+      "poly.endcap.diff.1",
+      "poly.ongrid.1",
+      "poly.width.1",
+      "tap.angle.1",
+      "tap.enclosing.licon.1",
+      "tap.ongrid.1",
+      "tap.width.1"
     ],
     "rules_skipped": [
+      "areaid_re.ongrid.1",
       "capm.enclosing.via3.1",
       "capm.separation.via3.1",
       "capm.space.1",
@@ -67,44 +1878,119 @@
       "capm2.separation.via4.1",
       "capm2.space.1",
       "capm2.width.1",
+      "dnwell.angle.1",
+      "dnwell.ongrid.1",
+      "hvi.angle.1",
+      "hvi.ongrid.1",
+      "hvntm.angle.1",
+      "hvntm.ongrid.1",
+      "hvtp.angle.1",
+      "hvtp.ongrid.1",
+      "hvtr.angle.1",
+      "hvtr.ongrid.1",
+      "lvtn.angle.1",
+      "lvtn.ongrid.1",
       "met1.enclosing.via.1",
+      "met1.enclosing_adjacent.via.1",
+      "met2.angle.1",
       "met2.area.1",
       "met2.enclosing.via.1",
       "met2.enclosing.via2.1",
+      "met2.enclosing_adjacent.via.1",
+      "met2.enclosing_adjacent.via2.1",
       "met2.holes_area.1",
+      "met2.ongrid.1",
       "met2.space.1",
       "met2.width.1",
+      "met3.angle.1",
       "met3.area.1",
       "met3.enclosing.capm.1",
       "met3.enclosing.via2.1",
       "met3.enclosing.via3.1",
+      "met3.enclosing_adjacent.via3.1",
       "met3.holes_area.1",
+      "met3.ongrid.1",
       "met3.space.1",
       "met3.width.1",
+      "met4.angle.1",
       "met4.area.1",
       "met4.enclosing.capm2.1",
       "met4.enclosing.via3.1",
       "met4.enclosing.via4.1",
       "met4.holes_area.1",
+      "met4.ongrid.1",
       "met4.space.1",
       "met4.width.1",
+      "met5.angle.1",
       "met5.area.1",
       "met5.enclosing.via4.1",
       "met5.holes_area.1",
+      "met5.ongrid.1",
       "met5.space.1",
       "met5.width.1",
+      "mf.angle.1",
+      "mf.ongrid.1",
+      "ncm.angle.1",
+      "ncm.ongrid.1",
+      "npc.angle.1",
+      "npc.ongrid.1",
+      "npc.space.1",
+      "npc.width.1",
+      "nsdm.angle.1",
+      "nsdm.ongrid.1",
+      "nsdm.space.1",
+      "nsdm.width.1",
+      "nsm.angle.1",
+      "nsm.ongrid.1",
+      "nwell.angle.1",
+      "nwell.enclosed.hvi.1",
+      "nwell.ongrid.1",
       "nwell.space.1",
       "nwell.width.1",
+      "pad.angle.1",
+      "pad.ongrid.1",
+      "psdm.angle.1",
+      "psdm.ongrid.1",
+      "psdm.space.1",
+      "psdm.width.1",
+      "pwbm.angle.1",
+      "pwbm.ongrid.1",
+      "pwde.angle.1",
+      "pwde.ongrid.1",
+      "pwell_rs.angle.1",
+      "pwell_rs.ongrid.1",
+      "rpm.angle.1",
+      "rpm.ongrid.1",
+      "rpm.width.1",
+      "tunm.angle.1",
+      "tunm.ongrid.1",
+      "uhvi.angle.1",
+      "uhvi.ongrid.1",
+      "urpm.width.1",
+      "vhvi.angle.1",
+      "vhvi.ongrid.1",
+      "via.angle.1",
+      "via.ongrid.1",
       "via.space.1",
       "via.width.1",
+      "via2.angle.1",
+      "via2.ongrid.1",
       "via2.space.1",
       "via2.width.1",
+      "via3.angle.1",
+      "via3.ongrid.1",
       "via3.space.1",
       "via3.width.1",
+      "via4.angle.1",
+      "via4.ongrid.1",
       "via4.space.1",
-      "via4.width.1"
+      "via4.width.1",
+      "vpp.angle.1",
+      "vpp.ongrid.1"
     ],
     "voltage_domain_warnings": [],
+    "unchecked_rules": [],
+    "marker_blind_layers_in_stream": [],
     "deck_scope": [
       "cap2m",
       "capm",
@@ -117,32 +2003,96 @@
       "m3",
       "m4",
       "m5",
+      "npc",
+      "nsdm",
       "nwell",
       "poly",
+      "psdm",
+      "rpm",
+      "urpm",
       "via",
       "via2",
       "via3",
-      "via4"
+      "via4",
+      "x"
+    ],
+    "unmodeled_rules": [
+      "difftap.10",
+      "difftap.11",
+      "difftap.8",
+      "difftap.9",
+      "hvi.1",
+      "hvi.2a",
+      "hvntm.1",
+      "hvntm.2",
+      "hvtp.1",
+      "hvtp.2",
+      "hvtr.1",
+      "hvtr.2",
+      "hvtr.2_a",
+      "m1.3ab",
+      "m1.5",
+      "m2.3ab",
+      "m2.5",
+      "m3.3ab",
+      "m4.5ab",
+      "n/psdm.10a",
+      "n/psdm.10b",
+      "n/psdm.5a",
+      "n/psdm.5b",
+      "n/psdm.6",
+      "n/psdm.7",
+      "n/psdm.8",
+      "npc.4",
+      "pad.2",
+      "rdl.1",
+      "rdl.2",
+      "via.5a",
+      "via2.5",
+      "via3.5"
     ],
     "schema_version": 1,
     "known": true,
     "checked": [
+      "diff.angle.1",
       "diff.enclosing.licon.1",
+      "diff.ongrid.1",
       "diff.width.1",
+      "li1.angle.1",
       "li1.enclosing.licon1.1",
+      "li1.ongrid.1",
       "li1.space.1",
       "li1.width.1",
+      "licon1.angle.1",
+      "licon1.ongrid.1",
+      "licon1.width.1",
+      "mcon.angle.1",
+      "mcon.ongrid.1",
       "mcon.space.1",
+      "mcon.width.1",
+      "met1.angle.1",
       "met1.area.1",
       "met1.enclosing.mcon.1",
       "met1.holes_area.1",
+      "met1.ongrid.1",
       "met1.space.1",
       "met1.width.1",
+      "poly.angle.1",
       "poly.enclosing.licon.1",
-      "poly.width.1"
+      "poly.endcap.diff.1",
+      "poly.ongrid.1",
+      "poly.width.1",
+      "tap.angle.1",
+      "tap.enclosing.licon.1",
+      "tap.ongrid.1",
+      "tap.width.1"
     ],
     "skipped": [],
     "inapplicable": [
+      {
+        "id": "areaid_re.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
       {
         "id": "capm.enclosing.via3.1",
         "reason": "no_applicable_geometry"
@@ -176,7 +2126,63 @@
         "reason": "no_applicable_geometry"
       },
       {
+        "id": "dnwell.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "dnwell.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvi.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvi.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvntm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvntm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvtp.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvtp.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvtr.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "hvtr.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "lvtn.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "lvtn.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
         "id": "met1.enclosing.via.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met1.enclosing_adjacent.via.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met2.angle.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -192,7 +2198,19 @@
         "reason": "no_applicable_geometry"
       },
       {
+        "id": "met2.enclosing_adjacent.via.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met2.enclosing_adjacent.via2.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
         "id": "met2.holes_area.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met2.ongrid.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -201,6 +2219,10 @@
       },
       {
         "id": "met2.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met3.angle.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -220,7 +2242,15 @@
         "reason": "no_applicable_geometry"
       },
       {
+        "id": "met3.enclosing_adjacent.via3.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
         "id": "met3.holes_area.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met3.ongrid.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -229,6 +2259,10 @@
       },
       {
         "id": "met3.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met4.angle.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -252,11 +2286,19 @@
         "reason": "no_applicable_geometry"
       },
       {
+        "id": "met4.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
         "id": "met4.space.1",
         "reason": "no_applicable_geometry"
       },
       {
         "id": "met4.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "met5.angle.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -272,11 +2314,83 @@
         "reason": "no_applicable_geometry"
       },
       {
+        "id": "met5.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
         "id": "met5.space.1",
         "reason": "no_applicable_geometry"
       },
       {
         "id": "met5.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "mf.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "mf.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "ncm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "ncm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "npc.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "npc.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "npc.space.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "npc.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nsdm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nsdm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nsdm.space.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nsdm.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nsm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nsm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nwell.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nwell.enclosed.hvi.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "nwell.ongrid.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -288,11 +2402,115 @@
         "reason": "no_applicable_geometry"
       },
       {
+        "id": "pad.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "pad.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "psdm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "psdm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "psdm.space.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "psdm.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "pwbm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "pwbm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "pwde.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "pwde.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "pwell_rs.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "pwell_rs.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "rpm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "rpm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "rpm.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "tunm.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "tunm.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "uhvi.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "uhvi.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "urpm.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "vhvi.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "vhvi.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "via.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "via.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
         "id": "via.space.1",
         "reason": "no_applicable_geometry"
       },
       {
         "id": "via.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "via2.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "via2.ongrid.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -304,11 +2522,27 @@
         "reason": "no_applicable_geometry"
       },
       {
+        "id": "via3.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "via3.ongrid.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
         "id": "via3.space.1",
         "reason": "no_applicable_geometry"
       },
       {
         "id": "via3.width.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "via4.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "via4.ongrid.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -318,6 +2552,14 @@
       {
         "id": "via4.width.1",
         "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "vpp.angle.1",
+        "reason": "no_applicable_geometry"
+      },
+      {
+        "id": "vpp.ongrid.1",
+        "reason": "no_applicable_geometry"
       }
     ],
     "unknown": [],
@@ -325,18 +2567,18 @@
     "nothing_checked_reasons": []
   },
   "provenance": {
-    "klt_version": "0.6.0",
+    "klt_version": "0.8.0",
     "klayout_version": "0.30.12",
     "pdk": null,
     "deck": {
       "name": "sky130",
-      "content_hash": "sha256:a1d90e066e822d0a8f36e2d4f4969b83df4360692f689b5815be9c3f151f7c8e",
-      "released": false
+      "content_hash": "sha256:ba0f97887e3d231aec8b54f1f52f2941ded0228f0234b6759712bcaca0e942e6",
+      "released": true
     },
     "input": {
       "content_hash": "sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd",
       "role": "layout"
     },
-    "klayout_version_mismatch": true
+    "klayout_version_mismatch": false
   }
 }

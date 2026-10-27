@@ -1,11 +1,15 @@
 {
-  "schema_version": 1,
-  "file": "layout/gain_cell_2t_array.gds",
+  "schema_version": 2,
+  "file": {
+    "path": "layout/gain_cell_2t_array.gds",
+    "scope": "repo"
+  },
   "spec": "layout/erc-supply-spec.json",
   "pdk": "sky130",
   "findings_only": false,
   "gate_role": "poly",
   "gate_count": 20,
+  "antenna_tables_omitted": false,
   "gates": [
     {
       "gate_id": "gate0",
@@ -768,6 +772,18 @@
       ]
     }
   ],
+  "nets": [
+    {
+      "name": "GND",
+      "matched_islands": 1,
+      "expected_islands": 1,
+      "roles": [],
+      "unlabelled_islands": null,
+      "unlabelled_area_um2": null,
+      "unlabelled_bbox": null,
+      "unlabelled_allowed_islands": null
+    }
+  ],
   "erc_findings": [],
   "erc_finding_count": 0,
   "erc_status": "clean",
@@ -941,11 +957,22 @@
     "checked_by_assertion": [],
     "checked_by_well_assertion": [
       "erc.missing_tie:[\"psub_guard_ring\"]"
+    ],
+    "layers_in_stream_without_declaration": [],
+    "well_assertion_coverage": [
+      {
+        "id": "erc.missing_tie:[\"psub_guard_ring\"]",
+        "tap_layer": "65/44",
+        "drawn_tap_area_um2": 17.7408,
+        "uncovered_tap_area_um2": 0.0,
+        "uncovered_tap_fraction": 0.0,
+        "extent_uncovered_fraction": 0.843525
+      }
     ]
   },
   "ties_disclosure": null,
   "provenance": {
-    "klt_version": "0.6.0",
+    "klt_version": "0.8.0",
     "klayout_version": "0.30.12",
     "pdk": {
       "name": "sky130",
@@ -960,6 +987,19 @@
     "spec": {
       "content_hash": "sha256:d6d76e7dd1391bccda9f35ef0a7255e0827bf21c58a871ac56c0d464b9714fa6"
     },
-    "devices": []
+    "devices": [],
+    "net_exclusions": [],
+    "label_layers": [
+      {
+        "name": "li1",
+        "label_layer": "67/5",
+        "label_text_count": 25
+      },
+      {
+        "name": "met1",
+        "label_layer": "68/5",
+        "label_text_count": 8
+      }
+    ]
   }
 }
