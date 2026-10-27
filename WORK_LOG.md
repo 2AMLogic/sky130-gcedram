@@ -2,6 +2,10 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-26
+
+- **PR #219**: feat: store new run evidence in the fleet artifact store via manifests
+
 ### 2026-10-23
 
 - **PR #214**: feat(sim): device-inclusive C_SN of the compact v2 array
