@@ -2,6 +2,13 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-27
+
+- **PR #225**: ci: wire unlisted test suites into evidence-checks and npm test
+- **Issue #224** (closed): CI/npm test: wire sim/test_klt_request.py into evidence-checks
+- **PR #238**: docs: scope manifest README grep to json files
+- **Issue #220** (closed): manifests/artifacts/README.md: documented no-bucket grep matches the README itself
+
 ### 2026-10-26
 
 - **PR #219**: feat: store new run evidence in the fleet artifact store via manifests
