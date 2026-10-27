@@ -304,7 +304,7 @@ def fake_toolchain(root: Path, *, commit: str, klayout: str, version: str, with_
 
 def pinned(role: str, **over) -> dict:
     rc = CFG["toolchains"][role]
-    kw = {"commit": rc["klayout_tools"]["commit"], "klayout": rc["klayout"],
+    kw = {"commit": rc["klayout_tools"].get("commit"), "klayout": rc["klayout"],
           "version": rc["klayout_tools"]["package_version"]}
     kw.update(over)
     return kw
@@ -320,15 +320,19 @@ def fake_pdk(root: Path, commit: str) -> tuple[str, str]:
 class ToolchainGuard(Tmp):
     def test_config_pins(self):
         gen, chk = CFG["toolchains"]["generation"], CFG["toolchains"]["check"]
+        # generation is a git-commit pin; check is a PyPI release pin (no commit)
+        self.assertRegex(gen["klayout_tools"]["commit"], r"^[0-9a-f]{40}$")
+        self.assertNotIn("commit", chk["klayout_tools"])
         for rc in (gen, chk):
-            self.assertRegex(rc["klayout_tools"]["commit"], r"^[0-9a-f]{40}$")
             self.assertRegex(rc["klayout"], r"^\d+\.\d+\.\d+$")
-        self.assertNotEqual(gen["klayout_tools"]["commit"], chk["klayout_tools"]["commit"])
+            self.assertRegex(rc["klayout_tools"]["package_version"], r"^\d+\.\d+\.\d+$")
+        self.assertNotEqual(gen["klayout_tools"]["package_version"], chk["klayout_tools"]["package_version"])
 
     def test_check_pin_matches_signoff_workflow(self):
         wf = (REPO / ".github" / "workflows" / "signoff.yml").read_text()
-        rev = re.search(r"KLT_REV:\s*([0-9a-f]{40})", wf).group(1)
-        self.assertEqual(CFG["toolchains"]["check"]["klayout_tools"]["commit"], rev)
+        ver = re.search(r"KLT_VERSION:\s*\"?(\d+\.\d+\.\d+)\"?\s*$", wf, re.M).group(1)
+        self.assertEqual(CFG["toolchains"]["check"]["klayout_tools"]["package_version"], ver)
+        self.assertIn("klayout-tools==${KLT_VERSION}", wf)
 
     def test_pdk_pin_matches_evidence_common(self):
         sys.path.insert(0, str(REPO / "sim"))
@@ -368,6 +372,16 @@ class ToolchainGuard(Tmp):
         py = fake_toolchain(self.dir / "c", **pinned("check"))
         ident, _ = T.probe(str(py))
         self.assertTrue(T.identity_problems(CFG["toolchains"]["generation"], ident))
+
+    def test_check_release_pin_rejects_git_install_and_wrong_version(self):
+        chk = CFG["toolchains"]["check"]
+        ok = T.probe(str(fake_toolchain(self.dir / "ok", **pinned("check"))))[0]
+        self.assertEqual(T.identity_problems(chk, ok), [])
+        git = T.probe(str(fake_toolchain(self.dir / "git", **pinned("check", commit="2" * 40))))[0]
+        self.assertTrue(any("git install" in p for p in T.identity_problems(chk, git)))
+        old = T.probe(str(fake_toolchain(self.dir / "old", **pinned("check", version="0.6.0"))))[0]
+        self.assertTrue(any("package version: expected" in p for p in T.identity_problems(chk, old)))
+        self.assertEqual(T.requirement_specs(chk)[0], f"klayout-tools=={chk['klayout_tools']['package_version']}")
 
     def test_absent_interpreter(self):
         ident, err = T.probe(str(self.dir / "nope" / "bin" / "python"))
@@ -429,8 +443,8 @@ class ScriptsFailBeforeWriting(Tmp):
         return {
             "PDK_ROOT": pdk_root, "PDK": pdk, "KLT_EXTRACT": "true",
             "GCEDRAM_KLT_GENERATION_PYTHON": str(fake_toolchain(
-                self.dir / "g", **pinned("generation", commit=CFG["toolchains"]["check"]["klayout_tools"]["commit"],
-                                         version="0.6.0"))),
+                self.dir / "g", **pinned("generation", commit="1" * 40,
+                                         version=CFG["toolchains"]["check"]["klayout_tools"]["package_version"]))),
             "GCEDRAM_KLT_CHECK_PYTHON": str(fake_toolchain(self.dir / "c", **pinned("check"))),
         }
 

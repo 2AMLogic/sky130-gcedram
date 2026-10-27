@@ -13,11 +13,9 @@
       "verified": "Scratch regeneration of the default 4x4 with this pair reproduces all five committed generation outputs byte-for-byte (gain_cell_2t_array.gds sha256 4a11550681e5...d4cd). See layout/results/generation_reproduction_20261011.json."
     },
     "check": {
-      "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools revision as .github/workflows/signoff.yml KLT_REV, which produced the committed array DRC/LVS/ERC reports (klt_version 0.6.0).",
+      "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools release as .github/workflows/signoff.yml KLT_VERSION (a PyPI pin, so no git commit), which produced the committed array DRC/LVS/ERC reports (klt_version 0.8.0).",
       "klayout_tools": {
-        "git_url": "https://github.com/2AMLogic/klayout-tools",
-        "commit": "c622e8addb362491664d44ba4d717f354ca88bbd",
-        "package_version": "0.6.0"
+        "package_version": "0.8.0"
       },
       "klayout": "0.30.12"
     }
