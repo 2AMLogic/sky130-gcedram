@@ -12,7 +12,7 @@ are not in the repo.
   means a nonzero exit and nothing written.
 - Every entry's `uri` must start with `artifact:`. No file here may name a
   storage bucket, cloud account or `s3://` URI, and the broker URL is never
-  written down: `git grep -nE 's3://|arn:aws:' -- manifests/` must be empty.
+  written down: `git grep -nE 's3://|arn:aws:' -- 'manifests/**/*.json'` must be empty.
 - CI runs [`scripts/check_artifact_manifests.py`](../../scripts/check_artifact_manifests.py)
   (schema, `artifact:` URIs, and no stored object's bytes committed). It never
   contacts the broker. On a fleet worker, confirm the bytes with
