@@ -47,6 +47,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim"))
 import array_parasitics as AP  # noqa: E402
 from _evidence_common import sha256_prefixed  # noqa: E402
+from gdsio import GdsError, gds_real, gds_records  # noqa: E402
 
 RESULTS = HERE / "results"
 PREFIX = "compact_parasitics_"
@@ -123,44 +124,34 @@ def read_flat_gds(path: Path) -> dict | None:
     Returns {"dbu_um", "boundaries": [(layer, datatype, [(x, y)...])], "texts": [(layer, texttype, (x, y), str)]},
     or None if the file instantiates other structures (SREF/AREF) -- then no hand number is claimed.
     """
-    data = Path(path).read_bytes()
-    pos, out = 0, {"dbu_um": None, "boundaries": [], "texts": []}
+    out = {"dbu_um": None, "boundaries": [], "texts": []}
     cur: dict = {}
-    while pos + 4 <= len(data):
-        n, rtype = int.from_bytes(data[pos:pos + 2], "big"), data[pos + 2]
-        body = data[pos + 4:pos + n]
-        pos += n
-        if n < 4:
-            return None
-        if rtype == 0x03:  # UNITS: db unit in user units, db unit in metres
-            out["dbu_um"] = _gds_real(body[8:16]) * 1e6
-        elif rtype in (0x0A, 0x0B):  # SREF / AREF
-            return None
-        elif rtype in (0x08, 0x0C):  # BOUNDARY / TEXT
-            cur = {"kind": rtype}
-        elif rtype == 0x0D:
-            cur["layer"] = int.from_bytes(body, "big")
-        elif rtype in (0x0E, 0x16):  # DATATYPE / TEXTTYPE
-            cur["dt"] = int.from_bytes(body, "big")
-        elif rtype == 0x10:
-            vals = [int.from_bytes(body[i:i + 4], "big", signed=True) for i in range(0, len(body), 4)]
-            cur["xy"] = list(zip(vals[0::2], vals[1::2]))
-        elif rtype == 0x19:
-            cur["str"] = body.rstrip(b"\0").decode("ascii", "replace")
-        elif rtype == 0x11 and cur:  # ENDEL
-            if cur["kind"] == 0x08:
-                out["boundaries"].append((cur["layer"], cur["dt"], cur["xy"]))
-            else:
-                out["texts"].append((cur["layer"], cur.get("dt", 0), cur["xy"][0], cur.get("str", "")))
-            cur = {}
+    try:
+        for rtype, _, body in gds_records(Path(path).read_bytes()):
+            if rtype == 0x03:  # UNITS: db unit in user units, db unit in metres
+                out["dbu_um"] = gds_real(body[8:16]) * 1e6
+            elif rtype in (0x0A, 0x0B):  # SREF / AREF
+                return None
+            elif rtype in (0x08, 0x0C):  # BOUNDARY / TEXT
+                cur = {"kind": rtype}
+            elif rtype == 0x0D:
+                cur["layer"] = int.from_bytes(body, "big")
+            elif rtype in (0x0E, 0x16):  # DATATYPE / TEXTTYPE
+                cur["dt"] = int.from_bytes(body, "big")
+            elif rtype == 0x10:
+                vals = [int.from_bytes(body[i:i + 4], "big", signed=True) for i in range(0, len(body), 4)]
+                cur["xy"] = list(zip(vals[0::2], vals[1::2]))
+            elif rtype == 0x19:
+                cur["str"] = body.rstrip(b"\0").decode("ascii", "replace")
+            elif rtype == 0x11 and cur:  # ENDEL
+                if cur["kind"] == 0x08:
+                    out["boundaries"].append((cur["layer"], cur["dt"], cur["xy"]))
+                else:
+                    out["texts"].append((cur["layer"], cur.get("dt", 0), cur["xy"][0], cur.get("str", "")))
+                cur = {}
+    except GdsError:
+        return None
     return out if out["dbu_um"] else None
-
-
-def _gds_real(b: bytes) -> float:
-    """GDSII 8-byte excess-64 real."""
-    sign = -1.0 if b[0] & 0x80 else 1.0
-    mant = int.from_bytes(b[1:], "big") / float(1 << 56)
-    return sign * mant * 16.0 ** ((b[0] & 0x7F) - 64)
 
 
 def poly_wordline_geometry(gds: Path) -> dict | None:
