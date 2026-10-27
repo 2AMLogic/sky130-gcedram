@@ -31,6 +31,7 @@ sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 
 FRACS = AR.FRACS
@@ -86,7 +87,7 @@ def record(meas: dict, mi: dict, corner: dict, sim_ok: bool) -> dict:
 
 
 def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], list[dict]]:
-    meas = {m["name"]: m["value"] for m in corner["measurements"]}
+    meas = measurements_of(corner, strict=True)
     sim_ok = corner["status"] == "pass" and bool(meas)
     rows = [record(meas, mi, corner, sim_ok) for mi in man["instances"] if mi["kind"] != "ref"]
     by: dict[str, list[dict]] = {}

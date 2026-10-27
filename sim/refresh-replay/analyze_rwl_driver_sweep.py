@@ -31,6 +31,7 @@ sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 
 BUDGET_NS = 34.0
@@ -105,7 +106,7 @@ def reason(sim_ok, sense, r1_ok, r0_ok) -> str:
 
 
 def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], list[dict]]:
-    meas = {m["name"]: m["value"] for m in corner["measurements"]}
+    meas = measurements_of(corner, strict=True)
     sim_ok = corner["status"] == "pass" and bool(meas)
     sn_ref = meas.get("snend_refw")
     by_var: dict[str, list[dict]] = {}
