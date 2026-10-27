@@ -52,6 +52,7 @@ from _evidence_common import (
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_ngspice_available,
+    measurements_of,
     ngspice_version,
     repo_git_sha,
     resolve_ngspice_lib,
@@ -153,7 +154,7 @@ def rows_from_klt_report(report_path: Path) -> list[dict]:
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     rows = []
     for corner in report["corners"]:
-        meas = {m["name"]: m["value"] for m in corner["measurements"]}
+        meas = measurements_of(corner, strict=True)
         if corner["status"] != "pass" or "ileak_a" not in meas:
             raise RuntimeError(f"{report_path}: corner {corner.get('corner_id')} has no passing ileak_a")
         rows.append(

@@ -39,6 +39,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 from _evidence_common import decided as _decided  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 import gen_sense_stage as G  # noqa: E402
 
 T_WINDOW_S = 5e-9              # ASSUMPTION: decision must complete within 5 ns of enable
@@ -75,7 +76,7 @@ def resolves(p: dict, expect: str) -> bool:
 
 
 def summarize_corner(corner: dict, writes: dict) -> tuple[list[dict], dict]:
-    meas = {m["name"]: m["value"] for m in corner["measurements"]}
+    meas = measurements_of(corner, strict=True)
     rows, pts = [], {}
     for inst in G.instances():
         n = inst["name"]

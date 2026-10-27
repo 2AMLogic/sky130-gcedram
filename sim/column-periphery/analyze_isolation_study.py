@@ -48,6 +48,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 from _evidence_common import decided as _decided  # noqa: E402
+from _evidence_common import load_clean_corners, measurements_of  # noqa: E402
 from _evidence_common import load_json as read_json  # noqa: E402
 import gen_isolation_study as S  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
@@ -62,21 +63,8 @@ T_EN_MID_S = G.T_EN_S + G.T_EDGE_S / 2
 N01 = NormalDist()
 
 
-def corner_key(c: dict) -> tuple[str, int]:
-    return c["process"], int(c["temperature_c"])
-
-
-def meas_of(c: dict) -> dict[str, float | None]:
-    return {m["name"]: m.get("value") for m in c["measurements"]}
-
-
 def load(report: Path) -> dict[tuple[str, int], dict[str, float | None]]:
-    out = {}
-    for c in read_json(report)["corners"]:
-        if c.get("status") != "pass":
-            raise SystemExit(f"corner {corner_key(c)} status {c.get('status')}: not a clean run")
-        out[corner_key(c)] = meas_of(c)
-    return out
+    return load_clean_corners(read_json(report))
 
 
 def decided(dend: float | None) -> str:
@@ -207,7 +195,7 @@ def load_mc(report: Path):
     rows = []
     for c in rep["corners"]:
         mc = c.get("monte_carlo") or {}
-        m = meas_of(c) if c.get("status") == "pass" else {}
+        m = measurements_of(c) if c.get("status") == "pass" else {}
         rows.append((c["process"], int(c["temperature_c"]), mc.get("sample_index"), c.get("status"), m))
     return rep, rows
 
