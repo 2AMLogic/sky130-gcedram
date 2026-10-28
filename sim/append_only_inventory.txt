@@ -14,6 +14,8 @@
 # Inventory as of 2026-10-09 (origin/main @ e69a94a): empty -- every tracked
 # result summary under sim/ is already inside a `results` directory.
 layout/results/density_20261009.json
+# issue #252: post-#244 density result (basis of the refreshed density-vs-sram figures).
+layout/results/density_20261028_v244.json
 #
 # sim/refresh-energy (issue #115): array-boundary refresh energy / standby power.
 # These live inside a `results` directory and are therefore already protected by
