@@ -4,6 +4,12 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-27
 
+- **PR #246**: refactor: share klt-report corner/measurement helpers in _evidence_common
+- **Issue #245** (closed): Consolidate duplicated klt-report corner/measurement helpers into sim/_evidence_common.py
+- **PR #243**: build: pin klayout-tools 0.8.0 and regenerate check evidence
+- **Issue #242** (closed): Bump klayout-tools pin c622e8addb36 → 0.8.0
+- **PR #241**: refactor: share one GDSII record reader across layout scripts
+- **Issue #239** (closed): Consolidate three hand-rolled GDSII readers in layout/ into one shared module
 - **PR #225**: ci: wire unlisted test suites into evidence-checks and npm test
 - **Issue #224** (closed): CI/npm test: wire sim/test_klt_request.py into evidence-checks
 - **PR #238**: docs: scope manifest README grep to json files
