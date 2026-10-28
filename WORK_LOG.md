@@ -2,6 +2,11 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-28
+
+- **PR #248**: fix: regenerate layout with klt 0.8.0 generators for a DRC-clean cell and array
+- **Issue #244** (closed): Layout fails new klt 0.8.0 DRC rules (licon1.ongrid.1, poly.endcap.diff.1); generate --check now red
+
 ### 2026-10-27
 
 - **PR #246**: refactor: share klt-report corner/measurement helpers in _evidence_common
