@@ -421,3 +421,39 @@ aged-state restore); refresh of rows other than row 0; timing optimisation
 (sense and write-back fixed at 10 ns); taller or wider extracted arrays.
 Nothing here is a full-macro power figure, a statistical-yield claim, or an
 SRAM comparison, and no spec file was changed.
+
+## Re-run on the klt-0.8.0 layout (issue #244)
+
+The extracted array behind this study changed when the layout was regenerated
+(DRC clean under klt 0.8.0), so `refresh_energy.spice`, `request.json` and
+`request_fine.json` were regenerated (`gen_refresh_energy.py`) and the study
+was re-run as **new evidence**; the 20261010 files above are history of the
+pre-#244 layout and are untouched. The `C_SN` used for the endpoint
+stored-energy term is now the layout-extracted 0.672741 fF, and the
+"extracted `C_SN`" refresh interval is read from the new retention row
+(6.1165 us / 2 = 3.06 us, was 2.75 us); the 5.03 us ratified interval is
+unchanged.
+
+* Run `20261028T071730Z`: both requests submitted together with
+  `klt sim --batch-set request.json request_fine.json` (klt 0.8.0 client,
+  runner 0.8.0) to the batch fleet: main job `klt-sim-a7f658ac4c3f`, fine job
+  `klt-sim-3dc8a7bcc729`, 10/10 corners pass each, ngspice-46. Nothing was run
+  locally; no capacity refusals this time.
+* Files: `results/klt_report_20261028T071730Z.json.gz`,
+  `results/klt_report_fine_20261028T071730Z.json.gz`,
+  `results/refresh_energy_{sources,points,scaling}_20261028T071730Z.csv`,
+  `results/refresh_energy_summary_20261028T071730Z.json`.
+* Max `E_row_incremental` = **2.54 pJ** at sf / 125 C all-one (was 2.46 pJ);
+  max idle hold power 0.70 nW (was 0.72 nW). The new run has 0 failed points
+  (the 20261010 run had 2). The 1 % convergence target is again not met on the
+  near-zero all-zero pattern (max relative difference 0.298, `tt/27C/zero`,
+  E ~ 1e-16 J), as before; restore classification agrees between the two step
+  sizes.
+* PDK identity caveat: the report's `models_lib_sha256` is the client-side
+  model library and equals the previous run's (`48de7c67...`), but the worker
+  stamps its own `open_pdks c6d73a35...`; the report marks the comparison to
+  the client `not_comparable` (`client_stamp_unavailable`), so equality of the
+  worker PDK to the pin in `docs/pdk-pin.md` (`f6eeac7d...`) is not shown by
+  this report.
+* `test_refresh_energy.py` reproduces only the newest run (the analyzer reads
+  the current retention intervals and layout `C_SN`).

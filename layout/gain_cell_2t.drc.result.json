@@ -6,691 +6,13 @@
   },
   "deck": "sky130",
   "dbu_um": 0.001,
-  "status": "violations",
-  "violation_count": 34,
-  "rule_counts": {
-    "licon1.ongrid.1": 32,
-    "poly.endcap.diff.1": 2
-  },
+  "status": "clean",
+  "violation_count": 0,
+  "rule_counts": {},
   "metrics": {
-    "drc__error__count": 34
+    "drc__error__count": 0
   },
-  "violations": [
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3680,
-        "bottom": 643,
-        "right": 3680,
-        "top": 643
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3680,
-        "bottom": 863,
-        "right": 3680,
-        "top": 863
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3680,
-        "bottom": 977,
-        "right": 3680,
-        "top": 977
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3680,
-        "bottom": 1197,
-        "right": 3680,
-        "top": 1197
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3900,
-        "bottom": 643,
-        "right": 3900,
-        "top": 643
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3900,
-        "bottom": 863,
-        "right": 3900,
-        "top": 863
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3900,
-        "bottom": 977,
-        "right": 3900,
-        "top": 977
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 3900,
-        "bottom": 1197,
-        "right": 3900,
-        "top": 1197
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4223,
-        "bottom": 100,
-        "right": 4223,
-        "top": 100
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4223,
-        "bottom": 320,
-        "right": 4223,
-        "top": 320
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4223,
-        "bottom": 1520,
-        "right": 4223,
-        "top": 1520
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4223,
-        "bottom": 1740,
-        "right": 4223,
-        "top": 1740
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4443,
-        "bottom": 100,
-        "right": 4443,
-        "top": 100
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4443,
-        "bottom": 320,
-        "right": 4443,
-        "top": 320
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4443,
-        "bottom": 1520,
-        "right": 4443,
-        "top": 1520
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4443,
-        "bottom": 1740,
-        "right": 4443,
-        "top": 1740
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4557,
-        "bottom": 100,
-        "right": 4557,
-        "top": 100
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4557,
-        "bottom": 320,
-        "right": 4557,
-        "top": 320
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4557,
-        "bottom": 1520,
-        "right": 4557,
-        "top": 1520
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4557,
-        "bottom": 1740,
-        "right": 4557,
-        "top": 1740
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4777,
-        "bottom": 100,
-        "right": 4777,
-        "top": 100
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4777,
-        "bottom": 320,
-        "right": 4777,
-        "top": 320
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4777,
-        "bottom": 1520,
-        "right": 4777,
-        "top": 1520
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 4777,
-        "bottom": 1740,
-        "right": 4777,
-        "top": 1740
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5100,
-        "bottom": 643,
-        "right": 5100,
-        "top": 643
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5100,
-        "bottom": 863,
-        "right": 5100,
-        "top": 863
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5100,
-        "bottom": 977,
-        "right": 5100,
-        "top": 977
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5100,
-        "bottom": 1197,
-        "right": 5100,
-        "top": 1197
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5320,
-        "bottom": 643,
-        "right": 5320,
-        "top": 643
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5320,
-        "bottom": 863,
-        "right": 5320,
-        "top": 863
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5320,
-        "bottom": 977,
-        "right": 5320,
-        "top": 977
-      },
-      "polygon": null
-    },
-    {
-      "rule": "licon1.ongrid.1",
-      "description": "licon1 vertices must be on the 0.005um manufacturing grid",
-      "check": "ongrid",
-      "layer": "licon1.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": "guard_ring",
-      "source_path": [
-        "tap__gain_cell_2t_tap",
-        "guard_ring"
-      ],
-      "bbox": {
-        "left": 5320,
-        "bottom": 1197,
-        "right": 5320,
-        "top": 1197
-      },
-      "polygon": null
-    },
-    {
-      "rule": "poly.endcap.diff.1",
-      "description": "minimum poly extension past diff at a gate (endcap)",
-      "check": "enclosed",
-      "layer": "diff.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": null,
-      "source_path": null,
-      "bbox": {
-        "left": 470,
-        "bottom": -130,
-        "right": 620,
-        "top": 0
-      },
-      "polygon": [
-        [
-          470,
-          -130
-        ],
-        [
-          470,
-          0
-        ],
-        [
-          620,
-          0
-        ],
-        [
-          620,
-          -130
-        ]
-      ]
-    },
-    {
-      "rule": "poly.endcap.diff.1",
-      "description": "minimum poly extension past diff at a gate (endcap)",
-      "check": "enclosed",
-      "layer": "diff.drawing",
-      "cell": "gain_cell_2t_layout_0",
-      "source_cell": null,
-      "source_path": null,
-      "bbox": {
-        "left": 1960,
-        "bottom": -130,
-        "right": 2110,
-        "top": 0
-      },
-      "polygon": [
-        [
-          1960,
-          -130
-        ],
-        [
-          1960,
-          0
-        ],
-        [
-          2110,
-          0
-        ],
-        [
-          2110,
-          -130
-        ]
-      ]
-    }
-  ],
+  "violations": [],
   "coverage": {
     "deck_layers": [
       "18/20",
@@ -742,7 +64,10 @@
       "66/44",
       "67/20",
       "67/44",
-      "68/20"
+      "68/20",
+      "93/44",
+      "94/20",
+      "95/20"
     ],
     "layers_in_stream_without_rules": [
       "67/5",
@@ -772,11 +97,23 @@
       "met1.ongrid.1",
       "met1.space.1",
       "met1.width.1",
+      "npc.angle.1",
+      "npc.ongrid.1",
+      "npc.space.1",
+      "npc.width.1",
+      "nsdm.angle.1",
+      "nsdm.ongrid.1",
+      "nsdm.space.1",
+      "nsdm.width.1",
       "poly.angle.1",
       "poly.enclosing.licon.1",
       "poly.endcap.diff.1",
       "poly.ongrid.1",
       "poly.width.1",
+      "psdm.angle.1",
+      "psdm.ongrid.1",
+      "psdm.space.1",
+      "psdm.width.1",
       "tap.angle.1",
       "tap.enclosing.licon.1",
       "tap.ongrid.1",
@@ -846,14 +183,6 @@
       "mf.ongrid.1",
       "ncm.angle.1",
       "ncm.ongrid.1",
-      "npc.angle.1",
-      "npc.ongrid.1",
-      "npc.space.1",
-      "npc.width.1",
-      "nsdm.angle.1",
-      "nsdm.ongrid.1",
-      "nsdm.space.1",
-      "nsdm.width.1",
       "nsm.angle.1",
       "nsm.ongrid.1",
       "nwell.angle.1",
@@ -863,10 +192,6 @@
       "nwell.width.1",
       "pad.angle.1",
       "pad.ongrid.1",
-      "psdm.angle.1",
-      "psdm.ongrid.1",
-      "psdm.space.1",
-      "psdm.width.1",
       "pwbm.angle.1",
       "pwbm.ongrid.1",
       "pwde.angle.1",
@@ -991,11 +316,23 @@
       "met1.ongrid.1",
       "met1.space.1",
       "met1.width.1",
+      "npc.angle.1",
+      "npc.ongrid.1",
+      "npc.space.1",
+      "npc.width.1",
+      "nsdm.angle.1",
+      "nsdm.ongrid.1",
+      "nsdm.space.1",
+      "nsdm.width.1",
       "poly.angle.1",
       "poly.enclosing.licon.1",
       "poly.endcap.diff.1",
       "poly.ongrid.1",
       "poly.width.1",
+      "psdm.angle.1",
+      "psdm.ongrid.1",
+      "psdm.space.1",
+      "psdm.width.1",
       "tap.angle.1",
       "tap.enclosing.licon.1",
       "tap.ongrid.1",
@@ -1256,38 +593,6 @@
         "reason": "no_applicable_geometry"
       },
       {
-        "id": "npc.angle.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "npc.ongrid.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "npc.space.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "npc.width.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "nsdm.angle.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "nsdm.ongrid.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "nsdm.space.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "nsdm.width.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
         "id": "nsm.angle.1",
         "reason": "no_applicable_geometry"
       },
@@ -1321,22 +626,6 @@
       },
       {
         "id": "pad.ongrid.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "psdm.angle.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "psdm.ongrid.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "psdm.space.1",
-        "reason": "no_applicable_geometry"
-      },
-      {
-        "id": "psdm.width.1",
         "reason": "no_applicable_geometry"
       },
       {
@@ -1490,7 +779,7 @@
       "released": true
     },
     "input": {
-      "content_hash": "sha256:f55f08e3a2f85199d04d90f9007b5724b0d013604f054ce0dbf656f9f954d259",
+      "content_hash": "sha256:ae17e5fa1c5c139ccd2f16e2c5badd87579b43657d10d3602beb6593c9234295",
       "role": "layout"
     },
     "klayout_version_mismatch": false

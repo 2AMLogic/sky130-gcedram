@@ -1,0 +1,322 @@
+{
+ "schema": "gcedram.compact_c_sn/1",
+ "issue": 161,
+ "label": "CAPACITANCE-ONLY SENSITIVITY at GEOMETRY-MATCHED leakage and the unchanged delta_V = VDD/2 ASSUMPTION. Wiring C_SN only (device gate/junction capacitance excluded). Not measured array retention, not dynamic, not a ratified value, not an array guarantee.",
+ "generated_utc": "2026-10-28T07:10:19+00:00",
+ "repo_git_sha": "389bd5c",
+ "convention": "total_ff = ground_ff + sum(coupled[].capacitance_ff), as derive_retention.load_extracted_c_sn(). Storage nodes of the compact layouts are anonymous nets identified from device connectivity (layout/compact_parasitics.py storage_nodes). Wiring only.",
+ "inputs": {
+  "leakage_summary": {
+   "path": "sim/leakage/compact-geometry/results/compact_leakage_summary_20261020T1716Z.json",
+   "sha256": "sha256:d8de1144f87d4ca84d97615c93ffb0de3f4e59916d029cdb0d4b500585bb1c2d"
+  },
+  "single_cell_report": {
+   "path": "layout/gain_cell_2t.extract.parasitics.json",
+   "sha256": "sha256:308314f8e2593fc9b406e4863fa846d4fc074cceaa1060fef1956800a7084830",
+   "top": "gain_cell_2t_layout_0",
+   "klt_version": "0.8.0",
+   "klayout_version": "0.30.12",
+   "deck_content_hash": "sha256:ba0f97887e3d231aec8b54f1f52f2941ded0228f0234b6759712bcaca0e942e6",
+   "input_content_hash": "sha256:ae17e5fa1c5c139ccd2f16e2c5badd87579b43657d10d3602beb6593c9234295",
+   "netlist_sha256": "a1448cf906e1b3e05b8ad3af1144765e0d3c27d2deb25bf58d337f713d0d3fb1"
+  },
+  "retention_csv_rows": [
+   "sim/retention/results/retention_results.csv:2",
+   "sim/retention/results/retention_results.csv:8"
+  ]
+ },
+ "single_cell": {
+  "net": "sn",
+  "ground_ff": 0.655316,
+  "coupling_ff": 0.017425,
+  "total_ff": 0.672741,
+  "coupled_ff": {
+   "bl": 0.01071,
+   "rwl": 0.006715
+  }
+ },
+ "retention_baselines": {
+  "ratified_prelayout": {
+   "source": "sim/retention/results/retention_results.csv:2",
+   "line_sha256": "sha256:b3c7da945be5b92a736a635abd669acf637e9ecb0b62ccae51c7532bee16998f",
+   "timestamp_utc": "2026-08-20T22:38:54+00:00",
+   "repo_git_sha": "46c07a4",
+   "leakage_source_row": "corner=sf,temp_c=125",
+   "leakage_ileak_a": 9.89888e-11,
+   "c_storage_node_ff": 1.106463,
+   "delta_v_sense_margin_v_ASSUMPTION": 0.9,
+   "retention_time_s": 1.005989e-05
+  },
+  "isolated_cell_extracted": {
+   "source": "sim/retention/results/retention_results.csv:8",
+   "line_sha256": "sha256:ba7e4c86c8c974a94b79ad2489602524e118c1c9ef6ba8233c3d432c86299af8",
+   "timestamp_utc": "2026-10-28T07:09:34+00:00",
+   "repo_git_sha": "389bd5c",
+   "leakage_source_row": "corner=sf,temp_c=125",
+   "leakage_ileak_a": 9.89888e-11,
+   "c_storage_node_ff": 0.672741,
+   "delta_v_sense_margin_v_ASSUMPTION": 0.9,
+   "retention_time_s": 6.116519e-06
+  }
+ },
+ "layouts": {
+  "uniform_grid": {
+   "extraction": {
+    "path": "layout/gain_cell_2t_array.extract.parasitics.json",
+    "sha256": "sha256:b6907c445b041869c79bac969ef008f624848017d2298f83b73d0bd0bad61735",
+    "top": "gain_cell_2t_array_4x4_layout_0",
+    "klt_version": "0.8.0",
+    "klayout_version": "0.30.12",
+    "deck_content_hash": "sha256:ba0f97887e3d231aec8b54f1f52f2941ded0228f0234b6759712bcaca0e942e6",
+    "input_content_hash": "sha256:2bcd6e1bb7eff7b248d77b45500972448f050089d4cf3f38300915b612fcdcce",
+    "netlist_sha256": "6469896a403d9da6ba5f7d0ba10616fd0aa1a04470699460893c67b8e44f9e1f"
+   },
+   "node_count": 16,
+   "limiting_node": "sn_3_0",
+   "nodes_tied_at_minimum": [
+    "sn_3_0"
+   ],
+   "c_sn_total_ff": {
+    "min": 0.538402,
+    "max": 0.56808,
+    "mean": 0.556549
+   },
+   "c_sn_ground_ff": {
+    "min": 0.49907,
+    "max": 0.501634
+   },
+   "c_sn_coupling_ff": {
+    "min": 0.036768,
+    "max": 0.06901
+   },
+   "ratio_min_c_sn_over_isolated_cell": 0.800311,
+   "leakage": {
+    "ileak_a": 1.092400597064e-10,
+    "corner": "sf",
+    "temp_c": 125,
+    "geometry_matched": true,
+    "source": "sim/leakage/compact-geometry/results/compact_leakage_summary_20261020T1716Z.json",
+    "leakage_tag": "base"
+   },
+   "at_limiting_node": {
+    "c_sn_ff": 0.538402,
+    "retention_time_us": 4.4358,
+    "refresh_interval_us_at_2x_safety": 2.2179,
+    "ratio_t_over_ratified": 0.440934
+   },
+   "at_max_node": {
+    "c_sn_ff": 0.56808,
+    "retention_time_us": 4.6803,
+    "refresh_interval_us_at_2x_safety": 2.3401,
+    "ratio_t_over_ratified": 0.46524
+   },
+   "c_sn_required_for_ratified_retention_ff": 1.221048,
+   "shortfall_vs_required_ff": 0.682646,
+   "per_node": {
+    "sn_3_0": 0.538402,
+    "sn_3_3": 0.540186,
+    "sn_3_1": 0.543753,
+    "sn_3_2": 0.543753,
+    "sn_0_3": 0.550896,
+    "sn_0_0": 0.55207,
+    "sn_0_1": 0.554463,
+    "sn_0_2": 0.554463,
+    "sn_1_0": 0.562729,
+    "sn_2_0": 0.562729,
+    "sn_1_3": 0.564513,
+    "sn_2_3": 0.564513,
+    "sn_1_1": 0.56808,
+    "sn_1_2": 0.56808,
+    "sn_2_1": 0.56808,
+    "sn_2_2": 0.56808
+   },
+   "bounding_scenario_wiring_plus_full_cgate": {
+    "note": "UPPER-BOUND-STYLE scenario, not a result: adds the computed C_gate of the read transistor (0.553231 fF, retention_results.csv) on top of the wiring C_SN. May count the poly term twice (the extractor's poly area may overlap the channel; unchecked, spec Section 9.6 item 2) and still omits the write-device drain-junction capacitance.",
+    "c_sn_ff": 1.091633,
+    "retention_time_us": 8.9937,
+    "refresh_interval_us_at_2x_safety": 4.4968,
+    "ratio_t_over_ratified": 0.894013
+   }
+  },
+  "compact_v2": {
+   "extraction": {
+    "path": "layout/compact/gain_cell_2t_v2_array.extract.parasitics.json",
+    "sha256": "sha256:78002e584616a1034a91aedd390e00e427b062a7b7fc92dccd390f07ee561212",
+    "top": "gain_cell_2t_v2_array_4x4_layout_0",
+    "klt_version": "0.7.1.dev2264+gcba5e957d9ed",
+    "klayout_version": "0.30.12",
+    "deck_content_hash": "sha256:ba0f97887e3d231aec8b54f1f52f2941ded0228f0234b6759712bcaca0e942e6",
+    "input_content_hash": "sha256:f9f61745ede84fdce2cbdaf68fed5ba8785cef1b500ea40dd75a2cbb579c678b",
+    "netlist_sha256": "83933be419b5f4f769d2007d53a38f5e82b6fad33424e85722ea28aeaabbccb8"
+   },
+   "node_count": 16,
+   "limiting_node": "\\$20",
+   "nodes_tied_at_minimum": [
+    "\\$20",
+    "\\$25",
+    "\\$32"
+   ],
+   "c_sn_total_ff": {
+    "min": 0.316892,
+    "max": 0.334888,
+    "mean": 0.327283
+   },
+   "c_sn_ground_ff": {
+    "min": 0.291528,
+    "max": 0.291622
+   },
+   "c_sn_coupling_ff": {
+    "min": 0.02527,
+    "max": 0.04336
+   },
+   "ratio_min_c_sn_over_isolated_cell": 0.471046,
+   "leakage": {
+    "ileak_a": 1.059500907147e-10,
+    "corner": "sf",
+    "temp_c": 125,
+    "geometry_matched": true,
+    "source": "sim/leakage/compact-geometry/results/compact_leakage_summary_20261020T1716Z.json",
+    "leakage_tag": "v2"
+   },
+   "at_limiting_node": {
+    "c_sn_ff": 0.316892,
+    "retention_time_us": 2.6919,
+    "refresh_interval_us_at_2x_safety": 1.3459,
+    "ratio_t_over_ratified": 0.267583
+   },
+   "at_max_node": {
+    "c_sn_ff": 0.334888,
+    "retention_time_us": 2.8447,
+    "refresh_interval_us_at_2x_safety": 1.4224,
+    "ratio_t_over_ratified": 0.282779
+   },
+   "c_sn_required_for_ratified_retention_ff": 1.184274,
+   "shortfall_vs_required_ff": 0.867382,
+   "per_node": {
+    "\\$20": 0.316892,
+    "\\$25": 0.316892,
+    "\\$32": 0.316892,
+    "\\$10": 0.320156,
+    "\\$17": 0.323337,
+    "\\$22": 0.323337,
+    "\\$29": 0.323337,
+    "\\$7": 0.324688,
+    "\\$18": 0.333537,
+    "\\$19": 0.333537,
+    "\\$23": 0.333537,
+    "\\$24": 0.333537,
+    "\\$30": 0.333537,
+    "\\$31": 0.333537,
+    "\\$8": 0.334888,
+    "\\$9": 0.334888
+   },
+   "bounding_scenario_wiring_plus_full_cgate": {
+    "note": "UPPER-BOUND-STYLE scenario, not a result: adds the computed C_gate of the read transistor (0.553231 fF, retention_results.csv) on top of the wiring C_SN. May count the poly term twice (the extractor's poly area may overlap the channel; unchecked, spec Section 9.6 item 2) and still omits the write-device drain-junction capacitance.",
+    "c_sn_ff": 0.870123,
+    "retention_time_us": 7.3913,
+    "refresh_interval_us_at_2x_safety": 3.6957,
+    "ratio_t_over_ratified": 0.734731
+   }
+  },
+  "compact_v1": {
+   "extraction": {
+    "path": "layout/compact/gain_cell_2t_v1_array.extract.parasitics.json",
+    "sha256": "sha256:c757d8c970f9e549b695e914737bf81c9092bf157e9116490d994f36e8350c75",
+    "top": "gain_cell_2t_v1_array_4x4_layout_0",
+    "klt_version": "0.7.1.dev2264+gcba5e957d9ed",
+    "klayout_version": "0.30.12",
+    "deck_content_hash": "sha256:ba0f97887e3d231aec8b54f1f52f2941ded0228f0234b6759712bcaca0e942e6",
+    "input_content_hash": "sha256:a3c80d4d0aa4fba1a31cb2091b30e2f5cf865e9994a3dcf501484726606acc99",
+    "netlist_sha256": "a3b77750990778133b359ea211483f0b441ef23bfcd10fd8c3f350e7219498c6"
+   },
+   "node_count": 16,
+   "limiting_node": "\\$19",
+   "nodes_tied_at_minimum": [
+    "\\$19",
+    "\\$24"
+   ],
+   "c_sn_total_ff": {
+    "min": 0.308707,
+    "max": 0.329304,
+    "mean": 0.321535
+   },
+   "c_sn_ground_ff": {
+    "min": 0.291528,
+    "max": 0.291622
+   },
+   "c_sn_coupling_ff": {
+    "min": 0.017085,
+    "max": 0.037776
+   },
+   "ratio_min_c_sn_over_isolated_cell": 0.458879,
+   "leakage": {
+    "ileak_a": 1.059500907147e-10,
+    "corner": "sf",
+    "temp_c": 125,
+    "geometry_matched": true,
+    "source": "sim/leakage/compact-geometry/results/compact_leakage_summary_20261020T1716Z.json",
+    "leakage_tag": "v1"
+   },
+   "at_limiting_node": {
+    "c_sn_ff": 0.308707,
+    "retention_time_us": 2.6223,
+    "refresh_interval_us_at_2x_safety": 1.3112,
+    "ratio_t_over_ratified": 0.260672
+   },
+   "at_max_node": {
+    "c_sn_ff": 0.329304,
+    "retention_time_us": 2.7973,
+    "refresh_interval_us_at_2x_safety": 1.3986,
+    "ratio_t_over_ratified": 0.278064
+   },
+   "c_sn_required_for_ratified_retention_ff": 1.184274,
+   "shortfall_vs_required_ff": 0.875567,
+   "per_node": {
+    "\\$19": 0.308707,
+    "\\$24": 0.308707,
+    "\\$26": 0.313239,
+    "\\$32": 0.314572,
+    "\\$17": 0.319104,
+    "\\$29": 0.319104,
+    "\\$8": 0.320156,
+    "\\$21": 0.323439,
+    "\\$23": 0.323439,
+    "\\$27": 0.323439,
+    "\\$9": 0.324688,
+    "\\$10": 0.329023,
+    "\\$7": 0.329023,
+    "\\$18": 0.329304,
+    "\\$30": 0.329304,
+    "\\$31": 0.329304
+   },
+   "bounding_scenario_wiring_plus_full_cgate": {
+    "note": "UPPER-BOUND-STYLE scenario, not a result: adds the computed C_gate of the read transistor (0.553231 fF, retention_results.csv) on top of the wiring C_SN. May count the poly term twice (the extractor's poly area may overlap the channel; unchecked, spec Section 9.6 item 2) and still omits the write-device drain-junction capacitance.",
+    "c_sn_ff": 0.861938,
+    "retention_time_us": 7.3218,
+    "refresh_interval_us_at_2x_safety": 3.6609,
+    "ratio_t_over_ratified": 0.72782
+   }
+  }
+ },
+ "budget_check": {
+  "ratified_retention_s": 1.005989e-05,
+  "ratified_retention_source": "sim/retention/results/retention_results.csv:2",
+  "ratified_c_sn_ff_ASSUMPTION": 1.106463,
+  "ratified_refresh_interval_us": 5.0299,
+  "safety_factor_ASSUMPTION": 2.0,
+  "safety_factor_source": "spec/retention-refresh-budget.md Section 7 (ASSUMED 2x margin)",
+  "delta_v_v_ASSUMPTION": 0.9,
+  "criterion": "the ratified ~5.03 us refresh interval stays valid iff t_retention >= the ratified 10.06 us at the same 2x margin, i.e. iff C_SN >= the 'c_sn_required_for_ratified_retention_ff' of the layout",
+  "compact_v2_wiring_only_holds": false,
+  "compact_v2_wiring_plus_full_cgate_holds": false,
+  "finding": "DOES NOT HOLD on extracted wiring C_SN at geometry-matched worst-case leakage; also does not hold with the full read-gate capacitance added (bounding scenario)",
+  "action": "Not a spec edit. The ratified pre-layout C_SN is an ASSUMPTION (2.0x C_gate); the extraction does not support it. Report as an operator decision (see sim/retention/README.md)."
+ },
+ "limitations": [
+  "Wiring-only C_SN: device gate and junction capacitance are excluded (spec Section 9.6 item 2 remains open); the bounding scenario is not a measurement.",
+  "Leakage is the SN-side-junction DC off-state current of ONE write device (drain at VDD, bit line at 0 V), as in #2/#149; the read device and hold-state dynamics are not included.",
+  "Quiet-neighbour coupling counted as load; dynamic neighbour switching is #94.",
+  "4x4 arrays only; boundary nodes limit. Constant-current decay, delta_V = VDD/2 and no mismatch are the existing ASSUMPTIONS.",
+  "Worst-case corner only (sf / 125 C); the leakage study confirms it is the worst for all three geometries."
+ ]
+}

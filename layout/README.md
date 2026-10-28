@@ -150,8 +150,9 @@ verification pass (that is a separate, later T1 item). Captured by
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t.drc.result.json`](gain_cell_2t.drc.result.json)): `status:
-  "violations"`, `violation_count: 34` under klt 0.8.0 (it was `clean`, 0, under
-  0.5.0) -- see "DRC under klt 0.8.0" below.
+  "clean"`, `violation_count: 0` under klt 0.8.0 after the issue #244
+  regeneration (the 0.4.0-generated geometry gave `violations`, 34, under 0.8.0;
+  it was `clean`, 0, under 0.5.0) -- see "DRC under klt 0.8.0" below.
 - **`klt extract --deck sky130`**
   ([`gain_cell_2t.extract.json`](gain_cell_2t.extract.json) /
   [`.spice`](gain_cell_2t.extract.spice)): `device_count: 2`, both `nfet`,
@@ -203,6 +204,17 @@ since `sn` couples to the adjacent `bl`/`rwl` routing. The storage node
 | **Total `C_SN` (extracted)** | **0.605354 fF** |
 | Series resistance (star, both device terminals) | 170.3519 Ω |
 
+**Superseded by issue #244.** The table above records the extraction of the
+pre-#244 geometry (klt 0.3.0). The committed
+[`gain_cell_2t.extract.parasitics.json`](gain_cell_2t.extract.parasitics.json)
+now holds the extraction of the klt-0.8.0-regenerated cell (klt 0.8.0): ground
+0.655316 fF + coupling 0.017425 fF (`bl` + `rwl`) = **0.672741 fF**, star
+resistance 199.3743 Ω. The pre-#244 GDS extracted with klt 0.8.0 reproduces
+0.605354 fF exactly
+([`results/gain_cell_2t.extract.parasitics_pre244_geometry_klt0.8.0_20261028.json`](results/gain_cell_2t.extract.parasitics_pre244_geometry_klt0.8.0_20261028.json)),
+so the +0.067 fF is geometry, not the extractor. Re-ratifying 0.672741 fF is a
+proposed spec decision, not yet ratified:
+[`spec/c-sn-re-ratification-PROPOSED.md`](../spec/c-sn-re-ratification-PROPOSED.md).
 See [`sim/retention/README.md`](../sim/retention/README.md) "Storage-node
 capacitance" for how this total feeds the retention-time re-derivation.
 
@@ -330,8 +342,8 @@ the single cell's own dedicated tap.
 
 ### Bill of devices/layers (informational, `4x4`)
 
-`gain_cell_2t_array.gds`'s bounding box is `13.66 x 8.30` um (`bbox_um`
-`{-1.07, -1.07}` to `{12.59, 7.23}`) -- one `mos_array` block (32 transistors
+`gain_cell_2t_array.gds`'s bounding box is `13.91 x 9.75` um (`bbox_um`
+`{-1.195, -1.195}` to `{12.715, 8.555}`; `13.66 x 8.30` before issue #244) -- one `mos_array` block (32 transistors
 on a uniform grid, `add_guard_ring=true`) with its own shared tap ring drawn
 around it. `klt extract --deck sky130` confirms `device_count: 32`, all
 class `nfet`, matching `2 * N_ROWS * N_COLS = 2*4*4 = 32`.
@@ -382,11 +394,15 @@ layer minimum. klayout-tools #2594 (in 0.7.0) clamps sky130 licon/mcon cuts
 to 0.17 um. The extra `_mos.gds` PCell parameters come from klayout-tools
 #1577/#1580. The pin is therefore the last revision before #1577:
 
-- **generation** (`klt gen`, `klt gen-compose`): klayout-tools
-  `2dd24b09e7569581297aabf9738594e9791210f1` (package version 0.4.0) with
-  `klayout==0.30.12`. With `klayout==0.30.10` the array GDS still matches,
-  but `_mos.gds` does not (PCell context serialization), so KLayout is pinned
-  too.
+- **generation** (`klt gen`, `klt gen-compose`): PyPI `klayout-tools==0.8.0`
+  with `klayout==0.30.12` (issue #244). The table above records why the
+  pre-#244 pin was the 0.4.0-era git revision `2dd24b09e756`; that revision's
+  guard-ring and `mos_array` output violates the 0.8.0 deck's
+  `licon1.ongrid.1` and `poly.endcap.diff.1`, and the 0.8.0 generators do not.
+  The 4x4 array regenerated in a scratch directory reproduces the committed
+  array byte-for-byte (`baseline comparison: match`). Generation and check are
+  now the same release pin. KLayout stays pinned (with `klayout==0.30.10` PCell
+  context serialization differs).
 - **check** (`klt drc`, `klt lvs`, `klt erc`): PyPI `klayout-tools==0.8.0`
   with `klayout==0.30.12`. This is the same release `.github/workflows/signoff.yml`
   grades with (`KLT_VERSION`), and the one the committed DRC/LVS/ERC reports
@@ -478,8 +494,9 @@ reported, signed-off verification pass (#24 item 5):
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)):
-  `status: "violations"`, `violation_count: 64` under klt 0.8.0 (it was
-  `clean`, 0, under 0.6.0) -- see "DRC under klt 0.8.0" below.
+  `status: "clean"`, `violation_count: 0` under klt 0.8.0 after the issue #244
+  regeneration (the 0.4.0-generated geometry gave `violations`, 64, under 0.8.0;
+  it was `clean`, 0, under 0.6.0) -- see "DRC under klt 0.8.0" below.
 - **`klt lvs`**
   ([`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json))
   against the generated
@@ -504,11 +521,35 @@ found, the layout and the spec were not touched to make it pass:
 Both rules are new in the 0.8.0 deck (`licon1.ongrid.1` flags licon vertices
 off the 0.005 um grid, all in the generator-drawn `guard_ring`/`mos_array`
 cells). LVS stays `match` and ERC stays `clean`. As a result T1 item 3 (DRC)
-in `block-manifest.signoff.json` flips from `met` to `unmet`
-(`t1_met_count` 3 -> 2). `generate_array.sh` and `generate.sh` still require
-a `clean` DRC from the check toolchain, so their `--check` runs fail until the
-geometry is fixed or the finding is ruled on; that follow-up is not part of the
-pin bump.
+in `block-manifest.signoff.json` flipped from `met` to `unmet`
+(`t1_met_count` 3 -> 2). `generate_array.sh` and `generate.sh` require
+a `clean` DRC from the check toolchain, so their `--check` runs failed.
+
+**Resolved (issue #244).** Regenerating with the klt 0.8.0 generators (the
+`generation` pin in `generation-toolchain.json` is now `klayout-tools==0.8.0`,
+params unchanged, no GDS post-edit, no rule waived, deck untouched) gives a
+layout that is DRC clean under the 0.8.0 deck:
+
+| Report | 0.4.0-generated geometry, 0.8.0 deck | 0.8.0-generated geometry, 0.8.0 deck |
+|---|---|---|
+| `gain_cell_2t.drc.result.json` | violations, 34 | clean, 0 |
+| `gain_cell_2t_array.drc.result.json` | violations, 64 | clean, 0 |
+
+The cause was in the generators, as suspected (the off-grid licon pitch of the
+guard ring and the short gate endcap); a newer release fixes both. LVS stays
+`match` (2/2 devices, 32/32 for the array) and ERC stays `clean`. T1 item 3 is
+`met` again (`t1_met_count` 3). The cost is geometry: the single cell is
+1.84 -> 2.115 um tall (bbox 5.92 x 2.115 um, was 5.42 x 1.84), the array
+bitcell pitch grew 1.64 -> 1.94 um (`results/density_20261028_v244.json`), and
+the extracted single-cell `C_SN` moved 0.605354 -> 0.672741 fF. Operator ruling
+2026-10-28 (option a) accepted the regenerated layout; the `C_SN`
+re-ratification is a separate, still-proposed spec decision
+([`spec/c-sn-re-ratification-PROPOSED.md`](../spec/c-sn-re-ratification-PROPOSED.md)).
+Refreshed evidence: DRC/LVS/ERC reports, `gain_cell_2t.extract.json`, both
+parasitics extractions, `gain_cell_2t_array.parasitics.summary.json`,
+`block-manifest.json` content hashes, `block-manifest.signoff.json`. The
+earlier failure history above is kept; superseded git history holds the old
+reports.
 
 ### `klt erc` supply spec (structural power delivery, T1 item 11; issue #39)
 
@@ -549,8 +590,11 @@ debugging (issue #39). Two committed files:
     (`tap_is_dedicated: true`, `connect_to: li1`, `net: GND`).
     `well_boxes` are the four edge strips of the guard ring, read from the
     committed GDS: the merged 65/44 shape is one ring, outer edge
-    (-1.07, -1.07)-(12.59, 7.23) um, inner edge (-0.65, -0.65)-(12.17, 6.81) um
-    (0.42 um wide). The identity `erc.missing_tie:["psub_guard_ring"]`
+    (-1.07, -1.07)-(12.59, 8.43) um, inner edge (-0.65, -0.65)-(12.17, 8.01) um
+    (0.42 um wide). These coordinates are the 4x4 regenerated in issue #244
+    (the pre-#244 array was 7.23 / 6.81 um tall); the spec's `well_boxes`
+    were moved with the ring, because a stale box set would still grade
+    `clean` while asserting a region that is no longer the ring. The identity `erc.missing_tie:["psub_guard_ring"]`
     appears in both `erc_coverage.checked` and
     `erc_coverage.checked_by_well_assertion`; `skipped` and `inapplicable`
     are empty; there are zero `erc.missing_tie` findings.
@@ -561,17 +605,20 @@ debugging (issue #39). Two committed files:
     that continuity runs through bulk silicon, which `klt erc` does not
     model, and rests on the array LVS (bulk terminals matched, `GND` paired).
     The ring's enclosing rectangle is deliberately not asserted: it equals
-    the top-cell extent and is skipped as `degenerate_well_assertion`.
+    the top-cell extent (before issue #244; within 0.125 um of it since) and
+    is skipped as `degenerate_well_assertion`.
   - Fresh: `provenance.input.content_hash`
-    `sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd`
-    matches the committed `gain_cell_2t_array.gds` (unchanged by #54), and
+    `sha256:2bcd6e1bb7eff7b248d77b45500972448f050089d4cf3f38300915b612fcdcce`
+    matches the committed `gain_cell_2t_array.gds` (regenerated in #244; it
+    was `4a1155...d4cd`), and
     the spec's content hash is pinned in `provenance.spec`.
 - **[`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json)**
   and **[`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)**
-  -- refreshed with klt v0.8.0 against the *unchanged* committed GDS
+  -- refreshed with klt v0.8.0 against the committed GDS regenerated in #244
   (`klt lvs gain_cell_2t_array.lvs.request.json`, `klt drc
   gain_cell_2t_array.gds --deck sky130`, from `layout/`): LVS `match` with
-  `GND` paired, carrying `provenance.input`; DRC **`violations`** (64, see
+  `GND` paired, carrying `provenance.input`; DRC **`clean`** (0; it was 64
+  violations on the pre-#244 geometry, see
   "DRC under klt 0.8.0" below).
 
 #### Item 11 in the signoff record
@@ -633,6 +680,15 @@ filed against [2AMLogic/klayout-tools](https://github.com/2AMLogic/klayout-tools
   describe.
 
 ## Array bitline/wordline/storage-node parasitics (issue #80)
+
+> **Numbers below are the pre-#244 geometry.** The committed array extraction
+> and [`gain_cell_2t_array.parasitics.summary.json`](gain_cell_2t_array.parasitics.summary.json)
+> were regenerated on the klt-0.8.0 layout (issue #244, extractor klt 0.8.0,
+> was `0.7.0+gd1e9e119331f`); the tables and hashes in this section describe
+> the earlier extraction and are kept as the record of what #80 found. For the
+> current per-net values read the summary JSON. Storage node, current:
+> single cell 0.672741 fF, array `sn_<r>_<c>` 0.538402 -- 0.568080 fF
+> (`sim/retention/results/array_c_sn_comparison_20261028T070954Z.json`).
 
 This is an extraction of the committed `4x4` array. It changes no layout.
 Its job is to replace the read-bitline load that the sense path currently
@@ -825,6 +881,10 @@ applied in the array gives:
 | | Ground (fF) | Coupling (fF) | Total (fF) | vs 0.605354 fF |
 |---|---|---|---|---|
 | `sn_<r>_<c>`, range over 16 cells | 0.430576 -- 0.433689 | 0.040446 -- 0.071424 | **0.473620 -- 0.502000** | **-21.8% to -17.1%** |
+
+**(Pre-#244 numbers: after the regeneration the single cell is 0.672741 fF
+and the array range is 0.538402 -- 0.568080 fF, i.e. 15.6--20.0 % lower; see
+the note at the top of this section.)**
 
 **Finding: array-context `C_SN` is 17--22% lower than the single-cell
 value used by retention.** The `by_layer` split explains the gap.

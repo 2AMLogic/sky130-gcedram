@@ -20,7 +20,7 @@
 .param TEDGE   = 1e-10
 .param C_RBL   = 1e-14   $ ASSUMPTION (contract; not extracted)
 .param C_WBL   = 1e-14   $ ASSUMPTION (not extracted)
-.param C_SN    = 6.05354e-16   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)
+.param C_SN    = 6.72741e-16   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)
 
 * ---- shared control (ideal digital edges) ----
 vdd   vdd 0 dc {VDD}

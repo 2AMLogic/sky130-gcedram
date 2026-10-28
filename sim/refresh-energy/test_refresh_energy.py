@@ -82,7 +82,7 @@ def get_meas(corner: dict, name: str):
     return next(x["value"] for x in corner["measurements"] if x["name"] == name)
 
 
-C_SN = 0.605354e-15
+C_SN = 0.672741e-15  # layout-extracted single cell, klt 0.8.0 regeneration (issue #244)
 
 
 # ---------------------------------------------------------------------------
@@ -127,7 +127,7 @@ class Generated(unittest.TestCase):
             caps = {ln.split()[0]: float(ln.split()[3]) for ln in net if ln.startswith("c") and ln.split()[0].endswith("_" + n)}
             self.assertEqual(len(caps), len(arr["cap"]))
             for nm, _a, _b, f in arr["cap"]:
-                self.assertAlmostEqual(caps[f"{nm.lower()}_{n}"], f, delta=1e-6 * f)
+                self.assertAlmostEqual(caps[f"{nm.lower()}_{n}"], f, delta=5e-6 * f)  # deck is emitted with 6 significant digits
             res = [ln for ln in net if ln.startswith("r") and ln.split()[0].endswith("_" + n)]
             self.assertEqual(len(res), len(arr["res"]) - 1)        # Rvsubs_dctie replaced by vsub
 
@@ -442,7 +442,9 @@ class Evidence(unittest.TestCase):
     def test_committed_results_reproduce(self):
         if not self.summaries():
             self.skipTest("no reduced results committed (batch evidence pending)")
-        for s in self.summaries():
+        # Only the newest run reproduces: the analyzer reads the CURRENT retention intervals and
+        # layout C_SN, and earlier runs (pre-#244 layout) are append-only history of the old inputs.
+        for s in self.summaries()[-1:]:
             d = json.loads(s.read_text())
             rid, frid = d["run_id"], d["fine_run_id"]
             main = next(RESULTS.glob(f"klt_report_{rid}.json*"))
