@@ -320,13 +320,13 @@ def fake_pdk(root: Path, commit: str) -> tuple[str, str]:
 class ToolchainGuard(Tmp):
     def test_config_pins(self):
         gen, chk = CFG["toolchains"]["generation"], CFG["toolchains"]["check"]
-        # generation is a git-commit pin; check is a PyPI release pin (no commit)
-        self.assertRegex(gen["klayout_tools"]["commit"], r"^[0-9a-f]{40}$")
+        # since #244 both roles are PyPI release pins (no git commit)
+        self.assertNotIn("commit", gen["klayout_tools"])
         self.assertNotIn("commit", chk["klayout_tools"])
         for rc in (gen, chk):
             self.assertRegex(rc["klayout"], r"^\d+\.\d+\.\d+$")
             self.assertRegex(rc["klayout_tools"]["package_version"], r"^\d+\.\d+\.\d+$")
-        self.assertNotEqual(gen["klayout_tools"]["package_version"], chk["klayout_tools"]["package_version"])
+        self.assertEqual(gen["klayout_tools"]["package_version"], chk["klayout_tools"]["package_version"])
 
     def test_check_pin_matches_signoff_workflow(self):
         wf = (REPO / ".github" / "workflows" / "signoff.yml").read_text()
@@ -350,6 +350,7 @@ class ToolchainGuard(Tmp):
             for ln in code:
                 self.assertNotRegex(ln, r"(^|[\s(])klt (gen|gen-compose|drc|lvs|erc)\b", f"{name}: bare klt: {ln}")
             self.assertNotIn("2dd24b09", text, f"{name} duplicates the pin literal")
+            self.assertNotIn("klayout-tools==0.", text, f"{name} duplicates the pin literal")
 
     def test_matching_identity(self):
         py = fake_toolchain(self.dir / "g", **pinned("generation"))
@@ -359,17 +360,18 @@ class ToolchainGuard(Tmp):
 
     def test_mismatched_commit_klayout_and_missing_klt(self):
         py = fake_toolchain(self.dir / "g", **pinned("generation", commit="0" * 40, klayout="0.30.10"),
-                            with_klt=False)
+                            with_klt=False)  # a git install where a release is pinned
         ident, _ = T.probe(str(py))
         problems = T.identity_problems(CFG["toolchains"]["generation"], ident)
         joined = "\n".join(problems)
-        self.assertIn("klayout-tools commit: expected 2dd24b09", joined)
-        self.assertIn(f"actual {'0' * 40}", joined)
+        self.assertIn(f"klayout-tools is a git install ({'0' * 40})", joined)
         self.assertIn("klayout (KLayout Python module) version: expected 0.30.12, actual 0.30.10", joined)
         self.assertIn("no executable `klt`", joined)
 
-    def test_check_toolchain_is_not_accepted_as_generation(self):
-        py = fake_toolchain(self.dir / "c", **pinned("check"))
+    def test_old_generation_revision_is_rejected(self):
+        # the pre-#244 generation pin (0.4.0 git revision) must no longer pass
+        py = fake_toolchain(self.dir / "o", **pinned("generation", commit="2dd24b09e7569581297aabf9738594e9791210f1",
+                                                     version="0.4.0"))
         ident, _ = T.probe(str(py))
         self.assertTrue(T.identity_problems(CFG["toolchains"]["generation"], ident))
 
@@ -399,7 +401,8 @@ class ToolchainGuard(Tmp):
         self.assertIn("generation toolchain unavailable or mismatched", e)
         self.assertIn("interpreter not found", e)
         self.assertIn("generation_toolchain.py install --role generation", e)
-        self.assertIn("klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@2dd24b09", e)
+        gen_version = CFG["toolchains"]["generation"]["klayout_tools"]["package_version"]
+        self.assertIn(f"klayout-tools=={gen_version}", e)
         self.assertNotIn("check toolchain", e)
         self.assertIn("No artifacts were written.", e)
 
@@ -455,7 +458,7 @@ class ScriptsFailBeforeWriting(Tmp):
             with self.subTest(script=script, args=args):
                 p = self.run_script(script, args, env)
                 self.assertEqual(p.returncode, 2, p.stderr)
-                self.assertIn("klayout-tools commit: expected 2dd24b09", p.stderr)
+                self.assertIn("klayout-tools is a git install", p.stderr)
                 self.assertIn("No artifacts were written.", p.stderr)
                 self.assertNotIn("== 1/", p.stdout)
 

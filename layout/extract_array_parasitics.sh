@@ -35,7 +35,7 @@
 #
 # Both parts are reduced by array_parasitics.py into
 # layout/gain_cell_2t_array.parasitics.summary.json (per-net table, the
-# comparison against the 10 fF C_RBL and 0.605354 fF C_SN assumptions, and a
+# comparison against the 10 fF C_RBL and 0.672741 fF C_SN assumptions, and a
 # fixed + per-row linear fit). Anything beyond N_ROWS=8 in that file is an
 # extrapolation and is labelled ASSUMPTION there.
 #

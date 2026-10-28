@@ -26,7 +26,7 @@ vctl  ctl 0 pwl(0 {VDD} {T_READ-T_PGAP} {VDD} {T_READ-T_PGAP+TEDGE} 0)
 ven   en  0 pwl(0 0 {T_EN} 0 {T_EN+TEDGE} {VDD})
 venb  enb 0 pwl(0 {VDD} {T_EN} {VDD} {T_EN+TEDGE} 0)
 .model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)
-.param C_SN    = 6.05354e-16   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)
+.param C_SN    = 6.72741e-16   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)
 vrwls rwl_sel 0 pwl(0 {VDD} {T_READ} {VDD} {T_READ+TEDGE} 0)
 vrwld rwl_des 0 dc {VDD}
 vpre  prea 0 dc {VRBL}

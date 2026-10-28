@@ -112,14 +112,15 @@ class VariantTests(unittest.TestCase):
 
     def test_baseline_files_untouched_by_variants(self):
         # variants write only new files; the baseline GDS hash is the one
-        # recorded in the committed baseline density result
-        base = json.loads((LAYOUT / "results" / "density_20261009.json").read_text())
+        # recorded in the newest committed baseline density result (issue #244
+        # regenerated the baseline GDS; density_20261009.json describes the old one)
+        base = json.loads((LAYOUT / "results" / "density_20261028_v244.json").read_text())
         self.assertEqual(base["inputs"]["gds_sha256"], sha(LAYOUT / "gain_cell_2t_array.gds"))
 
     def test_default_area_density_run_unchanged(self):
-        out = subprocess.run([sys.executable, "-I", str(LAYOUT / "area_density.py"), "--dry-run"],
+        out = subprocess.run([sys.executable, "-I", str(LAYOUT / "area_density.py"), "--dry-run", "--issue", "244"],
                              capture_output=True, text=True, check=True).stdout
-        new, old = json.loads(out), json.loads((LAYOUT / "results" / "density_20261009.json").read_text())
+        new, old = json.loads(out), json.loads((LAYOUT / "results" / "density_20261028_v244.json").read_text())
         for d in (new, old):
             d.pop("generated_utc"), d.pop("klt_version_on_host")
         self.assertEqual(new, old)

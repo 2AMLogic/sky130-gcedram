@@ -6,14 +6,14 @@
   "pdk": {
     "name": "sky130A",
     "variant": "sky130A",
-    "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
   },
   "dbu_um": 0.001,
   "bbox_um": {
-    "x0": -1.07,
-    "y0": -1.07,
-    "x1": 12.59,
-    "y1": 7.23
+    "x0": -1.195,
+    "y0": -1.195,
+    "x1": 12.715,
+    "y1": 8.555
   },
   "device_count": 32,
   "ports": [
@@ -52,7 +52,7 @@
         "name": null
       },
       "x_um": 0.545,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -91,7 +91,7 @@
         "name": null
       },
       "x_um": 2.035,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -130,7 +130,7 @@
         "name": null
       },
       "x_um": 3.5250000000000004,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -169,7 +169,7 @@
         "name": null
       },
       "x_um": 5.015000000000001,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -208,7 +208,7 @@
         "name": null
       },
       "x_um": 6.505000000000001,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -247,7 +247,7 @@
         "name": null
       },
       "x_um": 7.995000000000001,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -286,7 +286,7 @@
         "name": null
       },
       "x_um": 9.485000000000001,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -325,7 +325,7 @@
         "name": null
       },
       "x_um": 10.975000000000001,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -338,7 +338,7 @@
         "name": null
       },
       "x_um": 0.21000000000000002,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -351,7 +351,7 @@
         "name": null
       },
       "x_um": 0.8800000000000001,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -364,7 +364,7 @@
         "name": null
       },
       "x_um": 0.545,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -377,7 +377,7 @@
         "name": null
       },
       "x_um": 1.7000000000000002,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -390,7 +390,7 @@
         "name": null
       },
       "x_um": 2.37,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -403,7 +403,7 @@
         "name": null
       },
       "x_um": 2.035,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -416,7 +416,7 @@
         "name": null
       },
       "x_um": 3.1900000000000004,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -429,7 +429,7 @@
         "name": null
       },
       "x_um": 3.8600000000000003,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -442,7 +442,7 @@
         "name": null
       },
       "x_um": 3.5250000000000004,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -455,7 +455,7 @@
         "name": null
       },
       "x_um": 4.680000000000001,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -468,7 +468,7 @@
         "name": null
       },
       "x_um": 5.3500000000000005,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -481,7 +481,7 @@
         "name": null
       },
       "x_um": 5.015000000000001,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -494,7 +494,7 @@
         "name": null
       },
       "x_um": 6.170000000000001,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -507,7 +507,7 @@
         "name": null
       },
       "x_um": 6.840000000000001,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -520,7 +520,7 @@
         "name": null
       },
       "x_um": 6.505000000000001,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -533,7 +533,7 @@
         "name": null
       },
       "x_um": 7.660000000000001,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -546,7 +546,7 @@
         "name": null
       },
       "x_um": 8.330000000000002,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -559,7 +559,7 @@
         "name": null
       },
       "x_um": 7.995000000000001,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -572,7 +572,7 @@
         "name": null
       },
       "x_um": 9.150000000000002,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -585,7 +585,7 @@
         "name": null
       },
       "x_um": 9.820000000000002,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -598,7 +598,7 @@
         "name": null
       },
       "x_um": 9.485000000000001,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -611,7 +611,7 @@
         "name": null
       },
       "x_um": 10.640000000000002,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -624,7 +624,7 @@
         "name": null
       },
       "x_um": 11.310000000000002,
-      "y_um": 1.85,
+      "y_um": 2.15,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -637,7 +637,7 @@
         "name": null
       },
       "x_um": 10.975000000000001,
-      "y_um": 2.67,
+      "y_um": 3.12,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -650,7 +650,7 @@
         "name": null
       },
       "x_um": 0.21000000000000002,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -663,7 +663,7 @@
         "name": null
       },
       "x_um": 0.8800000000000001,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -676,7 +676,7 @@
         "name": null
       },
       "x_um": 0.545,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -689,7 +689,7 @@
         "name": null
       },
       "x_um": 1.7000000000000002,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -702,7 +702,7 @@
         "name": null
       },
       "x_um": 2.37,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -715,7 +715,7 @@
         "name": null
       },
       "x_um": 2.035,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -728,7 +728,7 @@
         "name": null
       },
       "x_um": 3.1900000000000004,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -741,7 +741,7 @@
         "name": null
       },
       "x_um": 3.8600000000000003,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -754,7 +754,7 @@
         "name": null
       },
       "x_um": 3.5250000000000004,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -767,7 +767,7 @@
         "name": null
       },
       "x_um": 4.680000000000001,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -780,7 +780,7 @@
         "name": null
       },
       "x_um": 5.3500000000000005,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -793,7 +793,7 @@
         "name": null
       },
       "x_um": 5.015000000000001,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -806,7 +806,7 @@
         "name": null
       },
       "x_um": 6.170000000000001,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -819,7 +819,7 @@
         "name": null
       },
       "x_um": 6.840000000000001,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -832,7 +832,7 @@
         "name": null
       },
       "x_um": 6.505000000000001,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -845,7 +845,7 @@
         "name": null
       },
       "x_um": 7.660000000000001,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -858,7 +858,7 @@
         "name": null
       },
       "x_um": 8.330000000000002,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -871,7 +871,7 @@
         "name": null
       },
       "x_um": 7.995000000000001,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -884,7 +884,7 @@
         "name": null
       },
       "x_um": 9.150000000000002,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -897,7 +897,7 @@
         "name": null
       },
       "x_um": 9.820000000000002,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -910,7 +910,7 @@
         "name": null
       },
       "x_um": 9.485000000000001,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -923,7 +923,7 @@
         "name": null
       },
       "x_um": 10.640000000000002,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -936,7 +936,7 @@
         "name": null
       },
       "x_um": 11.310000000000002,
-      "y_um": 3.49,
+      "y_um": 4.09,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -949,7 +949,7 @@
         "name": null
       },
       "x_um": 10.975000000000001,
-      "y_um": 4.3100000000000005,
+      "y_um": 5.06,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -962,7 +962,7 @@
         "name": null
       },
       "x_um": 0.21000000000000002,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -975,7 +975,7 @@
         "name": null
       },
       "x_um": 0.8800000000000001,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -988,7 +988,7 @@
         "name": null
       },
       "x_um": 0.545,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1001,7 +1001,7 @@
         "name": null
       },
       "x_um": 1.7000000000000002,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -1014,7 +1014,7 @@
         "name": null
       },
       "x_um": 2.37,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1027,7 +1027,7 @@
         "name": null
       },
       "x_um": 2.035,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1040,7 +1040,7 @@
         "name": null
       },
       "x_um": 3.1900000000000004,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -1053,7 +1053,7 @@
         "name": null
       },
       "x_um": 3.8600000000000003,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1066,7 +1066,7 @@
         "name": null
       },
       "x_um": 3.5250000000000004,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1079,7 +1079,7 @@
         "name": null
       },
       "x_um": 4.680000000000001,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -1092,7 +1092,7 @@
         "name": null
       },
       "x_um": 5.3500000000000005,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1105,7 +1105,7 @@
         "name": null
       },
       "x_um": 5.015000000000001,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1118,7 +1118,7 @@
         "name": null
       },
       "x_um": 6.170000000000001,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -1131,7 +1131,7 @@
         "name": null
       },
       "x_um": 6.840000000000001,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1144,7 +1144,7 @@
         "name": null
       },
       "x_um": 6.505000000000001,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1157,7 +1157,7 @@
         "name": null
       },
       "x_um": 7.660000000000001,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -1170,7 +1170,7 @@
         "name": null
       },
       "x_um": 8.330000000000002,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1183,7 +1183,7 @@
         "name": null
       },
       "x_um": 7.995000000000001,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1196,7 +1196,7 @@
         "name": null
       },
       "x_um": 9.150000000000002,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -1209,7 +1209,7 @@
         "name": null
       },
       "x_um": 9.820000000000002,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1222,7 +1222,7 @@
         "name": null
       },
       "x_um": 9.485000000000001,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1235,7 +1235,7 @@
         "name": null
       },
       "x_um": 10.640000000000002,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 180
     },
@@ -1248,7 +1248,7 @@
         "name": null
       },
       "x_um": 11.310000000000002,
-      "y_um": 5.13,
+      "y_um": 6.03,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1261,7 +1261,7 @@
         "name": null
       },
       "x_um": 10.975000000000001,
-      "y_um": 5.95,
+      "y_um": 7.0,
       "width_um": 0.42000000000000004,
       "direction_deg": 90
     },
@@ -1274,7 +1274,7 @@
         "name": null
       },
       "x_um": 5.760000000000001,
-      "y_um": 7.02,
+      "y_um": 8.219999999999999,
       "width_um": 0.42,
       "direction_deg": 90
     },
@@ -1300,7 +1300,7 @@
         "name": null
       },
       "x_um": 12.38,
-      "y_um": 3.08,
+      "y_um": 3.6799999999999997,
       "width_um": 0.42,
       "direction_deg": 0
     },
@@ -1313,11 +1313,12 @@
         "name": null
       },
       "x_um": -0.8600000000000001,
-      "y_um": 3.08,
+      "y_um": 3.6799999999999997,
       "width_um": 0.42,
       "direction_deg": 180
     }
   ],
+  "navigable_regions": [],
   "drc_hints": {
     "min_spacing_um": 0.4,
     "matched_group_id": "mos_array:4x8:array",
@@ -1326,7 +1327,19 @@
       "gate length below 0.28um (this generator's own default): the S/D local-metal pads are automatically padded clear of the gate (issue #1187), so no S/D metal minimum-spacing violation results from this alone -- but params.l_um itself may still violate the target PDK's own poly minimum-width rule (e.g. sky130's poly.width.1 floor is 0.15um), which this generator does not check"
     ],
     "voltage_flavor": null,
-    "voltage_flavor_mark_present": false
+    "voltage_flavor_mark_present": false,
+    "sd_implant_present": true
   },
-  "warnings": []
+  "warnings": [],
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "--pdk-root flag",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "deck": null,
+    "input": null
+  }
 }
