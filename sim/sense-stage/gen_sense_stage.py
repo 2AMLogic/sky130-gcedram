@@ -87,15 +87,40 @@ def extracted_c_rbl_ff() -> float:
     return float(v)
 
 
+PRE244_C_RBL_FF = 0.859179   # extracted_4row_worst_total_ff before PR #248 (issue #244) regenerated the layout
+
+
 def variants() -> dict:
+    """Variant registry. ``*_p244`` are generated from the current layout summary.
+
+    The un-suffixed ids are the 2026-10-11 pre-#244 variants: their decks and
+    results are committed history (``sim/`` is append-only), no longer generated
+    (``legacy``), and carry the frozen pre-#244 C_RBL so their summaries still
+    reproduce.
+    """
     ext = extracted_c_rbl_ff() * 1e-15
     lab = ("EXTRACTED-4-ROW (layout/gain_cell_2t_array.parasitics.summary.json "
            "comparison.c_rbl.extracted_4row_worst_total_ff; N_rows = 4 is a STUDY-ASSUMPTION)")
+    lab_old = lab   # unchanged text: the frozen summaries record exactly this label
+    old = PRE244_C_RBL_FF * 1e-15
     return {
-        "crbl_ext4row": dict(c_rbl_f=ext, c_rbl_label=lab, card="design"),
-        "crbl_2f": dict(c_rbl_f=2e-15, c_rbl_label="ASSUMPTION (mid-point, not extracted)", card="design"),
-        "crbl_ext4row_layoutcard": dict(c_rbl_f=ext, c_rbl_label=lab, card="layout"),
+        "crbl_ext4row": dict(c_rbl_f=old, c_rbl_label=lab_old, card="design", legacy=True,
+                             c_rbl_source_ff=PRE244_C_RBL_FF),
+        "crbl_2f": dict(c_rbl_f=2e-15, c_rbl_label="ASSUMPTION (mid-point, not extracted)", card="design",
+                        legacy=True, c_rbl_source_ff=PRE244_C_RBL_FF),
+        "crbl_ext4row_layoutcard": dict(c_rbl_f=old, c_rbl_label=lab_old, card="layout", legacy=True,
+                                        c_rbl_source_ff=PRE244_C_RBL_FF),
+        "crbl_ext4row_p244": dict(c_rbl_f=ext, c_rbl_label=lab, card="design", legacy=False,
+                                  c_rbl_source_ff=extracted_c_rbl_ff()),
+        "crbl_2f_p244": dict(c_rbl_f=2e-15, c_rbl_label="ASSUMPTION (mid-point, not extracted)", card="design",
+                             legacy=False, c_rbl_source_ff=extracted_c_rbl_ff()),
+        "crbl_ext4row_layoutcard_p244": dict(c_rbl_f=ext, c_rbl_label=lab, card="layout", legacy=False,
+                                             c_rbl_source_ff=extracted_c_rbl_ff()),
     }
+
+
+def current_variants() -> dict:
+    return {k: v for k, v in variants().items() if not v["legacy"]}
 
 
 def layout_card(params: str) -> str:
@@ -164,6 +189,8 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
     c_rbl_f, c_rbl_label = C_RBL_F, "ASSUMPTION (contract; not extracted)"
     if variant is not None:
         v = variants()[variant]
+        if v["legacy"]:
+            raise ValueError(f"variant {variant!r} is frozen pre-#244 history; its deck is not regenerated")
         c_rbl_f, c_rbl_label = v["c_rbl_f"], v["c_rbl_label"]
         if v["card"] == "layout":
             wr_p, rd_p = layout_card(wr_p), layout_card(rd_p)
@@ -293,7 +320,7 @@ def render(variant: str | None = None) -> tuple[str, str]:
 def main(argv: list[str] | None = None) -> int:
     import argparse
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--variant", choices=sorted(variants()), default=None,
+    ap.add_argument("--variant", choices=sorted(current_variants()), default=None,
                     help="issue #88 variant (default: the unchanged issue #60 deck)")
     a = ap.parse_args(argv)
     net, req = render(a.variant)

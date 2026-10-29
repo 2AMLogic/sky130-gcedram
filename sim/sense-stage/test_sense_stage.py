@@ -61,7 +61,7 @@ class Variants(unittest.TestCase):
     """Issue #88: C_RBL / device-card variants; the default deck is untouched."""
 
     def test_committed_variant_files_not_stale(self):
-        for v in G.variants():
+        for v in G.current_variants():
             net, req = G.render(v)
             npath, rpath = G.variant_paths(v)
             self.assertEqual(net, npath.read_text(), f"run gen_sense_stage.py --variant {v}")
@@ -71,10 +71,10 @@ class Variants(unittest.TestCase):
     def test_extracted_c_rbl_is_the_cited_json_value_on_rbl_and_reference(self):
         d = json.loads(G.PARASITICS_SUMMARY.read_text())
         want_ff = d["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"]
-        self.assertAlmostEqual(want_ff, 0.859179, places=6)
+        self.assertAlmostEqual(want_ff, 0.955559, places=6)
         self.assertEqual(d["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"],
                          max(c["total_ff"] for c in d["per_column"]["rbl"].values()))
-        for v in ("crbl_ext4row", "crbl_ext4row_layoutcard"):
+        for v in ("crbl_ext4row_p244", "crbl_ext4row_layoutcard_p244"):
             net, _ = G.render(v)
             self.assertIn(f".param C_RBL   = {G._fmt(want_ff * 1e-15)}   $ EXTRACTED-4-ROW", net)
             self.assertIn("STUDY-ASSUMPTION", net.split(".param C_RBL")[1].splitlines()[0])
@@ -88,7 +88,7 @@ class Variants(unittest.TestCase):
 
     def test_variant_changes_only_declared_lines(self):
         base = G.NETLIST_PATH.read_text().splitlines()
-        for v, spec in G.variants().items():
+        for v, spec in G.current_variants().items():
             net = G.render(v)[0].splitlines()
             body_b, body_v = base[2:], net[3:]   # header comment lines differ by design
             self.assertEqual(len(body_b), len(body_v))

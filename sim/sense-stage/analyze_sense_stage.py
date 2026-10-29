@@ -214,7 +214,7 @@ def main(argv: list[str] | None = None) -> int:
             id=variant, c_rbl_label=v["c_rbl_label"], cell_card=v["card"],
             reference_dummy_load="same C_RBL as rbl (ideal matched dummy load)",
             c_rbl_source=dict(file="layout/gain_cell_2t_array.parasitics.summary.json",
-                              key=".".join(G.C_RBL_KEY), value_ff=G.extracted_c_rbl_ff()),
+                              key=".".join(G.C_RBL_KEY), value_ff=v["c_rbl_source_ff"]),
             n_rows_ratified=False)
         summary["claims"]["extracted_c_rbl"] = v["c_rbl_label"].startswith("EXTRACTED-4-ROW")
         summary["claims"]["n_rows_ratified"] = False
