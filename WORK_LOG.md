@@ -2,8 +2,18 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-29
+
+- **Issue #44** (closed): README: embed the fleet burndown chart (one line)
+
 ### 2026-10-28
 
+- **PR #256**: refactor: single-source inst_lines/ic_tokens in replay_lib
+- **Issue #255** (closed): Dedupe inst_lines/ic_tokens: identical copies in two refresh-replay generators
+- **PR #254**: docs: refresh density-vs-sram inputs to post-#244 layout (2.79x drawn)
+- **Issue #252** (closed): spec: refresh density-vs-sram inputs for the post-#244 layout (2.79x pitch)
+- **PR #251**: sim: re-run five benches on the post-#244 layout as new dated evidence
+- **Issue #249** (closed): sim: re-run write-disturb, refresh-op, sense-stage, sense-mismatch, column-periphery on the klt-0.8.0 layout
 - **PR #248**: fix: regenerate layout with klt 0.8.0 generators for a DRC-clean cell and array
 - **Issue #244** (closed): Layout fails new klt 0.8.0 DRC rules (licon1.ongrid.1, poly.endcap.diff.1); generate --check now red
 
