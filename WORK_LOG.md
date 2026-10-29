@@ -4,6 +4,8 @@ Chronological record of merged pull requests and closed issues. Maintained by th
 
 ### 2026-10-29
 
+- **PR #260**: refactor: remove unused functions, imports and locals from sim scripts
+- **Issue #259** (closed): Remove dead code: 3 unused functions, 6 unused imports, 3 unused locals in sim/ scripts
 - **Issue #44** (closed): README: embed the fleet burndown chart (one line)
 
 ### 2026-10-28
