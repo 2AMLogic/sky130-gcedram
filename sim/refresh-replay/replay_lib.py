@@ -257,9 +257,6 @@ def check_trace_consistency(golden: dict, other: dict, signals: list[str] | None
     return out
 
 
-def trace_from_edges(initial: dict, edges: list[dict]) -> dict:
-    return dict(initial=dict(initial), edges=sorted_edges(edges))
-
 
 def digital_duration(trace: dict) -> dict:
     """Operation timing from the trace (t = 0 is the accepting clock edge)."""
