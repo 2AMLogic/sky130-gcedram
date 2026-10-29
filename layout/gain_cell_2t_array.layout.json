@@ -6,14 +6,14 @@
   "pdk": {
     "name": "sky130A",
     "variant": "sky130A",
-    "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
   },
   "dbu_um": 0.001,
   "bbox_um": {
-    "x0": -1.07,
-    "y0": -1.07,
-    "x1": 12.59,
-    "y1": 7.23
+    "x0": -1.195,
+    "y0": -1.195,
+    "x1": 12.715,
+    "y1": 8.555
   },
   "ports": [
     {
@@ -25,7 +25,7 @@
         "name": null
       },
       "x_um": -0.8600000000000001,
-      "y_um": 3.08,
+      "y_um": 3.6799999999999997,
       "width_um": 0.42,
       "direction_deg": 180,
       "block": "mos",
@@ -38,17 +38,20 @@
       "source": "generator_report",
       "generator": "mos_array",
       "cell_name": "gain_cell_2t_array_mos",
+      "source_path": "gain_cell_2t_array_mos.gds",
+      "source_digest": "sha256:dc983694e74ae49aec0cdb0996f5e0068b98614495fcda9090b3ea02f1dd941d",
       "offset_um": {
         "x": 0.0,
         "y": 0.0
       },
       "bbox_um": {
-        "x0": -1.07,
-        "y0": -1.07,
-        "x1": 12.59,
-        "y1": 7.23
+        "x0": -1.195,
+        "y0": -1.195,
+        "x1": 12.715,
+        "y1": 8.555
       },
-      "orientation": "none"
+      "orientation": "none",
+      "abuts": []
     }
   ],
   "nets": [
@@ -75,6 +78,7 @@
       "routed": true,
       "route_length_um": 9.96,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -89,7 +93,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -104,7 +110,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -119,7 +127,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -146,6 +156,7 @@
       "routed": true,
       "route_length_um": 9.96,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -160,7 +171,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -175,7 +188,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -190,7 +205,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -217,6 +234,7 @@
       "routed": true,
       "route_length_um": 9.96,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -231,7 +249,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -246,7 +266,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -261,7 +283,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -288,6 +312,7 @@
       "routed": true,
       "route_length_um": 9.96,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -302,7 +327,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -317,7 +344,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -332,7 +361,9 @@
           ],
           "routed": true,
           "route_length_um": 3.3200000000000003,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -359,6 +390,7 @@
       "routed": true,
       "route_length_um": 8.940000000000001,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -373,7 +405,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -388,7 +422,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -403,7 +439,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000013,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -430,6 +468,7 @@
       "routed": true,
       "route_length_um": 8.940000000000001,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -444,7 +483,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -459,7 +500,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -474,7 +517,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000013,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -501,6 +546,7 @@
       "routed": true,
       "route_length_um": 8.940000000000001,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -515,7 +561,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -530,7 +578,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -545,7 +595,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000013,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -572,6 +624,7 @@
       "routed": true,
       "route_length_um": 8.940000000000001,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -586,7 +639,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -601,7 +656,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000004,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -616,7 +673,9 @@
           ],
           "routed": true,
           "route_length_um": 2.9800000000000013,
-          "reason": null
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -641,24 +700,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U16_S"
-            },
-            {
-              "block": "mos",
-              "port": "U24_S"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -671,8 +716,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -686,8 +733,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U16_S"
+            },
+            {
+              "block": "mos",
+              "port": "U24_S"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -712,24 +778,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U18_S"
-            },
-            {
-              "block": "mos",
-              "port": "U26_S"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -742,8 +794,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -757,8 +811,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U18_S"
+            },
+            {
+              "block": "mos",
+              "port": "U26_S"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -783,24 +856,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U20_S"
-            },
-            {
-              "block": "mos",
-              "port": "U28_S"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -813,8 +872,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -828,8 +889,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U20_S"
+            },
+            {
+              "block": "mos",
+              "port": "U28_S"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -854,24 +934,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U22_S"
-            },
-            {
-              "block": "mos",
-              "port": "U30_S"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -884,8 +950,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -899,8 +967,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U22_S"
+            },
+            {
+              "block": "mos",
+              "port": "U30_S"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -925,24 +1012,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U17_D"
-            },
-            {
-              "block": "mos",
-              "port": "U25_D"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -955,8 +1028,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -970,8 +1045,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U17_D"
+            },
+            {
+              "block": "mos",
+              "port": "U25_D"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -996,24 +1090,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U19_D"
-            },
-            {
-              "block": "mos",
-              "port": "U27_D"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -1026,8 +1106,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -1041,8 +1123,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U19_D"
+            },
+            {
+              "block": "mos",
+              "port": "U27_D"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1067,24 +1168,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U21_D"
-            },
-            {
-              "block": "mos",
-              "port": "U29_D"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -1097,8 +1184,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -1112,8 +1201,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U21_D"
+            },
+            {
+              "block": "mos",
+              "port": "U29_D"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1138,24 +1246,10 @@
         }
       ],
       "routed": true,
-      "route_length_um": 5.9399999999999995,
+      "route_length_um": 6.84,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
-        {
-          "pins": [
-            {
-              "block": "mos",
-              "port": "U23_D"
-            },
-            {
-              "block": "mos",
-              "port": "U31_D"
-            }
-          ],
-          "routed": true,
-          "route_length_um": 1.9799999999999995,
-          "reason": null
-        },
         {
           "pins": [
             {
@@ -1168,8 +1262,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         },
         {
           "pins": [
@@ -1183,8 +1279,27 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.98,
-          "reason": null
+          "route_length_um": 2.28,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
+        },
+        {
+          "pins": [
+            {
+              "block": "mos",
+              "port": "U23_D"
+            },
+            {
+              "block": "mos",
+              "port": "U31_D"
+            }
+          ],
+          "routed": true,
+          "route_length_um": 2.2800000000000002,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1201,8 +1316,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.975,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1216,8 +1332,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.975,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1234,8 +1352,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000003,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1249,8 +1368,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000003,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1267,8 +1388,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000003,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1282,8 +1404,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000003,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1300,8 +1424,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9749999999999994,
+      "route_length_um": 2.124999999999999,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1315,8 +1440,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9749999999999994,
-          "reason": null
+          "route_length_um": 2.124999999999999,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1333,8 +1460,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9749999999999999,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1348,8 +1476,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9749999999999999,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1366,8 +1496,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.975,
+      "route_length_um": 2.1250000000000004,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1381,8 +1512,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.975,
-          "reason": null
+          "route_length_um": 2.1250000000000004,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1399,8 +1532,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.975,
+      "route_length_um": 2.1250000000000004,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1414,8 +1548,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.975,
-          "reason": null
+          "route_length_um": 2.1250000000000004,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1432,8 +1568,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9749999999999992,
+      "route_length_um": 2.1249999999999996,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1447,8 +1584,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9749999999999992,
-          "reason": null
+          "route_length_um": 2.1249999999999996,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1465,8 +1604,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000003,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1480,8 +1620,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000003,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1498,8 +1640,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000005,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1513,8 +1656,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000005,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1531,8 +1676,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000005,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1546,8 +1692,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000005,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1564,8 +1712,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9749999999999996,
+      "route_length_um": 2.124999999999999,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1579,8 +1728,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9749999999999996,
-          "reason": null
+          "route_length_um": 2.124999999999999,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1597,8 +1748,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000003,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1612,8 +1764,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000003,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1630,8 +1784,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000005,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1645,8 +1800,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000005,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1663,8 +1820,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9750000000000005,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1678,8 +1836,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9750000000000005,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     },
@@ -1696,8 +1856,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.9749999999999996,
+      "route_length_um": 2.124999999999999,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -1711,8 +1872,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.9749999999999996,
-          "reason": null
+          "route_length_um": 2.124999999999999,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     }
@@ -1739,5 +1902,19 @@
     ],
     "notes": []
   },
-  "warnings": []
+  "warnings": [],
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": null,
+    "input": null
+  }
 }

@@ -1,11 +1,15 @@
 {
-  "schema_version": 1,
-  "file": "layout/gain_cell_2t_array.gds",
+  "schema_version": 2,
+  "file": {
+    "path": "layout/gain_cell_2t_array.gds",
+    "scope": "repo"
+  },
   "spec": "layout/erc-supply-spec.json",
   "pdk": "sky130",
   "findings_only": false,
   "gate_role": "poly",
   "gate_count": 20,
+  "antenna_tables_omitted": false,
   "gates": [
     {
       "gate_id": "gate0",
@@ -15,9 +19,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -25,9 +29,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -36,8 +40,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -53,9 +57,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -63,9 +67,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -74,8 +78,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -91,9 +95,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -101,9 +105,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -112,8 +116,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -129,9 +133,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -139,9 +143,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -150,8 +154,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -167,9 +171,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 1.6296,
-          "cumulative_area_um2": 1.6296,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 1.8096,
+          "cumulative_area_um2": 1.8096,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -178,8 +182,8 @@
         {
           "layer": "li1",
           "step_area_um2": 0.7056,
-          "cumulative_area_um2": 2.3352,
-          "antenna_ratio": 9.266667,
+          "cumulative_area_um2": 2.5152,
+          "antenna_ratio": 9.980952,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -187,9 +191,9 @@
         },
         {
           "layer": "met1",
-          "step_area_um2": 2.07555,
-          "cumulative_area_um2": 4.41075,
-          "antenna_ratio": 17.502976,
+          "step_area_um2": 1.8228,
+          "cumulative_area_um2": 4.338,
+          "antenna_ratio": 17.214286,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -205,9 +209,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -215,9 +219,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -226,8 +230,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -243,9 +247,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -253,9 +257,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -264,8 +268,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -281,9 +285,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -291,9 +295,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -302,8 +306,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -319,9 +323,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -329,9 +333,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -340,8 +344,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -357,9 +361,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 1.6296,
-          "cumulative_area_um2": 1.6296,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 1.8096,
+          "cumulative_area_um2": 1.8096,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -368,8 +372,8 @@
         {
           "layer": "li1",
           "step_area_um2": 0.7056,
-          "cumulative_area_um2": 2.3352,
-          "antenna_ratio": 9.266667,
+          "cumulative_area_um2": 2.5152,
+          "antenna_ratio": 9.980952,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -377,9 +381,9 @@
         },
         {
           "layer": "met1",
-          "step_area_um2": 2.07555,
-          "cumulative_area_um2": 4.41075,
-          "antenna_ratio": 17.502976,
+          "step_area_um2": 1.8228,
+          "cumulative_area_um2": 4.338,
+          "antenna_ratio": 17.214286,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -395,9 +399,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -405,9 +409,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -416,8 +420,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -433,9 +437,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -443,9 +447,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -454,8 +458,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -471,9 +475,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -481,9 +485,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -492,8 +496,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -509,9 +513,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -519,9 +523,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -530,8 +534,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -547,9 +551,9 @@
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 1.6296,
-          "cumulative_area_um2": 1.6296,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 1.8096,
+          "cumulative_area_um2": 1.8096,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -558,8 +562,8 @@
         {
           "layer": "li1",
           "step_area_um2": 0.7056,
-          "cumulative_area_um2": 2.3352,
-          "antenna_ratio": 9.266667,
+          "cumulative_area_um2": 2.5152,
+          "antenna_ratio": 9.980952,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -567,9 +571,9 @@
         },
         {
           "layer": "met1",
-          "step_area_um2": 2.07555,
-          "cumulative_area_um2": 4.41075,
-          "antenna_ratio": 17.502976,
+          "step_area_um2": 1.8228,
+          "cumulative_area_um2": 4.338,
+          "antenna_ratio": 17.214286,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -579,15 +583,15 @@
     },
     {
       "gate_id": "gate15",
-      "net": "wl_3",
-      "gate_area_um2": 0.252,
+      "net": "sn_3_0",
+      "gate_area_um2": 0.063,
       "antenna_verdict": "pass",
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 1.6296,
-          "cumulative_area_um2": 1.6296,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -595,9 +599,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.7056,
-          "cumulative_area_um2": 2.3352,
-          "antenna_ratio": 9.266667,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -605,9 +609,9 @@
         },
         {
           "layer": "met1",
-          "step_area_um2": 2.07555,
-          "cumulative_area_um2": 4.41075,
-          "antenna_ratio": 17.502976,
+          "step_area_um2": 0.0,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -617,15 +621,15 @@
     },
     {
       "gate_id": "gate16",
-      "net": "sn_3_0",
+      "net": "sn_3_1",
       "gate_area_um2": 0.063,
       "antenna_verdict": "pass",
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -633,9 +637,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -644,8 +648,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -655,15 +659,15 @@
     },
     {
       "gate_id": "gate17",
-      "net": "sn_3_1",
+      "net": "sn_3_2",
       "gate_area_um2": 0.063,
       "antenna_verdict": "pass",
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -671,9 +675,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -682,8 +686,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -693,15 +697,15 @@
     },
     {
       "gate_id": "gate18",
-      "net": "sn_3_2",
+      "net": "sn_3_3",
       "gate_area_um2": 0.063,
       "antenna_verdict": "pass",
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 0.4524,
+          "cumulative_area_um2": 0.4524,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -709,9 +713,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.630775,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -720,8 +724,8 @@
         {
           "layer": "met1",
           "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "cumulative_area_um2": 1.083175,
+          "antenna_ratio": 17.193254,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -731,15 +735,15 @@
     },
     {
       "gate_id": "gate19",
-      "net": "sn_3_3",
-      "gate_area_um2": 0.063,
+      "net": "wl_3",
+      "gate_area_um2": 0.252,
       "antenna_verdict": "pass",
       "levels": [
         {
           "layer": "poly",
-          "step_area_um2": 0.4074,
-          "cumulative_area_um2": 0.4074,
-          "antenna_ratio": 6.466667,
+          "step_area_um2": 1.8096,
+          "cumulative_area_um2": 1.8096,
+          "antenna_ratio": 7.180952,
           "antenna_ratio_max": null,
           "antenna_ratio_source": null,
           "verdict": "unchecked",
@@ -747,9 +751,9 @@
         },
         {
           "layer": "li1",
-          "step_area_um2": 0.605275,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 0.7056,
+          "cumulative_area_um2": 2.5152,
+          "antenna_ratio": 9.980952,
           "antenna_ratio_max": 75.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.li.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
@@ -757,15 +761,27 @@
         },
         {
           "layer": "met1",
-          "step_area_um2": 0.0,
-          "cumulative_area_um2": 1.012675,
-          "antenna_ratio": 16.074206,
+          "step_area_um2": 1.8228,
+          "cumulative_area_um2": 4.338,
+          "antenna_ratio": 17.214286,
           "antenna_ratio_max": 400.0,
           "antenna_ratio_source": "https://github.com/google/skywater-pdk/blob/main/docs/rules/antenna/table-Ia-antenna-rules-s8d.csv rule '.met1.1', 'Max EA/A w/o diode' column",
           "verdict": "pass",
           "remedy": null
         }
       ]
+    }
+  ],
+  "nets": [
+    {
+      "name": "GND",
+      "matched_islands": 1,
+      "expected_islands": 1,
+      "roles": [],
+      "unlabelled_islands": null,
+      "unlabelled_area_um2": null,
+      "unlabelled_bbox": null,
+      "unlabelled_allowed_islands": null
     }
   ],
   "erc_findings": [],
@@ -941,11 +957,26 @@
     "checked_by_assertion": [],
     "checked_by_well_assertion": [
       "erc.missing_tie:[\"psub_guard_ring\"]"
+    ],
+    "layers_in_stream_without_declaration": [
+      "93/44",
+      "94/20",
+      "95/20"
+    ],
+    "well_assertion_coverage": [
+      {
+        "id": "erc.missing_tie:[\"psub_guard_ring\"]",
+        "tap_layer": "65/44",
+        "drawn_tap_area_um2": 18.7488,
+        "uncovered_tap_area_um2": 0.0,
+        "uncovered_tap_fraction": 0.0,
+        "extent_uncovered_fraction": 0.861757
+      }
     ]
   },
   "ties_disclosure": null,
   "provenance": {
-    "klt_version": "0.6.0",
+    "klt_version": "0.8.0",
     "klayout_version": "0.30.12",
     "pdk": {
       "name": "sky130",
@@ -954,12 +985,25 @@
     },
     "deck": null,
     "input": {
-      "content_hash": "sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd",
+      "content_hash": "sha256:2bcd6e1bb7eff7b248d77b45500972448f050089d4cf3f38300915b612fcdcce",
       "role": "layout"
     },
     "spec": {
-      "content_hash": "sha256:d6d76e7dd1391bccda9f35ef0a7255e0827bf21c58a871ac56c0d464b9714fa6"
+      "content_hash": "sha256:d45c7537b2e7122896c2800cf3d0f5b00fc44c7efd3c4bc2ca3695709f67e887"
     },
-    "devices": []
+    "devices": [],
+    "net_exclusions": [],
+    "label_layers": [
+      {
+        "name": "li1",
+        "label_layer": "67/5",
+        "label_text_count": 25
+      },
+      {
+        "name": "met1",
+        "label_layer": "68/5",
+        "label_text_count": 8
+      }
+    ]
   }
 }

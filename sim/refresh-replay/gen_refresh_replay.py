@@ -21,7 +21,6 @@ Variants (same circuit, initial levels, loads, restore criteria; only the contro
 from __future__ import annotations
 
 import argparse
-import copy
 import hashlib
 import json
 import subprocess
@@ -293,7 +292,7 @@ def verify_deck(deck: str, insts: list[dict], golden: dict) -> dict:
     res = {}
     for p in insts:
         name = p["name"]
-        findings, got_trace_edges, init = [], [], {}
+        findings = []
         for sig, pm in L.PIN_MAP.items():
             node = pm["node"]
             exp_init, exp_edges, inv = p["nodes"][node]

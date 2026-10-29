@@ -36,6 +36,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 from _evidence_common import decided as _decided  # noqa: E402
+from _evidence_common import load_clean_corners  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
 
 SETTLE_BUDGET_S = G.T_PRE_BUDGET_S
@@ -46,18 +47,8 @@ T_PRE_MID_S = G.T_PRE_ON_S + G.T_EDGE_S / 2
 T_EN_MID_S = G.T_EN_S + G.T_EDGE_S / 2
 
 
-def corner_key(c: dict) -> tuple[str, int]:
-    return c["process"], int(c["temperature_c"])
-
-
 def load(report: Path) -> dict[tuple[str, int], dict[str, float | None]]:
-    rep = json.loads(report.read_text())
-    out = {}
-    for c in rep["corners"]:
-        if c.get("status") != "pass":
-            raise SystemExit(f"corner {corner_key(c)} status {c.get('status')}: not a clean run")
-        out[corner_key(c)] = {m["name"]: m.get("value") for m in c["measurements"]}
-    return out
+    return load_clean_corners(json.loads(report.read_text()))
 
 
 def derived(m: dict, n: str) -> dict:

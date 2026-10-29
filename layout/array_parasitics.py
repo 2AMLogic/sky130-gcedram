@@ -38,7 +38,7 @@ C_RBL_ASSUMPTION_SOURCE = (
     "sim/sense-stage/gen_sense_stage.py:46 C_RBL_F = 10e-15 "
     "(ASSUMPTION; sim/loaded-column/cold-corner/SENSE_INPUT_CONTRACT.md)"
 )
-C_SN_SINGLE_CELL_FF = 0.605354
+C_SN_SINGLE_CELL_FF = 0.672741
 C_SN_SINGLE_CELL_SOURCE = (
     "layout/gain_cell_2t.extract.parasitics.json net 'sn' "
     "(issue #7; used by sim/retention/derive_retention.py)"

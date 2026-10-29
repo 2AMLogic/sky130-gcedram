@@ -72,10 +72,10 @@ class Committed(unittest.TestCase):
         parasitics = sorted((REPO / "layout" / "results").glob(f"{CP.PREFIX}*.json"))
         retention = sorted((HERE / "results").glob(f"{R.OUTPUT_PREFIX}*.json"))
         self.assertTrue(parasitics and retention)
-        for f in parasitics:
-            self.assertEqual(CP.main(["--check", str(f)]), 0, f)
-        for f in retention:
-            self.assertEqual(R.main(["--check", str(f)]), 0, f)
+        # Only the newest file of each kind reproduces from the current inputs; earlier ones
+        # are append-only history of the pre-#244 uniform-grid layout.
+        self.assertEqual(CP.main(["--check", str(parasitics[-1])]), 0, parasitics[-1])
+        self.assertEqual(R.main(["--check", str(retention[-1])]), 0, retention[-1])
 
     def test_budget_verdict_is_derived_not_hardcoded(self):
         doc = json.loads(sorted((HERE / "results").glob(f"{R.OUTPUT_PREFIX}*.json"))[-1].read_text())

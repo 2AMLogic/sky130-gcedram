@@ -38,7 +38,6 @@ import argparse
 import csv
 import json
 import math
-import re
 import sys
 from pathlib import Path
 
@@ -47,6 +46,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim"))
 from _evidence_common import load_json as load_report  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 from _evidence_common import sha256_hex as sha256_file  # noqa: E402
 sys.path.insert(0, str(REPO / "sim" / "refresh-overhead"))
 import gen_refresh_energy as G  # noqa: E402
@@ -181,10 +181,6 @@ def run_id_of(path: Path) -> str:
     return n.split("klt_report_", 1)[1]
 
 
-def corner_meas(corner: dict) -> dict:
-    return {m["name"]: m.get("value") for m in corner["measurements"]}
-
-
 def need(m: dict, name: str) -> float:
     v = m.get(name)
     if v is None or not isinstance(v, (int, float)) or not math.isfinite(v):
@@ -246,7 +242,7 @@ def sn_stored_delta_j(m: dict, inst_name: str, c_sn_f: float) -> float:
 
 
 def reduce_corner(corner: dict, c_sn_f: float) -> tuple[list[dict], list[dict], dict]:
-    m = corner_meas(corner)
+    m = measurements_of(corner)
     proc, temp = corner["process"], corner["temperature_c"]
     sn_ref = [need(m, f"snref_{c}") for c in range(G.N_COLS)]
     insts = {i["name"]: i for i in G.instances()}

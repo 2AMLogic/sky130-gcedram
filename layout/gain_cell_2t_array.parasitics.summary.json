@@ -4,13 +4,13 @@
   "source": {
     "extraction": "layout/gain_cell_2t_array.extract.parasitics.json",
     "netlist": "layout/gain_cell_2t_array.extract.parasitics.spice",
-    "netlist_sha256": "dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33",
+    "netlist_sha256": "6469896a403d9da6ba5f7d0ba10616fd0aa1a04470699460893c67b8e44f9e1f",
     "top": "gain_cell_2t_array_4x4_layout_0",
     "device_count": 32,
-    "klt_version": "0.7.0+gd1e9e119331f",
+    "klt_version": "0.8.0",
     "klayout_version": "0.30.12",
-    "deck_content_hash": "sha256:f8f2c3f48eada473dc34a7a8926c0b04fef446fb351a70a636ce43a9ca9c70ba",
-    "input_content_hash": "sha256:4a11550681e5a8da5740b54f6a12afde308f25a12037634c801361d6cd55d4cd",
+    "deck_content_hash": "sha256:ba0f97887e3d231aec8b54f1f52f2941ded0228f0234b6759712bcaca0e942e6",
+    "input_content_hash": "sha256:2bcd6e1bb7eff7b248d77b45500972448f050089d4cf3f38300915b612fcdcce",
     "critical_nets": [
       "wl_0",
       "rwl_0",
@@ -56,78 +56,78 @@
   "per_column": {
     "rbl": {
       "rbl_0": {
-        "ground_ff": 0.581168,
-        "coupling_ff": 0.278011,
-        "total_ff": 0.859179,
-        "resistance_ohm": 385.481,
+        "ground_ff": 0.66272,
+        "coupling_ff": 0.292839,
+        "total_ff": 0.955559,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.581168
+          "metal0": 0.66272
         },
         "coupled_ff": {
-          "bl_1": 0.129795,
-          "rwl_0": 0.019738,
-          "rwl_1": 0.019738,
-          "rwl_2": 0.019738,
-          "rwl_3": 0.019738,
+          "bl_1": 0.152745,
+          "rwl_0": 0.018144,
+          "rwl_1": 0.018144,
+          "rwl_2": 0.018144,
+          "rwl_3": 0.018144,
           "sn_0_0": 0.01071,
           "sn_1_0": 0.024327,
           "sn_2_0": 0.024327,
-          "wl_0": 0.0033,
-          "wl_1": 0.0033,
-          "wl_2": 0.0033
+          "wl_0": 0.002718,
+          "wl_1": 0.002718,
+          "wl_2": 0.002718
         }
       },
       "rbl_1": {
-        "ground_ff": 0.581168,
-        "coupling_ff": 0.278011,
-        "total_ff": 0.859179,
-        "resistance_ohm": 385.481,
+        "ground_ff": 0.66272,
+        "coupling_ff": 0.292839,
+        "total_ff": 0.955559,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.581168
+          "metal0": 0.66272
         },
         "coupled_ff": {
-          "bl_2": 0.129795,
-          "rwl_0": 0.019738,
-          "rwl_1": 0.019738,
-          "rwl_2": 0.019738,
-          "rwl_3": 0.019738,
+          "bl_2": 0.152745,
+          "rwl_0": 0.018144,
+          "rwl_1": 0.018144,
+          "rwl_2": 0.018144,
+          "rwl_3": 0.018144,
           "sn_0_1": 0.01071,
           "sn_1_1": 0.024327,
           "sn_2_1": 0.024327,
-          "wl_0": 0.0033,
-          "wl_1": 0.0033,
-          "wl_2": 0.0033
+          "wl_0": 0.002718,
+          "wl_1": 0.002718,
+          "wl_2": 0.002718
         }
       },
       "rbl_2": {
-        "ground_ff": 0.581168,
-        "coupling_ff": 0.278011,
-        "total_ff": 0.859179,
-        "resistance_ohm": 385.481,
+        "ground_ff": 0.66272,
+        "coupling_ff": 0.292839,
+        "total_ff": 0.955559,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.581168
+          "metal0": 0.66272
         },
         "coupled_ff": {
-          "bl_3": 0.129795,
-          "rwl_0": 0.019738,
-          "rwl_1": 0.019738,
-          "rwl_2": 0.019738,
-          "rwl_3": 0.019738,
+          "bl_3": 0.152745,
+          "rwl_0": 0.018144,
+          "rwl_1": 0.018144,
+          "rwl_2": 0.018144,
+          "rwl_3": 0.018144,
           "sn_0_2": 0.01071,
           "sn_1_2": 0.024327,
           "sn_2_2": 0.024327,
-          "wl_0": 0.0033,
-          "wl_1": 0.0033,
-          "wl_2": 0.0033
+          "wl_0": 0.002718,
+          "wl_1": 0.002718,
+          "wl_2": 0.002718
         }
       },
       "rbl_3": {
-        "ground_ff": 0.596076,
+        "ground_ff": 0.674997,
         "coupling_ff": 0.102204,
-        "total_ff": 0.69828,
-        "resistance_ohm": 385.481,
+        "total_ff": 0.777201,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.596076
+          "metal0": 0.674997
         },
         "coupled_ff": {
           "rwl_0": 0.01071,
@@ -142,12 +142,12 @@
     },
     "bl": {
       "bl_0": {
-        "ground_ff": 0.596076,
+        "ground_ff": 0.674997,
         "coupling_ff": 0.115821,
-        "total_ff": 0.711897,
-        "resistance_ohm": 385.481,
+        "total_ff": 0.790818,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.596076
+          "metal0": 0.674997
         },
         "coupled_ff": {
           "sn_0_0": 0.01071,
@@ -160,72 +160,72 @@
         }
       },
       "bl_1": {
-        "ground_ff": 0.581168,
-        "coupling_ff": 0.291628,
-        "total_ff": 0.872796,
-        "resistance_ohm": 385.481,
+        "ground_ff": 0.66272,
+        "coupling_ff": 0.306456,
+        "total_ff": 0.969176,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.581168
+          "metal0": 0.66272
         },
         "coupled_ff": {
-          "rbl_0": 0.129795,
-          "rwl_0": 0.009028,
-          "rwl_1": 0.009028,
-          "rwl_2": 0.009028,
-          "rwl_3": 0.009028,
+          "rbl_0": 0.152745,
+          "rwl_0": 0.007434,
+          "rwl_1": 0.007434,
+          "rwl_2": 0.007434,
+          "rwl_3": 0.007434,
           "sn_0_1": 0.01071,
           "sn_1_1": 0.01071,
           "sn_2_1": 0.01071,
           "sn_3_1": 0.01071,
-          "wl_0": 0.027627,
-          "wl_1": 0.027627,
-          "wl_2": 0.027627
+          "wl_0": 0.027045,
+          "wl_1": 0.027045,
+          "wl_2": 0.027045
         }
       },
       "bl_2": {
-        "ground_ff": 0.581168,
-        "coupling_ff": 0.291628,
-        "total_ff": 0.872796,
-        "resistance_ohm": 385.481,
+        "ground_ff": 0.66272,
+        "coupling_ff": 0.292839,
+        "total_ff": 0.955559,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.581168
+          "metal0": 0.66272
         },
         "coupled_ff": {
-          "rbl_1": 0.129795,
-          "rwl_0": 0.009028,
-          "rwl_1": 0.009028,
-          "rwl_2": 0.009028,
-          "rwl_3": 0.009028,
+          "rbl_1": 0.152745,
+          "rwl_0": 0.007434,
+          "rwl_1": 0.007434,
+          "rwl_2": 0.007434,
+          "rwl_3": 0.007434,
           "sn_0_2": 0.01071,
           "sn_1_2": 0.01071,
           "sn_2_2": 0.01071,
           "sn_3_2": 0.01071,
-          "wl_0": 0.027627,
-          "wl_1": 0.027627,
-          "wl_2": 0.027627
+          "wl_0": 0.013428,
+          "wl_1": 0.027045,
+          "wl_2": 0.027045
         }
       },
       "bl_3": {
-        "ground_ff": 0.581168,
-        "coupling_ff": 0.291628,
-        "total_ff": 0.872796,
-        "resistance_ohm": 385.481,
+        "ground_ff": 0.66272,
+        "coupling_ff": 0.292839,
+        "total_ff": 0.955559,
+        "resistance_ohm": 451.2616,
         "by_layer_ground_ff": {
-          "metal0": 0.581168
+          "metal0": 0.66272
         },
         "coupled_ff": {
-          "rbl_2": 0.129795,
-          "rwl_0": 0.009028,
-          "rwl_1": 0.009028,
-          "rwl_2": 0.009028,
-          "rwl_3": 0.009028,
+          "rbl_2": 0.152745,
+          "rwl_0": 0.007434,
+          "rwl_1": 0.007434,
+          "rwl_2": 0.007434,
+          "rwl_3": 0.007434,
           "sn_0_3": 0.01071,
           "sn_1_3": 0.01071,
           "sn_2_3": 0.01071,
           "sn_3_3": 0.01071,
-          "wl_0": 0.027627,
-          "wl_1": 0.027627,
-          "wl_2": 0.027627
+          "wl_0": 0.013428,
+          "wl_1": 0.027045,
+          "wl_2": 0.027045
         }
       }
     }
@@ -233,440 +233,440 @@
   "per_row": {
     "wl": {
       "wl_0": {
-        "ground_ff": 1.909279,
-        "coupling_ff": 0.189768,
-        "total_ff": 2.099047,
-        "resistance_ohm": 434.2748,
+        "ground_ff": 2.124706,
+        "coupling_ff": 0.148008,
+        "total_ff": 2.272714,
+        "resistance_ohm": 746.0857,
         "by_layer_ground_ff": {
-          "poly": 0.695682,
+          "poly": 0.913914,
           "metal0": 0.299611,
-          "metal1": 0.913986
+          "metal1": 0.911181
         },
         "coupled_ff": {
           "bl_0": 0.024327,
-          "bl_1": 0.027627,
-          "bl_2": 0.027627,
-          "bl_3": 0.027627,
-          "rbl_0": 0.0033,
-          "rbl_1": 0.0033,
-          "rbl_2": 0.0033,
-          "sn_0_0": 0.019664,
-          "sn_0_1": 0.019664,
-          "sn_0_2": 0.019664,
-          "sn_0_3": 0.013668
+          "bl_1": 0.027045,
+          "bl_2": 0.013428,
+          "bl_3": 0.013428,
+          "rbl_0": 0.002718,
+          "rbl_1": 0.002718,
+          "rbl_2": 0.002718,
+          "sn_0_0": 0.018944,
+          "sn_0_1": 0.015986,
+          "sn_0_2": 0.015986,
+          "sn_0_3": 0.01071
         }
       },
       "wl_1": {
-        "ground_ff": 1.909279,
-        "coupling_ff": 0.180892,
-        "total_ff": 2.090171,
-        "resistance_ohm": 434.2748,
+        "ground_ff": 2.124706,
+        "coupling_ff": 0.172284,
+        "total_ff": 2.29699,
+        "resistance_ohm": 746.0857,
         "by_layer_ground_ff": {
-          "poly": 0.695682,
+          "poly": 0.913914,
           "metal0": 0.299611,
-          "metal1": 0.913986
+          "metal1": 0.911181
         },
         "coupled_ff": {
           "bl_0": 0.024327,
-          "bl_1": 0.027627,
-          "bl_2": 0.027627,
-          "bl_3": 0.027627,
-          "rbl_0": 0.0033,
-          "rbl_1": 0.0033,
-          "rbl_2": 0.0033,
-          "sn_1_0": 0.019664,
-          "sn_1_1": 0.016705,
-          "sn_1_2": 0.016705,
+          "bl_1": 0.027045,
+          "bl_2": 0.027045,
+          "bl_3": 0.027045,
+          "rbl_0": 0.002718,
+          "rbl_1": 0.002718,
+          "rbl_2": 0.002718,
+          "sn_1_0": 0.015986,
+          "sn_1_1": 0.015986,
+          "sn_1_2": 0.015986,
           "sn_1_3": 0.01071
         }
       },
       "wl_2": {
-        "ground_ff": 1.909279,
-        "coupling_ff": 0.180892,
-        "total_ff": 2.090171,
-        "resistance_ohm": 434.2748,
+        "ground_ff": 2.124706,
+        "coupling_ff": 0.172284,
+        "total_ff": 2.29699,
+        "resistance_ohm": 746.0857,
         "by_layer_ground_ff": {
-          "poly": 0.695682,
+          "poly": 0.913914,
           "metal0": 0.299611,
-          "metal1": 0.913986
+          "metal1": 0.911181
         },
         "coupled_ff": {
           "bl_0": 0.024327,
-          "bl_1": 0.027627,
-          "bl_2": 0.027627,
-          "bl_3": 0.027627,
-          "rbl_0": 0.0033,
-          "rbl_1": 0.0033,
-          "rbl_2": 0.0033,
-          "sn_2_0": 0.019664,
-          "sn_2_1": 0.016705,
-          "sn_2_2": 0.016705,
+          "bl_1": 0.027045,
+          "bl_2": 0.027045,
+          "bl_3": 0.027045,
+          "rbl_0": 0.002718,
+          "rbl_1": 0.002718,
+          "rbl_2": 0.002718,
+          "sn_2_0": 0.015986,
+          "sn_2_1": 0.015986,
+          "sn_2_2": 0.015986,
           "sn_2_3": 0.01071
         }
       },
       "wl_3": {
-        "ground_ff": 1.91375,
-        "coupling_ff": 0.063784,
-        "total_ff": 1.977534,
-        "resistance_ohm": 434.2748,
+        "ground_ff": 2.128387,
+        "coupling_ff": 0.058668,
+        "total_ff": 2.187055,
+        "resistance_ohm": 746.0857,
         "by_layer_ground_ff": {
-          "poly": 0.695682,
+          "poly": 0.913914,
           "metal0": 0.299611,
-          "metal1": 0.918457
+          "metal1": 0.914862
         },
         "coupled_ff": {
-          "sn_3_0": 0.019664,
-          "sn_3_1": 0.016705,
-          "sn_3_2": 0.016705,
+          "sn_3_0": 0.015986,
+          "sn_3_1": 0.015986,
+          "sn_3_2": 0.015986,
           "sn_3_3": 0.01071
         }
       }
     },
     "rwl": {
       "rwl_0": {
-        "ground_ff": 1.187129,
-        "coupling_ff": 0.166126,
-        "total_ff": 1.353255,
-        "resistance_ohm": 57.8391,
+        "ground_ff": 1.191798,
+        "coupling_ff": 0.151477,
+        "total_ff": 1.343275,
+        "resistance_ohm": 58.8647,
         "by_layer_ground_ff": {
           "metal0": 0.299611,
-          "metal1": 0.887517
+          "metal1": 0.892186
         },
         "coupled_ff": {
-          "bl_1": 0.009028,
-          "bl_2": 0.009028,
-          "bl_3": 0.009028,
-          "rbl_0": 0.019738,
-          "rbl_1": 0.019738,
-          "rbl_2": 0.019738,
+          "bl_1": 0.007434,
+          "bl_2": 0.007434,
+          "bl_3": 0.007434,
+          "rbl_0": 0.018144,
+          "rbl_1": 0.018144,
+          "rbl_2": 0.018144,
           "rbl_3": 0.01071,
           "sn_0_0": 0.010072,
-          "sn_0_1": 0.019682,
-          "sn_0_2": 0.019682,
-          "sn_0_3": 0.019682
+          "sn_0_1": 0.017987,
+          "sn_0_2": 0.017987,
+          "sn_0_3": 0.017987
         }
       },
       "rwl_1": {
-        "ground_ff": 1.187129,
-        "coupling_ff": 0.166126,
-        "total_ff": 1.353255,
-        "resistance_ohm": 57.8391,
+        "ground_ff": 1.191798,
+        "coupling_ff": 0.151477,
+        "total_ff": 1.343275,
+        "resistance_ohm": 58.8647,
         "by_layer_ground_ff": {
           "metal0": 0.299611,
-          "metal1": 0.887517
+          "metal1": 0.892186
         },
         "coupled_ff": {
-          "bl_1": 0.009028,
-          "bl_2": 0.009028,
-          "bl_3": 0.009028,
-          "rbl_0": 0.019738,
-          "rbl_1": 0.019738,
-          "rbl_2": 0.019738,
+          "bl_1": 0.007434,
+          "bl_2": 0.007434,
+          "bl_3": 0.007434,
+          "rbl_0": 0.018144,
+          "rbl_1": 0.018144,
+          "rbl_2": 0.018144,
           "rbl_3": 0.01071,
           "sn_1_0": 0.010072,
-          "sn_1_1": 0.019682,
-          "sn_1_2": 0.019682,
-          "sn_1_3": 0.019682
+          "sn_1_1": 0.017987,
+          "sn_1_2": 0.017987,
+          "sn_1_3": 0.017987
         }
       },
       "rwl_2": {
-        "ground_ff": 1.187129,
-        "coupling_ff": 0.166126,
-        "total_ff": 1.353255,
-        "resistance_ohm": 57.8391,
+        "ground_ff": 1.191798,
+        "coupling_ff": 0.151477,
+        "total_ff": 1.343275,
+        "resistance_ohm": 58.8647,
         "by_layer_ground_ff": {
           "metal0": 0.299611,
-          "metal1": 0.887517
+          "metal1": 0.892186
         },
         "coupled_ff": {
-          "bl_1": 0.009028,
-          "bl_2": 0.009028,
-          "bl_3": 0.009028,
-          "rbl_0": 0.019738,
-          "rbl_1": 0.019738,
-          "rbl_2": 0.019738,
+          "bl_1": 0.007434,
+          "bl_2": 0.007434,
+          "bl_3": 0.007434,
+          "rbl_0": 0.018144,
+          "rbl_1": 0.018144,
+          "rbl_2": 0.018144,
           "rbl_3": 0.01071,
           "sn_2_0": 0.010072,
-          "sn_2_1": 0.019682,
-          "sn_2_2": 0.019682,
-          "sn_2_3": 0.019682
+          "sn_2_1": 0.017987,
+          "sn_2_2": 0.017987,
+          "sn_2_3": 0.017987
         }
       },
       "rwl_3": {
-        "ground_ff": 1.187129,
-        "coupling_ff": 0.166126,
-        "total_ff": 1.353255,
-        "resistance_ohm": 57.8391,
+        "ground_ff": 1.191798,
+        "coupling_ff": 0.151477,
+        "total_ff": 1.343275,
+        "resistance_ohm": 58.8647,
         "by_layer_ground_ff": {
           "metal0": 0.299611,
-          "metal1": 0.887517
+          "metal1": 0.892186
         },
         "coupled_ff": {
-          "bl_1": 0.009028,
-          "bl_2": 0.009028,
-          "bl_3": 0.009028,
-          "rbl_0": 0.019738,
-          "rbl_1": 0.019738,
-          "rbl_2": 0.019738,
+          "bl_1": 0.007434,
+          "bl_2": 0.007434,
+          "bl_3": 0.007434,
+          "rbl_0": 0.018144,
+          "rbl_1": 0.018144,
+          "rbl_2": 0.018144,
           "rbl_3": 0.01071,
           "sn_3_0": 0.010072,
-          "sn_3_1": 0.019682,
-          "sn_3_2": 0.019682,
-          "sn_3_3": 0.019682
+          "sn_3_1": 0.017987,
+          "sn_3_2": 0.017987,
+          "sn_3_3": 0.017987
         }
       }
     }
   },
   "per_cell_sn": {
     "sn_0_0": {
-      "ground_ff": 0.433689,
-      "coupling_ff": 0.051156,
-      "total_ff": 0.484845,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.501634,
+      "coupling_ff": 0.050436,
+      "total_ff": 0.55207,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.259769
+        "poly": 0.228478,
+        "metal0": 0.273155
       },
       "coupled_ff": {
         "bl_0": 0.01071,
         "rbl_0": 0.01071,
         "rwl_0": 0.010072,
-        "wl_0": 0.019664
+        "wl_0": 0.018944
       }
     },
     "sn_0_1": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.060766,
-      "total_ff": 0.491342,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.055393,
+      "total_ff": 0.554463,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_1": 0.01071,
         "rbl_1": 0.01071,
-        "rwl_0": 0.019682,
-        "wl_0": 0.019664
+        "rwl_0": 0.017987,
+        "wl_0": 0.015986
       }
     },
     "sn_0_2": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.060766,
-      "total_ff": 0.491342,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.055393,
+      "total_ff": 0.554463,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_2": 0.01071,
         "rbl_2": 0.01071,
-        "rwl_0": 0.019682,
-        "wl_0": 0.019664
+        "rwl_0": 0.017987,
+        "wl_0": 0.015986
       }
     },
     "sn_0_3": {
-      "ground_ff": 0.432518,
-      "coupling_ff": 0.05477,
-      "total_ff": 0.487288,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.500779,
+      "coupling_ff": 0.050117,
+      "total_ff": 0.550896,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.258598
+        "poly": 0.228478,
+        "metal0": 0.272301
       },
       "coupled_ff": {
         "bl_3": 0.01071,
         "rbl_3": 0.01071,
-        "rwl_0": 0.019682,
-        "wl_0": 0.013668
+        "rwl_0": 0.017987,
+        "wl_0": 0.01071
       }
     },
     "sn_1_0": {
-      "ground_ff": 0.433689,
-      "coupling_ff": 0.064773,
-      "total_ff": 0.498462,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.501634,
+      "coupling_ff": 0.061095,
+      "total_ff": 0.562729,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.259769
+        "poly": 0.228478,
+        "metal0": 0.273155
       },
       "coupled_ff": {
         "bl_0": 0.01071,
         "rbl_0": 0.024327,
         "rwl_1": 0.010072,
-        "wl_1": 0.019664
+        "wl_1": 0.015986
       }
     },
     "sn_1_1": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.071424,
-      "total_ff": 0.502,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.06901,
+      "total_ff": 0.56808,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_1": 0.01071,
         "rbl_1": 0.024327,
-        "rwl_1": 0.019682,
-        "wl_1": 0.016705
+        "rwl_1": 0.017987,
+        "wl_1": 0.015986
       }
     },
     "sn_1_2": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.071424,
-      "total_ff": 0.502,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.06901,
+      "total_ff": 0.56808,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_2": 0.01071,
         "rbl_2": 0.024327,
-        "rwl_1": 0.019682,
-        "wl_1": 0.016705
+        "rwl_1": 0.017987,
+        "wl_1": 0.015986
       }
     },
     "sn_1_3": {
-      "ground_ff": 0.432518,
-      "coupling_ff": 0.065429,
-      "total_ff": 0.497947,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.500779,
+      "coupling_ff": 0.063734,
+      "total_ff": 0.564513,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.258598
+        "poly": 0.228478,
+        "metal0": 0.272301
       },
       "coupled_ff": {
         "bl_3": 0.01071,
         "rbl_3": 0.024327,
-        "rwl_1": 0.019682,
+        "rwl_1": 0.017987,
         "wl_1": 0.01071
       }
     },
     "sn_2_0": {
-      "ground_ff": 0.433689,
-      "coupling_ff": 0.064773,
-      "total_ff": 0.498462,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.501634,
+      "coupling_ff": 0.061095,
+      "total_ff": 0.562729,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.259769
+        "poly": 0.228478,
+        "metal0": 0.273155
       },
       "coupled_ff": {
         "bl_0": 0.01071,
         "rbl_0": 0.024327,
         "rwl_2": 0.010072,
-        "wl_2": 0.019664
+        "wl_2": 0.015986
       }
     },
     "sn_2_1": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.071424,
-      "total_ff": 0.502,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.06901,
+      "total_ff": 0.56808,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_1": 0.01071,
         "rbl_1": 0.024327,
-        "rwl_2": 0.019682,
-        "wl_2": 0.016705
+        "rwl_2": 0.017987,
+        "wl_2": 0.015986
       }
     },
     "sn_2_2": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.071424,
-      "total_ff": 0.502,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.06901,
+      "total_ff": 0.56808,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_2": 0.01071,
         "rbl_2": 0.024327,
-        "rwl_2": 0.019682,
-        "wl_2": 0.016705
+        "rwl_2": 0.017987,
+        "wl_2": 0.015986
       }
     },
     "sn_2_3": {
-      "ground_ff": 0.432518,
-      "coupling_ff": 0.065429,
-      "total_ff": 0.497947,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.500779,
+      "coupling_ff": 0.063734,
+      "total_ff": 0.564513,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.258598
+        "poly": 0.228478,
+        "metal0": 0.272301
       },
       "coupled_ff": {
         "bl_3": 0.01071,
         "rbl_3": 0.024327,
-        "rwl_2": 0.019682,
+        "rwl_2": 0.017987,
         "wl_2": 0.01071
       }
     },
     "sn_3_0": {
-      "ground_ff": 0.433689,
-      "coupling_ff": 0.040446,
-      "total_ff": 0.474135,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.501634,
+      "coupling_ff": 0.036768,
+      "total_ff": 0.538402,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.259769
+        "poly": 0.228478,
+        "metal0": 0.273155
       },
       "coupled_ff": {
         "bl_0": 0.01071,
         "rwl_3": 0.010072,
-        "wl_3": 0.019664
+        "wl_3": 0.015986
       }
     },
     "sn_3_1": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.047097,
-      "total_ff": 0.477673,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.044683,
+      "total_ff": 0.543753,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_1": 0.01071,
-        "rwl_3": 0.019682,
-        "wl_3": 0.016705
+        "rwl_3": 0.017987,
+        "wl_3": 0.015986
       }
     },
     "sn_3_2": {
-      "ground_ff": 0.430576,
-      "coupling_ff": 0.047097,
-      "total_ff": 0.477673,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.49907,
+      "coupling_ff": 0.044683,
+      "total_ff": 0.543753,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.256655
+        "poly": 0.228478,
+        "metal0": 0.270591
       },
       "coupled_ff": {
         "bl_2": 0.01071,
-        "rwl_3": 0.019682,
-        "wl_3": 0.016705
+        "rwl_3": 0.017987,
+        "wl_3": 0.015986
       }
     },
     "sn_3_3": {
-      "ground_ff": 0.432518,
-      "coupling_ff": 0.041102,
-      "total_ff": 0.47362,
-      "resistance_ohm": 250.2452,
+      "ground_ff": 0.500779,
+      "coupling_ff": 0.039407,
+      "total_ff": 0.540186,
+      "resistance_ohm": 338.9817,
       "by_layer_ground_ff": {
-        "poly": 0.17392,
-        "metal0": 0.258598
+        "poly": 0.228478,
+        "metal0": 0.272301
       },
       "coupled_ff": {
         "bl_3": 0.01071,
-        "rwl_3": 0.019682,
+        "rwl_3": 0.017987,
         "wl_3": 0.01071
       }
     }
@@ -676,17 +676,17 @@
       "assumption_ff": 10.0,
       "assumption_source": "sim/sense-stage/gen_sense_stage.py:46 C_RBL_F = 10e-15 (ASSUMPTION; sim/loaded-column/cold-corner/SENSE_INPUT_CONTRACT.md)",
       "extracted_4row_worst_net": "rbl_2",
-      "extracted_4row_worst_ground_ff": 0.581168,
-      "extracted_4row_worst_total_ff": 0.859179,
-      "ratio_extracted_total_to_assumption": 0.085918
+      "extracted_4row_worst_ground_ff": 0.66272,
+      "extracted_4row_worst_total_ff": 0.955559,
+      "ratio_extracted_total_to_assumption": 0.095556
     },
     "c_sn": {
-      "single_cell_ff": 0.605354,
+      "single_cell_ff": 0.672741,
       "single_cell_source": "layout/gain_cell_2t.extract.parasitics.json net 'sn' (issue #7; used by sim/retention/derive_retention.py)",
-      "array_min_total_ff": 0.47362,
-      "array_max_total_ff": 0.502,
-      "array_relative_delta_min": -0.217615,
-      "array_relative_delta_max": -0.170733,
+      "array_min_total_ff": 0.538402,
+      "array_max_total_ff": 0.56808,
+      "array_relative_delta_min": -0.199689,
+      "array_relative_delta_max": -0.155574,
       "finding": "array-context C_SN differs from the single-cell value used by retention"
     }
   },
@@ -701,15 +701,15 @@
         },
         "worst_rbl": {
           "net": "rbl_2",
-          "ground_ff": 0.24556,
-          "coupling_ff": 0.095871,
-          "total_ff": 0.341431
+          "ground_ff": 0.271867,
+          "coupling_ff": 0.103521,
+          "total_ff": 0.375388
         },
         "worst_bl": {
           "net": "bl_3",
-          "ground_ff": 0.24556,
-          "coupling_ff": 0.095871,
-          "total_ff": 0.341431
+          "ground_ff": 0.271867,
+          "coupling_ff": 0.117138,
+          "total_ff": 0.389005
         }
       },
       {
@@ -721,15 +721,15 @@
         },
         "worst_rbl": {
           "net": "rbl_2",
-          "ground_ff": 0.583799,
-          "coupling_ff": 0.269889,
-          "total_ff": 0.853688
+          "ground_ff": 0.66272,
+          "coupling_ff": 0.292839,
+          "total_ff": 0.955559
         },
         "worst_bl": {
-          "net": "bl_3",
-          "ground_ff": 0.583799,
-          "coupling_ff": 0.269889,
-          "total_ff": 0.853688
+          "net": "bl_1",
+          "ground_ff": 0.66272,
+          "coupling_ff": 0.306456,
+          "total_ff": 0.969176
         }
       },
       {
@@ -741,37 +741,37 @@
         },
         "worst_rbl": {
           "net": "rbl_2",
-          "ground_ff": 1.260277,
-          "coupling_ff": 0.617925,
-          "total_ff": 1.878202
+          "ground_ff": 1.444426,
+          "coupling_ff": 0.671475,
+          "total_ff": 2.115901
         },
         "worst_bl": {
-          "net": "bl_3",
-          "ground_ff": 1.260277,
-          "coupling_ff": 0.617925,
-          "total_ff": 1.878202
+          "net": "bl_1",
+          "ground_ff": 1.444426,
+          "coupling_ff": 0.685092,
+          "total_ff": 2.129518
         }
       }
     ],
     "fit": {
       "worst_rbl.ground_ff": {
-        "fixed_ff": -0.092679,
-        "per_row_ff": 0.16912,
+        "fixed_ff": -0.118986,
+        "per_row_ff": 0.195427,
         "max_abs_residual_ff": 0.0
       },
       "worst_rbl.total_ff": {
-        "fixed_ff": -0.170826,
-        "per_row_ff": 0.256128,
+        "fixed_ff": -0.204783,
+        "per_row_ff": 0.290085,
         "max_abs_residual_ff": 0.0
       },
       "worst_bl.ground_ff": {
-        "fixed_ff": -0.092679,
-        "per_row_ff": 0.16912,
+        "fixed_ff": -0.118986,
+        "per_row_ff": 0.195427,
         "max_abs_residual_ff": 0.0
       },
       "worst_bl.total_ff": {
-        "fixed_ff": -0.170826,
-        "per_row_ff": 0.256128,
+        "fixed_ff": -0.191166,
+        "per_row_ff": 0.290085,
         "max_abs_residual_ff": 0.0
       }
     },
@@ -781,32 +781,32 @@
       "rows": [
         {
           "n_rows": 16,
-          "worst_rbl_total_ff": 3.927222,
-          "worst_bl_total_ff": 3.927222
+          "worst_rbl_total_ff": 4.436577,
+          "worst_bl_total_ff": 4.450194
         },
         {
           "n_rows": 32,
-          "worst_rbl_total_ff": 8.02527,
-          "worst_bl_total_ff": 8.02527
+          "worst_rbl_total_ff": 9.077937,
+          "worst_bl_total_ff": 9.091554
         },
         {
           "n_rows": 64,
-          "worst_rbl_total_ff": 16.221366,
-          "worst_bl_total_ff": 16.221366
+          "worst_rbl_total_ff": 18.360657,
+          "worst_bl_total_ff": 18.374274
         },
         {
           "n_rows": 128,
-          "worst_rbl_total_ff": 32.613558,
-          "worst_bl_total_ff": 32.613558
+          "worst_rbl_total_ff": 36.926097,
+          "worst_bl_total_ff": 36.939714
         },
         {
           "n_rows": 256,
-          "worst_rbl_total_ff": 65.397942,
-          "worst_bl_total_ff": 65.397942
+          "worst_rbl_total_ff": 74.056977,
+          "worst_bl_total_ff": 74.070594
         }
       ],
-      "n_rows_where_wiring_alone_reaches_c_rbl_assumption": 39.709934
+      "n_rows_where_wiring_alone_reaches_c_rbl_assumption": 35.178596
     },
-    "scratch_4row_vs_committed_max_abs_diff_ff": 0.06114
+    "scratch_4row_vs_committed_max_abs_diff_ff": 0.0
   }
 }

@@ -235,10 +235,11 @@ class CommittedInputs(unittest.TestCase):
 
     def test_recorded_range_and_limiting_node(self):
         a = self.doc["array"]
-        self.assertAlmostEqual(a["total_ff"]["min"], 0.47362, places=6)
-        self.assertAlmostEqual(a["total_ff"]["max"], 0.502, places=6)
-        self.assertEqual(a["limiting_node"], "sn_3_3")
-        self.assertEqual(a["nodes_tied_at_minimum"], ["sn_3_3"])
+        # klt 0.8.0 regeneration (issue #244); the 20261011 file records the pre-#244 layout
+        self.assertAlmostEqual(a["total_ff"]["min"], 0.538402, places=6)
+        self.assertAlmostEqual(a["total_ff"]["max"], 0.568080, places=6)
+        self.assertEqual(a["limiting_node"], "sn_3_0")
+        self.assertEqual(a["nodes_tied_at_minimum"], ["sn_3_0"])
 
     def test_matches_issue80_summary(self):
         summary = json.loads((C.REPO_ROOT / "layout" / "gain_cell_2t_array.parasitics.summary.json").read_text())
@@ -254,7 +255,7 @@ class CommittedInputs(unittest.TestCase):
     def test_baselines_kept_distinct(self):
         r = self.doc["retention"]
         self.assertAlmostEqual(r["ratified_prelayout"]["retention_time_s"], 1.005989e-05)
-        self.assertAlmostEqual(r["isolated_cell_extracted"]["retention_time_s"], 5.503841e-06)
+        self.assertAlmostEqual(r["isolated_cell_extracted"]["retention_time_s"], 6.116519e-06)
         s = r["array_capacitance_only_sensitivity"]
         self.assertIn("CAPACITANCE-ONLY SENSITIVITY", s["label"])
         self.assertIn("not an array guarantee", s["label"])
@@ -272,13 +273,14 @@ class CommittedInputs(unittest.TestCase):
         self.assertFalse(g["geometry_matched_leakage_evidence_committed"])
 
     def test_committed_comparison_reproduces(self):
+        # Only the newest file reproduces from the current inputs; earlier files are
+        # append-only history of superseded layouts (issue #244 regenerated the GDS).
         files = committed_comparisons()
         self.assertTrue(files, "no committed array_c_sn_comparison_*.json")
-        for f in files:
-            with self.subTest(f=f.name):
-                committed = json.loads(f.read_text())
-                doc = C.build(retention_as_of=committed["generated_utc"])
-                self.assertEqual(C.strip_volatile(committed), json.loads(json.dumps(C.strip_volatile(doc))))
+        f = files[-1]
+        committed = json.loads(f.read_text())
+        doc = C.build(retention_as_of=committed["generated_utc"])
+        self.assertEqual(C.strip_volatile(committed), json.loads(json.dumps(C.strip_volatile(doc))))
 
     def test_check_cli(self):
         files = committed_comparisons()
@@ -299,7 +301,7 @@ class DefaultPathUntouched(unittest.TestCase):
         self.assertEqual(src["extract_json"].name, "gain_cell_2t.extract.parasitics.json")
         self.assertEqual(src["net"], "sn")
         total, _ = DR.load_extracted_c_sn(src["extract_json"], src["net"])
-        self.assertAlmostEqual(total, 0.605354, places=6)
+        self.assertAlmostEqual(total, 0.672741, places=6)
 
 
 if __name__ == "__main__":

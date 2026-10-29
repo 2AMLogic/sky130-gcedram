@@ -124,7 +124,6 @@ def numbers() -> None:
         check(len(pts(v)) == 30, f"{v}: 30 points")
     mnf = lambda v, f: min(f(p) for p in pts(v))
     mxf = lambda v, f: max(f(p) for p in pts(v))
-    a0, a1 = "after_write", "preread"
     check(close(mnf("rem_vwl_2p0", lambda p: p["stored0_after_write_v"]["min"]), -0.1393), "A stored '0' min -0.139 V")
     check(close(mnf("phase2_baseline", lambda p: p["stored0_after_write_v"]["min"]), -0.13465), "baseline stored '0' min -0.135 V")
     check(close(mnf("phase2_baseline", lambda p: p["stored1_after_write_v"]["min"]), 0.8637), "baseline stored '1' min 0.864 V")

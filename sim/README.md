@@ -378,3 +378,14 @@ the sense amplifier and the write-margin decision in issue #24 each consume;
 it does **not** re-ratify any retention number in
 [`spec/retention-refresh-budget.md`](../spec/retention-refresh-budget.md),
 which remains a separate, gated spec change.
+
+## Stored evidence (issue #218)
+
+New campaigns put raw outputs in the fleet artifact store instead of git: stage
+them in the git-ignored `evidence-scratch/<bench>-<run-id>/`, then run
+`python3 -I sim/store_evidence.py --bench <bench> --run-id <run-id>`. Only
+`manifests/artifacts/<bench>-<run-id>.manifest.json` and a Markdown summary are
+committed; see [`../manifests/artifacts/README.md`](../manifests/artifacts/README.md).
+The writer fails closed (no byte-committing fallback), and CI checks the
+manifests. The append-only rule above still governs files committed under
+`results/`; this path only adds new, manifest-referenced evidence.

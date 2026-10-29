@@ -81,7 +81,9 @@ class Analysis(unittest.TestCase):
             r = json.loads(rep.read_text())
             self.assertEqual(r["corner_count"], 10)
             self.assertEqual(r["environment"]["remote"]["provider"], "aws-batch-fleet")
-            self.assertEqual(r["environment"]["remote"]["bucket"], "<redacted-bucket>")
+            # klt >= 0.8.0 no longer emits the bucket at all; older reports
+            # carry it redacted. Either way no real bucket name may appear.
+            self.assertIn(r["environment"]["remote"].get("bucket"), (None, "<redacted-bucket>"))
 
     def test_analyzer_refuses_to_overwrite(self):
         with tempfile.TemporaryDirectory() as d:
@@ -208,7 +210,9 @@ class IsolationAnalysis(unittest.TestCase):
             r = json.loads(rep.read_text())
             self.assertEqual(r["corner_count"], 10)
             self.assertEqual(r["environment"]["remote"]["provider"], "aws-batch-fleet")
-            self.assertEqual(r["environment"]["remote"]["bucket"], "<redacted-bucket>")
+            # klt >= 0.8.0 no longer emits the bucket at all; older reports
+            # carry it redacted. Either way no real bucket name may appear.
+            self.assertIn(r["environment"]["remote"].get("bucket"), (None, "<redacted-bucket>"))
 
     def test_analyzer_refuses_to_overwrite(self):
         with tempfile.TemporaryDirectory() as d:

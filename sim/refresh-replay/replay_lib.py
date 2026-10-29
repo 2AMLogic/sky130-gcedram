@@ -257,9 +257,6 @@ def check_trace_consistency(golden: dict, other: dict, signals: list[str] | None
     return out
 
 
-def trace_from_edges(initial: dict, edges: list[dict]) -> dict:
-    return dict(initial=dict(initial), edges=sorted_edges(edges))
-
 
 def digital_duration(trace: dict) -> dict:
     """Operation timing from the trace (t = 0 is the accepting clock edge)."""
@@ -269,3 +266,21 @@ def digital_duration(trace: dict) -> dict:
     return dict(busy_rise_ns=busy_rise[0] if busy_rise else None, busy_fall_ns=busy_fall[-1] if busy_fall else None,
                 done_rise_ns=done_rise[0] if done_rise else None)
 
+
+# ---- deck-instance parsing shared by the declared-change-only verifiers (gen_init_control, gen_rwl_driver_sweep) ----
+def inst_lines(deck: str, name: str) -> list[str]:
+    rx = re.compile(r"(?<=_)" + re.escape(name) + r"(?:_\d+)?(?![A-Za-z0-9_])")
+    return [ln.replace(name, "@") for ln in deck.splitlines() if rx.search(ln) and not ln.startswith(("*", ".ic"))]
+
+
+def ic_tokens(deck: str, name: str) -> dict:
+    """``.ic v(node)=value`` tokens of one instance, name masked."""
+    rx = re.compile(r"v\((\S+?)\)=(\S+)")
+    nrx = re.compile(r"(?<=_)" + re.escape(name) + r"(?:_\d+)?$")
+    out = {}
+    for ln in deck.splitlines():
+        if ln.startswith(".ic"):
+            for node, val in rx.findall(ln):
+                if nrx.search(node):
+                    out[node.replace(name, "@")] = val
+    return out
