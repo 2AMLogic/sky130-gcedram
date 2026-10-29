@@ -33,10 +33,11 @@ class Generator(unittest.TestCase):
     def test_extracted_c_rbl_is_the_cited_json_value(self):
         d = json.loads(G.PARASITICS_SUMMARY.read_text())
         v = d["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"]
-        self.assertAlmostEqual(v, 0.859179, places=6)
+        self.assertAlmostEqual(v, 0.955559, places=6)
         self.assertEqual(v, max(c["total_ff"] for c in d["per_column"]["rbl"].values()))
         self.assertEqual(G.extracted_provenance()["netlist_sha256"],
-                         "dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33")
+                         "6469896a403d9da6ba5f7d0ba10616fd0aa1a04470699460893c67b8e44f9e1f")
+        self.assertEqual(G.extracted_provenance("pre244")["value_ff"], 0.859179)
         for vid in ("crbl_ext4row", "crbl_ext4row_layoutcard", "nc_write_disabled_ext4row"):
             self.assertEqual(G.variants()[vid]["c_rbl_f"], v * 1e-15)
             self.assertEqual(G.variants()[vid]["c_rbl_label"], "EXTRACTED-4-ROW")
@@ -178,6 +179,21 @@ class Analyzer(unittest.TestCase):
                 self.assertEqual(X.ingest([str(src)], "C"), 2)
             finally:
                 X.RESULTS = old
+
+    def test_era_is_detected_from_deck_sha(self):
+        import hashlib
+        def rep(era):
+            deck = G.era_decks(era) / "crbl_2f_fresh.spice"
+            r = fake_report("crbl_2f", "fresh")
+            r["environment"]["netlist_sha256"] = hashlib.sha256(deck.read_bytes()).hexdigest()
+            return r
+        self.assertEqual(X.detect_era([rep("pre244")]), "pre244")
+        self.assertEqual(X.detect_era([rep("p244")]), "p244")
+
+    def test_reference_deck_keeps_phase2_c_sn_and_others_use_current(self):
+        self.assertIn(f".param C_SN = {G.PHASE2_C_SN_FF * 1e-15:.6e}", G.build_netlist("ref_crbl_10f", "fresh"))
+        csn, _ = R.load_extracted_c_sn(R.EXTRACT_JSON, "sn")
+        self.assertIn(f".param C_SN = {csn * 1e-15:.6e}", G.build_netlist("crbl_ext4row", "fresh"))
 
     def test_unknown_report_rejected(self):
         with self.assertRaises(ValueError):

@@ -88,6 +88,8 @@ stress item; see the decision record section 8.
 
 ## Issue #88 addendum: extracted `C_RBL` re-run (append-only)
 
+> Pre-#244 layout (0.859179 fF, `C_SN` 0.605354 fF). Kept as history; the post-#244 re-run is the "Issue #261 addendum" below, and its verdicts differ.
+
 New simulation evidence on the ideal-periphery baseline. The sections above
 are unchanged, and nothing is ratified.
 
@@ -125,3 +127,43 @@ still fails fs/-40 C (0.075 V against the 0.1 V placeholder). ss/-40 C is no
 longer marginal. Only the layout-card variant passes the full grid, and only
 narrowly. The supply-option decision record is unaffected. Options A and B
 were not re-run.
+
+## Issue #261 addendum: #88 re-run on the post-#244 layout (append-only)
+
+PR #248 (issue #244) regenerated the layout, so the extracted `C_RBL` moved from 0.859179 to **0.955559 fF** and the extracted `C_SN` from 0.605354 to 0.672741 fF. The #88 evidence above is pre-#244 history and is not edited. New dated runs, same ideal-periphery baseline; nothing is ratified.
+
+| Item | File |
+|---|---|
+| Loaded-column re-run (section "Issue #261") | [`../extracted-crbl/README.md`](../extracted-crbl/README.md) |
+| Sense-stage re-run | [`../../sense-stage/README.md`](../../sense-stage/README.md) (section "Issue #261") |
+| Contract row (new dated section) | [`SENSE_INPUT_CONTRACT.md`](SENSE_INPUT_CONTRACT.md) "2026-10-29 addendum" |
+
+Pins:
+
+* `C_RBL` source: `layout/gain_cell_2t_array.parasitics.summary.json`
+  `comparison.c_rbl.extracted_4row_worst_total_ff` = 0.955559 fF. Extracted
+  netlist sha256 `6469896a403d9da6ba5f7d0ba10616fd0aa1a04470699460893c67b8e44f9e1f`.
+* Loaded column, run `20261029T203633Z` (decks in `../extracted-crbl/decks_p244/`):
+  * `summary.json` SHA-256 `74243b13d42e702582fcb0bb73db41a64ea71d113a17096f2395db5eae163244`;
+  * `cases.csv.gz` SHA-256 `7ab7d170c747e55217f561e269ffb3b19371c65bd657a0ef29deabaafeb49f70`;
+  * 10 fleet jobs, 8192 case rows.
+* Sense stage:
+  * `sense_summary_20261029T194412Z.json` SHA-256 `35762c8fc4a43ed996ab0180d271bd5cc766c5b972835551a1b307e2442fd7ef` (EXTRACTED-4-ROW);
+  * `sense_summary_20261029T194413Z.json` SHA-256 `95f2a0116c974f7f8b82955cdef45bb80b91ce094578fb99db30ce136807d71a` (2 fF);
+  * `sense_summary_20261029T194414Z.json` SHA-256 `03a33440ef47b82edcc3d15b6b5b5f20b57e0347cf09e643b90d18fcd2c1d66a` (EXTRACTED-4-ROW + layout card).
+
+Check additions in `check_evidence_index.py` (`issue261()`): the hashes above
+match; the summary records an OK reproduction of the committed Phase 2 run and
+an OK negative control; the run used the cited `C_RBL`; every number quoted in
+the contract addendum matches the new summaries. The `issue88()` checks now
+read the cited value and netlist hash from the frozen 2026-10-11 summary
+instead of the live layout JSON.
+
+**Verdict after #261.** At the bounding extracted load the design-card column
+now passes the full grid (30/30). The fs/-40 C aged point is the minimum at
+0.102 V against the 0.1 V placeholder, a 2 mV margin, so this is marginal
+and not a robust pass. The 2 fF trend variant still fails fs/-40 C
+(0.075 V), and the 10 fF reproduction is unchanged. The sense-stage verdicts
+did not change (sf/125 C best-reference droop verdict stays `met`). The
+supply-option decision record is unaffected.
+

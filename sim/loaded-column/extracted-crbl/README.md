@@ -1,5 +1,7 @@
 # Loaded column and sense stage with the extracted 4-row `C_RBL` (issue #88)
 
+> **Pre-#244 layout.** This file's tables and verdicts below (`C_RBL` 0.859179 fF, `C_SN` 0.605354 fF, run `20261011T015419Z`, decks in `decks/`) are history of the layout before PR #248. They are not edited. The same variants on the current layout (`C_RBL` 0.955559 fF, `C_SN` 0.672741 fF) are in "Issue #261" at the end of this file, and **its fs/-40 C verdict differs**.
+
 This directory adds new append-only evidence. It re-runs the Phase 2 /
 cold-corner loaded-column read (issues #45, #47) with the read-bitline load
 extracted from the committed 4x4 array (issue #80) instead of the assumed
@@ -211,7 +213,7 @@ close it. It is closed only together with the layout card, and only narrowly.
 
 | File | Role |
 |---|---|
-| [`gen_column_klt.py`](gen_column_klt.py) | generates [`decks/`](decks/) (10 circuit bodies + 10 `klt sim` requests); `--check` exits 1 if stale |
+| [`gen_column_klt.py`](gen_column_klt.py) | generates [`decks_p244/`](decks_p244/) (10 circuit bodies + 10 `klt sim` requests; `decks/` is the frozen pre-#244 set, not regenerated); `--check` exits 1 if stale |
 | [`analyze_column_klt.py`](analyze_column_klt.py) | `--ingest` (redact + gzip + refuse overwrite); reduce a run directory into `cases.csv.gz` + `summary.json` |
 | [`test_column_klt.py`](test_column_klt.py) | stdlib tests: decks not stale, `C_RBL` is the cited JSON value and the whole load, Phase 2 connectivity and instants, card/negative-control diffs, analyzer, committed summary reproduces from the committed reports |
 | `results/20261011T015419Z/` | 10 klt reports (`.json.gz`), `cases.csv.gz` (8192 rows), `summary.json` (reproduction, negative control, old-vs-new per point) |
@@ -221,8 +223,8 @@ close it. It is closed only together with the layout card, and only narrowly.
 ```bash
 python3 -I sim/loaded-column/extracted-crbl/gen_column_klt.py --check
 # each request is one batch job (KLT_SIM_BACKEND=batch); never a local grid
-uvx --from "klayout-tools==0.6.0" klt sim --backend batch --format json \
-    sim/loaded-column/extracted-crbl/decks/request_<variant>_<age>.json > /tmp/<variant>_<age>.json
+uvx --from "klayout-tools==0.8.0" klt sim --backend batch --format json \
+    sim/loaded-column/extracted-crbl/decks_p244/request_<variant>_<age>.json > /tmp/<variant>_<age>.json
 python3 -I sim/loaded-column/extracted-crbl/analyze_column_klt.py --campaign <NEW_RUN_ID> --ingest /tmp/*.json
 python3 -I sim/loaded-column/extracted-crbl/analyze_column_klt.py sim/loaded-column/extracted-crbl/results/<NEW_RUN_ID>
 python3 -I sim/loaded-column/extracted-crbl/test_column_klt.py
@@ -242,3 +244,55 @@ python3 -I sim/loaded-column/extracted-crbl/test_column_klt.py
 * No klayout-tools friction beyond the already-filed #2894 (no `.param`
   axis) and the known runner/client version skew, which was avoided by
   pinning the 0.6.0 client.
+
+## Issue #261: re-run on the post-#244 layout (append-only, 2026-10-29)
+
+PR #248 (issue #244) regenerated the layout, which moved two extracted values: `C_RBL` 0.859179 -> **0.955559 fF** (worst net `rbl_2`; ground 0.581168 -> 0.66272 fF) and `C_SN` 0.605354 -> 0.672741 fF. Label unchanged: **EXTRACTED-4-ROW**, 4 rows a STUDY-ASSUMPTION, `N_rows` **not ratified**. No `spec/` change, ideal periphery as before. The extracted netlist sha256 is now `6469896a403d9da6ba5f7d0ba10616fd0aa1a04470699460893c67b8e44f9e1f`.
+
+**Handling.** The 2026-10-11 decks in `decks/` and run `20261011T015419Z` are frozen history; `gen_column_klt.py` now writes `decks_p244/` from the current JSON key and the current extracted `C_SN`. One deliberate exception: `ref_crbl_10f` (the harness-reproduction gate) keeps the Phase 2 `C_SN` of 0.605354 fF, so that it still reproduces the committed Phase 2 rows under the unchanged 1 mV / same-verdict criterion. The analyzer picks the era by matching each report's `netlist_sha256` to the committed decks of each era, so both runs re-derive from their committed reports.
+
+**Run.** Campaign [`20261029T203633Z`](results/20261029T203633Z/): 10 requests, 128 corners, all `pass`, 0 errored, ngspice 46, `uvx --from "klayout-tools==0.8.0" klt sim --backend batch --format json`, 8192 case rows. Every job went to the batch fleet; none was refused and nothing ran locally. (A first attempt to submit two requests at once was refused by klt's output-directory lock before any job launched; the requests were then submitted one at a time.) Reports have the bucket name redacted.
+
+| Request | Job | Corners | Elapsed |
+|---|---|---:|---:|
+| `ref_crbl_10f` fresh / aged | `klt-sim-c9e5df985fe3` / `klt-sim-452a445dc38f` | 15 / 15 | 69 / 362 s |
+| `crbl_ext4row` fresh / aged | `klt-sim-61d1f1f7f5fc` / `klt-sim-43c3b59f9cc8` | 15 / 15 | 42 / 393 s |
+| `crbl_2f` fresh / aged | `klt-sim-f77da8f70f21` / `klt-sim-f133d0fd8d71` | 15 / 15 | 80 / 697 s |
+| `crbl_ext4row_layoutcard` fresh / aged | `klt-sim-e4584580de66` / `klt-sim-a978ed62fc04` | 15 / 15 | 42 / 427 s |
+| `nc_write_disabled_ext4row` fresh / aged | `klt-sim-78c4c3660392` / `klt-sim-d46f30067358` | 4 / 4 | 22 / 156 s |
+
+**Checks.** The 10 fF reproduction is OK (1920 cases, worst point-separation difference 5.0e-5 V, no verdict mismatch) and the negative control fails at all 8 points with negative separation, as required.
+
+### Old vs new at the contract's named corners
+
+Pre-#244 numbers are from `20261011T015419Z`.
+
+| Point | 10 fF, this harness (Phase 2 `C_SN`) | **0.956 fF EXTRACTED-4-ROW** (pre-#244: 0.859 fF) | 2 fF ASSUMPTION (pre-#244) | 0.956 fF + layout card (pre-#244) |
+|---|---|---|---|---|
+| fs/-40 C fresh | 0.018 V, NR, FAIL | **0.111 V, 8.36 ns, PASS** (0.082 V, 11.78 ns, FAIL) | 0.081 V, 12.16 ns, FAIL (0.057 V, 17.94 ns) | 0.148 V, 6.00 ns, PASS (0.116 V, 7.95 ns) |
+| fs/-40 C aged | 0.017 V, NR, FAIL | **0.102 V, 9.145 ns, PASS** (0.075 V, 12.97 ns, FAIL) | 0.075 V, 13.31 ns, FAIL (0.052 V, 19.76 ns) | 0.138 V, 6.50 ns, PASS (0.108 V, 8.68 ns) |
+| ss/-40 C fresh | 0.121 V, 7.92 ns, PASS | **0.457 V, 1.24 ns, PASS** (0.388 V, 1.56 ns) | 0.372 V, 1.77 ns, PASS (0.303 V, 2.35 ns) | 0.521 V, 1.03 ns, PASS (0.459 V, 1.25 ns) |
+| ss/-40 C aged | 0.113 V, 8.55 ns, PASS | **0.439 V, 1.32 ns, PASS** (0.370 V, 1.69 ns) | 0.356 V, 1.90 ns, PASS (0.288 V, 2.54 ns) | 0.503 V, 1.09 ns, PASS (0.441 V, 1.33 ns) |
+
+### Whole grid (15 points x 2 ages)
+
+| Variant | Points PASS (pre-#244) | Min separation over grid (point) (pre-#244) | Max read disturb (pre-#244) |
+|---|---:|---|---:|
+| `ref_crbl_10f` (this harness) | 28/30 (28/30) | 0.017 V, fs/-40 aged (0.017 V) | 0.067 V (0.067 V) |
+| `crbl_ext4row` | **30/30** (28/30) | **0.102 V**, fs/-40 aged (0.075 V) | 0.060 V (0.069 V) |
+| `crbl_2f` | 28/30 (28/30) | 0.075 V, fs/-40 aged (0.052 V) | 0.060 V (0.068 V) |
+| `crbl_ext4row_layoutcard` | 30/30 (30/30) | 0.138 V, fs/-40 aged (0.108 V) | 0.054 V (0.058 V) |
+| `nc_write_disabled_ext4row` | 0/8 (required) (0/8) | all negative, min -1.225 V (-1.229 V) | n/a |
+
+### What moved, and what moved a verdict
+
+* **The design-card extracted-load verdict at fs/-40 C flips from FAIL to PASS.**
+  * Both ages now clear the 0.1 V separation placeholder (0.111 V fresh, 0.102 V aged) and the stored '1' reaches the 0.1 V droop inside `t_sense` = 10 ns (8.36 ns fresh, 9.145 ns aged). The grid is 30/30 where it was 28/30.
+  * **The aged point passes by 2 mV and 0.86 ns of latency.** Against placeholder criteria this is a narrow pass, not a robust one. The criteria are study ASSUMPTIONS, not spec values.
+  * Cause, as far as these runs show: the regenerated layout raises `C_SN` by 11% (0.605354 -> 0.672741 fF), which also moves the 2 fF row (0.052 -> 0.075 V) with `C_RBL` held at 2 fF, and that row still **fails** fs/-40 C. The extracted-load row gains 0.027 V, the 2 fF row 0.023 V. The runs change `C_RBL` and `C_SN` together, so the share due to the heavier `C_RBL` itself is not isolated; no run holds `C_SN` at the old value other than the 10 fF reproduction deck, which has no bearing on the extracted-load rows.
+* **ss/-40 C** stays PASS and gets more comfortable (0.370 -> 0.439 V aged, 1.69 -> 1.32 ns).
+* **The layout-card variant** keeps its PASS at 30/30 with a wider margin (0.108 -> 0.138 V). It is no longer the only variant that clears the grid, so "only the layout-card variant passes the full grid" in the pre-#244 verdict no longer holds on the current layout.
+* **The other 26 points** of the `crbl_ext4row` grid move by -0.001 to +0.036 V. The largest gains are at fs/27 C (fresh +0.027 V, aged +0.036 V); the 125 C points move by 0.004 V or less (for example sf/125 C aged 0.609 -> 0.608 V).
+* **Unchanged:** the 10 fF reproduction (identical numbers, by construction), the negative control, the 2 fF fail at fs/-40 C, and the label: the extracted value is a lightest-load bound (wiring only, replacing the 10 fF), not a prediction, and `N_rows` is not ratified.
+
+The sense-stage half of the re-run is in [`../../sense-stage/README.md`](../../sense-stage/README.md), section "Issue #261". Contract row: "2026-10-29 addendum" in [`../cold-corner/SENSE_INPUT_CONTRACT.md`](../cold-corner/SENSE_INPUT_CONTRACT.md).
