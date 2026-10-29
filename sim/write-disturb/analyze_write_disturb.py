@@ -51,7 +51,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(0, str(HERE.parent))
 import gen_write_disturb as G  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 
 DELTA_V_V = G.DELTA_V_V
 T_RET_S = G.T_RET_RATIFIED_S
@@ -161,7 +163,7 @@ def brief(r: dict | None) -> dict | None:
 
 
 def summarize_corner(corner: dict) -> tuple[list[dict], list[dict], dict]:
-    meas = {m["name"]: m["value"] for m in corner["measurements"]}
+    meas = measurements_of(corner, strict=True)
     tog = toggle_rows("std", meas, corner) + toggle_rows("neg", meas, corner)
     hs = hs_rows(meas, corner)
     n_last = G.N_SET[-1]

@@ -56,6 +56,9 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from gdsio import GdsError, gds_records  # noqa: E402
+
 BASELINE_ARTIFACTS: list[tuple[str, str]] = [
     ("gain_cell_2t_array_mos.gds", "gds"),
     ("gain_cell_2t_array_mos.json", "json"),
@@ -89,28 +92,6 @@ REC = {
 }
 ELEMENT_START = {0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x15, 0x2D}
 TIMESTAMP_RECORDS = {0x01, 0x05}
-
-
-class GdsError(ValueError):
-    pass
-
-
-def gds_records(data: bytes):
-    i, n = 0, len(data)
-    while i < n:
-        if i + 4 > n:
-            raise GdsError(f"truncated record header at byte {i}")
-        length, rtype, dtype = struct.unpack(">HBB", data[i:i + 4])
-        if length < 4 or i + length > n:
-            raise GdsError(f"bad record length {length} at byte {i}")
-        yield rtype, dtype, data[i + 4:i + length]
-        i += length
-        if rtype == 0x04:  # ENDLIB
-            rest = data[i:]
-            if rest.strip(b"\x00"):
-                raise GdsError(f"non-padding bytes after ENDLIB at byte {i}")
-            return
-    raise GdsError("no ENDLIB record")
 
 
 def canonical_gds(data: bytes) -> dict[str, Any]:

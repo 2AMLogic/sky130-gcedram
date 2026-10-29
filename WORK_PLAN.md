@@ -9,7 +9,7 @@ Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a h
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
-- **#214**: feat(sim): device-inclusive C_SN of the compact v2 array
+- **#223**: docs(spec): propose shorter refresh interval on device-inclusive retention bound
 
 ## Very Important
 
@@ -49,7 +49,7 @@ PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#76**: ci: run refresh-overhead and evidence_common tests (#73)
 - **#152**: sim: re-run sense stage and loaded column with the extracted 4-row C_RBL
-- **#214**: feat(sim): device-inclusive C_SN of the compact v2 array
+- **#223**: docs(spec): propose shorter refresh interval on device-inclusive retention bound
 
 ## Proposed
 
@@ -60,8 +60,8 @@ Issues carrying `loom:curated`.
 - **#88**: Re-run sense-stage and loaded-column with the extracted 4-row C_RBL (0.86 fF vs assumed 10 fF) *(curated)*
 - **#166**: Re-qualify reference records under open_pdks f6eeac7 and mark c6d73a3 records superseded *(curated)*
 - **#168**: Re-qualify G1 retention chain (leakage, bitcell-transient, retention) under open_pdks f6eeac7 *(curated)*
-- **#208**: Operator decision: retention/refresh budget vs compact-layout C_SN (from #161) *(curated)*
 - **#212**: Re-baseline layout DRC/LVS/ERC evidence under a klt rev with signoff --attest *(curated)*
+- **#218**: Adopt the common artifact store for sim evidence (manifests in git, bytes via klt artifact) *(curated)*
 
 ## Proposed (Architect / Hermit)
 

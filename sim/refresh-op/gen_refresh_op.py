@@ -61,10 +61,6 @@ SN1_PRE_V = [0.90, 1.00]       # stored '1' pre-read level: 0.9 V = the retentio
 SN0_PRE_V = [-0.10, 0.00]      # stored '0' pre-read level (sense-stage)
 
 
-def sense_grid() -> list[float]:
-    return list(SENSE_S)
-
-
 def wb_grid() -> list[float]:
     return [NEG_CONTROL_WB_S] + list(WB_S)
 

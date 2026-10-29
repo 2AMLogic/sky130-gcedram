@@ -49,6 +49,8 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+from gdsio import gds_real, gds_records  # noqa: E402
 N_ROWS, N_COLS = 4, 4  # layout/array_topology.py defaults (checked below)
 
 # --- ASSUMPTIONS (labelled; not measured) -----------------------------------
@@ -97,30 +99,17 @@ for _c in SRAM_COMPARATORS:
 
 def gds_extents(path: Path) -> dict:
     """Min/max of every BOUNDARY/PATH/BOX XY over all structures (um)."""
-    data = path.read_bytes()
-    i, dbu_um = 0, None
+    dbu_um = None
     xs, ys = [], []
-    while i + 4 <= len(data):
-        n, rtype, dtype = struct.unpack(">HBB", data[i:i + 4])
-        body = data[i + 4:i + n]
+    for rtype, _, body in gds_records(path.read_bytes()):
         if rtype == 0x03 and dbu_um is None:  # UNITS: (db/user, db/m)
-            dbu_um = _real8(body[8:16]) * 1e6
+            dbu_um = gds_real(body[8:16]) * 1e6
         elif rtype == 0x10:  # XY
             vals = struct.unpack(">%di" % (len(body) // 4), body)
             xs += vals[0::2]
             ys += vals[1::2]
-        i += n
-        if n == 0:
-            break
     return {"x0": min(xs) * dbu_um, "y0": min(ys) * dbu_um,
             "x1": max(xs) * dbu_um, "y1": max(ys) * dbu_um}
-
-
-def _real8(b: bytes) -> float:
-    sign = -1 if b[0] & 0x80 else 1
-    exp = (b[0] & 0x7F) - 64
-    mant = int.from_bytes(b[1:], "big") / float(1 << 56)
-    return sign * mant * 16.0 ** exp
 
 
 def derive_pitch(mos: dict, n_rows: int = N_ROWS, n_cols: int = N_COLS) -> tuple[float, float]:

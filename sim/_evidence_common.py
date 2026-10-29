@@ -241,6 +241,37 @@ def load_json(path: Path):
         return json.load(fh)
 
 
+def corner_key(c: dict) -> tuple[str, int]:
+    """(process, temperature_c) key of one klt-report corner."""
+    return c["process"], int(c["temperature_c"])
+
+
+def measurements_of(c: dict, strict: bool = False) -> dict[str, float | None]:
+    """`{name: value}` for one klt-report corner's measurements. A
+    measurement with no `value` key (or a null one) maps to None, which
+    `decided()` reads as "none". With `strict=True` a measurement whose
+    `value` key is absent raises ValueError instead, for benches that
+    treat a malformed report as a hard failure rather than a missing
+    sample."""
+    out: dict[str, float | None] = {}
+    for m in c.get("measurements") or []:
+        if strict and "value" not in m:
+            raise ValueError(f"corner {c.get('corner_id')}: measurement {m.get('name')!r} has no value")
+        out[m["name"]] = m.get("value")
+    return out
+
+
+def load_clean_corners(report: dict) -> dict[tuple[str, int], dict[str, float | None]]:
+    """Measurements of every corner in a loaded klt report keyed by
+    `corner_key`; exits if any corner's status is not `pass`."""
+    out = {}
+    for c in report["corners"]:
+        if c.get("status") != "pass":
+            raise SystemExit(f"corner {corner_key(c)} status {c.get('status')}: not a clean run")
+        out[corner_key(c)] = measurements_of(c)
+    return out
+
+
 def decided(dend: float | None, threshold_v: float) -> str:
     """Classify a sense-amp differential into the recorded bit: `"1"` if
     dend <= -threshold_v, `"0"` if dend >= +threshold_v, `"unresolved"`

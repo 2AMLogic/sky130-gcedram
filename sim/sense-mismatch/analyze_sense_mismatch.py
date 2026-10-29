@@ -52,6 +52,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 from _evidence_common import decided as _decided  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 import gen_sense_mismatch as M  # noqa: E402
 import analyze_sense_stage as SS  # noqa: E402  (sim/sense-stage, on sys.path via gen_sense_mismatch)
 
@@ -227,7 +228,7 @@ def sample_rows(rep: dict, kind: str) -> list[dict]:
     rows = []
     for c in rep["corners"]:
         mc = c.get("monte_carlo") or {}
-        meas = {m["name"]: m.get("value") for m in c.get("measurements") or []}
+        meas = measurements_of(c)
         for i in insts:
             n = i["name"]
             din, dend, tdec = meas.get(f"din_{n}"), meas.get(f"dend_{n}"), meas.get(f"tdec_{n}")

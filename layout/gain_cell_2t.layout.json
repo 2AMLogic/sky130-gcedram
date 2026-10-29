@@ -6,13 +6,14 @@
   "pdk": {
     "name": "sky130A",
     "variant": "sky130A",
-    "version": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
   },
+  "dbu_um": 0.001,
   "bbox_um": {
-    "x0": 0.0,
-    "y0": 0.0,
-    "x1": 5.42,
-    "y1": 1.84
+    "x0": -0.125,
+    "y0": -0.15,
+    "x1": 5.795,
+    "y1": 1.965
   },
   "ports": [
     {
@@ -24,7 +25,7 @@
         "name": null
       },
       "x_um": 0.545,
-      "y_um": 1.03,
+      "y_um": 1.18,
       "width_um": 0.42000000000000004,
       "direction_deg": 90,
       "block": "mos",
@@ -83,7 +84,7 @@
         "datatype": 20,
         "name": null
       },
-      "x_um": 3.79,
+      "x_um": 4.04,
       "y_um": 0.9199999999999999,
       "width_um": 0.42,
       "direction_deg": 180,
@@ -97,34 +98,40 @@
       "source": "generator_report",
       "generator": "mos_array",
       "cell_name": "gain_cell_2t_mos",
+      "source_path": "gain_cell_2t_mos.gds",
+      "source_digest": "sha256:1e33717765f67ab6d2cc6689e12a2d057b88567a5e73fc6be0731e4b359c4eb7",
       "offset_um": {
         "x": 0.0,
         "y": 0.0
       },
       "bbox_um": {
-        "x0": 0.0,
-        "y0": 0.0,
-        "x1": 2.58,
-        "y1": 1.24
+        "x0": -0.125,
+        "y0": -0.15,
+        "x1": 2.705,
+        "y1": 1.3900000000000001
       },
-      "orientation": "none"
+      "orientation": "none",
+      "abuts": []
     },
     {
       "id": "tap",
       "source": "generator_report",
       "generator": "guard_ring",
       "cell_name": "gain_cell_2t_tap",
+      "source_path": "gain_cell_2t_tap.gds",
+      "source_digest": "sha256:9b33f6566c8b2e565c0039fcc158a15a6280018248da9e3005ea368bb824fb8d",
       "offset_um": {
-        "x": 3.58,
+        "x": 3.83,
         "y": 0.0
       },
       "bbox_um": {
-        "x0": 3.58,
-        "y0": 0.0,
-        "x1": 5.42,
-        "y1": 1.84
+        "x0": 3.705,
+        "y0": -0.125,
+        "x1": 5.795,
+        "y1": 1.965
       },
-      "orientation": "none"
+      "orientation": "none",
+      "abuts": []
     }
   ],
   "nets": [
@@ -141,8 +148,9 @@
         }
       ],
       "routed": true,
-      "route_length_um": 1.975,
+      "route_length_um": 2.125,
       "status": "routed",
+      "landed_on_block": true,
       "legs": [
         {
           "pins": [
@@ -156,8 +164,10 @@
             }
           ],
           "routed": true,
-          "route_length_um": 1.975,
-          "reason": null
+          "route_length_um": 2.125,
+          "reason": null,
+          "channel_track": 0,
+          "landed_on_block": true
         }
       ]
     }
@@ -208,5 +218,19 @@
     ],
     "notes": []
   },
-  "warnings": []
+  "warnings": [],
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": null,
+    "input": null
+  }
 }

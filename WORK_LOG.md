@@ -2,6 +2,42 @@
 
 Chronological record of merged pull requests and closed issues. Maintained by the Loom Guide role.
 
+### 2026-10-29
+
+- **Issue #44** (closed): README: embed the fleet burndown chart (one line)
+
+### 2026-10-28
+
+- **PR #256**: refactor: single-source inst_lines/ic_tokens in replay_lib
+- **Issue #255** (closed): Dedupe inst_lines/ic_tokens: identical copies in two refresh-replay generators
+- **PR #254**: docs: refresh density-vs-sram inputs to post-#244 layout (2.79x drawn)
+- **Issue #252** (closed): spec: refresh density-vs-sram inputs for the post-#244 layout (2.79x pitch)
+- **PR #251**: sim: re-run five benches on the post-#244 layout as new dated evidence
+- **Issue #249** (closed): sim: re-run write-disturb, refresh-op, sense-stage, sense-mismatch, column-periphery on the klt-0.8.0 layout
+- **PR #248**: fix: regenerate layout with klt 0.8.0 generators for a DRC-clean cell and array
+- **Issue #244** (closed): Layout fails new klt 0.8.0 DRC rules (licon1.ongrid.1, poly.endcap.diff.1); generate --check now red
+
+### 2026-10-27
+
+- **PR #246**: refactor: share klt-report corner/measurement helpers in _evidence_common
+- **Issue #245** (closed): Consolidate duplicated klt-report corner/measurement helpers into sim/_evidence_common.py
+- **PR #243**: build: pin klayout-tools 0.8.0 and regenerate check evidence
+- **Issue #242** (closed): Bump klayout-tools pin c622e8addb36 → 0.8.0
+- **PR #241**: refactor: share one GDSII record reader across layout scripts
+- **Issue #239** (closed): Consolidate three hand-rolled GDSII readers in layout/ into one shared module
+- **PR #225**: ci: wire unlisted test suites into evidence-checks and npm test
+- **Issue #224** (closed): CI/npm test: wire sim/test_klt_request.py into evidence-checks
+- **PR #238**: docs: scope manifest README grep to json files
+- **Issue #220** (closed): manifests/artifacts/README.md: documented no-bucket grep matches the README itself
+
+### 2026-10-26
+
+- **PR #219**: feat: store new run evidence in the fleet artifact store via manifests
+
+### 2026-10-23
+
+- **PR #214**: feat(sim): device-inclusive C_SN of the compact v2 array
+
 ### 2026-10-20
 
 - **PR #209**: feat: re-characterise C_SN, parasitics and leakage for the compact bitcell layouts

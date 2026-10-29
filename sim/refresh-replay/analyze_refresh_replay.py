@@ -36,6 +36,7 @@ sys.path.insert(0, str(REPO / "sim"))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 
 BUDGET_CYCLES = 34             # provisional scheduler T_ROW (digital/refresh-scheduler), ASSUMPTION
@@ -70,7 +71,7 @@ def duration_record(man_inst: dict, variant: str) -> dict:
 
 
 def corner_results(corner: dict, man: dict, check: dict, prior: dict | None) -> tuple[list[dict], list[dict]]:
-    meas = {m["name"]: m["value"] for m in corner["measurements"]}
+    meas = measurements_of(corner, strict=True)
     sim_ok = corner["status"] == "pass" and bool(meas)
     sn_ref = meas.get("snend_refw")
     by_var: dict[str, list[dict]] = {}
@@ -133,8 +134,10 @@ def corner_results(corner: dict, man: dict, check: dict, prior: dict | None) -> 
             res["negative_control_ok"] = (not golden_ok) and all(not r[f"restored_{int(PRIMARY * 100)}"] for r in rs if r["kind"] == "op1")
         results.append(res)
     if prior is not None:
-        pm = {m["name"]: m["value"] for c in prior["corners"] if (c["process"], c["temperature_c"]) == (corner["process"], corner["temperature_c"])
-              for m in c["measurements"]}
+        pm = {}
+        for c in prior["corners"]:
+            if (c["process"], c["temperature_c"]) == (corner["process"], corner["temperature_c"]):
+                pm.update(measurements_of(c, strict=True))
         diffs = {}
         for r in by_var["baseline_analog"]:
             k = {"op1": "op1", "op0": "op0"}[r["kind"]]

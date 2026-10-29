@@ -42,6 +42,7 @@ sys.path.insert(0, str(HERE.parent))
 from _evidence_common import sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
+from replay_lib import ic_tokens, inst_lines  # noqa: E402
 
 GEN = GR.G
 S = GR.S
@@ -194,23 +195,6 @@ def build_request(insts: list[dict]) -> dict:
 SRC = ("vctl_", "vrs_", "ven_", "venb_", "vww_", "vwc_")
 PREP = ("vpw_", "vpc_", "spw_")
 NODE_OF = {"vctl_": "ctl", "vrs_": "rwls", "ven_": "en", "vww_": "wwl", "vwc_": "wbc"}
-
-
-def inst_lines(deck: str, name: str) -> list[str]:
-    rx = re.compile(r"(?<=_)" + re.escape(name) + r"(?:_\d+)?(?![A-Za-z0-9_])")
-    return [ln.replace(name, "@") for ln in deck.splitlines() if rx.search(ln) and not ln.startswith(("*", ".ic"))]
-
-
-def ic_tokens(deck: str, name: str) -> dict:
-    rx = re.compile(r"v\((\S+?)\)=(\S+)")
-    nrx = re.compile(r"(?<=_)" + re.escape(name) + r"(?:_\d+)?$")
-    out = {}
-    for ln in deck.splitlines():
-        if ln.startswith(".ic"):
-            for node, val in rx.findall(ln):
-                if nrx.search(node):
-                    out[node.replace(name, "@")] = val
-    return out
 
 
 def _split(lines: list[str]):

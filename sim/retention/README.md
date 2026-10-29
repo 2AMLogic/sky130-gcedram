@@ -612,3 +612,26 @@ window), staleness of the committed deck and reproduction of the committed resul
 | `test_compare_compact_c_sn.py` | Issue #161: stdlib tests (storage-node identification, orientation, reproduction of committed results) |
 | `compact_device_c_sn.py`, `compact-device-c-sn/`, `results/compact_device_c_sn_*.json`, `results/klt_report_*.json` | Issue #208: device-inclusive compact v2 `C_SN` (deck + `klt sim` request generator, reducer, committed batch report and result); measurement only |
 | `test_compact_device_c_sn.py` | Issue #208: stdlib tests (reducer, staleness, reproduction of the committed result) |
+
+## Update: layout regenerated under klt 0.8.0 (issue #244)
+
+The numbers above are the pre-#244 layout and are kept as history (the CSV and
+all earlier result files are append-only). After the layout was regenerated
+under klt 0.8.0 (DRC clean; cell 1.84 -> 2.115 um tall) the extracted
+single-cell `C_SN` is **0.672741 fF** (was 0.605354 fF; the old GDS extracted
+with klt 0.8.0 still gives 0.605354 fF, so the change is geometry, not the
+extractor). New dated evidence, nothing edited:
+
+* `derive_retention.py` appended two rows to `results/retention_results.csv`:
+  `2T-min` extracted `C_SN` = 0.672741 fF -> **6.116519e-06 s** (6.12 us,
+  sf / 125 C; was 5.503841e-06 s); `3T-min` unchanged (ASSUMED).
+* `results/array_c_sn_comparison_20261028T070954Z.json`: 4x4 array `C_SN`
+  0.538402 (`sn_3_0`) .. 0.568080 fF; capacitance-only sensitivity
+  4.90 .. 5.16 us. `results/compact_c_sn_20261028T071019Z.json` (+
+  `layout/results/compact_parasitics_20261028T071008Z.json`) re-compare the
+  compact layouts against the new uniform grid.
+
+The ratified value is unchanged. The re-ratification is a proposed decision:
+[`spec/c-sn-re-ratification-PROPOSED.md`](../../spec/c-sn-re-ratification-PROPOSED.md).
+The tests that compare against committed comparison files now reproduce only
+the newest file of each kind; earlier ones describe superseded inputs.

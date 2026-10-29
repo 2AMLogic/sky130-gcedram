@@ -40,6 +40,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import load_json  # noqa: E402
+from _evidence_common import measurements_of  # noqa: E402
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_refresh_op as G  # noqa: E402
 import analyze_sense_stage as SS  # noqa: E402
@@ -78,7 +79,7 @@ def min_pass_from_above(widths: list[float], ok: list[bool]) -> tuple[int | None
 
 
 def summarize_corner(corner: dict, writes: dict) -> tuple[list[dict], dict]:
-    meas = {m["name"]: m["value"] for m in corner["measurements"]}
+    meas = measurements_of(corner, strict=True)
     insts = G.instances()
     sn_ref = meas.get("snend_refw")
     rows = []
