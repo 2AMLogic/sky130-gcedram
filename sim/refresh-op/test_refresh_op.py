@@ -6,7 +6,6 @@ Run: python3 -I sim/refresh-op/test_refresh_op.py
 from __future__ import annotations
 
 import csv
-import gzip
 import json
 import sys
 import tempfile

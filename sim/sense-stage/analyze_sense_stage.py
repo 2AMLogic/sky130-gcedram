@@ -63,7 +63,6 @@ def load_phase3_writes() -> dict[tuple[str, int], float]:
 
 def point(kind: str, meas: dict, name: str) -> dict:
     din, dend, tdec = meas.get(f"din_{name}"), meas.get(f"dend_{name}"), meas.get(f"tdec_{name}")
-    want = "0" if kind == "cell0" else None
     return dict(din=din, dend=dend, tdec=tdec)
 
 

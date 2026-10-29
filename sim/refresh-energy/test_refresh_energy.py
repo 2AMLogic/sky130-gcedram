@@ -22,10 +22,6 @@ import gen_refresh_energy as G  # noqa: E402
 RESULTS = HERE / "results"
 
 
-def main_reports() -> list[Path]:
-    return sorted(p for p in RESULTS.glob("klt_report_*.json*") if not p.name.startswith("klt_report_fine_"))
-
-
 # ---------------------------------------------------------------------------
 # synthetic report (analytic fixture for the reduction controls)
 # ---------------------------------------------------------------------------
