@@ -36,14 +36,12 @@ Issues currently being built (`loom:building`).
 - **#73**: CI: run refresh-overhead and evidence_common tests; fix python -I import in test_refresh_overhead
 - **#88**: Re-run sense-stage and loaded-column with the extracted 4-row C_RBL (0.86 fF vs assumed 10 fF)
 - **#208**: Operator decision: retention/refresh budget vs compact-layout C_SN (from #161)
-- **#249**: sim: re-run write-disturb, refresh-op, sense-stage, sense-mismatch, column-periphery on the klt-0.8.0 layout
-- **#252**: spec: refresh density-vs-sram inputs for the post-#244 layout (2.79x pitch)
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#251**: sim: re-run five benches on the post-#244 layout as new dated evidence
+_None._
 
 ## Approved (Awaiting Merge)
 
@@ -64,8 +62,6 @@ Issues carrying `loom:curated`.
 - **#168**: Re-qualify G1 retention chain (leakage, bitcell-transient, retention) under open_pdks f6eeac7 *(curated)*
 - **#212**: Re-baseline layout DRC/LVS/ERC evidence under a klt rev with signoff --attest *(curated)*
 - **#218**: Adopt the common artifact store for sim evidence (manifests in git, bytes via klt artifact) *(curated)*
-- **#249**: sim: re-run write-disturb, refresh-op, sense-stage, sense-mismatch, column-periphery on the klt-0.8.0 layout *(curated)*
-- **#252**: spec: refresh density-vs-sram inputs for the post-#244 layout (2.79x pitch) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -85,10 +81,10 @@ Issues carrying `loom:curated`.
 | Very important | 1 |
 | Important | 1 |
 | Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 5 |
-| PRs awaiting review | 1 |
+| In Progress (`loom:building`) | 3 |
+| PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 3 |
-| Curated | 9 |
+| Curated | 7 |
 | Architect / Hermit proposals | 2 |
 | Active epics | 2 |
 <!-- guide:plan-body:end -->
