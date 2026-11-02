@@ -1,0 +1,861 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/bitcell-transient/bitcell_d1.spice",
+    "scope": "repo"
+  },
+  "status": "pass",
+  "corner_count": 15,
+  "passed": 15,
+  "failed": 0,
+  "errored": 0,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {},
+    "by_severity": {},
+    "corners_with_diagnostics": 0
+  },
+  "metrics": {
+    "sim__corner__count": 15,
+    "sim__corner__passed_count": 15,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 0,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": "46",
+    "ngspice_binary": "/usr/local/bin/ngspice",
+    "engine_build": {
+      "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Wed Aug  5 10:12:28 UTC 2026\n******",
+      "binary_sha256": "c874869b16dc8a31cfa9d37d2b90a2a9e0e5b996f8e2535db89eb82855072931",
+      "probe": "ok",
+      "reason": null
+    },
+    "models_lib": {
+      "path": null,
+      "scope": "external"
+    },
+    "models_lib_sha256": "48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+    "models_lib_sha256_scope": "client",
+    "netlist_sha256": "39b4e6a88551696af0770770007c9c01c283b1055888522f2f732ccba35465ff",
+    "netlist_closure": [
+      {
+        "path": "sim/bitcell-transient/bitcell_d1.spice",
+        "scope": "repo",
+        "sha256": "39b4e6a88551696af0770770007c9c01c283b1055888522f2f732ccba35465ff"
+      }
+    ],
+    "netlist_identity": "sha256:83983433b5aead34ea8d2f0febe6737bbf35493be1a32c2b4dc96874f143c0d2",
+    "remote": {
+      "provider": "aws-batch-fleet",
+      "job_id": "klt-sim-6b80d0d66577",
+      "region": "us-east-1",
+      "instance_id": "i-0577f366d1f0cbd32",
+      "instance_type": "c7i.8xlarge",
+      "availability_zone": "us-east-1f",
+      "ami_id": "ami-0fa5ef830209100bd",
+      "lifecycle": "spot",
+      "spot": true,
+      "state": "done",
+      "exit_code": "0",
+      "concurrency": "2",
+      "physical_cores": "16",
+      "elapsed_seconds": 158,
+      "client_submitted_at": "2026-11-02T18:31:24.786001Z",
+      "client_launched_at": "2026-11-02T18:31:45.061466Z",
+      "client_status_terminal_at": "2026-11-02T18:34:50.105654Z",
+      "client_collected_at": "2026-11-02T18:34:50.922286Z",
+      "runner_klt_version": "0.8.0",
+      "client_klt_version": "0.8.1.dev1084+g7eebf2d2d867",
+      "runner_compatibility": "match",
+      "runner_request_features": {
+        "required": [
+          "options.ngspice_init"
+        ],
+        "missing": [],
+        "status": "supported"
+      },
+      "worker_environment": {
+        "capture": "ok",
+        "simulator": {
+          "requested_binary": "ngspice",
+          "binary_source": "PATH",
+          "selected_path": "/usr/local/bin/ngspice",
+          "version_banner": "******\n** ngspice-46 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2025, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Thu Oct  1 23:51:59 UTC 2026\n******\n",
+          "version_probe": "ok"
+        },
+        "pdk": {
+          "variant": "sky130A",
+          "root": "/opt/pdk",
+          "stamp_scheme": "sources-sha256",
+          "stamp_sha256": "d5ac52956829da3fee35d0b307d4e6cb83ae0e6535b56dba2eefed61cdffaf9b",
+          "stamp_text": "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b",
+          "models_staged": false,
+          "stamp_scope": "executed"
+        },
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8488C",
+        "omp_num_threads": null,
+        "image_manifest": null,
+        "model_inputs": null,
+        "diagnostics": [],
+        "pdk_stamp_comparison": {
+          "status": "mismatch",
+          "warning": "the worker's PDK revision stamp for sky130A differs from the one the submitter resolved locally; results may differ from a local run (a matching stamp would not prove identical models)"
+        },
+        "engine_build_comparison": {
+          "status": "mismatch",
+          "warning": "the worker's ngspice --version banner differs from the local binary's; build options (e.g. FFT linkage) may differ, so results derived from them can differ from a local run"
+        }
+      },
+      "runner_model_inputs": null,
+      "job_ceiling": {
+        "basis": "conservative_serial_bound",
+        "unit_count": 15,
+        "per_unit_timeout_s": 1800,
+        "overhead_s": 120.0,
+        "job_bound_s": 27120.0,
+        "max_job_seconds": 3600.0,
+        "max_job_seconds_source": "fleet_config",
+        "exceeds_ceiling": true,
+        "check": "warn",
+        "max_units_per_job": 1,
+        "recommended_hosts": 15,
+        "warning": "batch job bound 27120s (options.timeout_s 1800s x 15 units + 120s; a conservative fully-serial upper bound, not a runtime estimate) exceeds the fleet's whole-job ceiling of 3600s (max_job_seconds from fleet_config); a job still running at the ceiling is killed and every unit is reported batch_job_timeout. Set request.remote.hosts to at least 15 to run one job per shard of at most 1 units, each within the ceiling"
+      }
+    },
+    "engine_host": "worker",
+    "client_ngspice_binary": "/home/ubuntu/.local/bin/ngspice",
+    "backend": {
+      "resolved": "batch",
+      "source": "flag",
+      "requested": "batch"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 15,
+    "measurements_declared": 2,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [
+      "measurement:[0,\"tt/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[0,\"tt/novdd/-40C\",\"i_read_raw_a\"]/observation",
+      "measurement:[1,\"tt/novdd/27C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[1,\"tt/novdd/27C\",\"i_read_raw_a\"]/observation",
+      "measurement:[10,\"sf/novdd/27C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[10,\"sf/novdd/27C\",\"i_read_raw_a\"]/observation",
+      "measurement:[11,\"sf/novdd/125C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[11,\"sf/novdd/125C\",\"i_read_raw_a\"]/observation",
+      "measurement:[12,\"fs/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[12,\"fs/novdd/-40C\",\"i_read_raw_a\"]/observation",
+      "measurement:[13,\"fs/novdd/27C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[13,\"fs/novdd/27C\",\"i_read_raw_a\"]/observation",
+      "measurement:[14,\"fs/novdd/125C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[14,\"fs/novdd/125C\",\"i_read_raw_a\"]/observation",
+      "measurement:[2,\"tt/novdd/125C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[2,\"tt/novdd/125C\",\"i_read_raw_a\"]/observation",
+      "measurement:[3,\"ss/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[3,\"ss/novdd/-40C\",\"i_read_raw_a\"]/observation",
+      "measurement:[4,\"ss/novdd/27C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[4,\"ss/novdd/27C\",\"i_read_raw_a\"]/observation",
+      "measurement:[5,\"ss/novdd/125C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[5,\"ss/novdd/125C\",\"i_read_raw_a\"]/observation",
+      "measurement:[6,\"ff/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[6,\"ff/novdd/-40C\",\"i_read_raw_a\"]/observation",
+      "measurement:[7,\"ff/novdd/27C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[7,\"ff/novdd/27C\",\"i_read_raw_a\"]/observation",
+      "measurement:[8,\"ff/novdd/125C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[8,\"ff/novdd/125C\",\"i_read_raw_a\"]/observation",
+      "measurement:[9,\"sf/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/observation",
+      "measurement:[9,\"sf/novdd/-40C\",\"i_read_raw_a\"]/observation"
+    ],
+    "skipped": [],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/-40C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[1,\"tt/novdd/27C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[10,\"sf/novdd/27C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[11,\"sf/novdd/125C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[12,\"fs/novdd/-40C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[13,\"fs/novdd/27C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[14,\"fs/novdd/125C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[2,\"tt/novdd/125C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[3,\"ss/novdd/-40C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[4,\"ss/novdd/27C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[5,\"ss/novdd/125C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[6,\"ff/novdd/-40C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[7,\"ff/novdd/27C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[8,\"ff/novdd/125C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"i_rbl_deselect_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[9,\"sf/novdd/-40C\",\"i_read_raw_a\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "provenance": {
+    "klt_version": "0.8.1.dev1084+g7eebf2d2d867",
+    "klt_git_commit": "7eebf2d2d867dec464100739b71a4a483289910c",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@7eebf2d2d867dec464100739b71a4a483289910c",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "PDK_ROOT environment variable",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "ambiguous_sources": [
+        "search root: ~/.ciel",
+        "search root: ~/.volare"
+      ]
+    },
+    "deck": {
+      "name": "sky130.lib.spice",
+      "content_hash": "sha256:48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:39b4e6a88551696af0770770007c9c01c283b1055888522f2f732ccba35465ff",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "i_rbl_deselect_raw_a",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": -9.767043944472e-13,
+        "margin": null
+      }
+    },
+    {
+      "name": "i_read_raw_a",
+      "unit": "A",
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/-40C",
+        "value": -2.404836373547e-06,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "tt/novdd/-40C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 22.967,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.767043944472e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -2.404836373547e-06,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "tt/novdd/27C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 150.966,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.804650581029e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -8.25461483915e-06,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "tt/novdd/125C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 150.721,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": 5.953783256335e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -1.90273678542e-05,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/-40C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 150.92,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.676025172097e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -2.21268628984e-07,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/27C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 32.084,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.733912894491e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -1.764031861246e-06,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ss/novdd/125C",
+      "process": "ss",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 129.621,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -8.479814723672e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -7.159214213573e-06,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/-40C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 150.918,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.859285696897e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -1.058982636233e-05,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/27C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 150.935,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -6.498753358386e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -2.172328190139e-05,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "ff/novdd/125C",
+      "process": "ff",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 150.913,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": 4.441868515798e-10,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -3.663801495202e-05,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/-40C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 150.701,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.877231411256e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -1.885637582556e-05,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/27C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 150.937,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": 1.08672576146e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -2.911464918852e-05,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "sf/novdd/125C",
+      "process": "sf",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 149.231,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": 1.610229428311e-09,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -4.197514039206e-05,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/-40C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": -40,
+      "status": "pass",
+      "runtime_s": 150.922,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.66157926235e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -3.221396540992e-08,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/27C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 150.89,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -9.724161580151e-13,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -6.031479948109e-07,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    },
+    {
+      "corner_id": "fs/novdd/125C",
+      "process": "fs",
+      "supply_v": {},
+      "temperature_c": 125,
+      "status": "pass",
+      "runtime_s": 147.297,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "i_rbl_deselect_raw_a",
+          "value": -8.489983022167e-12,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "i_read_raw_a",
+          "value": -4.383972200107e-06,
+          "unit": "A",
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}

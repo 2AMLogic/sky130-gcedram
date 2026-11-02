@@ -365,11 +365,14 @@ def check_env(ngspice_lib: Path) -> bool:
 
 def load_leakage_by_point() -> dict[tuple[str, int], float]:
     """Worst (maximum) recorded DC leakage per (corner, temp_c) from
-    sim/leakage/results/leakage_results.csv. Used ONLY to size the
-    hold-phase simulation window -- never as a reported result."""
+    sim/leakage/results/leakage_results.csv, over rows of the CURRENT PDK pin
+    only (the file also holds the historical c6d73a3 block). Used ONLY to
+    size the hold-phase simulation window -- never as a reported result."""
     table: dict[tuple[str, int], float] = {}
     with LEAKAGE_CSV.open(newline="") as f:
         for row in csv.DictReader(f):
+            if not str(row.get("pdk_open_pdks_commit", "")).startswith(PDK_OPEN_PDKS_COMMIT[:7]):
+                continue
             try:
                 key = (row["corner"], int(row["temp_c"]))
                 val = float(row["ileak_a"])
