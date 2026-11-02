@@ -679,15 +679,71 @@ reading `notes`: `c_sn_ff`/`c_sn_source` for `--c-sn-ff`, `tmax_s` for
 |---|---|
 | `tb_bitcell_transient.spice.tmpl` | ngspice `.tran` testbench template; includes `design/gain_cell_2t.spice` verbatim, declares the phase timing in a `.param` block the driver parses back out |
 | `run_bitcell_transient.py` | Sweep driver: renders decks, invokes `ngspice -b`, measures every recorded scalar, sizes the hold window from `sim/leakage/`, appends rows via `sim/_evidence_common.append_result` |
+| `gen_bitcell_transient.py`, `bitcell_d{1,0}.spice`, `request_*.json` | Issue #182: generator, inlined decks and `klt sim` batch requests for the `f6eeac7` re-qualification |
+| `reduce_bitcell_transient.py`, `test_gen_bitcell_transient.py` | Reducer (klt reports -> CSV rows) and the generator/reducer tests |
 | `results/bitcell_transient_results.csv` | Append-only recorded results, one row per (corner, temperature, stored value) plus the committed override/sensitivity runs |
 
 The PDK version pin (same `open_pdks` commit as `sim/leakage/` and
 `design/`) and the corner/temperature grid are documented in
 [`../../docs/pdk-pin.md`](../../docs/pdk-pin.md), not a local `pdk.json`.
 
-## Re-qualification under open_pdks `f6eeac7` (issue #168): NOT yet done
+## Re-qualification under open_pdks `f6eeac7` (issue #182): batch grid run, PDK stamp NOT confirmed
 
-The records here are all `c6d73a3`. The re-run is deferred: this driver sizes a hold window per
-(corner, temperature, stored value) from the leakage rows, grows it and retries, and reduces `wrdata` waveforms
-in Python, so it does not map onto a single `klt sim` corner request. Expressing it as batch requests needs a
-per-point window design and `.meas`-based reductions with their own convergence check; that is tracked in #182. Until then nothing in this directory may be cited as a `f6eeac7` result.
+**Status: the grid was re-run on the batch fleet, but the fleet still stamps open_pdks `c6d73a3`
+(`pdk_stamp_comparison.status = mismatch` in every report), so these rows are NOT `f6eeac7` evidence.**
+They are recorded as "run under the fleet's stamped PDK": the `pdk_open_pdks_commit` column holds
+`fleet-stamp:c6d73a35f524070e85faff4a6a9eef49553ebc2b` (never the repo pin) and each row's `notes` says so. The fix is a
+worker-spec change in 2AMLogic/2am `infra/aws/loom-worker/`, outside this repo and not worked around here. Once a
+fleet report shows `match`, re-run the same committed requests and reduce them as new rows.
+
+The `c6d73a3` rows above are untouched. The 30 new rows (15 corners x stored 1/0) were appended by
+`reduce_bitcell_transient.py`; the 20 raw `klt sim` reports are in `results/klt_report_*_20261102T1845Z.json`
+(ngspice 46 on the fleet, batch jobs listed per row in `notes`; one job id per request).
+
+### How the grid is expressed
+
+* `gen_bitcell_transient.py` writes `bitcell_d1.spice` / `bitcell_d0.spice` (circuit bodies; the two device cards are
+  copied verbatim from `design/gain_cell_2t.spice`, whose sha256 is in the header, so there is no absolute `.include`;
+  timing and bias are parsed from the template's `.param` block) and the requests:
+  `request_hold_d1_<corner>_<temp>.json` (15, stored '1'), `request_hold_d0_<temp>.json` (3, stored '0'),
+  `request_read_d{1,0}.json` (2, the separate fine `tmax = TEDGE/10` read-phase run, all 15 PVT points).
+* The `.tran` window is fixed at generation time from `f6eeac7` leakage rows only (same
+  `HOLD_WINDOW_SLACK x C_est x dV / I_leak` seed as the driver; stored '1' per corner and temperature). The driver's
+  grow-up-to-3-times loop cannot run on the fleet; the reducer instead checks that the crossing fell inside the window
+  (none exceeded it). The stored-'0' request uses the per-temperature maximum window of the five corners, so its
+  `hold_window_s` differs from the stored-'1' row at the same point (recorded per row).
+* `.meas` cards reproduce `measure()`. One thing a `.meas` card cannot do: read another `.meas` result, so the
+  data-dependent threshold `v_sn_hold_start_v - delta_V` cannot be a `WHEN` target. The stored-'1' requests therefore record
+  the first falling crossing of a fixed 25 mV level ladder (50-400 mV) and the reducer takes a cubic through the four
+  nearest rungs. Thresholds at or below the 0.05 V floor stay blank (unreachable), as before.
+* The hold-end sample is taken 1 ns inside `tstop`: ngspice rejects `AT=` exactly on the last point ("out of interval").
+
+### `.meas` vs Python equivalence (local single-corner probe, tt / 27 C / stored '1')
+
+Local `klt sim --backend local` (ngspice 46, `--pdk-root` at the `f6eeac7` tree), same window and `tmax` as the
+Python `run_tran()` + `measure()` on the same tree; one `ngspice` run each, no local grid:
+
+| Quantity | max relative difference |
+|---|---|
+| `v_sn_end_wl_pulse_v`, `v_sn_after_write_settled_v`, `v_sn_read_gate_v`, `v_sn_hold_start_v` | <= 1.9e-9 |
+| `dvdt_hold_start_v_per_s` (secant from `.meas` samples) | 1.8e-7 |
+| `v_sn_hold_end_v` (1 ns back-off) | 7.1e-7 |
+| `t_ret_tran_s` (cubic over the ladder vs exact interpolated crossing) | 5.5e-5 (linear interpolation would be 2.1e-3) |
+
+The fleet runner honoured every `.meas` form used (`FIND ... AT`, `WHEN ... FALL=1 TD=`). The read-phase currents come
+from `.meas FIND i(vrbl) AT=`; the reducer takes the magnitude.
+
+### Reproduce
+
+```bash
+python3 -I sim/bitcell-transient/gen_bitcell_transient.py        # rewrite decks + requests
+python3 -I sim/bitcell-transient/test_gen_bitcell_transient.py   # fails if committed files are stale
+PDK_ROOT=~/.ciel/ciel/sky130/versions/f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7 klt sim --format json --batch-set \
+    sim/bitcell-transient/request_*.json            # batch fleet; reports land in sim/bitcell-transient/.klt/sim/<request>/report.json
+# copy each report to results/klt_report_<request minus "request_">_<RUN_ID>.json, then
+python3 -I sim/bitcell-transient/reduce_bitcell_transient.py --reports-dir sim/bitcell-transient/results --dry-run
+python3 -I sim/bitcell-transient/reduce_bitcell_transient.py --reports-dir sim/bitcell-transient/results
+```
+
+(Do not pass `--pdk-root` to a batch run: klt refuses to forward a host path to the runner.) Run the reducer once per
+set of reports; it appends, it does not de-duplicate.
