@@ -44,6 +44,9 @@ sign-off evidence, and it does not change any provisional timing value.
    (real SPI transactions into the single SPI/configuration/runtime scheduler
    driving the launch adapter and phase sequencer under saturated foreground
    traffic, issue #146; several minutes, see its README for measured times)
+9. `digital/spi-crossing/run_tests.sh` (protocol model of the proposed SPI
+   crossing, issue #157; seconds; carries its own negative controls that must
+   fail, so there is no separate `run_mutation.sh`)
 
 The `refresh-scheduler`, `spi-control` and `phase-control` `run_mutation.sh`
 scripts share one harness, `digital/ci/mutation_lib.sh` (tmp dir, baseline gate,
