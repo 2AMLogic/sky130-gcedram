@@ -32,5 +32,7 @@ run sched-phase-coupled-tests "$root/digital/sched-phase-integration/run_coupled
 run sched-phase-coupled-mutation "$root/digital/sched-phase-integration/run_coupled_mutation.sh"
 run spi-sched-phase-tests "$root/digital/spi-sched-phase-integration/run_tests.sh"
 run spi-sched-phase-mutation "$root/digital/spi-sched-phase-integration/run_mutation.sh"
+# Includes its own negative controls (NEG=1 must fail); no run_mutation.sh.
+run spi-crossing-tests "$root/digital/spi-crossing/run_tests.sh"
 echo "overall: $([ $fail -eq 0 ] && echo PASS || echo FAIL)" | tee -a "$logs/summary.txt"
 exit $fail
