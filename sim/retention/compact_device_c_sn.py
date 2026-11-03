@@ -326,24 +326,9 @@ def c_steps_ff(times: list[float], i_a: float) -> list[float]:
 def extract_times(report: dict, insts: list[dict]) -> dict:
     """{(corner, temp): {inst id: [t at each level]}} -- exactly the request's Cartesian product."""
     AN.check_identity(report, DECK_PATH)
-    if report.get("status") != "pass" or report.get("errored") or report.get("failed"):
-        raise AN.AnalysisError(f"report not successful: status={report.get('status')!r} "
-                               f"failed={report.get('failed')} errored={report.get('errored')}")
     want = {(p, t) for p in PROCESS_CORNERS for t in TEMPS_C}
     out: dict = {}
-    for c in report.get("corners") or []:
-        key = (c.get("process"), c.get("temperature_c"))
-        if key in out:
-            raise AN.AnalysisError(f"duplicate PVT point {key}")
-        if c.get("status") != "pass":
-            raise AN.AnalysisError(f"corner {key} status {c.get('status')!r}")
-        m = {}
-        for e in c.get("measurements") or []:
-            if e["name"] in m:
-                raise AN.AnalysisError(f"corner {key}: duplicate measurement {e['name']}")
-            if e.get("status") != "pass" or e.get("unit") != "s":
-                raise AN.AnalysisError(f"corner {key}: measurement {e['name']} status/unit {e.get('status')!r}/{e.get('unit')!r}")
-            m[e["name"]] = e.get("value")
+    for key, m in AN.collect_corner_measurements(report, want, "s").items():
         out[key] = {}
         for i in insts:
             ts = []
@@ -355,8 +340,6 @@ def extract_times(report: dict, insts: list[dict]) -> dict:
             if any(t1 <= t0 for t0, t1 in zip(ts, ts[1:])):
                 raise AN.AnalysisError(f"corner {key}: instance {i['id']} crossing times not increasing: {ts}")
             out[key][i["id"]] = ts
-    if set(out) != want:
-        raise AN.AnalysisError(f"PVT set mismatch: missing {sorted(want - set(out))}, unexpected {sorted(set(out) - want)}")
     return out
 
 
