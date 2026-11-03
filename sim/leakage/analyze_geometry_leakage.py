@@ -73,14 +73,16 @@ def check_deck_matches_geometry(geometry: dict, deck_path: Path | None = None) -
         raise AnalysisError("generated deck does not match the extraction geometry (stale deck?)")
 
 
-def extract_points(report: dict, request: dict | None = None, deck_path: Path | None = None) -> dict:
-    """{(corner, temp_c): (i_ext, i_leg)} -- exactly the request's Cartesian product."""
-    request = request or G.build_request()
-    check_identity(report, deck_path)
+def collect_corner_measurements(report: dict, want: set, unit: str) -> dict:
+    """Strict klt-report walk shared by every analyzer: {(process, temp_c): {name: value}}.
+
+    Raises AnalysisError on a non-pass report, a duplicate or non-pass corner, a duplicate or
+    non-pass measurement, a measurement whose unit is not `unit`, or a PVT set != `want`.
+    Callers do their own missing-name / finite / ordering checks on the returned values.
+    """
     if report.get("status") != "pass" or report.get("errored") or report.get("failed"):
         raise AnalysisError(f"report not successful: status={report.get('status')!r} "
                             f"failed={report.get('failed')} errored={report.get('errored')}")
-    want = {(p, t) for p in request["corners"]["process"] for t in request["corners"]["temperature_c"]}
     out: dict = {}
     for c in report.get("corners") or []:
         key = (c.get("process"), c.get("temperature_c"))
@@ -88,22 +90,33 @@ def extract_points(report: dict, request: dict | None = None, deck_path: Path | 
             raise AnalysisError(f"duplicate PVT point {key}")
         if c.get("status") != "pass":
             raise AnalysisError(f"corner {key} status {c.get('status')!r}")
-        m = {}
+        m: dict = {}
         for e in c.get("measurements") or []:
             if e["name"] in m:
                 raise AnalysisError(f"corner {key}: duplicate measurement {e['name']}")
             if e.get("status") != "pass":
                 raise AnalysisError(f"corner {key}: measurement {e['name']} status {e.get('status')!r}")
-            if e.get("unit") != "A":
-                raise AnalysisError(f"corner {key}: measurement {e['name']} unit {e.get('unit')!r}, need 'A'")
+            if e.get("unit") != unit:
+                raise AnalysisError(f"corner {key}: measurement {e['name']} unit {e.get('unit')!r}, need {unit!r}")
             m[e["name"]] = e.get("value")
+        out[key] = m
+    if set(out) != want:
+        raise AnalysisError(f"PVT set mismatch: missing {sorted(want - set(out))}, unexpected {sorted(set(out) - want)}")
+    return out
+
+
+def extract_points(report: dict, request: dict | None = None, deck_path: Path | None = None) -> dict:
+    """{(corner, temp_c): (i_ext, i_leg)} -- exactly the request's Cartesian product."""
+    request = request or G.build_request()
+    check_identity(report, deck_path)
+    want = {(p, t) for p in request["corners"]["process"] for t in request["corners"]["temperature_c"]}
+    out: dict = {}
+    for key, m in collect_corner_measurements(report, want, "A").items():
         for n in (G.MEAS_EXT, G.MEAS_LEG):
             if n not in m:
                 raise AnalysisError(f"corner {key}: missing measurement {n}")
         out[key] = (_finite_pos(m[G.MEAS_EXT], f"{key} {G.MEAS_EXT}"),
                     _finite_pos(m[G.MEAS_LEG], f"{key} {G.MEAS_LEG}"))
-    if set(out) != want:
-        raise AnalysisError(f"PVT set mismatch: missing {sorted(want - set(out))}, unexpected {sorted(set(out) - want)}")
     return out
 
 

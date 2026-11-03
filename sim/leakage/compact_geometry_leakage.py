@@ -183,31 +183,14 @@ def extract_points(report: dict) -> dict:
     """{(corner, temp_c): {tag: amps}} -- exactly the request's Cartesian product."""
     request = build_request()
     AN.check_identity(report, DECK_PATH)
-    if report.get("status") != "pass" or report.get("errored") or report.get("failed"):
-        raise AN.AnalysisError(f"report not successful: status={report.get('status')!r} "
-                               f"failed={report.get('failed')} errored={report.get('errored')}")
     want = {(p, t) for p in request["corners"]["process"] for t in request["corners"]["temperature_c"]}
     out: dict = {}
-    for c in report.get("corners") or []:
-        key = (c.get("process"), c.get("temperature_c"))
-        if key in out:
-            raise AN.AnalysisError(f"duplicate PVT point {key}")
-        if c.get("status") != "pass":
-            raise AN.AnalysisError(f"corner {key} status {c.get('status')!r}")
-        m = {}
-        for e in c.get("measurements") or []:
-            if e["name"] in m:
-                raise AN.AnalysisError(f"corner {key}: duplicate measurement {e['name']}")
-            if e.get("status") != "pass" or e.get("unit") != "A":
-                raise AN.AnalysisError(f"corner {key}: measurement {e['name']} status/unit {e.get('status')!r}/{e.get('unit')!r}")
-            m[e["name"]] = e.get("value")
+    for key, m in AN.collect_corner_measurements(report, want, "A").items():
         out[key] = {}
         for t in TAGS:
             if meas_name(t) not in m:
                 raise AN.AnalysisError(f"corner {key}: missing measurement {meas_name(t)}")
             out[key][t] = AN._finite_pos(m[meas_name(t)], f"{key} {meas_name(t)}")
-    if set(out) != want:
-        raise AN.AnalysisError(f"PVT set mismatch: missing {sorted(want - set(out))}, unexpected {sorted(set(out) - want)}")
     return out
 
 
