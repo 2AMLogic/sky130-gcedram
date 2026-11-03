@@ -1,0 +1,137 @@
+{
+  "netlist": "bitcell_d1.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/combined/sky130.lib.spice"
+  },
+  "corners": {
+    "process": [
+      "ff"
+    ],
+    "temperature_c": [
+      27
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "10p 4.742689e-03 0 2.371317e-06"
+  },
+  "measurements": [
+    {
+      "name": "v_sn_end_wl_pulse_v",
+      "unit": "V",
+      "spice": ".meas tran v_sn_end_wl_pulse_v FIND v(sn) AT=2.100000e-08"
+    },
+    {
+      "name": "v_sn_after_write_settled_v",
+      "unit": "V",
+      "spice": ".meas tran v_sn_after_write_settled_v FIND v(sn) AT=2.950000e-08"
+    },
+    {
+      "name": "v_sn_read_gate_v",
+      "unit": "V",
+      "spice": ".meas tran v_sn_read_gate_v FIND v(sn) AT=4.950000e-08"
+    },
+    {
+      "name": "v_sn_hold_start_v",
+      "unit": "V",
+      "spice": ".meas tran v_sn_hold_start_v FIND v(sn) AT=5.500000e-08"
+    },
+    {
+      "name": "v_sn_slope_end_v",
+      "unit": "V",
+      "spice": ".meas tran v_sn_slope_end_v FIND v(sn) AT=9.490768e-05"
+    },
+    {
+      "name": "v_sn_hold_end_v",
+      "unit": "V",
+      "spice": ".meas tran v_sn_hold_end_v FIND v(sn) AT=4.742688e-03"
+    },
+    {
+      "name": "t_lvl_0050mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0050mv WHEN v(sn)=0.05 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0075mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0075mv WHEN v(sn)=0.075 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0100mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0100mv WHEN v(sn)=0.1 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0125mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0125mv WHEN v(sn)=0.125 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0150mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0150mv WHEN v(sn)=0.15 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0175mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0175mv WHEN v(sn)=0.175 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0200mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0200mv WHEN v(sn)=0.2 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0225mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0225mv WHEN v(sn)=0.225 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0250mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0250mv WHEN v(sn)=0.25 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0275mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0275mv WHEN v(sn)=0.275 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0300mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0300mv WHEN v(sn)=0.3 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0325mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0325mv WHEN v(sn)=0.325 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0350mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0350mv WHEN v(sn)=0.35 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0375mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0375mv WHEN v(sn)=0.375 FALL=1 TD=5.500000e-08"
+    },
+    {
+      "name": "t_lvl_0400mv",
+      "unit": "s",
+      "spice": ".meas tran t_lvl_0400mv WHEN v(sn)=0.4 FALL=1 TD=5.500000e-08"
+    }
+  ],
+  "options": {
+    "timeout_s": 3600,
+    "keep_artifacts": false,
+    "waveforms": false,
+    "ngspice_init": [
+      "set measureprec=12",
+      "set numdgt=12"
+    ]
+  }
+}
