@@ -125,7 +125,7 @@ their integration benches) is checked by behavioral Verilog regressions under
 ```
 digital/ci/install_iverilog.sh "$HOME/iverilog" /tmp/iverilog-build   # pinned Icarus Verilog v13_0
 export PATH="$HOME/iverilog/bin:$PATH"
-digital/ci/run_digital_regressions.sh /tmp/digital-logs               # 13 suites, serial
+digital/ci/run_digital_regressions.sh /tmp/digital-logs               # 14 suites, serial
 ```
 
 The driver runs every suite even after a failure and exits non-zero if any
