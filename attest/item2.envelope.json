@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 2,
+  "summary": "T1 item 2 (Layout): the committed bitcell and 4x4 array GDS bound to the scripts that generate them",
+  "source": "attest/make_item2_envelope.py",
+  "provenance": {
+    "klt_version": null,
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "paths": [
+        {
+          "path": {
+            "path": "layout/gain_cell_2t.gds",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:ae17e5fa1c5c139ccd2f16e2c5badd87579b43657d10d3602beb6593c9234295"
+        },
+        {
+          "path": {
+            "path": "layout/gain_cell_2t_array.gds",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:2bcd6e1bb7eff7b248d77b45500972448f050089d4cf3f38300915b612fcdcce"
+        },
+        {
+          "path": {
+            "path": "layout/generate.sh",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:72c3ac05d5d2983ee896cf3f4071a9609b0abe379e07b83c673c8f0b84b9bc2b"
+        },
+        {
+          "path": {
+            "path": "layout/generate_array.sh",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:8b6a42b147b78db4320820203923e37510fb519906983fdc8f785b805aabd050"
+        },
+        {
+          "path": {
+            "path": "layout/generation_toolchain.py",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:4e2d2197fdd8ce0ff8220b7fb4635a9d53a01d2ee4e1a596da08ecf4a9f39104"
+        }
+      ],
+      "content_hash": "sha256:62ef4547f4cb762313355479bd4fa33f32ecfe9e2840fdb61347cdc60029f6b7"
+    }
+  }
+}
