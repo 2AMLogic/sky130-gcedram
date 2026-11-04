@@ -57,3 +57,22 @@ Run against the committed envelopes with klt 0.8.0:
 
 Both files were restored with `git checkout`; nothing from the controls is
 committed.
+
+## Addendum: item 10 also graded for the digital partition (issue #235)
+
+**Evidence record, not a spec change.** `block-manifest.json` now cites the same
+`attest/item10.envelope.json` for `10.digital`, so `t1_met_count` goes from 6 to
+**7** (digital item 10 `met`; every other digital row stays unmet). klt 0.8.0
+is unchanged, no `KLT_REV`/workflow pin bump, nothing under `sim/` touched.
+
+- `attest/item10.json` additionally inventories, by content hash only,
+  `.github/workflows/digital-regressions.yml`,
+  `digital/ci/run_digital_regressions.sh` and `digital/ci/README.md`.
+- The ~17 min digital regression is **not** a graded command: it needs a
+  source-built Icarus Verilog, and `evidence-checks.yml` has no such toolchain.
+  `README.md` documents the reproduce steps instead.
+- Negative control: appending a line to `digital/ci/README.md` makes
+  `klt signoff --attest 10 --inventory attest/item10.json --check
+  attest/item10.envelope.json` exit **3**. `--manifest ... --check` still exits
+  0 in that case, because the manifest pin covers the inventory file, not the
+  inventoried files; the envelope `--check` in `signoff.yml` is what catches it.
