@@ -52,6 +52,15 @@ jobs:
           klt drc --check gain_cell_2t_array.drc.result.json
           klt lvs --check gain_cell_2t_array.lvs.result.json
 
+      - name: Re-attest the repo-hygiene and analog testbench inventories (T1 items 10 and 9, analog)
+        # --check re-runs each inventoried command and refuses a drifted
+        # envelope. Item 9's cold start needs ngspice + the pinned PDK, which
+        # this runner lacks: it is `local_only`, so --check skips it and carries
+        # the committed outcome (see spec/t1-analog-attestation-decision.md).
+        run: |
+          klt signoff --attest 10 --inventory attest/item10.json --check attest/item10.envelope.json
+          klt signoff --attest 9 --inventory attest/item9.json --check attest/item9.envelope.json
+
       - name: Re-check the digital testbench inventory (T1 item 9, digital)
         # --check re-hashes every inventoried bench and refuses a drifted
         # envelope. The cold start (digital/ci/run_digital_regressions.sh)
