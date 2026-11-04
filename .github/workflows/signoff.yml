@@ -52,6 +52,15 @@ jobs:
           klt drc --check gain_cell_2t_array.drc.result.json
           klt lvs --check gain_cell_2t_array.lvs.result.json
 
+      - name: Re-check the digital testbench inventory (T1 item 9, digital)
+        # --check re-hashes every inventoried bench and refuses a drifted
+        # envelope. The cold start (digital/ci/run_digital_regressions.sh)
+        # needs the pinned iverilog, which this job does not build: it is
+        # `local_only`, so --check skips it and carries the committed outcome.
+        # digital-regressions.yml runs that cold start on every PR.
+        run: |
+          klt signoff --attest 9 --inventory attest/item9.digital.json --check attest/item9.digital.envelope.json
+
       - name: Re-grade the block manifest
         run: |
           rc=0

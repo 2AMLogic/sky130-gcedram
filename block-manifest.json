@@ -3,7 +3,7 @@
   "kind": "mixed-signal",
   "partition_boundary": {
     "analog": "The 2T gain-cell bitcell (design/gain_cell_2t.sch/.spice, layout/gain_cell_2t.gds) and the shared-tap 4x4 array built from it (layout/gain_cell_2t_array.gds); the sense path is future work tracked in #24. Evidence today: items 3 and 4 cover the committed bitcell artifacts, re-verified against the current deck by the reports cited below; item 11 (power delivery, structural) is cited for the analog partition only and covers the shared-tap 4x4 array (layout/gain_cell_2t_array.gds): its ERC and LVS reports are pinned to that layout's content hash.",
-    "digital": "The refresh controller and SPI host interface planned in #24 - no digital partition has been built yet, so every digital-partition T1 row is unmet by construction and cites no evidence."
+    "digital": "Behavioral Verilog RTL under digital/ (refresh scheduler, SPI slave, phase sequencer and their integrations, plus the SPI clock-domain-crossing model) with Icarus Verilog regressions and mutation suites driven by digital/ci/run_digital_regressions.sh. Not synthesized, no gate-level replay, no place-and-route, not signed off: every digital-partition T1 row other than item 9 is unmet and cites no evidence. Item 9 (testbenches shipped) is cited for the digital partition only, as the artifact-anchored attestation envelope attest/item9.digital.envelope.json; it attests that the benches and cold-start command are committed with pinned tools, not that the design is correct beyond what those behavioral benches check."
   },
   "evidence": {
     "3.analog": {
@@ -23,6 +23,10 @@
         "file": "layout/gain_cell_2t_array.lvs.result.json",
         "content_hash": "sha256:2bcd6e1bb7eff7b248d77b45500972448f050089d4cf3f38300915b612fcdcce"
       }
-    ]
+    ],
+    "9.digital": {
+      "file": "attest/item9.digital.envelope.json",
+      "content_hash": "sha256:fa28f186f63158e69267ae8c92b689c292438b94ed4e00b22f98b8f6fba26738"
+    }
   }
 }
