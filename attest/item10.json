@@ -2,14 +2,17 @@
   "schema_version": 1,
   "kind": "t1-attestation-inventory",
   "t1_item": 10,
-  "description": "Repo hygiene for the analog partition: README, LICENSE, the spec index and PDK pin, plus the evidence-checks.yml and signoff.yml commands (stdlib checks and klt DRC/LVS freshness).",
+  "description": "Repo hygiene for both partitions: README, LICENSE, the spec index and PDK pin, the evidence-checks.yml and signoff.yml commands (stdlib checks and klt DRC/LVS freshness), and the digital regression entry points (digital-regressions.yml, run_digital_regressions.sh, digital/ci/README.md) inventoried by content hash only; the ~17 min digital run is not a graded command.",
   "hygiene": [
     "README.md",
     "LICENSE",
     "spec/README.md",
     "docs/pdk-pin.md",
     ".github/workflows/evidence-checks.yml",
-    ".github/workflows/signoff.yml"
+    ".github/workflows/signoff.yml",
+    ".github/workflows/digital-regressions.yml",
+    "digital/ci/run_digital_regressions.sh",
+    "digital/ci/README.md"
   ],
   "checks": [
     {
