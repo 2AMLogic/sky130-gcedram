@@ -116,6 +116,25 @@ layout/        GDS + DRC/LVS reports (klayout-tools driven)
 measurements/  silicon characterization (empty until tape-out)
 ```
 
+## Reproducing the digital regressions
+
+The digital partition (refresh scheduler, SPI control, phase sequencer and
+their integration benches) is checked by behavioral Verilog regressions under
+`digital/`. From a clean checkout:
+
+```
+digital/ci/install_iverilog.sh "$HOME/iverilog" /tmp/iverilog-build   # pinned Icarus Verilog v13_0
+export PATH="$HOME/iverilog/bin:$PATH"
+digital/ci/run_digital_regressions.sh /tmp/digital-logs               # 14 suites, serial
+```
+
+The driver runs every suite even after a failure and exits non-zero if any
+failed; per-suite logs and `summary.txt` land in the log directory. An uncached
+run takes about 17 minutes (CI measured 16m38s, see
+`.github/workflows/digital-regressions.yml`). This is **behavioral regression
+only**: it is not CDC, synthesis, timing or macro signoff evidence. Pin,
+suite list and scope are in [digital/ci/README.md](digital/ci/README.md).
+
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).
