@@ -1,4 +1,4 @@
-# T1 analog attestation: items 2, 9, 10 attested, item 1 a named gap (issue #192)
+# T1 analog attestation: items 1, 2, 9, 10 attested (issues #192, #229)
 
 **Evidence record, not a spec change.** It changes no ratified value and
 relaxes no ratified spec. It records how the analog partition's T1 checklist
@@ -27,22 +27,26 @@ edited inventoried file, through the manifest hash pin and the envelope check.
 Re-attest item 9 locally whenever a bench or the PDK pin changes. No ngspice,
 xschem or PDK is installed in CI.
 
-## Item 1 stays unmet (named gap)
+## Item 1 attested (issue #229; was a named gap in #192)
 
-Item 1 (Design sources) needs a freshness check that fails when a committed
-netlist is stale against its schematic. Neither available command can run
-on a dispatch worker or is correct:
+Item 1 (Design sources) is attested by `attest/item1.json` ->
+`attest/item1.envelope.json`, pinned as `1.analog`. The freshness chain has two
+legs, both declared in the inventory:
 
-- `design/regen_netlist.sh --check` is the right check but calls raw `xschem`,
-  which dispatch workers must not run.
-- `klt netlist --check` reports `drifted` on all three cells, because the
-  committed `design/*.spice` are post-processed (provenance header, line
-  re-wrapping, relative `sch_path`) by `design/normalize_netlist.py`.
+- schematic -> raw: `klt netlist design/<cell>.sch -o design/<cell>.raw.spice
+  --check` (committed `design/<cell>.raw.spice`, repo-relative `sch_path`).
+  `local_only`: it needs xschem >= 3.4.5, which the CI runner lacks, so CI
+  carries the committed outcome; workers (xschem 3.4.7) run it for real.
+- raw -> normalized: `python3 -I design/normalize_netlist.py --check RAW NORM`,
+  a pure function of the committed files that also verifies the header's
+  schematic sha256. Runs in CI.
 
-The cause is this repo's post-processing, not a generic klt gap, so no
-klayout-tools issue is filed. Closing it needs either a host with the xschem
-toolchain, or a separate redesign of `regen_netlist.sh` onto `klt netlist`
-with the normalisation as a post-step.
+`design/regen_netlist.sh` now goes through `klt netlist` (no raw `xschem`),
+and `--check` runs both legs. The committed normalized netlists are
+byte-identical to before. The earlier note that 3.4.4 refuses `--check`
+no longer applies on workers (3.4.7). Gap to know: klt 0.8.0 pins only the
+inventory hash for item 1, so an edited source is caught by `--check`
+(CI and `regen_netlist.sh --check`), not by the manifest pin alone.
 
 ## Negative controls (scratch, not committed)
 
@@ -76,3 +80,12 @@ is unchanged, no `KLT_REV`/workflow pin bump, nothing under `sim/` touched.
   attest/item10.envelope.json` exit **3**. `--manifest ... --check` still exits
   0 in that case, because the manifest pin covers the inventory file, not the
   inventoried files; the envelope `--check` in `signoff.yml` is what catches it.
+
+## Addendum: item 1 negative control (issue #229)
+
+Edited `W=0.42` to `W=0.43` on `M_WR` in `design/gain_cell_2t.sch` (scratch,
+reverted): `design/regen_netlist.sh --check` exits **1** with the raw netlist
+stale and the normalized header sha256 stale; the other two cells stay OK.
+Hand-editing a normalized `.spice` fails `normalize_netlist.py --check`
+(`design/test_normalize_netlist.py`). Graded with klt 0.8.0: `t1_met_count`
+8 -> 9, `1.analog` `met`.

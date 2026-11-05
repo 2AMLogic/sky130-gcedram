@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 1,
+  "summary": "T1 item 1 (Design sources): 17/17 attestation checks passed (klt signoff --attest)",
+  "source": "attest/item1.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 17,
+    "passed_count": 17,
+    "checks": [
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/column_periphery.sch",
+        "passed": true,
+        "content_hash": "sha256:1a7aeb6aae08757e77a18e446132755e33c9106218452f901930ecf2f79a014e"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/gain_cell_2t.sch",
+        "passed": true,
+        "content_hash": "sha256:1e778b714b4eeb3433afd6b5785cc22b47c41a29d832522e8f5874c31f98927e"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/normalize_netlist.py",
+        "passed": true,
+        "content_hash": "sha256:e877f67ccfceed7a7717905acd64ae40859031483a2b1c307a44f17dbdee20b7"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/sense_latch.sch",
+        "passed": true,
+        "content_hash": "sha256:73732b9391242c0bc8676376c6bbdb33d37a0ca9ac438f12ea106d83d5976e54"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/xschemrc",
+        "passed": true,
+        "content_hash": "sha256:376d4cb3df325f6f7cf891fd6cab34b099d776ce5559ceb2e1aecf08e396deae"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/column_periphery.raw.spice",
+        "passed": true,
+        "content_hash": "sha256:c3c1d8604ad72660019913f1947849897c1347c9721097270924764f9feafac4"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/column_periphery.spice",
+        "passed": true,
+        "content_hash": "sha256:9e152ee9d50ec751446a28a1a67ae4ac10f63c4de6356c66690f944751f977b0"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/gain_cell_2t.raw.spice",
+        "passed": true,
+        "content_hash": "sha256:4a3cb95e7a8e8417f570276b3ac6e4a60c4222e1008fe9abe7aa7930fb9f5e16"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/gain_cell_2t.spice",
+        "passed": true,
+        "content_hash": "sha256:1dbe6c519b96d651264ef30c736f62188b1c8728833fdd77ac60a9703e8aa05a"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/sense_latch.raw.spice",
+        "passed": true,
+        "content_hash": "sha256:aacf945a09edd1cdb4c24b3ecc75e53c9001c92a607fff7bf1c491df4b740ffd"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/sense_latch.spice",
+        "passed": true,
+        "content_hash": "sha256:4f9db65dd376bfc8c1a4b1f1ac9da0a5ba5319bd31ae542c9654bba60f299f58"
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/column_periphery.raw.spice",
+        "generator": "klt netlist",
+        "argv": [
+          "klt",
+          "netlist",
+          "design/column_periphery.sch",
+          "-o",
+          "design/column_periphery.raw.spice",
+          "--check",
+          "--rcfile",
+          "design/xschemrc"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/column_periphery.spice",
+        "generator": "design/normalize_netlist.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/normalize_netlist.py",
+          "--check",
+          "design/column_periphery.raw.spice",
+          "design/column_periphery.spice"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/gain_cell_2t.raw.spice",
+        "generator": "klt netlist",
+        "argv": [
+          "klt",
+          "netlist",
+          "design/gain_cell_2t.sch",
+          "-o",
+          "design/gain_cell_2t.raw.spice",
+          "--check",
+          "--rcfile",
+          "design/xschemrc"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/gain_cell_2t.spice",
+        "generator": "design/normalize_netlist.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/normalize_netlist.py",
+          "--check",
+          "design/gain_cell_2t.raw.spice",
+          "design/gain_cell_2t.spice"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/sense_latch.raw.spice",
+        "generator": "klt netlist",
+        "argv": [
+          "klt",
+          "netlist",
+          "design/sense_latch.sch",
+          "-o",
+          "design/sense_latch.raw.spice",
+          "--check",
+          "--rcfile",
+          "design/xschemrc"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/sense_latch.spice",
+        "generator": "design/normalize_netlist.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/normalize_netlist.py",
+          "--check",
+          "design/sense_latch.raw.spice",
+          "design/sense_latch.spice"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "attest/item1.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:6689b74ea3c4722804ea00b0a5722d67bbd62853f25170d5c2d1ec8aa30ebcea"
+    }
+  }
+}

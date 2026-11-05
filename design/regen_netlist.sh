@@ -55,8 +55,8 @@ if [[ "${1:-}" == "--check" ]]; then
   CHECK_MODE=1
 fi
 
-if ! command -v xschem >/dev/null 2>&1; then
-  echo "FAIL: xschem not found on PATH -- see design/README.md" >&2
+if ! command -v klt >/dev/null 2>&1; then
+  echo "FAIL: klt not found on PATH -- see design/README.md" >&2
   exit 1
 fi
 if [[ -z "${PDK_ROOT:-}" || -z "${PDK:-}" ]]; then
@@ -64,35 +64,56 @@ if [[ -z "${PDK_ROOT:-}" || -z "${PDK:-}" ]]; then
   exit 1
 fi
 
+if [[ "${CHECK_MODE}" -eq 1 ]]; then
+  # Worker-runnable freshness check (issue #229), the same two legs T1 item 1
+  # attests (attest/item1.json): schematic -> raw via `klt netlist --check`,
+  # raw -> normalized via the xschem-free normalize_netlist.py --check (which
+  # also verifies the header's schematic sha256), plus the flavour gate on the
+  # committed netlist. Needs xschem >= 3.4.5: klt refuses older ones.
+  CHECK_STATUS=0
+  for CELL in "${CELLS[@]}"; do
+    (cd "${REPO_ROOT}" && klt netlist "design/${CELL}.sch" -o "design/${CELL}.raw.spice" \
+        --check --rcfile design/xschemrc >/dev/null) || {
+      echo "FAIL: design/${CELL}.raw.spice is STALE against design/${CELL}.sch (or klt netlist failed)." >&2
+      echo "      Run ./design/regen_netlist.sh (without --check) and commit the result." >&2
+      CHECK_STATUS=1; }
+    python3 -I "${REPO_ROOT}/design/normalize_netlist.py" --check \
+      "${REPO_ROOT}/design/${CELL}.raw.spice" "${REPO_ROOT}/design/${CELL}.spice" || CHECK_STATUS=1
+    NON_RATIFIED="$(grep -oE 'sky130_fd_pr__[a-zA-Z0-9_]+' "${REPO_ROOT}/design/${CELL}.spice" | sort -u \
+      | grep -vE "^(${ALLOWED[$CELL]})\$" || true)"
+    if [[ -n "${NON_RATIFIED}" ]]; then
+      echo "FAIL: ${CELL}: non-ratified sky130_fd_pr primitive(s): ${NON_RATIFIED}" >&2
+      CHECK_STATUS=1
+    else
+      echo "OK: ${CELL}: every device instance resolves to {${ALLOWED[$CELL]//|/, }}."
+    fi
+  done
+  exit "${CHECK_STATUS}"
+fi
+
 SCRATCH_DIR="$(mktemp -d)"
 trap 'rm -rf "${SCRATCH_DIR}"' EXIT
 
-STATUS=0
 for CELL in "${CELLS[@]}"; do
   DESIGN_SCH="${REPO_ROOT}/design/${CELL}.sch"
   COMMITTED_NETLIST="${REPO_ROOT}/design/${CELL}.spice"
   CELL_DIR="${SCRATCH_DIR}/${CELL}"
   mkdir -p "${CELL_DIR}"
 
-  # xschem's exit code reflects its electrical-rule check, not merely whether
-  # netlisting succeeded; a clean netlist exits 0. The PDK xschemrc prints a
-  # fixed informational banner, which is filtered; anything else is a failure.
-  set +e
-  XSCHEM_OUT="$(xschem -x -n -s -q --rcfile "${XSCHEMRC}" -o "${CELL_DIR}" "${DESIGN_SCH}" 2>&1)"
-  XSCHEM_EXIT=$?
-  set -e
-  XSCHEM_OUT="$(printf '%s\n' "${XSCHEM_OUT}" | grep -vE '^(open_pdks installation:|SKYWATER_MODELS:|SKYWATER_STDCELLS:|setup_tcp_bespice:)' | sed '/^$/d' || true)"
+  # Raw netlist: `klt netlist` forces headless xschem flags and kills a hung
+  # run (never call raw `xschem` from this script: dispatch workers forbid it).
+  # The committed design/<cell>.raw.spice is its output with the machine-local
+  # `** sch_path:` comment rewritten to a repo-relative path.
   RAW_NETLIST="${CELL_DIR}/${CELL}.spice"
-  if [[ ! -f "${RAW_NETLIST}" ]]; then
-    echo "FAIL: xschem did not produce ${RAW_NETLIST}" >&2
-    echo "${XSCHEM_OUT}" >&2
+  if ! (cd "${REPO_ROOT}" && klt netlist "design/${CELL}.sch" -o "${RAW_NETLIST}" \
+        --rcfile design/xschemrc --format json >"${CELL_DIR}/klt.json"); then
+    echo "FAIL: ${CELL}: klt netlist failed:" >&2
+    cat "${CELL_DIR}/klt.json" >&2
     exit 1
   fi
-  if [[ "${XSCHEM_EXIT}" -ne 0 || -n "${XSCHEM_OUT}" ]]; then
-    echo "FAIL: ${CELL}: xschem exited ${XSCHEM_EXIT} or printed unexpected text (expected exit 0, no output):" >&2
-    echo "${XSCHEM_OUT}" >&2
-    exit 1
-  fi
+  sed -i -E "s#^(\\*\\* s(ch|ym)_path: ).*/(design/.*)#\\1\\3#" "${RAW_NETLIST}"
+  cp "${RAW_NETLIST}" "${REPO_ROOT}/design/${CELL}.raw.spice"
+  echo "OK: wrote ${REPO_ROOT}/design/${CELL}.raw.spice"
 
   # Evaluate version-dependent expr() params and rewrap deterministically.
   EVALUATED="${CELL_DIR}/evaluated.spice"
@@ -139,20 +160,7 @@ for CELL in "${CELLS[@]}"; do
     cat "${NORMALIZED_BODY}"
   } > "${FINAL_NETLIST}"
 
-  if [[ "${CHECK_MODE}" -eq 1 ]]; then
-    if [[ ! -f "${COMMITTED_NETLIST}" ]]; then
-      echo "FAIL: ${COMMITTED_NETLIST} does not exist -- run without --check first." >&2
-      STATUS=1
-    elif diff -u "${COMMITTED_NETLIST}" "${FINAL_NETLIST}"; then
-      echo "OK: ${COMMITTED_NETLIST} matches a fresh regeneration from the current schematic."
-    else
-      echo "FAIL: ${COMMITTED_NETLIST} is STALE relative to the current schematic." >&2
-      echo "      Run ./design/regen_netlist.sh (without --check) and commit the result." >&2
-      STATUS=1
-    fi
-  else
-    cp "${FINAL_NETLIST}" "${COMMITTED_NETLIST}"
-    echo "OK: wrote ${COMMITTED_NETLIST}"
-  fi
+  cp "${FINAL_NETLIST}" "${COMMITTED_NETLIST}"
+  echo "OK: wrote ${COMMITTED_NETLIST}"
 done
-exit "${STATUS}"
+exit 0

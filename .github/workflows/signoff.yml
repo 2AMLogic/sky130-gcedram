@@ -61,6 +61,16 @@ jobs:
           klt signoff --attest 10 --inventory attest/item10.json --check attest/item10.envelope.json
           klt signoff --attest 9 --inventory attest/item9.json --check attest/item9.envelope.json
 
+      - name: Re-check the design-sources inventory (T1 item 1, analog)
+        # --check re-runs the raw -> normalized freshness commands
+        # (design/normalize_netlist.py --check, no xschem needed). The
+        # schematic -> raw leg (klt netlist --check) needs xschem >= 3.4.5 and
+        # the sky130 symbols, which this runner lacks: it is `local_only`, so
+        # --check skips it and carries the committed outcome. Run
+        # design/regen_netlist.sh --check on a host with xschem.
+        run: |
+          klt signoff --attest 1 --inventory attest/item1.json --check attest/item1.envelope.json
+
       - name: Re-check the digital testbench inventory (T1 item 9, digital)
         # --check re-hashes every inventoried bench and refuses a drifted
         # envelope. The cold start (digital/ci/run_digital_regressions.sh)
