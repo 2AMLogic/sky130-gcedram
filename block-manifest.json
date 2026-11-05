@@ -2,10 +2,14 @@
   "block": "sky130-gcedram",
   "kind": "mixed-signal",
   "partition_boundary": {
-    "analog": "The 2T gain-cell bitcell (design/gain_cell_2t.sch/.spice, layout/gain_cell_2t.gds) and the shared-tap 4x4 array built from it (layout/gain_cell_2t_array.gds), plus the sense latch (design/sense_latch.*) and column-periphery slice (design/column_periphery.*) schematics and netlists; the refresh controller and SPI interface are the digital partition, tracked in #24. Evidence today: items 3 and 4 cover the committed bitcell artifacts, re-verified against the current deck by the reports cited below; item 11 (power delivery, structural) is cited for the analog partition only and covers the shared-tap 4x4 array (layout/gain_cell_2t_array.gds): its ERC and LVS reports are pinned to that layout's content hash; items 2, 9 and 10 are artifact-anchored attestation envelopes under attest/ (item 1 is a named gap: see spec/t1-analog-attestation-decision.md).",
+    "analog": "The 2T gain-cell bitcell (design/gain_cell_2t.sch/.spice, layout/gain_cell_2t.gds) and the shared-tap 4x4 array built from it (layout/gain_cell_2t_array.gds), plus the sense latch (design/sense_latch.*) and column-periphery slice (design/column_periphery.*) schematics and netlists; the refresh controller and SPI interface are the digital partition, tracked in #24. Evidence today: items 3 and 4 cover the committed bitcell artifacts, re-verified against the current deck by the reports cited below; item 11 (power delivery, structural) is cited for the analog partition only and covers the shared-tap 4x4 array (layout/gain_cell_2t_array.gds): its ERC and LVS reports are pinned to that layout's content hash; items 1, 2, 9 and 10 are artifact-anchored attestation envelopes under attest/ (see spec/t1-analog-attestation-decision.md).",
     "digital": "Behavioral Verilog RTL under digital/ (refresh scheduler, SPI slave, phase sequencer and their integrations, plus the SPI clock-domain-crossing model) with Icarus Verilog regressions and mutation suites driven by digital/ci/run_digital_regressions.sh. Not synthesized, no gate-level replay, no place-and-route, not signed off: every digital-partition T1 row other than items 9 and 10 is unmet and cites no evidence. Item 9 (testbenches shipped) is cited for the digital partition only, as the artifact-anchored attestation envelope attest/item9.digital.envelope.json; it attests that the benches and cold-start command are committed with pinned tools, not that the design is correct beyond what those behavioral benches check. Item 10 (repo hygiene) is cited through the shared attest/item10.envelope.json whose inventory covers the digital regression workflow, driver and README."
   },
   "evidence": {
+    "1.analog": {
+      "file": "attest/item1.envelope.json",
+      "content_hash": "sha256:6689b74ea3c4722804ea00b0a5722d67bbd62853f25170d5c2d1ec8aa30ebcea"
+    },
     "3.analog": {
       "file": "layout/gain_cell_2t.drc.result.json",
       "content_hash": "sha256:ae17e5fa1c5c139ccd2f16e2c5badd87579b43657d10d3602beb6593c9234295"

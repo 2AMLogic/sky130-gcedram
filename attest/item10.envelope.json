@@ -24,14 +24,14 @@
         "role": "hygiene",
         "path": ".github/workflows/evidence-checks.yml",
         "passed": true,
-        "content_hash": "sha256:a8e130f863a5bf68e644a82e48039fff2c0e518e20414fd003875cbb1e20aa0b"
+        "content_hash": "sha256:d9ee19c163992f03f8a535c81e0310f9459acb42e502f2256712d2aabee9a495"
       },
       {
         "check": "present",
         "role": "hygiene",
         "path": ".github/workflows/signoff.yml",
         "passed": true,
-        "content_hash": "sha256:099b6acaf5b3693c327c4af7b7f7f0c09173f6258ad07c828f14c68ecdd42c94"
+        "content_hash": "sha256:ae26a4936c1517236dd93a2c76a23267e1b980818f66fdc46d080c8c2e22fd40"
       },
       {
         "check": "present",
