@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 10,
+  "description": "Repo hygiene for both partitions: README, LICENSE, the spec index and PDK pin, the evidence-checks.yml and signoff.yml commands (stdlib checks and klt DRC/LVS freshness), and the digital regression entry points (digital-regressions.yml, run_digital_regressions.sh, digital/ci/README.md) inventoried by content hash only; the ~17 min digital run is not a graded command.",
+  "hygiene": [
+    "README.md",
+    "LICENSE",
+    "spec/README.md",
+    "docs/pdk-pin.md",
+    ".github/workflows/evidence-checks.yml",
+    ".github/workflows/signoff.yml",
+    ".github/workflows/digital-regressions.yml",
+    "digital/ci/run_digital_regressions.sh",
+    "digital/ci/README.md"
+  ],
+  "checks": [
+    {
+      "name": "Loaded-column analysis tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/test_analysis.py"
+      ]
+    },
+    {
+      "name": "Cold-corner variant tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/cold-corner/test_variants.py"
+      ]
+    },
+    {
+      "name": "Evidence index check",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/cold-corner/check_evidence_index.py"
+      ]
+    },
+    {
+      "name": "Sense-stage checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/sense-stage/test_sense_stage.py"
+      ]
+    },
+    {
+      "name": "Refresh-operation (sense + write-back) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/refresh-op/test_refresh_op.py"
+      ]
+    },
+    {
+      "name": "RTL-strobe replay (converter, consistency check, analysis) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/refresh-replay/test_refresh_replay.py"
+      ]
+    },
+    {
+      "name": "Refresh-replay matched initialization controls (issue #139) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/refresh-replay/test_init_control.py"
+      ]
+    },
+    {
+      "name": "Refresh energy / standby power checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/refresh-energy/test_refresh_energy.py"
+      ]
+    },
+    {
+      "name": "Sense-latch design-vs-deck drift check",
+      "argv": [
+        "python3",
+        "-I",
+        "design/test_sense_latch.py"
+      ]
+    },
+    {
+      "name": "Column-periphery slice design-vs-deck drift check",
+      "argv": [
+        "python3",
+        "-I",
+        "design/test_column_periphery.py"
+      ]
+    },
+    {
+      "name": "Column-periphery comparison checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/column-periphery/test_column_periphery.py"
+      ]
+    },
+    {
+      "name": "Sense-stage mismatch (Monte Carlo) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/sense-mismatch/test_sense_mismatch.py"
+      ]
+    },
+    {
+      "name": "Write-disturb checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/write-disturb/test_write_disturb.py"
+      ]
+    },
+    {
+      "name": "Append-only guard fixture tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/test_append_only.py"
+      ]
+    },
+    {
+      "name": "Array-context C_SN comparison (issue #89) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/retention/test_compare_array_c_sn.py"
+      ]
+    },
+    {
+      "name": "Array generation pin and baseline comparison (issue #91) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "layout/test_generation_reproducibility.py"
+      ]
+    },
+    {
+      "name": "Geometry-matched access leakage (issue #149) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/leakage/test_geometry_leakage.py"
+      ]
+    },
+    {
+      "name": "Refresh-overhead arithmetic tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/refresh-overhead/test_refresh_overhead.py"
+      ]
+    },
+    {
+      "name": "Bitcell compaction variants (issue #100) consistency checks",
+      "argv": [
+        "python3",
+        "-I",
+        "layout/compact/test_compact.py"
+      ]
+    },
+    {
+      "name": "Compact-layout parasitics, leakage and retention-budget (issue #161) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/retention/test_compare_compact_c_sn.py"
+      ]
+    },
+    {
+      "name": "Device-inclusive compact C_SN (issue #208) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/retention/test_compact_device_c_sn.py"
+      ]
+    },
+    {
+      "name": "Shared klt request skeleton tests (issue #196)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/test_klt_request.py"
+      ]
+    },
+    {
+      "name": "Shared evidence helper tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/test_evidence_common.py"
+      ]
+    },
+    {
+      "name": "Artifact-store writer (issue #218) fail-closed checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/test_store_evidence.py"
+      ]
+    },
+    {
+      "name": "Artifact manifest checker (issue #218) fixture tests",
+      "argv": [
+        "python3",
+        "-I",
+        "scripts/tests/test_check_artifact_manifests.py"
+      ]
+    },
+    {
+      "name": "Artifact manifests (schema, artifact: URIs, no committed bytes)",
+      "argv": [
+        "python3",
+        "-I",
+        "scripts/check_artifact_manifests.py",
+        "check"
+      ]
+    },
+    {
+      "name": "klt drc --check gain_cell_2t.drc.result.json",
+      "argv": [
+        "klt",
+        "drc",
+        "--check",
+        "gain_cell_2t.drc.result.json"
+      ],
+      "cwd": "layout"
+    },
+    {
+      "name": "klt lvs --check gain_cell_2t.lvs.result.json",
+      "argv": [
+        "klt",
+        "lvs",
+        "--check",
+        "gain_cell_2t.lvs.result.json"
+      ],
+      "cwd": "layout"
+    },
+    {
+      "name": "klt drc --check gain_cell_2t_array.drc.result.json",
+      "argv": [
+        "klt",
+        "drc",
+        "--check",
+        "gain_cell_2t_array.drc.result.json"
+      ],
+      "cwd": "layout"
+    },
+    {
+      "name": "klt lvs --check gain_cell_2t_array.lvs.result.json",
+      "argv": [
+        "klt",
+        "lvs",
+        "--check",
+        "gain_cell_2t_array.lvs.result.json"
+      ],
+      "cwd": "layout"
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 10,
+  "summary": "T1 item 10 (Repo hygiene): 39/39 attestation checks passed (klt signoff --attest)",
+  "source": "attest/item10.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 39,
+    "passed_count": 39,
+    "checks": [
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": ".github/workflows/digital-regressions.yml",
+        "passed": true,
+        "content_hash": "sha256:c39001d2fc57f55590297d6e96a3124a15a8579b0c8bcb5ff81ae38702183ac9"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": ".github/workflows/evidence-checks.yml",
+        "passed": true,
+        "content_hash": "sha256:d9ee19c163992f03f8a535c81e0310f9459acb42e502f2256712d2aabee9a495"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": ".github/workflows/signoff.yml",
+        "passed": true,
+        "content_hash": "sha256:ae26a4936c1517236dd93a2c76a23267e1b980818f66fdc46d080c8c2e22fd40"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "LICENSE",
+        "passed": true,
+        "content_hash": "sha256:cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "README.md",
+        "passed": true,
+        "content_hash": "sha256:f35b9faabdae59b3d4973097ec96c72cc5cb4cf574f72aca66df780b866e14b6"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "digital/ci/README.md",
+        "passed": true,
+        "content_hash": "sha256:10ec3b0eeca64c646afe002017685e41ea20d26e71c9d49848b40cfb056771c0"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "digital/ci/run_digital_regressions.sh",
+        "passed": true,
+        "content_hash": "sha256:afefee7e73827e071167c47f74abff2391a02c43a9ab45c75b632f0f3216d885"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "docs/pdk-pin.md",
+        "passed": true,
+        "content_hash": "sha256:4ef180ee38d4451f71ef453aa89c510573ce036d2663a5bca8f971981fcb8f86"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "spec/README.md",
+        "passed": true,
+        "content_hash": "sha256:6176dff7e1fd40670393e08c898d911050f5bf4fc8db74863de9ce3351808b3e"
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Loaded-column analysis tests",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/test_analysis.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Cold-corner variant tests",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/cold-corner/test_variants.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Evidence index check",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/cold-corner/check_evidence_index.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Sense-stage checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/sense-stage/test_sense_stage.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Refresh-operation (sense + write-back) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/refresh-op/test_refresh_op.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "RTL-strobe replay (converter, consistency check, analysis) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/refresh-replay/test_refresh_replay.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Refresh-replay matched initialization controls (issue #139) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/refresh-replay/test_init_control.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Refresh energy / standby power checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/refresh-energy/test_refresh_energy.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Sense-latch design-vs-deck drift check",
+        "argv": [
+          "python3",
+          "-I",
+          "design/test_sense_latch.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Column-periphery slice design-vs-deck drift check",
+        "argv": [
+          "python3",
+          "-I",
+          "design/test_column_periphery.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Column-periphery comparison checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/column-periphery/test_column_periphery.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Sense-stage mismatch (Monte Carlo) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/sense-mismatch/test_sense_mismatch.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Write-disturb checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/write-disturb/test_write_disturb.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Append-only guard fixture tests",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/test_append_only.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Array-context C_SN comparison (issue #89) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/retention/test_compare_array_c_sn.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Array generation pin and baseline comparison (issue #91) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "layout/test_generation_reproducibility.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Geometry-matched access leakage (issue #149) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/leakage/test_geometry_leakage.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Refresh-overhead arithmetic tests",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/refresh-overhead/test_refresh_overhead.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Bitcell compaction variants (issue #100) consistency checks",
+        "argv": [
+          "python3",
+          "-I",
+          "layout/compact/test_compact.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Compact-layout parasitics, leakage and retention-budget (issue #161) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/retention/test_compare_compact_c_sn.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Device-inclusive compact C_SN (issue #208) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/retention/test_compact_device_c_sn.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Shared klt request skeleton tests (issue #196)",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/test_klt_request.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Shared evidence helper tests",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/test_evidence_common.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Artifact-store writer (issue #218) fail-closed checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/test_store_evidence.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Artifact manifest checker (issue #218) fixture tests",
+        "argv": [
+          "python3",
+          "-I",
+          "scripts/tests/test_check_artifact_manifests.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Artifact manifests (schema, artifact: URIs, no committed bytes)",
+        "argv": [
+          "python3",
+          "-I",
+          "scripts/check_artifact_manifests.py",
+          "check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt drc --check gain_cell_2t.drc.result.json",
+        "argv": [
+          "klt",
+          "drc",
+          "--check",
+          "gain_cell_2t.drc.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt lvs --check gain_cell_2t.lvs.result.json",
+        "argv": [
+          "klt",
+          "lvs",
+          "--check",
+          "gain_cell_2t.lvs.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt drc --check gain_cell_2t_array.drc.result.json",
+        "argv": [
+          "klt",
+          "drc",
+          "--check",
+          "gain_cell_2t_array.drc.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt lvs --check gain_cell_2t_array.lvs.result.json",
+        "argv": [
+          "klt",
+          "lvs",
+          "--check",
+          "gain_cell_2t_array.lvs.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "attest/item10.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:db1b07baafa5dbcce725b0a1c3baad4ab4d0a226fa2fd2b1e344cd9cdb6e9872"
+    }
+  }
+}

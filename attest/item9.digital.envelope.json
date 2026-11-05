@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 9,
+  "summary": "T1 item 9 (Testbenches shipped): 37/37 attestation checks passed (klt signoff --attest)",
+  "source": "attest/item9.digital.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 37,
+    "passed_count": 37,
+    "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/ci/bootstrap_auditor.sh",
+        "passed": true,
+        "content_hash": "sha256:3161db1d7c40b6317478db8dc9bb27dae95bca1b1844ca2206dca5c8028fb7a6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/ci/install_iverilog.sh",
+        "passed": true,
+        "content_hash": "sha256:88500af3635178322116d027f46a95692d39e0553808cfc8fe0518e802f35468"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/ci/mutation_lib.sh",
+        "passed": true,
+        "content_hash": "sha256:77a834f701f7c723b831b6335bb2f97268817b88329ddade3e1c90fc5d0be5da"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/ci/run_digital_regressions.sh",
+        "passed": true,
+        "content_hash": "sha256:afefee7e73827e071167c47f74abff2391a02c43a9ab45c75b632f0f3216d885"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/control-integration/params.py",
+        "passed": true,
+        "content_hash": "sha256:f8df5e7c719b7404a32c80edf073b5088dec15ffa75e17f2aa75541231a1838b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/control-integration/run_mutation.sh",
+        "passed": true,
+        "content_hash": "sha256:e68b8bc8f691ac03a2bb19727a03d4acfd1216dd2338490834c16f42598a9dc2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/control-integration/run_tests.sh",
+        "passed": true,
+        "content_hash": "sha256:ee4c68c7c2a66fc1aa81e9a25f58a80beb47ebf814e02ab6a2b0a6b683459a2b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/control-integration/sim_one.sh",
+        "passed": true,
+        "content_hash": "sha256:52eea1ccc1e6015072b1cf5c4348ce4f28acaddf7d564ac5a1a4f595f0290dbc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/control-integration/tb_ctrl_integ.v",
+        "passed": true,
+        "content_hash": "sha256:58603fc70e8cb10c2ac25ad8efc03b04b9065eb0bda1822a649c33b8bfc805cf"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/control-integration/tb_equiv.v",
+        "passed": true,
+        "content_hash": "sha256:0db7c633bf15a820feb80dfaa40d4ced47d5bb9bc7b698261c4260f60a6a6751"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/phase-control/run_mutation.sh",
+        "passed": true,
+        "content_hash": "sha256:10df9ba8b29a746d37a37c0267979e810013f26b064a867988dc509ff1b77518"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/phase-control/run_tests.sh",
+        "passed": true,
+        "content_hash": "sha256:d184a08ad997aa7f03fbba1e35f5cce477eb8b47d16845bb54aca1c90f7b4807"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/phase-control/tb_phase_seq.v",
+        "passed": true,
+        "content_hash": "sha256:33ac910d141ddd87005fae2c96b51d6d514f5585fa9060ea2fa9f0d7310c5f8c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/phase-control/tb_trace_export.v",
+        "passed": true,
+        "content_hash": "sha256:8f25a9f01b0c38c862c6012d247fe2f665eeccecd8662d88883336dc925c941a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/refresh-scheduler/params.py",
+        "passed": true,
+        "content_hash": "sha256:a503bee46b4ed52134baa09c3e2fcdfe5ee9a747d307d7f285a5976e7a9a6153"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/refresh-scheduler/run_mutation.sh",
+        "passed": true,
+        "content_hash": "sha256:87ac3a49602ef10429ae48ee8cc25680f4408183e0221fbb754049e6effe48d5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/refresh-scheduler/run_tests.sh",
+        "passed": true,
+        "content_hash": "sha256:b960e7a7ec428077438dfc25221fc176ccd6aafd5c010bd585cf8de9d2d23fe0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/refresh-scheduler/tb_refresh_sched.v",
+        "passed": true,
+        "content_hash": "sha256:8cbadb24dd8a96d093bb403b9f7b22d2de824863d2e44db5824f5f0b850385bc"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/sched-phase-integration/coupled_params.py",
+        "passed": true,
+        "content_hash": "sha256:8036f8c9d4fbbfbdcac14d10ed3437c1deb6940dbc8905ac2476070f10207e17"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/sched-phase-integration/run_coupled.sh",
+        "passed": true,
+        "content_hash": "sha256:57ab769f9a981124eafbdb65912ce352ce722f393fa5616985decf83bb67c75d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/sched-phase-integration/run_coupled_mutation.sh",
+        "passed": true,
+        "content_hash": "sha256:b7b069bc526f95ef0edacc9f810414f4e8b90e4554124e9e2b8a335cb927996e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/sched-phase-integration/run_mutation.sh",
+        "passed": true,
+        "content_hash": "sha256:fb7e99359428453f6ff613a0f8629f6e5bfb860518e2a29ca2dd5b45527212aa"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/sched-phase-integration/run_tests.sh",
+        "passed": true,
+        "content_hash": "sha256:7ad6e8b574d95578a879ebc8cdae2086802f799342977e96f6da50e7344ee9b3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/sched-phase-integration/tb_coupled.v",
+        "passed": true,
+        "content_hash": "sha256:848417b446359bbb8dde317548192fe5de7cf8d01d21e83ce9b515d5fb2c1f19"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/sched-phase-integration/tb_sched_phase.v",
+        "passed": true,
+        "content_hash": "sha256:cd755f2efdb699983ba90bc13c73730426a95e5b3196cf08c8a09b5d04dedf35"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-control/params.py",
+        "passed": true,
+        "content_hash": "sha256:bc2b2537f37acfb170e57bcca614d5254fee945b094ddb3b7b3551e488805ae7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-control/run_mutation.sh",
+        "passed": true,
+        "content_hash": "sha256:38270b8fe5937e40048673cdaabe7e2cc282198ee640feac68cc963363edcded"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-control/run_tests.sh",
+        "passed": true,
+        "content_hash": "sha256:f86c121d602eb74157e15c942e0a09f89c3df3eceb649e5f4757474eaf62b8e3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-control/tb_spi_slave.v",
+        "passed": true,
+        "content_hash": "sha256:ec792bc68eeb4a58f46e60ddfa0f3b297c435fbf725b81b4393ce7a0116145f3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-crossing/run_tests.sh",
+        "passed": true,
+        "content_hash": "sha256:73f3e534063037efee3c4d2a99ee16d6873ecb028c6ce50c2eb633e9d4bd45ec"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-crossing/tb_xing.v",
+        "passed": true,
+        "content_hash": "sha256:568e869289343ac0972fab014c1b783960c0f75b456acef190805ba44100e088"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-sched-phase-integration/run_mutation.sh",
+        "passed": true,
+        "content_hash": "sha256:884d79e906e8e58349899b239ab153e1e342fd29b2aa21b85aa88a05578bdb00"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-sched-phase-integration/run_tests.sh",
+        "passed": true,
+        "content_hash": "sha256:918c192209fcc6a1edb483061615bfec56a10be62e68a7a22bf709857c9937e2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "digital/spi-sched-phase-integration/tb_spi_sched_phase.v",
+        "passed": true,
+        "content_hash": "sha256:0641fe0f74d648b5fe9888fb15b31dd19aac1b5718fe57a512a684ca7cd11d19"
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "argv": [
+          "digital/ci/run_digital_regressions.sh",
+          "/tmp/digital-regressions-logs"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "pin",
+        "role": "pdk",
+        "passed": true,
+        "value": {
+          "name": "none",
+          "revision": "not applicable: the digital cold start is behavioral RTL under iverilog and consumes no PDK"
+        }
+      },
+      {
+        "check": "pin",
+        "role": "tools",
+        "passed": true,
+        "value": {
+          "iverilog": "v13_0 (dfeee909ed9f20b4870dd93423156c0170c0e1ff)",
+          "klt": "0.8.0",
+          "python3": "system python3 from the ubuntu runner image (not pinned by digital-regressions.yml)"
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "attest/item9.digital.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:fa28f186f63158e69267ae8c92b689c292438b94ed4e00b22f98b8f6fba26738"
+    }
+  }
+}

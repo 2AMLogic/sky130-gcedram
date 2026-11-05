@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 9,
+  "description": "Digital-partition testbenches under digital/: every Icarus Verilog testbench (tb_*.v), bench runner (run_tests.sh, run_mutation.sh, run_coupled*.sh, sim_one.sh), bench parameter generator (params.py) and the digital/ci scripts. cold_start is the 14-step serial regression driver digital/ci/run_digital_regressions.sh, which also runs spi-crossing/run_tests.sh. It needs iverilog (pinned v13_0, commit dfeee909ed9f20b4870dd93423156c0170c0e1ff, built by digital/ci/install_iverilog.sh) and python3, so it is local_only: --check carries the committed outcome rather than re-running it, and .github/workflows/digital-regressions.yml runs it on every PR. Behavioral RTL only: no synthesis or gate-level replay exists. Re-attest locally with: klt signoff --attest 9 --inventory attest/item9.digital.json -o attest/item9.digital.envelope.json",
+  "testbenches": [
+    "digital/ci/bootstrap_auditor.sh",
+    "digital/ci/install_iverilog.sh",
+    "digital/ci/mutation_lib.sh",
+    "digital/ci/run_digital_regressions.sh",
+    "digital/control-integration/params.py",
+    "digital/control-integration/run_mutation.sh",
+    "digital/control-integration/run_tests.sh",
+    "digital/control-integration/sim_one.sh",
+    "digital/control-integration/tb_ctrl_integ.v",
+    "digital/control-integration/tb_equiv.v",
+    "digital/phase-control/run_mutation.sh",
+    "digital/phase-control/run_tests.sh",
+    "digital/phase-control/tb_phase_seq.v",
+    "digital/phase-control/tb_trace_export.v",
+    "digital/refresh-scheduler/params.py",
+    "digital/refresh-scheduler/run_mutation.sh",
+    "digital/refresh-scheduler/run_tests.sh",
+    "digital/refresh-scheduler/tb_refresh_sched.v",
+    "digital/sched-phase-integration/coupled_params.py",
+    "digital/sched-phase-integration/run_coupled.sh",
+    "digital/sched-phase-integration/run_coupled_mutation.sh",
+    "digital/sched-phase-integration/run_mutation.sh",
+    "digital/sched-phase-integration/run_tests.sh",
+    "digital/sched-phase-integration/tb_coupled.v",
+    "digital/sched-phase-integration/tb_sched_phase.v",
+    "digital/spi-control/params.py",
+    "digital/spi-control/run_mutation.sh",
+    "digital/spi-control/run_tests.sh",
+    "digital/spi-control/tb_spi_slave.v",
+    "digital/spi-crossing/run_tests.sh",
+    "digital/spi-crossing/tb_xing.v",
+    "digital/spi-sched-phase-integration/run_mutation.sh",
+    "digital/spi-sched-phase-integration/run_tests.sh",
+    "digital/spi-sched-phase-integration/tb_spi_sched_phase.v"
+  ],
+  "cold_start": {
+    "argv": [
+      "digital/ci/run_digital_regressions.sh",
+      "/tmp/digital-regressions-logs"
+    ],
+    "local_only": true
+  },
+  "pins": {
+    "pdk": {
+      "name": "none",
+      "revision": "not applicable: the digital cold start is behavioral RTL under iverilog and consumes no PDK"
+    },
+    "tools": {
+      "klt": "0.8.0",
+      "iverilog": "v13_0 (dfeee909ed9f20b4870dd93423156c0170c0e1ff)",
+      "python3": "system python3 from the ubuntu runner image (not pinned by digital-regressions.yml)"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 1,
+  "description": "Analog design sources: three xschem schematics, their raw klt netlist output (schematic -> raw freshness is klt netlist --check, local_only because CI has no xschem >= 3.4.5) and the normalized netlists (raw -> normalized freshness is the xschem-free normalize_netlist.py --check, which also verifies the header's schematic sha256).",
+  "sources": [
+    "design/column_periphery.sch",
+    "design/gain_cell_2t.sch",
+    "design/normalize_netlist.py",
+    "design/sense_latch.sch",
+    "design/xschemrc"
+  ],
+  "derived": [
+    {
+      "path": "design/column_periphery.raw.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/column_periphery.sch",
+          "-o",
+          "design/column_periphery.raw.spice",
+          "--check",
+          "--rcfile",
+          "design/xschemrc"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "design/column_periphery.spice",
+      "generator": "design/normalize_netlist.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/normalize_netlist.py",
+          "--check",
+          "design/column_periphery.raw.spice",
+          "design/column_periphery.spice"
+        ]
+      }
+    },
+    {
+      "path": "design/gain_cell_2t.raw.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/gain_cell_2t.sch",
+          "-o",
+          "design/gain_cell_2t.raw.spice",
+          "--check",
+          "--rcfile",
+          "design/xschemrc"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "design/gain_cell_2t.spice",
+      "generator": "design/normalize_netlist.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/normalize_netlist.py",
+          "--check",
+          "design/gain_cell_2t.raw.spice",
+          "design/gain_cell_2t.spice"
+        ]
+      }
+    },
+    {
+      "path": "design/sense_latch.raw.spice",
+      "generator": "klt netlist",
+      "check": {
+        "argv": [
+          "klt",
+          "netlist",
+          "design/sense_latch.sch",
+          "-o",
+          "design/sense_latch.raw.spice",
+          "--check",
+          "--rcfile",
+          "design/xschemrc"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "design/sense_latch.spice",
+      "generator": "design/normalize_netlist.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/normalize_netlist.py",
+          "--check",
+          "design/sense_latch.raw.spice",
+          "design/sense_latch.spice"
+        ]
+      }
+    }
+  ]
+}
