@@ -21,6 +21,34 @@ Limits: protocol model only; `sclk`/`cs_n` are used directly as clocks, so no
 CDC, timing or synthesis claims. All interface choices are ASSUMPTIONs until
 the challenge rules and a real scheduler fix them (SPEC.md Sec. 5).
 
+## Reset / clear structure (issue #273)
+
+Every flop has exactly one asynchronous control (Yosys `proc` rejects two):
+
+| Flops | Clock | Async clear |
+|---|---|---|
+| `rx`, `cnt` | `posedge sclk` | `clr_n = rst_n & ~cs_n` (low = clear) |
+| `tx` | `negedge sclk` | `clr_n` |
+| commit state (`refresh_en`, `ivl_*`, `sh_l`, `sweep_tog`, `st`) | `posedge cs_n` | `rst_n` |
+
+`cs_n` high or `rst_n` low clears the frame state without any `sclk` edge.
+Simulation: the commit block reads `rx`/`cnt` on the same `cs_n` edge that
+clears them; the clear is a nonblocking assignment, so the commit sees the
+pre-clear values. How that race resolves in gates is part of the CDC work and
+is **not** solved here. A synchronous `cs_n` clear was rejected: `sclk` does
+not run while `cs_n` is high. Sim note: `clr_n` is already 0 at time 0 (`cs_n`
+high), so the testbenches apply the power-on reset with `cs_n` low (no edge
+otherwise; real flops are level-sensitive).
+
+Synthesis: `spi_slave.synth.request.json` (`klt synthesize`, sv2v frontend,
+`sky130_fd_sc_hd`, `MAX_INTERVAL=5029`) completes through `proc` and maps to
+library cells (259 instances, no warnings); report and netlist in
+`results/*_2026-11-11_issue273.*`.
+
+**Not yet verified:** timing (recovery/removal of `clr_n` against `sclk`,
+glitches on the combinational `clr_n`), CDC, gate-level behaviour of the commit
+race, and `gc_ctrl_top` synthesis (#230).
+
 ## CI
 
 CI: `.github/workflows/digital-regressions.yml` runs this under the pinned

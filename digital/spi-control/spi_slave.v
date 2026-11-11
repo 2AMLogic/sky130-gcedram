@@ -59,17 +59,22 @@ module spi_slave #(
         endcase
     endfunction
 
+    // Single async clear for the frame flops (issue #273): Yosys proc rejects two
+    // async controls per flop. clr_n is combinational from a pad input and the reset,
+    // so it can glitch; its recovery/removal against sclk is unverified.
+    wire clr_n = rst_n & ~cs_n;
+
     // shift-in (sampled on rising edge); counter saturates
-    always @(posedge sclk or posedge cs_n or negedge rst_n) begin
-        if (cs_n || !rst_n) begin rx <= 16'h0; cnt <= 5'd0; end
+    always @(posedge sclk or negedge clr_n) begin
+        if (!clr_n) begin rx <= 16'h0; cnt <= 5'd0; end
         else begin
             rx <= {rx[14:0], mosi};
             if (cnt != 5'd31) cnt <= cnt + 5'd1;
         end
     end
     // shift-out (driven on falling edge); read data latched after the 8 command bits
-    always @(negedge sclk or posedge cs_n or negedge rst_n) begin
-        if (cs_n || !rst_n) tx <= 8'h00;
+    always @(negedge sclk or negedge clr_n) begin
+        if (!clr_n) tx <= 8'h00;
         else if (cnt == 5'd8) tx <= rx[7] ? 8'h00 : rd(rx[6:0]);   // MUT_RDLATCH
         else if (cnt > 5'd8)  tx <= {tx[6:0], 1'b0};
     end

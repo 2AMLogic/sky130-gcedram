@@ -313,7 +313,10 @@ module tb_ctrl_integ;
 
     initial begin
         rng = SEED;
-        #0.1 rst_n = 0;
+        // (#273) the SPI slave's frame flops clear on negedge (rst_n & ~cs_n); cs_n is high
+        // at time 0 so that signal is already 0 (no edge). Pulse cs_n once before reset so
+        // the flops see a clear edge; the pulse ends before rst_n falls at 0.1 ns.
+        #0.02 cs_n = 0; #0.02 cs_n = 1; #0.06 rst_n = 0;
         bench_reset; n_resets = 0; n_cancel = 0; rej_rep = 0;
         #(5.1 + PH) rst_n = 1;
         traffic_on = (TRAFFIC != 0);
