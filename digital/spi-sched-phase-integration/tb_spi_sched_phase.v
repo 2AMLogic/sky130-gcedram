@@ -439,7 +439,10 @@ module tb_spi_sched_phase;
         for (k = 0; k < 3; k = k + 1) begin n_exec_k[k] = 0; min_margin[k] = 1 << 30; len_obs[k] = 0; sch_len_obs[k] = 0; end
         for (k = 0; k < N_ROWS; k = k + 1) ref_cnt[k] = 0;
         pend_v = 0; in_op = 0; op_busy_p = 0; q_busy_p = 0; q_fall_cyc = 0; exp_ref_row = 0;
-        #0.1 rst_n = 0;
+        // (#273) the SPI slave's frame flops clear on negedge (rst_n & ~cs_n); cs_n is high
+        // at time 0 so that signal is already 0 (no edge). Pulse cs_n once before reset so
+        // the flops see a clear edge; the pulse ends before rst_n falls at 0.1 ns.
+        #0.02 cs_n = 0; #0.02 cs_n = 1; #0.06 rst_n = 0;
         bench_reset; n_resets = 0; n_abandon = 0;
         #(5.1 + PH) rst_n = 1;
 
