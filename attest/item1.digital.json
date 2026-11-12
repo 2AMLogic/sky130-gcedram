@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 1,
+  "description": "Digital design sources for the gc_ctrl_top partition (issue #230): the behavioral RTL of the synthesized top and its three submodules (spi_slave, cfg_xfer, refresh_sched_rt), the klt synthesize request, the committed gate-level netlist, and the klt synthesize report (the generated Yosys script synth_gc_ctrl_top.ys is committed beside the netlist for reference but is not graded). phase_seq is NOT in this partition (gc_ctrl_top does not instantiate it) and coupled_top is not synthesized. Netlist freshness is klt synthesize --check (RTL bytes, parameters, liberty hash, netlist sha256); it needs Yosys, sv2v and the sky130A PDK, which the signoff CI runner lacks, so it is local_only: --check carries the committed outcome. Run it on a worker with those tools: klt synthesize digital/control-integration/synth/gc_ctrl_top.synth.json --pdk sky130A --check digital/control-integration/synth/gc_ctrl_top.synth.report.json. Re-attest with: klt signoff --attest 1 --inventory attest/item1.digital.json -o attest/item1.digital.envelope.json",
+  "sources": [
+    "digital/control-integration/cfg_xfer.v",
+    "digital/control-integration/gc_ctrl_top.v",
+    "digital/control-integration/refresh_sched_rt.v",
+    "digital/control-integration/synth/gc_ctrl_top.synth.json",
+    "digital/spi-control/spi_slave.v"
+  ],
+  "derived": [
+    {
+      "path": "digital/control-integration/synth/gc_ctrl_top.synth.report.json",
+      "generator": "klt synthesize",
+      "check": {
+        "argv": [
+          "klt",
+          "synthesize",
+          "digital/control-integration/synth/gc_ctrl_top.synth.json",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "digital/control-integration/synth/gc_ctrl_top.synth.report.json"
+        ],
+        "local_only": true
+      }
+    },
+    {
+      "path": "digital/control-integration/synth/run/gc_ctrl_top_synth.v",
+      "generator": "klt synthesize",
+      "check": {
+        "argv": [
+          "klt",
+          "synthesize",
+          "digital/control-integration/synth/gc_ctrl_top.synth.json",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "digital/control-integration/synth/gc_ctrl_top.synth.report.json"
+        ],
+        "local_only": true
+      }
+    }
+  ]
+}

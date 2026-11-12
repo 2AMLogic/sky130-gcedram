@@ -71,6 +71,15 @@ jobs:
         run: |
           klt signoff --attest 1 --inventory attest/item1.json --check attest/item1.envelope.json
 
+      - name: Re-check the digital design-sources inventory (T1 item 1, digital)
+        # --check re-hashes the RTL, the synthesize request, the committed
+        # netlist, its report and the Yosys script. The freshness command
+        # (klt synthesize --check) needs Yosys, sv2v and the sky130A PDK, which
+        # this runner lacks: it is `local_only`, so --check skips it and carries
+        # the committed outcome. Re-run it on a host with those tools.
+        run: |
+          klt signoff --attest 1 --inventory attest/item1.digital.json --check attest/item1.digital.envelope.json
+
       - name: Re-check the digital testbench inventory (T1 item 9, digital)
         # --check re-hashes every inventoried bench and refuses a drifted
         # envelope. The cold start (digital/ci/run_digital_regressions.sh)

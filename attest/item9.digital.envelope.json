@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 37/37 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 38/38 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9.digital.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 37,
-    "passed_count": 37,
+    "check_count": 38,
+    "passed_count": 38,
     "checks": [
       {
         "check": "present",
@@ -50,6 +50,13 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "digital/control-integration/run_gate_level.sh",
+        "passed": true,
+        "content_hash": "sha256:9cbfa879394a4a2c6f306df8b79caee05a7e24af4ae43409ed42c0d193f84ae2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "digital/control-integration/run_mutation.sh",
         "passed": true,
         "content_hash": "sha256:e68b8bc8f691ac03a2bb19727a03d4acfd1216dd2338490834c16f42598a9dc2"
@@ -73,7 +80,7 @@
         "role": "testbench",
         "path": "digital/control-integration/tb_ctrl_integ.v",
         "passed": true,
-        "content_hash": "sha256:ccfd07ec9cf8fa2ae4e2b7b518eafacbd8bb01aff015628cf447bd2ca027a336"
+        "content_hash": "sha256:4a6e94b5748becbb16edbd30a893279ac1a10107c6d08de8dff19ae3716378eb"
       },
       {
         "check": "present",
@@ -284,7 +291,7 @@
     ]
   },
   "provenance": {
-    "klt_version": "0.9.2.dev715+ge8f2899984e7",
+    "klt_version": "0.8.0",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -293,7 +300,7 @@
         "path": "attest/item9.digital.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:fa28f186f63158e69267ae8c92b689c292438b94ed4e00b22f98b8f6fba26738"
+      "content_hash": "sha256:8698b2f273b74e33adaec8dca3c3c8b8784a11c0c3a4a8f68201db0f8b8bba92"
     }
   }
 }
