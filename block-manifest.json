@@ -3,7 +3,7 @@
   "kind": "mixed-signal",
   "partition_boundary": {
     "analog": "The 2T gain-cell bitcell (design/gain_cell_2t.sch/.spice, layout/gain_cell_2t.gds) and the shared-tap 4x4 array built from it (layout/gain_cell_2t_array.gds), plus the sense latch (design/sense_latch.*) and column-periphery slice (design/column_periphery.*) schematics and netlists; the refresh controller and SPI interface are the digital partition, tracked in #24. Evidence today: items 3 and 4 cover the committed bitcell artifacts, re-verified against the current deck by the reports cited below; item 11 (power delivery, structural) is cited for the analog partition only and covers the shared-tap 4x4 array (layout/gain_cell_2t_array.gds): its ERC and LVS reports are pinned to that layout's content hash; items 1, 2, 9 and 10 are artifact-anchored attestation envelopes under attest/ (see spec/t1-analog-attestation-decision.md).",
-    "digital": "Behavioral Verilog RTL under digital/ (refresh scheduler, SPI slave, phase sequencer and their integrations, plus the SPI clock-domain-crossing model) with Icarus Verilog regressions and mutation suites driven by digital/ci/run_digital_regressions.sh. Not synthesized, no gate-level replay, no place-and-route, not signed off: every digital-partition T1 row other than items 9 and 10 is unmet and cites no evidence. Item 9 (testbenches shipped) is cited for the digital partition only, as the artifact-anchored attestation envelope attest/item9.digital.envelope.json; it attests that the benches and cold-start command are committed with pinned tools, not that the design is correct beyond what those behavioral benches check. Item 10 (repo hygiene) is cited through the shared attest/item10.envelope.json whose inventory covers the digital regression workflow, driver and README."
+    "digital": "Behavioral Verilog RTL under digital/ (refresh scheduler, SPI slave, phase sequencer and their integrations, plus the SPI clock-domain-crossing model) with Icarus Verilog regressions and mutation suites driven by digital/ci/run_digital_regressions.sh. The synthesized top is gc_ctrl_top with its three submodules spi_slave, cfg_xfer and refresh_sched_rt (digital/control-integration/synth/, klt synthesize on sky130_fd_sc_hd, ss_100C_1v60 liberty, sv2v front end); phase_seq is not instantiated by gc_ctrl_top and is outside that partition, and coupled_top is not synthesized. The committed gate-level netlist is replayed against the control-integration bench (digital/control-integration/run_gate_level.sh). Item 1 (design sources) is cited for the digital partition as the artifact-anchored attestation envelope attest/item1.digital.envelope.json. No timing, CDC, place-and-route or sign-off exists: every digital-partition T1 row other than items 1, 9 and 10 is unmet and cites no evidence. Item 9 (testbenches shipped) is cited for the digital partition only, as the artifact-anchored attestation envelope attest/item9.digital.envelope.json; it attests that the benches and cold-start command are committed with pinned tools, not that the design is correct beyond what those behavioral benches check. Item 10 (repo hygiene) is cited through the shared attest/item10.envelope.json whose inventory covers the digital regression workflow, driver and README."
   },
   "evidence": {
     "1.analog": {
@@ -40,9 +40,13 @@
       "file": "attest/item10.envelope.json",
       "content_hash": "sha256:db1b07baafa5dbcce725b0a1c3baad4ab4d0a226fa2fd2b1e344cd9cdb6e9872"
     },
+    "1.digital": {
+      "file": "attest/item1.digital.envelope.json",
+      "content_hash": "sha256:23c5ced67a73214e9ed33ad7fffe71f60278b111b3a3f8071e23c1687692a5ad"
+    },
     "9.digital": {
       "file": "attest/item9.digital.envelope.json",
-      "content_hash": "sha256:fa28f186f63158e69267ae8c92b689c292438b94ed4e00b22f98b8f6fba26738"
+      "content_hash": "sha256:8698b2f273b74e33adaec8dca3c3c8b8784a11c0c3a4a8f68201db0f8b8bba92"
     },
     "10.digital": {
       "file": "attest/item10.envelope.json",

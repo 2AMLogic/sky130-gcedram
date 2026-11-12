@@ -62,7 +62,14 @@ module tb_ctrl_integ;
     wire en_eff, sweep_active, sweep_done, refresh_ok, data_lost, cfg_reject, busy;
     wire [ROW_W-1:0] op_row; wire [15:0] ivl_eff;
 
+    // (#230) GATE_LEVEL: the synthesized netlist is elaborated at the module defaults
+    // (ratified basis) and has no parameters to override; run_tests.sh --gate-level
+    // drives only the ratified basis.
+`ifdef GATE_LEVEL
+    gc_ctrl_top dut (
+`else
     gc_ctrl_top #(.N_ROWS(N_ROWS), .T_ROW(T_ROW), .T_ACC(T_ACC), .INTERVAL(INTERVAL), .GUARD(GUARD)) dut (
+`endif
         .rst_n(rst_n), .clk(clk), .sclk(sclk), .cs_n(cs_n), .mosi(mosi), .miso(miso),
         .req_valid(req_valid), .req_we(req_we), .req_row(req_row), .req_accept(req_accept),
         .op_busy(op_busy), .op_is_refresh(op_is_refresh), .op_is_write(op_is_write),

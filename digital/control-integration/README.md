@@ -3,8 +3,9 @@
 This directory joins the #83 SPI slave to the #74 refresh scheduler through a
 proposed configuration-transfer contract
 ([`CONTRACT.md`](CONTRACT.md)). It contains a combined **behavioral** adapter
-and a self-checking integration bench. Nothing here is synthesised, timed,
-CDC-signed-off, or ratified, and `spec/` is not edited.
+and a self-checking integration bench. `gc_ctrl_top` is synthesised (see
+[Synthesis and gate-level replay](#synthesis-and-gate-level-replay)); nothing
+here is timed, CDC-signed-off, or ratified, and `spec/` is not edited.
 
 **Plain statement.** A gain cell is dynamic. This control path sets how often
 rows are refreshed, and it reports when the retention guarantee does **not**
@@ -34,6 +35,8 @@ would accept intervals the scheduler cannot meet: the #83 floor is a
 | `sim_one.sh` | one bench run (basis, SPI half period, phase, traffic, negative-control flag; `SRC_DIR` for mutants) |
 | `run_tests.sh` | everything below, serially; non-zero exit on any failure (`--no-mutation` skips step 4) |
 | `run_mutation.sh` | fault injection: 12 broken RTL copies, each must fail the bench |
+| `run_gate_level.sh` | gate-level replay of `tb_ctrl_integ.v` on the committed netlist, a negative control, and two re-synthesized mutants that must fail (`--no-mutation` skips the mutants) |
+| `synth/` | `klt synthesize` request, report, generated Yosys script and the committed gate-level netlist `synth/run/gc_ctrl_top_synth.v` |
 | `results/` | dated run output (append-only; add new files, never edit old ones) |
 
 Changes outside this directory are additive and default-off. `spi_slave.v`
@@ -180,9 +183,41 @@ timeout and runtime are in [`digital/ci/README.md`](../ci/README.md). This is
 behavioral regression coverage only, not physical CDC, synthesis, timing or
 macro sign-off.
 
+## Synthesis and gate-level replay
+
+Issue #230 (T1 item 1, digital). Top `gc_ctrl_top` with `spi_slave`, `cfg_xfer`
+and `refresh_sched_rt`; `phase_seq` is not instantiated by `gc_ctrl_top` and is
+outside this partition, and `coupled_top` is not synthesised. Parameters are
+the module defaults (ratified `INTERVAL` 5029), so the netlist covers the
+ratified basis only. Port list unchanged.
+
+- Request: `synth/gc_ctrl_top.synth.json` (sky130_fd_sc_hd, `ss_100C_1v60`
+  liberty, `sv_frontend: "sv2v"`, no RTL edits). Reproduce on a host with
+  Yosys, `sv2v` and the sky130A PDK, using the klt release recorded in
+  `synth/gc_ctrl_top.synth.report.json` (`provenance.klt_version`, 0.9.1):
+  `klt synthesize synth/gc_ctrl_top.synth.json --pdk sky130A --check synth/gc_ctrl_top.synth.report.json`
+  (checks RTL bytes, liberty hash and netlist sha256). Regenerate with the same
+  command minus `--check`, then drop everything under `synth/run/` except
+  `gc_ctrl_top_synth.v` and `synth_gc_ctrl_top.ys`. A second run produced the
+  identical netlist sha256.
+- `--verify-equivalence` is **not** used: with `--equiv-engine yosys-sequential`
+  klt stops with `Gold module contains memories or processes` (the RTL has a
+  small array, `last_ref`). The equivalence evidence here is the gate-level
+  replay below, which is a simulation check on the bench's scenarios, not a
+  formal proof.
+- `run_gate_level.sh`: the bench replays on the netlist with the sky130_fd_sc_hd
+  functional models (`-DFUNCTIONAL`, zero delay) at three SPI/clk phase
+  relationships; `tb_ctrl_integ.v` gained a `GATE_LEVEL` define that only drops
+  the parameter override. Mutants `sweep_toggle_dropped` and
+  `disable_not_applied` are applied to the RTL, re-synthesised and replayed:
+  both are killed. Output: `results/run_gate_level_2026-11-12_issue230.txt`.
+  About 5 min serial.
+- Not covered: timing, post-synthesis STA, delays, CDC, X-pessimism with real
+  reset sequencing on silicon, the extracted basis, and place-and-route.
+
 ## Not covered
 
-Physical CDC safety and metastability. Synthesis, timing, and the maximum
+Physical CDC safety and metastability. Timing, and the maximum
 `sclk` rate. The real `N_ROWS`/`T_ROW`/`T_ACC`. A memory datapath, and with it
 any validity recovery finer than "reset clears DATA_LOST". Multi-bank
 refresh. Production or ratified specification. The worst-case

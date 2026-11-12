@@ -1,0 +1,25 @@
+== 1. gate-level replay on the committed netlist ==
+[gate-level ratified sclk_half_ps=3700 phase_ps=130 traffic=1]
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[gate-level ratified sclk_half_ps=370 phase_ps=610 traffic=1]
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+[gate-level ratified sclk_half_ps=500 phase_ps=0 traffic=1]
+ERRORS total=0 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+TB_RESULT: PASS
+== 2. negative control (must FAIL with LOST START_SWEEP) ==
+[gate-level neg_spacing] LOST START_SWEEP: accepted at cycle 1289, no completion within 1163 cycles
+[gate-level neg_spacing] LOST START_SWEEP: accepted at cycle 2453, no completion within 1163 cycles
+[gate-level neg_spacing] ERRORS total=2 deadline=0 hard=0 lost_sweep=2 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+[gate-level neg_spacing] TB_RESULT: FAIL (2 errors)
+[gate-level neg_spacing] expected failure observed
+== 3. mutate RTL -> re-synthesize -> gate-level replay (must FAIL) ==
+MUTANT sweep_toggle_dropped: killed at gate level
+    ERRORS total=17 deadline=0 hard=0 lost_sweep=6 spurious=0 incomplete_sweep=0 ok_early=0 unnoticed_invalid=0 data_lost_flag=0 not_applied=0 partial=0 cfg_reject=0 rearm=0 protocol=0
+MUTANT disable_not_applied: killed at gate level
+    ERRORS total=5806 deadline=0 hard=0 lost_sweep=0 spurious=0 incomplete_sweep=0 ok_early=5794 unnoticed_invalid=0 data_lost_flag=0 not_applied=3 partial=0 cfg_reject=0 rearm=4 protocol=0
+GATE-LEVEL ALL PASS
+
+user	4m45.006s
+sys	0m1.402s

@@ -1,0 +1,18 @@
+{
+  "schema": "klt.synthesize.request/1",
+  "engine": "yosys",
+  "sources": [
+    "../../spi-control/spi_slave.v",
+    "../cfg_xfer.v",
+    "../refresh_sched_rt.v",
+    "../gc_ctrl_top.v"
+  ],
+  "hdl_toplevel": "gc_ctrl_top",
+  "sv_frontend": "sv2v",
+  "pdk": {
+    "cell_library": "sky130_fd_sc_hd",
+    "corner": "ss_100C_1v60"
+  },
+  "constraints": { "clock_period_ns": null },
+  "outputs": { "dir": "run" }
+}

@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 1,
+  "summary": "T1 item 1 (Design sources): 9/9 attestation checks passed (klt signoff --attest)",
+  "source": "attest/item1.digital.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 9,
+    "passed_count": 9,
+    "checks": [
+      {
+        "check": "present",
+        "role": "source",
+        "path": "digital/control-integration/cfg_xfer.v",
+        "passed": true,
+        "content_hash": "sha256:58cedd334e5c0cf7aff54ef4cf5f43de1c32c35e9faa29996b896d83dbb2c69d"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "digital/control-integration/gc_ctrl_top.v",
+        "passed": true,
+        "content_hash": "sha256:a6a2dae99fadf242278dd31a18c81cd09dc9222c11a0a0eeba9fe9ef2318a9a5"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "digital/control-integration/refresh_sched_rt.v",
+        "passed": true,
+        "content_hash": "sha256:c344bebebcb8bb23c4aa6cda217af46f7240e718a99d12ef13b7f3ab8a4ce731"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "digital/control-integration/synth/gc_ctrl_top.synth.json",
+        "passed": true,
+        "content_hash": "sha256:cf7ee54735618e2e1c1d50bd899bbaeb9b324386bf5111171f67d8520c43d76d"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "digital/spi-control/spi_slave.v",
+        "passed": true,
+        "content_hash": "sha256:2ab1bebbe017939e581ac8d76186157b835a01e12b9a4a265e910525fed4c20b"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "digital/control-integration/synth/gc_ctrl_top.synth.report.json",
+        "passed": true,
+        "content_hash": "sha256:0b42ca0ac2bf8b8e47c155b80f00c75fcc1b4ba969cf6652e5f3ef166bbccaaf"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "digital/control-integration/synth/run/gc_ctrl_top_synth.v",
+        "passed": true,
+        "content_hash": "sha256:0d29de1d2963ff7ef8af020e8887542f44f8ea3ae664fb7f34b93da68715dd9c"
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "digital/control-integration/synth/gc_ctrl_top.synth.report.json",
+        "generator": "klt synthesize",
+        "argv": [
+          "klt",
+          "synthesize",
+          "digital/control-integration/synth/gc_ctrl_top.synth.json",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "digital/control-integration/synth/gc_ctrl_top.synth.report.json"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "digital/control-integration/synth/run/gc_ctrl_top_synth.v",
+        "generator": "klt synthesize",
+        "argv": [
+          "klt",
+          "synthesize",
+          "digital/control-integration/synth/gc_ctrl_top.synth.json",
+          "--pdk",
+          "sky130A",
+          "--check",
+          "digital/control-integration/synth/gc_ctrl_top.synth.report.json"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true,
+        "local_only": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.9.1",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "paths": [
+        {
+          "path": {
+            "path": "attest/item1.digital.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:33e7ac8d0212fe411412b5dc3ba6326489767073d129b56c789cda684a49d304"
+        },
+        {
+          "path": {
+            "path": "digital/control-integration/cfg_xfer.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:58cedd334e5c0cf7aff54ef4cf5f43de1c32c35e9faa29996b896d83dbb2c69d"
+        },
+        {
+          "path": {
+            "path": "digital/control-integration/gc_ctrl_top.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:a6a2dae99fadf242278dd31a18c81cd09dc9222c11a0a0eeba9fe9ef2318a9a5"
+        },
+        {
+          "path": {
+            "path": "digital/control-integration/refresh_sched_rt.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:c344bebebcb8bb23c4aa6cda217af46f7240e718a99d12ef13b7f3ab8a4ce731"
+        },
+        {
+          "path": {
+            "path": "digital/control-integration/synth/gc_ctrl_top.synth.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:cf7ee54735618e2e1c1d50bd899bbaeb9b324386bf5111171f67d8520c43d76d"
+        },
+        {
+          "path": {
+            "path": "digital/control-integration/synth/gc_ctrl_top.synth.report.json",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:0b42ca0ac2bf8b8e47c155b80f00c75fcc1b4ba969cf6652e5f3ef166bbccaaf"
+        },
+        {
+          "path": {
+            "path": "digital/control-integration/synth/run/gc_ctrl_top_synth.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:0d29de1d2963ff7ef8af020e8887542f44f8ea3ae664fb7f34b93da68715dd9c"
+        },
+        {
+          "path": {
+            "path": "digital/spi-control/spi_slave.v",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:2ab1bebbe017939e581ac8d76186157b835a01e12b9a4a265e910525fed4c20b"
+        }
+      ],
+      "content_hash": "sha256:23c5ced67a73214e9ed33ad7fffe71f60278b111b3a3f8071e23c1687692a5ad"
+    }
+  }
+}
