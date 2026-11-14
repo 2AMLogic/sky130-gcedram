@@ -497,11 +497,18 @@ class DriverSweepAnalysis(unittest.TestCase):
         self.assertEqual(AD.interp_crossing([(34.0, None), (35.0, 2.0)], 0.9), None)
 
     def test_failure_reason_separates_sense_and_restore(self):
-        self.assertEqual(AD.reason(True, True, True, True), "pass")
-        self.assertEqual(AD.reason(True, False, False, False), "sense_incorrect")
-        self.assertEqual(AD.reason(True, True, False, True), "stored1_below_threshold")
-        self.assertEqual(AD.reason(True, True, True, False), "stored0_above_50mV")
-        self.assertEqual(AD.reason(False, True, True, True), "simulator_error")
+        # the shared classifier (replay_lib) is the single source of the committed failure_reason/outcome vocabulary
+        self.assertEqual(L.failure_reason(True, True, True, True), "pass")
+        self.assertEqual(L.failure_reason(True, False, False, False), "sense_incorrect")
+        self.assertEqual(L.failure_reason(True, True, False, True), "stored1_below_threshold")
+        self.assertEqual(L.failure_reason(True, True, True, False), "stored0_above_50mV")
+        self.assertEqual(L.failure_reason(False, True, True, True), "simulator_error")
+
+    def test_driver_sweep_analyzer_has_no_private_failure_reason_copy(self):
+        """The analyzer must classify through replay_lib, not a local copy that could drift from the other bench (#287)."""
+        self.assertIs(AD.L.failure_reason, L.failure_reason)
+        local = sorted(n for n in ("reason", "outcome", "failure_reason") if n in vars(AD))
+        self.assertEqual(local, [], f"analyze_rwl_driver_sweep defines its own {local} -- classify through replay_lib instead")
 
     def test_time_budget_is_independent_of_restoration(self):
         mi = dict(digital=dict(busy_fall_ns=34.0), t_release_ns=34.0, t_src_release_end_ns=39.0, t_meas_ns=36.0)
