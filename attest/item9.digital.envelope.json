@@ -277,14 +277,14 @@
         "passed": true,
         "value": {
           "iverilog": "v13_0 (dfeee909ed9f20b4870dd93423156c0170c0e1ff)",
-          "klt": "0.8.0",
+          "klt": "0.9.1",
           "python3": "system python3 from the ubuntu runner image (not pinned by digital-regressions.yml)"
         }
       }
     ]
   },
   "provenance": {
-    "klt_version": "0.9.2.dev715+ge8f2899984e7",
+    "klt_version": "0.9.1",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -293,7 +293,7 @@
         "path": "attest/item9.digital.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:fa28f186f63158e69267ae8c92b689c292438b94ed4e00b22f98b8f6fba26738"
+      "content_hash": "sha256:b84dc16ea38e2d1539ce075df74d0c9523cdb1dd22a71cc122bb77ad848bedf9"
     }
   }
 }

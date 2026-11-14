@@ -81,8 +81,8 @@
       "revision": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
     },
     "tools": {
-      "klt": "0.8.0",
-      "ngspice": "46"
+      "klt": "0.9.1",
+      "ngspice": "47"
     }
   }
 }

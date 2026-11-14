@@ -8,12 +8,12 @@
         "package_version": "0.8.0"
       },
       "klayout": "0.30.12",
-      "verified": "Issue #244: klt 0.8.0 generators (gen mos_array, gen guard_ring, gen-compose) emit a layout that is DRC clean, LVS match, ERC clean under the 0.8.0 deck; see layout/README.md 'DRC under klt 0.8.0'. Supersedes the 2dd24b09 (0.4.0) generation pin recorded in layout/results/generation_reproduction_20261011.json."
+      "verified": "Issue #244: klt 0.8.0 generators (gen mos_array, gen guard_ring, gen-compose) emit a layout that is DRC clean, LVS match, ERC clean under the 0.8.0 deck, and reproduce the committed array byte-for-byte; see layout/README.md 'DRC under klt 0.8.0'. Supersedes the 2dd24b09 (0.4.0) generation pin recorded in layout/results/generation_reproduction_20261011.json. Issue #275 moved the check pin to 0.9.1 and left this one at 0.8.0, measured: klt 0.9.1 gen mos_array renames the emitted sub-PCell structure (mos_array -> <cell-name>__core) and adds a dogbone_terminals parameter, so 0.9.1 generation no longer reproduces the committed GDS byte-for-byte even though the drawn geometry, labels and bbox are identical (per-layer XOR empty on all 10 layers) and DRC/LVS/ERC stay clean/match/clean; see layout/README.md 'Generation and check pins diverge at klt 0.9.1 (issue #275)'."
     },
     "check": {
-      "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools release as .github/workflows/signoff.yml KLT_VERSION (a PyPI pin, so no git commit), which produced the committed array DRC/LVS/ERC reports (klt_version 0.8.0).",
+      "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools release as .github/workflows/signoff.yml KLT_VERSION (a PyPI pin, so no git commit), which produced the committed array DRC/LVS/ERC reports (klt_version 0.9.1). Tracks the signoff pin, which is why it can differ from the generation pin above (issue #275).",
       "klayout_tools": {
-        "package_version": "0.8.0"
+        "package_version": "0.9.1"
       },
       "klayout": "0.30.12"
     }
