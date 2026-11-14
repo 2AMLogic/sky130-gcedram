@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "kind": "gain_cell_2t_array flattened per-layer geometry XOR record (issue #284)",
-  "recorded_at_utc": "2026-11-14T08:52:42Z",
+  "recorded_at_utc": "2026-11-14T08:58:55Z",
   "script": "layout/xor_layout_geometry.py",
   "measurement": "flattened per-layer-datatype XOR, bounding box and label set of one top cell in two GDS streams; hierarchy- and structure-name-insensitive by construction",
-  "note": "Issue #284: re-derives the per-layer XOR geometry equivalence asserted unsourced in layout/generation-toolchain.json toolchains.generation.verified and layout/README.md 'Generation and check pins diverge at klt 0.9.1 (issue #275)'. The regenerated stream is klt 0.9.1 'gen mos_array' + 'gen-compose' at the committed 4x4 size; it differs from the committed GDS byte-for-byte (structure 'mos_array' -> 'gain_cell_2t_array_mos__core', plus a 'dogbone_terminals' PCell parameter in $$$CONTEXT_INFO$$$), which is why compare_array_layout.py and generate_array.sh --check correctly report 'mismatch'. This measurement is hierarchy- and structure-name-insensitive and answers the separate question of whether anything drawn changed.",
+  "note": "Issue #284: re-derives the per-layer XOR geometry equivalence that layout/generation-toolchain.json toolchains.generation.verified and layout/README.md 'Generation and check pins diverge at klt 0.9.1 (issue #275)' previously asserted unsourced. The regenerated stream is klt 0.9.1 'gen mos_array' + 'gen-compose' at the committed 4x4 size, from the same array_topology.py params and the same PDK pin; it differs from the committed GDS byte-for-byte (structure 'mos_array' -> 'gain_cell_2t_array_mos__core', plus a 'dogbone_terminals' PCell parameter in the PCell context record), which is why compare_array_layout.py and generate_array.sh --check correctly report 'mismatch'. This measurement is hierarchy- and structure-name-insensitive and answers the separate question of whether anything drawn changed.",
   "source": {
-    "commit": "b9a5ba8190bb5c18f3c048c94874c217442541b0",
-    "dirty": true
+    "commit": "db45a19ef087e4419cdecab70c387a0ee27cd02d",
+    "dirty": false
   },
   "top_cell": "gain_cell_2t_array_4x4_layout_0",
   "streams": {
@@ -23,18 +23,11 @@
   "toolchains": {
     "pins": {
       "generation": {
-        "purpose": "klt gen mos_array + klt gen-compose: writes gain_cell_2t_array_mos.{gds,json} and gain_cell_2t_array.{gds,layout.json}",
-        "klayout_tools": {
-          "package_version": "0.8.0"
-        },
-        "klayout": "0.30.12",
-        "verified": "Issue #244: klt 0.8.0 generators (gen mos_array, gen guard_ring, gen-compose) emit a layout that is DRC clean, LVS match, ERC clean under the 0.8.0 deck, and reproduce the committed array byte-for-byte; see layout/README.md 'DRC under klt 0.8.0'. Supersedes the 2dd24b09 (0.4.0) generation pin recorded in layout/results/generation_reproduction_20261011.json. Issue #275 moved the check pin to 0.9.1 and left this one at 0.8.0, measured: klt 0.9.1 gen mos_array renames the emitted sub-PCell structure (mos_array -> <cell-name>__core) and adds a dogbone_terminals parameter, so 0.9.1 generation no longer reproduces the committed GDS byte-for-byte even though the drawn geometry, labels and bbox are identical (per-layer XOR empty on all 10 layers) and DRC/LVS/ERC stay clean/match/clean; see layout/README.md 'Generation and check pins diverge at klt 0.9.1 (issue #275)'."
+        "klayout_tools_version": "0.8.0",
+        "klayout": "0.30.12"
       },
       "check": {
-        "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools release as .github/workflows/signoff.yml KLT_VERSION (a PyPI pin, so no git commit), which produced the committed array DRC/LVS/ERC reports (klt_version 0.9.1). Tracks the signoff pin, which is why it can differ from the generation pin above (issue #275).",
-        "klayout_tools": {
-          "package_version": "0.9.1"
-        },
+        "klayout_tools_version": "0.9.1",
         "klayout": "0.30.12"
       }
     },
