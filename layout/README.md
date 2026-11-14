@@ -601,13 +601,58 @@ emits its inner PCell structure as `<cell-name>__core`
 `$$$CONTEXT_INFO$$$` record. Structure names and PCell context live in the
 GDS, so the bytes differ.
 
-What is drawn does not. Flattening the committed and the 0.9.1-regenerated
-`gain_cell_2t_array_4x4_layout_0` and XOR-ing them layer by layer gives an
-**empty XOR on all 10 layers**, with identical bounding box
-(`-1.195,-1.195 ; 12.715,8.555` um) and an identical set of 33 labels; the
-scratch run is DRC `clean`, LVS `match`, ERC `clean`. So the committed
-geometry remains the geometry 0.9.1 would produce, and no density, `C_SN`,
-parasitic or retention number is affected.
+What is drawn does not -- and since issue #284 that is a committed
+measurement, not a sentence. `layout/xor_layout_geometry.py` flattens the
+committed and the 0.9.1-regenerated `gain_cell_2t_array_4x4_layout_0`
+full-depth and XORs them per layer/datatype; the record is
+[`layout/results/geometry_xor_klt0.9.1_vs_committed_20261114.json`](results/geometry_xor_klt0.9.1_vs_committed_20261114.json),
+stamped with both toolchain identities (klayout-tools 0.8.0 and 0.9.1, both on
+`klayout==0.30.12`) and the committed GDS's own sha256:
+
+| What | Result |
+|---|---|
+| Drawn layer/datatype pairs | **10**, enumerated by name: `65/20`, `65/44`, `66/20`, `66/44`, `67/20`, `67/44`, `68/20`, `93/44`, `94/20`, `95/20` |
+| Per-pair XOR | **empty on all 10** -- 0 polygons, 0.0 um^2, each stated explicitly |
+| Bounding box | identical, `-1.195,-1.195 ; 12.715,8.555` um |
+| Labels | identical, **33** on the two label-only pairs `67/5` (25) and `68/5` (8) |
+| DRC / LVS / ERC on the scratch run | `clean` / `match` / `clean` |
+
+So the committed geometry remains the geometry 0.9.1 would produce, and no
+density, `C_SN`, parasitic or retention number is affected.
+
+**Why 10 and not 12.** `klt layers` on this GDS reports **12** layer/datatype
+pairs, because it folds `TEXT` records into its per-pair shape counts. The
+drawn set is 10; `67/5` and `68/5` are label-only and carry the 33 labels
+asserted separately above. The record and the `verified` field therefore
+enumerate the 10 pairs **by name** -- a bare count is what made this ambiguous
+in the first place, and `xor_layout_geometry.py` asserts the enumeration rather
+than looping over whichever layers happen to be present.
+
+**Reproducing it.** The measurement needs a klt **0.9.1** *generation*
+toolchain, which the committed pin is not. Note that
+`GCEDRAM_KLT_GENERATION_PYTHON` does **not** get you one:
+`generation_toolchain.py preflight` validates whatever that variable points at
+*against* the committed pin, so a 0.9.1 interpreter in the generation slot is
+rejected with `klayout-tools package version: expected 0.8.0, actual 0.9.1`
+(exit 2, nothing written). That is the override working as designed -- it
+redirects *where* the pinned toolchain lives, it does not waive the pin. So run
+the two generation commands directly, in a scratch dir, with a 0.9.1 venv's
+`klt`; the full command list is in the record's `commands` array, and
+`./layout/generate_array.sh --check` keeps reporting `baseline comparison:
+mismatch` under the committed 0.8.0 pin's *byte* gate, which is correct and is
+not the claim under test.
+
+Two controls back the measurement up, because an empty XOR on the layers you
+happened to look at proves less than it appears to:
+
+* **Identity** -- the committed GDS against itself reports empty XOR on all 10
+  pairs (exit 0).
+* **Must-fail** -- a stream with a drawn layer *added* (`70/20`), one with a
+  drawn layer *dropped* (`94/20`), and one with a single `68/20` polygon nudged
+  by 5 nm each exit 1. The first two trip the enumeration assertion (an added
+  layer is precisely what a per-layer loop over the committed layers cannot
+  see); the third keeps the enumeration intact and is caught by the XOR at
+  0.00015 um^2, the manufacturing grid.
 
 Bumping the generation pin to 0.9.1 was therefore rejected: it would make
 `generate_array.sh --check` fail against the committed baseline, and
@@ -621,10 +666,31 @@ no longer asserts the two pins are equal; it requires the generation pin to
 carry its reproduction evidence in `verified` and, when the pins differ, to
 name the check pin and say why.
 
+Prose containment alone cannot tell a measured justification from a plausible
+sentence, so `ToolchainGuard::test_generation_pin_divergence_cites_the_xor_evidence_record`
+(issue #284) puts a mechanical floor under it: when the pins differ, every
+`layout/results/` file `verified` cites must exist, exactly one must parse as
+the geometry-XOR record kind, and that record must report an empty XOR on every
+enumerated drawn pair, a matching bbox and label set, the two pin versions it
+ran under, and **the sha256 of the committed `gain_cell_2t_array.gds` as it is
+on disk now**. Regenerate the array, move either pin, or reword `verified`'s
+layer enumeration and the citation fails loudly instead of going quietly stale.
+The test stays stdlib-only and never computes the XOR itself --
+`.github/workflows/evidence-checks.yml` runs it under a bare `python3 -I`,
+which has no `klayout`.
+
 Filed upstream as klayout-tools #5627: a generator whose emitted inner-cell
 name changes between releases cannot reproduce a committed GDS byte-for-byte
 even when the drawn geometry is unchanged, and there is no flag to pin the
 emitted name.
+
+Issue #284 surfaced the companion gap and filed it as klayout-tools #5729: `klt
+diff` "never ignores ... cell names", so on this rename it reports `different`
+(exit 3) with `layers: []` -- it found no shape difference, and the verdict
+rests entirely on the instance target's name. There is no flatten-and-boolean
+verb either, so `layout/xor_layout_geometry.py` hand-rolls the measurement
+against `klayout.db`. The ask upstream is a `klt diff --flatten` mode; retiring
+it would let this repo drop that script.
 
 A second gap surfaced while regenerating the attestation envelopes, filed as
 klayout-tools #5628: `klt signoff --attest` strips its own venv `bin` from
