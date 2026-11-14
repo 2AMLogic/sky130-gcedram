@@ -211,6 +211,14 @@ class Analysis(unittest.TestCase):
         self.assertNotIn("op1_0.9", v["restore_among_sense_correct_patterns"])
         self.assertEqual(A.ratio_hides_sense(list(rows.values())), [n + "@tt/27"])
 
+    def test_outcome_vocabulary_comes_from_the_shared_classifier(self):
+        """``outcome``/``failure_reason`` must classify through replay_lib, not a local copy that could drift from the
+        driver-sweep bench (#287). The branch table itself is exercised in test_refresh_replay.py; the assertions in
+        test_incorrect_sense_is_never_hidden_by_a_restore_ratio / ..._simulator_error_never_passes are the wiring check."""
+        self.assertIs(A.L.failure_reason, L.failure_reason)
+        local = sorted(n for n in ("outcome", "reason", "failure_reason") if n in vars(A))
+        self.assertEqual(local, [], f"analyze_init_control defines its own {local} -- classify through replay_lib instead")
+
     def test_unresolved_decision_is_not_correct_and_simulator_error_never_passes(self):
         n = self.n[("rtl_hold", "op0", 0.0)]
         rows, res = self.run_(dec={n: 0.2})

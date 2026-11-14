@@ -9,6 +9,8 @@
 * pwl_to_edges() + check_trace_consistency(): reverse-parse a generated deck source / compare edge
   lists so omitted, reordered or shifted control edges are caught
 * mutations (negative controls): drop or shorten the write-back strobes
+* failure_reason(): the single source of the committed failure-verdict vocabulary shared by the two
+  refresh-replay analyzers (analyze_init_control's ``outcome`` field, analyze_rwl_driver_sweep's ``failure_reason``)
 
 Conventions (ASSUMPTIONS, declared): one cycle = 1 ns; an edge at time T starts a TEDGE (0.1 ns) linear
 ramp at T (same convention as sim/refresh-op, so the baseline is matched); edges at exactly t = 0 set the
@@ -284,3 +286,24 @@ def ic_tokens(deck: str, name: str) -> dict:
                 if nrx.search(node):
                     out[node.replace(name, "@")] = val
     return out
+
+
+# ---- failure-verdict classifier shared by the refresh-replay analyzers (analyze_init_control, analyze_rwl_driver_sweep) ----
+def failure_reason(sim_ok: bool, sense: bool, r1_ok: bool, r0_ok: bool) -> str:
+    """First failing check, in a FIXED precedence order -- the single source of the committed ``failure_reason``/``outcome`` vocabulary.
+
+    simulator_error > sense_incorrect > stored1_below_threshold > stored0_above_50mV > pass (first failing)
+
+    A simulator failure is never reported as a circuit verdict, and a restoration verdict never overrides an incorrect sense
+    decision. Argument derivation is deliberately per-bench (the callers differ in how they reduce patterns to ``r1_ok``/``r0_ok``);
+    only this classification is shared, so the five recorded strings and their order cannot diverge between the two benches.
+    """
+    if not sim_ok:
+        return "simulator_error"
+    if not sense:
+        return "sense_incorrect"
+    if not r1_ok:
+        return "stored1_below_threshold"
+    if not r0_ok:
+        return "stored0_above_50mV"
+    return "pass"
