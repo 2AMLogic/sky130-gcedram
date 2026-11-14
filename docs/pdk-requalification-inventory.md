@@ -36,8 +36,11 @@ hiding it. The state column below therefore uses four values:
 
 Measured on `main` @ `4de3e77`: of the 28 `f6eeac7`-declaring `klt_report*.json`
 files, **23 are `mismatch`, 4 are `not_comparable`, 1 has no
-`worker_environment` block, and none is `match`**. Three further `f6eeac7`
-hits are prose or code rather than evidence —
+`worker_environment` block, and none is `match`**. Twenty-nine further files
+under `sim/` and `layout/` also mention `f6eeac7` (READMEs, CSVs, summary
+JSONs, the `layout/gain_cell_2t*.json` generator reports, …). Three of those
+hits could be mistaken for records in the groups whose state is `none`, but
+are prose or code rather than evidence —
 `sim/loaded-column/cold-corner/check_evidence_index.py:37` (a
 `FORWARD_OPEN_PDKS` constant), `sim/refresh-energy/README.md:456` (prose about
 the worker pin) and `sim/sense-mismatch/README.md:272` (a supersession note
@@ -57,7 +60,7 @@ path that verifies it.
 | G1 | `sim/leakage/geometry-matched` | 5 | **declared-only** — owner #166, landed in PR #183. `sim/leakage/geometry-matched/results/klt_report_20261016T0745Z.json` -> `mismatch`. | `retention-refresh-budget.md` | Reference: re-run |
 | G1 | `sim/bitcell-transient` | 24 | **declared-only** — owner **#182** (`loom:operator`), split out of #168. 20 reports from PR #264, all `mismatch`, e.g. `sim/bitcell-transient/results/klt_report_read_d1_20261102T1845Z.json`. | none (cross-checks `sim/leakage`, see `docs/pdk-pin.md`) | Reference for the chain: re-run |
 | G1 | `sim/retention` | 3 | **declared-only** — owner #166, landed in PR #183. `sim/retention/results/klt_report_20261022T0533Z.json` -> `not_comparable`, reason `client_stamp_unavailable` (no local stamp to compare against; the worker still stamped `c6d73a3`). | `retention-refresh-budget.md`, `spec/README.md`, crosscheck | Reference: re-derive after leakage; no retention number is re-cited before this |
-| G2 (loaded column) | `sim/loaded-column` | 3 | **none** — owner #169 (open, `loom:blocked`). No `f6eeac7` record. | PROPOSED decision records, `EVIDENCE_INDEX.md` | Reference: re-run |
+| G2 (loaded column) | `sim/loaded-column` | 3 | **none** — owner #169 (open, `loom:building`). No `f6eeac7` record. | PROPOSED decision records, `EVIDENCE_INDEX.md` | Reference: re-run |
 | G2 | `sim/loaded-column/cold-corner` | 8 | **none** — owner #169. Its only `f6eeac7` hit is the `FORWARD_OPEN_PDKS` constant in `check_evidence_index.py`, not a record. | PROPOSED decision records, `EVIDENCE_INDEX.md` | Reference: re-run; supersession entry goes in `EVIDENCE_INDEX.md` |
 | G3 (sense path) | `sim/sense-stage` | 4 | **declared-only** — owner #170 (closed `completed`). `sim/sense-stage/results/klt_report_20261028T085441Z.json` -> `not_comparable`; the older `sim/sense-stage/results/klt_report_20261016T072807Z.json` carries no `worker_environment` block at all. | `macro-pass-conditions-PROPOSED.md` | Reference: re-run |
 | G3 | `sim/column-periphery` | 5 | **declared-only** — owner #170. `sim/column-periphery/results/klt_report_20261028T085441Z.json` -> `not_comparable`. | none | Historical unless a spec cites it by the time of re-run |
@@ -73,17 +76,27 @@ Six or more reference studies span G1-G5, so per the Champion/Curator
 guidance on #166 the work is split per group rather than landed as one
 PR (see "Split" below).
 
-**Why the G5 count fell from 7 to 4.** At `bea81bb` the five single-cell and
-array generator reports (`layout/gain_cell_2t.layout.json`,
-`gain_cell_2t_array.layout.json`, `gain_cell_2t_array_mos.json`,
-`gain_cell_2t_mos.json`, `gain_cell_2t_tap.json`) carried `c6d73a3`. Commit
-`fbbb319` (2026-10-28) regenerated them with the klt 0.8.0 generators for a
-DRC-clean cell and array, and the regenerated reports carry `f6eeac7`
-directly. That was a generator change, not part of the #166 re-qualification,
-and not a stamp edit: `layout/` is outside `check_append_only.py`'s protected
-set (which covers `sim/**/results/**` plus
-`sim/append_only_inventory.txt`), so the files were replaced by a rerun of
-the generator rather than hand-edited.
+**Why the G5 count fell from 7 to 4.** At `bea81bb` `layout/` carried
+`c6d73a3` in seven files: the five single-cell and array generator reports
+(`layout/gain_cell_2t.layout.json`, `gain_cell_2t_array.layout.json`,
+`gain_cell_2t_array_mos.json`, `gain_cell_2t_mos.json`,
+`gain_cell_2t_tap.json`), plus `layout/results/density_20261009.json` and
+`layout/results/generation_reproduction_20261011.json`. Commit `fbbb319`
+(2026-10-28) regenerated the five generator reports with the klt 0.8.0
+generators for a DRC-clean cell and array, and the regenerated reports carry
+`f6eeac7` directly (−5). Two #172 records added since cite the superseded
+revision and so carry `c6d73a3` as the old stamp (+2):
+`layout/results/generation_reproduction_f6eeac7_20261016.json` and
+`layout/results/pdk_requalification_f6eeac7_20261016.md`. 7 − 5 + 2 = 4. The
+regeneration was a generator change, not part of the #166 re-qualification,
+and not a stamp edit: the five regenerated reports sit at `layout/` root and
+are not listed in `sim/append_only_inventory.txt`, so they are outside
+`check_append_only.py`'s protected set — that set covers `sim/**/results/**`
+plus every inventory entry, and the inventory does extend protection into
+`layout/results/` (five paths, including
+`layout/results/density_20261009.json`, the basis of the density-vs-SRAM
+figures). The files were replaced by a rerun of the generator rather than
+hand-edited.
 
 ## The gate for the remaining re-runs
 
@@ -113,9 +126,11 @@ image to open_pdks `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` in the worker
 spec, which lives in `2AMLogic/2am` under `infra/aws/loom-worker/` (a
 different repository — not a change any sweep in this repo can make). That is
 tracked on **#182**, which carries `loom:operator`: a human-held step, not
-in-flight Builder work. #169 and #171 are parked on the same single
-condition, each citing its own probe job (`klt-sim-9287ff5eedde` and
-`klt-sim-2066534a33a7`).
+in-flight Builder work. #171 is parked on the same single condition, citing
+its probe job (`klt-sim-2066534a33a7`); #169 was parked on it too (probe
+`klt-sim-9287ff5eedde`) until its `loom:blocked` was removed on 2026-11-14 —
+the gate still applies to any record #169 lands, so a re-run it commits
+before #182 is resolved would still be declared-only.
 
 ## Batch-path findings behind the gate
 
@@ -155,9 +170,9 @@ Child issues, one per group, each `Part of #166`:
 |---|---|---|
 | G1 retention chain (leakage, geometry-matched, retention) | #168 | Closed **`not_planned`**. Its leakage and retention records landed in **PR #183** (merged 2026-10-16, `3d7aa7c`); it was closed rather than completed because its one remaining criterion, `sim/bitcell-transient`, moved to #182. |
 | G1 `sim/bitcell-transient` | **#182** | Open, `loom:operator`. **PR #264** (merged 2026-11-02, `59a9a65`) landed the grid as batch `klt sim` requests and recorded the stamp mismatch instead of claiming a re-qualification. |
-| G2 loaded column | #169 | Open, `loom:blocked` on the gate above. No `f6eeac7` record. |
+| G2 loaded column | #169 | Open, `loom:building` (unparked from the gate 2026-11-14; the gate above still applies to its records). No `f6eeac7` record. |
 | G3 sense path | #170 | Closed `completed`. Its records are **declared-only**, the same condition as G1's: closing #170 recorded that the re-runs happened, not that the stamp matched. |
-| G4 refresh | #171 | Open, `loom:blocked` on the gate above. No `f6eeac7` record. |
+| G4 refresh | #171 | Open, `loom:triage` + `loom:blocked` on the gate above. No `f6eeac7` record. |
 | G5 layout and sign-off | #172 | Closed `completed`. The only group re-qualified against a verified `f6eeac7` tree, and the only one with no SPICE leg. |
 
 G1 goes first; no retention number is re-cited until its chain is re-derived,
