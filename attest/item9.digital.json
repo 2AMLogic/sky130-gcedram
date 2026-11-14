@@ -52,7 +52,7 @@
       "revision": "not applicable: the digital cold start is behavioral RTL under iverilog and consumes no PDK"
     },
     "tools": {
-      "klt": "0.8.0",
+      "klt": "0.9.1",
       "iverilog": "v13_0 (dfeee909ed9f20b4870dd93423156c0170c0e1ff)",
       "python3": "system python3 from the ubuntu runner image (not pinned by digital-regressions.yml)"
     }

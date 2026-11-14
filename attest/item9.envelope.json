@@ -449,14 +449,14 @@
         "role": "tools",
         "passed": true,
         "value": {
-          "klt": "0.8.0",
-          "ngspice": "46"
+          "klt": "0.9.1",
+          "ngspice": "47"
         }
       }
     ]
   },
   "provenance": {
-    "klt_version": "0.8.0",
+    "klt_version": "0.9.1",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -465,7 +465,7 @@
         "path": "attest/item9.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:acc9f0eb9b85f8c3944773bd3098ef8e0f8d27a5568a8988dfcf2b6e0898409d"
+      "content_hash": "sha256:aab635779d1553be1fa41989348f31a8c93d820607bac93c60a775f3bf14bd09"
     }
   }
 }

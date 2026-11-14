@@ -22,11 +22,11 @@ permissions:
 
 env:
   # Pinned to the exact klayout-tools release that graded the committed
-  # block-manifest.signoff.json (0.8.0, per its build.package_version). Bump this
+  # block-manifest.signoff.json (0.9.1, per its build.package_version). Bump this
   # pin deliberately, together with regenerating the record, so the pinned
   # checklist and the committed evidence record move together. A PyPI pin: a
-  # git+...@<sha> build reports a dev version and would not satisfy ==0.8.0.
-  KLT_VERSION: "0.8.0"
+  # git+...@<sha> build reports a dev version and would not satisfy ==0.9.1.
+  KLT_VERSION: "0.9.1"
 
 jobs:
   signoff:

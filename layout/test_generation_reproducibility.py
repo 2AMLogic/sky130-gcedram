@@ -326,7 +326,18 @@ class ToolchainGuard(Tmp):
         for rc in (gen, chk):
             self.assertRegex(rc["klayout"], r"^\d+\.\d+\.\d+$")
             self.assertRegex(rc["klayout_tools"]["package_version"], r"^\d+\.\d+\.\d+$")
-        self.assertEqual(gen["klayout_tools"]["package_version"], chk["klayout_tools"]["package_version"])
+        # The two pins are independent (the module docstring: "kept separate on purpose").
+        # They coincided from #244 until #275, which moved `check` to 0.9.1 and left
+        # `generation` at 0.8.0 because klt 0.9.1's `gen mos_array` renames the emitted
+        # sub-PCell structure, so it no longer reproduces the committed GDS byte-for-byte
+        # (identical geometry, different bytes). So instead of asserting they are equal,
+        # require the generation pin to carry its own reproduction evidence in `verified`,
+        # and -- when the pins differ -- to say why.
+        self.assertIn(gen["klayout_tools"]["package_version"], gen["verified"])
+        self.assertIn("byte-for-byte", gen["verified"])
+        if gen["klayout_tools"]["package_version"] != chk["klayout_tools"]["package_version"]:
+            self.assertIn(chk["klayout_tools"]["package_version"], gen["verified"],
+                          "generation pin differs from the check pin: `verified` must say why")
 
     def test_check_pin_matches_signoff_workflow(self):
         wf = (REPO / ".github" / "workflows" / "signoff.yml").read_text()

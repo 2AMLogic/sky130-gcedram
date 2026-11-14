@@ -1,11 +1,14 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "engine": "klayout",
   "layout": {
     "path": "layout/gain_cell_2t_array.gds",
     "scope": "repo"
   },
-  "reference": "gain_cell_2t_array.lvs_reference.spice",
+  "reference": {
+    "path": "layout/gain_cell_2t_array.lvs_reference.spice",
+    "scope": "repo"
+  },
   "top": "gain_cell_2t_array_4x4_layout_0",
   "reference_top": "GAIN_CELL_2T_ARRAY_4X4",
   "parameter_tolerance": null,
@@ -43,6 +46,7 @@
     "instance_count": 0,
     "expected_nets": null,
     "unchecked_expected_pins": [],
+    "excluded_pins": [],
     "findings": [],
     "finding_count": 0
   },
@@ -103,12 +107,14 @@
     "extracted_netlist": null
   },
   "provenance": {
-    "klt_version": "0.8.0",
+    "klt_version": "0.9.1",
+    "klt_git_commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
+    "klt_reinstall_spec": "klayout-tools==0.9.1",
     "klayout_version": "0.30.12",
     "pdk": null,
     "deck": {
       "name": "sky130",
-      "content_hash": "sha256:ba0f97887e3d231aec8b54f1f52f2941ded0228f0234b6759712bcaca0e942e6",
+      "content_hash": "sha256:029ef177c1f4e872c13cc81093f94a02a9bbfe1f51939a88194a83532d60bf7c",
       "released": true
     },
     "input": {
