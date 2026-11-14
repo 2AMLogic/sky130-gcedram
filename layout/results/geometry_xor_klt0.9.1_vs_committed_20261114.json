@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "kind": "gain_cell_2t_array flattened per-layer geometry XOR record (issue #284)",
+  "recorded_at_utc": "2026-11-14T08:52:42Z",
+  "script": "layout/xor_layout_geometry.py",
+  "measurement": "flattened per-layer-datatype XOR, bounding box and label set of one top cell in two GDS streams; hierarchy- and structure-name-insensitive by construction",
+  "note": "Issue #284: re-derives the per-layer XOR geometry equivalence asserted unsourced in layout/generation-toolchain.json toolchains.generation.verified and layout/README.md 'Generation and check pins diverge at klt 0.9.1 (issue #275)'. The regenerated stream is klt 0.9.1 'gen mos_array' + 'gen-compose' at the committed 4x4 size; it differs from the committed GDS byte-for-byte (structure 'mos_array' -> 'gain_cell_2t_array_mos__core', plus a 'dogbone_terminals' PCell parameter in $$$CONTEXT_INFO$$$), which is why compare_array_layout.py and generate_array.sh --check correctly report 'mismatch'. This measurement is hierarchy- and structure-name-insensitive and answers the separate question of whether anything drawn changed.",
+  "source": {
+    "commit": "b9a5ba8190bb5c18f3c048c94874c217442541b0",
+    "dirty": true
+  },
+  "top_cell": "gain_cell_2t_array_4x4_layout_0",
+  "streams": {
+    "committed": {
+      "path": "layout/gain_cell_2t_array.gds",
+      "sha256": "sha256:2bcd6e1bb7eff7b248d77b45500972448f050089d4cf3f38300915b612fcdcce"
+    },
+    "regenerated": {
+      "path": "<outside-repo>/gain_cell_2t_array.gds",
+      "sha256": "sha256:0983a4476f14d4b624823c49f179aa483b636f3768ee60abe3a43983ca02f11e"
+    }
+  },
+  "toolchains": {
+    "pins": {
+      "generation": {
+        "purpose": "klt gen mos_array + klt gen-compose: writes gain_cell_2t_array_mos.{gds,json} and gain_cell_2t_array.{gds,layout.json}",
+        "klayout_tools": {
+          "package_version": "0.8.0"
+        },
+        "klayout": "0.30.12",
+        "verified": "Issue #244: klt 0.8.0 generators (gen mos_array, gen guard_ring, gen-compose) emit a layout that is DRC clean, LVS match, ERC clean under the 0.8.0 deck, and reproduce the committed array byte-for-byte; see layout/README.md 'DRC under klt 0.8.0'. Supersedes the 2dd24b09 (0.4.0) generation pin recorded in layout/results/generation_reproduction_20261011.json. Issue #275 moved the check pin to 0.9.1 and left this one at 0.8.0, measured: klt 0.9.1 gen mos_array renames the emitted sub-PCell structure (mos_array -> <cell-name>__core) and adds a dogbone_terminals parameter, so 0.9.1 generation no longer reproduces the committed GDS byte-for-byte even though the drawn geometry, labels and bbox are identical (per-layer XOR empty on all 10 layers) and DRC/LVS/ERC stay clean/match/clean; see layout/README.md 'Generation and check pins diverge at klt 0.9.1 (issue #275)'."
+      },
+      "check": {
+        "purpose": "klt drc / klt lvs / klt erc status gates. Same klayout-tools release as .github/workflows/signoff.yml KLT_VERSION (a PyPI pin, so no git commit), which produced the committed array DRC/LVS/ERC reports (klt_version 0.9.1). Tracks the signoff pin, which is why it can differ from the generation pin above (issue #275).",
+        "klayout_tools": {
+          "package_version": "0.9.1"
+        },
+        "klayout": "0.30.12"
+      }
+    },
+    "committed": {
+      "python_version": "3.13.14",
+      "klayout_tools_version": "0.8.0",
+      "klayout_tools_commit": null,
+      "klayout_version": "0.30.12"
+    },
+    "regenerated": {
+      "python_version": "3.13.14",
+      "klayout_tools_version": "0.9.1",
+      "klayout_tools_commit": null,
+      "klayout_version": "0.30.12"
+    },
+    "measurement_klayout_version": "0.30.12"
+  },
+  "pdk": {
+    "pin": {
+      "variant": "sky130A",
+      "open_pdks_commit": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+      "note": "Must equal sim/_evidence_common.py PDK_OPEN_PDKS_COMMIT and docs/pdk-pin.md (checked by layout/test_generation_reproducibility.py)."
+    }
+  },
+  "commands": [
+    "# Provision a klt 0.9.1 generation toolchain without touching the committed",
+    "# 0.8.0 pin or any host-wide tool (worktree-local venv, gitignored):",
+    "uv venv ${TOOLCHAINS}/klt-generation-v0.9.1-klayout-0.30.12",
+    "uv pip install --python ${TOOLCHAINS}/klt-generation-v0.9.1-klayout-0.30.12/bin/python 'klayout-tools==0.9.1' 'klayout==0.30.12'",
+    "KLT_GEN_091=${TOOLCHAINS}/klt-generation-v0.9.1-klayout-0.30.12/bin/klt",
+    "# Regenerate the default 4x4 in a scratch dir with the SAME generation command",
+    "# sequence layout/generate_array.sh runs (steps 1/7 and 2/7), the same",
+    "# array_topology.py params, the same PDK pin:",
+    "(cd ${SCRATCH} && cp ${REPO}/layout/array_topology.py . && ${KLT_GEN_091} gen mos_array --params \"$(python3 array_topology.py --rows 4 --cols 4 --emit gen-params)\" --pdk sky130A --pdk-root ${PDK_ROOT} --cell-name gain_cell_2t_array_mos -o gain_cell_2t_array_mos.gds --format json > gain_cell_2t_array_mos.json)",
+    "(cd ${SCRATCH} && python3 array_topology.py --rows 4 --cols 4 --emit compose-request --mos-report gain_cell_2t_array_mos.json > gain_cell_2t_array.layout.request.json)",
+    "(cd ${SCRATCH} && ${KLT_GEN_091} gen-compose gain_cell_2t_array.layout.request.json --format json > gain_cell_2t_array.layout.json)",
+    "# Byte-level comparison (the gate that must keep reporting mismatch):",
+    "(cd ${REPO} && python3 -I layout/compare_array_layout.py --committed layout --regenerated ${SCRATCH} --generation-only)",
+    "# The geometry measurement this record holds:",
+    "(cd ${REPO} && ${TOOLCHAINS}/klt-generation-v0.9.1-klayout-0.30.12/bin/python -I layout/xor_layout_geometry.py --committed layout/gain_cell_2t_array.gds --regenerated ${SCRATCH}/gain_cell_2t_array.gds --top gain_cell_2t_array_4x4_layout_0 --committed-toolchain-python ${TOOLCHAINS}/klt-generation-v0.8.0-klayout-0.30.12/bin/python --regenerated-toolchain-python ${TOOLCHAINS}/klt-generation-v0.9.1-klayout-0.30.12/bin/python -o layout/results/geometry_xor_klt0.9.1_vs_committed_20261114.json)"
+  ],
+  "database_unit_um": 0.001,
+  "enumeration": {
+    "expected": [
+      "65/20",
+      "65/44",
+      "66/20",
+      "66/44",
+      "67/20",
+      "67/44",
+      "68/20",
+      "93/44",
+      "94/20",
+      "95/20"
+    ],
+    "in_committed": [
+      "65/20",
+      "65/44",
+      "66/20",
+      "66/44",
+      "67/20",
+      "67/44",
+      "68/20",
+      "93/44",
+      "94/20",
+      "95/20"
+    ],
+    "in_regenerated": [
+      "65/20",
+      "65/44",
+      "66/20",
+      "66/44",
+      "67/20",
+      "67/44",
+      "68/20",
+      "93/44",
+      "94/20",
+      "95/20"
+    ],
+    "unexpected_in_committed": [],
+    "unexpected_in_regenerated": [],
+    "expected_but_absent_in_committed": [],
+    "expected_but_absent_in_regenerated": [],
+    "match": true
+  },
+  "layers": [
+    {
+      "layer_datatype": "65/20",
+      "expected": true,
+      "committed_polygons": 32,
+      "regenerated_polygons": 32,
+      "committed_area_dbu2": 14649600,
+      "regenerated_area_dbu2": 14649600,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "65/44",
+      "expected": true,
+      "committed_polygons": 1,
+      "regenerated_polygons": 1,
+      "committed_area_dbu2": 18748800,
+      "regenerated_area_dbu2": 18748800,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "66/20",
+      "expected": true,
+      "committed_polygons": 32,
+      "regenerated_polygons": 32,
+      "committed_area_dbu2": 14476800,
+      "regenerated_area_dbu2": 14476800,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "66/44",
+      "expected": true,
+      "committed_polygons": 104,
+      "regenerated_polygons": 104,
+      "committed_area_dbu2": 3005600,
+      "regenerated_area_dbu2": 3005600,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "67/20",
+      "expected": true,
+      "committed_polygons": 57,
+      "regenerated_polygons": 57,
+      "committed_area_dbu2": 46847200,
+      "regenerated_area_dbu2": 46847200,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "67/44",
+      "expected": true,
+      "committed_polygons": 32,
+      "regenerated_polygons": 32,
+      "committed_area_dbu2": 924800,
+      "regenerated_area_dbu2": 924800,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "68/20",
+      "expected": true,
+      "committed_polygons": 8,
+      "regenerated_polygons": 8,
+      "committed_area_dbu2": 14414400,
+      "regenerated_area_dbu2": 14414400,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "93/44",
+      "expected": true,
+      "committed_polygons": 4,
+      "regenerated_polygons": 4,
+      "committed_area_dbu2": 31543600,
+      "regenerated_area_dbu2": 31543600,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "94/20",
+      "expected": true,
+      "committed_polygons": 1,
+      "regenerated_polygons": 1,
+      "committed_area_dbu2": 29908800,
+      "regenerated_area_dbu2": 29908800,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    },
+    {
+      "layer_datatype": "95/20",
+      "expected": true,
+      "committed_polygons": 32,
+      "regenerated_polygons": 32,
+      "committed_area_dbu2": 4147200,
+      "regenerated_area_dbu2": 4147200,
+      "xor_polygons": 0,
+      "xor_area_dbu2": 0,
+      "xor_area_um2": 0.0,
+      "xor_empty": true
+    }
+  ],
+  "bbox": {
+    "committed_dbu": [
+      -1195,
+      -1195,
+      12715,
+      8555
+    ],
+    "regenerated_dbu": [
+      -1195,
+      -1195,
+      12715,
+      8555
+    ],
+    "committed_um": {
+      "left_um": -1.195,
+      "bottom_um": -1.195,
+      "right_um": 12.715,
+      "top_um": 8.555
+    },
+    "regenerated_um": {
+      "left_um": -1.195,
+      "bottom_um": -1.195,
+      "right_um": 12.715,
+      "top_um": 8.555
+    },
+    "match": true
+  },
+  "labels": {
+    "pairs": [
+      {
+        "layer_texttype": "67/5",
+        "committed_labels": 25,
+        "regenerated_labels": 25,
+        "match": true
+      },
+      {
+        "layer_texttype": "68/5",
+        "committed_labels": 8,
+        "regenerated_labels": 8,
+        "match": true
+      }
+    ],
+    "committed_total": 33,
+    "regenerated_total": 33,
+    "overlap_with_drawn_layers": [],
+    "match": true
+  },
+  "problems": [],
+  "xor_empty_on_every_drawn_layer": true,
+  "result": "equivalent"
+}

@@ -339,6 +339,86 @@ class ToolchainGuard(Tmp):
             self.assertIn(chk["klayout_tools"]["package_version"], gen["verified"],
                           "generation pin differs from the check pin: `verified` must say why")
 
+    # Prose containment (above) cannot tell a measured justification from a
+    # plausible sentence. Issue #284 put a committed artifact behind the
+    # geometry half of that sentence; this binds the field to it, so the
+    # divergence rests on evidence that goes stale loudly rather than quietly.
+    # Stdlib only, and never computes the XOR: .github/workflows/evidence-checks.yml
+    # runs this file under a bare `python3 -I`, which has no `klayout`.
+    def test_generation_pin_divergence_cites_the_xor_evidence_record(self):
+        gen, chk = CFG["toolchains"]["generation"], CFG["toolchains"]["check"]
+        cited = re.findall(r"layout/results/[A-Za-z0-9._+-]+\.json", gen["verified"])
+        self.assertTrue(cited, "`verified` cites no layout/results/ evidence record")
+        records = {}
+        for rel in cited:
+            path = REPO / rel
+            self.assertTrue(path.is_file(), f"`verified` cites {rel}, which does not exist")
+            try:
+                records[rel] = json.loads(path.read_text())
+            except ValueError as exc:
+                self.fail(f"`verified` cites {rel}, which does not parse as JSON: {exc}")
+
+        if gen["klayout_tools"]["package_version"] == chk["klayout_tools"]["package_version"]:
+            return  # pins agree: byte-for-byte reproduction is the whole claim
+
+        xor = [(rel, r) for rel, r in records.items() if "geometry XOR" in r.get("kind", "")]
+        self.assertEqual(len(xor), 1, "the pins differ: `verified` must cite exactly one geometry-XOR "
+                                      f"evidence record (cited: {sorted(records)})")
+        rel, rec = xor[0]
+
+        # The measurement came out equivalent, over an asserted enumeration.
+        self.assertEqual(rec["result"], "equivalent", f"{rel}: {rec.get('problems')}")
+        self.assertEqual(rec["problems"], [], rel)
+        self.assertIs(rec["xor_empty_on_every_drawn_layer"], True, rel)
+        self.assertIs(rec["enumeration"]["match"], True, rel)
+        self.assertIs(rec["bbox"]["match"], True, rel)
+        self.assertIs(rec["labels"]["match"], True, rel)
+
+        # Every drawn pair reports its counts and an explicit zero XOR -- an
+        # empty XOR must be a stated 0, never an absent key.
+        for entry in rec["layers"]:
+            for key in ("layer_datatype", "committed_polygons", "regenerated_polygons",
+                        "xor_polygons", "xor_area_dbu2", "xor_area_um2"):
+                self.assertIn(key, entry, f"{rel}: layer entry missing {key}: {entry}")
+            self.assertEqual(entry["xor_polygons"], 0, f"{rel}: {entry['layer_datatype']} XOR not empty")
+            self.assertEqual(entry["xor_area_dbu2"], 0, f"{rel}: {entry['layer_datatype']} XOR area not 0")
+
+        # `verified`'s layer count must equal the record's enumeration, by name
+        # where the field names them -- so rewording the prose cannot drift
+        # away from the artifact (klt layers reports 12 on this GDS; the drawn
+        # set is 10 and the 2 label-only pairs are counted separately).
+        drawn = rec["enumeration"]["in_committed"]
+        self.assertEqual(sorted(drawn), sorted(rec["enumeration"]["expected"]), rel)
+        stated = re.search(r"XOR empty on all (\d+) drawn layers", gen["verified"])
+        self.assertIsNotNone(stated, "`verified` must state 'XOR empty on all <N> drawn layers'")
+        self.assertEqual(int(stated.group(1)), len(drawn),
+                         f"`verified` says {stated.group(1)} drawn layers, {rel} enumerates {len(drawn)}")
+        for pair in drawn:
+            self.assertIn(pair, gen["verified"], f"`verified` does not name drawn layer {pair} from {rel}")
+        for pair in (p["layer_texttype"] for p in rec["labels"]["pairs"]):
+            self.assertNotIn(pair, drawn, f"{rel}: label pair {pair} counted among the drawn layers")
+
+        # The record is about THIS committed GDS and THESE two pins. Regenerate
+        # the array or move a pin and the citation fails instead of going quietly
+        # stale.
+        committed = rec["streams"]["committed"]
+        self.assertEqual(committed["path"], "layout/gain_cell_2t_array.gds", rel)
+        digest = "sha256:" + hashlib.sha256((REPO / committed["path"]).read_bytes()).hexdigest()
+        self.assertEqual(committed["sha256"], digest,
+                         f"{rel} measured a different {committed['path']} than the committed one")
+        self.assertEqual(rec["toolchains"]["committed"]["klayout_tools_version"],
+                         gen["klayout_tools"]["package_version"], rel)
+        self.assertEqual(rec["toolchains"]["regenerated"]["klayout_tools_version"],
+                         chk["klayout_tools"]["package_version"], rel)
+        for role in ("committed", "regenerated"):
+            self.assertEqual(rec["toolchains"][role]["klayout_version"], gen["klayout"], rel)
+        self.assertEqual(rec["pdk"]["pin"]["open_pdks_commit"], CFG["pdk"]["open_pdks_commit"], rel)
+        self.assertEqual(rec["top_cell"], TOP, rel)
+
+        # Committed evidence must not embed somebody's host paths.
+        self.assertNotRegex((REPO / rel).read_text(), r"/home/|/Users/|/tmp/|/var/folders",
+                            f"{rel} embeds an absolute host path")
+
     def test_check_pin_matches_signoff_workflow(self):
         wf = (REPO / ".github" / "workflows" / "signoff.yml").read_text()
         ver = re.search(r"KLT_VERSION:\s*\"?(\d+\.\d+\.\d+)\"?\s*$", wf, re.M).group(1)
