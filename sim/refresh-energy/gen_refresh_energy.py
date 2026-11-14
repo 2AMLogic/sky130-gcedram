@@ -46,6 +46,7 @@ sys.path.insert(0, str(REPO / "sim" / "write-disturb"))
 import gen_refresh_op as G  # noqa: E402  (#110 operation reference)
 import gen_write_disturb as WD  # noqa: E402  (extracted-array parser)
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import VDD_V  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "refresh_energy.spice"
@@ -56,7 +57,6 @@ ARRAY_NETLIST = WD.ARRAY_NETLIST
 # ---- scope (restricted PROPOSED range; nothing outside it) ----
 PROCESS_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [27, 125]
-VDD_V = 1.8
 N_ROWS = 4
 N_COLS = 4
 SEL_ROW = 0                     # the refreshed row (issue: row 0, all four columns)
@@ -64,7 +64,9 @@ SEL_ROW = 0                     # the refreshed row (issue: row 0, all four colu
 # ---- levels ----
 VRBL_V = G.VRBL_V               # 0.9 V read-bitline precharge (contract, as #110)
 DREF_V = G.DREF_V               # ASSUMPTION (#110): sense reference = VRBL - 100 mV
-V_SN1_V = 0.90                  # ASSUMPTION (issue): aged stored '1' at refresh time (retention delta_V = VDD/2)
+V_SN1_V = 0.90                  # ASSUMPTION (issue): aged stored '1' at refresh time (retention delta_V = VDD/2);
+                                #   kept literal, NOT derived from _evidence_common.DELTA_V_V -- a stored level that
+                                #   happens to equal delta_V under today's assumption set is not a derivation (#294)
 V_SN0_V = 0.00                  # ASSUMPTION (issue): stored '0'
 WBL_IDLE_V = 0.0                # ASSUMPTION: idle write-bitline level (#110 WBL starts at 0 V)
 

@@ -48,6 +48,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import DELTA_V_V, VDD_V  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "write_disturb.spice"
@@ -57,7 +58,6 @@ ARRAY_NETLIST = REPO / "layout" / "gain_cell_2t_array.extract.parasitics.spice"
 # ---- scope: restricted range of the PROPOSED record (nothing outside it) ----
 PROCESS_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [27, 125]            # 27 C = restricted cold bound; 125 C = worst-case retention corner
-VDD_V = 1.8
 N_ROWS = 4
 N_COLS = 4
 
@@ -65,7 +65,6 @@ N_COLS = 4
 V_SN1_V = 1.0                  # stored '1' level at the start (between delta_V=0.9 V and typical written 1.0-1.2 V)
 V_SN0_V = 0.0                  # stored '0' level at the start
 VRBL_V = 0.9                   # idle read bitline (SENSE_INPUT_CONTRACT precharge level), ideal source
-DELTA_V_V = 0.9                # ratified retention-derivation delta_V = VDD/2 (ASSUMPTION there)
 T_RET_RATIFIED_S = 1.005989e-05  # spec/retention-refresh-budget.md section 7 (2T-min, sf/125 C)
 REFRESH_BOUND_S = T_RET_RATIFIED_S / 2   # ratified refresh interval ~5.03 us
 

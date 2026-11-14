@@ -17,9 +17,18 @@ initial PWL value (no ramp).
 from __future__ import annotations
 
 import re
+import sys
+from pathlib import Path
+
+# VDD_V comes from _evidence_common (the canonical PROPOSED supply, issue
+# #294's consolidation of the #37 pattern). This module is itself the
+# library its gen_/analyze_ drivers import after doing their own path
+# setup, so it resolves sim/ on sys.path here rather than assuming the
+# importer did it (test_*.py put only this directory on the path).
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _evidence_common import VDD_V  # noqa: E402
 
 T_EDGE_NS = 0.1
-VDD_V = 1.8
 SIGNALS = ["pre_en", "rwl_sel", "sense_en", "wwl_en", "bl_drive", "busy", "done"]
 TIME_TOL_NS = 1e-6
 

@@ -35,13 +35,14 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import load_clean_corners  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
 
 SETTLE_BUDGET_S = G.T_PRE_BUDGET_S
 RELEASE_TOL_V = G.SETTLE_V
-RESOLVE_V = 0.9
+RESOLVE_V = DELTA_V_V
 T_WINDOW_S = 5e-9
 T_PRE_MID_S = G.T_PRE_ON_S + G.T_EDGE_S / 2
 T_EN_MID_S = G.T_EN_S + G.T_EDGE_S / 2

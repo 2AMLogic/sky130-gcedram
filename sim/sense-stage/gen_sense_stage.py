@@ -31,6 +31,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import VDD_V  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "sense_stage.spice"
@@ -41,7 +42,6 @@ EXTRACT_JSON = REPO / "layout" / "gain_cell_2t.extract.parasitics.json"
 # ---- scope: restricted range of the PROPOSED record (nothing outside it) ----
 PROCESS_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [27, 125]            # 27 C = restricted cold bound; 125 C = worst-case retention corner
-VDD_V = 1.8
 
 # ---- bias / timing (contract inputs, SENSE_INPUT_CONTRACT.md) ----
 VRBL_V = 0.9                   # rbl precharge (contract)
