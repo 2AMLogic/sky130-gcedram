@@ -28,6 +28,7 @@ DOCS = [
     HERE / "sources" / "skywater-pdk-device-details-excerpt.md",
     ROOT / "spec" / "supply-reliability-decision-PROPOSED.md",
     HERE / "sources" / "reliability-search-log-issue51.md",
+    HERE.parent / "extracted-crbl" / "README.md",
 ]
 # Evidence-era pin: the open_pdks revision the committed records in this
 # directory were produced under (append-only; NOT the repo's forward pin in
@@ -207,6 +208,133 @@ def issue51() -> None:
     check("Issue #51 addendum" in (HERE / "EVIDENCE_INDEX.md").read_text(), "index has the #51 addendum")
 
 
+EXT_DIR = HERE.parent / "extracted-crbl"
+EXT_RUN = EXT_DIR / "results" / "20261011T015419Z"
+SS_RES = ROOT / "sim" / "sense-stage" / "results"
+ISSUE88_HASHES = {
+    EXT_RUN / "summary.json": "77d07c21bcf59aa3c5b81e64c2ceb90026e2ff79788c57a808d4acdd72efe464",
+    EXT_RUN / "cases.csv.gz": "48a83f9e2ef56f7f0617eb4c33d241215b35a0ccb549952c9138af8a71f3dbc4",
+    SS_RES / "sense_summary_20261011T015836Z.json": "d171548c93997aa1bd1207f2511d2585eef33bdb1bef4b00781d9779214caa0b",
+    SS_RES / "sense_summary_20261011T020128Z.json": "5a913667308f99335046eb930ecfb5d655e30ba1bb508848ab382deab94a1bda",
+    SS_RES / "sense_summary_20261011T020422Z.json": "39b06ab5d4acba1aa01af6b9b9b8ff5a73c049e87350825312c060a82ff03bad",
+}
+ARRAY_NETLIST_SHA = "dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33"
+
+
+def issue88() -> None:
+    """Issue #88: extracted C_RBL re-run, contract addendum numbers, pins."""
+    for p, h in ISSUE88_HASHES.items():
+        check(p.exists() and sha(p) == h, f"#88 sha256 {p.relative_to(ROOT)}")
+    # Pre-#244 history: the 2026-10-11 run recorded the cited value and netlist hash itself
+    # (the live layout summary moved to the post-#244 value; see issue261()).
+    s = json.loads((EXT_RUN / "summary.json").read_text())
+    c_rbl = s["c_rbl_source"]["value_ff"]
+    check(close(c_rbl, 0.859179, 1e-6), "#88 extracted C_RBL is 0.859179 fF at the cited key")
+    check(s["c_rbl_source"]["netlist_sha256"] == ARRAY_NETLIST_SHA, "#88 extracted netlist sha256 pinned")
+    check(not s["errors"], "#88 loaded-column summary has no errors")
+    check(s["reproduction"]["ok"] and s["reproduction"]["cases_compared"] == 1920,
+          "#88 10 fF harness reproduces committed Phase 2 (1920 cases)")
+    check(s["negative_control"]["behaves_as_expected"], "#88 negative control fails as required")
+    check(not s["claims"]["spec_changed"] and not s["claims"]["n_rows_ratified"]
+          and not s["claims"]["real_periphery_used"], "#88 claims: no spec change, N_rows not ratified, ideal periphery")
+    check(close(s["c_rbl_source"]["value_ff"], c_rbl, 1e-9), "#88 run used the cited C_RBL")
+    V = s["variants"]
+
+    def pt(v, c, t, a):
+        return next(p for p in V[v]["points"] if (p["corner"], p["temp_c"], p["age"]) == (c, t, a))
+
+    ext_min = V["crbl_ext4row"]["min_point_separation_v"]
+    check(close(ext_min, 0.075, 6e-4), "#88 extracted min separation 0.075 V")
+    check(close(pt("crbl_ext4row", "fs", -40, "refresh_bound")["worst_case_separation_v"], ext_min, 1e-12),
+          "#88 extracted min is at fs/-40 aged")
+    a = pt("crbl_ext4row", "fs", -40, "refresh_bound")
+    check(not a["PASS"] and close(a["latency_stored1_s"]["max"] * 1e9, 12.97, 6e-3), "#88 fs/-40 aged FAIL, latency 12.97 ns")
+    check(V["crbl_ext4row"]["n_points_pass"] == 28 and V["ref_crbl_10f"]["n_points_pass"] == 28, "#88 28/30 at 10 fF and extracted")
+    for age, sep, lat in (("refresh_bound", 0.370, 1.69), ("fresh", 0.388, 1.56)):
+        p = pt("crbl_ext4row", "ss", -40, age)
+        check(p["PASS"] and close(p["worst_case_separation_v"], sep, 6e-4) and close(p["latency_stored1_s"]["max"] * 1e9, lat, 6e-3),
+              f"#88 ss/-40 {age} {sep} V / {lat} ns")
+    check(close(V["crbl_2f"]["min_point_separation_v"], 0.052, 6e-4), "#88 2 fF min 0.052 V")
+    check(close(pt("crbl_2f", "ss", -40, "refresh_bound")["worst_case_separation_v"], 0.288, 6e-4), "#88 2 fF ss/-40 aged 0.288 V")
+    check(V["crbl_ext4row_layoutcard"]["n_points_pass"] == 30
+          and close(V["crbl_ext4row_layoutcard"]["min_point_separation_v"], 0.108, 6e-4), "#88 layout card 30/30, min 0.108 V")
+    ss = json.loads((SS_RES / "sense_summary_20261011T015836Z.json").read_text())
+    td = [c["stage_tdec_at_1mv_ns_minus"] for c in ss["corners"]]
+    check(close(min(td), 0.11, 6e-3) and close(max(td), 0.23, 6e-3), "#88 sense-stage t_dec at 1 mV 0.11-0.23 ns")
+    check({c["temp_c"] for c in ss["corners"]} == {27, 125}, "#88 sense stage has no -40 C result")
+    con = (HERE / "SENSE_INPUT_CONTRACT.md").read_text()
+    head, _, add = con.partition("## 2026-10-11 addendum: extracted `C_RBL` row (issue #88, PROPOSED)")
+    check(bool(add), "#88 contract has the dated addendum")
+    check("| `C_RBL` | 10 fF | same | same | ASSUMPTION (not extracted)" in head and "4. Any new multi-corner" in head,
+          "#88 original contract row and rules preserved")
+    for tok in ("0.859179 fF", "EXTRACTED-4-ROW", "not ratified", ARRAY_NETLIST_SHA, "0.075 V", "0.370 V", "0.288 V",
+                "0.108 V", "12.97 ns", "0.11-0.23 ns", "comparison.c_rbl.extracted_4row_worst_total_ff", "**ideal**"):
+        check(tok in add, f"#88 contract addendum quotes {tok}")
+    check("Issue #88 addendum" in (HERE / "EVIDENCE_INDEX.md").read_text(), "index has the #88 addendum")
+
+
+EXT_RUN261 = EXT_DIR / "results" / "20261029T203633Z"
+ISSUE261_HASHES = {
+    EXT_RUN261 / "summary.json": "74243b13d42e702582fcb0bb73db41a64ea71d113a17096f2395db5eae163244",
+    EXT_RUN261 / "cases.csv.gz": "7ab7d170c747e55217f561e269ffb3b19371c65bd657a0ef29deabaafeb49f70",
+    SS_RES / "sense_summary_20261029T194412Z.json": "35762c8fc4a43ed996ab0180d271bd5cc766c5b972835551a1b307e2442fd7ef",
+    SS_RES / "sense_summary_20261029T194413Z.json": "95f2a0116c974f7f8b82955cdef45bb80b91ce094578fb99db30ce136807d71a",
+    SS_RES / "sense_summary_20261029T194414Z.json": "03a33440ef47b82edcc3d15b6b5b5f20b57e0347cf09e643b90d18fcd2c1d66a",
+}
+ARRAY_NETLIST_SHA_P244 = "6469896a403d9da6ba5f7d0ba10616fd0aa1a04470699460893c67b8e44f9e1f"
+
+
+def issue261() -> None:
+    """Issue #261: the #88 evidence re-run on the post-#244 layout (C_RBL 0.955559 fF)."""
+    for p, h in ISSUE261_HASHES.items():
+        check(p.exists() and sha(p) == h, f"#261 sha256 {p.relative_to(ROOT)}")
+    par = json.loads((ROOT / "layout" / "gain_cell_2t_array.parasitics.summary.json").read_text())
+    c_rbl = par["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"]
+    check(close(c_rbl, 0.955559, 1e-6), "#261 extracted C_RBL is 0.955559 fF at the cited key")
+    check(par["source"]["netlist_sha256"] == ARRAY_NETLIST_SHA_P244, "#261 extracted netlist sha256 pinned")
+    s = json.loads((EXT_RUN261 / "summary.json").read_text())
+    check(not s["errors"], "#261 loaded-column summary has no errors")
+    check(s["reproduction"]["ok"] and s["reproduction"]["cases_compared"] == 1920,
+          "#261 10 fF harness reproduces committed Phase 2 (1920 cases)")
+    check(s["negative_control"]["behaves_as_expected"], "#261 negative control fails as required")
+    check(not s["claims"]["spec_changed"] and not s["claims"]["n_rows_ratified"]
+          and not s["claims"]["real_periphery_used"], "#261 claims: no spec change, N_rows not ratified, ideal periphery")
+    check(close(s["c_rbl_source"]["value_ff"], c_rbl, 1e-9), "#261 run used the cited C_RBL")
+    V = s["variants"]
+
+    def pt(v, c, t, a):
+        return next(p for p in V[v]["points"] if (p["corner"], p["temp_c"], p["age"]) == (c, t, a))
+
+    ext_min = V["crbl_ext4row"]["min_point_separation_v"]
+    check(close(ext_min, 0.102, 6e-4), "#261 extracted min separation 0.102 V")
+    a = pt("crbl_ext4row", "fs", -40, "refresh_bound")
+    check(close(a["worst_case_separation_v"], ext_min, 1e-12) and a["PASS"]
+          and close(a["latency_stored1_s"]["max"] * 1e9, 9.145, 6e-3), "#261 extracted min is fs/-40 aged, PASS, latency 9.145 ns")
+    check(V["crbl_ext4row"]["n_points_pass"] == 30 and V["ref_crbl_10f"]["n_points_pass"] == 28,
+          "#261 30/30 at extracted, 28/30 at 10 fF")
+    for age, sep, lat in (("refresh_bound", 0.439, 1.315), ("fresh", 0.457, 1.235)):
+        p = pt("crbl_ext4row", "ss", -40, age)
+        check(p["PASS"] and close(p["worst_case_separation_v"], sep, 6e-4) and close(p["latency_stored1_s"]["max"] * 1e9, lat, 6e-3),
+              f"#261 ss/-40 {age} {sep} V / {lat} ns")
+    check(V["crbl_2f"]["n_points_pass"] == 28 and close(V["crbl_2f"]["min_point_separation_v"], 0.075, 6e-4),
+          "#261 2 fF 28/30, min 0.075 V")
+    check(V["crbl_ext4row_layoutcard"]["n_points_pass"] == 30
+          and close(V["crbl_ext4row_layoutcard"]["min_point_separation_v"], 0.138, 6e-4), "#261 layout card 30/30, min 0.138 V")
+    ss = json.loads((SS_RES / "sense_summary_20261029T194412Z.json").read_text())
+    td = [c["stage_tdec_at_1mv_ns_minus"] for c in ss["corners"]]
+    check(close(min(td), 0.11, 6e-3) and close(max(td), 0.23, 6e-3), "#261 sense-stage t_dec at 1 mV 0.11-0.23 ns")
+    check({c["temp_c"] for c in ss["corners"]} == {27, 125}, "#261 sense stage has no -40 C result")
+    sf = next(c for c in ss["corners"] if (c["corner"], c["temp_c"]) == ("sf", 125))
+    check(sf["best_swept_reference"]["verdict"] == "met", "#261 sense-stage sf/125 C best-reference droop verdict is met")
+    con = (HERE / "SENSE_INPUT_CONTRACT.md").read_text()
+    head, _, add = con.partition("## 2026-10-29 addendum: post-#244 re-run of the extracted `C_RBL` row (issue #261, PROPOSED)")
+    check(bool(add) and "## 2026-10-11 addendum" in head, "#261 contract has the dated addendum after the #88 one")
+    for tok in ("0.955559 fF", "EXTRACTED-4-ROW", "not ratified", ARRAY_NETLIST_SHA_P244, "0.102 V", "0.439 V", "0.075 V",
+                "0.138 V", "9.145 ns", "0.11-0.23 ns", "comparison.c_rbl.extracted_4row_worst_total_ff", "**ideal**"):
+        check(tok in add, f"#261 contract addendum quotes {tok}")
+    check("Issue #261 addendum" in (HERE / "EVIDENCE_INDEX.md").read_text(), "index has the #261 addendum")
+
+
 def issue51_online() -> None:
     import urllib.request
     base = f"https://raw.githubusercontent.com/google/skywater-pdk/{SW_PDK_HEAD}/"
@@ -251,6 +379,8 @@ def main() -> int:
     numbers()
     status()
     issue51()
+    issue88()
+    issue261()
     if a.online:
         online()
         issue51_online()
