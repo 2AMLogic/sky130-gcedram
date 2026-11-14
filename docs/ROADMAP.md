@@ -40,8 +40,11 @@ Against the six macro items of #24:
   (`spec/macro-pass-conditions-PROPOSED.md`).
 - **Refresh controller and SPI:** behavioral Verilog under `digital/` with 14
   regression suites in CI (`digital/ci/run_digital_regressions.sh`).
-  `spi_slave` became synthesizable in PR #274; no gate-level netlist or
-  layout is on `main`.
+  `spi_slave` became synthesizable in PR #274 and its standard-cell-mapped
+  netlist is committed as a result artifact
+  (`digital/spi-control/results/spi_slave_synth_2026-11-11_issue273.v`); no
+  `gc_ctrl_top` gate-level netlist, no gate-level replay and no layout is on
+  `main`.
 - **Macro layout and post-layout PVT:** not started.
 
 Known limits, with committed evidence: the loaded-column read fails at the
@@ -87,8 +90,9 @@ device-inclusive retention measures below the ratified 10.06 us (#208).
   PR #152; **repeated closed-loop refresh** (#147) after #94.
 - **README status refresh:** the status paragraph and repo-layout tree omit
   the sense path, `digital/`, `attest/` and `docs/`. `README.md` is hashed by
-  the item-10 inventory (`attest/item10.json`) and PR #276 also edits it, so
-  do this after #276, with the item-10 envelope regenerated in the same PR.
+  the item-10 inventory (`attest/item10.json`), and PR #276 edits that
+  inventory's envelope (`attest/item10.envelope.json`), so do this after #276,
+  with the item-10 envelope regenerated in the same PR.
 - **Evidence-check test lists** (#277): after its decision.
 
 ## Later
