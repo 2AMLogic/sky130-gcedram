@@ -38,6 +38,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import load_json  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
@@ -45,7 +46,7 @@ sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_refresh_op as G  # noqa: E402
 import analyze_sense_stage as SS  # noqa: E402
 
-DECIDE_V = 0.9                 # |d| >= VDD/2 counts as decided (sense-stage convention)
+DECIDE_V = DELTA_V_V           # |d| >= VDD/2 counts as decided (sense-stage convention)
 FRACS = [0.90, 0.95, 0.98]     # ASSUMPTION: restore fractions of the in-deck reference write level
 PRIMARY_FRAC = 0.95            # ASSUMPTION: headline fraction
 ZERO_MAX_V = 0.05              # ASSUMPTION: a restored '0' sits within 50 mV of 0 V

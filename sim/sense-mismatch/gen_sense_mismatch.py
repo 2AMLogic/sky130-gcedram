@@ -39,6 +39,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as G  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import VDD_V  # noqa: E402
 from klt_request import build_request as klt_request, mc_block  # noqa: E402
 
 STAGE_NETLIST_PATH = HERE / "sense_mismatch.spice"
@@ -53,7 +54,6 @@ CELL_REQUEST_PATH = HERE / "request_cell.json"
 #   0.7-0.8 V), sf/125 (ratified worst-case retention corner; cheap to add).
 STAGE_CORNERS = [("tt_mm", 27), ("fs_mm", 27), ("ss_mm", 125), ("sf_mm", 125)]
 CELL_CORNERS = [("fs_mm", 27)]
-VDD_V = G.VDD_V                # 1.8 V, the one supply of the PROPOSED range
 
 # ---- Monte Carlo (recorded in the request and echoed in the report) ----
 MC_SEED = 20261009_81          # base seed; klt derives per-sample seeds from it (SHA-256)

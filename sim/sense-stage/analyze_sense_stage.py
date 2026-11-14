@@ -38,13 +38,14 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
 import gen_sense_stage as G  # noqa: E402
 
 T_WINDOW_S = 5e-9              # ASSUMPTION: decision must complete within 5 ns of enable
-RESOLVE_V = 0.9                # |d| >= VDD/2 counts as decided (full swing is 1.8 V)
-VDD_HALF_V = 0.9               # the retention study's delta_V ASSUMPTION (VDD/2)
+RESOLVE_V = DELTA_V_V          # |d| >= VDD/2 counts as decided (full swing is 1.8 V)
+VDD_HALF_V = DELTA_V_V         # the retention study's delta_V ASSUMPTION (VDD/2)
 PHASE3_PASS_FAIL = REPO / "sim/loaded-column/cold-corner/results/pass_fail_20261005T145658Z.csv"
 
 

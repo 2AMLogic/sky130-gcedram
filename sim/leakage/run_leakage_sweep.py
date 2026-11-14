@@ -50,6 +50,7 @@ sys.path.insert(0, str(SIM_LEAKAGE_DIR.parent))
 from _evidence_common import (
     DEFAULT_PDK_VARIANT,
     PDK_OPEN_PDKS_COMMIT,
+    VDD_V as VDD,
     append_result,
     check_ngspice_available,
     measurements_of,
@@ -81,7 +82,6 @@ CSV_FIELDS = [
 DEVICE = "sky130_fd_pr__nfet_01v8"
 W_UM = 0.42
 L_UM = 0.15
-VDD = 1.8
 DEFAULT_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 DEFAULT_TEMPS_C = [-40, 27, 125]
 

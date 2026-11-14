@@ -47,6 +47,7 @@ from statistics import NormalDist
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import load_clean_corners, measurements_of  # noqa: E402
 from _evidence_common import load_json as read_json  # noqa: E402
@@ -55,7 +56,7 @@ import gen_column_periphery as G  # noqa: E402
 
 SETTLE_BUDGET_S = G.T_PRE_BUDGET_S
 RELEASE_TOL_V = G.SETTLE_V
-RESOLVE_V = 0.9
+RESOLVE_V = DELTA_V_V
 T_WINDOW_S = 5e-9
 FLOOR_V = -0.135
 T_PRE_MID_S = G.T_PRE_ON_S + G.T_EDGE_S / 2

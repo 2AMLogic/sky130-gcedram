@@ -55,6 +55,7 @@ sys.path.insert(0, str(REPO_ROOT / "layout"))
 from _evidence_common import (  # noqa: E402
     DEFAULT_PDK_VARIANT,
     PDK_OPEN_PDKS_COMMIT,
+    VDD_V as VDD,
     append_result,
     check_ngspice_available,
     first_below,
@@ -80,7 +81,6 @@ N_ROWS, N_COLS = 4, 1
 CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [-40, 27, 125]
 AGE_LABELS = ["fresh", "refresh_bound"]
-VDD = 1.8
 MIN_TIMEPOINTS = 10  # fewer wrdata rows than this => sim failed
 
 # ASSUMPTIONS (proposed engineering choices, NOT ratified spec values)
