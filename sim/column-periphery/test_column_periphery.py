@@ -5,6 +5,7 @@ Run: python3 -I sim/column-periphery/test_column_periphery.py
 """
 from __future__ import annotations
 
+import ast
 import csv
 import json
 import math
@@ -15,6 +16,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import _periphery_contract as C  # noqa: E402
 import analyze_column_periphery as A  # noqa: E402
 import analyze_isolation_study as AI  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
@@ -112,6 +114,37 @@ class Compliance(unittest.TestCase):
         self.assertFalse(A.compliance(self.inst(dend_v=1.8), ok0)["correct_decision"])  # wrong polarity
         self.assertFalse(A.compliance(self.inst(tdec_s=6e-9), ok0)["decision_within_window"])
         self.assertFalse(A.compliance(self.inst(settle_s=None), ok0)["compliant"])
+
+    def test_the_isolation_study_gates_on_the_function_these_controls_exercise(self):
+        """Issue #283: `all_compliant` in the #117 isolation summary must come from
+        the very function the negative controls above drive, not from a copy. The
+        gate used to be declared twice (AST-identically) with only this copy
+        tested, so a threshold-edge fix reached the #114 summary and silently did
+        not reach the #117 one."""
+        self.assertIs(A.compliance, C.compliance)
+        self.assertIs(AI.compliance, C.compliance)
+
+    def test_neither_analyser_redefines_the_gate_or_its_thresholds(self):
+        """Issue #283: re-adding a local `compliance()` (or a local copy of a
+        threshold it reads) would silently reopen the coverage gap, since these
+        controls only ever see `_periphery_contract`'s. Asserted against the
+        source, so the duplication cannot come back untested."""
+        shared = ("SETTLE_BUDGET_S", "RELEASE_TOL_V", "RESOLVE_V", "T_WINDOW_S",
+                  "T_PRE_MID_S", "T_EN_MID_S")
+        for mod in (A, AI):
+            name = Path(mod.__file__).name
+            tree = ast.parse(Path(mod.__file__).read_text())
+            funcs = [n.name for n in tree.body if isinstance(n, ast.FunctionDef)]
+            self.assertNotIn("compliance", funcs, f"{name} redefines compliance()")
+            assigned = {t.id for n in tree.body if isinstance(n, ast.Assign)
+                        for t in n.targets if isinstance(t, ast.Name)}
+            self.assertEqual(assigned & set(shared), set(),
+                             f"{name} re-declares a shared contract threshold")
+        # ... and each threshold the analysers do read is the shared object itself.
+        for mod, names in ((A, ("SETTLE_BUDGET_S", "T_PRE_MID_S", "T_EN_MID_S")),
+                           (AI, ("T_WINDOW_S", "T_PRE_MID_S", "T_EN_MID_S"))):
+            for n in names:
+                self.assertIs(getattr(mod, n), getattr(C, n), n)
 
 
 ISO_REPORTS = sorted(RESULTS.glob("isolation_klt_report_*.json"))

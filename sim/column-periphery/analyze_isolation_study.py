@@ -23,7 +23,9 @@ Definitions (all ASSUMPTIONS, parameters at the top; the timeline is gen_column_
 * periphery capacitance C_p = I*dt/(v(5 ns) - v(15 ns)) of a probe instance (precharge device + isolation
   gate on an rbl node with no array load and no latch, gates idle, discharged at 0.1 uA).
 * compliance gates are #114's (settle <= 2 ns, |vrel - 0.9| <= 10 mV, correct decision with
-  |d| >= 0.9 V, within 5 ns of the enable), per corner, both data values.
+  |d| >= 0.9 V, within 5 ns of the enable), per corner, both data values. They are
+  `_periphery_contract.compliance()` -- the same unit-tested function analyze_column_periphery.py
+  reports, not a copy of it, so a threshold-edge fix reaches both analyses (issue #283).
 * ddin = din - dpre (the change from just before the isolation gates close to the enable instant: the
   closing disturbance plus the little signal movement in the lead time); its spread is insensitive to
   the cell's read-device mismatch for a stored '0' (read device off).
@@ -47,28 +49,20 @@ from statistics import NormalDist
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import load_clean_corners, measurements_of  # noqa: E402
 from _evidence_common import load_json as read_json  # noqa: E402
+# The #114 contract gate and its thresholds come from _periphery_contract, so the
+# `all_compliant` aggregate below is gated by the same unit-tested function the
+# #114 analyser reports, not by a second copy of it (issue #283).
+from _periphery_contract import T_EN_MID_S, T_PRE_MID_S, T_WINDOW_S, compliance, decided  # noqa: E402
 import gen_isolation_study as S  # noqa: E402
-import gen_column_periphery as G  # noqa: E402
 
-SETTLE_BUDGET_S = G.T_PRE_BUDGET_S
-RELEASE_TOL_V = G.SETTLE_V
-RESOLVE_V = 0.9
-T_WINDOW_S = 5e-9
-FLOOR_V = -0.135
-T_PRE_MID_S = G.T_PRE_ON_S + G.T_EDGE_S / 2
-T_EN_MID_S = G.T_EN_S + G.T_EDGE_S / 2
+FLOOR_V = -0.135  # isolation-study-only: the sub-ground floor of SENSE_INPUT_CONTRACT.md
 N01 = NormalDist()
 
 
 def load(report: Path) -> dict[tuple[str, int], dict[str, float | None]]:
     return load_clean_corners(read_json(report))
-
-
-def decided(dend: float | None) -> str:
-    return _decided(dend, RESOLVE_V)
 
 
 def inst_metrics(m: dict, n: str) -> dict:
@@ -78,15 +72,6 @@ def inst_metrics(m: dict, n: str) -> dict:
         settle_s=None if tpre is None else tpre - T_PRE_MID_S,
         vrel_v=g("vrel"), dpost_v=g("dpost"), dpre_v=g("dpre"), din_v=g("din"), dend_v=g("dend"),
         tdec_s=None if tdec is None else tdec - T_EN_MID_S, sn_v=g("sn"), snmin_v=g("snmin"))
-
-
-def compliance(r1: dict, r0: dict) -> dict:
-    ok_a = all(x["settle_s"] is not None and x["settle_s"] <= SETTLE_BUDGET_S for x in (r1, r0))
-    ok_b = all(x["vrel_v"] is not None and abs(x["vrel_v"] - G.VRBL_V) <= RELEASE_TOL_V for x in (r1, r0))
-    ok_c = decided(r1["dend_v"]) == "1" and decided(r0["dend_v"]) == "0"
-    ok_d = all(x["tdec_s"] is not None and 0 <= x["tdec_s"] <= T_WINDOW_S for x in (r1, r0))
-    return dict(settle_within_budget=ok_a, release_level_within_tol=ok_b, correct_decision=ok_c,
-                decision_within_window=ok_d, compliant=ok_a and ok_b and ok_c and ok_d)
 
 
 def periphery_cap_f(m: dict, tag: str) -> float | None:
