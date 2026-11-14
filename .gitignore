@@ -19,6 +19,9 @@ design/build/
 flow/build/
 # local klt install, created by the setup script
 .venv/
+# `klt sim` per-run scratch (reports/logs it writes next to a request file);
+# the reports we keep as evidence are copied into the study's results/ dir
+.klt/
 # pinned layout-generation/check klt venvs (layout/generation_toolchain.py install)
 .toolchains/
 # >>> loom-managed (do not edit) >>>

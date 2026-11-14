@@ -34,6 +34,9 @@ jobs:
       - name: Loaded-column analysis tests
         run: python3 -I sim/loaded-column/test_analysis.py
 
+      - name: Loaded-column klt request generator / reducer (issue #169) checks
+        run: python3 -I sim/loaded-column/test_gen_column_requests.py
+
       - name: Cold-corner variant tests
         run: python3 -I sim/loaded-column/cold-corner/test_variants.py
 
