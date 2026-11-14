@@ -23,6 +23,9 @@ Definitions (all ASSUMPTIONS, parameters at the top):
   The 0.1 V worst-case separation placeholder of SENSE_INPUT_CONTRACT.md is
   reported (``min_abs_din_v``) but NOT a gate here: it is defined for a
   rbl-to-rbl separation between stored values, not for din.
+  The four clauses and their thresholds are `_periphery_contract.compliance()`,
+  shared with ``analyze_isolation_study.py`` so a threshold-edge fix reaches
+  both analyses at once (issue #283).
 """
 from __future__ import annotations
 
@@ -35,16 +38,12 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import load_clean_corners  # noqa: E402
+# The contract gate and its thresholds live in _periphery_contract, so the
+# isolation study (issue #117) gates on this very function and not on a copy of
+# it -- see that module's docstring and issue #283.
+from _periphery_contract import SETTLE_BUDGET_S, T_EN_MID_S, T_PRE_MID_S, compliance  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
-
-SETTLE_BUDGET_S = G.T_PRE_BUDGET_S
-RELEASE_TOL_V = G.SETTLE_V
-RESOLVE_V = 0.9
-T_WINDOW_S = 5e-9
-T_PRE_MID_S = G.T_PRE_ON_S + G.T_EDGE_S / 2
-T_EN_MID_S = G.T_EN_S + G.T_EDGE_S / 2
 
 
 def load(report: Path) -> dict[tuple[str, int], dict[str, float | None]]:
@@ -61,20 +60,6 @@ def derived(m: dict, n: str) -> dict:
         d.update(sn_v=m[f"sn_{n}"], din_v=m[f"din_{n}"], dend_v=m[f"dend_{n}"],
                  tdec_s=None if tdec is None else tdec - T_EN_MID_S)
     return d
-
-
-def decided(dend: float | None) -> str:
-    return _decided(dend, RESOLVE_V)
-
-
-def compliance(r1: dict, r0: dict) -> dict:
-    ok_a = all(x["settle_s"] is not None and x["settle_s"] <= SETTLE_BUDGET_S for x in (r1, r0))
-    ok_b = all(x["vrel_v"] is not None and abs(x["vrel_v"] - G.VRBL_V) <= RELEASE_TOL_V for x in (r1, r0))
-    ok_c = decided(r1["dend_v"]) == "1" and decided(r0["dend_v"]) == "0"
-    ok_d = all(x["tdec_s"] is not None and 0 <= x["tdec_s"] <= T_WINDOW_S for x in (r1, r0))
-    return dict(settle_within_budget=ok_a, release_level_within_tol=ok_b,
-                correct_decision=ok_c, decision_within_window=ok_d,
-                compliant=ok_a and ok_b and ok_c and ok_d)
 
 
 def summarize(data: dict) -> dict:
