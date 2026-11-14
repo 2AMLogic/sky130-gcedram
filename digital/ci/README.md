@@ -48,13 +48,22 @@ sign-off evidence, and it does not change any provisional timing value.
    crossing, issue #157; seconds; carries its own negative controls that must
    fail, so there is no separate `run_mutation.sh`)
 
-The `refresh-scheduler`, `spi-control` and `phase-control` `run_mutation.sh`
-scripts share one harness, `digital/ci/mutation_lib.sh` (tmp dir, baseline gate,
-sed apply + "did not change the source" guard, killed/SURVIVED report, exit
-status). Each script supplies its mutant table and a `mutant_run` hook;
-`phase-control` also sets `MUT_KILL_PATTERN=VIOLATION` so a failure without a
-bench violation (e.g. a compile error) is not counted as a kill. The integration
-scripts use different runners and keep their own loops.
+Every `run_mutation.sh` in `digital/`, and
+`sched-phase-integration/run_coupled_mutation.sh`, share one harness,
+`digital/ci/mutation_lib.sh` (tmp dir, baseline gate, sed apply + "did not
+change the source" guard, exact-string ("anchor") mutant apply,
+killed/SURVIVED verdict, exit status). They use it in two shapes.
+`refresh-scheduler`, `spi-control` and `phase-control` hand the whole loop to
+`mutation_sed_check`, supplying only a mutant table `M` and a `mutant_run`
+hook; `phase-control` also sets `MUT_SORT=1` and `MUT_KILL_PATTERN=VIOLATION`
+so a failure without a bench violation (e.g. a compile error) is not counted as
+a kill. The integration scripts (`control-integration`, both
+`sched-phase-integration` scripts and `spi-sched-phase-integration`) use
+different runners and keep their own mutant loops and `rc` — they run more than
+one pass per mutant, or more than one loop — so they call whichever helpers they
+need individually: `mutation_init`, `mutation_baseline`,
+`mutation_anchor_apply`, `mutation_verdict`. The strings those helpers print are
+the evidence format of the committed `results/` files.
 
 Every suite runs even if an earlier one fails (so all logs exist); the driver
 exits non-zero if any failed, which fails the job. Compile errors, a failing
