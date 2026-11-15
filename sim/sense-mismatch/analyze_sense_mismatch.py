@@ -51,6 +51,7 @@ from statistics import NormalDist
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
@@ -71,7 +72,7 @@ def _nominal_min_resolvable(base: str, temp_c: int) -> dict:
     return {}
 
 T_WINDOW_S = 5e-9              # ASSUMPTION (as sense-stage): decision within 5 ns of enable
-RESOLVE_V = 0.9                # |d| >= VDD/2 counts as decided
+RESOLVE_V = DELTA_V_V          # |d| >= VDD/2 counts as decided
 ERROR_RATE_TARGETS = [1e-3, 1e-6]   # ASSUMPTION: no ratified per-decision error-rate target exists
 ALPHA = 0.05                   # 95 % intervals
 CHI2_1_95 = 3.841458820694124  # chi-square(1 dof) 0.95 quantile
