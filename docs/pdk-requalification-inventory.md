@@ -160,7 +160,15 @@ before #182 is resolved would still be declared-only.
   not also move the simulator version, and a pin-only comparison stays a
   pin-only comparison. The earlier note in this file about a local
   `ngspice-42` described a dispatch host, not a machine that produces
-  evidence.
+  evidence. **Update (issue #300): the simulator is now pinned like the
+  PDK** — `ngspice-47`, checked from the same
+  `check_ngspice_available()` entry point — and the forward obligation the
+  pin creates (records stamped with a different major version are
+  awaiting simulator re-qualification, a per-study inventory separate
+  from the PDK gate above) is executed as
+  [`docs/simulator-requalification-inventory.md`](simulator-requalification-inventory.md),
+  which lists per study the simulator version its committed records carry
+  and whether it is awaiting re-qualification under the pin.
 
 ## Split
 

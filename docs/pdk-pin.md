@@ -1,7 +1,8 @@
 # sky130 PDK version pin
 
 Every schematic, netlist, layout, and testbench in this repo resolves the
-sky130 PDK from the **same** `open_pdks`/`ciel` pin:
+sky130 PDK from the **same** `open_pdks`/`ciel` pin, and every recorded
+simulation is produced by the **same pinned simulator major version**:
 
 | Field | Value |
 |---|---|
@@ -10,6 +11,7 @@ sky130 PDK from the **same** `open_pdks`/`ciel` pin:
 | `open_pdks_commit` | `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` |
 | `install_command` | `pip install ciel==2.6.1` then `ciel enable --pdk-family sky130 -l sky130_fd_pr f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` |
 | default `PDK_ROOT` | `~/.ciel` |
+| `simulator` | `ngspice-47` (major version; the batch fleet image's engine) |
 
 ## Why one pin, everywhere
 
@@ -32,10 +34,44 @@ deliberately share this exact pin, not just a compatible one:
   device-level study on this PDK to diverge from the rest of the fleet's
   pin.
 
+The same argument covers the simulator row: the simulator produces every
+committed number in `sim/` just as the PDK models do, and the two pins
+are useless separately — a re-run at the pinned PDK on an unpinned
+simulator (or vice versa) conflates the two changes. That is not
+hypothetical: between ngspice-46 and ngspice-47, with the PDK revision
+ruled out, the loaded-column characterization numbers moved up to
+8.76e-02 V and -26% latency (issue #300) — larger than margins quoted in
+`spec/operating-range-decision-PROPOSED.md` §5.3.
+
+## Simulator pin (issue #300)
+
+The simulator is pinned by **major version only** — `ngspice-47`, the
+batch fleet image's engine — defined as `NGSPICE_VERSION_PIN` in
+[`sim/_evidence_common.py`](../sim/_evidence_common.py) beside
+`PDK_OPEN_PDKS_COMMIT`. The check parses the `ngspice-NN` token out of
+the `ngspice --version` banner (`ngspice_version()` in the same module)
+rather than comparing the full banner, so build options, compile dates
+and banner formatting are not false mismatches. `ngspice_version()`
+returning `"unknown"` (binary present but version unreadable) is a
+mismatch, never a pass — a record cannot carry absent simulator
+provenance and still satisfy the check. The check is surfaced from
+`check_ngspice_available()`, the same entry point every runner already
+calls for the PDK revision check, so no runner needed a new call site.
+
+**A simulator-version change triggers re-qualification on the same terms
+as a PDK re-pin**: new append-only records, supersession notes, no
+in-place edits of existing records. Which studies' committed records
+carry which simulator version, and which are awaiting re-qualification
+under this pin, is inventoried in
+[`docs/simulator-requalification-inventory.md`](simulator-requalification-inventory.md).
+There is no override flag: a re-qualification changes the pin constant,
+exactly as the PDK re-pin did.
+
 ## Where it's consumed
 
 **Python (canonical source):** [`sim/_evidence_common.py`](../sim/_evidence_common.py)
-defines `PDK_OPEN_PDKS_COMMIT` and `DEFAULT_PDK_VARIANT` once; every Python
+defines `PDK_OPEN_PDKS_COMMIT`, `DEFAULT_PDK_VARIANT` and
+`NGSPICE_VERSION_PIN` once; every Python
 script that needs the pin (`sim/leakage/run_leakage_sweep.py`,
 `sim/bitcell-transient/run_bitcell_transient.py`,
 `sim/retention/derive_retention.py`) imports them from there rather than
@@ -44,10 +80,12 @@ redefining its own copy. `resolve_pdk_root()` in the same module resolves
 variable, else the `~/.ciel` default above — also shared by all three
 scripts. `~/.volare` (the retired volare root) is never searched. The same
 module's `pdk_revision_problems()` reads the resolved tree's
-`<variant>/SOURCES` `open_pdks` line and the env checks (`check_ngspice_available()`,
-`derive_retention.py --check-env`) fail with a visible mismatch if it is not the
-pin above (or `SOURCES` is missing), so a stray tree at another revision cannot
-be used silently.
+`<variant>/SOURCES` `open_pdks` line and `ngspice_version_problems()` the
+simulator banner's major version; the env checks (`check_ngspice_available()`,
+`derive_retention.py --check-env`) fail with a visible mismatch if either is
+not the pin above (or `SOURCES` is missing, or the banner is unparsable), so
+a stray tree at another revision — or a stray simulator major version —
+cannot be used silently.
 
 **Shell/Tcl (design-side mirror):** [`design/env.sh`](../design/env.sh) and
 [`design/xschemrc`](../design/xschemrc) restate the same `PDK_ROOT`/`PDK`
@@ -108,3 +146,15 @@ re-qualification and supersession marking are tracked in #166.
 `sim/loaded-column/cold-corner/check_evidence_index.py` keeps `c6d73a3` as its
 *evidence-era* constant (it validates the committed index) and skips its
 installed-tree hash check when the installed PDK is a different revision.
+
+### Simulator added to the pin set (issue #300)
+
+The pin set grew from the PDK alone to PDK + simulator: `ngspice-47`
+(`NGSPICE_VERSION_PIN`), checked from the same `check_ngspice_available()`
+entry point as the PDK revision. Until this change the simulator was
+stamped per result row but never pinned or checked, and committed
+loaded-column numbers moved up to 8.76e-02 V between ngspice-46 and
+ngspice-47 unnoticed (PDK revision ruled out at `sf`/125 C). Every
+ngspice-46-stamped record is now awaiting re-qualification under the pin —
+inventoried in
+[`docs/simulator-requalification-inventory.md`](simulator-requalification-inventory.md).
