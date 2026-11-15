@@ -101,9 +101,19 @@ added since — the sense latch
 ([`design/sense_latch.sch`](../../design/sense_latch.sch)) and the
 column-periphery slice
 ([`design/column_periphery.sch`](../../design/column_periphery.sch)) —
-introduce `sky130_fd_pr__pfet_01v8`, and nothing else: across `design/` and
-every `sim/` deck, `nfet_01v8` and `pfet_01v8` are the only two
-`sky130_fd_pr` flavours that appear at all. The wordline drive scheme
+introduce `sky130_fd_pr__pfet_01v8`, and nothing else: within `design/`,
+`nfet_01v8` and `pfet_01v8` are the only two `sky130_fd_pr` flavours that
+appear at all. One further flavour appears in simulation, never in a design
+source: [`sim/loaded-column/cold-corner/`](../../sim/loaded-column/cold-corner/)
+simulates `sky130_fd_pr__nfet_01v8_lvt` as attribution/remedy variants for
+the `fs`/−40 °C loaded-column sense failure §5 records (its
+[README](../../sim/loaded-column/cold-corner/README.md): *"The only other
+flavour used is the PDK's own `sky130_fd_pr__nfet_01v8_lvt`"*). It is a
+low-Vt (higher-leakage) device — the wrong direction for a
+retention-critical access device, per
+[`sim/leakage/`](../../sim/leakage/README.md) — and still a **1.8 V core**
+flavour, so the 1.8 V-only reading of this section is unchanged. The
+wordline drive scheme
 is explicitly **plain 1.8 V, not boosted**
 ([`design/README.md`](../../design/README.md) "Wordline drive scheme"),
 consistent with the repo README's own "Supply" row: *"sky130 standard
@@ -111,7 +121,7 @@ consistent with the repo README's own "Supply" row: *"sky130 standard
 
 | Harness rail (assumed common structure) | This block's use |
 |---|---|
-| 1.8 V digital | **The only supply anything committed here uses.** Every measured, extracted or simulated evidence point in this document (leakage, retention, sense, refresh, DRC/LVS) is at `VDD` = 1.8 V against `nfet_01v8`/`pfet_01v8`. |
+| 1.8 V digital | **The only supply anything committed here uses.** Every measured, extracted or simulated evidence point in this document (leakage, retention, sense, refresh, DRC/LVS) is at `VDD` = 1.8 V against `nfet_01v8`/`pfet_01v8` — and the cold-corner `nfet_01v8_lvt` remedy variants noted above run on the same deck at the same 1.8 V rail. |
 | 3.3 V analog | **Not yet exercised by anything committed in this repo.** The sense stage that now exists is a 1.8 V latch at schematic level (§3), and no I/O buffer, level shifter or boosted-wordline charge pump is designed anywhere; a macro-ready sense path or refresh controller may still need 3.3 V-class devices for those functions (an open item the README itself flags: "boosted wordline is a design decision to record"). This document does not assert either way; it is an undesigned macro-integration decision, not a rail anything committed here currently consumes. |
 
 If Challenge #4's real (unpublished) brief forces a specific voltage split
