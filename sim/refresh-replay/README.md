@@ -461,4 +461,21 @@ Run `20261010T130000Z` (issue #131): one `klt sim` batch request (`uvx --from kl
 job `klt-sim-b8ad51731243`, c7i.4xlarge spot, 95 s, 10/10 corners; first and only submission, no local simulation, no fallback;
 `fleet_attempts.json`). The report arrived on stdout (the `-o` file was not written by this client); the bucket name is redacted in the gzip.
 
+## Latch geometry correction re-run (issue #293, 2026-11-15)
+
+Issue #293 fixed the latch device this bench's circuit simulates: `gen_refresh_replay.py` (whose netlist writer also builds the #134 driver-sweep and #139 init-control decks) had retyped the latch/footer/header geometry, silently dropping the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens of the schematic-derived `design/sense_latch.spice`, so the replay deck simulated a latch with no source-drain parasitic resistance. The generator now emits the latch through `parse_cards()` from the design netlist; the regenerated deck's token-level delta is exactly the five added tokens per latch device. This section records the re-run as **new dated evidence** under `results/20261115T120746Z/` (41 instances: 10 variants x 4 patterns + reference write); earlier results are untouched history. Tool: `uvx --from klayout-tools==0.9.1 klt sim --backend batch --format json --wait-for-capacity 600` (job `klt-sim-ab4b1bbfdff1`, 10/10 corners; runner klt 0.9.0, fleet worker ngspice-47; first and only submission, no local simulation, no fallback). The corner set is the committed request's (copied from `results/20261010T094617Z/request.json`: tt/ss/ff/sf/fs x 27/125 C) and the golden RTL trace was re-exported from the unchanged `phase_seq` RTL (14 edges, matches `CONTRACT.md` Sec. 2).
+
+Old = `results/20261010T130000Z/summary.json`, new = `results/20261115T120746Z/summary.json` (report `klt_report.json.gz`, gzip; no bucket string appeared in this client's output).
+
+| Variant | restore 0.95 old -> new (of 10) | sense old -> new | negative control / note |
+|---|---|---|---|
+| `baseline_analog` | 10 -> 10 | 10 -> 10 | see the prior-match note below |
+| `rtl_raw` | 0 -> 0 | 10 -> 10 | headline failure preserved |
+| `rtl_hold` | 0 -> 0 | 10 -> 10 | headline failure preserved |
+| `rwl_late_hold` | 10 -> 10 | 10 -> 10 | #131 attribution unchanged |
+| `combined_hold` | 10 -> 10 | 10 -> 10 | identical to `rwl_late_hold` as before |
+| `neg_missing_wb` / `neg_short_wb` | 0 -> 0 | 10 -> 10 | negative controls still fail restore as designed |
+
+**No verdict change anywhere**: the baseline still restores 10/10, the unmodified RTL waveform still restores 0/10 (the #128 headline finding, preserved not tuned away), the #131 release-order attribution stands, and both negative controls still fail restoration. One recorded check moved for the expected reason: the summary's built-in `baseline_matches_prior` flag is pinned to the **pre-correction** `sim/refresh-op` report (`klt_report_20261010T005003Z.json.gz`) and now reads `False` with max |SN_end delta| = 20 mV -- the correction's own effect (the corrected latch restores slightly more). Cross-checked directly against the new corrected-device refresh-op run `20261115T120247Z` at the same op point, the baseline agrees to 3e-5 V, the same agreement the old pair had (3e-5 V); the pinned prior in the analyzer was left as committed. No spec file, contract, scheduler timing or overlap rule was touched; the archived `driver_sweep_results/` and `init_control_results/` decks are append-only history and were **not** regenerated.
+
 Rerun with a **new** run id; never edit `results/`.

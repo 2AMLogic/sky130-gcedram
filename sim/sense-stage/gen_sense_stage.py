@@ -31,12 +31,14 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V  # noqa: E402
+from _evidence_common import VDD_V, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "sense_stage.spice"
 REQUEST_PATH = HERE / "request.json"
-DESIGN_NETLIST = REPO / "design" / "gain_cell_2t.spice"
+DESIGN = REPO / "design"
+DESIGN_NETLIST = DESIGN / "gain_cell_2t.spice"
+LATCH_SPICE = DESIGN / "sense_latch.spice"
 EXTRACT_JSON = REPO / "layout" / "gain_cell_2t.extract.parasitics.json"
 
 # ---- scope: restricted range of the PROPOSED record (nothing outside it) ----
@@ -61,23 +63,15 @@ SN0_LEVELS_V = [-0.10, 0.00]   # stored '0' pre-read level (undershoot floor -0.
 N_ROWS = 4                     # contract column size (ASSUMPTION)
 
 # ---- sense-stage devices (ASSUMPTION: sizes are first-pass choices) ----
-# (model, W um, L um); ad/as/pd/ps follow the bitcell convention 0.29 um diffusion.
-LATCH_N = ("sky130_fd_pr__nfet_01v8", 1.0, 0.15)
-LATCH_P = ("sky130_fd_pr__pfet_01v8", 2.0, 0.15)
-FOOTER = ("sky130_fd_pr__nfet_01v8", 2.0, 0.15)
-HEADER = ("sky130_fd_pr__pfet_01v8", 4.0, 0.15)
-DIFF_UM = 0.29
+# The latch/footer/header device cards are emitted from the schematic-derived
+# design/sense_latch.spice via parse_cards() (issue #293), so the simulated
+# geometry (incl. nrd/nrs/sa/sb/sd) is the design netlist's, never retyped.
+# Sizes there are first-pass choices: latch N 1.0/0.15, P 2.0/0.15,
+# footer 2.0/0.15, header 4.0/0.15 um.
 
 
 def _fmt(x: float) -> str:
     return f"{x:.6g}"
-
-
-def dev_params(w: float, l: float) -> str:
-    ad = w * DIFF_UM
-    pd = 2 * (w + DIFF_UM)
-    return (f"L={_fmt(l)} W={_fmt(w)} nf=1 ad={_fmt(ad)} as={_fmt(ad)} "
-            f"pd={_fmt(pd)} ps={_fmt(pd)} mult=1 m=1")
 
 
 def design_cell_cards() -> tuple[str, str]:
@@ -117,6 +111,7 @@ def instances() -> list[dict]:
 
 def build_netlist(c_sn_f: float) -> str:
     (wr_m, wr_p), (rd_m, rd_p) = design_cell_cards()
+    latch = parse_cards(LATCH_SPICE)
     pts = instances()
     L: list[str] = []
     a = L.append
@@ -187,13 +182,10 @@ def build_netlist(c_sn_f: float) -> str:
         a(f"spr_{n} {refbus} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rf})={VRBL_V - p['dref']:.6f}")
-        ln, lp, fo, he = LATCH_N, LATCH_P, FOOTER, HEADER
-        a(f"XMN1_{n} {rb} {rf} {vn} 0 {ln[0]} {dev_params(ln[1], ln[2])}")
-        a(f"XMN2_{n} {rf} {rb} {vn} 0 {ln[0]} {dev_params(ln[1], ln[2])}")
-        a(f"XMP1_{n} {rb} {rf} {vp} vdd {lp[0]} {dev_params(lp[1], lp[2])}")
-        a(f"XMP2_{n} {rf} {rb} {vp} vdd {lp[0]} {dev_params(lp[1], lp[2])}")
-        a(f"XMNF_{n} {vn} en 0 0 {fo[0]} {dev_params(fo[1], fo[2])}")
-        a(f"XMPH_{n} {vp} enb vdd vdd {he[0]} {dev_params(he[1], he[2])}")
+        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": "en", "enb": "enb",
+                "vdd": "vdd", "GND": "0", "0": "0"}
+        for dev, (nets, model, params) in latch.items():
+            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
         # settle values of the floating tail nodes (ASSUMPTION: ~ source-follower levels, then settle in idle time)
         ics.append(f"v({vn})=0.45")
         ics.append(f"v({vp})=1.35")

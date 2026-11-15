@@ -67,12 +67,33 @@ class Generated(unittest.TestCase):
     def test_baseline_sense_stage_request_untouched(self):
         self.assertNotIn("monte_carlo", json.loads(M.G.REQUEST_PATH.read_text()))
 
-    def test_latch_is_the_sense_stage_latch(self):
+    def test_latch_is_the_design_netlist_latch(self):
+        # issue #293: the latch is emitted from design/sense_latch.spice via
+        # parse_cards (full geometry, nrd/nrs/sa/sb/sd included), not retyped
+        latch = M.parse_cards(M.G.REPO / "design" / "sense_latch.spice")
         net = M.STAGE_NETLIST_PATH.read_text()
-        ln, lp = M.G.LATCH_N, M.G.LATCH_P
-        self.assertIn(f"XMN1_sz000_0 rbl_sz000_0 ref_sz000_0 vn_sz000_0 0 {ln[0]} {M.G.dev_params(ln[1], ln[2])}", net)
-        self.assertIn(f"XMP2_sz000_0 ref_sz000_0 rbl_sz000_0 vp_sz000_0 vdd {lp[0]} {M.G.dev_params(lp[1], lp[2])}", net)
+        lmap = {"rbl": "rbl_sz000_0", "ref": "ref_sz000_0", "vn": "vn_sz000_0", "vp": "vp_sz000_0",
+                "en": "en", "enb": "enb", "vdd": "vdd", "GND": "0", "0": "0"}
+        nets, model, params = latch["MN1"]
+        self.assertIn(f"XMN1_sz000_0 {' '.join(lmap[x] for x in nets)} {model} {params}", net)
+        nets, model, params = latch["MP2"]
+        self.assertIn(f"XMP2_sz000_0 {' '.join(lmap[x] for x in nets)} {model} {params}", net)
         self.assertNotIn("XMRD", net)               # stage-only deck has no cells
+
+    def test_latch_carries_source_drain_parasitics(self):
+        # issue #293 regression guard: every committed deck that emitters built
+        # from design/sense_latch.spice must carry nrd/nrs/sa/sb/sd on every
+        # latch device -- the truncated parameter list this issue fixed must
+        # not come back. The four committed top-level decks, one per generator.
+        decks = [
+            M.STAGE_NETLIST_PATH, M.CELL_NETLIST_PATH,
+            M.G.NETLIST_PATH, M.G.REPO / "sim" / "refresh-op" / "refresh_op.spice",
+        ]
+        for deck in decks:
+            for line in deck.read_text().splitlines():
+                if line.startswith(("XMN1_", "XMN2_", "XMP1_", "XMP2_", "XMNF_", "XMPH_")):
+                    for tok in ("nrd=", "nrs=", "sa=", "sb=", "sd="):
+                        self.assertIn(tok, line, f"{deck.name}: {line.split()[0]} missing {tok}")
 
     def test_cell_deck_inlines_design_cards(self):
         (wm, wp), (rm, rp) = M.G.design_cell_cards()

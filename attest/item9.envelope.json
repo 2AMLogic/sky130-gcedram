@@ -423,7 +423,7 @@
         "role": "testbench",
         "path": "sim/refresh-op/refresh_op.spice",
         "passed": true,
-        "content_hash": "sha256:7686e29211b773c68449a72a74e8c40c40b347be482780bfb3997294765fabd7"
+        "content_hash": "sha256:23071105f19f3f3aab5f55fed25db0122d25f8ee65df7b18c0b7a731ec04363a"
       },
       {
         "check": "present",
@@ -493,14 +493,14 @@
         "role": "testbench",
         "path": "sim/sense-mismatch/sense_mismatch.spice",
         "passed": true,
-        "content_hash": "sha256:22693170c7928b92d2cfc19016da8fceb201aa2785fda8db6a1b23fcb4615e53"
+        "content_hash": "sha256:dc1a8251d36694e0f4aa6ad3b8b18a19e3e0f5815413bc6361fba928f3f31497"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/sense-mismatch/sense_mismatch_cell.spice",
         "passed": true,
-        "content_hash": "sha256:898002d5f434081505d9a4704454c560f962e8c73729bfb91aaaaebdfe24a186"
+        "content_hash": "sha256:94d86ecd72f4d4641c56f4848f2e9234a040aa097a2f4ade0e19de8ffc251804"
       },
       {
         "check": "present",
@@ -514,7 +514,7 @@
         "role": "testbench",
         "path": "sim/sense-stage/sense_stage.spice",
         "passed": true,
-        "content_hash": "sha256:35c89978b6dec9666aa97c5ff847a3fff076b8716b5036cf2edfbf26a331cc62"
+        "content_hash": "sha256:0b206f40dfa293671653564b3198ade76799fcd2ad2ae7f099563e097425dfe2"
       },
       {
         "check": "present",

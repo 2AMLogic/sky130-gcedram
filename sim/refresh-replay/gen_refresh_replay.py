@@ -34,7 +34,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import PROPOSED_RANGE_STATUS, sha256_hex as sha256  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, parse_cards, sha256_hex as sha256  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 import replay_lib as L  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
@@ -175,6 +175,7 @@ def src_line(prefix: str, node: str, name: str, pts) -> str:
 
 def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
     (wr_m, wr_p), (rd_m, rd_p) = S.design_cell_cards()
+    latch = parse_cards(REPO / "design" / "sense_latch.spice")
     Ln: list[str] = []
     a = Ln.append
     a("* refresh_replay.spice -- RTL-strobe replay of one REFRESH op in the refresh-op circuit, issue #128")
@@ -235,13 +236,10 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
             a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
             ics.append(f"v({sn})={S._fmt(p['sn'])}")
-        ln, lp, fo, he = S.LATCH_N, S.LATCH_P, S.FOOTER, S.HEADER
-        a(f"XMN1_{n} {rb} {rf} {vn} 0 {ln[0]} {S.dev_params(ln[1], ln[2])}")
-        a(f"XMN2_{n} {rf} {rb} {vn} 0 {ln[0]} {S.dev_params(ln[1], ln[2])}")
-        a(f"XMP1_{n} {rb} {rf} {vp} vdd {lp[0]} {S.dev_params(lp[1], lp[2])}")
-        a(f"XMP2_{n} {rf} {rb} {vp} vdd {lp[0]} {S.dev_params(lp[1], lp[2])}")
-        a(f"XMNF_{n} {vn} en_{n} 0 0 {fo[0]} {S.dev_params(fo[1], fo[2])}")
-        a(f"XMPH_{n} {vp} enb_{n} vdd vdd {he[0]} {S.dev_params(he[1], he[2])}")
+        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{n}", "enb": f"enb_{n}",
+                "vdd": "vdd", "GND": "0", "0": "0"}
+        for dev, (nets, model, params) in latch.items():
+            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
         ics.append(f"v({vn})=0.45")
         ics.append(f"v({vp})=1.35")
         a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
