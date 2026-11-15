@@ -79,6 +79,7 @@ REPO_ROOT = SIM_RETENTION_DIR.parent.parent
 
 sys.path.insert(0, str(SIM_RETENTION_DIR.parent))
 from _evidence_common import (
+    DELTA_V_V,
     PDK_INSTALL_HINT,
     PDK_OPEN_PDKS_COMMIT,
     append_result,
@@ -197,7 +198,7 @@ EXTRACTED_C_SN_SOURCES = {
 # half-VDD bound used as a coarse worst-case sizing rule in SRAM/DRAM
 # sensing design (absent a specific sense-amp offset/noise budget) rather
 # than a value validated against this macro's own sense circuit.
-SENSE_MARGIN_V_ASSUMPTION = 1.8 / 2.0  # VDD/2, ASSUMPTION
+SENSE_MARGIN_V_ASSUMPTION = DELTA_V_V  # VDD/2, ASSUMPTION
 
 TOXE_RE = re.compile(r"toxe\s*=\s*\{\s*([0-9.eE+-]+)\s*\+\s*MC_MM_SWITCH")
 EPSROX_RE = re.compile(r"epsrox\s*=\s*([0-9.eE+-]+)")

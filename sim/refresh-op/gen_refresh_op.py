@@ -30,6 +30,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as S  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import VDD_V  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "refresh_op.spice"
@@ -37,7 +38,6 @@ REQUEST_PATH = HERE / "request.json"
 
 PROCESS_CORNERS = S.PROCESS_CORNERS
 TEMPS_C = S.TEMPS_C
-VDD_V = S.VDD_V
 VRBL_V = S.VRBL_V
 DREF_V = 0.10                  # ASSUMPTION: reference = VRBL - 100 mV (the sense-stage placeholder separation)
 N_ROWS = S.N_ROWS
@@ -57,6 +57,8 @@ REF_WB_S = 20e-9               # in-deck reference write: ideal 1.8 V WBL, 20 ns
 C_WBL_F = 10e-15               # ASSUMPTION: write-bitline load, not extracted (same as C_RBL)
 R_WBL_SW = 100                 # ASSUMPTION: ideal WBL connect switch on-resistance (ohm)
 SN1_PRE_V = [0.90, 1.00]       # stored '1' pre-read level: 0.9 V = the retention study's VDD/2 stored-level; 1.0 V fresher.
+                               #   Kept literal, NOT derived from _evidence_common.DELTA_V_V -- a stored level that
+                               #   happens to equal delta_V is not a derivation (#294).
                                # Kept below 0.95 x the lowest-corner reference write (~1.14 V) so a no-write cannot pass
 SN0_PRE_V = [-0.10, 0.00]      # stored '0' pre-read level (sense-stage)
 

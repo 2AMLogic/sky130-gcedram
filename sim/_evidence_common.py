@@ -64,6 +64,23 @@ PDK_INSTALL_HINT = (
     f"    ciel enable --pdk-family sky130 -l sky130_fd_pr {PDK_OPEN_PDKS_COMMIT}"
 )
 
+# Canonical PROPOSED supply pair for every bench under sim/ -- the same
+# consolidation issue #37 did for the PDK pin, applied to the next
+# spec-derived constant of that class (out of what were previously 20
+# independently hand-maintained copies in five spellings). `VDD_V` quotes
+# spec/operating-range-decision-PROPOSED.md:130 ("Proposed interval:
+# junction temperature 27 C to 125 C at `VDD` = 1.8 V") and :148 ("the
+# grid is `VDD` = 1.8 V only"); both are NOT-RATIFIED, so a ratification
+# is one edit here, not twenty. `DELTA_V_V` is the retention-derivation
+# half-supply margin, ASSUMED exactly as the spec states it
+# (spec/operating-range-decision-PROPOSED.md:19: "`delta_V` = `VDD`/2 =
+# 0.9 V ASSUMED"; spec/retention-refresh-budget.md:266 keeps it an open
+# ASSUMPTION). Stored levels that merely coincide with 0.9 V (an aged
+# stored-'1' grid point, a refreshed-cell pre-read level) are deliberately
+# NOT derived from DELTA_V_V -- a level is not the threshold.
+VDD_V = 1.8
+DELTA_V_V = VDD_V / 2
+
 
 def resolve_pdk_root(
     cli_pdk_root: str | None,
