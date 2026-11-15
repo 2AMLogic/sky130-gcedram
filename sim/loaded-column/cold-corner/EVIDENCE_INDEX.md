@@ -129,6 +129,21 @@ sf/125 C):
 | `pin-attribution/klt_report_local_sf125_c6d73a3_ngspice47_20261114T091445Z.json.gz` | `a0f12794450093c1b029809b80162ecbef8721282fc918e8df48af9540399d0e` |
 | `pin-attribution/klt_report_local_sf125_f6eeac7_ngspice47_20261114T091445Z.json.gz` | `6b7d61094161d49f208320602b7426302c4b7afe83c7f10c5fba8b624d00fac3` |
 
+Deck-reshape equivalence artifacts (the check that validates differences (1)
+and (2) of the re-qualification -- 16 `.control` cases reshaped into 16
+independent instances, `.meas` cards replacing waveform interpolation -- at
+tt/27 C, fresh, selected row 0, all 16 patterns, same `~/.ciel` open_pdks
+`f6eeac7` tree and same ngspice-47 on both sides; worst relative deviation
+7.3e-04, within the 1e-03 bound declared in `compare_pins.py`):
+
+| File (under `../results/`) | SHA-256 |
+|---|---|
+| `equivalence/klt_report_local_tt27_f6eeac7_ngspice47_20261115T101029Z.json.gz` | `e65e731295fb8a077ff1943c3a6454bc8ed6b21ba54555612e97e5af8fdd59f7` |
+| `equivalence/run_loaded_column_tt27_fresh_sel0.csv` | `c846ee1be2a1edcfc6acf0a1773181aae84afcc602eee5f59feab424b6840a3f` |
+
+Tabulate it with `python3 -I sim/loaded-column/compare_pins.py --compare-equiv
+<report.json.gz> <csv>`.
+
 Verdict unchanged: 150/150 groups still have a positive worst-case separation,
 the cold-corner written-level shortfall persists (worst stored '1' storage node
 0.8697 V), and no spec threshold was altered. What did move -- up to

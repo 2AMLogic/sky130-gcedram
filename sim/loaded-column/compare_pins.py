@@ -18,6 +18,15 @@ a time. The floors exist because several measured quantities sit at or below the
 simulator's own noise (a deselected-row current of ~1e-11 A, an `rbl` level of
 ~1e-06 V): a bare relative test on those is meaningless.
 
+The SAME-PIN equivalence check (`--compare-equiv`) joins the committed local
+`klt sim --backend local` report of one reshaped deck against the committed
+`run_loaded_column.py` rows for the same point (tt, 27 C, fresh, selected row 0,
+all 16 patterns) and declares its own bound: worst relative deviation
+EQUIV_RTOL 1e-03 across every measured field, plain relative (no atol floor --
+both sides ran the same engine on the same PDK tree, so there is no cross-pin
+noise to floor against). Again a declared comparison bound for this check
+only, not a spec threshold.
+
 Exit status: 0 = every field within tolerance, 1 = at least one field outside it
 (which issue #169 requires be raised as a follow-up issue or a decision-record
 row, not absorbed silently), 2 = the comparison could not be made.
@@ -26,6 +35,9 @@ Usage:
     python3 -I sim/loaded-column/compare_pins.py
     python3 -I sim/loaded-column/compare_pins.py --base-run-id 20261005T102906Z \\
         --head-run-id 20261114T0930Z
+    python3 -I sim/loaded-column/compare_pins.py --compare-equiv \\
+        results/equivalence/klt_report_local_tt27_f6eeac7_ngspice47_<id>.json.gz \\
+        results/equivalence/run_loaded_column_tt27_fresh_sel0.csv
 """
 
 from __future__ import annotations
@@ -48,6 +60,10 @@ RTOL = 0.02
 ATOL_V = 1e-3
 ATOL_A = 1e-12
 ATOL_S = 1e-11
+
+#: Worst relative deviation allowed by `--compare-equiv` (deck-reshape +
+#: `.meas`-reduction equivalence, same engine and PDK tree on both sides).
+EQUIV_RTOL = 1e-3
 
 #: Measured/derived numeric fields, in report order. Provenance, keys and the
 #: declared-assumption columns are excluded: they are inputs, not results.
@@ -271,6 +287,126 @@ def compare_reports(path_a: str, path_b: str) -> int:
     return 0
 
 
+def compare_equiv(report_path: str, runner_csv: str) -> int:
+    """Equivalence check for the deck reshape (issue #169): the committed local
+    single-corner `klt sim` report of one reshaped deck vs the committed
+    `run_loaded_column.py` rows for the same point. The klt side is reduced to
+    the same CSV schema by `reduce_column_results.rows_for_corner` (the same
+    derivation the fleet evidence uses), so every compared value is
+    like-for-like. Exits 0 when the worst relative deviation is within the
+    declared EQUIV_RTOL."""
+    sys.path.insert(0, str(HERE.parent))
+    sys.path.insert(0, str(HERE))
+    from _evidence_common import load_json  # local import: stdlib-only module
+    import gen_column_requests as G  # noqa: import here, not at module top
+    import reduce_column_results as D  # noqa: import here, not at module top
+
+    rep = load_json(Path(report_path))
+    corners = rep.get("corners") or []
+    if len(corners) != 1:
+        print(f"expected exactly one corner in {report_path}, found "
+              f"{len(corners)}", file=sys.stderr)
+        return 2
+    corner = corners[0]
+    age, sel = D.job_of(rep)
+    prov = {
+        "timestamp_utc": "local", "repo_git_sha": "local", "job_id": "local",
+        "runner_klt_version": str(rep.get("provenance", {}).get("klt_version")
+                                  or "unknown"),
+        "pdk_stamp_text": str((rep.get("provenance", {}).get("pdk") or {})
+                              .get("version") or "unknown"),
+        "ngspice_version": f"ngspice-{rep.get('environment', {}).get('engine_version')}",
+    }
+    deck = Path(str((rep.get("netlist") or {}).get("path") or "")).name
+    klt_rows = D.rows_for_corner(corner, age=age, sel=sel,
+                                 knobs=dict(G.BASELINE_KNOBS),
+                                 c_sn_f=G.c_sn_farads(), prov=prov,
+                                 run_id="equiv", deck=deck)
+    if any(r["status"] != "ok" for r in klt_rows):
+        print("klt side has non-ok rows", file=sys.stderr)
+        return 2
+    klt = {r["pattern_rows3210"]: r for r in klt_rows}
+
+    run_rows = [r for r in load(Path(runner_csv))
+                if r.get("pattern_rows3210") in klt]
+    if len(run_rows) != len(klt) or not run_rows:
+        print(f"runner csv joins {len(run_rows)} of {len(klt)} patterns",
+              file=sys.stderr)
+        return 2
+    if any(r.get("status") != "ok" for r in run_rows):
+        print("runner side has non-ok rows", file=sys.stderr)
+        return 2
+    if len({(r["corner"], r["temp_c"], r["age_label"], r["sel_row"])
+            for r in run_rows}) != 1:
+        print("runner csv is not a single (corner, temp, age, sel) point",
+              file=sys.stderr)
+        return 2
+
+    meas = [f for f in FIELDS]
+    n_cmp = n_empty = 0
+    one_sided = []
+    worst = {"rel": 0.0, "field": None, "key": None, "klt": None, "runner": None}
+    per_field: dict[str, dict] = {}
+    for rr in run_rows:
+        kr = klt[rr["pattern_rows3210"]]
+        for field in meas:
+            a, b = kr.get(field, ""), rr.get(field, "")
+            if a == "" and b == "":
+                n_empty += 1
+                continue
+            if a == "" or b == "":
+                one_sided.append((rr["pattern_rows3210"], field))
+                continue
+            x, y = float(a), float(b)
+            rel = abs(x - y) / max(abs(y), 1e-30)
+            n_cmp += 1
+            if field not in per_field or rel > per_field[field]["rel"]:
+                per_field[field] = {"rel": rel, "key": rr["pattern_rows3210"],
+                                    "klt": x, "runner": y}
+            if rel > worst["rel"]:
+                worst.update(rel=rel, field=field, key=rr["pattern_rows3210"],
+                             klt=x, runner=y)
+    if one_sided:
+        print(f"one-sided values (present on only one side): {one_sided[:8]}",
+              file=sys.stderr)
+        return 2
+
+    rr0 = run_rows[0]
+    print(f"klt side `{Path(report_path).name}`: PDK "
+          f"{prov['pdk_stamp_text']}, ngspice "
+          f"{rep.get('environment', {}).get('engine_version')}, corner "
+          f"{corner.get('process')}/{corner.get('temperature_c')} C, deck "
+          f"`{deck}` ({age}, selected row {sel})")
+    print(f"runner side `{Path(runner_csv).name}`: PDK "
+          f"{rr0.get('pdk_open_pdks_commit')}, ngspice banner "
+          f"`{rr0.get('ngspice_version')}` (run `{rr0.get('run_id')}`)")
+    print(f"\n{n_cmp} compared values across {len(meas)} fields x "
+          f"{len(run_rows)} patterns ({n_empty} stored-'0' latency values "
+          "empty on both sides, 0 one-sided).")
+    print(f"\nWorst relative deviation per field (declared bound "
+          f"EQUIV_RTOL {EQUIV_RTOL:.0e}):\n")
+    print("| Field | worst rel | klt | runner | at pattern |")
+    print("|---|---|---|---|---|")
+    for field in meas:
+        f = per_field.get(field)
+        if not f:
+            print(f"| `{field}` | (empty on both sides) | | | |")
+            continue
+        print(f"| `{field}` | {f['rel']:.3e} | {f['klt']:.6e} | "
+              f"{f['runner']:.6e} | {f['key']} |")
+    w = worst
+    print(f"\n**Worst: {w['rel']:.3e} relative on `{w['field']}` at pattern "
+          f"{w['key']} (klt {w['klt']:.6e} vs runner {w['runner']:.6e}, "
+          f"abs {abs(w['klt'] - w['runner']):.3e})**")
+    if w["rel"] > EQUIV_RTOL:
+        print(f"\nOUTSIDE the declared equivalence bound {EQUIV_RTOL:.0e}.",
+              file=sys.stderr)
+        return 1
+    print(f"\nAll {n_cmp} compared values within the declared equivalence "
+          f"bound {EQUIV_RTOL:.0e}.")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -280,9 +416,16 @@ def main(argv=None) -> int:
     ap.add_argument("--compare-reports", nargs=2, metavar=("A", "B"),
                     help="diff two klt reports measurement-by-measurement instead "
                          "(the pin-attribution probe) and exit")
+    ap.add_argument("--compare-equiv", nargs=2,
+                    metavar=("KLT_REPORT", "RUNNER_CSV"),
+                    help="equivalence check for the deck reshape instead: a local "
+                         "single-corner klt report of one reshaped deck vs "
+                         "run_loaded_column.py rows for the same point, and exit")
     a = ap.parse_args(argv)
     if a.compare_reports:
         return compare_reports(*a.compare_reports)
+    if a.compare_equiv:
+        return compare_equiv(*a.compare_equiv)
     rows = load(Path(a.results_csv))
     base_run = pick_run(rows, BASE_PIN, a.base_run_id)
     head_run = pick_run(rows, HEAD_PIN, a.head_run_id)

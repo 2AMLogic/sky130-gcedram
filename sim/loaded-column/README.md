@@ -310,13 +310,30 @@ measured, not assumed:
    every row, so the difference is visible rather than assumed.
 
 **Equivalence check for (1) and (2)** -- the new deck run through `klt sim
---backend local` against the *same* PDK tree and the *same* ngspice-47 as a
-`run_loaded_column.py` run of the same point (tt, 27 C, fresh, selected row 0,
-all 16 patterns): worst relative deviation **4.1e-04**, on a deselected-row
-current of 6.68e-11 A (absolute 2.7e-14 A); `v_rbl_sense_v` 1.3e-04 relative
-(absolute 1.7e-10 V); latency agreed to seven significant figures
-(2.302366e-10 s vs 2.302367e-10 s). The deck reshape and the `.meas`
-reductions therefore account for none of the changes below.
+--backend local` against the *same* PDK tree (`~/.ciel`, open_pdks `f6eeac7`)
+and the *same* ngspice-47 as a `run_loaded_column.py` run of the same point
+(tt, 27 C, fresh, selected row 0, all 16 patterns). Both artifacts are
+committed under [`results/equivalence/`](results/equivalence) -- the local
+klt report and the runner's 16 rows -- and the comparison is a
+`compare_pins.py` mode, so the numbers are re-derivable from this branch:
+
+```bash
+python3 -I sim/loaded-column/compare_pins.py --compare-equiv \
+  sim/loaded-column/results/equivalence/klt_report_local_tt27_f6eeac7_ngspice47_20261115T101029Z.json.gz \
+  sim/loaded-column/results/equivalence/run_loaded_column_tt27_fresh_sel0.csv
+```
+
+Worst relative deviation **7.3e-04**, on the selected-row read-disturb delta
+`dv_sn_sel_read_disturb_v` (absolute 4.3e-07 V); the per-row deselected
+preread currents agree to **4.1e-04** at 6.68e-11 A (absolute 2.7e-14 A);
+`v_rbl_sense_v` 1.3e-04 relative (absolute 1.7e-10 V); latency agrees to
+seven significant figures (2.301482e-10 s vs 2.301483e-10 s). All 456 valued
+measurements (29 fields x 16 patterns, the 8 stored-'0' latencies empty on
+both sides) sit inside the declared equivalence bound of 1e-03 relative, so
+the deck reshape and the `.meas` reductions account for none of the changes
+below. The single-corner request is `klt/request_lc_fresh_sel0.json` with
+`corners` scoped to `tt` / 27 C, run with `--backend local`; the report
+carries its own PDK and engine provenance.
 
 ### What changed, and why
 
@@ -351,12 +368,18 @@ pattern) -- 1920 shared points, none missing on either side -- and checks each
 point against a **declared comparison tolerance** (`|head-base| <= max(atol,
 2% x |base|)`, atol 1 mV / 1 pA / 10 ps; these are comparison tolerances
 stated for this check only, not spec thresholds, and nothing in `spec/` is
-relaxed by them). **16 of the 29 compared fields have points outside it**; the
-largest movements are `v_rbl_sense_v` up to 8.76e-02 V (tt, -40 C, aged),
-`latency_s` up to 2.24e-09 s (ss, -40 C, aged), the read currents up to ~8%
-(sf, 125 C) and the deselected-row currents up to ~15% (sf, 125 C, where they
-are ~1e-09 A). `compare_pins.py` exits 1 while any field is outside tolerance,
-so this is a visible, standing condition and not a silent pass.
+relaxed by them). **24 of the 29 compared fields have points outside it** (the
+five within are the four `v_sn_r*_wl_off_v` levels and
+`v_rbl_preread_float_v`); the largest movements are `v_rbl_sense_v` up to
+8.76e-02 V (tt, -40 C, aged), `latency_s` up to 2.24e-09 s (ss, -40 C, aged),
+the read currents up to ~8% and the deselected-row currents up to ~15% (sf,
+125 C, where they are ~1e-09 A). Those percentages are relative moves at the
+worst-**absolute**-delta point; per point relative to its own tolerance the
+read currents move the most -- 1.15e+01 x on a near-noise sense current (base
++4.85e-09 A, head +6.06e-08 A, ss, 27 C, aged), 575x the 1 pA floor -- see
+the worst-violation table `compare_pins.py` prints. `compare_pins.py` exits 1
+while any field is outside tolerance, so this is a visible, standing
+condition and not a silent pass.
 
 **The PDK revision is not the cause.** The same deck, run locally at sf/125 C
 (the largest-delta corner) twice with nothing changed but which open_pdks tree
