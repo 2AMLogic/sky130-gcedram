@@ -159,5 +159,63 @@ class LoadJson(unittest.TestCase):
             self.assertEqual(C.load_json(str(gz)), doc)
 
 
+class KltProvenance(unittest.TestCase):
+    """Key spellings and field order of the evidence-summary envelope are
+    contract (committed summaries are append-only), not style (issue #292)."""
+
+    REP = {
+        "status": "pass",
+        "corner_count": 6,
+        "environment": {
+            "remote": {"job_id": "j-1", "instance_type": "c6i.2xlarge"},
+            "netlist_sha256": "nl",
+            "models_lib_sha256": "ml",
+            "engine": "ngspice",
+            "engine_version": "42",
+        },
+    }
+
+    def test_flat_default_spelling(self):
+        d = C.klt_provenance(self.REP)
+        self.assertEqual(list(d), ["klt_status", "corner_count", "batch_job_id",
+                                   "batch_instance_type", "netlist_sha256",
+                                   "models_lib_sha256", "engine_version"])
+        self.assertEqual(d, {"klt_status": "pass", "corner_count": 6, "batch_job_id": "j-1",
+                             "batch_instance_type": "c6i.2xlarge", "netlist_sha256": "nl",
+                             "models_lib_sha256": "ml", "engine_version": "42"})
+
+    def test_report_prefix_and_engine_replay_spelling(self):
+        d = C.klt_provenance(self.REP, hash_prefix="report_", engine=True)
+        self.assertEqual(list(d), ["klt_status", "corner_count", "batch_job_id",
+                                   "batch_instance_type", "report_netlist_sha256",
+                                   "report_models_lib_sha256", "engine", "engine_version"])
+
+    def test_status_key_and_pre_batch_refresh_energy_spelling(self):
+        rep = dict(self.REP, provenance={"klt_version": "klt 1.2.3"})
+        d = C.klt_provenance(rep, status_key="status",
+                             pre_batch={"klt_version": rep["provenance"]["klt_version"]})
+        self.assertEqual(list(d), ["status", "corner_count", "klt_version", "batch_job_id",
+                                   "batch_instance_type", "netlist_sha256",
+                                   "models_lib_sha256", "engine_version"])
+
+    def test_pre_batch_sits_between_corner_count_and_batch_keys(self):
+        d = C.klt_provenance(self.REP, pre_batch={"klt_errored": None, "monte_carlo": {"n": 100}})
+        self.assertEqual(list(d)[:4], ["klt_status", "corner_count", "klt_errored", "monte_carlo"])
+
+    def test_missing_environment_yields_nones_not_a_crash(self):
+        d = C.klt_provenance({"status": "pass", "corner_count": 0})
+        self.assertEqual(d, {"klt_status": "pass", "corner_count": 0, "batch_job_id": None,
+                             "batch_instance_type": None, "netlist_sha256": None,
+                             "models_lib_sha256": None, "engine_version": None})
+
+    def test_scope_constants_pin_the_committed_spellings(self):
+        self.assertEqual(C.PROPOSED_RANGE_STATUS, "PROPOSED_OPERATING_RANGE_NOT_RATIFIED")
+        self.assertEqual(C.PROPOSED_RANGE_SCOPE,
+                         "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
+                         "per spec/operating-range-decision-PROPOSED.md")
+        self.assertEqual(C.PROPOSED_RANGE_SCOPE_REPLAY_PREFIX,
+                         "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V")
+
+
 if __name__ == "__main__":
     unittest.main()

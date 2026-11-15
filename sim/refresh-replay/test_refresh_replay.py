@@ -9,7 +9,9 @@ from __future__ import annotations
 import json
 import shutil
 import sys
+import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -534,6 +536,20 @@ class DriverSweepAnalysis(unittest.TestCase):
         d2 = AD.duration(mi, AD.slowest_crossing([12.8, None, 20.0]), None)
         self.assertEqual((d2["fits_pin_release_90"], d2["slack_pin_release_90_ns"]), (None, None))
         self.assertIsNone(AD.slowest_crossing([]))
+
+
+class ManifestStatusSinglePointOfEdit(unittest.TestCase):
+    def test_generator_manifest_status_follows_the_shared_constant(self):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            trace = tmp / "trace.json"
+            trace.write_text(json.dumps(golden()))
+            sentinel = "SENTINEL_STATUS"
+            with unittest.mock.patch.object(G, "PROPOSED_RANGE_STATUS", sentinel):
+                rc = G.main([str(trace), "--results-dir", str(tmp / "out"), "--run-id", "probe"])
+            self.assertEqual(rc, 0)
+            man = json.loads((tmp / "out" / "probe" / "manifest.json").read_text())
+            self.assertEqual(man["status"], sentinel)
 
 
 class Committed(unittest.TestCase):

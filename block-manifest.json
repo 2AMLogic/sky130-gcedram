@@ -34,7 +34,7 @@
     },
     "9.analog": {
       "file": "attest/item9.envelope.json",
-      "content_hash": "sha256:aab635779d1553be1fa41989348f31a8c93d820607bac93c60a775f3bf14bd09"
+      "content_hash": "sha256:c78b0f2bdb6169e32782ba4616c81a4d045a2d278a28d05aa49d1b3b10da2a27"
     },
     "10.analog": {
       "file": "attest/item10.envelope.json",

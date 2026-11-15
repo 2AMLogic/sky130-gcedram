@@ -38,7 +38,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import sha256_prefixed as sha256_file  # noqa: E402
+from _evidence_common import sha256_prefixed as sha256_file, VDD_V  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 OUT = HERE / "geometry-matched"
 DECK_PATH = OUT / "access_leakage_geom.spice"
@@ -46,7 +46,6 @@ REQUEST_PATH = OUT / "request.json"
 EXTRACTION_PATH = REPO / "layout" / "gain_cell_2t_array.extract.parasitics.json"
 
 DEVICE = "sky130_fd_pr__nfet_01v8"
-VDD_V = 1.8
 PROCESS_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [-40, 27, 125]
 LEGACY_W_UM = 0.42   # legacy testbench card (sim/leakage/run_leakage_sweep.py)

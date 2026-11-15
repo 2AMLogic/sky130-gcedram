@@ -62,7 +62,7 @@ sys.path.insert(0, str(HERE.parent / "leakage"))
 sys.path.insert(0, str(REPO / "layout"))
 import analyze_geometry_leakage as AN  # noqa: E402
 import compact_parasitics as CP  # noqa: E402
-from _evidence_common import sha256_prefixed  # noqa: E402
+from _evidence_common import sha256_prefixed, VDD_V  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 OUT = HERE / "compact-device-c-sn"
@@ -84,7 +84,6 @@ LABEL = ("DEVICE-INCLUSIVE C_SN of the compact v2 array measured on the extracte
 PROCESS_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [-40, 27, 125]
 WORST_CASE = ("sf", 125)
-VDD_V = 1.8
 VRBL_V = 0.9                   # idle read bitline (as sim/write-disturb)
 V_START_V = 1.1                # initial node level: the ramp-in finishes above the first crossing
 LEVELS_V = [1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]   # 1.0 V = assumed stored '1'; window = delta_V 0.9 V
