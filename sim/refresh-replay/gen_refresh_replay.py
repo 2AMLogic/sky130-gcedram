@@ -34,7 +34,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import sha256_hex as sha256  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, sha256_hex as sha256  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 import replay_lib as L  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
@@ -379,7 +379,7 @@ def main(argv=None) -> int:
     (run_dir / "waveforms.json").write_text(json.dumps(wf, indent=1) + "\n")
     (run_dir / "consistency_check.json").write_text(json.dumps(check, indent=1) + "\n")
     man = dict(
-        run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=131,
+        run_id=a.run_id, status=PROPOSED_RANGE_STATUS, issue=131,
         experiments={k: {kk: vv for kk, vv in v.items()} for k, v in EXPERIMENTS.items()},
         deck_sha256=hashlib.sha256(deck.encode()).hexdigest(), request_sha256=hashlib.sha256((json.dumps(req, indent=1) + "\n").encode()).hexdigest(),
         variants=VARIANTS, negative_controls=NEGATIVE, patterns=[dict(kind=k, sn_v=v) for k, v in PATTERNS],

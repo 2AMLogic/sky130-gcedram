@@ -41,7 +41,8 @@ THRESHOLDS = (1.00, 0.25, 0.10)
 # t_row_refresh_op scenarios: ordered (phase, ns, basis). Every phase is an
 # ASSUMPTION for refresh; "anchored" means the number is borrowed from a
 # committed testbench deck setting, which is itself a declared choice, not a
-# ratified spec value. No refresh controller / sense amp exists yet.
+# ratified spec value. No refresh controller exists; the schematic sense
+# latch (`design/sense_latch.sch`, #109) contributes no validated timing.
 SCENARIOS = {
     "fast": [
         ("precharge", 1.0, "ASSUMPTION: half the 2 ns precharge lead in sim/loaded-column"),
@@ -51,7 +52,7 @@ SCENARIOS = {
     ],
     "anchored": [
         ("precharge", 2.0, "anchored: 2 ns precharge lead, sim/loaded-column/README.md (declared deck choice)"),
-        ("sense", 10.0, "anchored: t_sense = 10 ns, sim/loaded-column/README.md (ASSUMED there, no sense amp exists)"),
+        ("sense", 10.0, "anchored: t_sense = 10 ns, sim/loaded-column/README.md (ASSUMED there, not derived from the sense latch)"),
         ("writeback_wl_pulse", 20.0, "anchored: 20 ns write pulse, sim/bitcell-transient/README.md (deck choice, not a ratified access time)"),
         ("bl_release_guard", 2.0, "anchored: bl returns to 0 V 2 ns after wl low, sim/loaded-column/README.md"),
     ],
@@ -142,7 +143,7 @@ def header_banner() -> str:
         "Refresh-overhead envelope (issue #59) -- NOT a macro claim.",
         "MEASURED/derived input: t_retention, read from sim/retention results CSV.",
         f"ASSUMPTION: safety margin {SAFETY_MARGIN_ASSUMPTION}x (spec Section 7).",
-        "ASSUMPTION: every t_row_refresh_op phase (no refresh controller or sense amp exists).",
+        "ASSUMPTION: every t_row_refresh_op phase (no refresh controller exists; no phase is derived from the sense latch).",
         "ASSUMPTION: every N_rows value (array not designed).",
         "A ~5 us-interval gain cell is a very different proposition from SRAM.",
     ])
