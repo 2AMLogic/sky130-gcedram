@@ -40,7 +40,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V  # noqa: E402
+from _evidence_common import VDD_V, join_lines, parse_cards  # noqa: E402,F401
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "column_periphery.spice"
@@ -109,22 +109,6 @@ DIFF_UM = 0.29
 
 def _fmt(x: float) -> str:
     return f"{x:.6g}"
-
-
-def join_lines(text: str) -> str:
-    return re.sub(r"\n\+", " ", text)
-
-
-def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
-    """{device: (nets[D G S B], model, trailing params)} for every X card."""
-    out = {}
-    for line in join_lines(path.read_text()).splitlines():
-        if line.startswith("*"):
-            continue
-        t = line.split()
-        if t and t[0].startswith("XM"):
-            out[t[0][1:]] = (t[1:5], t[5], " ".join(t[6:]))
-    return out
 
 
 def set_width(params: str, w_um: float) -> str:

@@ -30,7 +30,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as S  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V  # noqa: E402
+from _evidence_common import VDD_V, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "refresh_op.spice"
@@ -117,6 +117,7 @@ def _pwl_pulse(hi: str, lo: str, t0: float, t1: float) -> str:
 
 def build_netlist(c_sn_f: float) -> str:
     (wr_m, wr_p), (rd_m, rd_p) = S.design_cell_cards()
+    latch = parse_cards(S.REPO / "design" / "sense_latch.spice")
     pts = instances()
     L: list[str] = []
     a = L.append
@@ -193,13 +194,10 @@ def build_netlist(c_sn_f: float) -> str:
             a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
             ics.append(f"v({sn})={S._fmt(p['sn'])}")
-        ln, lp, fo, he = S.LATCH_N, S.LATCH_P, S.FOOTER, S.HEADER
-        a(f"XMN1_{n} {rb} {rf} {vn} 0 {ln[0]} {S.dev_params(ln[1], ln[2])}")
-        a(f"XMN2_{n} {rf} {rb} {vn} 0 {ln[0]} {S.dev_params(ln[1], ln[2])}")
-        a(f"XMP1_{n} {rb} {rf} {vp} vdd {lp[0]} {S.dev_params(lp[1], lp[2])}")
-        a(f"XMP2_{n} {rf} {rb} {vp} vdd {lp[0]} {S.dev_params(lp[1], lp[2])}")
-        a(f"XMNF_{n} {vn} en_{n} 0 0 {fo[0]} {S.dev_params(fo[1], fo[2])}")
-        a(f"XMPH_{n} {vp} enb_{n} vdd vdd {he[0]} {S.dev_params(he[1], he[2])}")
+        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{n}", "enb": f"enb_{n}",
+                "vdd": "vdd", "GND": "0", "0": "0"}
+        for dev, (nets, model, params) in latch.items():
+            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
         ics.append(f"v({vn})=0.45")
         ics.append(f"v({vp})=1.35")
         a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")

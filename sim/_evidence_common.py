@@ -304,6 +304,33 @@ def decided(dend: float | None, threshold_v: float) -> str:
 
 
 # --------------------------------------------------------------------------
+# Design-netlist card parsing (issue #293) -- the {device: (nets, model,
+# params)} view of a committed design/*.spice netlist that deck generators
+# emit device cards from, so a simulated device can never drift from the
+# schematic-derived netlist (design/regen_netlist.sh --check keeps that
+# file fresh). Moved from gen_column_periphery.py, which had been the sole
+# definition; the sense-stage / sense-mismatch / refresh-op / refresh-replay
+# generators previously retyped the latch geometry and silently dropped the
+# nrd/nrs/sa/sb/sd tokens the design netlist carries.
+# --------------------------------------------------------------------------
+
+def join_lines(text: str) -> str:
+    return re.sub(r"\n\+", " ", text)
+
+
+def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
+    """{device: (nets[D G S B], model, trailing params)} for every X card."""
+    out = {}
+    for line in join_lines(path.read_text()).splitlines():
+        if line.startswith("*"):
+            continue
+        t = line.split()
+        if t and t[0].startswith("XM"):
+            out[t[0][1:]] = (t[1:5], t[5], " ".join(t[6:]))
+    return out
+
+
+# --------------------------------------------------------------------------
 # Evidence-summary preamble (issue #292) -- the spec-derived status/scope
 # literals and the klt provenance envelope that the sim/*/analyze_*.py
 # summaries re-spelled inline, eight copies across two drift-grown spellings.
