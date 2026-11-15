@@ -51,6 +51,7 @@ from _evidence_common import sha256_hex as sha256_file  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
+from _evidence_common import c_sn_provenance_json  # noqa: E402
 sys.path.insert(0, str(REPO / "sim" / "refresh-overhead"))
 import gen_refresh_energy as G  # noqa: E402
 import refresh_overhead as RO  # noqa: E402
@@ -459,8 +460,7 @@ def main(argv: list[str] | None = None) -> int:
     c_sn_ff, c_sn_prov = G.G.S.load_extracted_c_sn(G.G.S.EXTRACT_JSON, "sn")
     # Record the extraction report repo-root-relative so the committed summary is
     # machine-independent (an absolute path differs between worktrees / CI runners).
-    c_sn_prov = dict(c_sn_prov)
-    c_sn_prov["extract_json_path"] = Path(c_sn_prov["extract_json_path"]).resolve().relative_to(REPO).as_posix()
+    c_sn_prov = c_sn_provenance_json(c_sn_prov)
     src, pts, ctl = reduce_report(rep, c_sn_ff * 1e-15)
     _src_f, pts_f, ctl_f = reduce_report(rep_f, c_sn_ff * 1e-15)
     add_convergence(pts, pts_f)

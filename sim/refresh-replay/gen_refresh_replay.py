@@ -34,7 +34,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import PROPOSED_RANGE_STATUS, parse_cards, sha256_hex as sha256  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, parse_cards, sha256_hex as sha256  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 import replay_lib as L  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
@@ -392,7 +392,7 @@ def main(argv=None) -> int:
             latch_hold_adapter="enable set at sense_en rise, cleared at busy fall; no delay; RWL is NOT held (RTL timing)",
             t_meas_after_release_ns=T_MEAS_NS, decision_probe_lead_ns=SN_DEC_LEAD_NS,
             baseline=dict(sense_ns=BASE_SENSE_S * 1e9, wwl_ns=BASE_WB_S * 1e9, from_="sim/refresh-op generator constants"),
-            c_rbl_f=S.C_RBL_F, c_wbl_f=G.C_WBL_F, c_sn_ff=c_sn_ff, c_sn_provenance=str(prov),
+            c_rbl_f=S.C_RBL_F, c_wbl_f=G.C_WBL_F, c_sn_ff=c_sn_ff, c_sn_provenance=c_sn_provenance_json(prov),
             budget_cycles_provisional=34, shared_circuit="sim/refresh-op circuit body (ideal drivers; column driver is #114/#117)"),
         pins=pins(golden))
     (run_dir / "manifest.json").write_text(json.dumps(man, indent=1) + "\n")
