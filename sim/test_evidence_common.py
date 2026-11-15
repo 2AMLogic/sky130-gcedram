@@ -123,6 +123,83 @@ class PdkRevision(unittest.TestCase):
             self.assertEqual(C.pdk_revision_problems(v), [])
 
 
+class NgspiceVersion(unittest.TestCase):
+    """The simulator major version is pinned and checked exactly like the
+    PDK revision (issue #300): ngspice-47, compared by parsed major
+    version, `unknown` is a mismatch."""
+
+    def test_match(self):
+        self.assertEqual(
+            C.ngspice_version_problems("** ngspice-47 : Circuit level simulation program"),
+            [],
+        )
+
+    def test_mismatch(self):
+        problems = C.ngspice_version_problems(
+            "** ngspice-46 : Circuit level simulation program"
+        )
+        self.assertEqual(len(problems), 1)
+        self.assertIn("expected ngspice-47", problems[0])
+        self.assertIn("actual ngspice-46", problems[0])
+
+    def test_banner_build_detail_is_not_a_mismatch(self):
+        # Only the parsed major version is compared, so compile options,
+        # creation date and banner formatting differences do not fail.
+        banner = (
+            "******\n** ngspice-47 : Circuit level simulation program\n"
+            "** Compiled with KLU Direct Linear Solver\n"
+            "** The U. C. Berkeley CAD Group\n"
+            "** Creation Date: Sun Mar 31 20:15:14 UTC 2024\n******"
+        )
+        self.assertEqual(C.ngspice_version_problems(banner), [])
+
+    def test_unknown_is_a_mismatch(self):
+        # ngspice_version() returns "unknown" on any failure; that must
+        # be a visible problem, never a pass.
+        problems = C.ngspice_version_problems("unknown")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("cannot verify", problems[0])
+        self.assertIn(C.NGSPICE_VERSION_PIN, problems[0])
+
+    def test_unparsable_banner_is_a_mismatch(self):
+        problems = C.ngspice_version_problems("** no version here **")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("cannot verify", problems[0])
+
+    def test_env_check_fails_on_stray_simulator(self):
+        # check_ngspice_available must reject a PDK tree at the pin when
+        # the ngspice it would stamp rows with is a different major
+        # version. ngspice_version/which are patched so the test host's
+        # own binary (or its absence) does not decide the outcome.
+        with tempfile.TemporaryDirectory() as d:
+            PdkRevision()._variant(
+                Path(d), f"open_pdks {C.PDK_OPEN_PDKS_COMMIT}\n"
+            )
+            lib = C.resolve_ngspice_lib(Path(d), "sky130A")
+            self.assertTrue(lib.is_file())
+            real_version, real_which = C.ngspice_version, C.which
+            try:
+                C.which = lambda name: "/usr/bin/ngspice"
+                C.ngspice_version = lambda: "** ngspice-46 : Circuit level simulation program"
+                self.assertFalse(C.check_ngspice_available(lib))
+                C.ngspice_version = lambda: "** ngspice-47 : Circuit level simulation program"
+                self.assertTrue(C.check_ngspice_available(lib))
+            finally:
+                C.ngspice_version, C.which = real_version, real_which
+
+    def test_env_check_missing_binary_is_a_clean_failure(self):
+        # ngspice absent from PATH must stay a failure, not a crash.
+        with tempfile.TemporaryDirectory() as d:
+            PdkRevision()._variant(Path(d), f"open_pdks {C.PDK_OPEN_PDKS_COMMIT}\n")
+            lib = C.resolve_ngspice_lib(Path(d), "sky130A")
+            real = C.which
+            try:
+                C.which = lambda name: None
+                self.assertFalse(C.check_ngspice_available(lib))
+            finally:
+                C.which = real
+
+
 class Sha256(unittest.TestCase):
     def test_hex_and_prefixed(self):
         with tempfile.TemporaryDirectory() as d:

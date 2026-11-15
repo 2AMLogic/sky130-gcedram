@@ -59,7 +59,13 @@ PR (see "Split" below).
   `ngspice-42`. A pin-only comparison would conflate the PDK change with a
   simulator change, so a re-run needs the same `ngspice` as the original
   records, or the version delta must be called out per result. Host tools
-  are not changed from a sweep (worker spec change).
+  are not changed from a sweep (worker spec change). **Update (issue
+  #300): the simulator is now pinned like the PDK** — `ngspice-47`,
+  checked from the same `check_ngspice_available()` entry point — and the
+  anticipated obligation this bullet raised is executed as
+  [`docs/simulator-requalification-inventory.md`](simulator-requalification-inventory.md),
+  which lists per study the simulator version its committed records carry
+  and whether it is awaiting re-qualification under the pin.
 * **Batch backend.** Multi-corner and Monte Carlo grids must go through
   `klt sim` (`KLT_SIM_BACKEND=batch`); any submit failure is reported on
   the issue, not worked around with a local grid.
