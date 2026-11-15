@@ -39,7 +39,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import sha256_hex as sha  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 from replay_lib import ic_tokens, inst_lines  # noqa: E402
@@ -303,7 +303,7 @@ def main(argv=None) -> int:
     (run_dir / "request.json").write_text(json.dumps(req, indent=1) + "\n")
     (run_dir / "consistency_check.json").write_text(json.dumps(check, indent=1) + "\n")
     man = dict(
-        run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=139,
+        run_id=a.run_id, status=PROPOSED_RANGE_STATUS, issue=139,
         regimes=dict(
             legacy="unchanged #131 control instances: SN = label (.ic), no RWL pin IC, tran uic",
             pin_ic="legacy + explicit idle-high RWL pin IC (the #134 ic_artifact_check change); nothing else",
