@@ -287,3 +287,18 @@ Old = `results/mismatch_summary_20261009T141819Z.json` and `results/mismatch_cel
 | end-to-end fs_mm/27 C, ref 100 mV | lowest level with 0 errors at and above | 0.95 V | 0.95 V |
 
 **No verdict change; every statistic is bit-identical to the committed run.** Both decks appear insensitive to the layout change: the stage-only study is the latch alone, and in the end-to-end study the stored level is swept directly, so the `C_SN` change (0.605354 -> 0.672741 fF) does not enter the quantities reduced here (cause inferred from the deck structure, not isolated by a separate run). The "stored '1' 0.85 / 0.95 V" findings above stand as written.
+
+## Latch geometry correction re-run (issue #293, 2026-11-15)
+
+Issue #293 fixed the latch device this bench simulates: the generators had retyped the latch/footer/header geometry, silently dropping the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens of the schematic-derived `design/sense_latch.spice`, so both decks here (via `gen_sense_stage.py`'s constants) simulated a latch with no source-drain parasitic resistance. `gen_sense_mismatch.py` now emits the latch through `parse_cards()` from the design netlist, same as every other bench; the regenerated decks' token-level delta is exactly the five added tokens per latch device. This section records the re-run as **new dated evidence**; earlier results are untouched history. Tool: `uvx --from klayout-tools==0.9.1 klt sim --backend batch --format json --wait-for-capacity 600` (jobs `klt-sim-f872ef0c5e9e` (stage-only, run `20261115T115508Z`) and `klt-sim-bae0e70f165f` (end-to-end, run `20261115T115950Z`), 0 errored samples; runner klt 0.9.0, fleet worker ngspice-47). Corners and the Monte Carlo block are the committed ones (`tt_mm/fs_mm/ss_mm/sf_mm` x 27/125 C, `n=40`, `seed=2026100981`, `vary: mismatch`), so old and new are sample-for-sample comparable.
+
+| Study | Headline | Old (`20261028T085441Z`) | New (stage `20261115T115508Z`, cell `20261115T115950Z`) |
+|---|---|---|---|
+| stage, sf_mm/125 C (worst) | latch offset sigma [95 % CI] | 19.16 mV [18.1, 20.3] | 19.15 mV [18.1, 20.3] |
+| stage, tt_mm/27 C | sigma | 17.66 mV | 17.66 mV (bit-identical) |
+| stage, fs_mm/27 C | sigma | 16.31 mV | 16.42 mV |
+| stage, ss_mm/125 C | sigma | 17.63 mV | 17.71 mV |
+| end-to-end fs_mm/27 C, ref 50 mV | lowest level with 0 errors at and above | 0.85 V | 0.85 V |
+| end-to-end fs_mm/27 C, ref 100 mV | lowest level with 0 errors at and above | 0.95 V | 0.95 V |
+
+**No verdict change.** With the same seeds the correction moves individual Bernoulli decisions near the threshold (tt_mm/27 C is bit-identical, the other corners re-fit to sigma within 0.1 mV and mu within 0.04 mV); the stored-'0' negative control still resolves everywhere and the "stored '1' 0.85 / 0.95 V" findings above stand as written. MC quantiles [2.5, 50, 97.5] are recomputed from the new run. No spec threshold was touched.
