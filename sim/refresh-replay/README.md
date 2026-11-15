@@ -10,11 +10,17 @@ contract, scheduler timing, overlap rule or prior result was changed. 1 cycle = 
 
 ## Headline result (run `20261010T094617Z`)
 
+*Device provenance: this run's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`, i.e. no source-drain parasitic resistance). The bench was re-run under the corrected device — see "Latch geometry correction re-run (issue #293, 2026-11-15)" below — and the conclusions here are unchanged.*
+
 **The unmodified RTL waveform does not restore the stored level at any of the 10 corners** (0/10 at restore
 fractions 0.90, 0.95 and 0.98), with or without the explicit latch-hold adapter. The latch decision itself is
 correct everywhere (10/10, all four patterns), the PWL conversion is valid (10/10), and the matched baseline
 (the existing analog sequence at SENSE 10 ns / WWL 20 ns, same deck) restores at 10/10 and agrees with the prior
-`sim/refresh-op` report to 1e-5 V. The failure is preserved, not tuned away; see "Proposed follow-up".
+`sim/refresh-op` report to 1e-5 V. *(Issue-293 note: this 1e-5 V figure is superseded by the latch correction —
+the re-run summary's pinned `baseline_matches_prior` flag, pinned to the pre-correction `sim/refresh-op` report,
+now reads `False` at max |SN_end delta| = 20 mV, while the baseline re-verifies to 3e-5 V against the
+corrected-device refresh-op run `20261115T120247Z`; see "Latch geometry correction re-run (issue #293, 2026-11-15)"
+below.)* The failure is preserved, not tuned away; see "Proposed follow-up".
 
 Stored '1' pre-read 0.9 V, SN(end) in V (SN_ref = in-deck reference write; fraction of SN_ref in brackets):
 
@@ -44,6 +50,8 @@ lets the latch decide but then floats: the latch complement node shares charge w
 feedthrough dominates was **not** isolated; that needs a separate experiment.
 
 ## Release-order attribution experiment (issue #131, run `20261010T130000Z`)
+
+*Device provenance: this run's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`, i.e. no source-drain parasitic resistance). The bench was re-run under the corrected device — see "Latch geometry correction re-run (issue #293, 2026-11-15)" below — and the conclusions here are unchanged.*
 
 Question left open above: is the restoration failure caused by the RWL release ordering, by the latch-enable
 release, or by ideal-driver coupling? The RTL, `CONTRACT.md`, scheduler defaults, restoration criteria
@@ -129,6 +137,8 @@ The analog baseline needs 37. Nothing in `scheduler`/`CONTRACT.md` was changed.
   No ratified specification or digital overlap rule was revised.
 
 ## RWL driver slew / impedance / release-delay sensitivity (issue #134, run `driver_sweep_results/20261010T141816Z`)
+
+*Device provenance: this study's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`) and was **not** regenerated — it is append-only archived evidence. The numbers below therefore describe the pre-correction latch. See "Latch geometry correction re-run (issue #293, 2026-11-15)" below.*
 
 **Experimental stimulus model, not a designed physical driver.** Question left open by #131: is the late-RWL restoration
 benefit an artifact of the ideal 0.1 ns edge and a zero-impedance read-wordline source? The selected row's RWL source (the
@@ -265,6 +275,8 @@ pin-crossing probes of series-R instances locked onto the t = 0 start-up charge 
 Single-corner local runs of small subset decks (and of the failed full deck) were diagnostics only. No grid was run locally.
 
 ## Matched initialization controls (issue #139, run `init_control_results/20261010T163500Z`)
+
+*Device provenance: this study's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`) and was **not** regenerated — it is append-only archived evidence. The numbers below therefore describe the pre-correction latch. See "Latch geometry correction re-run (issue #293, 2026-11-15)" below.*
 
 Question: the start-up artifact above means every recorded sense / restore verdict of #128/#131/#134 was obtained from a storage-node level
 that is **not** its label. Which conclusions depend on that legacy start, and which survive when the stored level is prepared differently?
