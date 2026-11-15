@@ -1,0 +1,2374 @@
+{
+  "netlist": "lc_refresh_bound_sel2.spice",
+  "engine": "ngspice",
+  "backend": "batch",
+  "models": {
+    "pdk": "sky130A",
+    "lib": "libs.tech/combined/sky130.lib.spice"
+  },
+  "corners": {
+    "process": [
+      "tt",
+      "ss",
+      "ff",
+      "sf",
+      "fs"
+    ],
+    "temperature_c": [
+      -40,
+      27,
+      125
+    ]
+  },
+  "analysis": {
+    "kind": "tran",
+    "args": "10p 5.075945e-06 0 5.000e-10"
+  },
+  "measurements": [
+    {
+      "name": "p00__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r0_wl_off_v FIND v(sn_r0_p00) AT=2.100000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r1_wl_off_v FIND v(sn_r1_p00) AT=4.600000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r2_wl_off_v FIND v(sn_r2_p00) AT=7.100000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r3_wl_off_v FIND v(sn_r3_p00) AT=9.600000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r0_after_write_v FIND v(sn_r0_p00) AT=9.950000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r1_after_write_v FIND v(sn_r1_p00) AT=9.950000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r2_after_write_v FIND v(sn_r2_p00) AT=9.950000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r3_after_write_v FIND v(sn_r3_p00) AT=9.950000000e-08"
+    },
+    {
+      "name": "p00__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r0_preread_v FIND v(sn_r0_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r0_preread_a FIND i(vam_r0_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r1_preread_v FIND v(sn_r1_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r1_preread_a FIND i(vam_r1_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r2_preread_v FIND v(sn_r2_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r2_preread_a FIND i(vam_r2_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r3_preread_v FIND v(sn_r3_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r3_preread_a FIND i(vam_r3_p00) AT=5.048445000e-06"
+    },
+    {
+      "name": "p00__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_rbl_preread_float_v FIND v(rbl_p00) AT=5.050745000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r0_sense_a FIND i(vam_r0_p00) AT=5.060945000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r1_sense_a FIND i(vam_r1_p00) AT=5.060945000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r2_sense_a FIND i(vam_r2_p00) AT=5.060945000e-06"
+    },
+    {
+      "name": "p00__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p00__i_into_rbl_r3_sense_a FIND i(vam_r3_p00) AT=5.060945000e-06"
+    },
+    {
+      "name": "p00__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_rbl_sense_v FIND v(rbl_p00) AT=5.060945000e-06"
+    },
+    {
+      "name": "p00__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_rbl_end_v FIND v(rbl_p00) AT=5.070445000e-06"
+    },
+    {
+      "name": "p00__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_sel_sense_v FIND v(sn_r2_p00) AT=5.060945000e-06"
+    },
+    {
+      "name": "p00__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r0_end_v FIND v(sn_r0_p00) AT=5.075445000e-06"
+    },
+    {
+      "name": "p00__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r1_end_v FIND v(sn_r1_p00) AT=5.075445000e-06"
+    },
+    {
+      "name": "p00__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r2_end_v FIND v(sn_r2_p00) AT=5.075445000e-06"
+    },
+    {
+      "name": "p00__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p00__v_sn_r3_end_v FIND v(sn_r3_p00) AT=5.075445000e-06"
+    },
+    {
+      "name": "p00__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p00__t_latency_abs_s WHEN v(rbl_p00)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p01__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r0_wl_off_v FIND v(sn_r0_p01) AT=2.100000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r1_wl_off_v FIND v(sn_r1_p01) AT=4.600000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r2_wl_off_v FIND v(sn_r2_p01) AT=7.100000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r3_wl_off_v FIND v(sn_r3_p01) AT=9.600000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r0_after_write_v FIND v(sn_r0_p01) AT=9.950000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r1_after_write_v FIND v(sn_r1_p01) AT=9.950000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r2_after_write_v FIND v(sn_r2_p01) AT=9.950000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r3_after_write_v FIND v(sn_r3_p01) AT=9.950000000e-08"
+    },
+    {
+      "name": "p01__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r0_preread_v FIND v(sn_r0_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r0_preread_a FIND i(vam_r0_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r1_preread_v FIND v(sn_r1_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r1_preread_a FIND i(vam_r1_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r2_preread_v FIND v(sn_r2_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r2_preread_a FIND i(vam_r2_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r3_preread_v FIND v(sn_r3_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r3_preread_a FIND i(vam_r3_p01) AT=5.048445000e-06"
+    },
+    {
+      "name": "p01__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_rbl_preread_float_v FIND v(rbl_p01) AT=5.050745000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r0_sense_a FIND i(vam_r0_p01) AT=5.060945000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r1_sense_a FIND i(vam_r1_p01) AT=5.060945000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r2_sense_a FIND i(vam_r2_p01) AT=5.060945000e-06"
+    },
+    {
+      "name": "p01__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p01__i_into_rbl_r3_sense_a FIND i(vam_r3_p01) AT=5.060945000e-06"
+    },
+    {
+      "name": "p01__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_rbl_sense_v FIND v(rbl_p01) AT=5.060945000e-06"
+    },
+    {
+      "name": "p01__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_rbl_end_v FIND v(rbl_p01) AT=5.070445000e-06"
+    },
+    {
+      "name": "p01__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_sel_sense_v FIND v(sn_r2_p01) AT=5.060945000e-06"
+    },
+    {
+      "name": "p01__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r0_end_v FIND v(sn_r0_p01) AT=5.075445000e-06"
+    },
+    {
+      "name": "p01__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r1_end_v FIND v(sn_r1_p01) AT=5.075445000e-06"
+    },
+    {
+      "name": "p01__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r2_end_v FIND v(sn_r2_p01) AT=5.075445000e-06"
+    },
+    {
+      "name": "p01__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p01__v_sn_r3_end_v FIND v(sn_r3_p01) AT=5.075445000e-06"
+    },
+    {
+      "name": "p01__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p01__t_latency_abs_s WHEN v(rbl_p01)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p02__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r0_wl_off_v FIND v(sn_r0_p02) AT=2.100000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r1_wl_off_v FIND v(sn_r1_p02) AT=4.600000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r2_wl_off_v FIND v(sn_r2_p02) AT=7.100000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r3_wl_off_v FIND v(sn_r3_p02) AT=9.600000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r0_after_write_v FIND v(sn_r0_p02) AT=9.950000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r1_after_write_v FIND v(sn_r1_p02) AT=9.950000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r2_after_write_v FIND v(sn_r2_p02) AT=9.950000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r3_after_write_v FIND v(sn_r3_p02) AT=9.950000000e-08"
+    },
+    {
+      "name": "p02__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r0_preread_v FIND v(sn_r0_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r0_preread_a FIND i(vam_r0_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r1_preread_v FIND v(sn_r1_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r1_preread_a FIND i(vam_r1_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r2_preread_v FIND v(sn_r2_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r2_preread_a FIND i(vam_r2_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r3_preread_v FIND v(sn_r3_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r3_preread_a FIND i(vam_r3_p02) AT=5.048445000e-06"
+    },
+    {
+      "name": "p02__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_rbl_preread_float_v FIND v(rbl_p02) AT=5.050745000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r0_sense_a FIND i(vam_r0_p02) AT=5.060945000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r1_sense_a FIND i(vam_r1_p02) AT=5.060945000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r2_sense_a FIND i(vam_r2_p02) AT=5.060945000e-06"
+    },
+    {
+      "name": "p02__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p02__i_into_rbl_r3_sense_a FIND i(vam_r3_p02) AT=5.060945000e-06"
+    },
+    {
+      "name": "p02__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_rbl_sense_v FIND v(rbl_p02) AT=5.060945000e-06"
+    },
+    {
+      "name": "p02__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_rbl_end_v FIND v(rbl_p02) AT=5.070445000e-06"
+    },
+    {
+      "name": "p02__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_sel_sense_v FIND v(sn_r2_p02) AT=5.060945000e-06"
+    },
+    {
+      "name": "p02__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r0_end_v FIND v(sn_r0_p02) AT=5.075445000e-06"
+    },
+    {
+      "name": "p02__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r1_end_v FIND v(sn_r1_p02) AT=5.075445000e-06"
+    },
+    {
+      "name": "p02__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r2_end_v FIND v(sn_r2_p02) AT=5.075445000e-06"
+    },
+    {
+      "name": "p02__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p02__v_sn_r3_end_v FIND v(sn_r3_p02) AT=5.075445000e-06"
+    },
+    {
+      "name": "p02__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p02__t_latency_abs_s WHEN v(rbl_p02)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p03__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r0_wl_off_v FIND v(sn_r0_p03) AT=2.100000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r1_wl_off_v FIND v(sn_r1_p03) AT=4.600000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r2_wl_off_v FIND v(sn_r2_p03) AT=7.100000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r3_wl_off_v FIND v(sn_r3_p03) AT=9.600000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r0_after_write_v FIND v(sn_r0_p03) AT=9.950000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r1_after_write_v FIND v(sn_r1_p03) AT=9.950000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r2_after_write_v FIND v(sn_r2_p03) AT=9.950000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r3_after_write_v FIND v(sn_r3_p03) AT=9.950000000e-08"
+    },
+    {
+      "name": "p03__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r0_preread_v FIND v(sn_r0_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r0_preread_a FIND i(vam_r0_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r1_preread_v FIND v(sn_r1_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r1_preread_a FIND i(vam_r1_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r2_preread_v FIND v(sn_r2_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r2_preread_a FIND i(vam_r2_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r3_preread_v FIND v(sn_r3_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r3_preread_a FIND i(vam_r3_p03) AT=5.048445000e-06"
+    },
+    {
+      "name": "p03__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_rbl_preread_float_v FIND v(rbl_p03) AT=5.050745000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r0_sense_a FIND i(vam_r0_p03) AT=5.060945000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r1_sense_a FIND i(vam_r1_p03) AT=5.060945000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r2_sense_a FIND i(vam_r2_p03) AT=5.060945000e-06"
+    },
+    {
+      "name": "p03__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p03__i_into_rbl_r3_sense_a FIND i(vam_r3_p03) AT=5.060945000e-06"
+    },
+    {
+      "name": "p03__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_rbl_sense_v FIND v(rbl_p03) AT=5.060945000e-06"
+    },
+    {
+      "name": "p03__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_rbl_end_v FIND v(rbl_p03) AT=5.070445000e-06"
+    },
+    {
+      "name": "p03__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_sel_sense_v FIND v(sn_r2_p03) AT=5.060945000e-06"
+    },
+    {
+      "name": "p03__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r0_end_v FIND v(sn_r0_p03) AT=5.075445000e-06"
+    },
+    {
+      "name": "p03__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r1_end_v FIND v(sn_r1_p03) AT=5.075445000e-06"
+    },
+    {
+      "name": "p03__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r2_end_v FIND v(sn_r2_p03) AT=5.075445000e-06"
+    },
+    {
+      "name": "p03__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p03__v_sn_r3_end_v FIND v(sn_r3_p03) AT=5.075445000e-06"
+    },
+    {
+      "name": "p03__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p03__t_latency_abs_s WHEN v(rbl_p03)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p04__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r0_wl_off_v FIND v(sn_r0_p04) AT=2.100000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r1_wl_off_v FIND v(sn_r1_p04) AT=4.600000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r2_wl_off_v FIND v(sn_r2_p04) AT=7.100000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r3_wl_off_v FIND v(sn_r3_p04) AT=9.600000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r0_after_write_v FIND v(sn_r0_p04) AT=9.950000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r1_after_write_v FIND v(sn_r1_p04) AT=9.950000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r2_after_write_v FIND v(sn_r2_p04) AT=9.950000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r3_after_write_v FIND v(sn_r3_p04) AT=9.950000000e-08"
+    },
+    {
+      "name": "p04__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r0_preread_v FIND v(sn_r0_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r0_preread_a FIND i(vam_r0_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r1_preread_v FIND v(sn_r1_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r1_preread_a FIND i(vam_r1_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r2_preread_v FIND v(sn_r2_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r2_preread_a FIND i(vam_r2_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r3_preread_v FIND v(sn_r3_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r3_preread_a FIND i(vam_r3_p04) AT=5.048445000e-06"
+    },
+    {
+      "name": "p04__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_rbl_preread_float_v FIND v(rbl_p04) AT=5.050745000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r0_sense_a FIND i(vam_r0_p04) AT=5.060945000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r1_sense_a FIND i(vam_r1_p04) AT=5.060945000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r2_sense_a FIND i(vam_r2_p04) AT=5.060945000e-06"
+    },
+    {
+      "name": "p04__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p04__i_into_rbl_r3_sense_a FIND i(vam_r3_p04) AT=5.060945000e-06"
+    },
+    {
+      "name": "p04__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_rbl_sense_v FIND v(rbl_p04) AT=5.060945000e-06"
+    },
+    {
+      "name": "p04__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_rbl_end_v FIND v(rbl_p04) AT=5.070445000e-06"
+    },
+    {
+      "name": "p04__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_sel_sense_v FIND v(sn_r2_p04) AT=5.060945000e-06"
+    },
+    {
+      "name": "p04__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r0_end_v FIND v(sn_r0_p04) AT=5.075445000e-06"
+    },
+    {
+      "name": "p04__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r1_end_v FIND v(sn_r1_p04) AT=5.075445000e-06"
+    },
+    {
+      "name": "p04__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r2_end_v FIND v(sn_r2_p04) AT=5.075445000e-06"
+    },
+    {
+      "name": "p04__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p04__v_sn_r3_end_v FIND v(sn_r3_p04) AT=5.075445000e-06"
+    },
+    {
+      "name": "p04__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p04__t_latency_abs_s WHEN v(rbl_p04)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p05__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r0_wl_off_v FIND v(sn_r0_p05) AT=2.100000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r1_wl_off_v FIND v(sn_r1_p05) AT=4.600000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r2_wl_off_v FIND v(sn_r2_p05) AT=7.100000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r3_wl_off_v FIND v(sn_r3_p05) AT=9.600000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r0_after_write_v FIND v(sn_r0_p05) AT=9.950000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r1_after_write_v FIND v(sn_r1_p05) AT=9.950000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r2_after_write_v FIND v(sn_r2_p05) AT=9.950000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r3_after_write_v FIND v(sn_r3_p05) AT=9.950000000e-08"
+    },
+    {
+      "name": "p05__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r0_preread_v FIND v(sn_r0_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r0_preread_a FIND i(vam_r0_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r1_preread_v FIND v(sn_r1_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r1_preread_a FIND i(vam_r1_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r2_preread_v FIND v(sn_r2_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r2_preread_a FIND i(vam_r2_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r3_preread_v FIND v(sn_r3_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r3_preread_a FIND i(vam_r3_p05) AT=5.048445000e-06"
+    },
+    {
+      "name": "p05__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_rbl_preread_float_v FIND v(rbl_p05) AT=5.050745000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r0_sense_a FIND i(vam_r0_p05) AT=5.060945000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r1_sense_a FIND i(vam_r1_p05) AT=5.060945000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r2_sense_a FIND i(vam_r2_p05) AT=5.060945000e-06"
+    },
+    {
+      "name": "p05__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p05__i_into_rbl_r3_sense_a FIND i(vam_r3_p05) AT=5.060945000e-06"
+    },
+    {
+      "name": "p05__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_rbl_sense_v FIND v(rbl_p05) AT=5.060945000e-06"
+    },
+    {
+      "name": "p05__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_rbl_end_v FIND v(rbl_p05) AT=5.070445000e-06"
+    },
+    {
+      "name": "p05__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_sel_sense_v FIND v(sn_r2_p05) AT=5.060945000e-06"
+    },
+    {
+      "name": "p05__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r0_end_v FIND v(sn_r0_p05) AT=5.075445000e-06"
+    },
+    {
+      "name": "p05__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r1_end_v FIND v(sn_r1_p05) AT=5.075445000e-06"
+    },
+    {
+      "name": "p05__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r2_end_v FIND v(sn_r2_p05) AT=5.075445000e-06"
+    },
+    {
+      "name": "p05__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p05__v_sn_r3_end_v FIND v(sn_r3_p05) AT=5.075445000e-06"
+    },
+    {
+      "name": "p05__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p05__t_latency_abs_s WHEN v(rbl_p05)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p06__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r0_wl_off_v FIND v(sn_r0_p06) AT=2.100000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r1_wl_off_v FIND v(sn_r1_p06) AT=4.600000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r2_wl_off_v FIND v(sn_r2_p06) AT=7.100000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r3_wl_off_v FIND v(sn_r3_p06) AT=9.600000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r0_after_write_v FIND v(sn_r0_p06) AT=9.950000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r1_after_write_v FIND v(sn_r1_p06) AT=9.950000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r2_after_write_v FIND v(sn_r2_p06) AT=9.950000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r3_after_write_v FIND v(sn_r3_p06) AT=9.950000000e-08"
+    },
+    {
+      "name": "p06__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r0_preread_v FIND v(sn_r0_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r0_preread_a FIND i(vam_r0_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r1_preread_v FIND v(sn_r1_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r1_preread_a FIND i(vam_r1_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r2_preread_v FIND v(sn_r2_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r2_preread_a FIND i(vam_r2_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r3_preread_v FIND v(sn_r3_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r3_preread_a FIND i(vam_r3_p06) AT=5.048445000e-06"
+    },
+    {
+      "name": "p06__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_rbl_preread_float_v FIND v(rbl_p06) AT=5.050745000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r0_sense_a FIND i(vam_r0_p06) AT=5.060945000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r1_sense_a FIND i(vam_r1_p06) AT=5.060945000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r2_sense_a FIND i(vam_r2_p06) AT=5.060945000e-06"
+    },
+    {
+      "name": "p06__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p06__i_into_rbl_r3_sense_a FIND i(vam_r3_p06) AT=5.060945000e-06"
+    },
+    {
+      "name": "p06__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_rbl_sense_v FIND v(rbl_p06) AT=5.060945000e-06"
+    },
+    {
+      "name": "p06__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_rbl_end_v FIND v(rbl_p06) AT=5.070445000e-06"
+    },
+    {
+      "name": "p06__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_sel_sense_v FIND v(sn_r2_p06) AT=5.060945000e-06"
+    },
+    {
+      "name": "p06__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r0_end_v FIND v(sn_r0_p06) AT=5.075445000e-06"
+    },
+    {
+      "name": "p06__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r1_end_v FIND v(sn_r1_p06) AT=5.075445000e-06"
+    },
+    {
+      "name": "p06__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r2_end_v FIND v(sn_r2_p06) AT=5.075445000e-06"
+    },
+    {
+      "name": "p06__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p06__v_sn_r3_end_v FIND v(sn_r3_p06) AT=5.075445000e-06"
+    },
+    {
+      "name": "p06__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p06__t_latency_abs_s WHEN v(rbl_p06)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p07__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r0_wl_off_v FIND v(sn_r0_p07) AT=2.100000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r1_wl_off_v FIND v(sn_r1_p07) AT=4.600000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r2_wl_off_v FIND v(sn_r2_p07) AT=7.100000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r3_wl_off_v FIND v(sn_r3_p07) AT=9.600000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r0_after_write_v FIND v(sn_r0_p07) AT=9.950000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r1_after_write_v FIND v(sn_r1_p07) AT=9.950000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r2_after_write_v FIND v(sn_r2_p07) AT=9.950000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r3_after_write_v FIND v(sn_r3_p07) AT=9.950000000e-08"
+    },
+    {
+      "name": "p07__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r0_preread_v FIND v(sn_r0_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r0_preread_a FIND i(vam_r0_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r1_preread_v FIND v(sn_r1_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r1_preread_a FIND i(vam_r1_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r2_preread_v FIND v(sn_r2_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r2_preread_a FIND i(vam_r2_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r3_preread_v FIND v(sn_r3_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r3_preread_a FIND i(vam_r3_p07) AT=5.048445000e-06"
+    },
+    {
+      "name": "p07__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_rbl_preread_float_v FIND v(rbl_p07) AT=5.050745000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r0_sense_a FIND i(vam_r0_p07) AT=5.060945000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r1_sense_a FIND i(vam_r1_p07) AT=5.060945000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r2_sense_a FIND i(vam_r2_p07) AT=5.060945000e-06"
+    },
+    {
+      "name": "p07__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p07__i_into_rbl_r3_sense_a FIND i(vam_r3_p07) AT=5.060945000e-06"
+    },
+    {
+      "name": "p07__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_rbl_sense_v FIND v(rbl_p07) AT=5.060945000e-06"
+    },
+    {
+      "name": "p07__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_rbl_end_v FIND v(rbl_p07) AT=5.070445000e-06"
+    },
+    {
+      "name": "p07__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_sel_sense_v FIND v(sn_r2_p07) AT=5.060945000e-06"
+    },
+    {
+      "name": "p07__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r0_end_v FIND v(sn_r0_p07) AT=5.075445000e-06"
+    },
+    {
+      "name": "p07__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r1_end_v FIND v(sn_r1_p07) AT=5.075445000e-06"
+    },
+    {
+      "name": "p07__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r2_end_v FIND v(sn_r2_p07) AT=5.075445000e-06"
+    },
+    {
+      "name": "p07__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p07__v_sn_r3_end_v FIND v(sn_r3_p07) AT=5.075445000e-06"
+    },
+    {
+      "name": "p07__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p07__t_latency_abs_s WHEN v(rbl_p07)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p08__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r0_wl_off_v FIND v(sn_r0_p08) AT=2.100000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r1_wl_off_v FIND v(sn_r1_p08) AT=4.600000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r2_wl_off_v FIND v(sn_r2_p08) AT=7.100000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r3_wl_off_v FIND v(sn_r3_p08) AT=9.600000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r0_after_write_v FIND v(sn_r0_p08) AT=9.950000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r1_after_write_v FIND v(sn_r1_p08) AT=9.950000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r2_after_write_v FIND v(sn_r2_p08) AT=9.950000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r3_after_write_v FIND v(sn_r3_p08) AT=9.950000000e-08"
+    },
+    {
+      "name": "p08__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r0_preread_v FIND v(sn_r0_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r0_preread_a FIND i(vam_r0_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r1_preread_v FIND v(sn_r1_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r1_preread_a FIND i(vam_r1_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r2_preread_v FIND v(sn_r2_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r2_preread_a FIND i(vam_r2_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r3_preread_v FIND v(sn_r3_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r3_preread_a FIND i(vam_r3_p08) AT=5.048445000e-06"
+    },
+    {
+      "name": "p08__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_rbl_preread_float_v FIND v(rbl_p08) AT=5.050745000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r0_sense_a FIND i(vam_r0_p08) AT=5.060945000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r1_sense_a FIND i(vam_r1_p08) AT=5.060945000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r2_sense_a FIND i(vam_r2_p08) AT=5.060945000e-06"
+    },
+    {
+      "name": "p08__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p08__i_into_rbl_r3_sense_a FIND i(vam_r3_p08) AT=5.060945000e-06"
+    },
+    {
+      "name": "p08__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_rbl_sense_v FIND v(rbl_p08) AT=5.060945000e-06"
+    },
+    {
+      "name": "p08__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_rbl_end_v FIND v(rbl_p08) AT=5.070445000e-06"
+    },
+    {
+      "name": "p08__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_sel_sense_v FIND v(sn_r2_p08) AT=5.060945000e-06"
+    },
+    {
+      "name": "p08__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r0_end_v FIND v(sn_r0_p08) AT=5.075445000e-06"
+    },
+    {
+      "name": "p08__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r1_end_v FIND v(sn_r1_p08) AT=5.075445000e-06"
+    },
+    {
+      "name": "p08__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r2_end_v FIND v(sn_r2_p08) AT=5.075445000e-06"
+    },
+    {
+      "name": "p08__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p08__v_sn_r3_end_v FIND v(sn_r3_p08) AT=5.075445000e-06"
+    },
+    {
+      "name": "p08__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p08__t_latency_abs_s WHEN v(rbl_p08)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p09__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r0_wl_off_v FIND v(sn_r0_p09) AT=2.100000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r1_wl_off_v FIND v(sn_r1_p09) AT=4.600000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r2_wl_off_v FIND v(sn_r2_p09) AT=7.100000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r3_wl_off_v FIND v(sn_r3_p09) AT=9.600000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r0_after_write_v FIND v(sn_r0_p09) AT=9.950000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r1_after_write_v FIND v(sn_r1_p09) AT=9.950000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r2_after_write_v FIND v(sn_r2_p09) AT=9.950000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r3_after_write_v FIND v(sn_r3_p09) AT=9.950000000e-08"
+    },
+    {
+      "name": "p09__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r0_preread_v FIND v(sn_r0_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r0_preread_a FIND i(vam_r0_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r1_preread_v FIND v(sn_r1_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r1_preread_a FIND i(vam_r1_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r2_preread_v FIND v(sn_r2_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r2_preread_a FIND i(vam_r2_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r3_preread_v FIND v(sn_r3_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r3_preread_a FIND i(vam_r3_p09) AT=5.048445000e-06"
+    },
+    {
+      "name": "p09__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_rbl_preread_float_v FIND v(rbl_p09) AT=5.050745000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r0_sense_a FIND i(vam_r0_p09) AT=5.060945000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r1_sense_a FIND i(vam_r1_p09) AT=5.060945000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r2_sense_a FIND i(vam_r2_p09) AT=5.060945000e-06"
+    },
+    {
+      "name": "p09__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p09__i_into_rbl_r3_sense_a FIND i(vam_r3_p09) AT=5.060945000e-06"
+    },
+    {
+      "name": "p09__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_rbl_sense_v FIND v(rbl_p09) AT=5.060945000e-06"
+    },
+    {
+      "name": "p09__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_rbl_end_v FIND v(rbl_p09) AT=5.070445000e-06"
+    },
+    {
+      "name": "p09__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_sel_sense_v FIND v(sn_r2_p09) AT=5.060945000e-06"
+    },
+    {
+      "name": "p09__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r0_end_v FIND v(sn_r0_p09) AT=5.075445000e-06"
+    },
+    {
+      "name": "p09__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r1_end_v FIND v(sn_r1_p09) AT=5.075445000e-06"
+    },
+    {
+      "name": "p09__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r2_end_v FIND v(sn_r2_p09) AT=5.075445000e-06"
+    },
+    {
+      "name": "p09__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p09__v_sn_r3_end_v FIND v(sn_r3_p09) AT=5.075445000e-06"
+    },
+    {
+      "name": "p09__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p09__t_latency_abs_s WHEN v(rbl_p09)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p10__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r0_wl_off_v FIND v(sn_r0_p10) AT=2.100000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r1_wl_off_v FIND v(sn_r1_p10) AT=4.600000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r2_wl_off_v FIND v(sn_r2_p10) AT=7.100000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r3_wl_off_v FIND v(sn_r3_p10) AT=9.600000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r0_after_write_v FIND v(sn_r0_p10) AT=9.950000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r1_after_write_v FIND v(sn_r1_p10) AT=9.950000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r2_after_write_v FIND v(sn_r2_p10) AT=9.950000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r3_after_write_v FIND v(sn_r3_p10) AT=9.950000000e-08"
+    },
+    {
+      "name": "p10__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r0_preread_v FIND v(sn_r0_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r0_preread_a FIND i(vam_r0_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r1_preread_v FIND v(sn_r1_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r1_preread_a FIND i(vam_r1_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r2_preread_v FIND v(sn_r2_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r2_preread_a FIND i(vam_r2_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r3_preread_v FIND v(sn_r3_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r3_preread_a FIND i(vam_r3_p10) AT=5.048445000e-06"
+    },
+    {
+      "name": "p10__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_rbl_preread_float_v FIND v(rbl_p10) AT=5.050745000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r0_sense_a FIND i(vam_r0_p10) AT=5.060945000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r1_sense_a FIND i(vam_r1_p10) AT=5.060945000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r2_sense_a FIND i(vam_r2_p10) AT=5.060945000e-06"
+    },
+    {
+      "name": "p10__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p10__i_into_rbl_r3_sense_a FIND i(vam_r3_p10) AT=5.060945000e-06"
+    },
+    {
+      "name": "p10__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_rbl_sense_v FIND v(rbl_p10) AT=5.060945000e-06"
+    },
+    {
+      "name": "p10__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_rbl_end_v FIND v(rbl_p10) AT=5.070445000e-06"
+    },
+    {
+      "name": "p10__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_sel_sense_v FIND v(sn_r2_p10) AT=5.060945000e-06"
+    },
+    {
+      "name": "p10__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r0_end_v FIND v(sn_r0_p10) AT=5.075445000e-06"
+    },
+    {
+      "name": "p10__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r1_end_v FIND v(sn_r1_p10) AT=5.075445000e-06"
+    },
+    {
+      "name": "p10__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r2_end_v FIND v(sn_r2_p10) AT=5.075445000e-06"
+    },
+    {
+      "name": "p10__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p10__v_sn_r3_end_v FIND v(sn_r3_p10) AT=5.075445000e-06"
+    },
+    {
+      "name": "p10__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p10__t_latency_abs_s WHEN v(rbl_p10)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p11__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r0_wl_off_v FIND v(sn_r0_p11) AT=2.100000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r1_wl_off_v FIND v(sn_r1_p11) AT=4.600000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r2_wl_off_v FIND v(sn_r2_p11) AT=7.100000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r3_wl_off_v FIND v(sn_r3_p11) AT=9.600000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r0_after_write_v FIND v(sn_r0_p11) AT=9.950000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r1_after_write_v FIND v(sn_r1_p11) AT=9.950000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r2_after_write_v FIND v(sn_r2_p11) AT=9.950000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r3_after_write_v FIND v(sn_r3_p11) AT=9.950000000e-08"
+    },
+    {
+      "name": "p11__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r0_preread_v FIND v(sn_r0_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r0_preread_a FIND i(vam_r0_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r1_preread_v FIND v(sn_r1_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r1_preread_a FIND i(vam_r1_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r2_preread_v FIND v(sn_r2_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r2_preread_a FIND i(vam_r2_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r3_preread_v FIND v(sn_r3_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r3_preread_a FIND i(vam_r3_p11) AT=5.048445000e-06"
+    },
+    {
+      "name": "p11__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_rbl_preread_float_v FIND v(rbl_p11) AT=5.050745000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r0_sense_a FIND i(vam_r0_p11) AT=5.060945000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r1_sense_a FIND i(vam_r1_p11) AT=5.060945000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r2_sense_a FIND i(vam_r2_p11) AT=5.060945000e-06"
+    },
+    {
+      "name": "p11__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p11__i_into_rbl_r3_sense_a FIND i(vam_r3_p11) AT=5.060945000e-06"
+    },
+    {
+      "name": "p11__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_rbl_sense_v FIND v(rbl_p11) AT=5.060945000e-06"
+    },
+    {
+      "name": "p11__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_rbl_end_v FIND v(rbl_p11) AT=5.070445000e-06"
+    },
+    {
+      "name": "p11__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_sel_sense_v FIND v(sn_r2_p11) AT=5.060945000e-06"
+    },
+    {
+      "name": "p11__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r0_end_v FIND v(sn_r0_p11) AT=5.075445000e-06"
+    },
+    {
+      "name": "p11__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r1_end_v FIND v(sn_r1_p11) AT=5.075445000e-06"
+    },
+    {
+      "name": "p11__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r2_end_v FIND v(sn_r2_p11) AT=5.075445000e-06"
+    },
+    {
+      "name": "p11__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p11__v_sn_r3_end_v FIND v(sn_r3_p11) AT=5.075445000e-06"
+    },
+    {
+      "name": "p11__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p11__t_latency_abs_s WHEN v(rbl_p11)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p12__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r0_wl_off_v FIND v(sn_r0_p12) AT=2.100000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r1_wl_off_v FIND v(sn_r1_p12) AT=4.600000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r2_wl_off_v FIND v(sn_r2_p12) AT=7.100000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r3_wl_off_v FIND v(sn_r3_p12) AT=9.600000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r0_after_write_v FIND v(sn_r0_p12) AT=9.950000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r1_after_write_v FIND v(sn_r1_p12) AT=9.950000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r2_after_write_v FIND v(sn_r2_p12) AT=9.950000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r3_after_write_v FIND v(sn_r3_p12) AT=9.950000000e-08"
+    },
+    {
+      "name": "p12__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r0_preread_v FIND v(sn_r0_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r0_preread_a FIND i(vam_r0_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r1_preread_v FIND v(sn_r1_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r1_preread_a FIND i(vam_r1_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r2_preread_v FIND v(sn_r2_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r2_preread_a FIND i(vam_r2_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r3_preread_v FIND v(sn_r3_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r3_preread_a FIND i(vam_r3_p12) AT=5.048445000e-06"
+    },
+    {
+      "name": "p12__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_rbl_preread_float_v FIND v(rbl_p12) AT=5.050745000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r0_sense_a FIND i(vam_r0_p12) AT=5.060945000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r1_sense_a FIND i(vam_r1_p12) AT=5.060945000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r2_sense_a FIND i(vam_r2_p12) AT=5.060945000e-06"
+    },
+    {
+      "name": "p12__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p12__i_into_rbl_r3_sense_a FIND i(vam_r3_p12) AT=5.060945000e-06"
+    },
+    {
+      "name": "p12__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_rbl_sense_v FIND v(rbl_p12) AT=5.060945000e-06"
+    },
+    {
+      "name": "p12__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_rbl_end_v FIND v(rbl_p12) AT=5.070445000e-06"
+    },
+    {
+      "name": "p12__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_sel_sense_v FIND v(sn_r2_p12) AT=5.060945000e-06"
+    },
+    {
+      "name": "p12__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r0_end_v FIND v(sn_r0_p12) AT=5.075445000e-06"
+    },
+    {
+      "name": "p12__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r1_end_v FIND v(sn_r1_p12) AT=5.075445000e-06"
+    },
+    {
+      "name": "p12__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r2_end_v FIND v(sn_r2_p12) AT=5.075445000e-06"
+    },
+    {
+      "name": "p12__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p12__v_sn_r3_end_v FIND v(sn_r3_p12) AT=5.075445000e-06"
+    },
+    {
+      "name": "p12__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p12__t_latency_abs_s WHEN v(rbl_p12)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p13__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r0_wl_off_v FIND v(sn_r0_p13) AT=2.100000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r1_wl_off_v FIND v(sn_r1_p13) AT=4.600000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r2_wl_off_v FIND v(sn_r2_p13) AT=7.100000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r3_wl_off_v FIND v(sn_r3_p13) AT=9.600000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r0_after_write_v FIND v(sn_r0_p13) AT=9.950000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r1_after_write_v FIND v(sn_r1_p13) AT=9.950000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r2_after_write_v FIND v(sn_r2_p13) AT=9.950000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r3_after_write_v FIND v(sn_r3_p13) AT=9.950000000e-08"
+    },
+    {
+      "name": "p13__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r0_preread_v FIND v(sn_r0_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r0_preread_a FIND i(vam_r0_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r1_preread_v FIND v(sn_r1_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r1_preread_a FIND i(vam_r1_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r2_preread_v FIND v(sn_r2_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r2_preread_a FIND i(vam_r2_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r3_preread_v FIND v(sn_r3_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r3_preread_a FIND i(vam_r3_p13) AT=5.048445000e-06"
+    },
+    {
+      "name": "p13__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_rbl_preread_float_v FIND v(rbl_p13) AT=5.050745000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r0_sense_a FIND i(vam_r0_p13) AT=5.060945000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r1_sense_a FIND i(vam_r1_p13) AT=5.060945000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r2_sense_a FIND i(vam_r2_p13) AT=5.060945000e-06"
+    },
+    {
+      "name": "p13__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p13__i_into_rbl_r3_sense_a FIND i(vam_r3_p13) AT=5.060945000e-06"
+    },
+    {
+      "name": "p13__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_rbl_sense_v FIND v(rbl_p13) AT=5.060945000e-06"
+    },
+    {
+      "name": "p13__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_rbl_end_v FIND v(rbl_p13) AT=5.070445000e-06"
+    },
+    {
+      "name": "p13__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_sel_sense_v FIND v(sn_r2_p13) AT=5.060945000e-06"
+    },
+    {
+      "name": "p13__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r0_end_v FIND v(sn_r0_p13) AT=5.075445000e-06"
+    },
+    {
+      "name": "p13__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r1_end_v FIND v(sn_r1_p13) AT=5.075445000e-06"
+    },
+    {
+      "name": "p13__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r2_end_v FIND v(sn_r2_p13) AT=5.075445000e-06"
+    },
+    {
+      "name": "p13__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p13__v_sn_r3_end_v FIND v(sn_r3_p13) AT=5.075445000e-06"
+    },
+    {
+      "name": "p13__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p13__t_latency_abs_s WHEN v(rbl_p13)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p14__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r0_wl_off_v FIND v(sn_r0_p14) AT=2.100000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r1_wl_off_v FIND v(sn_r1_p14) AT=4.600000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r2_wl_off_v FIND v(sn_r2_p14) AT=7.100000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r3_wl_off_v FIND v(sn_r3_p14) AT=9.600000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r0_after_write_v FIND v(sn_r0_p14) AT=9.950000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r1_after_write_v FIND v(sn_r1_p14) AT=9.950000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r2_after_write_v FIND v(sn_r2_p14) AT=9.950000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r3_after_write_v FIND v(sn_r3_p14) AT=9.950000000e-08"
+    },
+    {
+      "name": "p14__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r0_preread_v FIND v(sn_r0_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r0_preread_a FIND i(vam_r0_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r1_preread_v FIND v(sn_r1_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r1_preread_a FIND i(vam_r1_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r2_preread_v FIND v(sn_r2_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r2_preread_a FIND i(vam_r2_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r3_preread_v FIND v(sn_r3_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r3_preread_a FIND i(vam_r3_p14) AT=5.048445000e-06"
+    },
+    {
+      "name": "p14__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_rbl_preread_float_v FIND v(rbl_p14) AT=5.050745000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r0_sense_a FIND i(vam_r0_p14) AT=5.060945000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r1_sense_a FIND i(vam_r1_p14) AT=5.060945000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r2_sense_a FIND i(vam_r2_p14) AT=5.060945000e-06"
+    },
+    {
+      "name": "p14__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p14__i_into_rbl_r3_sense_a FIND i(vam_r3_p14) AT=5.060945000e-06"
+    },
+    {
+      "name": "p14__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_rbl_sense_v FIND v(rbl_p14) AT=5.060945000e-06"
+    },
+    {
+      "name": "p14__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_rbl_end_v FIND v(rbl_p14) AT=5.070445000e-06"
+    },
+    {
+      "name": "p14__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_sel_sense_v FIND v(sn_r2_p14) AT=5.060945000e-06"
+    },
+    {
+      "name": "p14__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r0_end_v FIND v(sn_r0_p14) AT=5.075445000e-06"
+    },
+    {
+      "name": "p14__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r1_end_v FIND v(sn_r1_p14) AT=5.075445000e-06"
+    },
+    {
+      "name": "p14__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r2_end_v FIND v(sn_r2_p14) AT=5.075445000e-06"
+    },
+    {
+      "name": "p14__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p14__v_sn_r3_end_v FIND v(sn_r3_p14) AT=5.075445000e-06"
+    },
+    {
+      "name": "p14__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p14__t_latency_abs_s WHEN v(rbl_p14)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    },
+    {
+      "name": "p15__v_sn_r0_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r0_wl_off_v FIND v(sn_r0_p15) AT=2.100000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r1_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r1_wl_off_v FIND v(sn_r1_p15) AT=4.600000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r2_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r2_wl_off_v FIND v(sn_r2_p15) AT=7.100000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r3_wl_off_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r3_wl_off_v FIND v(sn_r3_p15) AT=9.600000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r0_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r0_after_write_v FIND v(sn_r0_p15) AT=9.950000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r1_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r1_after_write_v FIND v(sn_r1_p15) AT=9.950000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r2_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r2_after_write_v FIND v(sn_r2_p15) AT=9.950000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r3_after_write_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r3_after_write_v FIND v(sn_r3_p15) AT=9.950000000e-08"
+    },
+    {
+      "name": "p15__v_sn_r0_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r0_preread_v FIND v(sn_r0_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r0_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r0_preread_a FIND i(vam_r0_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__v_sn_r1_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r1_preread_v FIND v(sn_r1_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r1_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r1_preread_a FIND i(vam_r1_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__v_sn_r2_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r2_preread_v FIND v(sn_r2_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r2_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r2_preread_a FIND i(vam_r2_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__v_sn_r3_preread_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r3_preread_v FIND v(sn_r3_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r3_preread_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r3_preread_a FIND i(vam_r3_p15) AT=5.048445000e-06"
+    },
+    {
+      "name": "p15__v_rbl_preread_float_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_rbl_preread_float_v FIND v(rbl_p15) AT=5.050745000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r0_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r0_sense_a FIND i(vam_r0_p15) AT=5.060945000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r1_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r1_sense_a FIND i(vam_r1_p15) AT=5.060945000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r2_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r2_sense_a FIND i(vam_r2_p15) AT=5.060945000e-06"
+    },
+    {
+      "name": "p15__i_into_rbl_r3_sense_a",
+      "unit": "A",
+      "spice": ".meas tran p15__i_into_rbl_r3_sense_a FIND i(vam_r3_p15) AT=5.060945000e-06"
+    },
+    {
+      "name": "p15__v_rbl_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_rbl_sense_v FIND v(rbl_p15) AT=5.060945000e-06"
+    },
+    {
+      "name": "p15__v_rbl_end_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_rbl_end_v FIND v(rbl_p15) AT=5.070445000e-06"
+    },
+    {
+      "name": "p15__v_sn_sel_sense_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_sel_sense_v FIND v(sn_r2_p15) AT=5.060945000e-06"
+    },
+    {
+      "name": "p15__v_sn_r0_end_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r0_end_v FIND v(sn_r0_p15) AT=5.075445000e-06"
+    },
+    {
+      "name": "p15__v_sn_r1_end_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r1_end_v FIND v(sn_r1_p15) AT=5.075445000e-06"
+    },
+    {
+      "name": "p15__v_sn_r2_end_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r2_end_v FIND v(sn_r2_p15) AT=5.075445000e-06"
+    },
+    {
+      "name": "p15__v_sn_r3_end_v",
+      "unit": "V",
+      "spice": ".meas tran p15__v_sn_r3_end_v FIND v(sn_r3_p15) AT=5.075445000e-06"
+    },
+    {
+      "name": "p15__t_latency_abs_s",
+      "unit": "s",
+      "spice": ".meas tran p15__t_latency_abs_s WHEN v(rbl_p15)={VRBL-DV_LAT} FALL=1 TD=5.050945000e-06",
+      "on_unreached": "null"
+    }
+  ],
+  "options": {
+    "timeout_s": 220,
+    "keep_artifacts": false,
+    "waveforms": false,
+    "ngspice_init": [
+      "set measureprec=12",
+      "set numdgt=12"
+    ]
+  }
+}
