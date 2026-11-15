@@ -19,7 +19,12 @@ From [`retention-refresh-budget.md`](retention-refresh-budget.md) (RATIFIED):
 1.106463 fF ASSUMED, `delta_V` = `VDD`/2 = 0.9 V ASSUMED, `I_leak`
 9.898880e-11 A measured); refresh-interval upper bound ~5.03 us (2x margin
 ASSUMPTION); refresh bandwidth formula. `delta_V` = `VDD`/2 remains an
-ASSUMPTION pending a sense amplifier. Restricting the temperature range
+ASSUMPTION pending a validated sense-margin budget: a schematic-level sense
+latch exists (`design/sense_latch.sch`, #109), characterized across corners
+and for input-referred offset, but it has no layout and its offset/yield is
+not validated (`offset_yield_validated: false`) — see
+[`sense-stage-premise-decision.md`](sense-stage-premise-decision.md).
+Restricting the temperature range
 relaxes none of them.
 
 ## 2. Operator ruling and what it does not adopt
@@ -151,7 +156,12 @@ This is a conservative interval that rests on **discrete simulated points**
 
 ## 7. What is not shown (stated limitations)
 
-* No sense amplifier exists. The summary `claims` field has
+* No validated sense-margin budget exists: a schematic-level sense latch
+  exists (`design/sense_latch.sch`, #109), characterized across corners and
+  for input-referred offset, but its sizes are provisional, it has no
+  layout, and its offset/yield is not validated — see
+  [`sense-stage-premise-decision.md`](sense-stage-premise-decision.md). The
+  summary `claims` field has
   `sense_decision_implemented: false`, `offset_yield_validated: false`,
   `all_corner_functional_pass: false`. "Separation >= 0.1 V" is read
   separation, **not** a validated sense decision, and not offset or yield.
@@ -177,8 +187,12 @@ This is a conservative interval that rests on **discrete simulated points**
 > global process corners at junction temperatures of 27 C and 125 C and
 > 1.8 V supply. The same path fails at -40 C in the fs corner and is
 > marginal in the ss corner, and was not simulated between -40 C and 27 C,
-> above 125 C, or at any other supply. No sense amplifier, mismatch, offset
-> or yield result exists. This block is a dynamic gain-cell memory with a
+> above 125 C, or at any other supply. A schematic-level sense latch exists
+> (`design/sense_latch.sch`, #109), characterized across corners and for
+> input-referred offset, but it has no layout and its offset/yield is not
+> validated, so there is still no validated sense-margin budget (see
+> [`sense-stage-premise-decision.md`](sense-stage-premise-decision.md)).
+> This block is a dynamic gain-cell memory with a
 > refresh requirement; it is not full-range and is not a drop-in
 > replacement for SRAM.
 
