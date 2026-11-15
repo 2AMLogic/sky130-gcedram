@@ -33,6 +33,7 @@ sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
+import replay_lib as L  # noqa: E402
 
 BUDGET_NS = 34.0
 CYCLE_NS = 1.0
@@ -91,18 +92,6 @@ def duration(mi: dict, pin90_ns, pin50_ns) -> dict:
                 slack_completion_observed_ns=None if done_seen is None else round(BUDGET_NS - done_seen, 4),
                 fits_completion_observed=False if done_seen is None else done_seen <= BUDGET_NS + 1e-9,
                 gating_probe_ns=mi["t_meas_ns"], fits_gating_probe=mi["t_meas_ns"] <= BUDGET_NS + 1e-9)
-
-
-def reason(sim_ok, sense, r1_ok, r0_ok) -> str:
-    if not sim_ok:
-        return "simulator_error"
-    if not sense:
-        return "sense_incorrect"
-    if not r1_ok:
-        return "stored1_below_threshold"
-    if not r0_ok:
-        return "stored0_above_50mV"
-    return "pass"
 
 
 def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], list[dict]]:
@@ -172,7 +161,7 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
             sense_correct=sense, sense_correct_by_pattern={pat(r): r["sense_correct"] for r in rs},
             restore_success=restore[f"{PRIMARY:g}"], restore_success_by_fraction=restore,
             restored_by_pattern={pat(r): r[f"restored_{int(PRIMARY * 100)}"] for r in rs},
-            failure_reason=reason(sim_ok, sense, r1_ok, r0_ok),
+            failure_reason=L.failure_reason(sim_ok, sense, r1_ok, r0_ok),
             snend_by_pattern_v={pat(r): r["snend_v"] for r in rs},
             snend_over_sn_ref_by_pattern={pat(r): r["snend_over_sn_ref"] for r in rs},
             sn_before_wwl_fall_by_pattern_v={pat(r): r["sn_before_wwl_fall_v"] for r in rs},
