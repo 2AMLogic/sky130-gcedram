@@ -214,6 +214,7 @@ def measure(kdb: Any, committed: dict[str, Any], regenerated: dict[str, Any],
         "expected_but_absent_in_committed": sorted(set(expected) - set(committed["drawn"])),
         "expected_but_absent_in_regenerated": sorted(set(expected) - set(regenerated["drawn"])),
     }
+    enum_problems: list[str] = []
     for field, msg in (
         ("unexpected_in_committed", "drawn layer(s) in the committed stream not in --expect-drawn-layer"),
         ("unexpected_in_regenerated", "drawn layer(s) in the regenerated stream not in --expect-drawn-layer"),
@@ -221,8 +222,9 @@ def measure(kdb: Any, committed: dict[str, Any], regenerated: dict[str, Any],
         ("expected_but_absent_in_regenerated", "expected drawn layer(s) absent from the regenerated stream"),
     ):
         if enumeration[field]:
-            problems.append(f"{msg}: {', '.join(enumeration[field])}")
-    enumeration["match"] = not problems
+            enum_problems.append(f"{msg}: {', '.join(enumeration[field])}")
+    enumeration["match"] = not enum_problems
+    problems.extend(enum_problems)
 
     # ---- (2) per-pair XOR over the union of both streams' drawn pairs ----
     empty = kdb.Region()

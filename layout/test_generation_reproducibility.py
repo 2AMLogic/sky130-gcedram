@@ -5,6 +5,10 @@ and the preflight in layout/generate_array.sh / extract_array_parasitics.sh.
 No klt, KLayout or PDK needed: the toolchains are faked, and the GDS
 fixtures are byte-level mutations of the committed array GDS.
 
+Also covers the verdict scoping of layout/xor_layout_geometry.py's measure()
+(issue #306): measure() takes `kdb` as a parameter and imports klayout only
+lazily, so a small area-backed Region stub stands in for klayout here.
+
 Run: python3 -I layout/test_generation_reproducibility.py
 """
 from __future__ import annotations
@@ -28,6 +32,7 @@ REPO = HERE.parent
 sys.path.insert(0, str(HERE))
 import compare_array_layout as C  # noqa: E402
 import generation_toolchain as T  # noqa: E402
+import xor_layout_geometry as X  # noqa: E402
 
 COMMITTED_GDS = HERE / "gain_cell_2t_array.gds"
 TOP = "gain_cell_2t_array_4x4_layout_0"
@@ -513,6 +518,127 @@ class ToolchainGuard(Tmp):
         self.assertTrue(any("expected f6eeac7d" in p and "ciel enable" in p for p in problems))
         self.assertTrue(T.pdk_problems(CFG, T.pdk_identity(None, None)))
         self.assertTrue(T.pdk_problems(CFG, T.pdk_identity(str(self.dir / "none"), "sky130A")))
+
+
+# ------------------------------------- xor verdict scoping (issue #306)
+class _Box:
+    def __init__(self, l: int, b: int, r: int, t: int):
+        self.left, self.bottom, self.right, self.top = l, b, r, t
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, _Box) and (self.left, self.bottom, self.right, self.top) == (
+            other.left, other.bottom, other.right, other.top)
+
+
+class _Region:
+    """Area-backed stand-in for klayout.db.Region: the only API `measure()`
+    needs is `^`, merge, area, count, is_empty and bbox."""
+
+    def __init__(self, area: int = 0):
+        self._area = area
+
+    def __xor__(self, other: "_Region") -> "_Region":
+        return _Region(abs(self._area - other._area))
+
+    def merge(self) -> None:
+        pass
+
+    def area(self) -> int:
+        return self._area
+
+    def count(self) -> int:
+        return 1 if self._area else 0
+
+    def is_empty(self) -> bool:
+        return self._area == 0
+
+    def bbox(self) -> _Box:
+        return _Box(0, 0, self._area, self._area)
+
+
+class _Cell:
+    def __init__(self, extent: int = 100):
+        self._extent = extent
+
+    def bbox(self) -> _Box:
+        return _Box(0, 0, self._extent, self._extent)
+
+
+class _KDB:
+    Region = _Region
+
+
+class XorEnumerationVerdict(Tmp):
+    """`measure()`'s enumeration verdict must be scoped to the enumeration's
+    own findings, not the shared `problems` list (issue #306): the dbu check
+    appends to `problems` before the enumeration block, so a dbu mismatch
+    must leave `enumeration.match` true when the drawn-pair enumeration
+    itself matched -- while `result` stays not-equivalent and exit 1."""
+
+    EXPECTED = ["65/20", "66/20"]
+
+    def streams(self, *, committed_dbu: float = 0.001, regenerated_dbu: float | None = None,
+                committed_layers: dict | None = None, regenerated_layers: dict | None = None):
+        if committed_layers is None:
+            committed_layers = {"65/20": _Region(10), "66/20": _Region(4)}
+        if regenerated_layers is None:
+            regenerated_layers = dict(committed_layers)
+        committed = {"dbu": committed_dbu, "drawn": committed_layers, "labels": {}, "cell": _Cell()}
+        regenerated = {"dbu": regenerated_dbu if regenerated_dbu is not None else committed_dbu,
+                       "drawn": regenerated_layers, "labels": {}, "cell": _Cell()}
+        return committed, regenerated
+
+    def run_measure(self, **kw) -> dict:
+        committed, regenerated = self.streams(**kw)
+        return X.measure(_KDB, committed, regenerated, self.EXPECTED)
+
+    def test_dbu_mismatch_does_not_flip_enumeration_match(self):
+        rec = self.run_measure(regenerated_dbu=0.0005)
+        self.assertIs(rec["enumeration"]["match"], True)
+        for field in ("unexpected_in_committed", "unexpected_in_regenerated",
+                      "expected_but_absent_in_committed", "expected_but_absent_in_regenerated"):
+            self.assertEqual(rec["enumeration"][field], [], field)
+        self.assertEqual(rec["result"], "not-equivalent")
+        self.assertEqual(len(rec["problems"]), 1)
+        self.assertTrue(rec["problems"][0].startswith("database unit differs"), rec["problems"])
+
+    def test_added_layer_fails_enumeration(self):
+        rec = self.run_measure(regenerated_layers={
+            "65/20": _Region(10), "66/20": _Region(4), "70/20": _Region(7)})
+        self.assertIs(rec["enumeration"]["match"], False)
+        self.assertEqual(rec["enumeration"]["unexpected_in_regenerated"], ["70/20"])
+        self.assertIn("drawn layer(s) in the regenerated stream not in "
+                      "--expect-drawn-layer: 70/20", rec["problems"])
+        self.assertEqual(rec["result"], "not-equivalent")
+
+    def test_dropped_layer_fails_enumeration(self):
+        rec = self.run_measure(regenerated_layers={"65/20": _Region(10)})
+        self.assertIs(rec["enumeration"]["match"], False)
+        self.assertEqual(rec["enumeration"]["expected_but_absent_in_regenerated"], ["66/20"])
+        self.assertIn("expected drawn layer(s) absent from the regenerated stream: 66/20",
+                      rec["problems"])
+        self.assertEqual(rec["result"], "not-equivalent")
+
+    def test_clean_run_is_fully_quiet(self):
+        rec = self.run_measure()
+        self.assertIs(rec["enumeration"]["match"], True)
+        self.assertEqual(rec["problems"], [])
+        self.assertEqual(rec["result"], "equivalent")
+
+    def test_dbu_mismatch_plus_added_layer_keeps_problems_ordering(self):
+        rec = self.run_measure(regenerated_dbu=0.0005, regenerated_layers={
+            "65/20": _Region(10), "66/20": _Region(4), "70/20": _Region(7)})
+        self.assertIs(rec["enumeration"]["match"], False)
+        self.assertTrue(rec["problems"][0].startswith("database unit differs"), rec["problems"])
+        self.assertIn("drawn layer(s) in the regenerated stream not in "
+                      "--expect-drawn-layer: 70/20", rec["problems"])
+
+    def test_empty_expectation_with_no_drawn_layers_matches(self):
+        committed, regenerated = self.streams(committed_layers={}, regenerated_layers={})
+        rec = X.measure(_KDB, committed, regenerated, [])
+        self.assertIs(rec["enumeration"]["match"], True)
+        self.assertEqual(rec["problems"], [])
+        self.assertEqual(rec["result"], "equivalent")
 
 
 # --------------------------------------- scripts fail before writing
