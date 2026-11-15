@@ -192,11 +192,13 @@ EXTRACTED_C_SN_SOURCES = {
 
 # Sense margin: the storage-node voltage droop, from a written '1' at VDD,
 # that a read-side sense scheme can tolerate before it can no longer
-# reliably discriminate a stored '1' from a '0'. No sense-amplifier design
-# exists yet for this macro, so this repo assumes the conservative
-# half-VDD bound used as a coarse worst-case sizing rule in SRAM/DRAM
-# sensing design (absent a specific sense-amp offset/noise budget) rather
-# than a value validated against this macro's own sense circuit.
+# reliably discriminate a stored '1' from a '0'. A schematic-level sense
+# latch exists (design/sense_latch.sch, #109), characterized across
+# corners and for input-referred offset, but its offset/yield is not
+# validated (offset_yield_validated: false in every committed summary), so
+# this repo assumes the conservative half-VDD bound used as a coarse
+# worst-case sizing rule in SRAM/DRAM sensing design rather than a value
+# validated against this macro's own sense circuit.
 SENSE_MARGIN_V_ASSUMPTION = 1.8 / 2.0  # VDD/2, ASSUMPTION
 
 TOXE_RE = re.compile(r"toxe\s*=\s*\{\s*([0-9.eE+-]+)\s*\+\s*MC_MM_SWITCH")
@@ -443,7 +445,7 @@ def main(argv: list[str] | None = None) -> int:
         f"C_gate(read transistor, same geometry)={c_gate_ff:.6f} fF"
     )
     print(
-        f"ASSUMED sense margin (VDD/2, no sense-amp design exists yet): "
+        f"ASSUMED sense margin (VDD/2; latch offset/yield not validated): "
         f"delta_V={SENSE_MARGIN_V_ASSUMPTION} V"
     )
     print()

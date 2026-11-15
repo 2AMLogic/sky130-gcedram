@@ -119,8 +119,10 @@ instants, so the waveform and the sampling points cannot drift apart.
 
 ### `rbl` bias: `VDD`/2 = 0.9 V (an explicit choice)
 
-No sense amplifier exists yet (#24 item 2), so there is no designed
-bitline precharge level to adopt. `VDD`/2 is chosen because it keeps `M_RD`
+A schematic-level sense latch exists (`design/sense_latch.sch`, #109),
+but its sizes are provisional and its offset/yield is not validated
+(`offset_yield_validated: false`), so there is still no designed bitline
+precharge level to adopt. `VDD`/2 is chosen because it keeps `M_RD`
 in saturation for a stored '1' across the whole corner grid (the retained
 '1' levels below run 0.865 V … 1.223 V, and with `rwl` pulled to 0 V the
 device sees `Vds` = 0.9 V > `Vgs - Vth`), so `i_read_a` reads as a
