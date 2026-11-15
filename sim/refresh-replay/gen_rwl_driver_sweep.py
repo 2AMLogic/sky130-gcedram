@@ -32,7 +32,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import sha256_hex as sha  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 from replay_lib import ic_tokens, inst_lines  # noqa: E402
@@ -345,7 +345,7 @@ def main(argv=None) -> int:
     (run_dir / "waveforms.json").write_text(json.dumps(wf, indent=1) + "\n")
     (run_dir / "consistency_check.json").write_text(json.dumps(check, indent=1) + "\n")
     man = dict(
-        run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=134,
+        run_id=a.run_id, status=PROPOSED_RANGE_STATUS, issue=134,
         experimental_stimulus_model="RWL source: PWL with declared 0-100% ramp time (all RWL edges) + series resistor to the cell pin; NOT a designed physical driver",
         sweep_values_assumptions=dict(slew_only_ns=SLEW_ONLY_NS, r_only_ohm=R_ONLY_OHM, combined_slew_ns_r_ohm=COMBINED,
                                       release_delays_ns=RELEASE_DELAYS_NS, release_drivers_slew_ns_r_ohm=RELEASE_DRIVERS, ic_artifact_check=IC_CHECK,
