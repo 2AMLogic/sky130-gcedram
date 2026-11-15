@@ -22,6 +22,7 @@ Carlo), **PROPOSED/UNRATIFIED** restricted range
 | [`column_periphery.spice`](column_periphery.spice) | flat circuit body for `klt sim` (8 instances; device cards copied from the three `design/` netlists) |
 | [`request.json`](request.json) | the `klt sim` request: 5 process corners x {27, 125} C = 10 corners, one `tran` each, `backend: batch` |
 | [`analyze_column_periphery.py`](analyze_column_periphery.py) | reduces the committed klt report to per-point CSV + summary JSON (writes new files only) |
+| [`_periphery_contract.py`](_periphery_contract.py) | the contract gate below and its thresholds, in one place: imported by **both** analysers here, so a threshold-edge fix reaches the #114 summary and the #117 isolation summary together (issue #283) |
 | [`test_column_periphery.py`](test_column_periphery.py), [`../../design/test_column_periphery.py`](../../design/test_column_periphery.py) | stdlib checks, wired into CI (generated files not stale, scope, summary reproduces from the report, netlist-vs-schematic-vs-deck consistency) |
 | `results/` | append-only evidence |
 
@@ -72,6 +73,13 @@ scenario in [`sim/refresh-overhead`](../refresh-overhead/README.md);
 polarity with |d| >= 0.9 V; (d) within 5 ns of the enable. The 2 ns, 10 mV and
 5 ns values are ASSUMPTIONS inherited from the existing phase budget and
 sense-stage criterion, not spec values.
+
+All four clauses are one function, `compliance()` in
+[`_periphery_contract.py`](_periphery_contract.py), with the negative-control
+suite (`class Compliance`, each clause driven false individually) in
+[`test_column_periphery.py`](test_column_periphery.py). Both analysers import
+it: `analyze_column_periphery.py` reports it per corner, and
+`analyze_isolation_study.py` feeds it into the #117 `all_compliant` aggregate.
 
 ## Sizing rationale
 
