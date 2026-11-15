@@ -32,7 +32,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import PROPOSED_RANGE_STATUS, sha256_hex as sha  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 from replay_lib import ic_tokens, inst_lines  # noqa: E402
@@ -375,7 +375,7 @@ def main(argv=None) -> int:
                         digital=L.digital_duration(p["trace"]) if p["variant"] not in ("baseline_analog", "reference_write") and not str(p["variant"]).startswith("an_") else None)
                    for p in allinst],
         assumptions=dict(cycle_ns=1.0, vdd_v=L.VDD_V, budget_cycles_provisional=34, c_rbl_f=S.C_RBL_F, c_wbl_f=GEN.C_WBL_F, c_sn_ff=c_sn_ff,
-                         c_sn_provenance=str(prov), loads_fixed="C_RBL, C_WBL, C_SN, 100 ohm switches, other rows' RWL (ideal VDD) are identical to #131; the "
+                         c_sn_provenance=c_sn_provenance_json(prov), loads_fixed="C_RBL, C_WBL, C_SN, 100 ohm switches, other rows' RWL (ideal VDD) are identical to #131; the "
                          "driver model adds only the RWL source ramp time and a series resistor on the selected row"),
         pins=GR.pins(golden))
     man["pins"]["source_sha256"]["sim/refresh-replay/gen_rwl_driver_sweep.py"] = sha(HERE / "gen_rwl_driver_sweep.py")
