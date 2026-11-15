@@ -4,7 +4,7 @@
 * Circuit, stimulus and measurement instants come from
 * sim/loaded-column/tb_loaded_column.spice.tmpl and run_loaded_column.py;
 * the two device cards are copied verbatim from design/gain_cell_2t.spice
-* (sha256:1dbe6c519b96d651264ef30c736f62188b1c8728833fdd77ac60a9703e8aa05a), re-sized only when a knob changes W.
+* (sha256:7d1fe877ee5a7789e5b6f4b29788e1ecd927112de99e3156ba246eb2dcb73ad5), re-sized only when a knob changes W.
 * ALL timing / bias / loading below is a labelled ASSUMPTION -- see
 * sim/loaded-column/README.md. Nothing here is a ratified spec value.
 *
