@@ -11,7 +11,9 @@ Per (corner, regime, variant, pattern) record, kept SEPARATE and never merged in
 * ``sense_correct``           decided == intended data
 * ``restore_fraction``        SN_end / SN_ref (in-deck reference write); ``restored_90/95/98`` = sim/refresh-op criterion, which
                               ALREADY requires the correct decision -- a restore ratio can never pass an incorrect sense decision
-* ``outcome``                 simulator_error > sense_incorrect > stored1_below_threshold > stored0_above_50mV > pass (first failing)
+* ``outcome``                 simulator_error > sense_incorrect > stored1_below_threshold > stored0_above_50mV > pass (first failing);
+                              classified by ``replay_lib.failure_reason`` -- shared with sim/refresh-replay/analyze_rwl_driver_sweep.py so the
+                              recorded vocabulary and its precedence order have exactly one definition
 
 Writes NEW files (refuses to overwrite); ``--out-dir`` re-analyses a recorded run append-only into a new directory.
 """
@@ -32,7 +34,10 @@ sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_SCOPE_REPLAY_PREFIX  # noqa: E402
+from _evidence_common import klt_provenance  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
+import replay_lib as L  # noqa: E402
 
 FRACS = AR.FRACS
 PRIMARY = AR.PRIMARY_FRAC
@@ -49,18 +54,6 @@ DOCUMENTED_PIC_DROP_V = (-0.26, -0.12)                         # README #134: pi
 
 def pat(kind: str, sn: float) -> str:
     return f"{kind}_{sn:g}"
-
-
-def outcome(sim_ok: bool, sense: bool, r1_ok: bool, r0_ok: bool) -> str:
-    if not sim_ok:
-        return "simulator_error"
-    if not sense:
-        return "sense_incorrect"
-    if not r1_ok:
-        return "stored1_below_threshold"
-    if not r0_ok:
-        return "stored0_above_50mV"
-    return "pass"
 
 
 def record(meas: dict, mi: dict, corner: dict, sim_ok: bool) -> dict:
@@ -81,8 +74,8 @@ def record(meas: dict, mi: dict, corner: dict, sim_ok: bool) -> dict:
                label_matches_pre_read=None if pre is None else abs(pre - mi["sn_v"]) <= LABEL_TOL_V,
                sn_during_sense_v=meas.get(f"snrd_{n}"), dec_v=dec, decided=d, sense_correct=sense, snend_v=sn, sn_ref_v=sn_ref,
                restore_fraction=None if sn is None or not sn_ref else round(sn / sn_ref, 6), **r)
-    rec["outcome"] = outcome(sim_ok, sense, rec[f"restored_{int(PRIMARY * 100)}"] or mi["kind"] != "op1",
-                             rec[f"restored_{int(PRIMARY * 100)}"] or mi["kind"] != "op0")
+    rec["outcome"] = L.failure_reason(sim_ok, sense, rec[f"restored_{int(PRIMARY * 100)}"] or mi["kind"] != "op1",
+                                      rec[f"restored_{int(PRIMARY * 100)}"] or mi["kind"] != "op0")
     return rec
 
 
@@ -118,7 +111,7 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
                    min_op1_fraction=min((r["restore_fraction"] for r in op1 if r["restore_fraction"] is not None), default=None),
                    stored_zero_signed_levels_v=sorted(r["snend_v"] for r in op0 if r["snend_v"] is not None),
                    sn_ref_v=rs[0]["sn_ref_v"],
-                   failure_reason=outcome(sim_ok, sense, all(r[k] for r in op1), all(r[k] for r in op0)),
+                   failure_reason=L.failure_reason(sim_ok, sense, all(r[k] for r in op1), all(r[k] for r in op0)),
                    # restoration verdict of a record whose sense decision is wrong is NOT a restore result: report it as such
                    restore_among_sense_correct_patterns={r["pattern"]: r[k] for r in rs if r["sense_correct"]})
         neg_restore = rs[0]["restoration_negative"]
@@ -341,16 +334,13 @@ def main(argv=None) -> int:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
-    env = rep["environment"]
-    remote = env.get("remote", {})
     summary = dict(
         run_id=man["run_id"], issue=man["issue"], status=man["status"],
         framing="matched initialization controls of the unchanged refresh-replay circuit (ideal drivers); the physical regime is a zero-hold "
                 "preparation control, not a retention/hold study (#94)",
-        scope="27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V, no mismatch (PROPOSED range, not ratified)",
-        klt_status=rep["status"], corner_count=rep["corner_count"], batch_job_id=remote.get("job_id"), batch_instance_type=remote.get("instance_type"),
-        report_netlist_sha256=env.get("netlist_sha256"), report_models_lib_sha256=env.get("models_lib_sha256"), engine=env.get("engine"),
-        engine_version=env.get("engine_version"), report_provenance=rep.get("provenance"),
+        scope=PROPOSED_RANGE_SCOPE_REPLAY_PREFIX + ", no mismatch (PROPOSED range, not ratified)",
+        **klt_provenance(rep, hash_prefix="report_", engine=True),
+        report_provenance=rep.get("provenance"),
         analyzer_sha256_at_analysis=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         generated_deck_sha256=man["deck_sha256"], request_sha256=man["request_sha256"], pins=man["pins"], regimes=man["regimes"],
         preparation_assumptions=man["preparation_assumptions"], probe_definitions=man["probe_definitions"],

@@ -304,6 +304,73 @@ def decided(dend: float | None, threshold_v: float) -> str:
 
 
 # --------------------------------------------------------------------------
+# Evidence-summary preamble (issue #292) -- the spec-derived status/scope
+# literals and the klt provenance envelope that the sim/*/analyze_*.py
+# summaries re-spelled inline, eight copies across two drift-grown spellings.
+# The operating-range decision is PROPOSED, not ratified: when
+# ratification/ee-key/ and ratification/market-key/ sign, the status and
+# every scope string must flip together, and this is the one edit point that
+# makes that flip reach every bench at once (same rationale as decided()
+# above). The emitted bytes are pinned by each bench's committed summary
+# (sim/check_append_only.py), so key spellings and field order here are
+# contract, not style.
+# --------------------------------------------------------------------------
+
+PROPOSED_RANGE_STATUS = "PROPOSED_OPERATING_RANGE_NOT_RATIFIED"
+
+PROPOSED_RANGE_SCOPE = (
+    "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
+    "per spec/operating-range-decision-PROPOSED.md"
+)
+
+# The refresh-replay family's committed summaries pre-date the "=" spelling
+# above and append per-bench tails ("no mismatch", "ideal drivers", the
+# "(PROPOSED range, not ratified)" tag); their shared prefix stays under its
+# own constant until a ratified value replaces both spellings together.
+PROPOSED_RANGE_SCOPE_REPLAY_PREFIX = (
+    "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V"
+)
+
+
+def klt_provenance(
+    rep: dict,
+    *,
+    hash_prefix: str = "",
+    engine: bool = False,
+    status_key: str = "klt_status",
+    pre_batch: dict | None = None,
+) -> dict:
+    """Provenance envelope of one loaded klt report, in the field order the
+    committed summaries pin: `status_key`, `corner_count`, any `pre_batch`
+    extras, `batch_job_id`, `batch_instance_type`,
+    `{hash_prefix}netlist_sha256`, `{hash_prefix}models_lib_sha256`, an
+    optional `engine`, `engine_version`.
+
+    `hash_prefix="report_"` reproduces the refresh-replay family's key
+    spellings (their summaries prefix the two report hashes); `engine=True`
+    adds the `engine` key those summaries carry next to `engine_version`;
+    `status_key="status"` reproduces refresh-energy's nested `klt.main` /
+    `klt.fine` spelling; `pre_batch` inserts extra keys after
+    `corner_count` (sense-mismatch's `klt_errored`/`monte_carlo`,
+    refresh-energy's `klt_version`). Insertion order is part of the
+    contract: summaries are dumped with json.dumps, so a reordered key is
+    a changed evidence byte."""
+    env = rep.get("environment", {})
+    remote = env.get("remote", {})
+    out = {status_key: rep.get("status"), "corner_count": rep.get("corner_count")}
+    if pre_batch:
+        out.update(pre_batch)
+    out["batch_job_id"] = remote.get("job_id")
+    out["batch_instance_type"] = remote.get("instance_type")
+    out[f"{hash_prefix}netlist_sha256"] = env.get("netlist_sha256")
+    out[f"{hash_prefix}models_lib_sha256"] = env.get("models_lib_sha256")
+    if engine:
+        out["engine"] = env.get("engine")
+    out["engine_version"] = env.get("engine_version")
+    return out
+
+
+# --------------------------------------------------------------------------
 # SPICE number / waveform helpers (issue #58) -- shared by
 # sim/bitcell-transient/run_bitcell_transient.py and
 # sim/loaded-column/run_loaded_column.py (and, via the latter, the

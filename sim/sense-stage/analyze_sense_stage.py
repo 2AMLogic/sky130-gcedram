@@ -41,6 +41,9 @@ sys.path.insert(0, str(HERE.parent))
 from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
+from _evidence_common import klt_provenance  # noqa: E402
 import gen_sense_stage as G  # noqa: E402
 
 T_WINDOW_S = 5e-9              # ASSUMPTION: decision must complete within 5 ns of enable
@@ -177,16 +180,11 @@ def main(argv: list[str] | None = None) -> int:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
-    remote = rep["environment"].get("remote", {})
     summary = dict(
         run_id=run_id,
-        status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
-        scope="27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, per spec/operating-range-decision-PROPOSED.md",
-        klt_status=rep["status"], corner_count=rep["corner_count"],
-        batch_job_id=remote.get("job_id"), batch_instance_type=remote.get("instance_type"),
-        netlist_sha256=rep["environment"].get("netlist_sha256"),
-        models_lib_sha256=rep["environment"].get("models_lib_sha256"),
-        engine_version=rep["environment"].get("engine_version"),
+        status=PROPOSED_RANGE_STATUS,
+        scope=PROPOSED_RANGE_SCOPE,
+        **klt_provenance(rep),
         assumptions=dict(t_window_s=T_WINDOW_S, resolve_v=RESOLVE_V, c_rbl_f=G.C_RBL_F, vrbl_v=G.VRBL_V,
                          dvref_v=G.DVREF_V, t_en_after_select_s=G.T_EN_S - G.T_READ_S, n_rows=G.N_ROWS),
         claims=dict(mismatch_or_offset_yield_validated=False, supply_tolerance_studied=False,
