@@ -354,3 +354,34 @@ issue ratifies nothing, and no spec file is edited.
   simulated, so their area, power and settling costs are qualitative here.
 * `M_WR` gate overdrive (option A) cannot be judged from SPICE models.
 * No klayout-tools friction arose: this increment is simulation-only.
+
+## PDK pin status (issue #169, 2026-11-14)
+
+Everything in this directory is still pinned to open_pdks
+`c6d73a35f524070e85faff4a6a9eef49553ebc2b` and ngspice-46, as stamped on every
+row of `results/variant_results.csv`. The repo pin has since moved to
+`f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` ([`docs/pdk-pin.md`](../../../docs/pdk-pin.md)),
+and issue #169 re-qualified the **Phase 2** half of this group under it (run
+`20261114T091445Z`, see [`../README.md`](../README.md) section
+"Re-qualification under open_pdks `f6eeac7`"). This campaign was **not**
+re-run: its 10176 points at ~29 `.meas` declarations each do not fit a
+committed `klt sim` request/report evidence set, because `klt sim` has no
+per-case axis for a transient grid and cannot return named transient node
+vectors (2AMLogic/klayout-tools#5731). **#301** carries the follow-up and names
+the three ways out.
+
+Two findings from the Phase 2 re-run bear on reading the numbers below, and
+neither has been re-measured here:
+
+* At `sf / 125 C` the two open_pdks revisions give **bit-identical** results
+  for this circuit, so the model revision is unlikely to move these numbers.
+* The simulator upgrade from ngspice-46 to ngspice-47 did move Phase 2 numbers
+  (read currents up to ~8%, `v_rbl_sense_v` up to 8.76e-02 V, latency up to
+  -26%), always in the favourable direction. Since this study's pass criteria
+  are separation-, latency- and disturb-based, the same shift would relax them
+  rather than tighten them -- but that is an expectation, not a measurement.
+  Tracked in **#300**.
+
+Nothing above this section is edited, and no verdict here is restated or
+revised on the strength of an un-run grid.
+
