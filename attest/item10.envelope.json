@@ -52,7 +52,7 @@
         "role": "hygiene",
         "path": "digital/ci/README.md",
         "passed": true,
-        "content_hash": "sha256:10ec3b0eeca64c646afe002017685e41ea20d26e71c9d49848b40cfb056771c0"
+        "content_hash": "sha256:34849b61443da9b592516303d0501cd08861db31f25cf581974dfe913f2876c5"
       },
       {
         "check": "present",
