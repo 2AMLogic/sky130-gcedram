@@ -37,6 +37,8 @@ sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_SCOPE_REPLAY_PREFIX  # noqa: E402
+from _evidence_common import klt_provenance  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 
 BUDGET_CYCLES = 34             # provisional scheduler T_ROW (digital/refresh-scheduler), ASSUMPTION
@@ -230,8 +232,6 @@ def main(argv=None) -> int:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
-    env = rep["environment"]
-    remote = env.get("remote", {})
     by_variant = {}
     for v in man["variants"]:
         rs = [r for r in results if r["variant"] == v]
@@ -252,10 +252,8 @@ def main(argv=None) -> int:
             by_variant[v]["negative_control_ok_corners"] = sum(r["negative_control_ok"] for r in rs)
     summary = dict(
         run_id=man["run_id"], issue=man["issue"], status=man["status"],
-        scope="27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V, no mismatch, ideal drivers (PROPOSED range, not ratified)",
-        klt_status=rep["status"], corner_count=rep["corner_count"], batch_job_id=remote.get("job_id"),
-        batch_instance_type=remote.get("instance_type"), report_netlist_sha256=env.get("netlist_sha256"),
-        report_models_lib_sha256=env.get("models_lib_sha256"), engine=env.get("engine"), engine_version=env.get("engine_version"),
+        scope=PROPOSED_RANGE_SCOPE_REPLAY_PREFIX + ", no mismatch, ideal drivers (PROPOSED range, not ratified)",
+        **klt_provenance(rep, hash_prefix="report_", engine=True),
         report_provenance=rep.get("provenance"), report_klt_client_note="klt_version in report_provenance is the client that produced the report; pins.klt_client is the generator-time default client",
         generated_deck_sha256=man["deck_sha256"], request_sha256=man["request_sha256"], pins=man["pins"],
         criteria=dict(decide_v=AR.DECIDE_V, fracs=FRACS, primary_frac=PRIMARY, zero_max_v=AR.ZERO_MAX_V, budget_cycles=BUDGET_CYCLES,
