@@ -10,6 +10,7 @@
     "docs/pdk-pin.md",
     ".github/workflows/evidence-checks.yml",
     ".github/workflows/signoff.yml",
+    "sim/check_append_only.py",
     ".github/workflows/digital-regressions.yml",
     "digital/ci/run_digital_regressions.sh",
     "digital/ci/README.md"
