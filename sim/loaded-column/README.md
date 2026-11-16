@@ -470,3 +470,23 @@ which names the three ways out and the checks that must move with it. `gen_colum
 (`BASELINE_KNOBS` is asserted equal to `cold-corner/variants.py`'s `BASELINE`)
 so that campaign can reuse this shape unchanged once its size question is
 settled.
+
+### Grid-wide PDK-revision exclusion (static, 2026-11-16, issue #338)
+
+The per-corner scope caveat above ("attribution at tt/-40 C and across the
+rest of the grid remains an extrapolation") is extended grid-wide by a
+**static** closure-identity check, not by more probes:
+[`sim/pdk-closure-identity/`](../pdk-closure-identity) resolves the model
+closure these requests load from their own entry point for every corner
+section and shows, in its committed evidence record
+([`results/closure_identity_c6d73a3_vs_f6eeac7_20261116.json`](../pdk-closure-identity/results/closure_identity_c6d73a3_vs_f6eeac7_20261116.json)),
+that the two open_pdks revisions differ as files (119 vs 141 closure files;
+monolith split plus additive `.param`s) but are **identical in the model
+content these eight decks instantiate** -- `sky130_fd_pr__nfet_01v8`, the
+only PDK model they reference, and every parameter feeding it. The ngspice
+simulator attribution recorded in
+[`spec/operating-range-decision-PROPOSED.md`](../../spec/operating-range-decision-PROPOSED.md)
+section 11 is unchanged; this note only widens its PDK-exclusion scope to
+the whole grid, for this deck set only, as a file-content argument (not a
+simulation). The committed per-corner probes above remain the direct
+numerical evidence.

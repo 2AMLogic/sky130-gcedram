@@ -350,3 +350,37 @@ sensitivity is established or claimed here (tracked as #300).
   disturb stays under its 0.1 V criterion in both runs. ss/-40 C aged still
   sits below 0.9 V pre-read (0.898945 V), so that corner remains in conflict
   and still is not support for any colder bound.
+
+**Grid-wide extension of the PDK-revision exclusion (2026-11-16, issue
+#338).** This dated note extends the PDK-revision exclusion above from the
+two probed corners to the **whole loaded-column grid** (all five process
+sections ss/sf/tt/fs/ff and all temperatures), on a different and
+corner-independent basis: **content identity of the instantiated model
+set**, established statically from the two PDK trees with no SPICE run. The
+committed checker and its evidence record are
+[`sim/pdk-closure-identity/`](../sim/pdk-closure-identity/) with
+[`results/closure_identity_c6d73a3_vs_f6eeac7_20261116.json`](../sim/pdk-closure-identity/results/closure_identity_c6d73a3_vs_f6eeac7_20261116.json):
+resolving the model closure from the requests' own entry point for every
+corner section shows the loaded closures are **not** byte-identical (119 vs
+141 files; `f6eeac7` splits the `models_fet.spice` monolith into 22
+per-device files and adds an interconnect-capacitance `.param` block), but
+every difference is outside the set the decks use -- the eight `lc_*.spice`
+decks instantiate exactly one PDK model, `sky130_fd_pr__nfet_01v8` (1024
+references), whose block content, corner inputs and feeding parameters are
+identical in both revisions, and every differing `.param` is consumed only
+by R/C models no deck instantiates. Since a PDK revision can only change a
+result through the model content a deck instantiates, the ngspice-46 ->
+ngspice-47 attribution recorded above is unchanged by this note and now
+rests on both bases: the per-corner probes (direct numerical evidence,
+unchanged) and this static closure comparison (corner-independent, this
+deck set). **Limits of this note**: it covers this deck set only (the eight
+`lc_*.spice` decks instantiating only `sky130_fd_pr__nfet_01v8`); it is a
+static file-content argument, not a simulation; and it does **not** retire
+the PDK-attribution question in the per-group re-qualification issues
+(#166, #171, #182, #301) unless the checker is run over those studies' own
+decks and passes -- #182/#301 are `loom:operator` and a human's. Also
+recorded here: `environment.models_lib_sha256` in klt reports hashes only
+the entry-point `sky130.lib.spice` (klt `sim.py:4451`, klt issue #2522) and
+is identical between these revisions despite their closures differing, so
+it must **not** be cited as PDK-revision evidence (same caveat as
+`sim/sense-stage/README.md`).

@@ -459,6 +459,30 @@ it does **not** re-ratify any retention number in
 [`spec/retention-refresh-budget.md`](../spec/retention-refresh-budget.md),
 which remains a separate, gated spec change.
 
+## `pdk-closure-identity/` -- static PDK model-closure identity check (issue #338)
+
+No simulator runs here: a committed checker resolves the model closure the
+loaded-column requests actually load (from each request's own `models.lib`
+entry point, per corner section) in two open_pdks trees and compares the
+model content the decks instantiate -- order-independent per block name,
+plus transitive parameter-consumption tracing. Its committed evidence
+record establishes that open_pdks `c6d73a3` vs `f6eeac7` differ as files
+(119 vs 141 closure files) but are identical in everything the eight
+`lc_*.spice` decks instantiate (`sky130_fd_pr__nfet_01v8` and its feeding
+parameters), which extends the PDK-revision exclusion in
+[`spec/operating-range-decision-PROPOSED.md`](../spec/operating-range-decision-PROPOSED.md)
+section 11 grid-wide on a static basis. Also records why
+`environment.models_lib_sha256` must not be cited as PDK-revision evidence
+(entry-point-only hash). See
+[`pdk-closure-identity/README.md`](pdk-closure-identity/README.md).
+
+```bash
+python3 -I sim/pdk-closure-identity/check_closure_identity.py \
+    --root-a ~/.volare --root-b ~/.ciel \
+    --request sim/loaded-column/klt/request_*.json
+python3 -I sim/pdk-closure-identity/test_check_closure_identity.py
+```
+
 ## Stored evidence (issue #218)
 
 New campaigns put raw outputs in the fleet artifact store instead of git: stage
