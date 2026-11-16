@@ -30,7 +30,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as S  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V, parse_cards  # noqa: E402
+from _evidence_common import VDD_V, fmt_g6, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "refresh_op.spice"
@@ -141,14 +141,14 @@ def build_netlist(c_sn_f: float) -> str:
     a("* at one level, ideal matched dummy reference load, reference = VRBL - 100 mV, latch sizes")
     a("* (first pass), T_LATCH and T_GUARD fixed, global corners only (no mismatch).")
     a("")
-    a(f".param VDD   = {S._fmt(VDD_V)}")
-    a(f".param VRBL  = {S._fmt(VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param TEDGE = {S._fmt(T_EDGE_S)}")
-    a(f".param T_READ = {S._fmt(T_READ_S)}   $ select edge = T_PRE_ON + T_PRE_GAP")
-    a(f".param T_PGAP = {S._fmt(T_PRE_GAP_S)}")
-    a(f".param C_RBL = {S._fmt(S.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
-    a(f".param C_WBL = {S._fmt(C_WBL_F)}   $ ASSUMPTION (not extracted)")
-    a(f".param C_SN  = {S._fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param VDD   = {fmt_g6(VDD_V)}")
+    a(f".param VRBL  = {fmt_g6(VRBL_V)}   $ ASSUMPTION (contract)")
+    a(f".param TEDGE = {fmt_g6(T_EDGE_S)}")
+    a(f".param T_READ = {fmt_g6(T_READ_S)}   $ select edge = T_PRE_ON + T_PRE_GAP")
+    a(f".param T_PGAP = {fmt_g6(T_PRE_GAP_S)}")
+    a(f".param C_RBL = {fmt_g6(S.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
+    a(f".param C_WBL = {fmt_g6(C_WBL_F)}   $ ASSUMPTION (not extracted)")
+    a(f".param C_SN  = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("")
     a("* ---- shared drivers (ideal) ----")
     a("vdd   vdd 0 dc {VDD}")
@@ -156,7 +156,7 @@ def build_netlist(c_sn_f: float) -> str:
     a("vrwld rwl_des 0 dc {VDD}")
     a("vwwld wwl_des 0 dc 0")
     a("vpre  prea 0 dc {VRBL}")
-    a(f"vref  pref 0 dc {S._fmt(VRBL_V - DREF_V)}   $ reference = VRBL - {S._fmt(DREF_V)} (ASSUMPTION)")
+    a(f"vref  pref 0 dc {fmt_g6(VRBL_V - DREF_V)}   $ reference = VRBL - {fmt_g6(DREF_V)} (ASSUMPTION)")
     a("vwbi  wbl_ideal 0 dc {VDD}")
     a(".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)")
     a(f".model swwbl sw(vt=0.9 vh=0.1 ron={R_WBL_SW} roff=1e12)")
@@ -174,7 +174,7 @@ def build_netlist(c_sn_f: float) -> str:
         if p["kind"] == "ref":
             a(f"* reference write: ideal 1.8 V WBL; rbl/ref/latch idle (no read)")
             a(f"vwbr_{n} {wb} 0 dc {{VDD}}")
-            ics.append(f"v({wb})={S._fmt(VDD_V)}")
+            ics.append(f"v({wb})={fmt_g6(VDD_V)}")
         else:
             ics.append(f"v({wb})=0")
             a(f"swb_{n} {rf} {wb} wbc_{n} 0 swwbl")
@@ -184,7 +184,7 @@ def build_netlist(c_sn_f: float) -> str:
         a(f"spr_{n} pref {rf} ctl 0 swpre")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
-        ics.append(f"v({rb})={S._fmt(VDD_V)}")
+        ics.append(f"v({rb})={fmt_g6(VDD_V)}")
         ics.append(f"v({rf})=0")
         for r in range(N_ROWS):
             sn = f"sn_{n}_{r}"
@@ -193,7 +193,7 @@ def build_netlist(c_sn_f: float) -> str:
             a(f"XMWR_{n}_{r} {sn} {wwl} {wb} 0 {wr_m} {wr_p}")
             a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={S._fmt(p['sn'])}")
+            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
         lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{n}", "enb": f"enb_{n}",
                 "vdd": "vdd", "GND": "0", "0": "0"}
         for dev, (nets, model, params) in latch.items():

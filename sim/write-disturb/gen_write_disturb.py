@@ -48,7 +48,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import DELTA_V_V, VDD_V  # noqa: E402
+from _evidence_common import DELTA_V_V, VDD_V, fmt_g6  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "write_disturb.spice"
@@ -99,10 +99,6 @@ STAGE_NAMES = ["ctl0", "ctl1", "rep1", "rep0", "hs_p1", "hs_p0",
                "neg_ctl0", "neg_ctl1", "neg_rep1", "neg_rep0"]
 
 PRE_T_S = 5e-9                 # "pre" sample for single-write scenarios
-
-
-def _fmt(x: float) -> str:
-    return f"{x:.6g}"
 
 
 # ---------------------------------------------------------------------------
@@ -213,8 +209,8 @@ def mos_card(m, inst: str, leaky: bool) -> str:
         w = w * f
     nm = "xm" + name[2:].lower() + "_" + inst
     return (f"{nm} {node_name(d, inst)} {node_name(g, inst)} {node_name(s, inst)} {node_name(b, inst)} "
-            f"sky130_fd_pr__nfet_01v8 L={_fmt(l)} W={_fmt(w)} nf=1 ad={_fmt(ad)} as={_fmt(as_)} "
-            f"pd={_fmt(pd)} ps={_fmt(ps)} mult=1 m=1")
+            f"sky130_fd_pr__nfet_01v8 L={fmt_g6(l)} W={fmt_g6(w)} nf=1 ad={fmt_g6(ad)} as={fmt_g6(as_)} "
+            f"pd={fmt_g6(pd)} ps={fmt_g6(ps)} mult=1 m=1")
 
 
 # ---------------------------------------------------------------------------
@@ -223,7 +219,7 @@ def mos_card(m, inst: str, leaky: bool) -> str:
 def pwl(points: list[tuple[float, float]]) -> str:
     chunks, cur = [], []
     for t, v in points:
-        cur.append(f"{t:.10g} {_fmt(v)}")
+        cur.append(f"{t:.10g} {fmt_g6(v)}")
         if len(cur) == 6:
             chunks.append(" ".join(cur))
             cur = []
@@ -278,9 +274,9 @@ def build_netlist() -> str:
     a("* stored levels and 34 ns write cadence as in the generator constants, no sense / read activity.")
     a("")
     a(f".options {SIM_OPTIONS}")
-    a(f".param VDD = {_fmt(VDD_V)}")
+    a(f".param VDD = {fmt_g6(VDD_V)}")
     a("vdd  vdd  0 dc {VDD}")
-    a(f"vrbl vrbl 0 dc {_fmt(VRBL_V)}")
+    a(f"vrbl vrbl 0 dc {fmt_g6(VRBL_V)}")
     for node, (kind, n) in DRIVERS.items():
         a(f"v{node} {node} 0 {pwl(train(n, kind))}")
     a("")
@@ -293,9 +289,9 @@ def build_netlist() -> str:
         for nm, n1, n2, ohm in arr["res"]:
             if nm == "Rvsubs_dctie":
                 continue
-            a(f"{nm.lower()}_{inst} {node_name(n1, inst)} {node_name(n2, inst)} {_fmt(ohm)}")
+            a(f"{nm.lower()}_{inst} {node_name(n1, inst)} {node_name(n2, inst)} {fmt_g6(ohm)}")
         for nm, n1, n2, f in arr["cap"]:
-            a(f"{nm.lower()}_{inst} {node_name(n1, inst)} {node_name(n2, inst)} {_fmt(f)}")
+            a(f"{nm.lower()}_{inst} {node_name(n1, inst)} {node_name(n2, inst)} {fmt_g6(f)}")
         # ideal drivers: 0 V sources tie each hub to its shared drive node (or 0 / vdd / vrbl)
         for r in range(N_ROWS):
             a(f"vdw_{inst}_{r} wl_{r}_{inst} {WL_NODE[sc['wl']] if r == 0 else '0'} dc 0")
@@ -323,7 +319,7 @@ def build_netlist() -> str:
             else:
                 val = 0.0
             if kind == "sn" or tail:
-                ics.append(f"v({node_name(net, inst)})={_fmt(val)}")
+                ics.append(f"v({node_name(net, inst)})={fmt_g6(val)}")
         a("")
     a("* initial conditions (tran uic): stored levels, driven nets at their idle level")
     for k in range(0, len(ics), 4):
@@ -351,11 +347,11 @@ def build_request() -> dict:
                     t_lo, t_hi = c0 + T_WL_ON_S + 0.5e-9, c0 + T_WL_ON_S + T_WL_W_S
                     t_post = c0 + T_CYC_S - T_SETTLE_S
                     for tag, expr in (
-                        ("pre", f"FIND {node} AT={_fmt(PRE_T_S * 1e9)}n"),
-                        ("post", f"FIND {node} AT={_fmt(t_post * 1e9)}n"),
+                        ("pre", f"FIND {node} AT={fmt_g6(PRE_T_S * 1e9)}n"),
+                        ("post", f"FIND {node} AT={fmt_g6(t_post * 1e9)}n"),
                     ) + ((
-                        ("min", f"MIN {node} FROM={_fmt(t_lo * 1e9)}n TO={_fmt(t_hi * 1e9)}n"),
-                        ("max", f"MAX {node} FROM={_fmt(t_lo * 1e9)}n TO={_fmt(t_hi * 1e9)}n"),
+                        ("min", f"MIN {node} FROM={fmt_g6(t_lo * 1e9)}n TO={fmt_g6(t_hi * 1e9)}n"),
+                        ("max", f"MAX {node} FROM={fmt_g6(t_lo * 1e9)}n TO={fmt_g6(t_hi * 1e9)}n"),
                     ) if r == 0 else ()):
                         nm = meas_name("hs", inst, r, c, tag)
                         meas.append({"name": nm, "unit": "V", "spice": f".meas tran {nm} {expr}"})
@@ -363,10 +359,10 @@ def build_request() -> dict:
                     for n in N_SET:
                         nm = meas_name("sn", inst, r, c, f"n{n}")
                         meas.append({"name": nm, "unit": "V",
-                                     "spice": f".meas tran {nm} FIND {node} AT={_fmt(checkpoint_time_s(n) * 1e9)}n"})
-    stop = _fmt(T_STOP_S * 1e9)
+                                     "spice": f".meas tran {nm} FIND {node} AT={fmt_g6(checkpoint_time_s(n) * 1e9)}n"})
+    stop = fmt_g6(T_STOP_S * 1e9)
     return klt_request("write_disturb.spice", {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-                       f"{_fmt(TRAN_STEP_S * 1e12)}p {stop}n 0 {_fmt(TRAN_MAX_S * 1e12)}p uic", meas, 3600)
+                       f"{fmt_g6(TRAN_STEP_S * 1e12)}p {stop}n 0 {fmt_g6(TRAN_MAX_S * 1e12)}p uic", meas, 3600)
 
 
 def render() -> tuple[str, str]:
