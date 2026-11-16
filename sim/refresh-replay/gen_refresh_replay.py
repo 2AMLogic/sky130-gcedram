@@ -34,7 +34,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, parse_cards, sha256_hex as sha256  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, fmt_g6, parse_cards, sha256_hex as sha256  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 import replay_lib as L  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
@@ -187,18 +187,18 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
     a("* PWL sources differ. Sources per instance: ctl<-pre_en, rwls<-rwl_sel (inverted), en/enb<-sense_en")
     a("* (or the latch-hold adapter waveform), wwl<-wwl_en, wbc<-bl_drive. Instance suffix = variant.")
     a("")
-    a(f".param VDD   = {S._fmt(G.VDD_V)}")
-    a(f".param VRBL  = {S._fmt(G.VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param C_RBL = {S._fmt(S.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
-    a(f".param C_WBL = {S._fmt(G.C_WBL_F)}   $ ASSUMPTION (not extracted)")
-    a(f".param C_SN  = {S._fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param VDD   = {fmt_g6(G.VDD_V)}")
+    a(f".param VRBL  = {fmt_g6(G.VRBL_V)}   $ ASSUMPTION (contract)")
+    a(f".param C_RBL = {fmt_g6(S.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
+    a(f".param C_WBL = {fmt_g6(G.C_WBL_F)}   $ ASSUMPTION (not extracted)")
+    a(f".param C_SN  = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("")
     a("* ---- shared static drivers (ideal) ----")
     a("vdd   vdd 0 dc {VDD}")
     a("vrwld rwl_des 0 dc {VDD}")
     a("vwwld wwl_des 0 dc 0")
     a("vpre  prea 0 dc {VRBL}")
-    a(f"vref  pref 0 dc {S._fmt(G.VRBL_V - G.DREF_V)}   $ reference = VRBL - {S._fmt(G.DREF_V)} (ASSUMPTION)")
+    a(f"vref  pref 0 dc {fmt_g6(G.VRBL_V - G.DREF_V)}   $ reference = VRBL - {fmt_g6(G.DREF_V)} (ASSUMPTION)")
     a(".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)")
     a(f".model swwbl sw(vt=0.9 vh=0.1 ron={G.R_WBL_SW} roff=1e12)")
     a("")
@@ -217,7 +217,7 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
         if p["kind"] == "ref":
             a("* reference write: ideal 1.8 V WBL; rbl/ref/latch idle (no read)")
             a(f"vwbr_{n} {wb} 0 dc {{VDD}}")
-            ics.append(f"v({wb})={S._fmt(G.VDD_V)}")
+            ics.append(f"v({wb})={fmt_g6(G.VDD_V)}")
         else:
             ics.append(f"v({wb})=0")
             a(f"swb_{n} {rf} {wb} wbc_{n} 0 swwbl")
@@ -226,7 +226,7 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
         a(f"spr_{n} pref {rf} ctl_{n} 0 swpre")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
-        ics.append(f"v({rb})={S._fmt(G.VDD_V)}")
+        ics.append(f"v({rb})={fmt_g6(G.VDD_V)}")
         ics.append(f"v({rf})=0")
         for r in range(G.N_ROWS):
             sn = f"sn_{n}_{r}"
@@ -235,7 +235,7 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
             a(f"XMWR_{n}_{r} {sn} {wwl} {wb} 0 {wr_m} {wr_p}")
             a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={S._fmt(p['sn'])}")
+            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
         lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{n}", "enb": f"enb_{n}",
                 "vdd": "vdd", "GND": "0", "0": "0"}
         for dev, (nets, model, params) in latch.items():

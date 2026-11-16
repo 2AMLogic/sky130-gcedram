@@ -39,7 +39,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, sha256_hex as sha  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, fmt_g6, sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 from replay_lib import ic_tokens, inst_lines  # noqa: E402
@@ -133,10 +133,10 @@ def physical_instance(golden: dict, vt: dict, base: str, kind: str, sn: float, p
 def prep_lines(inst: dict) -> list[str]:
     """Declared ideal preparation driver (physical regime only): data source -> 100 ohm switch (existing swwbl model) -> WBL."""
     n, lab = inst["name"], inst["sn"]
-    data = f"pwl(0 {S._fmt(lab)} {PREP_WBL_RETURN_NS * 1e-9:.4e} {S._fmt(lab)} {(PREP_WBL_RETURN_NS + L.T_EDGE_NS) * 1e-9:.4e} 0)"
+    data = f"pwl(0 {fmt_g6(lab)} {PREP_WBL_RETURN_NS * 1e-9:.4e} {fmt_g6(lab)} {(PREP_WBL_RETURN_NS + L.T_EDGE_NS) * 1e-9:.4e} 0)"
     ctl = L.pwl_text(L.edges_to_pwl(1, [(PREP_SW_OPEN_NS, 0)], False))
     return [f"* preparation driver (physical regime; write {'ENABLED' if inst['prep_write'] else 'DELETED (init negative control)'}): "
-            f"WBL <- {S._fmt(lab)} V until {PREP_WBL_RETURN_NS:g} ns, then 0 V; switch open at {PREP_SW_OPEN_NS:g} ns",
+            f"WBL <- {fmt_g6(lab)} V until {PREP_WBL_RETURN_NS:g} ns, then 0 V; switch open at {PREP_SW_OPEN_NS:g} ns",
             f"vpw_{n} wpd_{n} 0 {data}", f"vpc_{n} pctl_{n} 0 {ctl}", f"spw_{n} wpd_{n} wbl_{n} pctl_{n} 0 swwbl"]
 
 
@@ -151,7 +151,7 @@ def build_deck(c_sn_f: float, insts: list[dict]) -> str:
             for t in toks:
                 m = re.match(r"v\(sn_(\S+)_0\)=(\S+)$", t)
                 if m and m.group(1) in by and by[m.group(1)]["regime"] == "physical":
-                    t = f"v(sn_{m.group(1)}_0)={S._fmt(by[m.group(1)]['sn_ic_row0_v'])}"
+                    t = f"v(sn_{m.group(1)}_0)={fmt_g6(by[m.group(1)]['sn_ic_row0_v'])}"
                 new.append(t)
             out.append(".ic " + " ".join(new))
             continue
@@ -162,7 +162,7 @@ def build_deck(c_sn_f: float, insts: list[dict]) -> str:
             if inst["regime"] == "physical":
                 out += prep_lines(inst)
             if inst.get("pin_ic"):
-                extra_ic.append(f"v(rwls_{inst['name']})={S._fmt(GEN.VDD_V)}")
+                extra_ic.append(f"v(rwls_{inst['name']})={fmt_g6(GEN.VDD_V)}")
     if out and out[-1] == "":
         out.pop()
     out.append("* explicit idle-high RWL pin initial conditions (pin_ic and physical regimes ONLY; legacy has none)")
@@ -213,9 +213,9 @@ def _split(lines: list[str]):
 def expected_ics(leg_ics: dict, inst: dict) -> dict:
     want = dict(leg_ics)
     if inst["pin_ic"]:
-        want["rwls_@"] = S._fmt(GEN.VDD_V)
+        want["rwls_@"] = fmt_g6(GEN.VDD_V)
     if inst["regime"] == "physical":
-        want["sn_@_0"] = S._fmt(inst["sn_ic_row0_v"])
+        want["sn_@_0"] = fmt_g6(inst["sn_ic_row0_v"])
     return want
 
 

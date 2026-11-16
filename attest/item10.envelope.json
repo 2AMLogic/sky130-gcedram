@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 40/40 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 43/43 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 40,
-    "passed_count": 40,
+    "check_count": 43,
+    "passed_count": 43,
     "checks": [
       {
         "check": "present",
@@ -52,7 +52,7 @@
         "role": "hygiene",
         "path": "digital/ci/README.md",
         "passed": true,
-        "content_hash": "sha256:10ec3b0eeca64c646afe002017685e41ea20d26e71c9d49848b40cfb056771c0"
+        "content_hash": "sha256:34849b61443da9b592516303d0501cd08861db31f25cf581974dfe913f2876c5"
       },
       {
         "check": "present",
@@ -71,6 +71,13 @@
       {
         "check": "present",
         "role": "hygiene",
+        "path": "sim/check_append_only.py",
+        "passed": true,
+        "content_hash": "sha256:13631b6e90ae79a9974a00e3a15d4bb9463b296beafb2eff07c48ccfc25bf543"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
         "path": "spec/README.md",
         "passed": true,
         "content_hash": "sha256:6176dff7e1fd40670393e08c898d911050f5bf4fc8db74863de9ce3351808b3e"
@@ -83,6 +90,19 @@
           "python3",
           "-I",
           "sim/loaded-column/test_analysis.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Loaded-column klt request generator / reducer (issue #169) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/test_gen_column_requests.py"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -187,6 +207,19 @@
           "python3",
           "-I",
           "design/test_sense_latch.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Normalizer raw-to-normalized freshness check (issue #229)",
+        "argv": [
+          "python3",
+          "-I",
+          "design/test_normalize_netlist.py"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -495,7 +528,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:64ee8b9028be25c47b7638aabe6a26c157eb5545225eab5f3e4a373a9a736646"
+      "content_hash": "sha256:451ebcd8032e4d65c13d62fc0284c4d54ca11a537d4a0b2bf4cd58e6a7feba98"
     }
   }
 }

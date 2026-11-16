@@ -88,7 +88,6 @@ from __future__ import annotations
 
 import argparse
 import datetime as _dt
-import hashlib
 import json
 import subprocess
 import sys
@@ -98,7 +97,9 @@ from typing import Any
 LAYOUT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = LAYOUT_DIR.parent
 sys.path.insert(0, str(LAYOUT_DIR))
+sys.path.insert(0, str(REPO_ROOT / "sim"))
 import generation_toolchain as T  # noqa: E402  (stdlib-only; no klayout needed)
+from _evidence_common import sha256_prefixed  # noqa: E402
 
 RECORD_KIND = "gain_cell_2t_array flattened per-layer geometry XOR record (issue #284)"
 SCHEMA_VERSION = 1
@@ -325,10 +326,6 @@ def repo_relative(p: Path) -> str:
         return f"<outside-repo>/{p.name}"
 
 
-def sha256_file(p: Path) -> str:
-    return "sha256:" + hashlib.sha256(p.read_bytes()).hexdigest()
-
-
 def toolchain_stamp(python: str | None) -> dict[str, Any] | None:
     """Probe an interpreter for its klayout-tools/klayout identity, or None."""
     if not python:
@@ -391,8 +388,8 @@ def main(argv: list[str] | None = None) -> int:
         "source": git_source(),
         "top_cell": args.top,
         "streams": {
-            "committed": {"path": repo_relative(args.committed), "sha256": sha256_file(args.committed)},
-            "regenerated": {"path": repo_relative(args.regenerated), "sha256": sha256_file(args.regenerated)},
+            "committed": {"path": repo_relative(args.committed), "sha256": sha256_prefixed(args.committed)},
+            "regenerated": {"path": repo_relative(args.regenerated), "sha256": sha256_prefixed(args.regenerated)},
         },
         "toolchains": {
             # Pin IDENTITY only, not generation-toolchain.json's `verified` prose:
