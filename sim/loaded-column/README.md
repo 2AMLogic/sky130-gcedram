@@ -98,7 +98,7 @@ One `.tran` per (corner, temperature, age, selected row, 4-bit stored pattern):
 | Quantity | Value | Basis |
 |---|---|---|
 | `C_RBL` (rbl load) | 10 fF | **Assumed, schematic-level.** Stand-in for column wire plus sense-input load; **not extracted**. The four `M_RD` drain junctions are model-internal. `bl` is an ideal driver. |
-| `t_sense` | 10 ns after select edge | Assumed; no sense circuit exists. |
+| `t_sense` | 10 ns after select edge | Assumed; a schematic-level sense latch exists (`design/sense_latch.sch`, #109), but its offset/yield is not validated (`offset_yield_validated: false`), so no sense-decision time is derived from it. |
 | Latency threshold | `rbl` 0.1 V below its pre-read level | Assumed; latency is *time to that droop*, not a sense decision time. |
 | Precharge level | 0.9 V (`VDD/2`) | Inherited from bitcell-transient. |
 | Write order / read age | rows 0..3; read age referenced to row 0 | Test choice. |
