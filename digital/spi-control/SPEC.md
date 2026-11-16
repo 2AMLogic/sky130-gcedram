@@ -87,4 +87,4 @@ interface (parallel vs serial).
 
 ## 6. Not covered
 
-No synthesis, timing, CDC or layout evidence; the behavioral model uses `sclk`/`cs_n` as clocks directly and is a protocol model only.
+No timing, CDC or layout evidence; the behavioral model uses `sclk`/`cs_n` as clocks directly and is a protocol model only. Synthesis evidence exists and is committed (see [README.md](README.md)): `spi_slave.synth.request.json` plus the 2026-11-11 issue-273 netlist and report in `results/` map `spi_slave` to `sky130_fd_sc_hd` cells; gate-level behaviour of that netlist is not verified.
