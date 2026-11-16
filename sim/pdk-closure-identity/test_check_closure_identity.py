@@ -230,8 +230,16 @@ class SameNameRedefinitionNoFalseDelta(Base):
                 "libs.tech/combined/params.spice":
                     ".param vth0_nfet = 0.4 u0_nfet = 350\n",
             })
-        rc = self.fx.run()
+        rc = self.fx.run(extra=["--out", str(self.fx.dir / "record.json")])
         self.assertEqual(rc, 0)
+        # The exit code alone cannot see an *outside* delta: assert the
+        # redefined name produced no block delta at all, in every section.
+        record = json.loads((self.fx.dir / "record.json").read_text())
+        for section, r in record["sections"].items():
+            self.assertEqual(
+                r["block_multiset_differing_names"], [],
+                f"section {section}: same-named redefinitions leaked as "
+                "block deltas")
 
 
 class InSetModelDeltaFails(Base):
