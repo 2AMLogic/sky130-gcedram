@@ -209,6 +209,14 @@
       ]
     },
     {
+      "name": "PDK model-closure identity checker tests (issue #338)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/pdk-closure-identity/test_check_closure_identity.py"
+      ]
+    },
+    {
       "name": "Shared evidence helper tests",
       "argv": [
         "python3",

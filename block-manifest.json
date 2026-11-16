@@ -38,7 +38,7 @@
     },
     "10.analog": {
       "file": "attest/item10.envelope.json",
-      "content_hash": "sha256:652fb47c829d0d9dfb52be92613f216a0b1d45654f505ed10440a7307df4fe8c"
+      "content_hash": "sha256:451ebcd8032e4d65c13d62fc0284c4d54ca11a537d4a0b2bf4cd58e6a7feba98"
     },
     "9.digital": {
       "file": "attest/item9.digital.envelope.json",
@@ -46,7 +46,7 @@
     },
     "10.digital": {
       "file": "attest/item10.envelope.json",
-      "content_hash": "sha256:652fb47c829d0d9dfb52be92613f216a0b1d45654f505ed10440a7307df4fe8c"
+      "content_hash": "sha256:451ebcd8032e4d65c13d62fc0284c4d54ca11a537d4a0b2bf4cd58e6a7feba98"
     }
   }
 }

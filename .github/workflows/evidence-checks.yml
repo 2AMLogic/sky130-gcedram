@@ -103,6 +103,9 @@ jobs:
       - name: Shared klt request skeleton tests (issue #196)
         run: python3 -I sim/test_klt_request.py
 
+      - name: PDK model-closure identity checker tests (issue #338)
+        run: python3 -I sim/pdk-closure-identity/test_check_closure_identity.py
+
       - name: Shared evidence helper tests
         run: python3 -I sim/test_evidence_common.py
 

@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 42/42 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 43/43 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 42,
-    "passed_count": 42,
+    "check_count": 43,
+    "passed_count": 43,
     "checks": [
       {
         "check": "present",
@@ -24,7 +24,7 @@
         "role": "hygiene",
         "path": ".github/workflows/evidence-checks.yml",
         "passed": true,
-        "content_hash": "sha256:e32ca8670144f020096d3d243d07531e56880a44afe88e28bd84bfff33432791"
+        "content_hash": "sha256:98097409f67261c8e7544c837b967883dde84356709053cc065ed100f5c4360f"
       },
       {
         "check": "present",
@@ -397,6 +397,19 @@
       {
         "check": "command",
         "role": "audit",
+        "name": "PDK model-closure identity checker tests (issue #338)",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/pdk-closure-identity/test_check_closure_identity.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
         "name": "Shared evidence helper tests",
         "argv": [
           "python3",
@@ -515,7 +528,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:652fb47c829d0d9dfb52be92613f216a0b1d45654f505ed10440a7307df4fe8c"
+      "content_hash": "sha256:451ebcd8032e4d65c13d62fc0284c4d54ca11a537d4a0b2bf4cd58e6a7feba98"
     }
   }
 }
