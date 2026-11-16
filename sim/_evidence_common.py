@@ -317,6 +317,14 @@ def sha256_prefixed(path: Path) -> str:
     return "sha256:" + sha256_hex(path)
 
 
+def fmt_g6(x: float) -> str:
+    """`%.6g` formatting for every value a generator interpolates into a
+    committed deck (`.param` cards, PWL vertices, ICs, `.meas` bounds).
+    One definition so the deck-emitting generators cannot drift apart on
+    number spelling."""
+    return f"{x:.6g}"
+
+
 def load_json(path: Path):
     """Parse a JSON report, gzip-decompressing when the file name ends in
     `.gz` (klt reports are committed as `.json` or `.json.gz`)."""

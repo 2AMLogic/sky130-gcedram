@@ -32,7 +32,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, sha256_hex as sha  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, fmt_g6, sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 from replay_lib import ic_tokens, inst_lines  # noqa: E402
@@ -170,7 +170,7 @@ def build_deck(c_sn_f: float, controls: list[dict], sweep: list[dict]) -> str:
             # (under `uic` the forced/charged pin steps 0 -> VDD at t = 0 and injects charge onto SN through the read device;
             # see the README). `pin_ic` points (group ic_artifact_check) DECLARE an explicit idle-high pin IC to quantify that artifact.
             if inst["point"].get("pin_ic"):
-                ics.append(f"v(rwls_{inst['name']})={S._fmt(GEN.VDD_V)}" + (f" v(rwlsrc_{inst['name']})={S._fmt(GEN.VDD_V)}" if inst["point"]["r_ohm"] > 0 else ""))
+                ics.append(f"v(rwls_{inst['name']})={fmt_g6(GEN.VDD_V)}" + (f" v(rwlsrc_{inst['name']})={fmt_g6(GEN.VDD_V)}" if inst["point"]["r_ohm"] > 0 else ""))
             continue
         out.append(ln)
     out.append("* initial conditions of the finite-impedance RWL pins (idle = VDD)")

@@ -39,7 +39,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as G  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V, parse_cards  # noqa: E402
+from _evidence_common import VDD_V, fmt_g6, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request, mc_block  # noqa: E402
 
 STAGE_NETLIST_PATH = HERE / "sense_mismatch.spice"
@@ -117,13 +117,13 @@ def _header(title: str, kinds: str) -> list[str]:
         "* ASSUMPTIONS (labelled; none is a spec value): C_RBL, VRBL, reference level, sense instant,",
         "* latch/footer/header sizes, ideal precharge switch, ideal drivers, ideal matched dummy load.",
         "",
-        f".param VDD     = {G._fmt(VDD_V)}",
-        f".param VRBL    = {G._fmt(G.VRBL_V)}   $ ASSUMPTION (contract)",
-        f".param TEDGE   = {G._fmt(G.T_EDGE_S)}",
-        f".param T_READ  = {G._fmt(G.T_READ_S)}   $ select edge",
-        f".param T_PGAP  = {G._fmt(G.T_PRE_GAP_S)}   $ precharge released this long before T_READ",
-        f".param T_EN    = {G._fmt(G.T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)",
-        f".param C_RBL   = {G._fmt(G.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)",
+        f".param VDD     = {fmt_g6(VDD_V)}",
+        f".param VRBL    = {fmt_g6(G.VRBL_V)}   $ ASSUMPTION (contract)",
+        f".param TEDGE   = {fmt_g6(G.T_EDGE_S)}",
+        f".param T_READ  = {fmt_g6(G.T_READ_S)}   $ select edge",
+        f".param T_PGAP  = {fmt_g6(G.T_PRE_GAP_S)}   $ precharge released this long before T_READ",
+        f".param T_EN    = {fmt_g6(G.T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)",
+        f".param C_RBL   = {fmt_g6(G.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)",
         "",
         "* ---- shared drivers (ideal) ----",
         "vdd   vdd 0 dc {VDD}",
@@ -162,7 +162,7 @@ def build_stage_netlist() -> str:
                 "s<p|m|z><mV>_<r>: rbl precharged to VREF+d, no cells, replica r")
     a = L.append
     ref = f"pref_{round(STAGE_DREF_V * 1000):03d}"
-    a(f"vref_{round(STAGE_DREF_V * 1000):03d} {ref} 0 dc {G._fmt(G.VRBL_V - STAGE_DREF_V)}   $ reference = VRBL - {G._fmt(STAGE_DREF_V)} (ASSUMPTION)")
+    a(f"vref_{round(STAGE_DREF_V * 1000):03d} {ref} 0 dc {fmt_g6(G.VRBL_V - STAGE_DREF_V)}   $ reference = VRBL - {fmt_g6(STAGE_DREF_V)} (ASSUMPTION)")
     for d in D_MV:
         va = G.VRBL_V - STAGE_DREF_V + d * 1e-3
         a(f"vpa_{_mv_tag(d)} pa_{_mv_tag(d)} 0 dc {va:.6f}")
@@ -191,12 +191,12 @@ def build_cell_netlist(c_sn_f: float) -> str:
     L = _header("sense_mismatch_cell.spice -- end-to-end (4-row column + latch) Monte Carlo at fs/27 C",
                 "c1_* stored '1', c0_* stored '0'; r<mV> = reference offset; last field = replica")
     a = L.append
-    a(f".param C_SN    = {G._fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param C_SN    = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("vrwls rwl_sel 0 pwl(0 {VDD} {T_READ} {VDD} {T_READ+TEDGE} 0)")
     a("vrwld rwl_des 0 dc {VDD}")
     a("vpre  prea 0 dc {VRBL}")
     for dref in CELL_DVREF_V:
-        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {G._fmt(G.VRBL_V - dref)}   $ reference = VRBL - {G._fmt(dref)} (ASSUMPTION)")
+        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {fmt_g6(G.VRBL_V - dref)}   $ reference = VRBL - {fmt_g6(dref)} (ASSUMPTION)")
     a("")
     latch = parse_cards(G.REPO / "design" / "sense_latch.spice")
     ics: list[str] = []
@@ -205,14 +205,14 @@ def build_cell_netlist(c_sn_f: float) -> str:
         rb, rf = f"rbl_{n}", f"ref_{n}"
         a(f"* ---- {n}: {p['kind']} SN = {p['sn']} V, ref offset {p['dref']} V, replica {p['rep']} ----")
         a(f"spa_{n} prea {rb} ctl 0 swpre")
-        ics.append(f"v({rb})={G._fmt(G.VRBL_V)}")
+        ics.append(f"v({rb})={fmt_g6(G.VRBL_V)}")
         for r in range(G.N_ROWS):
             sn = f"sn_{n}_{r}"
             rwl = "rwl_sel" if r == 0 else "rwl_des"
             a(f"XMWR_{n}_{r} {sn} 0 0 0 {wr_m} {wr_p}")
             a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={G._fmt(p['sn'])}")
+            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"spr_{n} pref_{round(p['dref'] * 1000):03d} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
@@ -225,8 +225,8 @@ def build_cell_netlist(c_sn_f: float) -> str:
 
 def _meas(names: list[str]) -> list[dict]:
     """din (differential at the enable instant), dend (at stop), tdec per instance."""
-    t_en_ns = G._fmt(G.T_EN_S * 1e9)
-    t_stop_ns = G._fmt(T_STOP_S * 1e9)
+    t_en_ns = fmt_g6(G.T_EN_S * 1e9)
+    t_stop_ns = fmt_g6(T_STOP_S * 1e9)
     out = []
     for n in names:
         out += [
@@ -250,7 +250,7 @@ def _corners(cs: list[tuple[str, int]]) -> tuple[dict, list[dict]]:
 
 def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict]) -> dict:
     corners, excl = _corners(cs)
-    return klt_request(netlist, corners, f"10p {G._fmt(T_STOP_S * 1e9)}n 0 50p uic", meas, 900,
+    return klt_request(netlist, corners, f"10p {fmt_g6(T_STOP_S * 1e9)}n 0 50p uic", meas, 900,
                        exclude=excl, monte_carlo=mc_block(n_mc, MC_SEED))
 
 
