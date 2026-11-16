@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 41/41 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 42/42 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 41,
-    "passed_count": 41,
+    "check_count": 42,
+    "passed_count": 42,
     "checks": [
       {
         "check": "present",
@@ -67,6 +67,13 @@
         "path": "docs/pdk-pin.md",
         "passed": true,
         "content_hash": "sha256:5f9c9d83340512600e6664b8998ef54ec823b22aef0ace5ba1e4e4e7426941d6"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "sim/check_append_only.py",
+        "passed": true,
+        "content_hash": "sha256:13631b6e90ae79a9974a00e3a15d4bb9463b296beafb2eff07c48ccfc25bf543"
       },
       {
         "check": "present",
@@ -508,7 +515,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:2d7ad8d85266a176e4d76195a626efaed6daba8d4ba235fbbbecef5ecc10e61e"
+      "content_hash": "sha256:652fb47c829d0d9dfb52be92613f216a0b1d45654f505ed10440a7307df4fe8c"
     }
   }
 }
