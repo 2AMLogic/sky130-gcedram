@@ -39,7 +39,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import PROPOSED_RANGE_STATUS, sha256_hex as sha  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 from replay_lib import ic_tokens, inst_lines  # noqa: E402
@@ -331,7 +331,7 @@ def main(argv=None) -> int:
                         sn_ic_row0_v=p["sn_ic_row0_v"], t_prep_ns=p["t_prep_ns"], t_pre_read_ns=p["t_pre_read_ns"], t_post_init_ns=p["t_post_init_ns"],
                         t_op_start_probe_ns=p["t_op_start_probe_ns"], t_dec_ns=p["t_dec_ns"], t_wwl_rise_ns=p["t_wwl_rise_ns"],
                         t_wwl_fall_ns=p["t_wwl_fall_ns"], t_release_ns=p["t_release_ns"], t_meas_ns=p["t_meas_ns"]) for p in insts],
-        assumptions=dict(cycle_ns=1.0, vdd_v=L.VDD_V, c_rbl_f=S.C_RBL_F, c_wbl_f=GEN.C_WBL_F, c_sn_ff=c_sn_ff, c_sn_provenance=str(prov),
+        assumptions=dict(cycle_ns=1.0, vdd_v=L.VDD_V, c_rbl_f=S.C_RBL_F, c_wbl_f=GEN.C_WBL_F, c_sn_ff=c_sn_ff, c_sn_provenance=c_sn_provenance_json(prov),
                          circuit="sim/refresh-op circuit body via gen_refresh_replay.build_netlist (ideal drivers, 100 ohm switches, 4-row column)"),
         pins=GR.pins(golden))
     for f in ("gen_init_control.py", "analyze_init_control.py", "gen_rwl_driver_sweep.py", "replay_lib.py"):

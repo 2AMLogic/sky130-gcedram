@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -296,6 +297,29 @@ class Analysis(unittest.TestCase):
         self.assertTrue(d["pin_ic_minus_legacy_pre_read"]["within_documented"])
         rows[0]["sense_correct"] = False                      # an extra failure at tt/27 -> no longer the documented set
         self.assertFalse(A.documented_claims(rows, results)["pin_ic_stored1_0p9_sense_failures"]["reproduced"])
+
+
+class ManifestCsnProvenanceJson(unittest.TestCase):
+    """Issue #323: c_sn_provenance must be emitted as a JSON object whose
+    extract_json_path is repo-root-relative (machine-independent), not a
+    str(prov) repr embedding this worktree's absolute path. Asserted on a
+    freshly generated manifest only -- the committed runs carry the old
+    repr-string form and sim/ evidence is append-only."""
+
+    def test_fresh_manifest_records_c_sn_provenance_as_repo_relative_object(self):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            trace = tmp / "trace.json"
+            trace.write_text(json.dumps(golden()))
+            rc = C.main([str(trace), "--results-dir", str(tmp / "out"), "--run-id", "probe"])
+            self.assertEqual(rc, 0)
+            man = json.loads((tmp / "out" / "probe" / "manifest.json").read_text())
+            prov = man["assumptions"]["c_sn_provenance"]
+            self.assertIsInstance(prov, dict)
+            self.assertEqual(prov["extract_json_path"], "layout/gain_cell_2t.extract.parasitics.json")
+            for k in ("klt_version", "input_content_hash", "ground_c_ff", "coupling_c_ff", "coupled_nets"):
+                self.assertIn(k, prov)
+            self.assertNotIn(str(HERE.parent.parent), json.dumps(man["assumptions"]))
 
 
 class Committed(unittest.TestCase):

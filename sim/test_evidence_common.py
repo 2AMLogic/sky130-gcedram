@@ -294,5 +294,23 @@ class KltProvenance(unittest.TestCase):
                          "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V")
 
 
+class CsnProvenanceJson(unittest.TestCase):
+    def test_relative_conversion_is_machine_independent_and_non_mutating(self):
+        prov = {"extract_json_path": C.REPO_ROOT / "layout" / "gain_cell_2t.extract.parasitics.json",
+                "klt_version": "0.8.0", "input_content_hash": "sha256:ab", "ground_c_ff": 0.5,
+                "coupling_c_ff": 0.1, "coupled_nets": ["rbl"]}
+        out = C.c_sn_provenance_json(prov)
+        self.assertEqual(out["extract_json_path"], "layout/gain_cell_2t.extract.parasitics.json")
+        for k in ("klt_version", "input_content_hash", "ground_c_ff", "coupling_c_ff", "coupled_nets"):
+            self.assertEqual(out[k], prov[k], k)
+        self.assertEqual(list(out), list(prov))                      # field order preserved (json.dumps contract)
+        self.assertIsInstance(prov["extract_json_path"], Path)       # input dict untouched (loader Path contract)
+
+    def test_out_of_repo_path_refused_with_clear_message_not_a_traceback(self):
+        with self.assertRaises(SystemExit) as cm:
+            C.c_sn_provenance_json({"extract_json_path": "/etc/passwd"})
+        self.assertIn("outside the repo root", str(cm.exception.code))
+
+
 if __name__ == "__main__":
     unittest.main()

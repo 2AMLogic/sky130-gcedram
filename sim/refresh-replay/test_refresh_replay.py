@@ -552,6 +552,31 @@ class ManifestStatusSinglePointOfEdit(unittest.TestCase):
             self.assertEqual(man["status"], sentinel)
 
 
+class ManifestCsnProvenanceJson(unittest.TestCase):
+    """Issue #323: c_sn_provenance must be emitted as a JSON object whose
+    extract_json_path is repo-root-relative (machine-independent), not a
+    str(prov) repr embedding this worktree's absolute path. Asserted on
+    freshly generated manifests only -- the committed runs carry the old
+    repr-string form and sim/ evidence is append-only."""
+
+    def test_fresh_manifests_record_c_sn_provenance_as_repo_relative_object(self):
+        for gen in (G, D):
+            with self.subTest(generator=gen.__name__):
+                with tempfile.TemporaryDirectory() as td:
+                    tmp = Path(td)
+                    trace = tmp / "trace.json"
+                    trace.write_text(json.dumps(golden()))
+                    rc = gen.main([str(trace), "--results-dir", str(tmp / "out"), "--run-id", "probe"])
+                    self.assertEqual(rc, 0)
+                    man = json.loads((tmp / "out" / "probe" / "manifest.json").read_text())
+                    prov = man["assumptions"]["c_sn_provenance"]
+                    self.assertIsInstance(prov, dict)
+                    self.assertEqual(prov["extract_json_path"], "layout/gain_cell_2t.extract.parasitics.json")
+                    for k in ("klt_version", "input_content_hash", "ground_c_ff", "coupling_c_ff", "coupled_nets"):
+                        self.assertIn(k, prov)
+                    self.assertNotIn(str(HERE.parent.parent), json.dumps(man["assumptions"]))
+
+
 class Committed(unittest.TestCase):
     def test_committed_runs_are_self_consistent(self):
         for rd in sorted((HERE / "results").glob("*/")):

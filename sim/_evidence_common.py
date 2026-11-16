@@ -465,6 +465,35 @@ def klt_provenance(
     return out
 
 
+# Repo root (the directory containing sim/), for the repo-relative
+# provenance paths recorded below. Derived from __file__ so it is correct
+# in any checkout, worktree or CI runner.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def c_sn_provenance_json(prov: dict) -> dict:
+    """JSON-ready copy of a `load_extracted_c_sn` provenance dict, safe to
+    embed in emitted evidence: `extract_json_path` (which the loader
+    returns as a Path) is rewritten to a repo-root-relative POSIX string,
+    the machine-independent shape refresh-energy summaries already record
+    (an absolute path differs between worktrees / CI runners). Every other
+    key passes through unchanged and in the same order. A report resolving
+    outside REPO_ROOT is refused with a clear message instead of a
+    traceback mid-generation -- recording a machine-specific absolute path
+    there would poison the evidence chain this field exists to carry."""
+    out = dict(prov)
+    path = Path(out["extract_json_path"]).resolve()
+    try:
+        out["extract_json_path"] = path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        raise SystemExit(
+            f"ERROR: extracted-C_SN report {path} resolves outside the repo root "
+            f"{REPO_ROOT}; refusing to record a machine-specific absolute path "
+            "in evidence (c_sn_provenance_json)"
+        ) from None
+    return out
+
+
 # --------------------------------------------------------------------------
 # SPICE number / waveform helpers (issue #58) -- shared by
 # sim/bitcell-transient/run_bitcell_transient.py and
