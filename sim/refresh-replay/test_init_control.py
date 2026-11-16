@@ -18,6 +18,7 @@ import analyze_init_control as A  # noqa: E402
 import gen_init_control as C  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
+from _evidence_common import fmt_g6  # noqa: E402
 from test_refresh_replay import golden  # noqa: E402
 
 
@@ -62,7 +63,7 @@ class Generator(unittest.TestCase):
         for i in self.insts:
             if i["regime"] == "legacy" and i["kind"] != "ref":
                 self.assertEqual(C.ic_tokens(self.deck, i["name"]).get("rwls_@"), None, i["name"])     # legacy: NO pin IC
-                self.assertEqual(C.ic_tokens(self.deck, i["name"])["sn_@_0"], GR.S._fmt(i["sn"]))
+                self.assertEqual(C.ic_tokens(self.deck, i["name"])["sn_@_0"], fmt_g6(i["sn"]))
 
     def test_every_instance_changes_only_its_regime_declared_items(self):
         for n, c in self.check.items():

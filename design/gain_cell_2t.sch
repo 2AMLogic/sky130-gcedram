@@ -28,11 +28,19 @@ v {xschem version=3.4.7 file_version=1.2
 *     leakage, already characterized in sim/leakage/, discharges sn).
 *     Sizing: same W=0.42um L=0.15um minimum geometry as M_WR. This is a
 *     placeholder/first-pass choice, NOT yet driven by a read-current or
-*     sense-margin analysis -- no sense-amplifier design exists yet (see
-*     sim/retention/README.md's own "ASSUMPTION" framing for C_SN/delta_V,
-*     which has the same pre-sense-amp-design caveat). Read-path sizing is
-*     out of scope for this issue (T1 item 1, design-sources capture only)
-*     and is expected to be revisited once sense-amp work begins.
+*     sense-margin analysis: a schematic-level sense latch exists
+*     (design/sense_latch.sch, #109), characterized across corners and for
+*     input-referred offset, but its sizes are provisional, it has no
+*     layout, its offset/yield is NOT validated
+*     (offset_yield_validated: false), and it sits under the PROPOSED,
+*     unratified operating range of
+*     spec/operating-range-decision-PROPOSED.md -- so there is still no
+*     validated sense-margin budget (see sim/retention/README.md's own
+*     "ASSUMPTION" framing for C_SN/delta_V, which carries the same
+*     no-validated-budget caveat). Read-path sizing is out of scope for
+*     this issue (T1 item 1, design-sources capture only) and is expected
+*     to be revisited once a validated sense-margin budget exists
+*     (epic #24).
 *
 * Node naming -- kept consistent with sim/leakage/README.md's bias-condition
 * table (per this issue's acceptance criteria, since downstream testbenches

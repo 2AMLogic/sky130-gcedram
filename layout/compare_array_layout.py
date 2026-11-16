@@ -58,6 +58,8 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from gdsio import GdsError, gds_records  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "sim"))
+from _evidence_common import sha256_prefixed  # noqa: E402
 
 BASELINE_ARTIFACTS: list[tuple[str, str]] = [
     ("gain_cell_2t_array_mos.gds", "gds"),
@@ -221,10 +223,6 @@ def diff_text(a: str, b: str) -> list[str]:
     return ["byte-level difference (line endings/trailing newline)"] if a != b else []
 
 
-def sha256_file(p: Path) -> str:
-    return "sha256:" + hashlib.sha256(p.read_bytes()).hexdigest()
-
-
 def compare_artifact(committed: Path, regenerated: Path, kind: str) -> dict[str, Any]:
     res: dict[str, Any] = {"artifact": committed.name, "kind": kind}
     missing = [str(p) for p in (committed, regenerated) if not p.is_file()]
@@ -232,7 +230,7 @@ def compare_artifact(committed: Path, regenerated: Path, kind: str) -> dict[str,
         res.update(match=False, differences=[f"missing file: {m}" for m in missing])
         return res
     ra, rb = committed.read_bytes(), regenerated.read_bytes()
-    res["raw_sha256"] = {"committed": sha256_file(committed), "regenerated": sha256_file(regenerated)}
+    res["raw_sha256"] = {"committed": sha256_prefixed(committed), "regenerated": sha256_prefixed(regenerated)}
     res["raw_identical"] = ra == rb
     try:
         if kind == "gds":

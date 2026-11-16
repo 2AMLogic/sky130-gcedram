@@ -210,6 +210,16 @@ class Sha256(unittest.TestCase):
             self.assertEqual(C.sha256_prefixed(f), "sha256:" + h)
 
 
+class FmtG6(unittest.TestCase):
+    def test_six_significant_digits(self):
+        self.assertEqual(C.fmt_g6(1.8), "1.8")
+        self.assertEqual(C.fmt_g6(0.0), "0")
+        self.assertEqual(C.fmt_g6(1e-9), "1e-09")
+        self.assertEqual(C.fmt_g6(2.5e-12), "2.5e-12")
+        self.assertEqual(C.fmt_g6(1.23456789), "1.23457")
+        self.assertEqual(C.fmt_g6(1234567.0), "1.23457e+06")
+
+
 class Decided(unittest.TestCase):
     def test_classification_and_edges(self):
         self.assertEqual(C.decided(None, 0.9), "none")

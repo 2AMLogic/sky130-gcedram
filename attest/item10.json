@@ -24,6 +24,14 @@
       ]
     },
     {
+      "name": "Loaded-column klt request generator / reducer (issue #169) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/test_gen_column_requests.py"
+      ]
+    },
+    {
       "name": "Cold-corner variant tests",
       "argv": [
         "python3",
@@ -85,6 +93,14 @@
         "python3",
         "-I",
         "design/test_sense_latch.py"
+      ]
+    },
+    {
+      "name": "Normalizer raw-to-normalized freshness check (issue #229)",
+      "argv": [
+        "python3",
+        "-I",
+        "design/test_normalize_netlist.py"
       ]
     },
     {

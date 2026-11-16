@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 39/39 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 41/41 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 39,
-    "passed_count": 39,
+    "check_count": 41,
+    "passed_count": 41,
     "checks": [
       {
         "check": "present",
@@ -52,7 +52,7 @@
         "role": "hygiene",
         "path": "digital/ci/README.md",
         "passed": true,
-        "content_hash": "sha256:10ec3b0eeca64c646afe002017685e41ea20d26e71c9d49848b40cfb056771c0"
+        "content_hash": "sha256:34849b61443da9b592516303d0501cd08861db31f25cf581974dfe913f2876c5"
       },
       {
         "check": "present",
@@ -83,6 +83,19 @@
           "python3",
           "-I",
           "sim/loaded-column/test_analysis.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Loaded-column klt request generator / reducer (issue #169) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/test_gen_column_requests.py"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -187,6 +200,19 @@
           "python3",
           "-I",
           "design/test_sense_latch.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Normalizer raw-to-normalized freshness check (issue #229)",
+        "argv": [
+          "python3",
+          "-I",
+          "design/test_normalize_netlist.py"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -482,7 +508,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:db1b07baafa5dbcce725b0a1c3baad4ab4d0a226fa2fd2b1e344cd9cdb6e9872"
+      "content_hash": "sha256:2d7ad8d85266a176e4d76195a626efaed6daba8d4ba235fbbbecef5ecc10e61e"
     }
   }
 }

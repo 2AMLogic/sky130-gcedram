@@ -38,13 +38,13 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:82e8b8906b73e2c16bfa4e896a12e6b675d1b35eed4888048d1c0a6298693869",
+        "content_hash": "sha256:35ef828666ac5ddf2a52a0b962b3a7d47409565680acc450b17f94fc8506feb5",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
           "t1_item": 1,
           "path": null,
-          "content_hash": "sha256:82e8b8906b73e2c16bfa4e896a12e6b675d1b35eed4888048d1c0a6298693869",
+          "content_hash": "sha256:35ef828666ac5ddf2a52a0b962b3a7d47409565680acc450b17f94fc8506feb5",
           "input_verified": true,
           "members": [
             {
@@ -92,7 +92,7 @@
                 "path": "design/gain_cell_2t.sch",
                 "scope": "repo"
               },
-              "content_hash": "sha256:1e778b714b4eeb3433afd6b5785cc22b47c41a29d832522e8f5874c31f98927e",
+              "content_hash": "sha256:01965828996949232734c04f7dc01b238c4a56e62f37c3ee13ec58cc1710e686",
               "status": "verified"
             },
             {
@@ -100,7 +100,7 @@
                 "path": "design/gain_cell_2t.spice",
                 "scope": "repo"
               },
-              "content_hash": "sha256:1dbe6c519b96d651264ef30c736f62188b1c8728833fdd77ac60a9703e8aa05a",
+              "content_hash": "sha256:7d1fe877ee5a7789e5b6f4b29788e1ecd927112de99e3156ba246eb2dcb73ad5",
               "status": "verified"
             },
             {
@@ -669,7 +669,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:db1b07baafa5dbcce725b0a1c3baad4ab4d0a226fa2fd2b1e344cd9cdb6e9872",
+        "content_hash": "sha256:2d7ad8d85266a176e4d76195a626efaed6daba8d4ba235fbbbecef5ecc10e61e",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -678,15 +678,15 @@
             "path": "attest/item10.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:db1b07baafa5dbcce725b0a1c3baad4ab4d0a226fa2fd2b1e344cd9cdb6e9872",
+          "content_hash": "sha256:2d7ad8d85266a176e4d76195a626efaed6daba8d4ba235fbbbecef5ecc10e61e",
           "input_verified": true,
-          "summary": "T1 item 10 (Repo hygiene): 39/39 attestation checks passed (klt signoff --attest)",
+          "summary": "T1 item 10 (Repo hygiene): 41/41 attestation checks passed (klt signoff --attest)",
           "source": "attest/item10.json",
           "attestation": {
             "producer": "klt signoff --attest",
             "inventory_schema_version": 1,
-            "check_count": 39,
-            "passed_count": 39
+            "check_count": 41,
+            "passed_count": 41
           }
         }
       }
@@ -707,7 +707,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:db1b07baafa5dbcce725b0a1c3baad4ab4d0a226fa2fd2b1e344cd9cdb6e9872",
+        "content_hash": "sha256:2d7ad8d85266a176e4d76195a626efaed6daba8d4ba235fbbbecef5ecc10e61e",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -716,15 +716,15 @@
             "path": "attest/item10.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:db1b07baafa5dbcce725b0a1c3baad4ab4d0a226fa2fd2b1e344cd9cdb6e9872",
+          "content_hash": "sha256:2d7ad8d85266a176e4d76195a626efaed6daba8d4ba235fbbbecef5ecc10e61e",
           "input_verified": true,
-          "summary": "T1 item 10 (Repo hygiene): 39/39 attestation checks passed (klt signoff --attest)",
+          "summary": "T1 item 10 (Repo hygiene): 41/41 attestation checks passed (klt signoff --attest)",
           "source": "attest/item10.json",
           "attestation": {
             "producer": "klt signoff --attest",
             "inventory_schema_version": 1,
-            "check_count": 39,
-            "passed_count": 39
+            "check_count": 41,
+            "passed_count": 41
           }
         }
       }

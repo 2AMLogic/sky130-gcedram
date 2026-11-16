@@ -34,7 +34,7 @@ Re-qualification under open_pdks `f6eeac7` (issue #169) adds:
 | [`test_gen_column_requests.py`](test_gen_column_requests.py) | Generator staleness / deck-relocatability / reducer-gate tests |
 | `results/klt_report_lc_*_20261114T091445Z.json.gz` | The eight raw fleet reports (gzipped), one per request |
 | [`results/summary_20261114T091445Z.json`](results/summary_20261114T091445Z.json) | Per-group summary of the `f6eeac7` run |
-| `results/pin-attribution/` | Two single-corner local reports that isolate the PDK revision from the simulator version |
+| `results/pin-attribution/` | Six single-corner local reports that isolate the PDK revision from the simulator version (sf/125 C; ss/-40 C fresh and refresh_bound -- one pair of reports per open_pdks tree), with the committed ss/-40 C probe requests under [`klt/`](klt) |
 
 ## Sources, pins, and what is derived from what
 
@@ -98,7 +98,7 @@ One `.tran` per (corner, temperature, age, selected row, 4-bit stored pattern):
 | Quantity | Value | Basis |
 |---|---|---|
 | `C_RBL` (rbl load) | 10 fF | **Assumed, schematic-level.** Stand-in for column wire plus sense-input load; **not extracted**. The four `M_RD` drain junctions are model-internal. `bl` is an ideal driver. |
-| `t_sense` | 10 ns after select edge | Assumed; no sense circuit exists. |
+| `t_sense` | 10 ns after select edge | Assumed; a schematic-level sense latch exists (`design/sense_latch.sch`, #109), but its offset/yield is not validated (`offset_yield_validated: false`), so no sense-decision time is derived from it. |
 | Latency threshold | `rbl` 0.1 V below its pre-read level | Assumed; latency is *time to that droop*, not a sense decision time. |
 | Precharge level | 0.9 V (`VDD/2`) | Inherited from bitcell-transient. |
 | Write order / read age | rows 0..3; read age referenced to row 0 | Test choice. |
@@ -381,27 +381,61 @@ the worst-violation table `compare_pins.py` prints. `compare_pins.py` exits 1
 while any field is outside tolerance, so this is a visible, standing
 condition and not a silent pass.
 
-**The PDK revision is not the cause.** The same deck, run locally at sf/125 C
-(the largest-delta corner) twice with nothing changed but which open_pdks tree
-`$PDK_ROOT` resolved to, gives **bit-identical** results:
+**The PDK revision is not the cause, at the corners probed.** The same deck,
+run locally twice with nothing changed but which open_pdks tree `$PDK_ROOT`
+resolved to, gives **bit-identical** results. The first probe was sf/125 C --
+chosen because it is the largest-delta corner for the deselected-row current
+`i_desel_sum_sense_a` (worst |delta| 2.12e-06 A), a near-noise quantity; it is
+**not** extremal for the quantities the spec record rests on (the worst
+single-case separation delta is at tt/-40 C, 8.755e-02 V, and the worst
+latency delta at ss/-40 C, both per `compare_pins.py` above). The second
+probe (2026-11-15, issue #326) covers the corner where the recorded conflict
+lives, ss/-40 C, for **both** decks -- `lc_fresh_sel0.spice` (which carries
+the 0.9 V stored-level crossing) and `lc_refresh_bound_sel0.spice` (which
+carries the surviving conflict) -- again under ngspice-47, one run per PDK
+tree:
 
 ```bash
 python3 -I sim/loaded-column/compare_pins.py --compare-reports \
   sim/loaded-column/results/pin-attribution/klt_report_local_sf125_c6d73a3_ngspice47_20261114T091445Z.json.gz \
   sim/loaded-column/results/pin-attribution/klt_report_local_sf125_f6eeac7_ngspice47_20261114T091445Z.json.gz
 # 464 shared measurements: 456 bit-identical, 0 differ
+
+python3 -I sim/loaded-column/compare_pins.py --compare-reports \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_c6d73a3_ngspice47_20261114T091445Z.json.gz \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_f6eeac7_ngspice47_20261114T091445Z.json.gz
+# 464 shared measurements: 456 bit-identical, 0 differ
+
+python3 -I sim/loaded-column/compare_pins.py --compare-reports \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_c6d73a3_ngspice47_refresh_bound_20261114T091445Z.json.gz \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_f6eeac7_ngspice47_refresh_bound_20261114T091445Z.json.gz
+# 464 shared measurements: 456 bit-identical, 0 differ
 ```
 
-(the eight without a value are the stored-'0' latency measurements, which have
-no crossing by construction). The `c6d73a3` probe reads the retired
-`~/.volare` tree deliberately and only for this attribution; it is not grid
-evidence and nothing is recorded from it. So for this study the two open_pdks
-revisions' models are numerically indistinguishable, and the movement above is
-the **simulator upgrade, ngspice-46 -> ngspice-47**, which arrived on the fleet
-image with the new PDK. That is a tool-version sensitivity of the committed
-characterization numbers, not a model-revision finding; it is tracked in
-**#300** -- it is not resolved here and no threshold was changed to absorb
-it.
+(in each comparison the eight without a value are the stored-'0' latency
+measurements, which have no crossing by construction). The ss/-40 C probe
+requests are committed --
+[`klt/request_probe_ss40_lc_fresh_sel0.json`](klt/request_probe_ss40_lc_fresh_sel0.json)
+and
+[`klt/request_probe_ss40_lc_refresh_bound_sel0.json`](klt/request_probe_ss40_lc_refresh_bound_sel0.json),
+the grid requests with `corners` narrowed to
+`{"process": ["ss"], "temperature_c": [-40]}` and `backend: local`; each run
+sets `$PDK_ROOT` and `--pdk-root` to its tree. The `c6d73a3` probes read the
+retired `~/.volare` tree deliberately and only for this attribution; they are
+not grid evidence and nothing is recorded from them. So for this study the
+two open_pdks revisions' models are numerically indistinguishable **at both
+probed corners** (sf/125 C; ss/-40 C, both decks), and at those corners the
+movement above is the **simulator upgrade, ngspice-46 -> ngspice-47**, which
+arrived on the fleet image with the new PDK. **Scope of that attribution**:
+ss/-40 C is extremal in the latency delta and is now probed, but the worst
+single-case separation delta sits at tt/-40 C, which is **not** probed -- so
+per-corner attribution at tt/-40 C and across the rest of the grid remains an
+extrapolation from the two probed corners. That is a tool-version sensitivity
+of the committed characterization numbers, not a model-revision finding; it
+is tracked in **#300** -- it is not resolved here and no threshold was
+changed to absorb it.
+[`spec/operating-range-decision-PROPOSED.md`](../../spec/operating-range-decision-PROPOSED.md)
+section 11 records the shift against this evidence.
 
 ### Reproduce
 

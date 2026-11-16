@@ -31,7 +31,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V, parse_cards  # noqa: E402
+from _evidence_common import VDD_V, fmt_g6, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "sense_stage.spice"
@@ -68,10 +68,6 @@ N_ROWS = 4                     # contract column size (ASSUMPTION)
 # geometry (incl. nrd/nrs/sa/sb/sd) is the design netlist's, never retyped.
 # Sizes there are first-pass choices: latch N 1.0/0.15, P 2.0/0.15,
 # footer 2.0/0.15, header 4.0/0.15 um.
-
-
-def _fmt(x: float) -> str:
-    return f"{x:.6g}"
 
 
 def design_cell_cards() -> tuple[str, str]:
@@ -135,14 +131,14 @@ def build_netlist(c_sn_f: float) -> str:
     a("* reference level, latch/footer/header sizes, ideal precharge switch, ideal drivers, ideal")
     a("* matched dummy load on the reference side, all four SN at one level, global corners only.")
     a("")
-    a(f".param VDD     = {_fmt(VDD_V)}")
-    a(f".param VRBL    = {_fmt(VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param TEDGE   = {_fmt(T_EDGE_S)}")
-    a(f".param T_READ  = {_fmt(T_READ_S)}   $ select edge")
-    a(f".param T_PGAP  = {_fmt(T_PRE_GAP_S)}   $ precharge released this long before T_READ")
-    a(f".param T_EN    = {_fmt(T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)")
-    a(f".param C_RBL   = {_fmt(C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
-    a(f".param C_SN    = {_fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param VDD     = {fmt_g6(VDD_V)}")
+    a(f".param VRBL    = {fmt_g6(VRBL_V)}   $ ASSUMPTION (contract)")
+    a(f".param TEDGE   = {fmt_g6(T_EDGE_S)}")
+    a(f".param T_READ  = {fmt_g6(T_READ_S)}   $ select edge")
+    a(f".param T_PGAP  = {fmt_g6(T_PRE_GAP_S)}   $ precharge released this long before T_READ")
+    a(f".param T_EN    = {fmt_g6(T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)")
+    a(f".param C_RBL   = {fmt_g6(C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
+    a(f".param C_SN    = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("")
     a("* ---- shared drivers (ideal) ----")
     a("vdd   vdd 0 dc {VDD}")
@@ -153,7 +149,7 @@ def build_netlist(c_sn_f: float) -> str:
     a("vrwld rwl_des 0 dc {VDD}")
     a("vpre  prea 0 dc {VRBL}")
     for dref in sorted({p["dref"] for p in pts}):
-        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {_fmt(VRBL_V - dref)}   $ reference = VRBL - {_fmt(dref)} (ASSUMPTION)")
+        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {fmt_g6(VRBL_V - dref)}   $ reference = VRBL - {fmt_g6(dref)} (ASSUMPTION)")
     a(".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)")
     a("")
     ics: list[str] = []
@@ -170,14 +166,14 @@ def build_netlist(c_sn_f: float) -> str:
             ics.append(f"v({rb})={va:.6f}")
         else:
             a(f"spa_{n} prea {rb} ctl 0 swpre")
-            ics.append(f"v({rb})={_fmt(VRBL_V)}")
+            ics.append(f"v({rb})={fmt_g6(VRBL_V)}")
             for r in range(N_ROWS):
                 sn = f"sn_{n}_{r}"
                 rwl = "rwl_sel" if r == 0 else "rwl_des"
                 a(f"XMWR_{n}_{r} {sn} 0 0 0 {wr_m} {wr_p}")
                 a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
                 a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-                ics.append(f"v({sn})={_fmt(p['sn'])}")
+                ics.append(f"v({sn})={fmt_g6(p['sn'])}")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"spr_{n} {refbus} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
@@ -201,8 +197,8 @@ def build_netlist(c_sn_f: float) -> str:
 
 def build_request() -> dict:
     meas = []
-    t_en_ns = _fmt(T_EN_S * 1e9)
-    t_stop_ns = _fmt(T_STOP_S * 1e9)
+    t_en_ns = fmt_g6(T_EN_S * 1e9)
+    t_stop_ns = fmt_g6(T_STOP_S * 1e9)
     for p in instances():
         n = p["name"]
         meas += [
