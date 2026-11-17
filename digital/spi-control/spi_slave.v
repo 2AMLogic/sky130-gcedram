@@ -1,4 +1,6 @@
-// Behavioral SPI control slave (issue #83, epic #24 item 4). PROPOSED, NOT synthesis.
+// Behavioral SPI control slave (issue #83, epic #24 item 4). Synthesized to
+// sky130_fd_sc_hd -- see results/synth_spi_slave_2026-11-16_issue342.json;
+// no gate-level replay of that netlist exists.
 // See SPEC.md for the interface; every element there is tagged ASSUMPTION or sourced.
 // A gain cell is dynamic: this block only configures a refresh controller. It
 // is not an SRAM-replacement interface.

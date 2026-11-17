@@ -10,6 +10,7 @@
     "docs/pdk-pin.md",
     ".github/workflows/evidence-checks.yml",
     ".github/workflows/signoff.yml",
+    "sim/check_append_only.py",
     ".github/workflows/digital-regressions.yml",
     "digital/ci/run_digital_regressions.sh",
     "digital/ci/README.md"
@@ -205,6 +206,14 @@
         "python3",
         "-I",
         "sim/test_klt_request.py"
+      ]
+    },
+    {
+      "name": "PDK model-closure identity checker tests (issue #338)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/pdk-closure-identity/test_check_closure_identity.py"
       ]
     },
     {
