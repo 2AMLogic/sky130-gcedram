@@ -54,6 +54,7 @@ sys.path.insert(0, str(HERE.parent))
 from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import tdec_in_window  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
 import gen_sense_mismatch as M  # noqa: E402
@@ -246,7 +247,7 @@ def sample_rows(rep: dict, kind: str) -> list[dict]:
                 ref_offset_v=i["dref"], nominal_d_mv=i.get("d_mv", ""), sn_level_v=i.get("sn", ""),
                 replica=i["rep"], din_v=din, dend_v=dend, tdec_s=tdec, expected=expect, decided=dec,
                 correct="" if not expect else dec == expect,
-                resolves_in_window="" if not expect else (dec == expect and tdec is not None and tdec <= T_WINDOW_S)))
+                resolves_in_window="" if not expect else (dec == expect and tdec_in_window(tdec, T_WINDOW_S))))
     return rows
 
 
