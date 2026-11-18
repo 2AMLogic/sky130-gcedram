@@ -9,6 +9,13 @@ Also covers the verdict scoping of layout/xor_layout_geometry.py's measure()
 (issue #306): measure() takes `kdb` as a parameter and imports klayout only
 lazily, so a small area-backed Region stub stands in for klayout here.
 
+Since issue #329 it also re-renders the committed array-level LVS reference
+netlist via array_topology.build_lvs_reference -- a pure function of
+(n_rows, n_cols, source_spice_path, source_hash), no klt/KLayout/PDK --
+using the sha256 computed from design/gain_cell_2t.spice at test time, and
+byte-compares it against the committed file, so a design-netlist change
+cannot leave a stale provenance pin behind.
+
 Run: python3 -I layout/test_generation_reproducibility.py
 """
 from __future__ import annotations
@@ -33,6 +40,7 @@ sys.path.insert(0, str(HERE))
 import compare_array_layout as C  # noqa: E402
 import generation_toolchain as T  # noqa: E402
 import xor_layout_geometry as X  # noqa: E402
+import array_topology as A  # noqa: E402
 
 COMMITTED_GDS = HERE / "gain_cell_2t_array.gds"
 TOP = "gain_cell_2t_array_4x4_layout_0"
@@ -280,6 +288,30 @@ class ReportComparison(Tmp):
                 self.assertEqual(C.main(args), 1)
             finally:
                 sys.stdout = old
+
+
+# --------------------------- LVS-reference provenance pin (issue #329)
+class LvsReferenceProvenancePin(unittest.TestCase):
+    """The committed array-level LVS reference netlist pins the sha256 of
+    design/gain_cell_2t.spice in its header. build_lvs_reference() is a pure
+    function of (n_rows, n_cols, source_spice_path, source_hash) -- no klt,
+    KLayout or PDK -- so re-rendering it with the hash computed from the live
+    netlist at test time (never a literal) and byte-comparing against the
+    committed file catches a stale pin the moment the design netlist moves
+    without a regeneration."""
+
+    def test_committed_lvs_reference_pins_the_live_design_hash(self):
+        # 4x4: layout/generate_array.sh's N_ROWS/N_COLS defaults -- the size
+        # of the committed array (TOP names it) and the dimensions its
+        # LVS-reference emit passes (generate_array.sh:175-178).
+        src = REPO / "design" / "gain_cell_2t.spice"
+        live_hash = hashlib.sha256(src.read_bytes()).hexdigest()
+        want = A.build_lvs_reference(4, 4, "../design/gain_cell_2t.spice", live_hash)
+        got = (HERE / "gain_cell_2t_array.lvs_reference.spice").read_text()
+        self.assertEqual(
+            got, want,
+            "gain_cell_2t_array.lvs_reference.spice is stale: re-run "
+            "layout/generate_array.sh (or its --emit lvs-reference step)")
 
 
 # ----------------------------------------------------- toolchain guard
