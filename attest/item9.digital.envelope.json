@@ -73,7 +73,7 @@
         "role": "testbench",
         "path": "digital/control-integration/tb_ctrl_integ.v",
         "passed": true,
-        "content_hash": "sha256:58603fc70e8cb10c2ac25ad8efc03b04b9065eb0bda1822a649c33b8bfc805cf"
+        "content_hash": "sha256:ccfd07ec9cf8fa2ae4e2b7b518eafacbd8bb01aff015628cf447bd2ca027a336"
       },
       {
         "check": "present",
@@ -164,7 +164,7 @@
         "role": "testbench",
         "path": "digital/sched-phase-integration/run_mutation.sh",
         "passed": true,
-        "content_hash": "sha256:fb7e99359428453f6ff613a0f8629f6e5bfb860518e2a29ca2dd5b45527212aa"
+        "content_hash": "sha256:e84c481229ac355b14d633d06ecafc68adeff10bec45ca4dee7c40d606c3606f"
       },
       {
         "check": "present",
@@ -213,7 +213,7 @@
         "role": "testbench",
         "path": "digital/spi-control/tb_spi_slave.v",
         "passed": true,
-        "content_hash": "sha256:ec792bc68eeb4a58f46e60ddfa0f3b297c435fbf725b81b4393ce7a0116145f3"
+        "content_hash": "sha256:77abea8f6d498a275f3dc042cde11453277c567dae1640309d2cbfd3e3f0e7a7"
       },
       {
         "check": "present",
@@ -248,7 +248,7 @@
         "role": "testbench",
         "path": "digital/spi-sched-phase-integration/tb_spi_sched_phase.v",
         "passed": true,
-        "content_hash": "sha256:0641fe0f74d648b5fe9888fb15b31dd19aac1b5718fe57a512a684ca7cd11d19"
+        "content_hash": "sha256:8bc430d3249cd521cfc668234f4bbdda3160c161c7d910c621835a1a46db5b26"
       },
       {
         "check": "command",
@@ -277,14 +277,14 @@
         "passed": true,
         "value": {
           "iverilog": "v13_0 (dfeee909ed9f20b4870dd93423156c0170c0e1ff)",
-          "klt": "0.8.0",
+          "klt": "0.9.1",
           "python3": "system python3 from the ubuntu runner image (not pinned by digital-regressions.yml)"
         }
       }
     ]
   },
   "provenance": {
-    "klt_version": "0.8.0",
+    "klt_version": "0.9.3.dev27+g37fcbce0e52c",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -293,7 +293,7 @@
         "path": "attest/item9.digital.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:fa28f186f63158e69267ae8c92b689c292438b94ed4e00b22f98b8f6fba26738"
+      "content_hash": "sha256:f652c6d88dac8c1cc7bf0f3a18f98883eeacc3273ed6282c0d913fba26f75bb6"
     }
   }
 }

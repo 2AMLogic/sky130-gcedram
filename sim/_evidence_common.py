@@ -49,6 +49,18 @@ DEFAULT_NGSPICE_LIB_REL = "libs.tech/combined/sky130.lib.spice"
 # the install hint and revision check `check_ngspice_available()` runs.
 PDK_OPEN_PDKS_COMMIT = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
 
+# The simulator major version every runner is pinned to (issue #300) --
+# what the batch fleet image actually runs. Pinned and checked exactly
+# like the PDK revision above, closing the asymmetry that let committed
+# characterization numbers move up to 8.8e-02 V between ngspice-46 and
+# ngspice-47 unnoticed (the version was stamped per row, never checked).
+# Compared as the major version parsed out of the `ngspice --version`
+# banner, not the full banner, so a build-date or banner-format change is
+# not a false mismatch. A simulator-version change triggers
+# re-qualification on the same terms as a PDK re-pin; see
+# docs/pdk-pin.md and docs/simulator-requalification-inventory.md.
+NGSPICE_VERSION_PIN = "ngspice-47"
+
 
 # Default PDK root: where `ciel enable` installs (`~/.ciel/<variant>`). The
 # retired volare root (`~/.volare`) is deliberately never searched -- a
@@ -63,6 +75,23 @@ PDK_INSTALL_HINT = (
     "    pip install ciel==2.6.1\n"
     f"    ciel enable --pdk-family sky130 -l sky130_fd_pr {PDK_OPEN_PDKS_COMMIT}"
 )
+
+# Canonical PROPOSED supply pair for every bench under sim/ -- the same
+# consolidation issue #37 did for the PDK pin, applied to the next
+# spec-derived constant of that class (out of what were previously 20
+# independently hand-maintained copies in five spellings). `VDD_V` quotes
+# spec/operating-range-decision-PROPOSED.md:130 ("Proposed interval:
+# junction temperature 27 C to 125 C at `VDD` = 1.8 V") and :148 ("the
+# grid is `VDD` = 1.8 V only"); both are NOT-RATIFIED, so a ratification
+# is one edit here, not twenty. `DELTA_V_V` is the retention-derivation
+# half-supply margin, ASSUMED exactly as the spec states it
+# (spec/operating-range-decision-PROPOSED.md:19: "`delta_V` = `VDD`/2 =
+# 0.9 V ASSUMED"; spec/retention-refresh-budget.md:266 keeps it an open
+# ASSUMPTION). Stored levels that merely coincide with 0.9 V (an aged
+# stored-'1' grid point, a refreshed-cell pre-read level) are deliberately
+# NOT derived from DELTA_V_V -- a level is not the threshold.
+VDD_V = 1.8
+DELTA_V_V = VDD_V / 2
 
 
 def resolve_pdk_root(
@@ -156,11 +185,65 @@ def resolve_ngspice_lib(pdk_root: Path, variant: str) -> Path:
     return pdk_root / variant / DEFAULT_NGSPICE_LIB_REL
 
 
+def ngspice_major_version(version_banner: str) -> str | None:
+    """The `ngspice-NN` token parsed out of a `ngspice --version` banner
+    line (case-insensitive; e.g. "ngspice-46" out of
+    "** ngspice-46 : Circuit level simulation program"), or None if the
+    banner carries no parsable version -- including the "unknown"
+    sentinel `ngspice_version()` returns on failure. Only the major
+    number is kept, so build options, compile date and banner formatting
+    are not part of the comparison."""
+    m = re.search(r"ngspice-(\d+)", version_banner, re.IGNORECASE)
+    return f"ngspice-{m.group(1)}" if m else None
+
+
+def ngspice_version_problems(
+    version_banner: str, expected: str = NGSPICE_VERSION_PIN
+) -> list[str]:
+    """Mismatch messages (empty list = the simulator that would stamp new
+    rows is at the pinned major version), mirroring
+    `pdk_revision_problems`'s return convention. An unparsable banner --
+    including `ngspice_version()`'s "unknown" failure sentinel -- is a
+    failure, not a pass: a record cannot be written with absent simulator
+    provenance and still satisfy the check (issue #300)."""
+    actual = ngspice_major_version(version_banner)
+    if actual == expected:
+        return []
+    if actual is None:
+        return [
+            "cannot verify the ngspice version: no parsable `ngspice-NN` "
+            f"in the version banner {version_banner!r} (expected {expected})"
+        ]
+    return [f"ngspice version mismatch: expected {expected}, actual {actual}"]
+
+
+def check_ngspice_version(version_banner: str) -> bool:
+    """Print `ngspice_version_problems` plus a remediation hint to stderr;
+    True if the simulator is at the pin."""
+    problems = ngspice_version_problems(version_banner)
+    for p in problems:
+        print(f"ERROR: {p}", file=sys.stderr)
+    if problems:
+        print(
+            f"  Run on the batch fleet, whose image runs {NGSPICE_VERSION_PIN};",
+            file=sys.stderr,
+        )
+        print(
+            "  a simulator-version change is re-qualified on the same terms as a PDK re-pin "
+            "(docs/pdk-pin.md, docs/simulator-requalification-inventory.md).",
+            file=sys.stderr,
+        )
+    return not problems
+
+
 def check_ngspice_available(ngspice_lib: Path) -> bool:
     """Check that the sky130 ngspice model library exists and `ngspice`
     is on PATH, printing an install hint on failure. Callers with
     additional environment checks (e.g. a testbench template or design
-    netlist) run those separately and AND the result with this one."""
+    netlist) run those separately and AND the result with this one.
+    Also verifies the PDK revision (issue #165) and the simulator major
+    version (issue #300) against their pins, so every runner already
+    calling this inherits both checks with no new call site."""
     ok = True
     if not ngspice_lib.is_file():
         print(
@@ -184,6 +267,8 @@ def check_ngspice_available(ngspice_lib: Path) -> bool:
         ok = check_pdk_revision(variant_dir)
     if not which("ngspice"):
         print("ERROR: `ngspice` not found on PATH.", file=sys.stderr)
+        ok = False
+    elif not check_ngspice_version(ngspice_version()):
         ok = False
     return ok
 
@@ -230,6 +315,14 @@ def sha256_hex(path: Path) -> str:
 def sha256_prefixed(path: Path) -> str:
     """`"sha256:"`-prefixed SHA-256 digest of a file's bytes."""
     return "sha256:" + sha256_hex(path)
+
+
+def fmt_g6(x: float) -> str:
+    """`%.6g` formatting for every value a generator interpolates into a
+    committed deck (`.param` cards, PWL vertices, ICs, `.meas` bounds).
+    One definition so the deck-emitting generators cannot drift apart on
+    number spelling."""
+    return f"{x:.6g}"
 
 
 def load_json(path: Path):
@@ -284,6 +377,129 @@ def decided(dend: float | None, threshold_v: float) -> str:
     if dend >= threshold_v:
         return "0"
     return "unresolved"
+
+
+# --------------------------------------------------------------------------
+# Design-netlist card parsing (issue #293) -- the {device: (nets, model,
+# params)} view of a committed design/*.spice netlist that deck generators
+# emit device cards from, so a simulated device can never drift from the
+# schematic-derived netlist (design/regen_netlist.sh --check keeps that
+# file fresh). Moved from gen_column_periphery.py, which had been the sole
+# definition; the sense-stage / sense-mismatch / refresh-op / refresh-replay
+# generators previously retyped the latch geometry and silently dropped the
+# nrd/nrs/sa/sb/sd tokens the design netlist carries.
+# --------------------------------------------------------------------------
+
+def join_lines(text: str) -> str:
+    return re.sub(r"\n\+", " ", text)
+
+
+def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
+    """{device: (nets[D G S B], model, trailing params)} for every X card."""
+    out = {}
+    for line in join_lines(path.read_text()).splitlines():
+        if line.startswith("*"):
+            continue
+        t = line.split()
+        if t and t[0].startswith("XM"):
+            out[t[0][1:]] = (t[1:5], t[5], " ".join(t[6:]))
+    return out
+
+
+# --------------------------------------------------------------------------
+# Evidence-summary preamble (issue #292) -- the spec-derived status/scope
+# literals and the klt provenance envelope that the sim/*/analyze_*.py
+# summaries re-spelled inline, eight copies across two drift-grown spellings.
+# The operating-range decision is PROPOSED, not ratified: when
+# ratification/ee-key/ and ratification/market-key/ sign, the status and
+# every scope string must flip together, and this is the one edit point that
+# makes that flip reach every bench at once (same rationale as decided()
+# above). The emitted bytes are pinned by each bench's committed summary
+# (sim/check_append_only.py), so key spellings and field order here are
+# contract, not style.
+# --------------------------------------------------------------------------
+
+PROPOSED_RANGE_STATUS = "PROPOSED_OPERATING_RANGE_NOT_RATIFIED"
+
+PROPOSED_RANGE_SCOPE = (
+    "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
+    "per spec/operating-range-decision-PROPOSED.md"
+)
+
+# The refresh-replay family's committed summaries pre-date the "=" spelling
+# above and append per-bench tails ("no mismatch", "ideal drivers", the
+# "(PROPOSED range, not ratified)" tag); their shared prefix stays under its
+# own constant until a ratified value replaces both spellings together.
+PROPOSED_RANGE_SCOPE_REPLAY_PREFIX = (
+    "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V"
+)
+
+
+def klt_provenance(
+    rep: dict,
+    *,
+    hash_prefix: str = "",
+    engine: bool = False,
+    status_key: str = "klt_status",
+    pre_batch: dict | None = None,
+) -> dict:
+    """Provenance envelope of one loaded klt report, in the field order the
+    committed summaries pin: `status_key`, `corner_count`, any `pre_batch`
+    extras, `batch_job_id`, `batch_instance_type`,
+    `{hash_prefix}netlist_sha256`, `{hash_prefix}models_lib_sha256`, an
+    optional `engine`, `engine_version`.
+
+    `hash_prefix="report_"` reproduces the refresh-replay family's key
+    spellings (their summaries prefix the two report hashes); `engine=True`
+    adds the `engine` key those summaries carry next to `engine_version`;
+    `status_key="status"` reproduces refresh-energy's nested `klt.main` /
+    `klt.fine` spelling; `pre_batch` inserts extra keys after
+    `corner_count` (sense-mismatch's `klt_errored`/`monte_carlo`,
+    refresh-energy's `klt_version`). Insertion order is part of the
+    contract: summaries are dumped with json.dumps, so a reordered key is
+    a changed evidence byte."""
+    env = rep.get("environment", {})
+    remote = env.get("remote", {})
+    out = {status_key: rep.get("status"), "corner_count": rep.get("corner_count")}
+    if pre_batch:
+        out.update(pre_batch)
+    out["batch_job_id"] = remote.get("job_id")
+    out["batch_instance_type"] = remote.get("instance_type")
+    out[f"{hash_prefix}netlist_sha256"] = env.get("netlist_sha256")
+    out[f"{hash_prefix}models_lib_sha256"] = env.get("models_lib_sha256")
+    if engine:
+        out["engine"] = env.get("engine")
+    out["engine_version"] = env.get("engine_version")
+    return out
+
+
+# Repo root (the directory containing sim/), for the repo-relative
+# provenance paths recorded below. Derived from __file__ so it is correct
+# in any checkout, worktree or CI runner.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def c_sn_provenance_json(prov: dict) -> dict:
+    """JSON-ready copy of a `load_extracted_c_sn` provenance dict, safe to
+    embed in emitted evidence: `extract_json_path` (which the loader
+    returns as a Path) is rewritten to a repo-root-relative POSIX string,
+    the machine-independent shape refresh-energy summaries already record
+    (an absolute path differs between worktrees / CI runners). Every other
+    key passes through unchanged and in the same order. A report resolving
+    outside REPO_ROOT is refused with a clear message instead of a
+    traceback mid-generation -- recording a machine-specific absolute path
+    there would poison the evidence chain this field exists to carry."""
+    out = dict(prov)
+    path = Path(out["extract_json_path"]).resolve()
+    try:
+        out["extract_json_path"] = path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        raise SystemExit(
+            f"ERROR: extracted-C_SN report {path} resolves outside the repo root "
+            f"{REPO_ROOT}; refusing to record a machine-specific absolute path "
+            "in evidence (c_sn_provenance_json)"
+        ) from None
+    return out
 
 
 # --------------------------------------------------------------------------

@@ -54,6 +54,9 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import gen_write_disturb as G  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
+from _evidence_common import klt_provenance  # noqa: E402
 
 DELTA_V_V = G.DELTA_V_V
 T_RET_S = G.T_RET_RATIFIED_S
@@ -245,17 +248,12 @@ def main(argv: list[str] | None = None) -> int:
             w = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
             w.writeheader()
             w.writerows(rows)
-    env = rep["environment"]
-    remote = env.get("remote", {})
     hot = [c for c in corners if c["temp_c"] == HOT_C]
     summary = dict(
         run_id=run_id,
-        status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
-        scope="27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, per spec/operating-range-decision-PROPOSED.md",
-        klt_status=rep["status"], corner_count=rep["corner_count"],
-        batch_job_id=remote.get("job_id"), batch_instance_type=remote.get("instance_type"),
-        netlist_sha256=env.get("netlist_sha256"), models_lib_sha256=env.get("models_lib_sha256"),
-        engine_version=env.get("engine_version"),
+        status=PROPOSED_RANGE_STATUS,
+        scope=PROPOSED_RANGE_SCOPE,
+        **klt_provenance(rep),
         assumptions=dict(delta_v_v=DELTA_V_V, t_ret_ratified_s=T_RET_S, refresh_bound_s=G.REFRESH_BOUND_S,
                          disturb_limit_frac=DISTURB_LIMIT_FRAC, noise_floor_v=NOISE_FLOOR_V,
                          neg_min_ratio=NEG_MIN_RATIO, n_set=G.N_SET, t_cycle_s=G.T_CYC_S,

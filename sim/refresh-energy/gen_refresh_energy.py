@@ -46,6 +46,7 @@ sys.path.insert(0, str(REPO / "sim" / "write-disturb"))
 import gen_refresh_op as G  # noqa: E402  (#110 operation reference)
 import gen_write_disturb as WD  # noqa: E402  (extracted-array parser)
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import VDD_V, fmt_g6  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "refresh_energy.spice"
@@ -56,7 +57,6 @@ ARRAY_NETLIST = WD.ARRAY_NETLIST
 # ---- scope (restricted PROPOSED range; nothing outside it) ----
 PROCESS_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [27, 125]
-VDD_V = 1.8
 N_ROWS = 4
 N_COLS = 4
 SEL_ROW = 0                     # the refreshed row (issue: row 0, all four columns)
@@ -64,7 +64,9 @@ SEL_ROW = 0                     # the refreshed row (issue: row 0, all four colu
 # ---- levels ----
 VRBL_V = G.VRBL_V               # 0.9 V read-bitline precharge (contract, as #110)
 DREF_V = G.DREF_V               # ASSUMPTION (#110): sense reference = VRBL - 100 mV
-V_SN1_V = 0.90                  # ASSUMPTION (issue): aged stored '1' at refresh time (retention delta_V = VDD/2)
+V_SN1_V = 0.90                  # ASSUMPTION (issue): aged stored '1' at refresh time (retention delta_V = VDD/2);
+                                #   kept literal, NOT derived from _evidence_common.DELTA_V_V -- a stored level that
+                                #   happens to equal delta_V under today's assumption set is not a derivation (#294)
 V_SN0_V = 0.00                  # ASSUMPTION (issue): stored '0'
 WBL_IDLE_V = 0.0                # ASSUMPTION: idle write-bitline level (#110 WBL starts at 0 V)
 
@@ -110,10 +112,6 @@ ADAPTATIONS = [
     "array GND (body taps) and vsubs (substrate / extracted-capacitance reference) each returned through their "
     "own 0 V source per instance (write-disturb tied them to ideal ground directly)",
 ]
-
-
-def _fmt(x: float) -> str:
-    return f"{x:.6g}"
 
 
 def _ns(x: float) -> str:
@@ -211,12 +209,12 @@ def mos_card(m, inst: str) -> str:
     name, d, g, s, b, par = m
     nm = "xm" + name[2:].lower() + "_" + inst
     return (f"{nm} {node_name(d, inst)} {node_name(g, inst)} {node_name(s, inst)} {node_name(b, inst)} "
-            f"sky130_fd_pr__nfet_01v8 L={_fmt(par['L'])} W={_fmt(par['W'])} nf=1 ad={_fmt(par['AD'])} "
-            f"as={_fmt(par['AS'])} pd={_fmt(par['PD'])} ps={_fmt(par['PS'])} mult=1 m=1")
+            f"sky130_fd_pr__nfet_01v8 L={fmt_g6(par['L'])} W={fmt_g6(par['W'])} nf=1 ad={fmt_g6(par['AD'])} "
+            f"as={fmt_g6(par['AS'])} pd={fmt_g6(par['PD'])} ps={fmt_g6(par['PS'])} mult=1 m=1")
 
 
 def pwl(points: list[tuple[float, float]]) -> str:
-    return "pwl(" + " ".join(f"{t:.6e} {_fmt(v)}" for t, v in points) + ")"
+    return "pwl(" + " ".join(f"{t:.6e} {fmt_g6(v)}" for t, v in points) + ")"
 
 
 def _step_pair(lo: float, hi: float, t_up: float, t_dn: float) -> list[tuple[float, float]]:
@@ -230,19 +228,19 @@ def drive(inst: dict, stem: str) -> str:
     t = T_REF if mode == "ref" else T
     pulsed = mode in ("active", "ref")
     if stem.startswith("vpre"):
-        return f"dc {_fmt(VRBL_V)}"
+        return f"dc {fmt_g6(VRBL_V)}"
     if stem.startswith("vwbl"):
         c = int(stem[4:])
         if mode == "ref":
-            return f"dc {_fmt(VDD_V)}"            # #110 refw: ideal 1.8 V WBL throughout
+            return f"dc {fmt_g6(VDD_V)}"            # #110 refw: ideal 1.8 V WBL throughout
         if mode == "active" and bit(inst, SEL_ROW, c) == 1:
             return pwl(_step_pair(WBL_IDLE_V, VDD_V, t["t_on"], t["t_rel"]))
-        return f"dc {_fmt(WBL_IDLE_V)}"
+        return f"dc {fmt_g6(WBL_IDLE_V)}"
     if stem.startswith("vrwl"):
         r = int(stem[4:])
         if pulsed and r == SEL_ROW:
             return pwl(_step_pair(VDD_V, 0.0, t["t_sel"], t["t_rel"]))
-        return f"dc {_fmt(VDD_V)}"
+        return f"dc {fmt_g6(VDD_V)}"
     if stem.startswith("vwwl"):
         r = int(stem[4:])
         if pulsed and r == SEL_ROW:
@@ -257,7 +255,7 @@ def ctl_drive(inst: dict) -> str:
     t = T_REF if inst["mode"] == "ref" else T
     if inst["mode"] in ("active", "ref"):
         return pwl(_step_pair(VDD_V, 0.0, t["t_pre_off"], t["t_rel"]))
-    return f"dc {_fmt(VDD_V)}"
+    return f"dc {fmt_g6(VDD_V)}"
 
 
 def is_dc(inst: dict, stem: str) -> bool:
@@ -304,9 +302,9 @@ def build_netlist() -> str:
         for nm, n1, n2, ohm in arr["res"]:
             if nm == "Rvsubs_dctie":
                 continue         # replaced by the vsub source below
-            a(f"{nm.lower()}_{n} {node_name(n1, n)} {node_name(n2, n)} {_fmt(ohm)}")
+            a(f"{nm.lower()}_{n} {node_name(n1, n)} {node_name(n2, n)} {fmt_g6(ohm)}")
         for nm, n1, n2, f in arr["cap"]:
-            a(f"{nm.lower()}_{n} {node_name(n1, n)} {node_name(n2, n)} {_fmt(f)}")
+            a(f"{nm.lower()}_{n} {node_name(n1, n)} {node_name(n2, n)} {fmt_g6(f)}")
         # boundary sources (negative terminal = ground for every one of them)
         for stem, _role, _i in source_roles():
             a(f"{src_name(stem, n)} {src_pos_node(stem, n)} 0 {drive(inst, stem)}")
@@ -338,7 +336,7 @@ def build_netlist() -> str:
                 val = 0.0
             else:
                 continue
-            ics.append(f"v({node_name(net, n)})={_fmt(val)}")
+            ics.append(f"v({node_name(net, n)})={fmt_g6(val)}")
         a("")
     a("* initial conditions (tran uic)")
     for k in range(0, len(ics), 6):
@@ -388,7 +386,7 @@ def build_measurements() -> list[dict]:
 
 def build_request(tmax_s: float) -> dict:
     return klt_request("refresh_energy.spice", {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-                       f"{_fmt(TRAN_STEP_S * 1e12)}p {_fmt(T_STOP_S * 1e9)}n 0 {_fmt(tmax_s * 1e12)}p uic",
+                       f"{fmt_g6(TRAN_STEP_S * 1e12)}p {fmt_g6(T_STOP_S * 1e9)}n 0 {fmt_g6(tmax_s * 1e12)}p uic",
                        build_measurements(), 3600)
 
 

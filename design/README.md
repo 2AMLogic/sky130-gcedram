@@ -62,11 +62,21 @@ require a new leakage re-derivation.
 
 `M_RD`'s sizing reuses the same minimum geometry as a first-pass
 placeholder. This is **not** yet driven by a read-current or sense-margin
-analysis -- no sense-amplifier design exists yet in this repo (the same
-pre-design caveat [`sim/retention/README.md`](../sim/retention/README.md)
-already carries for its `C_SN`/`delta_V` assumptions). Read-path sizing is
-out of scope for this issue and expected to be revisited once sense-amp
-work begins.
+analysis: the read-path sizing predates the sense stage and has not been
+revisited against it. A schematic-level sense latch does exist now
+([`sense_latch.sch`](sense_latch.sch), characterized by
+[`sim/sense-stage/`](../sim/sense-stage/),
+[`sim/sense-mismatch/`](../sim/sense-mismatch/) and
+[`sim/loaded-column/`](../sim/loaded-column/)), but its sizes are
+provisional first-pass choices, it has no layout, its offset/yield is not
+yet validated, and it sits under the **PROPOSED**, unratified operating
+range of
+[`spec/operating-range-decision-PROPOSED.md`](../spec/operating-range-decision-PROPOSED.md)
+-- so there is still no validated sense-margin budget to size `M_RD`
+against (the same explicit-ASSUMPTION framing
+[`sim/retention/README.md`](../sim/retention/README.md) carries for its
+`C_SN`/`delta_V` assumptions). Read-path sizing is out of scope for this
+issue and expected to be revisited once that budget exists (epic #24).
 
 ## Node naming
 
@@ -179,8 +189,8 @@ suffix and ground is `0` (schematic `GND`); the test normalizes both.
 
 ## What's out of scope here
 
-Per this issue's non-goals: layout, DRC/LVS, PVT corner sweeps of the full
-cell, sense-amplifier design, and array/periphery integration are all
-follow-on increments (items 2-7 of the #13 gap tracker) once these design
-sources exist. This directory is schematic-capture + netlist-derivation
-only.
+Per issue #14's non-goals at that capture: layout, DRC/LVS, PVT corner
+sweeps of the full cell, sense-amplifier design, and array/periphery
+integration are all follow-on increments (items 2-7 of the #13 gap
+tracker) once these design sources exist. This directory is
+schematic-capture + netlist-derivation only.

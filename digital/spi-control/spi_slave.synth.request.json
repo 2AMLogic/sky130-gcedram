@@ -1,0 +1,10 @@
+{
+  "schema": "klt.synthesize.request/1",
+  "engine": "yosys",
+  "sv_frontend": "sv2v",
+  "sources": ["spi_slave.v"],
+  "hdl_toplevel": "spi_slave",
+  "parameters": {"MAX_INTERVAL": 5029},
+  "pdk": {"cell_library": "sky130_fd_sc_hd", "corner": "tt_025C_1v80"},
+  "constraints": {"clock_period_ns": null}
+}

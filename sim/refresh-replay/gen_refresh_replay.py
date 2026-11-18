@@ -34,7 +34,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import sha256_hex as sha256  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, fmt_g6, parse_cards, sha256_hex as sha256  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 import replay_lib as L  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
@@ -175,6 +175,7 @@ def src_line(prefix: str, node: str, name: str, pts) -> str:
 
 def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
     (wr_m, wr_p), (rd_m, rd_p) = S.design_cell_cards()
+    latch = parse_cards(REPO / "design" / "sense_latch.spice")
     Ln: list[str] = []
     a = Ln.append
     a("* refresh_replay.spice -- RTL-strobe replay of one REFRESH op in the refresh-op circuit, issue #128")
@@ -186,18 +187,18 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
     a("* PWL sources differ. Sources per instance: ctl<-pre_en, rwls<-rwl_sel (inverted), en/enb<-sense_en")
     a("* (or the latch-hold adapter waveform), wwl<-wwl_en, wbc<-bl_drive. Instance suffix = variant.")
     a("")
-    a(f".param VDD   = {S._fmt(G.VDD_V)}")
-    a(f".param VRBL  = {S._fmt(G.VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param C_RBL = {S._fmt(S.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
-    a(f".param C_WBL = {S._fmt(G.C_WBL_F)}   $ ASSUMPTION (not extracted)")
-    a(f".param C_SN  = {S._fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param VDD   = {fmt_g6(G.VDD_V)}")
+    a(f".param VRBL  = {fmt_g6(G.VRBL_V)}   $ ASSUMPTION (contract)")
+    a(f".param C_RBL = {fmt_g6(S.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
+    a(f".param C_WBL = {fmt_g6(G.C_WBL_F)}   $ ASSUMPTION (not extracted)")
+    a(f".param C_SN  = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("")
     a("* ---- shared static drivers (ideal) ----")
     a("vdd   vdd 0 dc {VDD}")
     a("vrwld rwl_des 0 dc {VDD}")
     a("vwwld wwl_des 0 dc 0")
     a("vpre  prea 0 dc {VRBL}")
-    a(f"vref  pref 0 dc {S._fmt(G.VRBL_V - G.DREF_V)}   $ reference = VRBL - {S._fmt(G.DREF_V)} (ASSUMPTION)")
+    a(f"vref  pref 0 dc {fmt_g6(G.VRBL_V - G.DREF_V)}   $ reference = VRBL - {fmt_g6(G.DREF_V)} (ASSUMPTION)")
     a(".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)")
     a(f".model swwbl sw(vt=0.9 vh=0.1 ron={G.R_WBL_SW} roff=1e12)")
     a("")
@@ -216,7 +217,7 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
         if p["kind"] == "ref":
             a("* reference write: ideal 1.8 V WBL; rbl/ref/latch idle (no read)")
             a(f"vwbr_{n} {wb} 0 dc {{VDD}}")
-            ics.append(f"v({wb})={S._fmt(G.VDD_V)}")
+            ics.append(f"v({wb})={fmt_g6(G.VDD_V)}")
         else:
             ics.append(f"v({wb})=0")
             a(f"swb_{n} {rf} {wb} wbc_{n} 0 swwbl")
@@ -225,7 +226,7 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
         a(f"spr_{n} pref {rf} ctl_{n} 0 swpre")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
-        ics.append(f"v({rb})={S._fmt(G.VDD_V)}")
+        ics.append(f"v({rb})={fmt_g6(G.VDD_V)}")
         ics.append(f"v({rf})=0")
         for r in range(G.N_ROWS):
             sn = f"sn_{n}_{r}"
@@ -234,14 +235,11 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
             a(f"XMWR_{n}_{r} {sn} {wwl} {wb} 0 {wr_m} {wr_p}")
             a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={S._fmt(p['sn'])}")
-        ln, lp, fo, he = S.LATCH_N, S.LATCH_P, S.FOOTER, S.HEADER
-        a(f"XMN1_{n} {rb} {rf} {vn} 0 {ln[0]} {S.dev_params(ln[1], ln[2])}")
-        a(f"XMN2_{n} {rf} {rb} {vn} 0 {ln[0]} {S.dev_params(ln[1], ln[2])}")
-        a(f"XMP1_{n} {rb} {rf} {vp} vdd {lp[0]} {S.dev_params(lp[1], lp[2])}")
-        a(f"XMP2_{n} {rf} {rb} {vp} vdd {lp[0]} {S.dev_params(lp[1], lp[2])}")
-        a(f"XMNF_{n} {vn} en_{n} 0 0 {fo[0]} {S.dev_params(fo[1], fo[2])}")
-        a(f"XMPH_{n} {vp} enb_{n} vdd vdd {he[0]} {S.dev_params(he[1], he[2])}")
+            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
+        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{n}", "enb": f"enb_{n}",
+                "vdd": "vdd", "GND": "0", "0": "0"}
+        for dev, (nets, model, params) in latch.items():
+            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
         ics.append(f"v({vn})=0.45")
         ics.append(f"v({vp})=1.35")
         a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
@@ -379,7 +377,7 @@ def main(argv=None) -> int:
     (run_dir / "waveforms.json").write_text(json.dumps(wf, indent=1) + "\n")
     (run_dir / "consistency_check.json").write_text(json.dumps(check, indent=1) + "\n")
     man = dict(
-        run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=131,
+        run_id=a.run_id, status=PROPOSED_RANGE_STATUS, issue=131,
         experiments={k: {kk: vv for kk, vv in v.items()} for k, v in EXPERIMENTS.items()},
         deck_sha256=hashlib.sha256(deck.encode()).hexdigest(), request_sha256=hashlib.sha256((json.dumps(req, indent=1) + "\n").encode()).hexdigest(),
         variants=VARIANTS, negative_controls=NEGATIVE, patterns=[dict(kind=k, sn_v=v) for k, v in PATTERNS],
@@ -394,7 +392,7 @@ def main(argv=None) -> int:
             latch_hold_adapter="enable set at sense_en rise, cleared at busy fall; no delay; RWL is NOT held (RTL timing)",
             t_meas_after_release_ns=T_MEAS_NS, decision_probe_lead_ns=SN_DEC_LEAD_NS,
             baseline=dict(sense_ns=BASE_SENSE_S * 1e9, wwl_ns=BASE_WB_S * 1e9, from_="sim/refresh-op generator constants"),
-            c_rbl_f=S.C_RBL_F, c_wbl_f=G.C_WBL_F, c_sn_ff=c_sn_ff, c_sn_provenance=str(prov),
+            c_rbl_f=S.C_RBL_F, c_wbl_f=G.C_WBL_F, c_sn_ff=c_sn_ff, c_sn_provenance=c_sn_provenance_json(prov),
             budget_cycles_provisional=34, shared_circuit="sim/refresh-op circuit body (ideal drivers; column driver is #114/#117)"),
         pins=pins(golden))
     (run_dir / "manifest.json").write_text(json.dumps(man, indent=1) + "\n")

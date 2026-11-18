@@ -43,7 +43,9 @@ module tb_spi_slave #(
 
     reg [15:0] prev; reg tog0;
     initial begin
-        #(2*H) rst_n = 0; #(2*H) rst_n = 1; #(2*H);
+        // (#273) frame flops clear on negedge clr_n = rst_n & ~cs_n; with cs_n high at
+        // time 0 clr_n is already 0 (no edge), so apply the power-on reset while selected.
+        #(2*H) cs_n = 0; #H rst_n = 0; #(2*H) rst_n = 1; #H cs_n = 1; #(2*H);
         // 1. reset defaults
         rchk("id", A_ID, 8'hA5);
         rchk("ctrl_rst", A_CTRL, 8'h01);
@@ -112,6 +114,39 @@ module tb_spi_slave #(
         raw(16'hFFFF, 5); wr(A_CMD, 8'h02); wr(A_CTRL, 8'h00); check("recovers", refresh_en, 0);
         // MISO high-Z when deselected
         check("miso_hiz", miso === 1'bz, 1);
+        // 6b. (#273) single async clear clr_n = rst_n & ~cs_n: cs_n rising mid-frame
+        // clears rx/cnt/tx and commits nothing; rst_n low while selected clears too.
+        wr(A_CMD, 8'h02);
+        prev = interval;
+        begin : midframe
+            integer n;
+            for (n = 8; n <= 16; n = n + 8) begin
+                raw({1'b1, 7'(A_CTRL), 8'h00}, n);
+                check("midframe_cnt_cleared", dut.cnt, 0);
+                check("midframe_rx_cleared", dut.rx, 0);
+                check("midframe_tx_cleared", dut.tx, 0);
+                check("midframe_no_commit_ivl", interval, prev);
+            end
+        end
+        // 9 clocks: mid-frame abort at the read-latch point, no commit, ERR_FRAME
+        raw({1'b1, 7'(A_IH), 8'h00}, 9); check("cs9_no_wr", interval, prev);
+        check("cs9_cnt_cleared", dut.cnt, 0);
+        wr(A_CMD, 8'h02); check("recover_after_cs9", err_any, 0);
+        // rst_n asserted while cs_n is low, mid-frame
+        cs_n = 0; #H;
+        repeat (5) begin mosi = 1; #H sclk = 1; #H sclk = 0; end
+        check("rstsel_cnt_before", dut.cnt, 5);
+        rst_n = 0; #H;
+        check("rstsel_cnt_cleared", dut.cnt, 0);
+        check("rstsel_rx_cleared", dut.rx, 0);
+        check("rstsel_tx_cleared", dut.tx, 0);
+        rst_n = 1; #H;     // release with cs_n still low: stays cleared
+        check("rstsel_release_cnt0", dut.cnt, 0);
+        #H sclk = 1; #H sclk = 0; check("rstsel_release_counts", dut.cnt, 1);
+        #H cs_n = 1; mosi = 0; #(2*H);
+        check("rstsel_ivl_default", interval, MAX_INTERVAL);
+        wr(A_CTRL, 8'h00); check("recovers_after_rstsel", refresh_en, 0);
+        wr(A_CTRL, 8'h01);
         // 7. async reset restores defaults
         setivl(500); wr(A_CMD, 8'h55);
         #H rst_n = 0; #H rst_n = 1; #H;

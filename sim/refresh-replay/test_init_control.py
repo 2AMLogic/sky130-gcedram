@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -17,6 +18,7 @@ import analyze_init_control as A  # noqa: E402
 import gen_init_control as C  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
+from _evidence_common import fmt_g6  # noqa: E402
 from test_refresh_replay import golden  # noqa: E402
 
 
@@ -61,7 +63,7 @@ class Generator(unittest.TestCase):
         for i in self.insts:
             if i["regime"] == "legacy" and i["kind"] != "ref":
                 self.assertEqual(C.ic_tokens(self.deck, i["name"]).get("rwls_@"), None, i["name"])     # legacy: NO pin IC
-                self.assertEqual(C.ic_tokens(self.deck, i["name"])["sn_@_0"], GR.S._fmt(i["sn"]))
+                self.assertEqual(C.ic_tokens(self.deck, i["name"])["sn_@_0"], fmt_g6(i["sn"]))
 
     def test_every_instance_changes_only_its_regime_declared_items(self):
         for n, c in self.check.items():
@@ -211,6 +213,14 @@ class Analysis(unittest.TestCase):
         self.assertNotIn("op1_0.9", v["restore_among_sense_correct_patterns"])
         self.assertEqual(A.ratio_hides_sense(list(rows.values())), [n + "@tt/27"])
 
+    def test_outcome_vocabulary_comes_from_the_shared_classifier(self):
+        """``outcome``/``failure_reason`` must classify through replay_lib, not a local copy that could drift from the
+        driver-sweep bench (#287). The branch table itself is exercised in test_refresh_replay.py; the assertions in
+        test_incorrect_sense_is_never_hidden_by_a_restore_ratio / ..._simulator_error_never_passes are the wiring check."""
+        self.assertIs(A.L.failure_reason, L.failure_reason)
+        local = sorted(n for n in ("outcome", "reason", "failure_reason") if n in vars(A))
+        self.assertEqual(local, [], f"analyze_init_control defines its own {local} -- classify through replay_lib instead")
+
     def test_unresolved_decision_is_not_correct_and_simulator_error_never_passes(self):
         n = self.n[("rtl_hold", "op0", 0.0)]
         rows, res = self.run_(dec={n: 0.2})
@@ -288,6 +298,29 @@ class Analysis(unittest.TestCase):
         self.assertTrue(d["pin_ic_minus_legacy_pre_read"]["within_documented"])
         rows[0]["sense_correct"] = False                      # an extra failure at tt/27 -> no longer the documented set
         self.assertFalse(A.documented_claims(rows, results)["pin_ic_stored1_0p9_sense_failures"]["reproduced"])
+
+
+class ManifestCsnProvenanceJson(unittest.TestCase):
+    """Issue #323: c_sn_provenance must be emitted as a JSON object whose
+    extract_json_path is repo-root-relative (machine-independent), not a
+    str(prov) repr embedding this worktree's absolute path. Asserted on a
+    freshly generated manifest only -- the committed runs carry the old
+    repr-string form and sim/ evidence is append-only."""
+
+    def test_fresh_manifest_records_c_sn_provenance_as_repo_relative_object(self):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            trace = tmp / "trace.json"
+            trace.write_text(json.dumps(golden()))
+            rc = C.main([str(trace), "--results-dir", str(tmp / "out"), "--run-id", "probe"])
+            self.assertEqual(rc, 0)
+            man = json.loads((tmp / "out" / "probe" / "manifest.json").read_text())
+            prov = man["assumptions"]["c_sn_provenance"]
+            self.assertIsInstance(prov, dict)
+            self.assertEqual(prov["extract_json_path"], "layout/gain_cell_2t.extract.parasitics.json")
+            for k in ("klt_version", "input_content_hash", "ground_c_ff", "coupling_c_ff", "coupled_nets"):
+                self.assertIn(k, prov)
+            self.assertNotIn(str(HERE.parent.parent), json.dumps(man["assumptions"]))
 
 
 class Committed(unittest.TestCase):

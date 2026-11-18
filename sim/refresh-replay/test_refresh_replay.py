@@ -9,7 +9,9 @@ from __future__ import annotations
 import json
 import shutil
 import sys
+import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -497,11 +499,18 @@ class DriverSweepAnalysis(unittest.TestCase):
         self.assertEqual(AD.interp_crossing([(34.0, None), (35.0, 2.0)], 0.9), None)
 
     def test_failure_reason_separates_sense_and_restore(self):
-        self.assertEqual(AD.reason(True, True, True, True), "pass")
-        self.assertEqual(AD.reason(True, False, False, False), "sense_incorrect")
-        self.assertEqual(AD.reason(True, True, False, True), "stored1_below_threshold")
-        self.assertEqual(AD.reason(True, True, True, False), "stored0_above_50mV")
-        self.assertEqual(AD.reason(False, True, True, True), "simulator_error")
+        # the shared classifier (replay_lib) is the single source of the committed failure_reason/outcome vocabulary
+        self.assertEqual(L.failure_reason(True, True, True, True), "pass")
+        self.assertEqual(L.failure_reason(True, False, False, False), "sense_incorrect")
+        self.assertEqual(L.failure_reason(True, True, False, True), "stored1_below_threshold")
+        self.assertEqual(L.failure_reason(True, True, True, False), "stored0_above_50mV")
+        self.assertEqual(L.failure_reason(False, True, True, True), "simulator_error")
+
+    def test_driver_sweep_analyzer_has_no_private_failure_reason_copy(self):
+        """The analyzer must classify through replay_lib, not a local copy that could drift from the other bench (#287)."""
+        self.assertIs(AD.L.failure_reason, L.failure_reason)
+        local = sorted(n for n in ("reason", "outcome", "failure_reason") if n in vars(AD))
+        self.assertEqual(local, [], f"analyze_rwl_driver_sweep defines its own {local} -- classify through replay_lib instead")
 
     def test_time_budget_is_independent_of_restoration(self):
         mi = dict(digital=dict(busy_fall_ns=34.0), t_release_ns=34.0, t_src_release_end_ns=39.0, t_meas_ns=36.0)
@@ -527,6 +536,45 @@ class DriverSweepAnalysis(unittest.TestCase):
         d2 = AD.duration(mi, AD.slowest_crossing([12.8, None, 20.0]), None)
         self.assertEqual((d2["fits_pin_release_90"], d2["slack_pin_release_90_ns"]), (None, None))
         self.assertIsNone(AD.slowest_crossing([]))
+
+
+class ManifestStatusSinglePointOfEdit(unittest.TestCase):
+    def test_generator_manifest_status_follows_the_shared_constant(self):
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            trace = tmp / "trace.json"
+            trace.write_text(json.dumps(golden()))
+            sentinel = "SENTINEL_STATUS"
+            with unittest.mock.patch.object(G, "PROPOSED_RANGE_STATUS", sentinel):
+                rc = G.main([str(trace), "--results-dir", str(tmp / "out"), "--run-id", "probe"])
+            self.assertEqual(rc, 0)
+            man = json.loads((tmp / "out" / "probe" / "manifest.json").read_text())
+            self.assertEqual(man["status"], sentinel)
+
+
+class ManifestCsnProvenanceJson(unittest.TestCase):
+    """Issue #323: c_sn_provenance must be emitted as a JSON object whose
+    extract_json_path is repo-root-relative (machine-independent), not a
+    str(prov) repr embedding this worktree's absolute path. Asserted on
+    freshly generated manifests only -- the committed runs carry the old
+    repr-string form and sim/ evidence is append-only."""
+
+    def test_fresh_manifests_record_c_sn_provenance_as_repo_relative_object(self):
+        for gen in (G, D):
+            with self.subTest(generator=gen.__name__):
+                with tempfile.TemporaryDirectory() as td:
+                    tmp = Path(td)
+                    trace = tmp / "trace.json"
+                    trace.write_text(json.dumps(golden()))
+                    rc = gen.main([str(trace), "--results-dir", str(tmp / "out"), "--run-id", "probe"])
+                    self.assertEqual(rc, 0)
+                    man = json.loads((tmp / "out" / "probe" / "manifest.json").read_text())
+                    prov = man["assumptions"]["c_sn_provenance"]
+                    self.assertIsInstance(prov, dict)
+                    self.assertEqual(prov["extract_json_path"], "layout/gain_cell_2t.extract.parasitics.json")
+                    for k in ("klt_version", "input_content_hash", "ground_c_ff", "coupling_c_ff", "coupled_nets"):
+                        self.assertIn(k, prov)
+                    self.assertNotIn(str(HERE.parent.parent), json.dumps(man["assumptions"]))
 
 
 class Committed(unittest.TestCase):

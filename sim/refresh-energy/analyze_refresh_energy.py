@@ -48,6 +48,10 @@ sys.path.insert(0, str(REPO / "sim"))
 from _evidence_common import load_json as load_report  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
 from _evidence_common import sha256_hex as sha256_file  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
+from _evidence_common import klt_provenance  # noqa: E402
+from _evidence_common import c_sn_provenance_json  # noqa: E402
 sys.path.insert(0, str(REPO / "sim" / "refresh-overhead"))
 import gen_refresh_energy as G  # noqa: E402
 import refresh_overhead as RO  # noqa: E402
@@ -456,8 +460,7 @@ def main(argv: list[str] | None = None) -> int:
     c_sn_ff, c_sn_prov = G.G.S.load_extracted_c_sn(G.G.S.EXTRACT_JSON, "sn")
     # Record the extraction report repo-root-relative so the committed summary is
     # machine-independent (an absolute path differs between worktrees / CI runners).
-    c_sn_prov = dict(c_sn_prov)
-    c_sn_prov["extract_json_path"] = Path(c_sn_prov["extract_json_path"]).resolve().relative_to(REPO).as_posix()
+    c_sn_prov = c_sn_provenance_json(c_sn_prov)
     src, pts, ctl = reduce_report(rep, c_sn_ff * 1e-15)
     _src_f, pts_f, ctl_f = reduce_report(rep_f, c_sn_ff * 1e-15)
     add_convergence(pts, pts_f)
@@ -468,32 +471,23 @@ def main(argv: list[str] | None = None) -> int:
             w = csv.DictWriter(f, fieldnames=list(rows[0]))
             w.writeheader()
             w.writerows(rows)
-    env, env_f = rep["environment"], rep_f["environment"]
     hot = max(G.TEMPS_C)
     summary = dict(
         run_id=run_id, fine_run_id=run_id_of(a.fine),
         what=("IDEAL-DRIVER ARRAY-BOUNDARY ENERGY ESTIMATE of one row refresh (partial cost under stated "
               "assumptions); NOT complete row-refresh energy, NOT a physical lower bound, NOT macro power, "
               "NOT an SRAM comparison"),
-        status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
-        scope="27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, per spec/operating-range-decision-PROPOSED.md",
+        status=PROPOSED_RANGE_STATUS,
+        scope=PROPOSED_RANGE_SCOPE,
         window=dict(t_start_s=G.T_START_S, t_end_s=G.T_END_S, duration_s=G.T_END_S - G.T_START_S,
                     phases_s={k: v for k, v in G.T.items()},
                     integration=".meas tran INTEG (trapezoidal over accepted time points), method=trap",
                     tran_max_step_s=G.TRAN_MAX_S, tran_max_step_fine_s=G.TRAN_MAX_FINE_S),
         t_row_refresh_op_s=G.t_row_refresh_op_s(),
-        klt=dict(main=dict(status=rep["status"], corner_count=rep["corner_count"],
-                           klt_version=rep.get("provenance", {}).get("klt_version"),
-                           batch_job_id=env.get("remote", {}).get("job_id"),
-                           batch_instance_type=env.get("remote", {}).get("instance_type"),
-                           netlist_sha256=env.get("netlist_sha256"), models_lib_sha256=env.get("models_lib_sha256"),
-                           engine_version=env.get("engine_version")),
-                 fine=dict(status=rep_f["status"], corner_count=rep_f["corner_count"],
-                           klt_version=rep_f.get("provenance", {}).get("klt_version"),
-                           batch_job_id=env_f.get("remote", {}).get("job_id"),
-                           batch_instance_type=env_f.get("remote", {}).get("instance_type"),
-                           netlist_sha256=env_f.get("netlist_sha256"), models_lib_sha256=env_f.get("models_lib_sha256"),
-                           engine_version=env_f.get("engine_version"))),
+        klt=dict(main=klt_provenance(rep, status_key="status",
+                                     pre_batch=dict(klt_version=rep.get("provenance", {}).get("klt_version"))),
+                 fine=klt_provenance(rep_f, status_key="status",
+                                     pre_batch=dict(klt_version=rep_f.get("provenance", {}).get("klt_version")))),
         input_hashes={str(p.relative_to(REPO)): sha256_file(p) for p in (
             G.ARRAY_NETLIST, G.NETLIST_PATH, G.REQUEST_PATH, G.REQUEST_FINE_PATH, HERE / "gen_refresh_energy.py",
             HERE / "analyze_refresh_energy.py", REPO / "sim" / "refresh-op" / "gen_refresh_op.py",

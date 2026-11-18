@@ -89,3 +89,68 @@ stale and the normalized header sha256 stale; the other two cells stay OK.
 Hand-editing a normalized `.spice` fails `normalize_netlist.py --check`
 (`design/test_normalize_netlist.py`). Graded with klt 0.8.0: `t1_met_count`
 8 -> 9, `1.analog` `met`.
+
+## Addendum: re-attested on klayout-tools 0.9.1 (issue #275)
+
+**Evidence record, not a spec change.** It changes no ratified value and
+relaxes no ratified spec. `t1_met_count` stays **9** and every row keeps the
+status it had; `tier` stays `null`. What moved is the tool pin:
+`.github/workflows/signoff.yml` `KLT_VERSION` 0.8.0 -> **0.9.1**, so all four
+envelopes were re-produced with 0.9.1 and the committed DRC/LVS/ERC reports
+regenerated (the 0.9.1 deck is a different deck, see layout/README.md
+"DRC/LVS/ERC under klt 0.9.1"). Everything above that names klt 0.8.0 describes
+the state before this addendum.
+
+Three consequences worth recording, because each changed a committed hash
+without any verdict changing:
+
+- **Item 1's envelope now binds 12 inputs, not 1.** Under 0.8.0,
+  `attest/item1.envelope.json`'s `provenance.input` was the single inventory
+  file (`path` + its hash). 0.9.1 records `provenance.input.paths` -- the
+  inventory plus all 11 inventoried design sources -- and a combined digest,
+  the same shape item 2 already used. The manifest's `1.analog` pin therefore
+  moved from the inventory's own hash to that combined digest
+  (`sha256:6689b74e...` -> `sha256:82e8b890...`). A strictly stronger binding:
+  editing any inventoried design source now makes the row stale, where before
+  only editing the inventory did. 17/17 checks pass, including the three
+  `klt netlist --check` schematic -> raw legs (xschem 3.4.7 on the worker).
+- **Item 9's recorded tool pins now read `klt 0.9.1`, `ngspice 47`.** The
+  cold start (one single-corner `klt sim --backend local`) was re-run for this
+  re-attestation on a worker carrying ngspice-47, and the inventory records the
+  environment the attestation actually ran in, so the declared value moved with
+  it (`ngspice --version` is a recorded provenance stamp in this repo, not a
+  pinned value -- `sim/_evidence_common.ngspice_version()`; only the PDK is
+  pinned). 61/61 checks pass. The older `sim/` result rows stamped `ngspice-46`
+  are untouched append-only evidence; this is an attestation that the benches
+  are committed and the cold start runs, not a measurement.
+- **Item 9 (digital)'s envelope was produced by a dev build and no longer is.**
+  It recorded `klt_version 0.9.2.dev715+ge8f2899984e7`, which satisfies no
+  release pin. Re-attesting on 0.9.1 replaced it; the 14-step cold start
+  (`digital/ci/run_digital_regressions.sh`, ~17 min, iverilog v13_0) was re-run
+  and reports `overall: PASS`, 37/37 checks.
+
+Item 10's envelope was re-produced for the ordinary reason: its inventory pins
+`.github/workflows/signoff.yml` by content hash, and that file changed. 39/39
+checks pass.
+
+`block-manifest.json`'s `9.analog` and `9.digital` pins moved with their
+regenerated envelopes; `3.analog`, `4.analog`, `10.*` and `11.analog` did not,
+because those pins are the *input* hashes (the two GDS streams and the item 10
+inventory), none of which changed.
+
+Verified end to end on this worker with the pinned release, as the `signoff`
+job runs it -- `klt --version` = `klt 0.9.1`, the four `klt drc/lvs --check`
+freshness checks, all four envelope `--check`s, and the manifest re-grade
+diffed against the committed record -- under both `klayout==0.30.12` (the
+`generation-toolchain.json` pin) and `klayout==0.30.13` (what
+`uv tool install "klayout-tools==0.9.1"` resolves to in CI today). Green in
+both. A `klayout` version that differs from the report's is reported by
+`--check` as a non-fatal `[DRIFT]` note, not a `[DRIFTED]` failure, which is
+why the committed reports' `0.30.12` stamp does not fail the job.
+
+Gap to know (filed as klayout-tools #5628): `klt signoff --attest` runs the
+commands an inventory declares with its own venv `bin` removed from `PATH`, so
+a declared `klt drc --check ...` audit resolves to whatever other `klt` is on
+`PATH` rather than the attesting one. Re-attest with a symlink to the pinned
+`klt` in a directory that is not the tool venv's `bin`, prepended to `PATH`
+(recipe in layout/README.md).

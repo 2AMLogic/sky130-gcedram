@@ -32,7 +32,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import sha256_hex as sha  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS, c_sn_provenance_json, fmt_g6, sha256_hex as sha  # noqa: E402
 import gen_refresh_replay as GR  # noqa: E402
 import replay_lib as L  # noqa: E402
 from replay_lib import ic_tokens, inst_lines  # noqa: E402
@@ -170,7 +170,7 @@ def build_deck(c_sn_f: float, controls: list[dict], sweep: list[dict]) -> str:
             # (under `uic` the forced/charged pin steps 0 -> VDD at t = 0 and injects charge onto SN through the read device;
             # see the README). `pin_ic` points (group ic_artifact_check) DECLARE an explicit idle-high pin IC to quantify that artifact.
             if inst["point"].get("pin_ic"):
-                ics.append(f"v(rwls_{inst['name']})={S._fmt(GEN.VDD_V)}" + (f" v(rwlsrc_{inst['name']})={S._fmt(GEN.VDD_V)}" if inst["point"]["r_ohm"] > 0 else ""))
+                ics.append(f"v(rwls_{inst['name']})={fmt_g6(GEN.VDD_V)}" + (f" v(rwlsrc_{inst['name']})={fmt_g6(GEN.VDD_V)}" if inst["point"]["r_ohm"] > 0 else ""))
             continue
         out.append(ln)
     out.append("* initial conditions of the finite-impedance RWL pins (idle = VDD)")
@@ -345,7 +345,7 @@ def main(argv=None) -> int:
     (run_dir / "waveforms.json").write_text(json.dumps(wf, indent=1) + "\n")
     (run_dir / "consistency_check.json").write_text(json.dumps(check, indent=1) + "\n")
     man = dict(
-        run_id=a.run_id, status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED", issue=134,
+        run_id=a.run_id, status=PROPOSED_RANGE_STATUS, issue=134,
         experimental_stimulus_model="RWL source: PWL with declared 0-100% ramp time (all RWL edges) + series resistor to the cell pin; NOT a designed physical driver",
         sweep_values_assumptions=dict(slew_only_ns=SLEW_ONLY_NS, r_only_ohm=R_ONLY_OHM, combined_slew_ns_r_ohm=COMBINED,
                                       release_delays_ns=RELEASE_DELAYS_NS, release_drivers_slew_ns_r_ohm=RELEASE_DRIVERS, ic_artifact_check=IC_CHECK,
@@ -375,7 +375,7 @@ def main(argv=None) -> int:
                         digital=L.digital_duration(p["trace"]) if p["variant"] not in ("baseline_analog", "reference_write") and not str(p["variant"]).startswith("an_") else None)
                    for p in allinst],
         assumptions=dict(cycle_ns=1.0, vdd_v=L.VDD_V, budget_cycles_provisional=34, c_rbl_f=S.C_RBL_F, c_wbl_f=GEN.C_WBL_F, c_sn_ff=c_sn_ff,
-                         c_sn_provenance=str(prov), loads_fixed="C_RBL, C_WBL, C_SN, 100 ohm switches, other rows' RWL (ideal VDD) are identical to #131; the "
+                         c_sn_provenance=c_sn_provenance_json(prov), loads_fixed="C_RBL, C_WBL, C_SN, 100 ohm switches, other rows' RWL (ideal VDD) are identical to #131; the "
                          "driver model adds only the RWL source ramp time and a series resistor on the selected row"),
         pins=GR.pins(golden))
     man["pins"]["source_sha256"]["sim/refresh-replay/gen_rwl_driver_sweep.py"] = sha(HERE / "gen_rwl_driver_sweep.py")

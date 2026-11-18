@@ -23,6 +23,19 @@ campaign contains failing engineering points on purpose; they stay visible.
 | [`results/loaded_column_results.csv`](results/loaded_column_results.csv) | Append-only evidence: 1920 rows, one per simulation point |
 | [`results/summary_20261005T102906Z.json`](results/summary_20261005T102906Z.json) | Machine-readable per-group summary of that run |
 
+Re-qualification under open_pdks `f6eeac7` (issue #169) adds:
+
+| File | Role |
+|---|---|
+| [`gen_column_requests.py`](gen_column_requests.py) | Generator: writes the `klt sim` decks and batch requests from this study's own template/params |
+| [`klt/`](klt) | The generated circuit bodies (`lc_<age>_sel<row>.spice`) and requests (`request_*.json`) that were submitted |
+| [`reduce_column_results.py`](reduce_column_results.py) | Reducer: gates a report on the worker's PDK stamp, then appends rows in the schema above |
+| [`compare_pins.py`](compare_pins.py) | Tabulates the two pins' deltas against a declared tolerance; also diffs two reports (`--compare-reports`) |
+| [`test_gen_column_requests.py`](test_gen_column_requests.py) | Generator staleness / deck-relocatability / reducer-gate tests |
+| `results/klt_report_lc_*_20261114T091445Z.json.gz` | The eight raw fleet reports (gzipped), one per request |
+| [`results/summary_20261114T091445Z.json`](results/summary_20261114T091445Z.json) | Per-group summary of the `f6eeac7` run |
+| `results/pin-attribution/` | Six single-corner local reports that isolate the PDK revision from the simulator version (sf/125 C; ss/-40 C fresh and refresh_bound -- one pair of reports per open_pdks tree), with the committed ss/-40 C probe requests under [`klt/`](klt) |
+
 ## Sources, pins, and what is derived from what
 
 * **Bitcell devices**: parsed from the committed
@@ -85,7 +98,7 @@ One `.tran` per (corner, temperature, age, selected row, 4-bit stored pattern):
 | Quantity | Value | Basis |
 |---|---|---|
 | `C_RBL` (rbl load) | 10 fF | **Assumed, schematic-level.** Stand-in for column wire plus sense-input load; **not extracted**. The four `M_RD` drain junctions are model-internal. `bl` is an ideal driver. |
-| `t_sense` | 10 ns after select edge | Assumed; no sense circuit exists. |
+| `t_sense` | 10 ns after select edge | Assumed; a schematic-level sense latch exists (`design/sense_latch.sch`, #109), but its offset/yield is not validated (`offset_yield_validated: false`), so no sense-decision time is derived from it. |
 | Latency threshold | `rbl` 0.1 V below its pre-read level | Assumed; latency is *time to that droop*, not a sense decision time. |
 | Precharge level | 0.9 V (`VDD/2`) | Inherited from bitcell-transient. |
 | Write order / read age | rows 0..3; read age referenced to row 0 | Test choice. |
@@ -234,3 +247,246 @@ Single column (no neighbouring-column coupling); ideal write driver and
 precharge; row 0 is the oldest row; sequential write order is fixed; process
 corners are global (no mismatch). Append-only rule: the existing
 `sim/bitcell-transient/` evidence is untouched.
+
+## Re-qualification under open_pdks `f6eeac7` (issue #169)
+
+The repo pin moved from `c6d73a3` to `f6eeac7`
+([`docs/pdk-pin.md`](../../docs/pdk-pin.md)), so this study's records were
+re-run under the new pin. The `c6d73a3` rows, summary and text above are
+**unchanged**; the new grid is appended as run `20261114T091445Z`.
+
+### How it was run
+
+The grid is expressed as `klt sim` corner requests and run on the batch fleet
+(`sim/README.md`; a hand-launched local `ngspice -b` grid is not an option on a
+shared host). Eight requests -- one per (age, selected row) -- each cover the
+full 15-point PVT grid, so 120 corner units and 1920 points, the same grid as
+run `20261005T102906Z`:
+
+| | |
+|---|---|
+| Requests / decks | [`klt/request_lc_{fresh,refresh_bound}_sel{0..3}.json`](klt) + the matching `.spice` bodies |
+| Batch jobs | `klt-sim-79cbeb8482ff`, `0076e86a56b6`, `2347ba3b15f5`, `f5cd4b1fee75` (fresh); `602978304e45`, `9a613789fd90`, `c071ae6a92be`, `bfacea7f99c0` (aged) |
+| Result | 120/120 units `pass`, 0 errored, 0 inconclusive; 1920 rows, 0 `sim_failed` |
+| Worker | aws-batch-fleet, m7i.4xlarge spot, runner klt 0.9.0 (`runner_compatibility: match`), client klt 0.9.2.dev1029 |
+| Simulator | **ngspice-47** (`engine_build_comparison: match`); the `c6d73a3` records are ngspice-46 |
+| Worker PDK | `open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, `stamp_scheme: sources-sha256`, **`pdk_stamp_comparison: match`** |
+| Per-unit runtime | 3.8 .. 5.2 s (fresh), 7.1 .. 8.0 s (aged) |
+
+`reduce_column_results.py` **refuses** to write a row from a report whose
+`pdk_stamp_comparison` is not `match`, or whose worker stamp does not name the
+repo pin (issue #169's condition for filing a fleet run under this pin); the
+refusal is covered by `test_gen_column_requests.py`. The client-side half of
+that comparison needs `$PDK_ROOT` to be set explicitly, because this host has
+two `sky130A` installs and `backend: batch` refuses `--pdk-root`
+(2AMLogic/klayout-tools#5731); without it the comparison comes back
+`not_comparable: client_stamp_unavailable` and nothing may be recorded.
+
+### Three declared differences from `run_loaded_column.py`, and their size
+
+`klt sim` has no per-case axis for a transient grid and cannot return named
+transient node vectors (2AMLogic/klayout-tools#5731), so the deck and the
+reductions are shaped differently from the local runner. Each difference was
+measured, not assumed:
+
+1. **16 stored patterns are 16 independent column instances in one deck**,
+   instead of 16 `.control`/`alterparam` cases in one process. The instances
+   share only ideal voltage sources (write/read wordlines, the precharge
+   source and its control), so none loads another; a per-instance 0 V source
+   `vam_r<r>_p<pp>` carries each cell's read current so the wordline sources
+   can be shared (`i_into_rbl = +i(vam)`, where the local runner read
+   `-i(vrwl_r)` of an unshared source).
+2. **Reductions are `.meas` cards** at the same instants
+   `run_loaded_column.measure()` interpolates at, not Python interpolation of
+   a `wrdata` waveform. `i_desel_sum_*`, `dv_rbl_sense_v`, `latency_s`,
+   `dv_sn_sel_read_disturb_v` and `dv_sn_unsel_worst_signed_v` are still
+   derived arithmetically, now in the reducer.
+3. **The latency threshold is the absolute level `VRBL - 0.1 V`**, because
+   ngspice cannot reference one `.meas` result from another's `WHEN` value.
+   The local runner used the *measured* pre-read float level minus 0.1 V.
+   Over the new grid that level differs from `VRBL` by at most 9.9e-04 V
+   (mean 2.2e-05 V), which is <= ~1 ps of latency against latencies of
+   0.11 .. 6.31 ns. Both the threshold used and `v_rbl_preread_float_v` are on
+   every row, so the difference is visible rather than assumed.
+
+**Equivalence check for (1) and (2)** -- the new deck run through `klt sim
+--backend local` against the *same* PDK tree (`~/.ciel`, open_pdks `f6eeac7`)
+and the *same* ngspice-47 as a `run_loaded_column.py` run of the same point
+(tt, 27 C, fresh, selected row 0, all 16 patterns). Both artifacts are
+committed under [`results/equivalence/`](results/equivalence) -- the local
+klt report and the runner's 16 rows -- and the comparison is a
+`compare_pins.py` mode, so the numbers are re-derivable from this branch:
+
+```bash
+python3 -I sim/loaded-column/compare_pins.py --compare-equiv \
+  sim/loaded-column/results/equivalence/klt_report_local_tt27_f6eeac7_ngspice47_20261115T101029Z.json.gz \
+  sim/loaded-column/results/equivalence/run_loaded_column_tt27_fresh_sel0.csv
+```
+
+Worst relative deviation **7.3e-04**, on the selected-row read-disturb delta
+`dv_sn_sel_read_disturb_v` (absolute 4.3e-07 V); the per-row deselected
+preread currents agree to **4.1e-04** at 6.68e-11 A (absolute 2.7e-14 A);
+`v_rbl_sense_v` 1.3e-04 relative (absolute 1.7e-10 V); latency agrees to
+seven significant figures (2.301482e-10 s vs 2.301483e-10 s). All 456 valued
+measurements (29 fields x 16 patterns, the 8 stored-'0' latencies empty on
+both sides) sit inside the declared equivalence bound of 1e-03 relative, so
+the deck reshape and the `.meas` reductions account for none of the changes
+below. The single-corner request is `klt/request_lc_fresh_sel0.json` with
+`corners` scoped to `tt` / 27 C, run with `--backend local`; the report
+carries its own PDK and engine provenance.
+
+### What changed, and why
+
+Every headline figure moved slightly in the favourable direction, and **no
+conclusion of this study changes**: 150/150 groups still have a positive
+worst-case separation, the cold-corner written-level shortfall is still there
+(worst stored '1' storage node 0.8697 V, still below the 0.9 V the text above
+discusses), and the same 64 stored-'1' points still never reach the latency
+threshold.
+
+| Quantity | `c6d73a3` / ngspice-46 | `f6eeac7` / ngspice-47 |
+|---|---|---|
+| Worst-case separation, min over the 150 groups | 0.016729 V | 0.024480 V |
+| Worst-case separation, max over the 150 groups | 0.659577 V | 0.681050 V |
+| Worst stored-'1' `rbl` at `t_sense` | 0.882141 V | 0.874437 V |
+| Lowest stored-'0' `rbl` at `t_sense` | 0.898648 V | 0.898709 V |
+| Lowest stored-'1' storage node after write | 0.863683 V | 0.869663 V |
+| Lowest stored-'1' storage node pre-read | 0.860385 V | 0.866506 V |
+| Latency (stored '1'), max / n measured / n never crossed | 8.5539e-09 s / 896 / 64 | 6.3099e-09 s / 896 / 64 |
+| \|read disturb\| on the selected node, max | 0.067252 V | 0.060645 V |
+| \|read disturb\| on an unselected node, max | 0.060136 V | 0.056588 V |
+| \|deselected-row current sum\| at `t_sense`, max | 2.8362e-05 A | 3.0482e-05 A |
+
+Row-level deltas are tabulated by
+
+```bash
+python3 -I sim/loaded-column/compare_pins.py
+```
+
+which joins the two runs on (corner, temperature, age, selected row, stored
+pattern) -- 1920 shared points, none missing on either side -- and checks each
+point against a **declared comparison tolerance** (`|head-base| <= max(atol,
+2% x |base|)`, atol 1 mV / 1 pA / 10 ps; these are comparison tolerances
+stated for this check only, not spec thresholds, and nothing in `spec/` is
+relaxed by them). **24 of the 29 compared fields have points outside it** (the
+five within are the four `v_sn_r*_wl_off_v` levels and
+`v_rbl_preread_float_v`); the largest movements are `v_rbl_sense_v` up to
+8.76e-02 V (tt, -40 C, aged), `latency_s` up to 2.24e-09 s (ss, -40 C, aged),
+the read currents up to ~8% and the deselected-row currents up to ~15% (sf,
+125 C, where they are ~1e-09 A). Those percentages are relative moves at the
+worst-**absolute**-delta point; per point relative to its own tolerance the
+read currents move the most -- 1.15e+01 x on a near-noise sense current (base
++4.85e-09 A, head +6.06e-08 A, ss, 27 C, aged), 575x the 1 pA floor -- see
+the worst-violation table `compare_pins.py` prints. `compare_pins.py` exits 1
+while any field is outside tolerance, so this is a visible, standing
+condition and not a silent pass.
+
+**The PDK revision is not the cause, at the corners probed.** The same deck,
+run locally twice with nothing changed but which open_pdks tree `$PDK_ROOT`
+resolved to, gives **bit-identical** results. The first probe was sf/125 C --
+chosen because it is the largest-delta corner for the deselected-row current
+`i_desel_sum_sense_a` (worst |delta| 2.12e-06 A), a near-noise quantity; it is
+**not** extremal for the quantities the spec record rests on (the worst
+single-case separation delta is at tt/-40 C, 8.755e-02 V, and the worst
+latency delta at ss/-40 C, both per `compare_pins.py` above). The second
+probe (2026-11-15, issue #326) covers the corner where the recorded conflict
+lives, ss/-40 C, for **both** decks -- `lc_fresh_sel0.spice` (which carries
+the 0.9 V stored-level crossing) and `lc_refresh_bound_sel0.spice` (which
+carries the surviving conflict) -- again under ngspice-47, one run per PDK
+tree:
+
+```bash
+python3 -I sim/loaded-column/compare_pins.py --compare-reports \
+  sim/loaded-column/results/pin-attribution/klt_report_local_sf125_c6d73a3_ngspice47_20261114T091445Z.json.gz \
+  sim/loaded-column/results/pin-attribution/klt_report_local_sf125_f6eeac7_ngspice47_20261114T091445Z.json.gz
+# 464 shared measurements: 456 bit-identical, 0 differ
+
+python3 -I sim/loaded-column/compare_pins.py --compare-reports \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_c6d73a3_ngspice47_20261114T091445Z.json.gz \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_f6eeac7_ngspice47_20261114T091445Z.json.gz
+# 464 shared measurements: 456 bit-identical, 0 differ
+
+python3 -I sim/loaded-column/compare_pins.py --compare-reports \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_c6d73a3_ngspice47_refresh_bound_20261114T091445Z.json.gz \
+  sim/loaded-column/results/pin-attribution/klt_report_local_ss40_f6eeac7_ngspice47_refresh_bound_20261114T091445Z.json.gz
+# 464 shared measurements: 456 bit-identical, 0 differ
+```
+
+(in each comparison the eight without a value are the stored-'0' latency
+measurements, which have no crossing by construction). The ss/-40 C probe
+requests are committed --
+[`klt/request_probe_ss40_lc_fresh_sel0.json`](klt/request_probe_ss40_lc_fresh_sel0.json)
+and
+[`klt/request_probe_ss40_lc_refresh_bound_sel0.json`](klt/request_probe_ss40_lc_refresh_bound_sel0.json),
+the grid requests with `corners` narrowed to
+`{"process": ["ss"], "temperature_c": [-40]}` and `backend: local`; each run
+sets `$PDK_ROOT` and `--pdk-root` to its tree. The `c6d73a3` probes read the
+retired `~/.volare` tree deliberately and only for this attribution; they are
+not grid evidence and nothing is recorded from them. So for this study the
+two open_pdks revisions' models are numerically indistinguishable **at both
+probed corners** (sf/125 C; ss/-40 C, both decks), and at those corners the
+movement above is the **simulator upgrade, ngspice-46 -> ngspice-47**, which
+arrived on the fleet image with the new PDK. **Scope of that attribution**:
+ss/-40 C is extremal in the latency delta and is now probed, but the worst
+single-case separation delta sits at tt/-40 C, which is **not** probed -- so
+per-corner attribution at tt/-40 C and across the rest of the grid remains an
+extrapolation from the two probed corners. That is a tool-version sensitivity
+of the committed characterization numbers, not a model-revision finding; it
+is tracked in **#300** -- it is not resolved here and no threshold was
+changed to absorb it.
+[`spec/operating-range-decision-PROPOSED.md`](../../spec/operating-range-decision-PROPOSED.md)
+section 11 records the shift against this evidence.
+
+### Reproduce
+
+```bash
+export PDK_ROOT=~/.ciel            # required: `backend: batch` refuses --pdk-root
+python3 -I sim/loaded-column/gen_column_requests.py --check     # decks/requests current?
+cd sim/loaded-column/klt
+klt sim --batch-set request_lc_fresh_sel0.json ... request_lc_refresh_bound_sel3.json \
+    --max-in-flight 4 --wait-for-capacity 600 --capacity-retries 2
+cd -
+python3 -I sim/loaded-column/reduce_column_results.py --run-id <new-run-id> \
+    sim/loaded-column/results/klt_report_lc_*_<new-run-id>.json.gz
+python3 -I sim/loaded-column/analyze_loaded_column.py --run-id <new-run-id>
+python3 -I sim/loaded-column/compare_pins.py
+python3 -I sim/loaded-column/test_gen_column_requests.py
+```
+
+A single corner can be re-run locally for a debug probe
+(`klt sim <request> --backend local` with the request's `corners` narrowed);
+the full grid must go to the fleet.
+
+### Not re-qualified here
+
+The **cold-corner variant campaign** in [`cold-corner/`](cold-corner) is still
+pinned to `c6d73a3` and ngspice-46. Its grid is 10176 points (30 variants x
+their scopes x 4 selected rows x 16 patterns), and at ~29 `.meas` declarations
+per point -- the only reduction shape `klt sim` offers for a transient grid --
+it does not fit a committed request/report evidence set at that granularity
+(~305k measurement declarations, tens of MB of JSON). See
+2AMLogic/klayout-tools#5731 for the tool gap and **#301** for the follow-up,
+which names the three ways out and the checks that must move with it. `gen_column_requests.py` is already knob-parameterised
+(`BASELINE_KNOBS` is asserted equal to `cold-corner/variants.py`'s `BASELINE`)
+so that campaign can reuse this shape unchanged once its size question is
+settled.
+
+### Grid-wide PDK-revision exclusion (static, 2026-11-16, issue #338)
+
+The per-corner scope caveat above ("attribution at tt/-40 C and across the
+rest of the grid remains an extrapolation") is extended grid-wide by a
+**static** closure-identity check, not by more probes:
+[`sim/pdk-closure-identity/`](../pdk-closure-identity) resolves the model
+closure these requests load from their own entry point for every corner
+section and shows, in its committed evidence record
+([`results/closure_identity_c6d73a3_vs_f6eeac7_20261116.json`](../pdk-closure-identity/results/closure_identity_c6d73a3_vs_f6eeac7_20261116.json)),
+that the two open_pdks revisions differ as files (119 vs 141 closure files;
+monolith split plus additive `.param`s) but are **identical in the model
+content these eight decks instantiate** -- `sky130_fd_pr__nfet_01v8`, the
+only PDK model they reference, and every parameter feeding it. The ngspice
+simulator attribution recorded in
+[`spec/operating-range-decision-PROPOSED.md`](../../spec/operating-range-decision-PROPOSED.md)
+section 11 is unchanged; this note only widens its PDK-exclusion scope to
+the whole grid, for this deck set only, as a file-content argument (not a
+simulation). The committed per-corner probes above remain the direct
+numerical evidence.

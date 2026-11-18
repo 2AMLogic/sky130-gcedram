@@ -32,7 +32,10 @@ sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_SCOPE_REPLAY_PREFIX  # noqa: E402
+from _evidence_common import klt_provenance  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
+import replay_lib as L  # noqa: E402
 
 BUDGET_NS = 34.0
 CYCLE_NS = 1.0
@@ -91,18 +94,6 @@ def duration(mi: dict, pin90_ns, pin50_ns) -> dict:
                 slack_completion_observed_ns=None if done_seen is None else round(BUDGET_NS - done_seen, 4),
                 fits_completion_observed=False if done_seen is None else done_seen <= BUDGET_NS + 1e-9,
                 gating_probe_ns=mi["t_meas_ns"], fits_gating_probe=mi["t_meas_ns"] <= BUDGET_NS + 1e-9)
-
-
-def reason(sim_ok, sense, r1_ok, r0_ok) -> str:
-    if not sim_ok:
-        return "simulator_error"
-    if not sense:
-        return "sense_incorrect"
-    if not r1_ok:
-        return "stored1_below_threshold"
-    if not r0_ok:
-        return "stored0_above_50mV"
-    return "pass"
 
 
 def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], list[dict]]:
@@ -172,7 +163,7 @@ def corner_results(corner: dict, man: dict, check: dict) -> tuple[list[dict], li
             sense_correct=sense, sense_correct_by_pattern={pat(r): r["sense_correct"] for r in rs},
             restore_success=restore[f"{PRIMARY:g}"], restore_success_by_fraction=restore,
             restored_by_pattern={pat(r): r[f"restored_{int(PRIMARY * 100)}"] for r in rs},
-            failure_reason=reason(sim_ok, sense, r1_ok, r0_ok),
+            failure_reason=L.failure_reason(sim_ok, sense, r1_ok, r0_ok),
             snend_by_pattern_v={pat(r): r["snend_v"] for r in rs},
             snend_over_sn_ref_by_pattern={pat(r): r["snend_over_sn_ref"] for r in rs},
             sn_before_wwl_fall_by_pattern_v={pat(r): r["sn_before_wwl_fall_v"] for r in rs},
@@ -414,8 +405,6 @@ def main(argv=None) -> int:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
-    env = rep["environment"]
-    remote = env.get("remote", {})
     ids = list(dict.fromkeys(r["variant"] for r in results))
     psum = {i: point_summary(results, i) for i in ids}
     ctl = {i: psum[i] for i in man["control_variants"] if i in psum}
@@ -430,10 +419,9 @@ def main(argv=None) -> int:
         run_id=man["run_id"], issue=man["issue"], status=man["status"],
         framing="EXPERIMENTAL stimulus model (ideal PWL source with a declared ramp time + series resistor to the cell pin); NOT a designed physical driver; "
                 "loads, write pulse, initial levels and thresholds identical to #131; sweep values are ASSUMPTIONS",
-        scope="27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V, no mismatch (PROPOSED range, not ratified)",
-        klt_status=rep["status"], corner_count=rep["corner_count"], batch_job_id=remote.get("job_id"), batch_instance_type=remote.get("instance_type"),
-        report_netlist_sha256=env.get("netlist_sha256"), report_models_lib_sha256=env.get("models_lib_sha256"), engine=env.get("engine"),
-        engine_version=env.get("engine_version"), report_provenance=rep.get("provenance"),
+        scope=PROPOSED_RANGE_SCOPE_REPLAY_PREFIX + ", no mismatch (PROPOSED range, not ratified)",
+        **klt_provenance(rep, hash_prefix="report_", engine=True),
+        report_provenance=rep.get("provenance"),
         analyzer_sha256_at_analysis=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         generated_deck_sha256=man["deck_sha256"], request_sha256=man["request_sha256"], pins=man["pins"],
         sweep_values_assumptions=man["sweep_values_assumptions"], probe_definitions=man["probe_definitions"],

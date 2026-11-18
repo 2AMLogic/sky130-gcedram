@@ -51,8 +51,11 @@ from statistics import NormalDist
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
+from _evidence_common import klt_provenance  # noqa: E402
 import gen_sense_mismatch as M  # noqa: E402
 import analyze_sense_stage as SS  # noqa: E402  (sim/sense-stage, on sys.path via gen_sense_mismatch)
 
@@ -69,7 +72,7 @@ def _nominal_min_resolvable(base: str, temp_c: int) -> dict:
     return {}
 
 T_WINDOW_S = 5e-9              # ASSUMPTION (as sense-stage): decision within 5 ns of enable
-RESOLVE_V = 0.9                # |d| >= VDD/2 counts as decided
+RESOLVE_V = DELTA_V_V          # |d| >= VDD/2 counts as decided
 ERROR_RATE_TARGETS = [1e-3, 1e-6]   # ASSUMPTION: no ratified per-decision error-rate target exists
 ALPHA = 0.05                   # 95 % intervals
 CHI2_1_95 = 3.841458820694124  # chi-square(1 dof) 0.95 quantile
@@ -426,23 +429,17 @@ def main(argv: list[str] | None = None) -> int:
     for r in rows:
         by.setdefault(_corner_key(r), []).append(r)
     env = rep.get("environment", {})
-    remote = env.get("remote", {})
     cs = M.STAGE_CORNERS if kind == "stage" else M.CELL_CORNERS
     order = {k: i for i, k in enumerate(cs)}
     summ = [summarize_stage_corner(v) if kind == "stage" else summarize_cell(v)
             for k, v in sorted(by.items(), key=lambda kv: order.get(kv[0], 99))]
     summary = dict(
         run_id=run_id, study=kind,
-        status="PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
+        status=PROPOSED_RANGE_STATUS,
         scope=("latch input-referred offset, stage-only, at " if kind == "stage" else
                "end-to-end cell+column+latch at the least-margin corner ")
         + ", ".join(f"{p}/{t}C" for p, t in cs) + ", VDD=1.8 V, sky130 *_mm sections (MC_MM_SWITCH=1)",
-        klt_status=rep.get("status"), corner_count=rep.get("corner_count"),
-        klt_errored=rep.get("errored"),
-        monte_carlo=env.get("monte_carlo"),
-        batch_job_id=remote.get("job_id"), batch_instance_type=remote.get("instance_type"),
-        netlist_sha256=env.get("netlist_sha256"), models_lib_sha256=env.get("models_lib_sha256"),
-        engine_version=env.get("engine_version"),
+        **klt_provenance(rep, pre_batch=dict(klt_errored=rep.get("errored"), monte_carlo=env.get("monte_carlo"))),
         assumptions=dict(t_window_s=T_WINDOW_S, resolve_v=RESOLVE_V, c_rbl_f=M.G.C_RBL_F, vrbl_v=M.G.VRBL_V,
                          t_en_after_select_s=M.G.T_EN_S - M.G.T_READ_S, t_stop_s=M.T_STOP_S,
                          error_rate_targets_ASSUMPTION=ERROR_RATE_TARGETS,

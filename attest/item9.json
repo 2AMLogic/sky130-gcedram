@@ -42,6 +42,22 @@
     "sim/leakage/request.json",
     "sim/leakage/tb_access_leakage.spice.tmpl",
     "sim/loaded-column/cold-corner/tb_cold_variant.spice.tmpl",
+    "sim/loaded-column/klt/lc_fresh_sel0.spice",
+    "sim/loaded-column/klt/lc_fresh_sel1.spice",
+    "sim/loaded-column/klt/lc_fresh_sel2.spice",
+    "sim/loaded-column/klt/lc_fresh_sel3.spice",
+    "sim/loaded-column/klt/lc_refresh_bound_sel0.spice",
+    "sim/loaded-column/klt/lc_refresh_bound_sel1.spice",
+    "sim/loaded-column/klt/lc_refresh_bound_sel2.spice",
+    "sim/loaded-column/klt/lc_refresh_bound_sel3.spice",
+    "sim/loaded-column/klt/request_lc_fresh_sel0.json",
+    "sim/loaded-column/klt/request_lc_fresh_sel1.json",
+    "sim/loaded-column/klt/request_lc_fresh_sel2.json",
+    "sim/loaded-column/klt/request_lc_fresh_sel3.json",
+    "sim/loaded-column/klt/request_lc_refresh_bound_sel0.json",
+    "sim/loaded-column/klt/request_lc_refresh_bound_sel1.json",
+    "sim/loaded-column/klt/request_lc_refresh_bound_sel2.json",
+    "sim/loaded-column/klt/request_lc_refresh_bound_sel3.json",
     "sim/loaded-column/tb_loaded_column.spice.tmpl",
     "sim/refresh-energy/refresh_energy.spice",
     "sim/refresh-energy/request.json",
@@ -81,8 +97,8 @@
       "revision": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
     },
     "tools": {
-      "klt": "0.8.0",
-      "ngspice": "46"
+      "klt": "0.9.1",
+      "ngspice": "47"
     }
   }
 }

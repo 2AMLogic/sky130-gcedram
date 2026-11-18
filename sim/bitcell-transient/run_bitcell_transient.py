@@ -104,6 +104,7 @@ REPO_ROOT = SIM_DIR.parent
 sys.path.insert(0, str(SIM_DIR))
 from _evidence_common import (  # noqa: E402
     DEFAULT_PDK_VARIANT,
+    DELTA_V_V,
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_ngspice_available,
@@ -133,7 +134,7 @@ DEFAULT_TEMPS_C = [-40, 27, 125]
 # margin" carries (delta_V = VDD/2 = 0.9 V, the coarse half-VDD bound used
 # absent a sense-amplifier offset/noise budget). Kept identical on purpose:
 # this study's whole point is to be comparable to that derivation.
-DEFAULT_DELTA_V = 0.9
+DEFAULT_DELTA_V = DELTA_V_V
 
 # .tran numerics. `tstep` is only ngspice's suggested initial/print step --
 # the accepted timepoints are LTE-controlled, with breakpoints forced at

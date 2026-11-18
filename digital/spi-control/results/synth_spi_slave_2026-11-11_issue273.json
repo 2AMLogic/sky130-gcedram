@@ -1,0 +1,227 @@
+{
+  "schema_version": 2,
+  "engine": "yosys",
+  "engine_version": "0.67+post",
+  "hdl_toplevel": "spi_slave",
+  "parameters": {
+    "MAX_INTERVAL": 5029
+  },
+  "defines": {},
+  "run_id": "run-21f57304d0684972a5343d4e32797cbd",
+  "status": "ok",
+  "instance_count": 259,
+  "area_um2": 2750.1376,
+  "sequential_area_um2": 1516.4544,
+  "instance_counts_by_type": {
+    "sky130_fd_sc_hd__a211o_1": 2,
+    "sky130_fd_sc_hd__a21boi_0": 2,
+    "sky130_fd_sc_hd__a21o_1": 1,
+    "sky130_fd_sc_hd__a21oi_1": 14,
+    "sky130_fd_sc_hd__a221o_1": 1,
+    "sky130_fd_sc_hd__a221oi_1": 3,
+    "sky130_fd_sc_hd__a222oi_1": 1,
+    "sky130_fd_sc_hd__a22oi_1": 3,
+    "sky130_fd_sc_hd__a31oi_1": 7,
+    "sky130_fd_sc_hd__a31oi_4": 1,
+    "sky130_fd_sc_hd__and2_1": 2,
+    "sky130_fd_sc_hd__and3_1": 3,
+    "sky130_fd_sc_hd__and4b_1": 1,
+    "sky130_fd_sc_hd__buf_1": 1,
+    "sky130_fd_sc_hd__buf_6": 2,
+    "sky130_fd_sc_hd__clkbuf_1": 6,
+    "sky130_fd_sc_hd__clkinv_1": 1,
+    "sky130_fd_sc_hd__conb_1": 1,
+    "sky130_fd_sc_hd__dfrtn_1": 8,
+    "sky130_fd_sc_hd__dfrtp_1": 40,
+    "sky130_fd_sc_hd__dfstp_2": 12,
+    "sky130_fd_sc_hd__inv_1": 11,
+    "sky130_fd_sc_hd__mux2_2": 2,
+    "sky130_fd_sc_hd__mux2_4": 5,
+    "sky130_fd_sc_hd__nand2_1": 33,
+    "sky130_fd_sc_hd__nand2b_1": 1,
+    "sky130_fd_sc_hd__nand3_1": 5,
+    "sky130_fd_sc_hd__nand3b_1": 1,
+    "sky130_fd_sc_hd__nand4_1": 1,
+    "sky130_fd_sc_hd__nor2_1": 18,
+    "sky130_fd_sc_hd__nor2b_1": 7,
+    "sky130_fd_sc_hd__nor3_1": 8,
+    "sky130_fd_sc_hd__nor3b_1": 1,
+    "sky130_fd_sc_hd__nor4_1": 4,
+    "sky130_fd_sc_hd__nor4b_4": 1,
+    "sky130_fd_sc_hd__o211ai_1": 20,
+    "sky130_fd_sc_hd__o21a_1": 4,
+    "sky130_fd_sc_hd__o21ai_0": 3,
+    "sky130_fd_sc_hd__o22a_1": 11,
+    "sky130_fd_sc_hd__o22ai_1": 1,
+    "sky130_fd_sc_hd__o2bb2ai_1": 1,
+    "sky130_fd_sc_hd__o31a_1": 1,
+    "sky130_fd_sc_hd__or2_2": 2,
+    "sky130_fd_sc_hd__or3_1": 2,
+    "sky130_fd_sc_hd__or3_4": 1,
+    "sky130_fd_sc_hd__or4_1": 1,
+    "sky130_fd_sc_hd__xnor2_1": 1,
+    "sky130_fd_sc_hd__xor2_1": 1
+  },
+  "macros": [],
+  "macro_instance_counts_by_type": {},
+  "macro_instance_count": 0,
+  "cells_without_area": [],
+  "leakage_power_nw": 1.1450182803000009,
+  "leakage_by_type_nw": {
+    "sky130_fd_sc_hd__a211o_1": 0.003137275,
+    "sky130_fd_sc_hd__a21boi_0": 0.002477802,
+    "sky130_fd_sc_hd__a21o_1": 0.005903084,
+    "sky130_fd_sc_hd__a21oi_1": 0.001652086,
+    "sky130_fd_sc_hd__a221o_1": 0.002656795,
+    "sky130_fd_sc_hd__a221oi_1": 0.001777997,
+    "sky130_fd_sc_hd__a222oi_1": 0.00243475,
+    "sky130_fd_sc_hd__a22oi_1": 0.002575718,
+    "sky130_fd_sc_hd__a31oi_1": 0.001483519,
+    "sky130_fd_sc_hd__a31oi_4": 0.002861701,
+    "sky130_fd_sc_hd__and2_1": 0.002665008,
+    "sky130_fd_sc_hd__and3_1": 0.005593908,
+    "sky130_fd_sc_hd__and4b_1": 0.005986822,
+    "sky130_fd_sc_hd__buf_1": 0.001181018,
+    "sky130_fd_sc_hd__buf_6": 0.006050182,
+    "sky130_fd_sc_hd__clkbuf_1": 0.001181018,
+    "sky130_fd_sc_hd__clkinv_1": 0.001567582,
+    "sky130_fd_sc_hd__conb_1": 0.003240037,
+    "sky130_fd_sc_hd__dfrtn_1": 0.01165228,
+    "sky130_fd_sc_hd__dfrtp_1": 0.01165228,
+    "sky130_fd_sc_hd__dfstp_2": 0.01051627,
+    "sky130_fd_sc_hd__inv_1": 0.005326682,
+    "sky130_fd_sc_hd__mux2_2": 0.003919761,
+    "sky130_fd_sc_hd__mux2_4": 0.008210934,
+    "sky130_fd_sc_hd__nand2_1": 0.00211796,
+    "sky130_fd_sc_hd__nand2b_1": 0.002254918,
+    "sky130_fd_sc_hd__nand3_1": 0.001027398,
+    "sky130_fd_sc_hd__nand3b_1": 0.001398257,
+    "sky130_fd_sc_hd__nand4_1": 0.0005259485,
+    "sky130_fd_sc_hd__nor2_1": 0.0019697,
+    "sky130_fd_sc_hd__nor2b_1": 0.002179742,
+    "sky130_fd_sc_hd__nor3_1": 0.0009251654,
+    "sky130_fd_sc_hd__nor3b_1": 0.001296897,
+    "sky130_fd_sc_hd__nor4_1": 0.0005011251,
+    "sky130_fd_sc_hd__nor4b_4": 0.007611379,
+    "sky130_fd_sc_hd__o211ai_1": 0.0007028808,
+    "sky130_fd_sc_hd__o21a_1": 0.002208678,
+    "sky130_fd_sc_hd__o21ai_0": 0.001038509,
+    "sky130_fd_sc_hd__o22a_1": 0.002758667,
+    "sky130_fd_sc_hd__o22ai_1": 0.001308287,
+    "sky130_fd_sc_hd__o2bb2ai_1": 0.001846366,
+    "sky130_fd_sc_hd__o31a_1": 0.002066099,
+    "sky130_fd_sc_hd__or2_2": 0.002404548,
+    "sky130_fd_sc_hd__or3_1": 0.001284555,
+    "sky130_fd_sc_hd__or3_4": 0.002706331,
+    "sky130_fd_sc_hd__or4_1": 0.0008534742,
+    "sky130_fd_sc_hd__xnor2_1": 0.002065353,
+    "sky130_fd_sc_hd__xor2_1": 0.004277774
+  },
+  "timing": {
+    "source": "abc_stime",
+    "wire_load": null,
+    "critical_path_ps": 1713.62,
+    "delay_target_ps": null,
+    "regions": [
+      {
+        "module": "spi_slave",
+        "critical_path_ps": 1713.62
+      }
+    ]
+  },
+  "clock_targets": {
+    "clocks": [],
+    "delay_target_ps": null,
+    "delay_target_basis": "none",
+    "per_clock_enforced": false
+  },
+  "sta": null,
+  "sta_unavailable_reason": "the optional klt_statime_native extension is not installed (it is not shipped with the published klayout-tools package), so no gate-level static timing analysis was attempted -- from a repo checkout, run `uv sync --group statime` (or `maturin develop --release` inside native/statime/) and re-run to populate `sta`; from an installed package, `klt sta` with a `verilog` request gives a netlist-level timing estimate (needs OpenSTA)",
+  "structural": {
+    "latches": 0,
+    "expected_latches": 0,
+    "unexpected_latches": 0,
+    "comb_loops": 0,
+    "multi_driven": 0,
+    "has_critical": false
+  },
+  "cell_exclusions": {
+    "mode": "additive",
+    "requested": [],
+    "library_defaults": [
+      "sky130_fd_sc_hd__lpflow_*",
+      "sky130_fd_sc_hd__probe*"
+    ],
+    "effective": [
+      "sky130_fd_sc_hd__lpflow_*",
+      "sky130_fd_sc_hd__probe*"
+    ],
+    "validated": null,
+    "engine_supports_dont_use": true
+  },
+  "abc_constr": {
+    "source": "builtin",
+    "driving_cell": "sky130_fd_sc_hd__buf_1",
+    "load_ff": 5.0
+  },
+  "warnings": {
+    "total": 0,
+    "by_category": {},
+    "representatives": []
+  },
+  "memory_mapping": {
+    "status": "none_detected",
+    "reason": null,
+    "modules": [],
+    "script_path": {
+      "path": "digital/spi-control/.klt/synthesize/run-21f57304d0684972a5343d4e32797cbd/spi_slave_memory_evidence.ys",
+      "scope": "repo"
+    }
+  },
+  "blackbox_modules": [],
+  "netlist_path": {
+    "path": "digital/spi-control/.klt/synthesize/run-21f57304d0684972a5343d4e32797cbd/spi_slave_synth.v",
+    "scope": "repo"
+  },
+  "netlist_sha256": "19ad907dd00469591ab19857d51e9341bbc8155109c91f2ed9289576255ad4d9",
+  "script_path": {
+    "path": "digital/spi-control/.klt/synthesize/run-21f57304d0684972a5343d4e32797cbd/synth_spi_slave.ys",
+    "scope": "repo"
+  },
+  "run_script_path": {
+    "path": "digital/spi-control/.klt/synthesize/run-21f57304d0684972a5343d4e32797cbd/synth_spi_slave.run.ys",
+    "scope": "repo"
+  },
+  "provenance": {
+    "klt_version": "0.9.2.dev682+g7d676aa2b583",
+    "klt_git_commit": "7d676aa2b583505508e31d22a8c90e42b8bc99e2",
+    "klt_reinstall_spec": "klayout-tools @ git+https://github.com/2AMLogic/klayout-tools@7d676aa2b583505508e31d22a8c90e42b8bc99e2",
+    "klayout_version": "0.30.13",
+    "pdk": {
+      "name": "sky130A",
+      "source": "--pdk-root flag",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "deck": {
+      "name": "sky130_fd_sc_hd__tt_025C_1v80",
+      "content_hash": "sha256:8e78e14442062dba34d414fca6490b2f6b96038d4510d1438ca44fee31487135",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:2ab1bebbe017939e581ac8d76186157b835a01e12b9a4a265e910525fed4c20b",
+      "role": "source"
+    },
+    "parameters": {
+      "MAX_INTERVAL": 5029
+    },
+    "defines": {},
+    "sv_frontend": {
+      "route": "sv2v",
+      "sv2v_version": "sv2v v0.0.13"
+    }
+  },
+  "equivalence": null,
+  "restructuring": null,
+  "arithmetic": null,
+  "baseline": null
+}

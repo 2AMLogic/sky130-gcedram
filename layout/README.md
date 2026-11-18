@@ -150,9 +150,11 @@ verification pass (that is a separate, later T1 item). Captured by
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t.drc.result.json`](gain_cell_2t.drc.result.json)): `status:
-  "clean"`, `violation_count: 0` under klt 0.8.0 after the issue #244
-  regeneration (the 0.4.0-generated geometry gave `violations`, 34, under 0.8.0;
-  it was `clean`, 0, under 0.5.0) -- see "DRC under klt 0.8.0" below.
+  "clean"`, `violation_count: 0` under klt 0.9.1 (the committed report's pin
+  since #275) and under klt 0.8.0 after the issue #244 regeneration (the
+  0.4.0-generated geometry gave `violations`, 34, under 0.8.0; it was `clean`,
+  0, under 0.5.0) -- see "DRC under klt 0.8.0" and "DRC/LVS/ERC under klt
+  0.9.1" below.
 - **`klt extract --deck sky130`**
   ([`gain_cell_2t.extract.json`](gain_cell_2t.extract.json) /
   [`.spice`](gain_cell_2t.extract.spice)): `device_count: 2`, both `nfet`,
@@ -400,16 +402,19 @@ to 0.17 um. The extra `_mos.gds` PCell parameters come from klayout-tools
   guard-ring and `mos_array` output violates the 0.8.0 deck's
   `licon1.ongrid.1` and `poly.endcap.diff.1`, and the 0.8.0 generators do not.
   The 4x4 array regenerated in a scratch directory reproduces the committed
-  array byte-for-byte (`baseline comparison: match`). Generation and check are
-  now the same release pin. KLayout stays pinned (with `klayout==0.30.10` PCell
+  array byte-for-byte (`baseline comparison: match`). 0.8.0 is still the newest
+  release that does -- see "Generation and check pins diverge at klt 0.9.1"
+  below. KLayout stays pinned (with `klayout==0.30.10` PCell
   context serialization differs).
-- **check** (`klt drc`, `klt lvs`, `klt erc`): PyPI `klayout-tools==0.8.0`
-  with `klayout==0.30.12`. This is the same release `.github/workflows/signoff.yml`
-  grades with (`KLT_VERSION`), and the one the committed DRC/LVS/ERC reports
-  record. It is a release pin, so `generation_toolchain.py` checks the exact
+- **check** (`klt drc`, `klt lvs`, `klt erc`): PyPI `klayout-tools==0.9.1`
+  with `klayout==0.30.12` (issue #275). This is the same release
+  `.github/workflows/signoff.yml` grades with (`KLT_VERSION`), and the one the
+  committed DRC/LVS/ERC reports record. It is a release pin, so
+  `generation_toolchain.py` checks the exact
   package version and rejects a git install (no commit is probed). klt 0.7.0
   could not run this ERC spec: it rejected the spec's `_comment` key
-  (klayout-tools #2822). 0.8.0 accepts it unchanged (measured, #242).
+  (klayout-tools #2822). 0.8.0 accepts it unchanged (measured, #242), and so
+  does 0.9.1 (measured, #275).
 - **PDK**: sky130A at open_pdks `f6eeac7d...` (`docs/pdk-pin.md`), read from
   `$PDK_ROOT/$PDK/SOURCES`.
 
@@ -494,9 +499,11 @@ reported, signed-off verification pass (#24 item 5):
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)):
-  `status: "clean"`, `violation_count: 0` under klt 0.8.0 after the issue #244
-  regeneration (the 0.4.0-generated geometry gave `violations`, 64, under 0.8.0;
-  it was `clean`, 0, under 0.6.0) -- see "DRC under klt 0.8.0" below.
+  `status: "clean"`, `violation_count: 0` under klt 0.9.1 (the committed
+  report's pin since #275) and under klt 0.8.0 after the issue #244
+  regeneration (the 0.4.0-generated geometry gave `violations`, 64, under
+  0.8.0; it was `clean`, 0, under 0.6.0) -- see "DRC under klt 0.8.0" and
+  "DRC/LVS/ERC under klt 0.9.1" below.
 - **`klt lvs`**
   ([`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json))
   against the generated
@@ -551,6 +558,156 @@ parasitics extractions, `gain_cell_2t_array.parasitics.summary.json`,
 earlier failure history above is kept; superseded git history holds the old
 reports.
 
+### DRC/LVS/ERC under klt 0.9.1 (issue #275)
+
+The check pin moved 0.8.0 -> 0.9.1 to track
+`.github/workflows/signoff.yml`'s `KLT_VERSION`. The 0.9.1 sky130 deck is a
+different deck (`provenance.deck.content_hash`
+`sha256:ba0f9788...` -> `sha256:029ef177...`), so every committed DRC/LVS
+report read `status: drifted` under `klt drc --check` / `klt lvs --check`
+until it was regenerated. Re-run against the **unchanged** committed GDS,
+every verdict holds:
+
+| Report | 0.8.0 | 0.9.1 |
+|---|---|---|
+| `gain_cell_2t.drc.result.json` | clean, 0 | clean, 0 |
+| `gain_cell_2t_array.drc.result.json` | clean, 0 | clean, 0 |
+| `gain_cell_2t.lvs.result.json` | match (2 `pfet` warnings) | match (2 `pfet` warnings) |
+| `gain_cell_2t_array.lvs.result.json` | match (2 `pfet` warnings) | match (2 `pfet` warnings) |
+| `gain_cell_2t_array.erc.result.json` | clean, 0 findings | clean, 0 findings |
+
+The 0.9.1 deck checks **three rules more** on this geometry
+(`diff.space.1`, `poly.space.1`, `tap.space.1`: 44 -> 47 rules checked), all
+passing, and discloses 21 more `unmodeled_rules` (33 -> 54, e.g. `poly.3`,
+`licon.13`, the `capm`/`cap2m` family) -- a wider, more honest coverage
+statement over the same geometry, not a relaxation. The LVS report schema
+moved 2 -> 3 (`reference` became a `{path, scope}` object; an
+`excluded_pins` field was added) and the ERC coverage block gained
+`missing_tie_checked: true`. T1 items 3, 4 and 11 stay `met`.
+
+### Generation and check pins diverge at klt 0.9.1 (issue #275)
+
+The two pins in [`generation-toolchain.json`](generation-toolchain.json)
+coincided from #244 until #275. They no longer do: **generation stays
+`0.8.0`, check moves to `0.9.1`.**
+
+Measured on 2026-11-14 with a 0.9.1 generation toolchain (same
+`klayout==0.30.12`, same `array_topology.py` params, same PDK pin),
+`./layout/generate_array.sh --check` reports `baseline comparison:
+mismatch`. The cause is **naming, not geometry**: klt 0.9.1's `gen mos_array`
+emits its inner PCell structure as `<cell-name>__core`
+(`gain_cell_2t_array_mos__core`) where 0.8.0 emitted the library name
+`mos_array`, and it adds a `dogbone_terminals` PCell parameter to the
+`$$$CONTEXT_INFO$$$` record. Structure names and PCell context live in the
+GDS, so the bytes differ.
+
+What is drawn does not -- and since issue #284 that is a committed
+measurement, not a sentence. `layout/xor_layout_geometry.py` flattens the
+committed and the 0.9.1-regenerated `gain_cell_2t_array_4x4_layout_0`
+full-depth and XORs them per layer/datatype; the record is
+[`layout/results/geometry_xor_klt0.9.1_vs_committed_20261114.json`](results/geometry_xor_klt0.9.1_vs_committed_20261114.json),
+stamped with both toolchain identities (klayout-tools 0.8.0 and 0.9.1, both on
+`klayout==0.30.12`) and the committed GDS's own sha256:
+
+| What | Result |
+|---|---|
+| Drawn layer/datatype pairs | **10**, enumerated by name: `65/20`, `65/44`, `66/20`, `66/44`, `67/20`, `67/44`, `68/20`, `93/44`, `94/20`, `95/20` |
+| Per-pair XOR | **empty on all 10** -- 0 polygons, 0.0 um^2, each stated explicitly |
+| Bounding box | identical, `-1.195,-1.195 ; 12.715,8.555` um |
+| Labels | identical, **33** on the two label-only pairs `67/5` (25) and `68/5` (8) |
+| DRC / LVS / ERC on the scratch run | `clean` / `match` / `clean` |
+
+So the committed geometry remains the geometry 0.9.1 would produce, and no
+density, `C_SN`, parasitic or retention number is affected.
+
+**Why 10 and not 12.** `klt layers` on this GDS reports **12** layer/datatype
+pairs, because it folds `TEXT` records into its per-pair shape counts. The
+drawn set is 10; `67/5` and `68/5` are label-only and carry the 33 labels
+asserted separately above. The record and the `verified` field therefore
+enumerate the 10 pairs **by name** -- a bare count is what made this ambiguous
+in the first place, and `xor_layout_geometry.py` asserts the enumeration rather
+than looping over whichever layers happen to be present.
+
+**Reproducing it.** The measurement needs a klt **0.9.1** *generation*
+toolchain, which the committed pin is not. Note that
+`GCEDRAM_KLT_GENERATION_PYTHON` does **not** get you one:
+`generation_toolchain.py preflight` validates whatever that variable points at
+*against* the committed pin, so a 0.9.1 interpreter in the generation slot is
+rejected with `klayout-tools package version: expected 0.8.0, actual 0.9.1`
+(exit 2, nothing written). That is the override working as designed -- it
+redirects *where* the pinned toolchain lives, it does not waive the pin. So run
+the two generation commands directly, in a scratch dir, with a 0.9.1 venv's
+`klt`; the full command list is in the record's `commands` array, and
+`./layout/generate_array.sh --check` keeps reporting `baseline comparison:
+mismatch` under the committed 0.8.0 pin's *byte* gate, which is correct and is
+not the claim under test.
+
+Two controls back the measurement up, because an empty XOR on the layers you
+happened to look at proves less than it appears to:
+
+* **Identity** -- the committed GDS against itself reports empty XOR on all 10
+  pairs (exit 0).
+* **Must-fail** -- a stream with a drawn layer *added* (`70/20`), one with a
+  drawn layer *dropped* (`94/20`), and one with a single `68/20` polygon nudged
+  by 5 nm each exit 1. The first two trip the enumeration assertion (an added
+  layer is precisely what a per-layer loop over the committed layers cannot
+  see); the third keeps the enumeration intact and is caught by the XOR at
+  0.00015 um^2, the manufacturing grid.
+
+Bumping the generation pin to 0.9.1 was therefore rejected: it would make
+`generate_array.sh --check` fail against the committed baseline, and
+re-generating the array to satisfy it would change
+`gain_cell_2t_array.gds`'s content hash for a cell rename, invalidating every
+extraction, parasitics, density and sim-side report that cites that hash --
+cost with no geometric benefit. The generation pin's contract is "the release
+that reproduces the committed GDS byte-for-byte", and that release is still
+0.8.0. `layout/test_generation_reproducibility.py::ToolchainGuard::test_config_pins`
+no longer asserts the two pins are equal; it requires the generation pin to
+carry its reproduction evidence in `verified` and, when the pins differ, to
+name the check pin and say why.
+
+Prose containment alone cannot tell a measured justification from a plausible
+sentence, so `ToolchainGuard::test_generation_pin_divergence_cites_the_xor_evidence_record`
+(issue #284) puts a mechanical floor under it: when the pins differ, every
+`layout/results/` file `verified` cites must exist, exactly one must parse as
+the geometry-XOR record kind, and that record must report an empty XOR on every
+enumerated drawn pair, a matching bbox and label set, the two pin versions it
+ran under, and **the sha256 of the committed `gain_cell_2t_array.gds` as it is
+on disk now**. Regenerate the array, move either pin, or reword `verified`'s
+layer enumeration and the citation fails loudly instead of going quietly stale.
+The test stays stdlib-only and never computes the XOR itself --
+`.github/workflows/evidence-checks.yml` runs it under a bare `python3 -I`,
+which has no `klayout`.
+
+Filed upstream as klayout-tools #5627: a generator whose emitted inner-cell
+name changes between releases cannot reproduce a committed GDS byte-for-byte
+even when the drawn geometry is unchanged, and there is no flag to pin the
+emitted name.
+
+Issue #284 surfaced the companion gap and filed it as klayout-tools #5729: `klt
+diff` "never ignores ... cell names", so on this rename it reports `different`
+(exit 3) with `layers: []` -- it found no shape difference, and the verdict
+rests entirely on the instance target's name. There is no flatten-and-boolean
+verb either, so `layout/xor_layout_geometry.py` hand-rolls the measurement
+against `klayout.db`. The ask upstream is a `klt diff --flatten` mode; retiring
+it would let this repo drop that script.
+
+A second gap surfaced while regenerating the attestation envelopes, filed as
+klayout-tools #5628: `klt signoff --attest` strips its own venv `bin` from
+`PATH` for the commands an inventory declares (so a bare `python3` is the
+repo's), which also means a declared `klt drc --check ...` audit runs whatever
+*other* `klt` is on `PATH` rather than the attesting one. On a host whose
+`~/.local/bin/klt` is a dev build, `attest 10` therefore refused a correct
+envelope for a deck drift that does not exist under the pinned release. Until
+that is fixed, regenerate envelopes with a symlink to the pinned `klt` in a
+directory that is **not** the tool venv's `bin`, prepended to `PATH`:
+
+```bash
+python3 layout/generation_toolchain.py install --role check   # .toolchains/klt-check-v<ver>-klayout-<ver>
+mkdir -p /tmp/klt-pinned && ln -sf "$PWD/.toolchains/klt-check-v0.9.1-klayout-0.30.12/bin/klt" /tmp/klt-pinned/klt
+PATH=/tmp/klt-pinned:$PATH klt signoff --attest 10 --inventory attest/item10.json -o attest/item10.envelope.json
+```
+
 ### `klt erc` supply spec (structural power delivery, T1 item 11; issue #39)
 
 The structural power-delivery evidence T1's item 11 grades -- distinct from
@@ -566,8 +723,9 @@ debugging (issue #39). Two committed files:
   `ties[]` entry, `psub_guard_ring`. The spec's own `_comment` block
   justifies every entry.
 - **[`gain_cell_2t_array.erc.result.json`](gain_cell_2t_array.erc.result.json)** --
-  the run against the committed GDS, produced by klt v0.8.0
-  (PyPI `klayout-tools==0.8.0`, previously `c622e8addb36`/0.6.0) **from the repository root**
+  the run against the committed GDS, produced by klt v0.9.1
+  (PyPI `klayout-tools==0.9.1`, previously `0.8.0`, before that
+  `c622e8addb36`/0.6.0) **from the repository root**
   (`klt signoff` re-reads the spec the report names relative to its own
   working directory, so the report must record `layout/erc-supply-spec.json`):
 
@@ -614,7 +772,7 @@ debugging (issue #39). Two committed files:
     the spec's content hash is pinned in `provenance.spec`.
 - **[`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json)**
   and **[`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)**
-  -- refreshed with klt v0.8.0 against the committed GDS regenerated in #244
+  -- refreshed with klt v0.9.1 (#275) against the committed GDS regenerated in #244
   (`klt lvs gain_cell_2t_array.lvs.request.json`, `klt drc
   gain_cell_2t_array.gds --deck sky130`, from `layout/`): LVS `match` with
   `GND` paired, carrying `provenance.input`; DRC **`clean`** (0; it was 64

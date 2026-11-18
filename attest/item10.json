@@ -10,6 +10,7 @@
     "docs/pdk-pin.md",
     ".github/workflows/evidence-checks.yml",
     ".github/workflows/signoff.yml",
+    "sim/check_append_only.py",
     ".github/workflows/digital-regressions.yml",
     "digital/ci/run_digital_regressions.sh",
     "digital/ci/README.md"
@@ -21,6 +22,14 @@
         "python3",
         "-I",
         "sim/loaded-column/test_analysis.py"
+      ]
+    },
+    {
+      "name": "Loaded-column klt request generator / reducer (issue #169) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/test_gen_column_requests.py"
       ]
     },
     {
@@ -85,6 +94,14 @@
         "python3",
         "-I",
         "design/test_sense_latch.py"
+      ]
+    },
+    {
+      "name": "Normalizer raw-to-normalized freshness check (issue #229)",
+      "argv": [
+        "python3",
+        "-I",
+        "design/test_normalize_netlist.py"
       ]
     },
     {
@@ -189,6 +206,14 @@
         "python3",
         "-I",
         "sim/test_klt_request.py"
+      ]
+    },
+    {
+      "name": "PDK model-closure identity checker tests (issue #338)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/pdk-closure-identity/test_check_closure_identity.py"
       ]
     },
     {

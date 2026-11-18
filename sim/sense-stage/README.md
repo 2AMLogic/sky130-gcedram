@@ -394,3 +394,24 @@ New evidence only; the 2026-10-11 variants above stay as pre-#244 history. PR #2
 * **sf/125 C droop verdict stays `met`, as the data shows.** At the 20 mV reference with `C_RBL` = 0.955559 fF on the design card, every swept stored-'1' level down to the 0.30 V sweep floor resolves, so the usable droop is >= 0.917 V against 0.9 V. That is a bound set by the sweep, not a measurement. The pre-#244 qualifiers carry over unchanged: it holds only for this bounding load on the design card (2 fF and the layout card stay indeterminate), the 20 mV reference was already called not credible without an offset result, and at the 100 mV placeholder reference every corner is still violated.
 * The earlier finding stands: `VDD`/2 is not supported by this stage as built. The stored-level reading ("a stored '1' at 0.9 V resolves") remains met at every corner, reference and variant. Nothing here changes `delta_V` or any spec value.
 * Not re-run, and still 10 fF based: `sim/sense-mismatch/`. The 1 mV floor says nothing about mismatch.
+
+## Latch geometry correction re-run (issue #293, 2026-11-15)
+
+Issue #293 fixed this deck's latch device: `gen_sense_stage.py` had retyped the latch/footer/header geometry (`dev_params()`), silently dropping the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens that the schematic-derived [`design/sense_latch.spice`](../../design/sense_latch.spice) carries, so this bench simulated a latch with no source-drain parasitic resistance. The generator now emits the latch through `parse_cards()` from the design netlist (as the column-periphery benches already did); the regenerated deck's token-level delta is exactly the five added tokens per latch device (`nrd=0.29`/`0.145`/`0.0725`, `nrs=`, `sa=0 sb=0 sd=0` on `XMN1`/`XMN2`, `XMP1`/`XMP2`/`XMNF`, `XMPH` respectively = `0.29/W` per the bitcell convention). This section records the re-run as **new dated evidence**; earlier results are untouched history. Tool: `uvx --from klayout-tools==0.9.1 klt sim --backend batch --format json --wait-for-capacity 600` (job `klt-sim-e974c305611b`, run `20261115T115315Z`, 10/10 corners pass; runner klt 0.9.0, fleet worker ngspice-47).
+
+Old = `results/sense_summary_20261028T085441Z.json`, new = `results/sense_summary_20261115T115315Z.json` (report `klt_report_20261115T115315Z.json`).
+
+| Corner | T | stage floor (mV, -) | `t_dec` @ 1 mV (ns) | min resolvable `SN` @100 mV (V) | usable `dV_SN` @ best ref (V) | best-ref verdict |
+|---|---:|---|---|---|---|---|
+| tt | 27 | 1.11 -> 1.11 | 0.383 -> 0.404 | 0.65 -> 0.65 | 0.478-0.528 -> 0.478-0.528 | violated -> violated |
+| tt | 125 | 1.16 -> 1.16 | 0.333 -> 0.353 | 0.55 -> 0.55 | 0.673-0.723 -> 0.673-0.723 | violated -> violated |
+| ss | 27 | 1.12 -> 1.12 | 0.510 -> 0.536 | 0.7 -> 0.7 | 0.310-0.360 -> 0.310-0.360 | violated -> violated |
+| ss | 125 | 1.14 -> 1.14 | 0.407 -> 0.427 | 0.65 -> 0.65 | 0.498-0.548 -> 0.498-0.548 | violated -> violated |
+| ff | 27 | 1.10 -> 1.10 | 0.300 -> 0.319 | 0.6 -> 0.6 | 0.588-0.638 -> 0.588-0.638 | violated -> violated |
+| ff | 125 | 1.31 -> 1.31 | 0.274 -> 0.293 | 0.5 -> 0.5 | 0.787-0.837 -> 0.787-0.837 | violated -> violated |
+| sf | 27 | 1.12 -> 1.12 | 0.387 -> 0.408 | 0.55 -> 0.55 | 0.673-0.723 -> 0.673-0.723 | violated -> violated |
+| sf | 125 | 1.17 -> 1.17 | 0.330 -> 0.350 | 0.45 -> 0.45 | 0.867-0.917 -> 0.867-0.917 | indeterminate_on_this_grid -> indeterminate_on_this_grid |
+| fs | 27 | 1.10 -> 1.10 | 0.383 -> 0.403 | 0.75 -> 0.75 | 0.232-0.282 -> 0.232-0.282 | violated -> violated |
+| fs | 125 | 1.21 -> 1.21 | 0.334 -> 0.354 | 0.65 -> 0.65 | 0.477-0.527 -> 0.477-0.527 | violated -> violated |
+
+**The simulated device really changed** -- every one of the 980 measurement rows moved (`t_dec` shifts +0.019-0.025 ns at every corner: regeneration is slightly slower with source-drain resistance in the latch; `dend` deltas up to 19 mV near the resolution limit) -- but **every summary-level verdict is unchanged at the reported precision**: the stage floor, the min-resolvable level at every reference, the usable-`dV` brackets and the best-swept-reference verdicts in the per-corner table above are re-derived from run `20261115T115315Z` and all hold as printed. Stored '0' resolves correctly at every corner and reference (negative control: 0 failures), every decided point reaches >= 1.55 V full swing with correct sign, and max `t_dec` is 0.54 ns against the 5 ns window, so **pass condition 2c of `spec/macro-pass-conditions-PROPOSED.md` (Status column: ASSUMPTION) still passes under the corrected device**. The `VDD`/2 FINDING above stands as written. No spec threshold was touched.

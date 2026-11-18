@@ -123,6 +123,83 @@ class PdkRevision(unittest.TestCase):
             self.assertEqual(C.pdk_revision_problems(v), [])
 
 
+class NgspiceVersion(unittest.TestCase):
+    """The simulator major version is pinned and checked exactly like the
+    PDK revision (issue #300): ngspice-47, compared by parsed major
+    version, `unknown` is a mismatch."""
+
+    def test_match(self):
+        self.assertEqual(
+            C.ngspice_version_problems("** ngspice-47 : Circuit level simulation program"),
+            [],
+        )
+
+    def test_mismatch(self):
+        problems = C.ngspice_version_problems(
+            "** ngspice-46 : Circuit level simulation program"
+        )
+        self.assertEqual(len(problems), 1)
+        self.assertIn("expected ngspice-47", problems[0])
+        self.assertIn("actual ngspice-46", problems[0])
+
+    def test_banner_build_detail_is_not_a_mismatch(self):
+        # Only the parsed major version is compared, so compile options,
+        # creation date and banner formatting differences do not fail.
+        banner = (
+            "******\n** ngspice-47 : Circuit level simulation program\n"
+            "** Compiled with KLU Direct Linear Solver\n"
+            "** The U. C. Berkeley CAD Group\n"
+            "** Creation Date: Sun Mar 31 20:15:14 UTC 2024\n******"
+        )
+        self.assertEqual(C.ngspice_version_problems(banner), [])
+
+    def test_unknown_is_a_mismatch(self):
+        # ngspice_version() returns "unknown" on any failure; that must
+        # be a visible problem, never a pass.
+        problems = C.ngspice_version_problems("unknown")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("cannot verify", problems[0])
+        self.assertIn(C.NGSPICE_VERSION_PIN, problems[0])
+
+    def test_unparsable_banner_is_a_mismatch(self):
+        problems = C.ngspice_version_problems("** no version here **")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("cannot verify", problems[0])
+
+    def test_env_check_fails_on_stray_simulator(self):
+        # check_ngspice_available must reject a PDK tree at the pin when
+        # the ngspice it would stamp rows with is a different major
+        # version. ngspice_version/which are patched so the test host's
+        # own binary (or its absence) does not decide the outcome.
+        with tempfile.TemporaryDirectory() as d:
+            PdkRevision()._variant(
+                Path(d), f"open_pdks {C.PDK_OPEN_PDKS_COMMIT}\n"
+            )
+            lib = C.resolve_ngspice_lib(Path(d), "sky130A")
+            self.assertTrue(lib.is_file())
+            real_version, real_which = C.ngspice_version, C.which
+            try:
+                C.which = lambda name: "/usr/bin/ngspice"
+                C.ngspice_version = lambda: "** ngspice-46 : Circuit level simulation program"
+                self.assertFalse(C.check_ngspice_available(lib))
+                C.ngspice_version = lambda: "** ngspice-47 : Circuit level simulation program"
+                self.assertTrue(C.check_ngspice_available(lib))
+            finally:
+                C.ngspice_version, C.which = real_version, real_which
+
+    def test_env_check_missing_binary_is_a_clean_failure(self):
+        # ngspice absent from PATH must stay a failure, not a crash.
+        with tempfile.TemporaryDirectory() as d:
+            PdkRevision()._variant(Path(d), f"open_pdks {C.PDK_OPEN_PDKS_COMMIT}\n")
+            lib = C.resolve_ngspice_lib(Path(d), "sky130A")
+            real = C.which
+            try:
+                C.which = lambda name: None
+                self.assertFalse(C.check_ngspice_available(lib))
+            finally:
+                C.which = real
+
+
 class Sha256(unittest.TestCase):
     def test_hex_and_prefixed(self):
         with tempfile.TemporaryDirectory() as d:
@@ -131,6 +208,16 @@ class Sha256(unittest.TestCase):
             h = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
             self.assertEqual(C.sha256_hex(f), h)
             self.assertEqual(C.sha256_prefixed(f), "sha256:" + h)
+
+
+class FmtG6(unittest.TestCase):
+    def test_six_significant_digits(self):
+        self.assertEqual(C.fmt_g6(1.8), "1.8")
+        self.assertEqual(C.fmt_g6(0.0), "0")
+        self.assertEqual(C.fmt_g6(1e-9), "1e-09")
+        self.assertEqual(C.fmt_g6(2.5e-12), "2.5e-12")
+        self.assertEqual(C.fmt_g6(1.23456789), "1.23457")
+        self.assertEqual(C.fmt_g6(1234567.0), "1.23457e+06")
 
 
 class Decided(unittest.TestCase):
@@ -157,6 +244,82 @@ class LoadJson(unittest.TestCase):
             self.assertEqual(C.load_json(plain), doc)
             self.assertEqual(C.load_json(gz), doc)
             self.assertEqual(C.load_json(str(gz)), doc)
+
+
+class KltProvenance(unittest.TestCase):
+    """Key spellings and field order of the evidence-summary envelope are
+    contract (committed summaries are append-only), not style (issue #292)."""
+
+    REP = {
+        "status": "pass",
+        "corner_count": 6,
+        "environment": {
+            "remote": {"job_id": "j-1", "instance_type": "c6i.2xlarge"},
+            "netlist_sha256": "nl",
+            "models_lib_sha256": "ml",
+            "engine": "ngspice",
+            "engine_version": "42",
+        },
+    }
+
+    def test_flat_default_spelling(self):
+        d = C.klt_provenance(self.REP)
+        self.assertEqual(list(d), ["klt_status", "corner_count", "batch_job_id",
+                                   "batch_instance_type", "netlist_sha256",
+                                   "models_lib_sha256", "engine_version"])
+        self.assertEqual(d, {"klt_status": "pass", "corner_count": 6, "batch_job_id": "j-1",
+                             "batch_instance_type": "c6i.2xlarge", "netlist_sha256": "nl",
+                             "models_lib_sha256": "ml", "engine_version": "42"})
+
+    def test_report_prefix_and_engine_replay_spelling(self):
+        d = C.klt_provenance(self.REP, hash_prefix="report_", engine=True)
+        self.assertEqual(list(d), ["klt_status", "corner_count", "batch_job_id",
+                                   "batch_instance_type", "report_netlist_sha256",
+                                   "report_models_lib_sha256", "engine", "engine_version"])
+
+    def test_status_key_and_pre_batch_refresh_energy_spelling(self):
+        rep = dict(self.REP, provenance={"klt_version": "klt 1.2.3"})
+        d = C.klt_provenance(rep, status_key="status",
+                             pre_batch={"klt_version": rep["provenance"]["klt_version"]})
+        self.assertEqual(list(d), ["status", "corner_count", "klt_version", "batch_job_id",
+                                   "batch_instance_type", "netlist_sha256",
+                                   "models_lib_sha256", "engine_version"])
+
+    def test_pre_batch_sits_between_corner_count_and_batch_keys(self):
+        d = C.klt_provenance(self.REP, pre_batch={"klt_errored": None, "monte_carlo": {"n": 100}})
+        self.assertEqual(list(d)[:4], ["klt_status", "corner_count", "klt_errored", "monte_carlo"])
+
+    def test_missing_environment_yields_nones_not_a_crash(self):
+        d = C.klt_provenance({"status": "pass", "corner_count": 0})
+        self.assertEqual(d, {"klt_status": "pass", "corner_count": 0, "batch_job_id": None,
+                             "batch_instance_type": None, "netlist_sha256": None,
+                             "models_lib_sha256": None, "engine_version": None})
+
+    def test_scope_constants_pin_the_committed_spellings(self):
+        self.assertEqual(C.PROPOSED_RANGE_STATUS, "PROPOSED_OPERATING_RANGE_NOT_RATIFIED")
+        self.assertEqual(C.PROPOSED_RANGE_SCOPE,
+                         "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
+                         "per spec/operating-range-decision-PROPOSED.md")
+        self.assertEqual(C.PROPOSED_RANGE_SCOPE_REPLAY_PREFIX,
+                         "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V")
+
+
+class CsnProvenanceJson(unittest.TestCase):
+    def test_relative_conversion_is_machine_independent_and_non_mutating(self):
+        prov = {"extract_json_path": C.REPO_ROOT / "layout" / "gain_cell_2t.extract.parasitics.json",
+                "klt_version": "0.8.0", "input_content_hash": "sha256:ab", "ground_c_ff": 0.5,
+                "coupling_c_ff": 0.1, "coupled_nets": ["rbl"]}
+        out = C.c_sn_provenance_json(prov)
+        self.assertEqual(out["extract_json_path"], "layout/gain_cell_2t.extract.parasitics.json")
+        for k in ("klt_version", "input_content_hash", "ground_c_ff", "coupling_c_ff", "coupled_nets"):
+            self.assertEqual(out[k], prov[k], k)
+        self.assertEqual(list(out), list(prov))                      # field order preserved (json.dumps contract)
+        self.assertIsInstance(prov["extract_json_path"], Path)       # input dict untouched (loader Path contract)
+
+    def test_out_of_repo_path_refused_with_clear_message_not_a_traceback(self):
+        with self.assertRaises(SystemExit) as cm:
+            C.c_sn_provenance_json({"extract_json_path": "/etc/passwd"})
+        self.assertIn("outside the repo root", str(cm.exception.code))
 
 
 if __name__ == "__main__":

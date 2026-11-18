@@ -74,9 +74,9 @@ class Variants(unittest.TestCase):
         self.assertAlmostEqual(want_ff, 0.955559, places=6)
         self.assertEqual(d["comparison"]["c_rbl"]["extracted_4row_worst_total_ff"],
                          max(c["total_ff"] for c in d["per_column"]["rbl"].values()))
-        for v in ("crbl_ext4row_p244", "crbl_ext4row_layoutcard_p244"):
+        for v in ("crbl_ext4row_p244_l293", "crbl_ext4row_layoutcard_p244_l293"):
             net, _ = G.render(v)
-            self.assertIn(f".param C_RBL   = {G._fmt(want_ff * 1e-15)}   $ EXTRACTED-4-ROW", net)
+            self.assertIn(f".param C_RBL   = {G.fmt_g6(want_ff * 1e-15)}   $ EXTRACTED-4-ROW", net)
             self.assertIn("STUDY-ASSUMPTION", net.split(".param C_RBL")[1].splitlines()[0])
             crbl = [ln for ln in net.splitlines() if ln.startswith("crbl_")]
             cref = [ln for ln in net.splitlines() if ln.startswith("cref_")]
@@ -121,7 +121,9 @@ class Variants(unittest.TestCase):
             self.assertEqual(hashlib.sha256(deck.read_bytes()).hexdigest(), d["netlist_sha256"], v)
             self.assertAlmostEqual(d["assumptions"]["c_rbl_f"], G.variants()[v]["c_rbl_f"], delta=1e-24)
             self.assertFalse(d["claims"]["n_rows_ratified"])
-        self.assertEqual(seen, set(G.variants()))
+        # Every simulated (legacy/frozen) variant has a recorded summary; the
+        # *_l293 decks are generated but not yet simulated, so none may have one.
+        self.assertEqual(seen, {k for k, v in G.variants().items() if v["legacy"]})
 
     def test_analyzer_maps_report_netlist_to_variant(self):
         self.assertIsNone(A.report_variant({"netlist": {"path": "sim/sense-stage/sense_stage.spice"}}))

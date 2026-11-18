@@ -11,6 +11,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import gen_bitcell_transient as G  # noqa: E402
 import reduce_bitcell_transient as RED  # noqa: E402
+import run_bitcell_transient as R  # noqa: E402
+import _evidence_common as EC  # noqa: E402  # after R: R puts sim/ on sys.path
 
 
 class Generator(unittest.TestCase):
@@ -57,6 +59,18 @@ class Generator(unittest.TestCase):
         stop = float(req["analysis"]["args"].split()[1])
         end = [m for m in req["measurements"] if m["name"] == "v_sn_hold_end_v"][0]["spice"]
         self.assertLess(float(end.split("AT=")[1]), stop)
+
+
+class DeltaVSingleSource(unittest.TestCase):
+    def test_default_delta_v_is_the_canonical_constant(self):
+        # issue #314: DEFAULT_DELTA_V must be the single canonical DELTA_V_V
+        # (sim/_evidence_common.py), not a hand-synchronized numeric copy.
+        # Direct identity, not a monkeypatch -- the runner binds DELTA_V_V at
+        # import time and gen_bitcell_transient binds the hold-window default
+        # argument at def time, so patching module attributes reaches neither.
+        self.assertEqual(R.DEFAULT_DELTA_V, EC.DELTA_V_V)
+        self.assertEqual(R.DEFAULT_DELTA_V.hex(), EC.DELTA_V_V.hex())
+        self.assertEqual(G.hold_window_s.__defaults__[0], EC.DELTA_V_V)
 
 
 class Reducer(unittest.TestCase):

@@ -5,6 +5,17 @@ and the preflight in layout/generate_array.sh / extract_array_parasitics.sh.
 No klt, KLayout or PDK needed: the toolchains are faked, and the GDS
 fixtures are byte-level mutations of the committed array GDS.
 
+Also covers the verdict scoping of layout/xor_layout_geometry.py's measure()
+(issue #306): measure() takes `kdb` as a parameter and imports klayout only
+lazily, so a small area-backed Region stub stands in for klayout here.
+
+Since issue #329 it also re-renders the committed array-level LVS reference
+netlist via array_topology.build_lvs_reference -- a pure function of
+(n_rows, n_cols, source_spice_path, source_hash), no klt/KLayout/PDK --
+using the sha256 computed from design/gain_cell_2t.spice at test time, and
+byte-compares it against the committed file, so a design-netlist change
+cannot leave a stale provenance pin behind.
+
 Run: python3 -I layout/test_generation_reproducibility.py
 """
 from __future__ import annotations
@@ -28,6 +39,8 @@ REPO = HERE.parent
 sys.path.insert(0, str(HERE))
 import compare_array_layout as C  # noqa: E402
 import generation_toolchain as T  # noqa: E402
+import xor_layout_geometry as X  # noqa: E402
+import array_topology as A  # noqa: E402
 
 COMMITTED_GDS = HERE / "gain_cell_2t_array.gds"
 TOP = "gain_cell_2t_array_4x4_layout_0"
@@ -277,6 +290,30 @@ class ReportComparison(Tmp):
                 sys.stdout = old
 
 
+# --------------------------- LVS-reference provenance pin (issue #329)
+class LvsReferenceProvenancePin(unittest.TestCase):
+    """The committed array-level LVS reference netlist pins the sha256 of
+    design/gain_cell_2t.spice in its header. build_lvs_reference() is a pure
+    function of (n_rows, n_cols, source_spice_path, source_hash) -- no klt,
+    KLayout or PDK -- so re-rendering it with the hash computed from the live
+    netlist at test time (never a literal) and byte-comparing against the
+    committed file catches a stale pin the moment the design netlist moves
+    without a regeneration."""
+
+    def test_committed_lvs_reference_pins_the_live_design_hash(self):
+        # 4x4: layout/generate_array.sh's N_ROWS/N_COLS defaults -- the size
+        # of the committed array (TOP names it) and the dimensions its
+        # LVS-reference emit passes (generate_array.sh:175-178).
+        src = REPO / "design" / "gain_cell_2t.spice"
+        live_hash = hashlib.sha256(src.read_bytes()).hexdigest()
+        want = A.build_lvs_reference(4, 4, "../design/gain_cell_2t.spice", live_hash)
+        got = (HERE / "gain_cell_2t_array.lvs_reference.spice").read_text()
+        self.assertEqual(
+            got, want,
+            "gain_cell_2t_array.lvs_reference.spice is stale: re-run "
+            "layout/generate_array.sh (or its --emit lvs-reference step)")
+
+
 # ----------------------------------------------------- toolchain guard
 CFG = T.load_config()
 
@@ -326,7 +363,98 @@ class ToolchainGuard(Tmp):
         for rc in (gen, chk):
             self.assertRegex(rc["klayout"], r"^\d+\.\d+\.\d+$")
             self.assertRegex(rc["klayout_tools"]["package_version"], r"^\d+\.\d+\.\d+$")
-        self.assertEqual(gen["klayout_tools"]["package_version"], chk["klayout_tools"]["package_version"])
+        # The two pins are independent (the module docstring: "kept separate on purpose").
+        # They coincided from #244 until #275, which moved `check` to 0.9.1 and left
+        # `generation` at 0.8.0 because klt 0.9.1's `gen mos_array` renames the emitted
+        # sub-PCell structure, so it no longer reproduces the committed GDS byte-for-byte
+        # (identical geometry, different bytes). So instead of asserting they are equal,
+        # require the generation pin to carry its own reproduction evidence in `verified`,
+        # and -- when the pins differ -- to say why.
+        self.assertIn(gen["klayout_tools"]["package_version"], gen["verified"])
+        self.assertIn("byte-for-byte", gen["verified"])
+        if gen["klayout_tools"]["package_version"] != chk["klayout_tools"]["package_version"]:
+            self.assertIn(chk["klayout_tools"]["package_version"], gen["verified"],
+                          "generation pin differs from the check pin: `verified` must say why")
+
+    # Prose containment (above) cannot tell a measured justification from a
+    # plausible sentence. Issue #284 put a committed artifact behind the
+    # geometry half of that sentence; this binds the field to it, so the
+    # divergence rests on evidence that goes stale loudly rather than quietly.
+    # Stdlib only, and never computes the XOR: .github/workflows/evidence-checks.yml
+    # runs this file under a bare `python3 -I`, which has no `klayout`.
+    def test_generation_pin_divergence_cites_the_xor_evidence_record(self):
+        gen, chk = CFG["toolchains"]["generation"], CFG["toolchains"]["check"]
+        cited = re.findall(r"layout/results/[A-Za-z0-9._+-]+\.json", gen["verified"])
+        self.assertTrue(cited, "`verified` cites no layout/results/ evidence record")
+        records = {}
+        for rel in cited:
+            path = REPO / rel
+            self.assertTrue(path.is_file(), f"`verified` cites {rel}, which does not exist")
+            try:
+                records[rel] = json.loads(path.read_text())
+            except ValueError as exc:
+                self.fail(f"`verified` cites {rel}, which does not parse as JSON: {exc}")
+
+        if gen["klayout_tools"]["package_version"] == chk["klayout_tools"]["package_version"]:
+            return  # pins agree: byte-for-byte reproduction is the whole claim
+
+        xor = [(rel, r) for rel, r in records.items() if "geometry XOR" in r.get("kind", "")]
+        self.assertEqual(len(xor), 1, "the pins differ: `verified` must cite exactly one geometry-XOR "
+                                      f"evidence record (cited: {sorted(records)})")
+        rel, rec = xor[0]
+
+        # The measurement came out equivalent, over an asserted enumeration.
+        self.assertEqual(rec["result"], "equivalent", f"{rel}: {rec.get('problems')}")
+        self.assertEqual(rec["problems"], [], rel)
+        self.assertIs(rec["xor_empty_on_every_drawn_layer"], True, rel)
+        self.assertIs(rec["enumeration"]["match"], True, rel)
+        self.assertIs(rec["bbox"]["match"], True, rel)
+        self.assertIs(rec["labels"]["match"], True, rel)
+
+        # Every drawn pair reports its counts and an explicit zero XOR -- an
+        # empty XOR must be a stated 0, never an absent key.
+        for entry in rec["layers"]:
+            for key in ("layer_datatype", "committed_polygons", "regenerated_polygons",
+                        "xor_polygons", "xor_area_dbu2", "xor_area_um2"):
+                self.assertIn(key, entry, f"{rel}: layer entry missing {key}: {entry}")
+            self.assertEqual(entry["xor_polygons"], 0, f"{rel}: {entry['layer_datatype']} XOR not empty")
+            self.assertEqual(entry["xor_area_dbu2"], 0, f"{rel}: {entry['layer_datatype']} XOR area not 0")
+
+        # `verified`'s layer count must equal the record's enumeration, by name
+        # where the field names them -- so rewording the prose cannot drift
+        # away from the artifact (klt layers reports 12 on this GDS; the drawn
+        # set is 10 and the 2 label-only pairs are counted separately).
+        drawn = rec["enumeration"]["in_committed"]
+        self.assertEqual(sorted(drawn), sorted(rec["enumeration"]["expected"]), rel)
+        stated = re.search(r"XOR empty on all (\d+) drawn layers", gen["verified"])
+        self.assertIsNotNone(stated, "`verified` must state 'XOR empty on all <N> drawn layers'")
+        self.assertEqual(int(stated.group(1)), len(drawn),
+                         f"`verified` says {stated.group(1)} drawn layers, {rel} enumerates {len(drawn)}")
+        for pair in drawn:
+            self.assertIn(pair, gen["verified"], f"`verified` does not name drawn layer {pair} from {rel}")
+        for pair in (p["layer_texttype"] for p in rec["labels"]["pairs"]):
+            self.assertNotIn(pair, drawn, f"{rel}: label pair {pair} counted among the drawn layers")
+
+        # The record is about THIS committed GDS and THESE two pins. Regenerate
+        # the array or move a pin and the citation fails instead of going quietly
+        # stale.
+        committed = rec["streams"]["committed"]
+        self.assertEqual(committed["path"], "layout/gain_cell_2t_array.gds", rel)
+        digest = "sha256:" + hashlib.sha256((REPO / committed["path"]).read_bytes()).hexdigest()
+        self.assertEqual(committed["sha256"], digest,
+                         f"{rel} measured a different {committed['path']} than the committed one")
+        self.assertEqual(rec["toolchains"]["committed"]["klayout_tools_version"],
+                         gen["klayout_tools"]["package_version"], rel)
+        self.assertEqual(rec["toolchains"]["regenerated"]["klayout_tools_version"],
+                         chk["klayout_tools"]["package_version"], rel)
+        for role in ("committed", "regenerated"):
+            self.assertEqual(rec["toolchains"][role]["klayout_version"], gen["klayout"], rel)
+        self.assertEqual(rec["pdk"]["pin"]["open_pdks_commit"], CFG["pdk"]["open_pdks_commit"], rel)
+        self.assertEqual(rec["top_cell"], TOP, rel)
+
+        # Committed evidence must not embed somebody's host paths.
+        self.assertNotRegex((REPO / rel).read_text(), r"/home/|/Users/|/tmp/|/var/folders",
+                            f"{rel} embeds an absolute host path")
 
     def test_check_pin_matches_signoff_workflow(self):
         wf = (REPO / ".github" / "workflows" / "signoff.yml").read_text()
@@ -422,6 +550,127 @@ class ToolchainGuard(Tmp):
         self.assertTrue(any("expected f6eeac7d" in p and "ciel enable" in p for p in problems))
         self.assertTrue(T.pdk_problems(CFG, T.pdk_identity(None, None)))
         self.assertTrue(T.pdk_problems(CFG, T.pdk_identity(str(self.dir / "none"), "sky130A")))
+
+
+# ------------------------------------- xor verdict scoping (issue #306)
+class _Box:
+    def __init__(self, l: int, b: int, r: int, t: int):
+        self.left, self.bottom, self.right, self.top = l, b, r, t
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, _Box) and (self.left, self.bottom, self.right, self.top) == (
+            other.left, other.bottom, other.right, other.top)
+
+
+class _Region:
+    """Area-backed stand-in for klayout.db.Region: the only API `measure()`
+    needs is `^`, merge, area, count, is_empty and bbox."""
+
+    def __init__(self, area: int = 0):
+        self._area = area
+
+    def __xor__(self, other: "_Region") -> "_Region":
+        return _Region(abs(self._area - other._area))
+
+    def merge(self) -> None:
+        pass
+
+    def area(self) -> int:
+        return self._area
+
+    def count(self) -> int:
+        return 1 if self._area else 0
+
+    def is_empty(self) -> bool:
+        return self._area == 0
+
+    def bbox(self) -> _Box:
+        return _Box(0, 0, self._area, self._area)
+
+
+class _Cell:
+    def __init__(self, extent: int = 100):
+        self._extent = extent
+
+    def bbox(self) -> _Box:
+        return _Box(0, 0, self._extent, self._extent)
+
+
+class _KDB:
+    Region = _Region
+
+
+class XorEnumerationVerdict(Tmp):
+    """`measure()`'s enumeration verdict must be scoped to the enumeration's
+    own findings, not the shared `problems` list (issue #306): the dbu check
+    appends to `problems` before the enumeration block, so a dbu mismatch
+    must leave `enumeration.match` true when the drawn-pair enumeration
+    itself matched -- while `result` stays not-equivalent and exit 1."""
+
+    EXPECTED = ["65/20", "66/20"]
+
+    def streams(self, *, committed_dbu: float = 0.001, regenerated_dbu: float | None = None,
+                committed_layers: dict | None = None, regenerated_layers: dict | None = None):
+        if committed_layers is None:
+            committed_layers = {"65/20": _Region(10), "66/20": _Region(4)}
+        if regenerated_layers is None:
+            regenerated_layers = dict(committed_layers)
+        committed = {"dbu": committed_dbu, "drawn": committed_layers, "labels": {}, "cell": _Cell()}
+        regenerated = {"dbu": regenerated_dbu if regenerated_dbu is not None else committed_dbu,
+                       "drawn": regenerated_layers, "labels": {}, "cell": _Cell()}
+        return committed, regenerated
+
+    def run_measure(self, **kw) -> dict:
+        committed, regenerated = self.streams(**kw)
+        return X.measure(_KDB, committed, regenerated, self.EXPECTED)
+
+    def test_dbu_mismatch_does_not_flip_enumeration_match(self):
+        rec = self.run_measure(regenerated_dbu=0.0005)
+        self.assertIs(rec["enumeration"]["match"], True)
+        for field in ("unexpected_in_committed", "unexpected_in_regenerated",
+                      "expected_but_absent_in_committed", "expected_but_absent_in_regenerated"):
+            self.assertEqual(rec["enumeration"][field], [], field)
+        self.assertEqual(rec["result"], "not-equivalent")
+        self.assertEqual(len(rec["problems"]), 1)
+        self.assertTrue(rec["problems"][0].startswith("database unit differs"), rec["problems"])
+
+    def test_added_layer_fails_enumeration(self):
+        rec = self.run_measure(regenerated_layers={
+            "65/20": _Region(10), "66/20": _Region(4), "70/20": _Region(7)})
+        self.assertIs(rec["enumeration"]["match"], False)
+        self.assertEqual(rec["enumeration"]["unexpected_in_regenerated"], ["70/20"])
+        self.assertIn("drawn layer(s) in the regenerated stream not in "
+                      "--expect-drawn-layer: 70/20", rec["problems"])
+        self.assertEqual(rec["result"], "not-equivalent")
+
+    def test_dropped_layer_fails_enumeration(self):
+        rec = self.run_measure(regenerated_layers={"65/20": _Region(10)})
+        self.assertIs(rec["enumeration"]["match"], False)
+        self.assertEqual(rec["enumeration"]["expected_but_absent_in_regenerated"], ["66/20"])
+        self.assertIn("expected drawn layer(s) absent from the regenerated stream: 66/20",
+                      rec["problems"])
+        self.assertEqual(rec["result"], "not-equivalent")
+
+    def test_clean_run_is_fully_quiet(self):
+        rec = self.run_measure()
+        self.assertIs(rec["enumeration"]["match"], True)
+        self.assertEqual(rec["problems"], [])
+        self.assertEqual(rec["result"], "equivalent")
+
+    def test_dbu_mismatch_plus_added_layer_keeps_problems_ordering(self):
+        rec = self.run_measure(regenerated_dbu=0.0005, regenerated_layers={
+            "65/20": _Region(10), "66/20": _Region(4), "70/20": _Region(7)})
+        self.assertIs(rec["enumeration"]["match"], False)
+        self.assertTrue(rec["problems"][0].startswith("database unit differs"), rec["problems"])
+        self.assertIn("drawn layer(s) in the regenerated stream not in "
+                      "--expect-drawn-layer: 70/20", rec["problems"])
+
+    def test_empty_expectation_with_no_drawn_layers_matches(self):
+        committed, regenerated = self.streams(committed_layers={}, regenerated_layers={})
+        rec = X.measure(_KDB, committed, regenerated, [])
+        self.assertIs(rec["enumeration"]["match"], True)
+        self.assertEqual(rec["problems"], [])
+        self.assertEqual(rec["result"], "equivalent")
 
 
 # --------------------------------------- scripts fail before writing

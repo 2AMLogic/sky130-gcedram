@@ -239,6 +239,38 @@ class AppendOnlyTests(unittest.TestCase):
         self.repo.write(CSV, b"a\n")
         self.check(base_tip, self.repo.commit("pr2"), 1, "truncated")
 
+    # --- merge queue (issue #355) ---------------------------------------
+    def test_merge_queue_trial_merge_passes(self) -> None:
+        # The queue branches from the current default-branch tip (the event's
+        # base_sha), merges the PR, and re-runs the gate on the trial-merge
+        # commit. The PR forked from an older base and only appends
+        # elsewhere, so the trial merge must pass against the queue base.
+        fork = self.base_with({CSV: b"a\n1\n"})
+        self.repo.write(CSV, b"a\n1\n2\n")
+        queue_base = self.repo.commit("queue base")
+        self.repo.git("checkout", "-q", "-b", "pr", fork)
+        self.repo.write("doc.md", b"x")
+        self.repo.commit("pr appends elsewhere")
+        self.repo.git("checkout", "-q", "main")
+        self.repo.git("merge", "-q", "--no-edit", "pr")
+        trial_head = self.repo.git("rev-parse", "HEAD")
+        self.check(queue_base, trial_head, 0)
+
+    def test_merge_queue_trial_merge_violation_caught(self) -> None:
+        # A PR that rewrites protected evidence is caught on the trial merge:
+        # the gate compares the queue base against the trial-merge result,
+        # not the PR's own stale fork base.
+        fork = self.base_with({CSV: b"a\n1\n"})
+        self.repo.write("doc.md", b"x")
+        queue_base = self.repo.commit("queue base")
+        self.repo.git("checkout", "-q", "-b", "pr", fork)
+        self.repo.write(CSV, b"a\n")
+        self.repo.commit("pr truncates evidence")
+        self.repo.git("checkout", "-q", "main")
+        self.repo.git("merge", "-q", "--no-edit", "pr")
+        trial_head = self.repo.git("rev-parse", "HEAD")
+        self.check(queue_base, trial_head, 1, "truncated")
+
     # --- fail closed ---------------------------------------------------
     def test_missing_base_object(self) -> None:
         b = self.base_with({CSV: b"a\n"})
@@ -248,6 +280,16 @@ class AppendOnlyTests(unittest.TestCase):
     def test_zero_sha(self) -> None:
         b = self.base_with({CSV: b"a\n"})
         self.check("0" * 40, b, 2, "all-zero")
+
+    def test_empty_base_sha(self) -> None:
+        # A merge_group payload with an absent base_sha must fail closed,
+        # never claim verification (issue #355).
+        b = self.base_with({CSV: b"a\n"})
+        self.check("", b, 2, "empty or all-zero")
+
+    def test_empty_head_sha(self) -> None:
+        b = self.base_with({CSV: b"a\n"})
+        self.check(b, "", 2, "empty or all-zero")
 
     def test_no_merge_base(self) -> None:
         b = self.base_with({CSV: b"a\n"})

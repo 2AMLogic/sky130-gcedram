@@ -26,7 +26,7 @@ so each level input carries a per-option column.
 | Tested corners | tt, ss, ff, sf, fs x -40/27/125 C, global corners only, no mismatch | same | same | EVIDENCE (full grid, both ages); range for the contract |
 | Margin criterion | 0.1 V worst-case column separation | same | same | **ASSUMPTION (placeholder)** |
 | Worst-case separation, min over grid | 0.017 V (fs/-40, aged) | 0.413 V | 0.604 V | EVIDENCE; B's includes sub-ground swing |
-| Offset/margin budget status | **none**: no sense amplifier, no offset or yield evidence, no mismatch | | | NOT AVAILABLE (summary `claims`: offset/yield false) |
+| Offset/margin budget status | **no validated budget**: a schematic sense latch exists (`design/sense_latch.sch`, #109); mismatch evidence with a measured input-referred offset exists (`sim/sense-mismatch/`); the offset/yield budget is not validated (`offset_yield_validated: false`) | | | NOT AVAILABLE (summary `claims`: offset/yield false) |
 | Read disturb | 0.067 V | 0.067 V | 0.082 V (sf/125) | EVIDENCE; 0.1 V limit is a placeholder |
 | Supply/rail tolerances (boost ripple, negative-rail accuracy) | n/a | not studied | not studied | NOT AVAILABLE |
 

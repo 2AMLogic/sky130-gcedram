@@ -31,17 +31,19 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
+from _evidence_common import VDD_V, fmt_g6, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "sense_stage.spice"
 REQUEST_PATH = HERE / "request.json"
-DESIGN_NETLIST = REPO / "design" / "gain_cell_2t.spice"
+DESIGN = REPO / "design"
+DESIGN_NETLIST = DESIGN / "gain_cell_2t.spice"
+LATCH_SPICE = DESIGN / "sense_latch.spice"
 EXTRACT_JSON = REPO / "layout" / "gain_cell_2t.extract.parasitics.json"
 
 # ---- scope: restricted range of the PROPOSED record (nothing outside it) ----
 PROCESS_CORNERS = ["tt", "ss", "ff", "sf", "fs"]
 TEMPS_C = [27, 125]            # 27 C = restricted cold bound; 125 C = worst-case retention corner
-VDD_V = 1.8
 
 # ---- bias / timing (contract inputs, SENSE_INPUT_CONTRACT.md) ----
 VRBL_V = 0.9                   # rbl precharge (contract)
@@ -61,12 +63,11 @@ SN0_LEVELS_V = [-0.10, 0.00]   # stored '0' pre-read level (undershoot floor -0.
 N_ROWS = 4                     # contract column size (ASSUMPTION)
 
 # ---- sense-stage devices (ASSUMPTION: sizes are first-pass choices) ----
-# (model, W um, L um); ad/as/pd/ps follow the bitcell convention 0.29 um diffusion.
-LATCH_N = ("sky130_fd_pr__nfet_01v8", 1.0, 0.15)
-LATCH_P = ("sky130_fd_pr__pfet_01v8", 2.0, 0.15)
-FOOTER = ("sky130_fd_pr__nfet_01v8", 2.0, 0.15)
-HEADER = ("sky130_fd_pr__pfet_01v8", 4.0, 0.15)
-DIFF_UM = 0.29
+# The latch/footer/header device cards are emitted from the schematic-derived
+# design/sense_latch.spice via parse_cards() (issue #293), so the simulated
+# geometry (incl. nrd/nrs/sa/sb/sd) is the design netlist's, never retyped.
+# Sizes there are first-pass choices: latch N 1.0/0.15, P 2.0/0.15,
+# footer 2.0/0.15, header 4.0/0.15 um.
 
 # ---- issue #88 variants (default output above is unchanged) ----
 # ``--variant NAME`` writes ``sense_stage_<NAME>.spice`` and ``request_<NAME>.json``
@@ -91,32 +92,39 @@ PRE244_C_RBL_FF = 0.859179   # extracted_4row_worst_total_ff before PR #248 (iss
 
 
 def variants() -> dict:
-    """Variant registry. ``*_p244`` are generated from the current layout summary.
+    """Variant registry. ``*_p244_l293`` are generated from the current layout summary.
 
-    The un-suffixed ids are the 2026-10-11 pre-#244 variants: their decks and
-    results are committed history (``sim/`` is append-only), no longer generated
-    (``legacy``), and carry the frozen pre-#244 C_RBL so their summaries still
-    reproduce.
+    ``legacy`` entries are committed history (``sim/`` is append-only): their decks
+    and results are frozen and no longer regenerated. The un-suffixed ids are the
+    2026-10-11 pre-#244 variants and carry the frozen pre-#244 C_RBL; the ``*_p244``
+    ids are the 2026-10-29 post-#244 variants, simulated on the pre-#293 latch
+    (retyped geometry without nrd/nrs/sa/sb/sd). Both keep their summaries
+    reproducible. The ``*_p244_l293`` ids are the same post-#244 C_RBL on the
+    schematic-derived latch of issue #293; their decks are generated and committed
+    but not yet simulated.
     """
     ext = extracted_c_rbl_ff() * 1e-15
     lab = ("EXTRACTED-4-ROW (layout/gain_cell_2t_array.parasitics.summary.json "
            "comparison.c_rbl.extracted_4row_worst_total_ff; N_rows = 4 is a STUDY-ASSUMPTION)")
     lab_old = lab   # unchanged text: the frozen summaries record exactly this label
     old = PRE244_C_RBL_FF * 1e-15
-    return {
+    reg = {
         "crbl_ext4row": dict(c_rbl_f=old, c_rbl_label=lab_old, card="design", legacy=True,
                              c_rbl_source_ff=PRE244_C_RBL_FF),
         "crbl_2f": dict(c_rbl_f=2e-15, c_rbl_label="ASSUMPTION (mid-point, not extracted)", card="design",
                         legacy=True, c_rbl_source_ff=PRE244_C_RBL_FF),
         "crbl_ext4row_layoutcard": dict(c_rbl_f=old, c_rbl_label=lab_old, card="layout", legacy=True,
                                         c_rbl_source_ff=PRE244_C_RBL_FF),
-        "crbl_ext4row_p244": dict(c_rbl_f=ext, c_rbl_label=lab, card="design", legacy=False,
+        "crbl_ext4row_p244": dict(c_rbl_f=ext, c_rbl_label=lab, card="design", legacy=True,
                                   c_rbl_source_ff=extracted_c_rbl_ff()),
         "crbl_2f_p244": dict(c_rbl_f=2e-15, c_rbl_label="ASSUMPTION (mid-point, not extracted)", card="design",
-                             legacy=False, c_rbl_source_ff=extracted_c_rbl_ff()),
-        "crbl_ext4row_layoutcard_p244": dict(c_rbl_f=ext, c_rbl_label=lab, card="layout", legacy=False,
+                             legacy=True, c_rbl_source_ff=extracted_c_rbl_ff()),
+        "crbl_ext4row_layoutcard_p244": dict(c_rbl_f=ext, c_rbl_label=lab, card="layout", legacy=True,
                                              c_rbl_source_ff=extracted_c_rbl_ff()),
     }
+    for k in [k for k in reg if k.endswith("_p244")]:
+        reg[k + "_l293"] = {**reg[k], "legacy": False}
+    return reg
 
 
 def current_variants() -> dict:
@@ -136,17 +144,6 @@ def variant_paths(variant: str | None) -> tuple[Path, Path]:
     if variant is None:
         return NETLIST_PATH, REQUEST_PATH
     return HERE / f"sense_stage_{variant}.spice", HERE / f"request_{variant}.json"
-
-
-def _fmt(x: float) -> str:
-    return f"{x:.6g}"
-
-
-def dev_params(w: float, l: float) -> str:
-    ad = w * DIFF_UM
-    pd = 2 * (w + DIFF_UM)
-    return (f"L={_fmt(l)} W={_fmt(w)} nf=1 ad={_fmt(ad)} as={_fmt(ad)} "
-            f"pd={_fmt(pd)} ps={_fmt(pd)} mult=1 m=1")
 
 
 def design_cell_cards() -> tuple[str, str]:
@@ -194,6 +191,7 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
         c_rbl_f, c_rbl_label = v["c_rbl_f"], v["c_rbl_label"]
         if v["card"] == "layout":
             wr_p, rd_p = layout_card(wr_p), layout_card(rd_p)
+    latch = parse_cards(LATCH_SPICE)
     pts = instances()
     L: list[str] = []
     a = L.append
@@ -224,14 +222,14 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
     a("* reference level, latch/footer/header sizes, ideal precharge switch, ideal drivers, ideal")
     a("* matched dummy load on the reference side, all four SN at one level, global corners only.")
     a("")
-    a(f".param VDD     = {_fmt(VDD_V)}")
-    a(f".param VRBL    = {_fmt(VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param TEDGE   = {_fmt(T_EDGE_S)}")
-    a(f".param T_READ  = {_fmt(T_READ_S)}   $ select edge")
-    a(f".param T_PGAP  = {_fmt(T_PRE_GAP_S)}   $ precharge released this long before T_READ")
-    a(f".param T_EN    = {_fmt(T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)")
-    a(f".param C_RBL   = {_fmt(c_rbl_f)}   $ {c_rbl_label}")
-    a(f".param C_SN    = {_fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param VDD     = {fmt_g6(VDD_V)}")
+    a(f".param VRBL    = {fmt_g6(VRBL_V)}   $ ASSUMPTION (contract)")
+    a(f".param TEDGE   = {fmt_g6(T_EDGE_S)}")
+    a(f".param T_READ  = {fmt_g6(T_READ_S)}   $ select edge")
+    a(f".param T_PGAP  = {fmt_g6(T_PRE_GAP_S)}   $ precharge released this long before T_READ")
+    a(f".param T_EN    = {fmt_g6(T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)")
+    a(f".param C_RBL   = {fmt_g6(c_rbl_f)}   $ {c_rbl_label}")
+    a(f".param C_SN    = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("")
     a("* ---- shared drivers (ideal) ----")
     a("vdd   vdd 0 dc {VDD}")
@@ -242,7 +240,7 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
     a("vrwld rwl_des 0 dc {VDD}")
     a("vpre  prea 0 dc {VRBL}")
     for dref in sorted({p["dref"] for p in pts}):
-        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {_fmt(VRBL_V - dref)}   $ reference = VRBL - {_fmt(dref)} (ASSUMPTION)")
+        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {fmt_g6(VRBL_V - dref)}   $ reference = VRBL - {fmt_g6(dref)} (ASSUMPTION)")
     a(".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)")
     a("")
     ics: list[str] = []
@@ -259,25 +257,22 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
             ics.append(f"v({rb})={va:.6f}")
         else:
             a(f"spa_{n} prea {rb} ctl 0 swpre")
-            ics.append(f"v({rb})={_fmt(VRBL_V)}")
+            ics.append(f"v({rb})={fmt_g6(VRBL_V)}")
             for r in range(N_ROWS):
                 sn = f"sn_{n}_{r}"
                 rwl = "rwl_sel" if r == 0 else "rwl_des"
                 a(f"XMWR_{n}_{r} {sn} 0 0 0 {wr_m} {wr_p}")
                 a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
                 a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-                ics.append(f"v({sn})={_fmt(p['sn'])}")
+                ics.append(f"v({sn})={fmt_g6(p['sn'])}")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"spr_{n} {refbus} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rf})={VRBL_V - p['dref']:.6f}")
-        ln, lp, fo, he = LATCH_N, LATCH_P, FOOTER, HEADER
-        a(f"XMN1_{n} {rb} {rf} {vn} 0 {ln[0]} {dev_params(ln[1], ln[2])}")
-        a(f"XMN2_{n} {rf} {rb} {vn} 0 {ln[0]} {dev_params(ln[1], ln[2])}")
-        a(f"XMP1_{n} {rb} {rf} {vp} vdd {lp[0]} {dev_params(lp[1], lp[2])}")
-        a(f"XMP2_{n} {rf} {rb} {vp} vdd {lp[0]} {dev_params(lp[1], lp[2])}")
-        a(f"XMNF_{n} {vn} en 0 0 {fo[0]} {dev_params(fo[1], fo[2])}")
-        a(f"XMPH_{n} {vp} enb vdd vdd {he[0]} {dev_params(he[1], he[2])}")
+        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": "en", "enb": "enb",
+                "vdd": "vdd", "GND": "0", "0": "0"}
+        for dev, (nets, model, params) in latch.items():
+            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
         # settle values of the floating tail nodes (ASSUMPTION: ~ source-follower levels, then settle in idle time)
         ics.append(f"v({vn})=0.45")
         ics.append(f"v({vp})=1.35")
@@ -293,8 +288,8 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
 
 def build_request(variant: str | None = None) -> dict:
     meas = []
-    t_en_ns = _fmt(T_EN_S * 1e9)
-    t_stop_ns = _fmt(T_STOP_S * 1e9)
+    t_en_ns = fmt_g6(T_EN_S * 1e9)
+    t_stop_ns = fmt_g6(T_STOP_S * 1e9)
     for p in instances():
         n = p["name"]
         meas += [

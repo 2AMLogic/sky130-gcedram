@@ -20,7 +20,7 @@ exists to prevent:
 | **Measured** | Worst-case access-device leakage, `ileak_a` | ngspice simulation against the shipped sky130 BSIM4 model, recorded in [`sim/leakage/results/leakage_results.csv`](../leakage/results/leakage_results.csv) (issue #2) |
 | **Computed** (not measured, not assumed) | Read-transistor gate-oxide capacitance, `C_gate` | Closed-form `Cox'' = eps0 * epsrox / toxe` using the `toxe`/`epsrox` parameters read directly out of the shipped sky130 BSIM4 model card -- a real, reproducible number from public PDK model constants, but not itself a simulation result |
 | **Extracted** (issue #7, `2T-min` only) | Total storage-node capacitance `C_SN` | Post-layout `klt extract --parasitics --critical-net sn` run against the committed [`layout/gain_cell_2t.gds`](../../layout/gain_cell_2t.gds) (issue #15/PR #18) -- see "Storage-node capacitance" below. Reclassified from ASSUMPTION to extracted now that a `2T-min` layout exists to extract from. |
-| **ASSUMPTION** (explicitly labelled) | Total storage-node capacitance `C_SN` for `3T-min`, and the sense margin `delta_V` for both geometries | No `3T-min` layout exists yet for this macro (3T is a documented alternative, not the ratified baseline -- [`spec/retention-refresh-budget.md`](../../spec/retention-refresh-budget.md) Section 6), so its `C_SN` remains a margin-factor assumption. No sense-amplifier design exists yet either, so `delta_V` remains assumed for both geometries. Both are stated as explicit assumptions with their rationale below, not presented as measured or derived quantities. |
+| **ASSUMPTION** (explicitly labelled) | Total storage-node capacitance `C_SN` for `3T-min`, and the sense margin `delta_V` for both geometries | No `3T-min` layout exists yet for this macro (3T is a documented alternative, not the ratified baseline -- [`spec/retention-refresh-budget.md`](../../spec/retention-refresh-budget.md) Section 6), so its `C_SN` remains a margin-factor assumption. A schematic-level sense latch now exists (`design/sense_latch.sch`, #109), but its offset/yield is not validated (`offset_yield_validated: false`), so `delta_V` remains assumed for both geometries. Both are stated as explicit assumptions with their rationale below, not presented as measured or derived quantities. |
 
 ## Candidate geometries
 
@@ -173,9 +173,11 @@ ground/coupling breakdown) instead of being blank.
 
 The retention time is the time for the storage node, written to a logic
 '1' at `VDD` = 1.8 V, to decay past the point where a read-side sense
-scheme can no longer reliably discriminate a stored '1' from a '0'. No
-sense-amplifier design exists yet for this macro, so this repo assumes the
-conservative half-`VDD` bound commonly used as a coarse worst-case sizing
+scheme can no longer reliably discriminate a stored '1' from a '0'. A
+schematic-level sense latch exists (`design/sense_latch.sch`, #109), but
+its offset/yield is not validated (`offset_yield_validated: false`), so
+this repo still assumes the conservative half-`VDD` bound commonly used
+as a coarse worst-case sizing
 rule in SRAM/DRAM sensing design, absent a validated sense-amp
 offset/noise budget for this macro's own sense circuit:
 
@@ -184,8 +186,9 @@ delta_V_ASSUMPTION = VDD / 2 = 0.9 V
 ```
 
 This is an explicit ASSUMPTION, independent of the storage-node
-capacitance assumption above, and should likewise be revisited once a
-sense-amplifier design exists for this macro.
+capacitance assumption above, and should likewise be revisited once the
+existing sense latch (`design/sense_latch.sch`) has a validated
+offset/noise budget.
 
 ## Retention-time formula
 
@@ -590,9 +593,11 @@ window), staleness of the committed deck and reproduction of the committed resul
   `spec/retention-refresh-budget.md` Section 6), its `C_SN` margin-factor
   assumption above should be replaced with an extracted value the same way
   issue #7 did for `2T-min`.
-- **Sense-amplifier-derived sense margin**: once a sense-amplifier design
-  exists for this macro, `delta_V_ASSUMPTION` should be replaced with a
-  value validated against that circuit's actual offset/noise budget.
+- **Sense-amplifier-derived sense margin**: a schematic-level sense latch
+  exists (`design/sense_latch.sch`, #109), but its offset/yield is not
+  validated (`offset_yield_validated: false`); `delta_V_ASSUMPTION` should
+  be replaced with a value validated against that circuit's actual
+  offset/noise budget.
 - **Array-level retention/refresh-interval spec**: this document estimates
   single-cell retention only; a macro-level refresh interval must also
   account for bitline coupling, read disturb, and array-wide

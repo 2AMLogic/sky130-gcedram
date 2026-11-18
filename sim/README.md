@@ -285,6 +285,86 @@ python3 -I sim/sense-stage/gen_sense_stage.py
 python3 -I sim/sense-stage/test_sense_stage.py
 ```
 
+## `sense-mismatch/` -- latch input-referred offset under Monte Carlo mismatch (issue #81)
+
+Epic #24 items 2 and 6; the direct follow-up to
+[`sense-stage/`](sense-stage/README.md), whose README had listed the
+mismatch/offset budget as NOT AVAILABLE. Regenerates the sense decks with
+the pinned PDK's Vth-mismatch model applied
+([`gen_sense_mismatch.py`](sense-mismatch/gen_sense_mismatch.py) imports
+the latch devices, sizes, timing and bias from
+[`sense-stage/gen_sense_stage.py`](sense-stage/gen_sense_stage.py) so the
+two cannot drift) and runs `klt sim` Monte Carlo (`n` = 40, pinned seed,
+`backend: batch`): stage-only at tt/27 C, fs/27 C, ss/125 C and sf/125 C
+(`VDD` = 1.8 V), plus an end-to-end run (read device + column + latch) at
+fs/27 C, reducing each report to the offset distribution (sigma, 95 % CIs)
+and the per-stored-level decision probability. Per its own README,
+`offset_yield_validated` stays **false**: every probability is per
+latch/column instance, not an array or macro yield, and no error rate
+below about 1 % is observed (its 1e-3 / 1e-6 figures are labelled
+extrapolations of a fitted normal model). See
+[`sense-mismatch/README.md`](sense-mismatch/README.md); results live in
+[`sense-mismatch/results/`](sense-mismatch/results/) in two dated runs
+(the originals, and the post-#244 layout re-run of issue #249); a new run
+uses [`request.json`](sense-mismatch/request.json) and
+[`request_cell.json`](sense-mismatch/request_cell.json) then reduces with
+[`analyze_sense_mismatch.py`](sense-mismatch/analyze_sense_mismatch.py).
+
+```bash
+python3 -I sim/sense-mismatch/gen_sense_mismatch.py
+python3 -I sim/sense-mismatch/test_sense_mismatch.py
+```
+
+## `column-periphery/` -- designed precharge/write-path slice versus ideal sources (issue #114)
+
+Epic #24 items 2, 3 and 6. Earlier sense-path studies drove the column
+with ideal sources; this one replaces the RBL precharge switch and the
+write-bitline driver with a designed slice
+([`design/column_periphery.sch`](../design/column_periphery.sch)) and
+measures what that changes in the sense-stage bench: precharge settling,
+written stored level, read `delta_V` and the sense decision, per corner.
+Schematic-level: global corners only, the 5 process corners x {27, 125} C
+restricted range at `VDD` = 1.8 V, one `tran` each, `klt sim`
+`backend: batch`. An isolation-sizing addendum (issue #117) sweeps the
+isolation-gate sizes, adds a reference-side matched precharge, and studies
+the offset the isolation pair contributes with a small Monte Carlo. See
+[`column-periphery/README.md`](column-periphery/README.md) for the slice,
+the sizing rationale and the limits to read before citing; results live in
+[`column-periphery/results/`](column-periphery/results/), two dated runs
+(the originals, and the post-#244 layout re-run of issue #249). The CI
+checks are [`test_column_periphery.py`](column-periphery/test_column_periphery.py)
+and its design-side drift check
+[`design/test_column_periphery.py`](../design/test_column_periphery.py);
+a new run regenerates the decks with
+[`gen_column_periphery.py`](column-periphery/gen_column_periphery.py) /
+[`gen_isolation_study.py`](column-periphery/gen_isolation_study.py), runs
+`klt sim` on the committed requests, then reduces with
+[`analyze_column_periphery.py`](column-periphery/analyze_column_periphery.py)
+/ [`analyze_isolation_study.py`](column-periphery/analyze_isolation_study.py).
+
+```bash
+python3 -I sim/column-periphery/gen_column_periphery.py
+python3 -I sim/column-periphery/test_column_periphery.py
+```
+
+## `cold-start/` -- single-corner cold-start probe of the sense-stage deck (T1 item 9)
+
+Not a study with recorded results: one committed `klt sim` **request**
+([`request.json`](cold-start/request.json)) that runs the
+[`sense-stage`](sense-stage/README.md) deck once, locally (`engine:
+ngspice`, `backend: local`), at a single corner (tt, 125 C), with one
+`.tran` and a large `.meas` block. It is hash-anchored by the analog T1
+attestation ([`attest/item9.json`](../attest/item9.json), item 9,
+"testbenches shipped"); it records no results in-tree, and the attestation
+`--check` carries the committed outcome rather than re-running it. A
+single-corner request like this is the one shape that legitimately runs
+`--backend local`; it needs `ngspice` and the PDK pinned in
+[`../docs/pdk-pin.md`](../docs/pdk-pin.md) enabled.
+
+```bash
+klt sim --backend local --format json sim/cold-start/request.json
+```
+
 ## `refresh-replay/` -- phase_seq RTL strobes replayed in the refresh-op circuit (issue #128)
 
 Exports the edges of one `phase_seq` REFRESH, converts them to PWL (explicit pin map, explicit latch-hold
@@ -378,6 +458,30 @@ the sense amplifier and the write-margin decision in issue #24 each consume;
 it does **not** re-ratify any retention number in
 [`spec/retention-refresh-budget.md`](../spec/retention-refresh-budget.md),
 which remains a separate, gated spec change.
+
+## `pdk-closure-identity/` -- static PDK model-closure identity check (issue #338)
+
+No simulator runs here: a committed checker resolves the model closure the
+loaded-column requests actually load (from each request's own `models.lib`
+entry point, per corner section) in two open_pdks trees and compares the
+model content the decks instantiate -- order-independent per block name,
+plus transitive parameter-consumption tracing. Its committed evidence
+record establishes that open_pdks `c6d73a3` vs `f6eeac7` differ as files
+(119 vs 141 closure files) but are identical in everything the eight
+`lc_*.spice` decks instantiate (`sky130_fd_pr__nfet_01v8` and its feeding
+parameters), which extends the PDK-revision exclusion in
+[`spec/operating-range-decision-PROPOSED.md`](../spec/operating-range-decision-PROPOSED.md)
+section 11 grid-wide on a static basis. Also records why
+`environment.models_lib_sha256` must not be cited as PDK-revision evidence
+(entry-point-only hash). See
+[`pdk-closure-identity/README.md`](pdk-closure-identity/README.md).
+
+```bash
+python3 -I sim/pdk-closure-identity/check_closure_identity.py \
+    --root-a ~/.volare --root-b ~/.ciel \
+    --request sim/loaded-column/klt/request_*.json
+python3 -I sim/pdk-closure-identity/test_check_closure_identity.py
+```
 
 ## Stored evidence (issue #218)
 

@@ -9,16 +9,19 @@ name: evidence-checks
 # package.json.
 #
 # The `append-only` job (issue #67) compares committed sim/ evidence blobs
-# between the PR's merge base and head commit. It uses the `pull_request`
-# event (fork PRs get a read-only token and no secrets), passes the event's
-# immutable base/head SHAs through env vars (no PR text is interpolated into
-# shell), checks out full history, and fails closed if either commit or any
-# blob is unavailable.
+# between the PR's merge base and head commit. It runs on the `pull_request`
+# event (fork PRs get a read-only token and no secrets) and on `merge_group`
+# (the merge queue's trial merge, issue #355; the queue re-runs required
+# checks against the queued merge result, so evidence cannot land on a base
+# it was not checked against). It passes the event's immutable base/head SHAs
+# through env vars (no PR text is interpolated into shell), checks out full
+# history, and fails closed if either commit or any blob is unavailable.
 
 on:
   push:
     branches: [main]
   pull_request:
+  merge_group:
 
 permissions:
   contents: read
@@ -33,6 +36,12 @@ jobs:
 
       - name: Loaded-column analysis tests
         run: python3 -I sim/loaded-column/test_analysis.py
+
+      - name: Loaded-column klt request generator / reducer (issue #169) checks
+        run: python3 -I sim/loaded-column/test_gen_column_requests.py
+
+      - name: Bitcell-transient request generator / reducer (issue #182) checks
+        run: python3 -I sim/bitcell-transient/test_gen_bitcell_transient.py
 
       - name: Cold-corner variant tests
         run: python3 -I sim/loaded-column/cold-corner/test_variants.py
@@ -103,6 +112,9 @@ jobs:
       - name: Shared klt request skeleton tests (issue #196)
         run: python3 -I sim/test_klt_request.py
 
+      - name: PDK model-closure identity checker tests (issue #338)
+        run: python3 -I sim/pdk-closure-identity/test_check_closure_identity.py
+
       - name: Shared evidence helper tests
         run: python3 -I sim/test_evidence_common.py
 
@@ -116,7 +128,9 @@ jobs:
         run: python3 -I scripts/check_artifact_manifests.py check
 
   append-only:
-    if: github.event_name == 'pull_request'
+    # merge_group must run the job too: a gate that skips on the queue's
+    # trial merge is a silent drop of the required context, not a pass.
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -126,30 +140,52 @@ jobs:
 
       - name: Fetch exact base and head commits
         env:
+          EVENT: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          MG_BASE: ${{ github.event.merge_group.base_sha }}
+          MG_HEAD: ${{ github.event.merge_group.head_sha }}
         run: |
           set -euo pipefail
-          # Head lives at refs/pull/N/head (also for forks); fetch both by
-          # ref and SHA so the check never relies on a moving branch tip.
-          git fetch --no-tags origin "+refs/pull/${PR_NUMBER}/head:refs/remotes/pr/head" "$BASE_SHA"
+          # Merge queue (issue #355; plumbing shape from sky130-comparator
+          # #332): the trial-merge base/head come from the event payload, and
+          # there is no refs/pull/N/head ref there, so both commits are
+          # fetched by SHA. An empty or unreachable SHA fails closed.
+          if [ "$EVENT" = "merge_group" ]; then
+            : "${MG_BASE:?merge_group.base_sha missing from the event payload}"
+            : "${MG_HEAD:?merge_group.head_sha missing from the event payload}"
+            BASE_SHA="$MG_BASE"
+            HEAD_SHA="$MG_HEAD"
+            git fetch --no-tags origin "$BASE_SHA" "$HEAD_SHA"
+          else
+            # Head lives at refs/pull/N/head (also for forks); fetch both by
+            # ref and SHA so the check never relies on a moving branch tip.
+            git fetch --no-tags origin "+refs/pull/${PR_NUMBER}/head:refs/remotes/pr/head" "$BASE_SHA"
+          fi
           git cat-file -e "${BASE_SHA}^{commit}"
           git cat-file -e "${HEAD_SHA}^{commit}"
           test "$(git rev-parse --is-shallow-repository)" = false
 
       - name: Append-only evidence check
         env:
+          EVENT: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          MG_BASE: ${{ github.event.merge_group.base_sha }}
+          MG_HEAD: ${{ github.event.merge_group.head_sha }}
         run: |
           set -euo pipefail
           # Prefer the checker as committed on the base branch, so changing
           # sim/check_append_only.py in a PR does not change the check applied
           # to that PR; fall back to the PR's copy only when the base does not
           # have one yet (the PR introducing it). Edits to this workflow file
-          # still require review: it runs from the PR's own merge ref under
-          # the pull_request event.
+          # still require review: it runs from the event's merge ref under
+          # the pull_request and merge_group events.
+          if [ "$EVENT" = "merge_group" ]; then
+            BASE_SHA="$MG_BASE"
+            HEAD_SHA="$MG_HEAD"
+          fi
           checker="$RUNNER_TEMP/check_append_only.py"
           if git cat-file -e "${BASE_SHA}:sim/check_append_only.py" 2>/dev/null; then
             git show "${BASE_SHA}:sim/check_append_only.py" > "$checker"
