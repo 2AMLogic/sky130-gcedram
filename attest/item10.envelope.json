@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 43/43 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 46/46 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 43,
-    "passed_count": 43,
+    "check_count": 46,
+    "passed_count": 46,
     "checks": [
       {
         "check": "present",
@@ -24,7 +24,7 @@
         "role": "hygiene",
         "path": ".github/workflows/evidence-checks.yml",
         "passed": true,
-        "content_hash": "sha256:370b084f39b45b521006fa4fa74697b9d7a56f02a5d015db4075bd13722a4779"
+        "content_hash": "sha256:49d8a25acc032f76c5a59ab7c6243dfed54350544dcee4c6ca1fa8dd2654f8bd"
       },
       {
         "check": "present",
@@ -74,6 +74,13 @@
         "path": "sim/check_append_only.py",
         "passed": true,
         "content_hash": "sha256:13631b6e90ae79a9974a00e3a15d4bb9463b296beafb2eff07c48ccfc25bf543"
+      },
+      {
+        "check": "present",
+        "role": "hygiene",
+        "path": "sim/check_item9_inventory.py",
+        "passed": true,
+        "content_hash": "sha256:6949c222af9c52669a9b2a7837a3266a7a9ebd0b48a7233e1d48dc740b56ec1b"
       },
       {
         "check": "present",
@@ -285,6 +292,32 @@
           "python3",
           "-I",
           "sim/test_append_only.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Item-9 inventory fixture tests (issue #371)",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/test_check_item9_inventory.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Item-9 inventory completeness (every sim/ bench inventoried, issue #371)",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/check_item9_inventory.py"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -528,7 +561,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:451ebcd8032e4d65c13d62fc0284c4d54ca11a537d4a0b2bf4cd58e6a7feba98"
+      "content_hash": "sha256:bd932d068b3c357547cf189aaa4f05e5e379915ace53c343ec329dd515dbb4e5"
     }
   }
 }
