@@ -11,7 +11,7 @@ the latch input ``din_v`` and final ``dend_v``, the signed decision and its late
 
 Definitions (ASSUMPTIONS, same as sim/sense-stage): d = V(rbl) - V(ref); a stored '1' must
 decide d -> -VDD, a '0' d -> +VDD. A point RESOLVES when the decision has the stored value's
-sign, |dend| >= VDD/2 and tdec <= 5 ns. ``within_refresh_bound`` = age <= the ratified 5.03 us
+sign, |dend| >= VDD/2 and 0 < tdec <= 5 ns (a non-positive tdec is not a decision time). ``within_refresh_bound`` = age <= the ratified 5.03 us
 bound (read only); ``meets_refresh_bound`` = within bound AND resolves. Failures are kept.
 
 Negative control: the inadequate-write ('control_weak_write') points MUST NOT resolve; the
@@ -30,7 +30,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 from _evidence_common import DELTA_V_V, PROPOSED_RANGE_SCOPE, PROPOSED_RANGE_STATUS  # noqa: E402
-from _evidence_common import decided, klt_provenance, measurements_of  # noqa: E402
+from _evidence_common import decided, klt_provenance, measurements_of, tdec_in_window  # noqa: E402
 import gen_aged_read as G  # noqa: E402
 
 T_WINDOW_S = 5e-9
@@ -44,7 +44,7 @@ def point_row(corner: dict, p: dict, m: dict) -> dict:
     dec = decided(dend, RESOLVE_V)
     wr, pre, post = g("wr"), g("pre"), g("post")
     correct = dec == str(p["value"])
-    resolves = bool(correct and tdec is not None and tdec <= T_WINDOW_S)
+    resolves = bool(correct and tdec_in_window(tdec, T_WINDOW_S))
     within = p["age_ns"] * 1e-9 <= G.REFRESH_BOUND_S
     return dict(
         corner=corner["process"], temperature_c=int(corner["temperature_c"]), kind=p["kind"], case=n,

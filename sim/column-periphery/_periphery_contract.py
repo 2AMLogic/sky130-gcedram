@@ -11,7 +11,7 @@ data values:
     (a) settle time <= the 2 ns precharge phase of t_row_refresh_op `anchored`
     (b) |V(rbl) - 0.9 V| <= 10 mV when the precharge is released
     (c) the latch decides the correct polarity with |d| >= RESOLVE_V
-    (d) within T_WINDOW_S of the enable (sense-stage criterion)
+    (d) 0 < tdec <= T_WINDOW_S after the enable (sense-stage criterion)
 
 It lives here, next to the thresholds it reads, because BOTH analyzers in this
 directory gate on it: `analyze_column_periphery.py` reports it per corner for
