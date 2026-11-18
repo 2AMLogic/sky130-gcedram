@@ -126,6 +126,26 @@ historical record.
   old run (`48de7c67...133c84`). It hashes only the top-level
   `sky130.lib.spice`, so it does not distinguish the two revisions; the
   included device model files are not hashed separately by klt.
+* **Correction note (issue #362, 2026-11-18; original text above kept as the
+  record of what was believed then).** (1) The "written by the runner that ran
+  the job" statement holds for this klt 0.6.0 run only. For the klt 0.8.0 runs
+  (`20261028T085441Z`, `20261029T194412Z`-`20261029T194414Z`) `provenance.pdk`
+  says `f6eeac7` while the worker's executed-scope capture
+  (`environment.remote.worker_environment.pdk.stamp_text`) says `c6d73a3`, so
+  there `provenance.pdk` is not executed-scope evidence. (2) The two klt 0.6.0
+  reports (`20261009T131831Z`, `20261016T072807Z`) carry no
+  `worker_environment` capture: their PDK revisions (`c6d73a3`, `f6eeac7`) are
+  the client-side `provenance.pdk` values, not executed-scope evidence.
+  (3) `models_lib_sha256` is client-side (`models_lib_sha256_scope: "client"`,
+  `models_lib.path: null`, `models_staged: false`) and is `48de7c67...` in
+  every report cited in this README; it is not PDK identity and must not be
+  read as such. (4) Whether the `c6d73a3` -> `f6eeac7` step is material for
+  this bench: `sense_points_20261009T131831Z.csv` and
+  `sense_points_20261016T072807Z.csv` are byte-identical (`cmp`). That is
+  bench-level equivalence evidence for this one revision pair, limited by (2):
+  the revisions of those two runs rest on client-side stamps. (Suspected cause
+  of the 0.6.0 vs 0.8.0 `provenance.pdk` difference, a klt semantics change, is
+  an unverified hypothesis; klt was not inspected.)
 * **Simulator.** `engine_version` is `46` in both runs, and klt 0.6.0 /
   KLayout 0.30.12 are the same, so there is no simulator delta to separate
   from the PDK change. Netlist sha256 is unchanged (`4cd2834d...530ff0`).
@@ -430,7 +450,9 @@ Old = `results/sense_summary_20261028T085441Z.json`, new = `results/sense_summar
 
 Follow-up to #152. The three `*_p244_l293` variants (same post-#244 `C_RBL` 0.955559 fF / 2 fF and cards as the `*_p244` runs, latch emitted from `design/sense_latch.spice` per #293) had committed decks and requests but no results. They were run as **new dated evidence**; the legacy `*_p244` results above are untouched. Tool: `uvx --from klayout-tools==0.9.1 klt sim --batch-set ... --wait-for-capacity 600 --format json` (one invocation, three jobs on the batch fleet, no local grid; runner klt 0.9.0, fleet worker ngspice-47). Every variant: 10/10 corners `pass`, first submission. Each summary's `netlist_sha256` equals the committed `_l293` deck (checked).
 
-**Simulator caveat (old vs new is not engine-matched).** The legacy `*_p244` runs report `environment.engine_version` = `46` (runs `20261029T194412Z`-`20261029T194414Z`); the `*_p244_l293` runs here report `47`. `models_lib_sha256` is identical in all six, so the PDK library is the same, but the simulator moved 46 -> 47 between the old and new columns, so the `t_dec` deltas below are **not isolated to the latch correction**. At the small end (e.g. `crbl_ext4row` tt/125 C, +0.0015 ns on 0.1544 ns, about 1 %) the delta is of the same order as a simulator minor-version step. Mitigation: #293's own +0.019-0.025 ns reference shift was measured across the same 46 -> 47 step, so the percentage comparison against it is like-for-like even though the absolute attribution is not.
+**Simulator caveat (old vs new is not engine-matched).** The legacy `*_p244` runs report `environment.engine_version` = `46` (runs `20261029T194412Z`-`20261029T194414Z`); the `*_p244_l293` runs here report `47`. `models_lib_sha256` is identical in all six, but see the correction note below: that hash is client-side and does not identify the PDK revision. The simulator moved 46 -> 47 between the old and new columns, so the `t_dec` deltas below are **not isolated to the latch correction**. At the small end (e.g. `crbl_ext4row` tt/125 C, +0.0015 ns on 0.1544 ns, about 1 %) the delta is of the same order as a simulator minor-version step. Mitigation: #293's own +0.019-0.025 ns reference shift was measured across the same 46 -> 47 step, so the percentage comparison against it is like-for-like even though the absolute attribution is not.
+
+**Correction note (issue #362, 2026-11-18): the old and new columns differ in the executed PDK revision as well as the simulator.** The sentence above originally read "`models_lib_sha256` is identical in all six, so the PDK library is the same"; that does not follow, because the hash is client-side (`models_lib_sha256_scope: "client"`, `models_staged: false`) and is constant by construction. The worker's executed-scope stamp (`environment.remote.worker_environment.pdk.stamp_text`) says otherwise: old `*_p244` runs `20261029T194412Z`-`20261029T194414Z` executed `open_pdks c6d73a35...`; new `*_p244_l293` runs `20261118T194857Z`, `20261118T194901Z`, `20261118T194931Z` executed `open_pdks f6eeac7d...`. So the old -> new `t_dec` deltas are not isolated to the latch correction on two counts: simulator 46 -> 47 **and** PDK revision `c6d73a3` -> `f6eeac7`. For the legacy runs `provenance.pdk` reads `f6eeac7` but disagrees with the worker capture (see the #261 correction note). Existing evidence on the PDK step alone: the #261 pair `sense_points_20261009T131831Z.csv` / `sense_points_20261016T072807Z.csv` is byte-identical across `c6d73a3` -> `f6eeac7` (client-side stamps, simulator held at 46), which suggests the PDK step is not what moved `t_dec`, but it is a different bench state (pre-#244 layout, pre-#293 latch) and does not isolate it here.
 
 | Run | Variant | Fleet job (`environment.remote.job_id`) | Instance | Old run (`*_p244`) |
 |---|---|---|---|---|
