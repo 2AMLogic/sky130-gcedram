@@ -242,6 +242,8 @@ the proposed range or any sense-amplifier specification.
 
 > **Pre-#244 layout.** Everything in this section (0.859179 fF, `C_SN` 0.605354 fF) is history of the layout before PR #248. The same variants on the current layout are in "Issue #261" at the end of this file. The decks and results here are not regenerated or edited.
 
+> **Device provenance (pre-#293 latch).** The decks behind this section predate the issue-#293 latch correction: `gen_sense_stage.py` had dropped the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens from the latch devices, so these runs simulated a latch with no source-drain parasitic resistance. The correction and its effect on the 10 fF deck are in "Latch geometry correction re-run (issue #293, 2026-11-15)" at the end of this file. These variant decks are append-only history and were **not** regenerated, so every `t_dec`, floor and droop-verdict number in this section describes the pre-correction latch. Re-running the variants under the corrected device is tracked in #357 (open).
+
 New evidence only. The sections above and their results files are
 unchanged. The loaded-column half of the issue, and the full description of
 the `C_RBL` value, are in
@@ -360,6 +362,10 @@ Old = `results/sense_summary_20261016T072807Z.json` (the latest prior run, re-qu
 
 ## Issue #261: #88 variants re-run on the post-#244 layout (append-only, 2026-10-29)
 
+> **Device provenance (pre-#293 latch).** The three `*_p244` decks of this section (runs `20261029T194412Z`-`20261029T194414Z`) predate the issue-#293 latch correction (latch without `nrd`/`nrs`/`sa`/`sb`/`sd`, i.e. no source-drain parasitic resistance), and were **not** regenerated; every number below, including the `t_dec` tables and the sf/125 C best-reference droop verdict (where the latch is the sensing element), describes the pre-correction latch. See "Latch geometry correction re-run (issue #293, 2026-11-15)" at the end of this file. Re-running these variants under the corrected device is tracked in #357 (open).
+>
+> **Corrected-device variant decks are committed but not simulated.** `gen_sense_stage.py` also registers `crbl_ext4row_p244_l293`, `crbl_2f_p244_l293` and `crbl_ext4row_layoutcard_p244_l293` (same post-#244 `C_RBL`/`C_SN`, latch emitted from `design/sense_latch.spice`); their decks and request files are in this directory, but **no results exist for them**. Nothing in this README or in `SENSE_INPUT_CONTRACT.md` is a measurement on the corrected device for any variant other than the 10 fF baseline.
+
 New evidence only; the 2026-10-11 variants above stay as pre-#244 history. PR #248 regenerated the layout, so the extracted `C_RBL` moved and the extracted `C_SN` moved too (0.605354 -> 0.672741 fF).
 
 **`C_RBL` source.** Same file and key as above (`layout/gain_cell_2t_array.parasitics.summary.json`, `comparison.c_rbl.extracted_4row_worst_total_ff`), now **0.955559 fF** (worst net `rbl_2`: 0.66272 fF ground; was 0.859179 fF with 0.581168 fF ground). Label unchanged: **EXTRACTED-4-ROW**, 4 rows is a STUDY-ASSUMPTION, `N_rows` is **not ratified**. No `spec/` change.
@@ -413,5 +419,7 @@ Old = `results/sense_summary_20261028T085441Z.json`, new = `results/sense_summar
 | sf | 125 | 1.17 -> 1.17 | 0.330 -> 0.350 | 0.45 -> 0.45 | 0.867-0.917 -> 0.867-0.917 | indeterminate_on_this_grid -> indeterminate_on_this_grid |
 | fs | 27 | 1.10 -> 1.10 | 0.383 -> 0.403 | 0.75 -> 0.75 | 0.232-0.282 -> 0.232-0.282 | violated -> violated |
 | fs | 125 | 1.21 -> 1.21 | 0.334 -> 0.354 | 0.65 -> 0.65 | 0.477-0.527 -> 0.477-0.527 | violated -> violated |
+
+**Scope of the "verdicts unchanged" conclusion.** It was measured on the **10 fF** baseline deck only. For the #88 and #261 variant decks (`C_RBL` 0.859/0.956 fF and 2 fF, layout card) it is an *expectation*, not a measurement: those were not re-simulated on the corrected device (#357), and the sf/125 C best-reference droop verdict in particular (`met` for the 0.955559 fF design-card variant) is not re-verified under the corrected latch.
 
 **The simulated device really changed** -- every one of the 980 measurement rows moved (`t_dec` shifts +0.019-0.025 ns at every corner: regeneration is slightly slower with source-drain resistance in the latch; `dend` deltas up to 19 mV near the resolution limit) -- but **every summary-level verdict is unchanged at the reported precision**: the stage floor, the min-resolvable level at every reference, the usable-`dV` brackets and the best-swept-reference verdicts in the per-corner table above are re-derived from run `20261115T115315Z` and all hold as printed. Stored '0' resolves correctly at every corner and reference (negative control: 0 failures), every decided point reaches >= 1.55 V full swing with correct sign, and max `t_dec` is 0.54 ns against the 5 ns window, so **pass condition 2c of `spec/macro-pass-conditions-PROPOSED.md` (Status column: ASSUMPTION) still passes under the corrected device**. The `VDD`/2 FINDING above stands as written. No spec threshold was touched.

@@ -62,7 +62,7 @@ periphery: **ideal** (PR #118 / issue #114 not merged).
 | ss/-40 C at extracted `C_RBL` | 0.370 V aged / 0.388 V fresh; latency 1.69 / 1.56 ns | not re-run | not re-run | EVIDENCE; was 0.113 / 0.121 V at 10 fF (marginal); passes either way |
 | `C_RBL` 2 fF (trend) | min 0.052 V (fs/-40 aged); ss/-40 0.288 V aged | not re-run | not re-run | ASSUMPTION mid-point, trend only |
 | Extracted `C_RBL` + layout diffusion card (`ad=as=0.1974`, `pd=ps=1.78`) | min 0.108 V (fs/-40 aged), **30/30 pass** | not re-run | not re-run | EVIDENCE, labelled device-card variant; the only verdict flip (fs/-40 C passes by 8 mV over the placeholder). Which card is right is issue #89 |
-| Sense-stage `t_dec` at the 1 mV point (27/125 C only) | 0.11-0.23 ns (was 0.27-0.51 ns) | not re-run | not re-run | EVIDENCE (`sense_summary_20261011T015836Z.json`); no -40 C sense-stage result |
+| Sense-stage `t_dec` at the 1 mV point (27/125 C only) | 0.11-0.23 ns (was 0.27-0.51 ns) | not re-run | not re-run | EVIDENCE (`sense_summary_20261011T015836Z.json`); no -40 C sense-stage result; **pre-#293 latch device** (no `nrd`/`nrs`/`sa`/`sb`/`sd`), not re-simulated on the corrected device (#357); see `sim/sense-stage/README.md` "Latch geometry correction re-run (issue #293)" |
 
 **Status of the old row.** "fs/-40 C pass/fail is insensitive to `C_RBL`"
 still holds for the verdict on the design card, now down to 0.859 fF. It
@@ -92,7 +92,7 @@ PR #248 (issue #244) regenerated the layout. This section re-runs the #88 eviden
 | ss/-40 C at extracted `C_RBL` | 0.439 V aged / 0.457 V fresh; latency 1.32 / 1.24 ns | not re-run | not re-run | EVIDENCE; was 0.370 / 0.388 V pre-#244 |
 | `C_RBL` 2 fF (trend) | min 0.075 V (fs/-40 aged), 28/30 | not re-run | not re-run | ASSUMPTION mid-point, trend only; still fails fs/-40 C. It moved from 0.052 V with no `C_RBL` change, so the shift is from the regenerated `C_SN` (0.605354 -> 0.672741 fF), not from `C_RBL`. |
 | Extracted `C_RBL` + layout diffusion card (`ad=as=0.1974`, `pd=ps=1.78`) | min 0.138 V (fs/-40 aged), **30/30 pass** | not re-run | not re-run | EVIDENCE, labelled device-card variant. Which card is right is issue #89. |
-| Sense-stage `t_dec` at the 1 mV point (27/125 C only) | 0.11-0.23 ns | not re-run | not re-run | EVIDENCE (`sense_summary_20261029T194412Z.json`); no -40 C sense-stage result; sf/125 C best-reference droop verdict stays `met` (20 mV reference, >= 0.917 V) |
+| Sense-stage `t_dec` at the 1 mV point (27/125 C only) | 0.11-0.23 ns | not re-run | not re-run | EVIDENCE (`sense_summary_20261029T194412Z.json`); no -40 C sense-stage result; sf/125 C best-reference droop verdict stays `met` (20 mV reference, >= 0.917 V); **pre-#293 latch device**: both this `t_dec` and the `met` verdict were simulated on the uncorrected latch (no `nrd`/`nrs`/`sa`/`sb`/`sd`) and are not re-simulated on the corrected device (#357; the `*_p244_l293` decks are committed, not simulated), see `sim/sense-stage/README.md` "Latch geometry correction re-run (issue #293)" |
 
 **What changed since the 2026-10-11 addendum.** The extracted-load column
 verdict at fs/-40 C moved from FAIL to a marginal PASS. The runs change
