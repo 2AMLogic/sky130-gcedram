@@ -15,8 +15,8 @@ Definitions (all ASSUMPTIONS, parameters at the top):
   includes charge drift during the floating interval, so it differs a few mV
   from the nominal stage-only offset).
 * a point RESOLVES when the final |d| >= RESOLVE_V of full swing, with the
-  correct sign, and ``tdec`` (enable edge at 0.9 V -> |d| = 0.9 V) is within
-  T_WINDOW_S. ``tdec`` is reported for every point so other windows can be
+  correct sign, and ``tdec`` (enable edge at 0.9 V -> |d| = 0.9 V) satisfies
+  0 < tdec <= T_WINDOW_S. ``tdec`` is reported for every point so other windows can be
   applied.
 * min resolvable SN level = lowest swept '1' level such that EVERY swept
   level at or above it resolves (monotone-from-above), reported with the

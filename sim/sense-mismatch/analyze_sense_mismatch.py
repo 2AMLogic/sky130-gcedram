@@ -20,8 +20,8 @@ Definitions (ASSUMPTIONS unless stated; parameters at the top):
 * d = V(rbl) - V(ref). '0' decision: final d >= +RESOLVE_V; '1': <= -RESOLVE_V.
   Stage-only: correct decision is '0' for d > 0 and '1' for d < 0 (d = 0 has
   no correct answer; it is reported as P(decide '0')).
-* resolves = correct decision AND tdec <= T_WINDOW_S (same rule as
-  sim/sense-stage/analyze_sense_stage.py).
+* resolves = correct decision AND 0 < tdec <= T_WINDOW_S (same rule as
+  sim/sense-stage/analyze_sense_stage.py; _evidence_common.tdec_in_window).
 * Offset model (probit): P(decide '0' | x) = Phi((x - mu) / sigma), fitted by
   maximum likelihood over every trial that reached a definite polarity.
   sigma is the input-referred offset standard deviation, mu its mean

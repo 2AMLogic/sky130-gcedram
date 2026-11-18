@@ -49,7 +49,7 @@ from statistics import NormalDist
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import load_clean_corners, measurements_of  # noqa: E402
+from _evidence_common import load_clean_corners, measurements_of, tdec_in_window  # noqa: E402
 from _evidence_common import load_json as read_json  # noqa: E402
 # The #114 contract gate and its thresholds come from _periphery_contract, so the
 # `all_compliant` aggregate below is gated by the same unit-tested function the
@@ -219,7 +219,7 @@ def summarize_mc(rows) -> dict:
                 din_min_v=min(dins), din_max_v=max(dins),
                 wrong_polarity_din=sum(1 for v in dins if (v > 0) != (d == 0)),
                 wrong_decision=sum(1 for x in xs if decided(x["dend_v"]) != want),
-                undecided_in_window=sum(1 for x in xs if x["tdec_s"] is None or x["tdec_s"] > T_WINDOW_S))
+                undecided_in_window=sum(1 for x in xs if not tdec_in_window(x["tdec_s"], T_WINDOW_S)))
         contrib = {}
         for d in (1, 0):
             vi = e[f"ideal_w{d}"]["din_sd_v"] ** 2
