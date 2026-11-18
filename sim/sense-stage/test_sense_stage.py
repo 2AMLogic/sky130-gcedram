@@ -121,9 +121,9 @@ class Variants(unittest.TestCase):
             self.assertEqual(hashlib.sha256(deck.read_bytes()).hexdigest(), d["netlist_sha256"], v)
             self.assertAlmostEqual(d["assumptions"]["c_rbl_f"], G.variants()[v]["c_rbl_f"], delta=1e-24)
             self.assertFalse(d["claims"]["n_rows_ratified"])
-        # Every simulated (legacy/frozen) variant has a recorded summary; the
-        # *_l293 decks are generated but not yet simulated, so none may have one.
-        self.assertEqual(seen, {k for k, v in G.variants().items() if v["legacy"]})
+        # Every simulated variant has a recorded summary: the legacy/frozen
+        # decks and the *_l293 decks (simulated in issue #357).
+        self.assertEqual(seen, {k for k, v in G.variants().items() if v["legacy"] or k.endswith("_l293")})
 
     def test_analyzer_maps_report_netlist_to_variant(self):
         self.assertIsNone(A.report_variant({"netlist": {"path": "sim/sense-stage/sense_stage.spice"}}))
