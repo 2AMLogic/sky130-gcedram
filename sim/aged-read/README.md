@@ -83,6 +83,15 @@ order; includes mixed stored values) x 10 ages
 and their ordering effects were not all run). 5 ns is the zero-hold control (the
 shortest age the write-to-read sequencing allows).
 
+**Selected-row axis is degenerate.** The deck models the column with one lumped `C_RBL` (the
+extracted worst 4-row net, applied to every row) and no per-row bitline RC or wordline delay,
+so the selected-row index only changes which node names carry which role. Measured on run
+`20261118T201556Z`: 0 of 800 `(corner, temperature, age, value, neighbour pattern)` groups
+differ in `pre_read_v` or `dend_v` across selected rows 0-3, so 2400 of the 3200 main points
+duplicate the other 800. Rows 0-3 are therefore coverage in name only, not a test of
+row-position dependence; applying the worst extracted net to every row is conservative.
+Per-row RC would be a separate characterization.
+
 **Negative control.** Two points (age 5 ns and 2 us) write a '1' with the wordline high
 level at 0.55 V (below the access-device threshold): written level 0.264 V at sf/125 C,
 the latch reads '0', and the analyzer sets `negative_control_detected` (true in all 10

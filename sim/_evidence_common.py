@@ -379,6 +379,16 @@ def decided(dend: float | None, threshold_v: float) -> str:
     return "unresolved"
 
 
+def tdec_in_window(tdec: float | None, window_s: float) -> bool:
+    """True only for a measured decision time `0 < tdec <= window_s`.
+
+    `tdec` is the difference of two independently-located ngspice crossings
+    (latch enable, then the |d| target). A non-positive value means the target
+    crossed at or before the enable -- not a decision time -- so it must not
+    count as a fast resolve. Shared so every bench uses one definition."""
+    return tdec is not None and 0 < tdec <= window_s
+
+
 # --------------------------------------------------------------------------
 # Design-netlist card parsing (issue #293) -- the {device: (nets, model,
 # params)} view of a committed design/*.spice netlist that deck generators

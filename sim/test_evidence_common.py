@@ -229,6 +229,17 @@ class Decided(unittest.TestCase):
         self.assertEqual(C.decided(0.0, 0.9), "unresolved")
 
 
+class TdecInWindow(unittest.TestCase):
+    def test_only_positive_in_window_passes(self):
+        w = 5e-9
+        self.assertFalse(C.tdec_in_window(None, w))
+        self.assertFalse(C.tdec_in_window(-1e-12, w))     # pre-enable crossing
+        self.assertFalse(C.tdec_in_window(0.0, w))        # coincident crossings
+        self.assertTrue(C.tdec_in_window(1e-11, w))
+        self.assertTrue(C.tdec_in_window(w, w))           # upper bound inclusive
+        self.assertFalse(C.tdec_in_window(w * 1.001, w))
+
+
 class LoadJson(unittest.TestCase):
     def test_plain_and_gzip(self):
         import gzip

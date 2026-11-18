@@ -15,8 +15,8 @@ Definitions (all ASSUMPTIONS, parameters at the top):
   includes charge drift during the floating interval, so it differs a few mV
   from the nominal stage-only offset).
 * a point RESOLVES when the final |d| >= RESOLVE_V of full swing, with the
-  correct sign, and ``tdec`` (enable edge at 0.9 V -> |d| = 0.9 V) is within
-  T_WINDOW_S. ``tdec`` is reported for every point so other windows can be
+  correct sign, and ``tdec`` (enable edge at 0.9 V -> |d| = 0.9 V) satisfies
+  0 < tdec <= T_WINDOW_S. ``tdec`` is reported for every point so other windows can be
   applied.
 * min resolvable SN level = lowest swept '1' level such that EVERY swept
   level at or above it resolves (monotone-from-above), reported with the
@@ -41,6 +41,7 @@ sys.path.insert(0, str(HERE.parent))
 from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import tdec_in_window  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
@@ -75,7 +76,7 @@ def decided(dend: float | None) -> str:
 
 
 def resolves(p: dict, expect: str) -> bool:
-    return (decided(p["dend"]) == expect and p["tdec"] is not None and p["tdec"] <= T_WINDOW_S)
+    return (decided(p["dend"]) == expect and tdec_in_window(p["tdec"], T_WINDOW_S))
 
 
 def summarize_corner(corner: dict, writes: dict) -> tuple[list[dict], dict]:

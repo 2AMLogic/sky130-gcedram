@@ -38,6 +38,26 @@ def synthetic_report(fail_age_ns: int | None = None, control_resolves: bool = Fa
             "environment": {"netlist_sha256": "x", "models_lib_sha256": "y", "engine_version": "47", "remote": {}}}
 
 
+class TdecGuard(unittest.TestCase):
+    def _row(self, tdec):
+        corner = {"process": "tt", "temperature_c": 27}
+        p = next(q for q in G.instances() if not q["weak"] and q["value"] == 1)
+        n = p["name"]
+        m = {f"dend_{n}": -1.8, f"tdec_{n}": tdec}
+        return A.point_row(corner, p, m)
+
+    def test_negative_tdec_does_not_resolve(self):
+        r = self._row(-1e-12)
+        self.assertTrue(r["correct"])
+        self.assertFalse(r["resolves"])
+
+    def test_tdec_window_edges(self):
+        self.assertFalse(self._row(None)["resolves"])
+        self.assertFalse(self._row(0.0)["resolves"])
+        self.assertTrue(self._row(A.T_WINDOW_S)["resolves"])
+        self.assertFalse(self._row(A.T_WINDOW_S * 1.001)["resolves"])
+
+
 class Generated(unittest.TestCase):
     def test_committed_files_not_stale(self):
         net, req = G.render()
