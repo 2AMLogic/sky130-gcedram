@@ -41,6 +41,7 @@ sys.path.insert(0, str(HERE.parent))
 from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import tdec_in_window  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
@@ -75,7 +76,7 @@ def decided(dend: float | None) -> str:
 
 
 def resolves(p: dict, expect: str) -> bool:
-    return (decided(p["dend"]) == expect and p["tdec"] is not None and p["tdec"] <= T_WINDOW_S)
+    return (decided(p["dend"]) == expect and tdec_in_window(p["tdec"], T_WINDOW_S))
 
 
 def summarize_corner(corner: dict, writes: dict) -> tuple[list[dict], dict]:
