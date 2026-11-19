@@ -11,6 +11,7 @@
     ".github/workflows/evidence-checks.yml",
     ".github/workflows/signoff.yml",
     "sim/check_append_only.py",
+    "sim/check_item9_inventory.py",
     ".github/workflows/digital-regressions.yml",
     "digital/ci/run_digital_regressions.sh",
     "digital/ci/README.md"
@@ -142,6 +143,22 @@
         "python3",
         "-I",
         "sim/test_append_only.py"
+      ]
+    },
+    {
+      "name": "Item-9 inventory fixture tests (issue #371)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/test_check_item9_inventory.py"
+      ]
+    },
+    {
+      "name": "Item-9 inventory completeness (every sim/ bench inventoried, issue #371)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/check_item9_inventory.py"
       ]
     },
     {
