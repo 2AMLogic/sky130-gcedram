@@ -17,6 +17,12 @@ against a later converged value), ``post_refresh_v`` (SN after the op settles) a
 to the wrong value); ``first_unrestored_cycle`` = first cycle whose post-refresh level fails the 0.95 gate.
 Failed corners and trajectories are kept. Controls: missing write-back (``nowb``) and excessive dwell must be
 DETECTED (any row read wrong or unrestored), else the analyzer/chain is not trusted.
+
+For the issue-#373 diagnostic variant (``d5030nbr``) the summary additionally carries a ``paired`` block: the
+instrumented baseline vs neighbour-SN-clamped arms of the cycle-1 row-2 read (signed read-branch currents,
+RBL/REF across the pre-latch sensing window, decision at the existing pre-write-back sample), whether the
+level change altered them, and a supported/refuted/partial/inconclusive verdict limited to that pattern,
+corner and model set.
 """
 from __future__ import annotations
 
@@ -54,6 +60,16 @@ def refop_refs() -> dict[tuple[str, int], float]:
 
 REFS = refop_refs()
 ZERO_MAX_V = 0.05
+
+# Recorded cycle-1 reference this diagnostic is paired against: ana_1111 at sf/125 C, run
+# 20261118T220449Z (results/closed_loop_points_d5030_20261118T220449Z.csv), the committed evidence
+# issue #373 isolates. The instrumented baseline arm must reproduce these before any interpretation.
+RECORDED = dict(
+    run_id="20261118T220449Z", variant="d5030",
+    row1=dict(pre_read_v=0.967506, dec_v=-1.61829, decision="1"),
+    row2=dict(pre_read_v=0.969999, dec_v=1.72257, decision="0"),
+    restored_neighbour_pre_clamp_v={0: 1.63393, 1: 1.61575},
+    rtl_control_stored1_post_refresh_v_range=[1.35869, 1.39556])
 
 
 def cycle_row(corner: dict, v: dict, p: dict, r: int, c: int, m: dict) -> dict:
@@ -143,7 +159,129 @@ def verdicts(corners: list[dict], v: dict) -> dict:
     if ex:
         out["excessive_dwell_corners_detected"] = sorted(f"{c['process']}/{c['temperature_c']}" for c, b in ex if b["failures_detected"])
         out["excessive_dwell_detected_any_corner"] = bool(out["excessive_dwell_corners_detected"])
+    paired = [c["paired"] for c in corners if c.get("paired")]
+    if paired:
+        out["diagnostic_paired_verdict"] = paired[0]["verdict"]
     return out
+
+
+def _arm_block(m: dict, n: str, v: dict) -> dict:
+    """Instrumented per-arm record of the victim-row read window (issue #373 conventions)."""
+    d = v
+    waves = G.trace_waves()
+    w0, w1 = G.sense_window_ns(v, "ana", d["victim_row"], d["victim_cycle"], waves)
+    dat = {r: 1 for r in range(G.N_ROWS)}   # pattern 1111
+    rows = {}
+    for r in range(G.N_ROWS):
+        dec_v = m.get(f"dec_{n}_r{r}_c{d['victim_cycle']}")
+        dec = decided(dec_v, RESOLVE_V)
+        rows[r] = dict(dec_v=dec_v, decision=dec, correct=dec == str(dat[r]))
+    return dict(
+        instance=n,
+        neighbour_pre_select_v={r: m.get(f"npre_{n}_r{r}") for r in (0, 1, 3)},
+        victim_pre_read_v=m.get(f"pre_{n}_r{d['victim_row']}_c{d['victim_cycle']}"),
+        rows=rows,
+        currents={r: {k: m.get(f"i{k if k != 'at_enable' else 'en'}_{n}_r{r}")
+                      for k in ("avg", "max", "min", "at_enable")} for r in range(G.N_ROWS)},
+        rbl_at_select_v=m.get(f"rblsel_{n}"), rbl_at_enable_v=m.get(f"rblen_{n}"), rbl_avg_v=m.get(f"rblavg_{n}"),
+        ref_at_enable_v=m.get(f"refen_{n}"), ref_avg_v=m.get(f"refavg_{n}"),
+        d_at_enable_v=m.get(f"den_{n}"),
+        sense_window_ns=[w0, w1],
+        current_sign="positive i = this row's RWL rail sourcing current into its read device (onto the shared RBL);"
+                     " negative = the rail sinking that row's read discharge")
+
+
+def paired_block(corner: dict, v: dict) -> dict:
+    """Paired comparison of the issue-#373 diagnostic: instrumented baseline vs neighbour-clamped arm.
+
+    Reports signed neighbour read-branch currents, RBL/REF across the victim's pre-latch sensing window and
+    the decision at the existing pre-write-back sample for BOTH arms; states whether the level change altered
+    the current, the differential at latch enable and the final decision. A clean refutation is a complete
+    outcome; a comparison whose preconditions fail is flagged inconclusive with the reason. Side-effects of
+    the intervention on the nodes the clamp never touches are disclosed in unclamped_node_change_v and, when
+    they exceed dec_delta_tol_v, as a limitations entry with the direction argument.
+    """
+    m = measurements_of(corner)
+    names = {p["kind"]: p["name"] for p in G.instances(v)}
+    base_n, diag_n = names["main"], names[G.KIND_DIAG]
+    b = _arm_block(m, base_n, v)
+    c = _arm_block(m, diag_n, v)
+    vr, ct, ctol, dtol = v["victim_row"], v["clamp_target_v"], v["clamp_tol_v"], v["dec_delta_tol_v"]
+    problems = []
+    base_ok = (b["rows"][0]["correct"] and b["rows"][1]["correct"]
+               and b["rows"][vr]["decision"] == RECORDED["row2"]["decision"] and not b["rows"][vr]["correct"]
+               and abs(b["rows"][1]["dec_v"] - RECORDED["row1"]["dec_v"]) <= dtol
+               and abs(b["rows"][vr]["dec_v"] - RECORDED["row2"]["dec_v"]) <= dtol)
+    if not base_ok:
+        problems.append("instrumented baseline did not reproduce the recorded cycle-1 decisions/levels")
+    base_neigh_ok = all(b["neighbour_pre_select_v"][r] is not None
+                        and b["neighbour_pre_select_v"][r] >= RECORDED["restored_neighbour_pre_clamp_v"][r] - ctol
+                        for r in (0, 1))
+    if not base_neigh_ok:
+        problems.append("baseline neighbours were not in the restored state before the victim select")
+    clamp_ok = all(c["neighbour_pre_select_v"][r] is not None and abs(c["neighbour_pre_select_v"][r] - ct) <= ctol
+                   for r in v["clamp_rows"])
+    if not clamp_ok:
+        problems.append(f"clamp did not hold neighbours at {ct} V before the victim select")
+    controls_ok = all(a["rows"][0]["correct"] and a["rows"][1]["correct"] for a in (b, c))
+    if not controls_ok:
+        problems.append("row-0/row-1 controls (read before any clamp effect) did not stay correct in both arms")
+    # The clamp touches rows 0/1 only; disclose what the intervention does to the nodes it never touches.
+    # With the victim-row precharge open and RBL floating between the clamp settling and the victim's
+    # pre-read probe, the clamped neighbours inject less into RBL and the RBL difference couples back onto
+    # the other cells' storage nodes through their read devices -- the victim's own pre-read level is NOT
+    # matched between arms. Recorded as a limitation (with the direction argument), not silently, and not
+    # folded into clean_comparison: the four preconditions above are what that flag asserts, and they hold.
+    unclamped_rows = [r for r in range(G.N_ROWS) if r not in v["clamp_rows"] and r != vr]
+    unclamped_node_change_v = {
+        "victim_pre_read": None if None in (b["victim_pre_read_v"], c["victim_pre_read_v"])
+        else c["victim_pre_read_v"] - b["victim_pre_read_v"],
+        **{f"neighbour_r{r}_pre_select": None if None in (b["neighbour_pre_select_v"][r], c["neighbour_pre_select_v"][r])
+           else c["neighbour_pre_select_v"][r] - b["neighbour_pre_select_v"][r] for r in unclamped_rows},
+    }
+    shifted = {k: d for k, d in unclamped_node_change_v.items() if d is not None and abs(d) > dtol}
+    if shifted:
+        problems.append(
+            "the intervention also shifted the unclamped nodes between arms (unclamped_node_change_v,"
+            " clamped - baseline, V): " + ", ".join(f"{k} {d:+.6f}" for k, d in sorted(shifted.items()))
+            + "; with the victim-row precharge open and RBL floating between the clamp settling and the"
+            " victim's pre-read probe, the clamped neighbours inject less into RBL and the RBL difference"
+            " couples onto the other cells' storage nodes through their read devices, so the victim's"
+            " pre-read level is not matched between the arms; direction is conservative for the verdict:"
+            " the clamped arm's victim starts lower (less drive to read its stored '1') and still reads"
+            " correctly, and the ideal clamp holds the neighbour gates rigid against RBL's fall, so the"
+            " clamped arm's neighbour conduction is if anything overstated; clean_comparison is unchanged"
+            " because the four preconditions it asserts all still hold")
+    clean = base_ok and base_neigh_ok and clamp_ok and controls_ok
+    changed = b["rows"][vr]["decision"] != c["rows"][vr]["decision"]
+    if not clean:
+        verdict = "inconclusive"
+    elif changed and c["rows"][vr]["correct"]:
+        verdict = "supported"
+    elif changed:
+        verdict = "partial"
+    else:
+        verdict = "refuted"
+    dcur = {r: dict(baseline_avg=b["currents"][r]["avg"], clamped_avg=c["currents"][r]["avg"],
+                    delta=None if None in (b["currents"][r]["avg"], c["currents"][r]["avg"])
+                    else c["currents"][r]["avg"] - b["currents"][r]["avg"]) for r in range(G.N_ROWS)}
+    return dict(
+        victim_row=vr, victim_cycle=v["victim_cycle"], clamp_target_v=ct, clamp_rows=list(v["clamp_rows"]),
+        clamp_window_ns=list(G.clamp_window_ns(v, G.trace_waves())),
+        recorded_reference=RECORDED, baseline=b, clamped=c,
+        baseline_neighbour_relaxation_v={r: None if b["neighbour_pre_select_v"][r] is None
+                                         else b["neighbour_pre_select_v"][r] - RECORDED["restored_neighbour_pre_clamp_v"][r]
+                                         for r in (0, 1)},
+        decision_changed_by_clamp=changed,
+        clamped_victim_correct=c["rows"][vr]["correct"],
+        d_at_enable_change_v=None if None in (b["d_at_enable_v"], c["d_at_enable_v"])
+        else c["d_at_enable_v"] - b["d_at_enable_v"],
+        neighbour_current_change_avg_a={r: dcur[r]["delta"] for r in v["clamp_rows"]},
+        all_rows_current_change_avg_a=dcur,
+        unclamped_node_change_v=unclamped_node_change_v,
+        clean_comparison=clean, limitations=problems, verdict=verdict,
+        conclusion_scope="this pattern (1111), corner (sf/125 C) and model set only; diagnostic intervention,"
+                         " not a circuit feature or a refresh-bound claim")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -172,12 +310,15 @@ def main(argv: list[str] | None = None) -> int:
     rows, corners = [], []
     for c in rep["corners"]:
         r, s = reduce_corner(c, v)
+        if v.get("diagnostic"):
+            s["paired"] = paired_block(c, v)
         rows += r
         corners.append(s)
     with pts_csv.open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
+    paired = next((c["paired"] for c in corners if "paired" in c), None)
     summary = dict(
         run_id=run_id, variant=v["name"], dwell_ns=v["dwell_ns"], cycles=v["cycles"], role=v["role"],
         status=PROPOSED_RANGE_STATUS, scope=PROPOSED_RANGE_SCOPE, **klt_provenance(rep),
@@ -189,7 +330,8 @@ def main(argv: list[str] | None = None) -> int:
             restore_reference=str(REFOP_REF_RUN.relative_to(G.REPO)) + " sn_ref_v (baseline_analog, op1, 0.9 V rows)",
             c_rbl_ff=G.S.extracted_c_rbl_ff(), c_sn_ff_array_min_wiring=G.A.array_c_sn_ff(), c_wbl_ff_not_extracted=G.C_WBL_F * 1e15,
             vrbl_v=G.VRBL_V, dvref_v=G.DREF_V, resolve_v=RESOLVE_V, restore_fractions=list(FRACTIONS), stored0_max_v=ZERO_MAX_V,
-            refresh_bound_s_ratified_read_only=G.REFRESH_BOUND_S, patterns=G.PATTERNS_ALL,
+            refresh_bound_s_ratified_read_only=G.REFRESH_BOUND_S,
+            patterns=(["1111"] if v.get("diagnostic") else G.PATTERNS_ALL),
             horizon_cycles=v["cycles"], horizon_is_finite_not_indefinite_stability=True,
             drivers="ideal wordline/bitline-init/precharge drivers and 100 ohm switches; no physical column or row driver",
             mismatch="none (global corners only)", pattern_enumeration="starting point, not proven worst case"),
@@ -197,6 +339,7 @@ def main(argv: list[str] | None = None) -> int:
                     refresh_bound_signed_off=False, global_corner_evidence_only=True,
                     indefinite_stability_claimed=False),
         verdicts=verdicts(corners, v),
+        **({"paired": paired} if paired else {}),
         corners=corners)
     sum_json.write_text(json.dumps(summary, indent=1) + "\n")
     print(f"wrote {pts_csv.name} and {sum_json.name}")

@@ -1,0 +1,438 @@
+{
+ "netlist": "closed_loop_d5030nbr.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "sf"
+  ],
+  "temperature_c": [
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "100p 5207.1n 0 2n uic"
+ },
+ "measurements": [
+  {
+   "name": "wr_ana_1111_r0",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r0 FIND v(sn_ana_1111_0) AT=21.6n"
+  },
+  {
+   "name": "pre_ana_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r0_c1 FIND v(sn_ana_1111_0) AT=5050.9n"
+  },
+  {
+   "name": "dec_ana_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r0_c1 FIND v(d_ana_1111) AT=5062n"
+  },
+  {
+   "name": "post_ana_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r0_c1 FIND v(sn_ana_1111_0) AT=5086.1n"
+  },
+  {
+   "name": "wr_ana_1111_r1",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r1 FIND v(sn_ana_1111_1) AT=61.6n"
+  },
+  {
+   "name": "pre_ana_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r1_c1 FIND v(sn_ana_1111_1) AT=5090.9n"
+  },
+  {
+   "name": "dec_ana_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r1_c1 FIND v(d_ana_1111) AT=5102n"
+  },
+  {
+   "name": "post_ana_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r1_c1 FIND v(sn_ana_1111_1) AT=5126.1n"
+  },
+  {
+   "name": "wr_ana_1111_r2",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r2 FIND v(sn_ana_1111_2) AT=101.6n"
+  },
+  {
+   "name": "pre_ana_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r2_c1 FIND v(sn_ana_1111_2) AT=5130.9n"
+  },
+  {
+   "name": "dec_ana_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r2_c1 FIND v(d_ana_1111) AT=5142n"
+  },
+  {
+   "name": "post_ana_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r2_c1 FIND v(sn_ana_1111_2) AT=5166.1n"
+  },
+  {
+   "name": "wr_ana_1111_r3",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r3 FIND v(sn_ana_1111_3) AT=141.6n"
+  },
+  {
+   "name": "pre_ana_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r3_c1 FIND v(sn_ana_1111_3) AT=5170.9n"
+  },
+  {
+   "name": "dec_ana_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r3_c1 FIND v(d_ana_1111) AT=5182n"
+  },
+  {
+   "name": "post_ana_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r3_c1 FIND v(sn_ana_1111_3) AT=5206.1n"
+  },
+  {
+   "name": "wr_anb_1111_r0",
+   "unit": "V",
+   "spice": ".meas tran wr_anb_1111_r0 FIND v(sn_anb_1111_0) AT=21.6n"
+  },
+  {
+   "name": "pre_anb_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_anb_1111_r0_c1 FIND v(sn_anb_1111_0) AT=5050.9n"
+  },
+  {
+   "name": "dec_anb_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_anb_1111_r0_c1 FIND v(d_anb_1111) AT=5062n"
+  },
+  {
+   "name": "post_anb_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran post_anb_1111_r0_c1 FIND v(sn_anb_1111_0) AT=5086.1n"
+  },
+  {
+   "name": "wr_anb_1111_r1",
+   "unit": "V",
+   "spice": ".meas tran wr_anb_1111_r1 FIND v(sn_anb_1111_1) AT=61.6n"
+  },
+  {
+   "name": "pre_anb_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_anb_1111_r1_c1 FIND v(sn_anb_1111_1) AT=5090.9n"
+  },
+  {
+   "name": "dec_anb_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_anb_1111_r1_c1 FIND v(d_anb_1111) AT=5102n"
+  },
+  {
+   "name": "post_anb_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran post_anb_1111_r1_c1 FIND v(sn_anb_1111_1) AT=5126.1n"
+  },
+  {
+   "name": "wr_anb_1111_r2",
+   "unit": "V",
+   "spice": ".meas tran wr_anb_1111_r2 FIND v(sn_anb_1111_2) AT=101.6n"
+  },
+  {
+   "name": "pre_anb_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_anb_1111_r2_c1 FIND v(sn_anb_1111_2) AT=5130.9n"
+  },
+  {
+   "name": "dec_anb_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_anb_1111_r2_c1 FIND v(d_anb_1111) AT=5142n"
+  },
+  {
+   "name": "post_anb_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran post_anb_1111_r2_c1 FIND v(sn_anb_1111_2) AT=5166.1n"
+  },
+  {
+   "name": "wr_anb_1111_r3",
+   "unit": "V",
+   "spice": ".meas tran wr_anb_1111_r3 FIND v(sn_anb_1111_3) AT=141.6n"
+  },
+  {
+   "name": "pre_anb_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_anb_1111_r3_c1 FIND v(sn_anb_1111_3) AT=5170.9n"
+  },
+  {
+   "name": "dec_anb_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_anb_1111_r3_c1 FIND v(d_anb_1111) AT=5182n"
+  },
+  {
+   "name": "post_anb_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran post_anb_1111_r3_c1 FIND v(sn_anb_1111_3) AT=5206.1n"
+  },
+  {
+   "name": "npre_ana_1111_r0",
+   "unit": "V",
+   "spice": ".meas tran npre_ana_1111_r0 FIND v(sn_ana_1111_0) AT=5130.9n"
+  },
+  {
+   "name": "iavg_ana_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran iavg_ana_1111_r0 AVG i(vmeas0_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_ana_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran imax_ana_1111_r0 MAX i(vmeas0_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_ana_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran imin_ana_1111_r0 MIN i(vmeas0_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_ana_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran ien_ana_1111_r0 FIND i(vmeas0_ana) AT=5141.1n"
+  },
+  {
+   "name": "npre_ana_1111_r1",
+   "unit": "V",
+   "spice": ".meas tran npre_ana_1111_r1 FIND v(sn_ana_1111_1) AT=5130.9n"
+  },
+  {
+   "name": "iavg_ana_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran iavg_ana_1111_r1 AVG i(vmeas1_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_ana_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran imax_ana_1111_r1 MAX i(vmeas1_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_ana_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran imin_ana_1111_r1 MIN i(vmeas1_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_ana_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran ien_ana_1111_r1 FIND i(vmeas1_ana) AT=5141.1n"
+  },
+  {
+   "name": "iavg_ana_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran iavg_ana_1111_r2 AVG i(vmeas2_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_ana_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran imax_ana_1111_r2 MAX i(vmeas2_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_ana_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran imin_ana_1111_r2 MIN i(vmeas2_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_ana_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran ien_ana_1111_r2 FIND i(vmeas2_ana) AT=5141.1n"
+  },
+  {
+   "name": "npre_ana_1111_r3",
+   "unit": "V",
+   "spice": ".meas tran npre_ana_1111_r3 FIND v(sn_ana_1111_3) AT=5130.9n"
+  },
+  {
+   "name": "iavg_ana_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran iavg_ana_1111_r3 AVG i(vmeas3_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_ana_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran imax_ana_1111_r3 MAX i(vmeas3_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_ana_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran imin_ana_1111_r3 MIN i(vmeas3_ana) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_ana_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran ien_ana_1111_r3 FIND i(vmeas3_ana) AT=5141.1n"
+  },
+  {
+   "name": "rblsel_ana_1111",
+   "unit": "V",
+   "spice": ".meas tran rblsel_ana_1111 FIND v(rbl_ana_1111) AT=5131.3n"
+  },
+  {
+   "name": "rblen_ana_1111",
+   "unit": "V",
+   "spice": ".meas tran rblen_ana_1111 FIND v(rbl_ana_1111) AT=5141.1n"
+  },
+  {
+   "name": "rblavg_ana_1111",
+   "unit": "V",
+   "spice": ".meas tran rblavg_ana_1111 AVG v(rbl_ana_1111) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "refen_ana_1111",
+   "unit": "V",
+   "spice": ".meas tran refen_ana_1111 FIND v(ref_ana_1111) AT=5141.1n"
+  },
+  {
+   "name": "refavg_ana_1111",
+   "unit": "V",
+   "spice": ".meas tran refavg_ana_1111 AVG v(ref_ana_1111) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "den_ana_1111",
+   "unit": "V",
+   "spice": ".meas tran den_ana_1111 FIND v(d_ana_1111) AT=5141.1n"
+  },
+  {
+   "name": "npre_anb_1111_r0",
+   "unit": "V",
+   "spice": ".meas tran npre_anb_1111_r0 FIND v(sn_anb_1111_0) AT=5130.9n"
+  },
+  {
+   "name": "iavg_anb_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran iavg_anb_1111_r0 AVG i(vmeas0_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_anb_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran imax_anb_1111_r0 MAX i(vmeas0_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_anb_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran imin_anb_1111_r0 MIN i(vmeas0_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_anb_1111_r0",
+   "unit": "A",
+   "spice": ".meas tran ien_anb_1111_r0 FIND i(vmeas0_anb) AT=5141.1n"
+  },
+  {
+   "name": "npre_anb_1111_r1",
+   "unit": "V",
+   "spice": ".meas tran npre_anb_1111_r1 FIND v(sn_anb_1111_1) AT=5130.9n"
+  },
+  {
+   "name": "iavg_anb_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran iavg_anb_1111_r1 AVG i(vmeas1_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_anb_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran imax_anb_1111_r1 MAX i(vmeas1_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_anb_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran imin_anb_1111_r1 MIN i(vmeas1_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_anb_1111_r1",
+   "unit": "A",
+   "spice": ".meas tran ien_anb_1111_r1 FIND i(vmeas1_anb) AT=5141.1n"
+  },
+  {
+   "name": "iavg_anb_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran iavg_anb_1111_r2 AVG i(vmeas2_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_anb_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran imax_anb_1111_r2 MAX i(vmeas2_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_anb_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran imin_anb_1111_r2 MIN i(vmeas2_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_anb_1111_r2",
+   "unit": "A",
+   "spice": ".meas tran ien_anb_1111_r2 FIND i(vmeas2_anb) AT=5141.1n"
+  },
+  {
+   "name": "npre_anb_1111_r3",
+   "unit": "V",
+   "spice": ".meas tran npre_anb_1111_r3 FIND v(sn_anb_1111_3) AT=5130.9n"
+  },
+  {
+   "name": "iavg_anb_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran iavg_anb_1111_r3 AVG i(vmeas3_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imax_anb_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran imax_anb_1111_r3 MAX i(vmeas3_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "imin_anb_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran imin_anb_1111_r3 MIN i(vmeas3_anb) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "ien_anb_1111_r3",
+   "unit": "A",
+   "spice": ".meas tran ien_anb_1111_r3 FIND i(vmeas3_anb) AT=5141.1n"
+  },
+  {
+   "name": "rblsel_anb_1111",
+   "unit": "V",
+   "spice": ".meas tran rblsel_anb_1111 FIND v(rbl_anb_1111) AT=5131.3n"
+  },
+  {
+   "name": "rblen_anb_1111",
+   "unit": "V",
+   "spice": ".meas tran rblen_anb_1111 FIND v(rbl_anb_1111) AT=5141.1n"
+  },
+  {
+   "name": "rblavg_anb_1111",
+   "unit": "V",
+   "spice": ".meas tran rblavg_anb_1111 AVG v(rbl_anb_1111) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "refen_anb_1111",
+   "unit": "V",
+   "spice": ".meas tran refen_anb_1111 FIND v(ref_anb_1111) AT=5141.1n"
+  },
+  {
+   "name": "refavg_anb_1111",
+   "unit": "V",
+   "spice": ".meas tran refavg_anb_1111 AVG v(ref_anb_1111) FROM=5131.1n TO=5141.1n"
+  },
+  {
+   "name": "den_anb_1111",
+   "unit": "V",
+   "spice": ".meas tran den_anb_1111 FIND v(d_anb_1111) AT=5141.1n"
+  }
+ ],
+ "options": {
+  "timeout_s": 900,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}

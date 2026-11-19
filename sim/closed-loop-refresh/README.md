@@ -30,8 +30,8 @@ trajectories are kept in the CSVs. A finite pass is a pass over 10 cycles only, 
 
 | File | Role |
 |---|---|
-| [`gen_closed_loop.py`](gen_closed_loop.py) | generates the 4 decks + requests below (constants / ASSUMPTIONs at its top) |
-| `closed_loop_<variant>.spice`, `request_<variant>.json` | flat deck; 5 corners x {27,125} C as one `klt sim` request per variant |
+| [`gen_closed_loop.py`](gen_closed_loop.py) | generates the 4 decks + requests below (constants / ASSUMPTIONs at its top), plus the issue-#373 paired diagnostic `d5030nbr` |
+| `closed_loop_<variant>.spice`, `request_<variant>.json` | flat deck; 5 corners x {27,125} C as one `klt sim` request per variant (`d5030nbr`: 1 corner, sf/125 C, paired arms) |
 | [`analyze_closed_loop.py`](analyze_closed_loop.py) | reduces a klt report to a per-cycle CSV + summary (writes new files only, refuses to overwrite) |
 | [`test_closed_loop.py`](test_closed_loop.py) | stdlib checks, wired into CI and `npm test` (not stale, scope, no state reset, schedule, analyzer on synthetic failing/healthy/control reports) |
 | `results/` | append-only evidence |
@@ -112,8 +112,95 @@ Controls (these prove the analyzer is not counting simulator completion as succe
 **Mechanism observation.** The `rtl` control restores neighbours only to ~1.36 V at sf/125 and never fails a read;
 the `ana`/`late` waveforms restore to ~1.63 V and do. That contrast, plus the row-order dependence above, is the
 evidence for the neighbour-conduction explanation. It was not isolated (it would need a run that changes only the
-neighbour level or the unselected `rwl` level, or a physical row driver, #114/#117). Also untested: other row
-orders, more neighbours than 3, a reference that tracks the column, and mismatch.
+neighbour level or the unselected `rwl` level, or a physical row driver, #114/#117). **Issue #373 provides that
+run: see the isolation section below.** Also untested: other row orders, more neighbours than 3, a reference that
+tracks the column, and mismatch.
+
+## Neighbour-level isolation (issue #373, run `20261119T024944Z`)
+
+The hypothesis above was isolated with **one paired comparison**: variant `d5030nbr` -- the `d5030` schedule,
+pattern `1111`, **cycle 1 only**, corner **sf / 125 C**, two instances in one deck:
+
+* `ana_1111` -- instrumented **baseline** arm;
+* `anb_1111` -- identical circuit plus a **DIAGNOSTIC ideal clamp** that holds the two already-restored
+  neighbours (rows 0, 1) at the RTL-control restore level (**1.36 V**, inside the committed sf/125
+  `control_rtl_unchanged` stored-'1' post-refresh range 1.35869..1.39556 V of run `20261118T220449Z`) through
+  the victim row-2 read window (open 5127.1 ns, settled 5128.1 ns, released 5165.1 ns -- after row 1's op end
+  and its post-refresh probe, before row 3's precharge drops).
+
+Everything else is shared and byte-identical between the arms: the `ana` RWL / latch / write-back waveform
+(the read select is **never touched** -- RWL is active LOW, so driving a neighbour's RWL low would select it
+and add a discharge path), the write/refresh history through row 1's write-back, the victim's age, precharge,
+loading and reference. The clamp is an intervention no physical periphery provides and is labelled DIAGNOSTIC
+ONLY in the deck. Both arms carry the same instrumentation: 0 V ammeters in every RWL rail (positive
+`i(vmeas)` = that row's RWL rail sourcing current into its read device, i.e. onto the shared RBL -- the
+injection direction; negative = the rail sinking that row's read discharge), neighbour storage-node probes at
+the victim-select instant (`npre`), and RBL / REF / d across the victim's pre-latch sensing window
+(select edge -> latch enable, 5131.1..5141.1 ns).
+
+**The instrumented baseline reproduces the recorded cycle-1 decisions** (the deck adds only 0 V sources):
+row 1 dec -1.61837 V vs recorded -1.61829 V, row 2 dec +1.72263 V vs recorded +1.72257 V (both within 0.1 mV),
+same pass/fail.
+
+| cycle-1, row-2 read of `ana_1111`, sf/125 C, 5.03 us | baseline | neighbours clamped to 1.36 V |
+|---|---|---|
+| neighbour SN before the victim select (`npre` r0 / r1) | 1.6742 / 1.6570 V | 1.3600 / 1.3600 V |
+| neighbour read-branch current `iavg` (r0 / r1) | +6.08 / +5.14 uA | +4.52 / +4.52 uA |
+| victim read-branch current `iavg` (r2) | -11.5 uA | -9.3 uA |
+| row-3 (unrestored neighbour) `iavg` | +0.24 nA | +1.8 nA |
+| RBL at latch enable | 0.835 V | 0.638 V |
+| REF at latch enable | 0.818 V | 0.881 V |
+| d = RBL - REF at latch enable | **+17 mV** | **-243 mV** |
+| row-2 decision (existing pre-write-back sample) | **'0' -- WRONG** (written back) | **'1' -- correct** |
+| row-3 decision (secondary observation) | '0' -- WRONG | '1' -- correct |
+
+The measured refutation did **not** occur: lowering the neighbours' storage-node level changed the
+injection current, the differential at latch enable, and the final decision, and the victim then read
+correctly. (Not *only* the neighbours' level, see the disclosure below.) Mechanism reading, at the level
+these measurements support: at the victim's select the restored
+neighbours sit ~0.77 V above the precharged RBL and inject ~11 uA combined while the victim's own discharge
+sinks ~11.5 uA -- the two nearly cancel, so RBL erodes only to 17 mV above the reference by the enable instant
+and the latch resolves in the '0' direction. With the neighbours at 1.36 V their early-window vgs drops to
+~0.46 V (sub-threshold), the victim's discharge dominates, RBL crosses below the reference, and the latch
+resolves '1'. At 1.36 V the neighbours do **not** switch off: once RBL falls their vgs recovers and they still
+conduct ~4.5 uA each late in the window -- the level change reduces the early-window erosion, it does not
+remove the conduction path, which is why the RBL - REF swing (-243 mV) is smaller than a healthy single-op read.
+Row 3's read also passes in the clamped arm (secondary observation, same mechanism; not the recorded
+comparison). The baseline neighbours' SN relaxes upward between the recorded post-refresh sample and the
+victim-select instant (+40.3 / +41.2 mV; `baseline_neighbour_relaxation_v` in the summary), so the recorded
+`post_refresh_v` values are not the levels at the victim's select -- both are recorded, at their own instants.
+
+**Disclosure: the intervention also moves the two unclamped nodes, so the victim's pre-read level is not
+matched between the arms.** Between the clamp settling (5128.1 ns) and the victim's pre-read probe
+(5130.9 ns) the victim row's precharge is open (released 5129.2 ns) and RBL floats; the clamped neighbours
+inject less into that floating RBL, and the resulting RBL level difference couples back onto the two cells
+the clamp never touches -- the victim's own pre-read level and row 3's `npre` both sit ~17.5 mV lower in
+the clamped arm (`unclamped_node_change_v` in the summary; `limitations` names it). 17.5 mV is not
+negligible here: it is the same order as the +17 mV baseline differential at latch enable that the
+experiment turns on. Two arguments say the bias runs **against** the claim, not for it: the clamped arm's
+victim starts 17.5 mV lower -- less drive to read its stored '1' -- and still reads correctly, so the flip
+is not explained by extra victim drive; and the ideal 1 Ohm clamp holds the neighbour gates rigid against
+RBL's fall where a physical periphery would let them droop, so the clamped arm's neighbour conduction is
+if anything overstated. `clean_comparison` stays true because the four preconditions it asserts (baseline
+reproduction, restored baseline neighbours, clamp level, row-0/1 controls) all still hold -- the shift is
+recorded as a `limitations` entry with this direction argument, not silently.
+
+**Claimed: the neighbour storage-node LEVEL is the controlling factor of the cycle-1 first-read failure of
+`ana_1111` row 2 at sf/125 C at the ratified 5.03 us dwell, in this deck (ideal drivers, this latch, this
+model set).** Not claimed: anything about other patterns/rows/corners, the physical column or row drivers
+(#114/#117), a reference that tracks the column, mismatch, or a revised refresh bound -- the sf/125 result at
+the ratified interval still stands as recorded and still needs its own spec/ decision record. The paired
+comparison is `clean_comparison=true` (baseline reproduced, clamp achieved its level, controls passed) with
+the unclamped-node shift disclosed in `limitations` (above), `verdict=supported` in
+`closed_loop_summary_d5030nbr_20261119T024944Z.json`.
+
+Run **locally** (single corner, so within the host rule for local runs): `klt sim --backend local`, ngspice-47,
+model library sha256 `48de7c67...133c84` (the pin of `docs/pdk-pin.md`; klt's first-match warning about
+`~/.ciel` vs `~/.volare` applies as in the fleet run -- the tree read is at open_pdks `f6eeac7`), ~6 s wall.
+Reproduce: `python3 -I sim/closed-loop-refresh/gen_closed_loop.py`, then
+`klt sim --backend local --format json sim/closed-loop-refresh/request_d5030nbr.json > sim/closed-loop-refresh/results/klt_report_d5030nbr_<NEW_RUN>.json`,
+then `python3 -I sim/closed-loop-refresh/analyze_closed_loop.py d5030nbr sim/closed-loop-refresh/results/klt_report_d5030nbr_<NEW_RUN>.json`.
+The committed reduction is byte-reproducible from the committed raw report in a fresh output location.
 
 ## Not claimed
 

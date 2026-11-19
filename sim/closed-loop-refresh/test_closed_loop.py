@@ -56,8 +56,13 @@ class Generated(unittest.TestCase):
     def test_scope_is_exactly_the_proposed_restricted_range(self):
         for v in G.VARIANTS:
             r = json.loads(G.paths(v)[1].read_text())
-            self.assertEqual(r["corners"]["process"], ["tt", "ss", "ff", "sf", "fs"])
-            self.assertEqual(r["corners"]["temperature_c"], [27, 125])
+            if v.get("diagnostic"):
+                # issue #373 diagnostic: the one recorded failing corner only
+                self.assertEqual(r["corners"]["process"], ["sf"])
+                self.assertEqual(r["corners"]["temperature_c"], [125])
+            else:
+                self.assertEqual(r["corners"]["process"], ["tt", "ss", "ff", "sf", "fs"])
+                self.assertEqual(r["corners"]["temperature_c"], [27, 125])
             self.assertNotIn("monte_carlo", r)
         self.assertEqual(G.VDD_V, 1.8)
 
@@ -76,7 +81,10 @@ class Generated(unittest.TestCase):
         d = [x["dwell_ns"] for x in G.VARIANTS if x["name"] in ("d2500", "d5030", "d8000")]
         self.assertTrue(d[0] < 5030 < d[2], "shorter and longer dwell must bracket the ratified interval")
         self.assertGreater(G.variant("d60000")["dwell_ns"], 5030 * 10)
-        self.assertTrue(all(v["cycles"] >= 2 for v in G.VARIANTS))
+        self.assertTrue(all(v["cycles"] >= 2 for v in G.VARIANTS if not v.get("diagnostic")))
+        # the paired diagnostic sits exactly on the ratified interval and covers its first read only
+        self.assertEqual(G.variant("d5030nbr")["dwell_ns"] * 1e-9, G.REFRESH_BOUND_S)
+        self.assertEqual(G.variant("d5030nbr")["cycles"], 1)
 
     def test_no_state_reset_between_cycles(self):
         """.ic lines appear once per node (t = 0 only) and no ideal source drives a storage node after the initial write."""
@@ -219,7 +227,213 @@ class Committed(unittest.TestCase):
             s = json.loads(f.read_text())
             self.assertFalse(any(s["claims"][k] for k in ("full_macro_or_yield_claim", "spec_changed",
                                                            "refresh_bound_signed_off", "indefinite_stability_claimed")), f.name)
-            self.assertEqual(len(s["corners"]), 10, f.name)
+            self.assertEqual(len(s["corners"]), 1 if s.get("paired") else 10, f.name)
+
+
+NETLIST_DIAG = G.paths(G.variant("d5030nbr"))[0].read_text()
+
+
+class DiagnosticDeck(unittest.TestCase):
+    """The issue-#373 paired diagnostic deck: arms differ by the clamp only; history preserved."""
+
+    V = G.variant("d5030nbr")
+
+    def test_two_paired_instances(self):
+        pts = G.instances(self.V)
+        self.assertEqual([(p["name"], p["kind"], p["wf"]) for p in pts],
+                         [("ana_1111", "main", "ana"), ("anb_1111", G.KIND_DIAG, G.DIAG_WF)])
+        self.assertEqual([p["data"] for p in pts], [[1, 1, 1, 1]] * 2)
+        # the paired arm's waveform trace source is ana's: identical RWL/latch/write-back by construction
+        self.assertEqual(G.WAVEFORMS[G.DIAG_WF], G.WAVEFORMS["ana"])
+
+    def test_shared_control_waveforms_identical_between_arms(self):
+        """RWL, latch-enable, write-back and precharge PWL point lists are identical for ana and anb."""
+        comp = {wf: G._composite(self.V, wf, WAVES) for wf in ("ana", G.DIAG_WF)}
+        for key in ("ctl", "en", "wbc"):
+            self.assertEqual(comp["ana"][key], comp[G.DIAG_WF][key], key)
+        for k in range(G.N_ROWS):
+            self.assertEqual(comp["ana"][f"rwls{k}"], comp[G.DIAG_WF][f"rwls{k}"], f"rwls{k}")
+            self.assertEqual(comp["ana"][f"wwl{k}"], comp[G.DIAG_WF][f"wwl{k}"], f"wwl{k}")
+
+    def test_circuit_diff_is_clamp_and_ammeters_only(self):
+        """Every ana_1111 card has an anb_1111 name-substituted counterpart, and the only extra anb cards
+        are the clamp block; the extra shared cards are the 0 V ammeters present in BOTH arms."""
+        lines = NETLIST_DIAG.splitlines()
+        body = [l for l in lines if not l.startswith("*") and not l.startswith(".ic ")]
+        lset = set(body)
+        ana = [l for l in body if "ana_1111" in l]
+        anb = [l for l in body if "anb_1111" in l]
+        # arms differ by name substitution only (instance names AND the per-waveform control-node suffix);
+        # the clamp switch cards additionally reference the clamped neighbours' SN nodes
+        shared_anb = [l for l in anb if l.replace("_anb", "_ana") in lset]
+        self.assertEqual(sorted(l.replace("_ana", "_anb") for l in ana), sorted(shared_anb))
+        self.assertEqual(sorted(l.replace("_anb", "_ana") for l in shared_anb), sorted(ana))
+        clamp_x = [l for l in anb if l.replace("_anb", "_ana") not in lset]
+        self.assertEqual(len(clamp_x), 2)   # the two clamp switch cards (the only clamp cards naming instances)
+        self.assertTrue(all(l.startswith("swc_") for l in clamp_x))
+        clamp_aux = [l for l in body if l.startswith(("vclmp_", "vclp_", ".model swclamp"))]
+        self.assertEqual(len(clamp_aux), 3)   # ideal clamp source, control PWL, switch model
+        self.assertEqual([l for l in body if l.startswith(".model swclamp")],
+                         [".model swclamp sw(vt=0.5 vh=0.1 ron=1 roff=1e12)"])
+        # the victim's storage node is never clamped (clamp rows are 0 and 1 only)
+        self.assertFalse(any("sn_anb_1111_2" in l and l.startswith("swc_") for l in lines))
+        ics = [l for l in lines if l.startswith(".ic ")]
+        tok = lambda arm: sorted(t for l in ics for t in l.split()[1:] if f"{arm}_1111" in t)
+        self.assertEqual(len(tok("ana")), 9)
+        self.assertEqual([t.replace("_ana", "_anb") for t in tok("ana")], tok("anb"))
+        # both arms carry the same 8 ammeters; the baseline d5030 deck has neither ammeters nor clamp
+        self.assertEqual(len([l for l in lines if l.startswith("vmeas")]), 8)
+        for wf in ("ana", "anb"):
+            for k in range(G.N_ROWS):
+                drv = next(l for l in lines if l.startswith(f"vrws{k}_{wf} "))
+                self.assertTrue(drv.startswith(f"vrws{k}_{wf} rwlsrc{k}_{wf} 0 pwl("))
+        main_net = G.paths(G.variant("d5030"))[0].read_text()
+        self.assertNotIn("vmeas", main_net)
+        self.assertNotIn("swclamp", main_net)
+
+    def test_clamp_window_preserves_history(self):
+        """Clamp opens after row 1's op end + its post-refresh probe, settles before the victim's pre-read
+        probe, closes at the victim's op end, and never touches row 3's op."""
+        v = self.V
+        d = v
+        sh = G.op_shape(WAVES["ana"]["nodes"])
+        waves = WAVES
+        on, off, done = G.clamp_window_ns(v, waves)
+        o_prev = G.select_ns(v, d["victim_row"] - 1, 1) - sh["sel"]
+        self.assertGreaterEqual(on, o_prev + sh["last"] + G.T_MEAS_NS)     # history through row 1's write-back + probe
+        vr_pre = G.probe_times(v, "ana", d["victim_row"], 1, waves)["pre"]
+        self.assertLessEqual(on + d["ramp_ns"], vr_pre)                    # settled before the victim pre-read probe
+        vr_sel, vr_en = G.sense_window_ns(v, "ana", d["victim_row"], 1, waves)
+        self.assertLessEqual(on + d["ramp_ns"], vr_sel)                    # and before the victim select edge
+        self.assertGreaterEqual(off, vr_en)                                # held through the victim's sensing
+        o3 = G.select_ns(v, 3, 1) - sh["sel"]
+        self.assertLessEqual(done, o3 + 2.0)                               # released before row 3's precharge drops
+        pwl = next(l for l in NETLIST_DIAG.splitlines() if l.startswith(f"vclp_{G.DIAG_WF} "))
+        for t in (on, on + d["ramp_ns"], off, done):
+            self.assertIn(f"{t * 1e-9:.12g}", pwl)
+
+    def test_request_probes_both_arms_equally(self):
+        r = json.loads(G.paths(self.V)[1].read_text())
+        names = [m["name"] for m in r["measurements"]]
+        for stem in ("iavg", "imax", "imin", "ien", "npre", "rblsel", "rblen", "rblavg", "refen", "refavg", "den"):
+            self.assertEqual(len([n for n in names if n.startswith(f"{stem}_ana_1111")]),
+                             len([n for n in names if n.startswith(f"{stem}_anb_1111")]), stem)
+        # the decision is read at the existing pre-write-back sample for both arms
+        for arm in ("ana_1111", "anb_1111"):
+            self.assertIn(f"dec_{arm}_r2_c1", names)
+            self.assertIn(f"pre_{arm}_r2_c1", names)
+
+
+def diag_measurements(v: dict, *, row2_clamped_dec: float | None, clamp_level: float = 1.36,
+                      neighbour_i_a: float = 2.5e-6, victim_dec: float = 1.72257,
+                      unclamped_shift_v: float = 0.0) -> list[dict]:
+    """Synthetic instrumented measurements for the paired deck. Baseline arm always reproduces the
+    recorded cycle-1 failure; the clamp arm's row-2 decision (and injection current) is the intervention.
+    unclamped_shift_v moves the clamp arm's UNCLAMPED nodes (victim pre-read, row-3 npre) the way the real
+    run shows the floating-RBL coupling does; 0.0 keeps both arms symmetric as the fixtures above assume."""
+    meas = []
+    for p in G.instances(v):
+        n, clamped = p["name"], p["wf"] == G.DIAG_WF
+        s = unclamped_shift_v if clamped else 0.0
+        for r in range(G.N_ROWS):
+            meas.append({"name": f"wr_{n}_r{r}", "value": 1.4})
+        dec2 = (row2_clamped_dec if clamped and row2_clamped_dec is not None else victim_dec)
+        meas += [
+            {"name": f"pre_{n}_r2_c1", "value": 0.969999 + s}, {"name": f"dec_{n}_r2_c1", "value": dec2},
+            {"name": f"post_{n}_r2_c1", "value": 1.45 if dec2 < 0 else -0.06},
+        ]
+        for r in (0, 1):
+            meas += [{"name": f"pre_{n}_r{r}_c1", "value": 0.96}, {"name": f"dec_{n}_r{r}_c1", "value": -1.61829},
+                     {"name": f"post_{n}_r{r}_c1", "value": 1.45}]
+            lvl = clamp_level if clamped else (1.63393 if r == 0 else 1.61575)
+            meas.append({"name": f"npre_{n}_r{r}", "value": lvl})
+        meas.append({"name": f"pre_{n}_r3_c1", "value": 0.96})
+        meas.append({"name": f"dec_{n}_r3_c1", "value": 1.72})
+        meas.append({"name": f"post_{n}_r3_c1", "value": 1.45})
+        meas.append({"name": f"npre_{n}_r3", "value": 0.9686 + s})
+        for r in range(G.N_ROWS):
+            mag = 1e-12 if (clamped and r in v["clamp_rows"]) else neighbour_i_a
+            i = -mag if r == 2 else mag   # victim's RWL rail sinks its read discharge; neighbours inject
+            meas += [{"name": f"iavg_{n}_r{r}", "value": i}, {"name": f"imax_{n}_r{r}", "value": i * 2},
+                     {"name": f"imin_{n}_r{r}", "value": i / 2}, {"name": f"ien_{n}_r{r}", "value": i}]
+        meas += [{"name": f"rblsel_{n}", "value": 0.9}, {"name": f"rblen_{n}", "value": 0.1 if dec2 < 0 else 0.89},
+                 {"name": f"rblavg_{n}", "value": 0.5}, {"name": f"refen_{n}", "value": 0.8},
+                 {"name": f"refavg_{n}", "value": 0.8}, {"name": f"den_{n}", "value": dec2}]
+    return meas
+
+
+class DiagnosticAnalyzer(unittest.TestCase):
+    """The paired reduction: verdicts on synthetic reports, refutation included, preconditions enforced."""
+
+    V = G.variant("d5030nbr")
+
+    def paired(self, **kw) -> dict:
+        corner = {"process": "sf", "temperature_c": 125, "status": "pass",
+                  "measurements": diag_measurements(self.V, **kw)}
+        rows, s = A.reduce_corner(corner, self.V)
+        s["paired"] = A.paired_block(corner, self.V)
+        return s["paired"]
+
+    def test_supported_when_clamp_flips_the_decision(self):
+        p = self.paired(row2_clamped_dec=-1.7)
+        self.assertTrue(p["clean_comparison"])
+        self.assertEqual(p["verdict"], "supported")
+        self.assertTrue(p["decision_changed_by_clamp"])
+        self.assertTrue(p["clamped_victim_correct"])
+        self.assertAlmostEqual(p["neighbour_current_change_avg_a"][0], 1e-12 - 2.5e-6)
+        self.assertAlmostEqual(p["d_at_enable_change_v"], -1.7 - 1.72257)
+        # the instrumented baseline reproduces the recorded numbers it is paired against
+        self.assertAlmostEqual(p["baseline"]["rows"][2]["dec_v"], A.RECORDED["row2"]["dec_v"], places=6)
+        self.assertAlmostEqual(p["baseline"]["rows"][1]["dec_v"], A.RECORDED["row1"]["dec_v"], places=6)
+
+    def test_refuted_when_clamp_leaves_the_decision(self):
+        p = self.paired(row2_clamped_dec=1.72257)
+        self.assertTrue(p["clean_comparison"])
+        self.assertEqual(p["verdict"], "refuted")
+        self.assertFalse(p["decision_changed_by_clamp"])
+
+    def test_partial_when_clamp_changes_the_decision_but_not_to_correct(self):
+        p = self.paired(row2_clamped_dec=0.2)   # unresolved band, no longer a clean '0' read
+        self.assertTrue(p["clean_comparison"])
+        self.assertTrue(p["decision_changed_by_clamp"])
+        self.assertFalse(p["clamped_victim_correct"])
+        self.assertEqual(p["verdict"], "partial")
+
+    def test_inconclusive_when_the_clamp_misses_its_level(self):
+        p = self.paired(row2_clamped_dec=-1.7, clamp_level=1.615)   # clamp did not take effect
+        self.assertFalse(p["clean_comparison"])
+        self.assertEqual(p["verdict"], "inconclusive")
+        self.assertTrue(any("clamp did not hold" in x for x in p["limitations"]))
+
+    def test_inconclusive_when_baseline_does_not_reproduce_the_record(self):
+        corner = {"process": "sf", "temperature_c": 125, "status": "pass",
+                  "measurements": diag_measurements(self.V, row2_clamped_dec=-1.7)}
+        for m in corner["measurements"]:
+            if m["name"] == "dec_ana_1111_r1_c1":
+                m["value"] = 1.7          # the control row 1 wrongly fails in the baseline arm
+        _, s = A.reduce_corner(corner, self.V)
+        s["paired"] = A.paired_block(corner, self.V)
+        p = s["paired"]
+        self.assertEqual(p["verdict"], "inconclusive")
+        self.assertTrue(any("baseline" in x for x in p["limitations"]))
+        self.assertEqual(A.verdicts([s], self.V)["diagnostic_paired_verdict"], "inconclusive")
+
+    def test_unclamped_node_shift_is_disclosed_not_silent(self):
+        # The real run's floating-RBL coupling: the clamp arm's victim pre-read and row-3 npre sit lower.
+        p = self.paired(row2_clamped_dec=-1.7, unclamped_shift_v=-0.0175)
+        self.assertTrue(p["clean_comparison"])   # the four preconditions do not look at these nodes
+        self.assertEqual(p["verdict"], "supported")   # the conservative direction keeps the verdict
+        self.assertAlmostEqual(p["unclamped_node_change_v"]["victim_pre_read"], -0.0175, places=9)
+        self.assertAlmostEqual(p["unclamped_node_change_v"]["neighbour_r3_pre_select"], -0.0175, places=9)
+        limitation = next(x for x in p["limitations"] if "unclamped_node_change_v" in x)
+        self.assertIn("victim_pre_read", limitation)
+        self.assertIn("conservative", limitation)   # the direction argument is part of the record
+
+    def test_symmetric_arms_report_no_limitation(self):
+        p = self.paired(row2_clamped_dec=-1.7)   # fixtures hand both arms identical unclamped levels
+        self.assertEqual(p["limitations"], [])
+        self.assertEqual(p["unclamped_node_change_v"]["victim_pre_read"], 0.0)
+        self.assertEqual(p["unclamped_node_change_v"]["neighbour_r3_pre_select"], 0.0)
 
 
 if __name__ == "__main__":

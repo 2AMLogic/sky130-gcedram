@@ -75,7 +75,26 @@ PATTERNS_EXCESS = ["1111", "1010", "0000"]
 
 # Waveform keys -> (source variant in sim/refresh-replay, write-back present)
 WAVEFORMS = {"ana": ("baseline_analog", True), "rtl": ("rtl_hold", True),
-             "late": ("rwl_late_hold", True), "nowb": ("baseline_analog", False)}
+             "late": ("rwl_late_hold", True), "nowb": ("baseline_analog", False),
+             "anb": ("baseline_analog", True)}   # anb = ana's trace, paired diagnostic arm (issue #373)
+
+# ---- Diagnostic: neighbour-storage-node level isolation (issue #373) ----
+# One paired comparison at sf / 125 C on the ratified 5.03 us dwell, cycle 1, pattern 1111: the two rows
+# refreshed before the victim row 2 (rows 0, 1) are held at the RTL-control restore level (1.36 V, inside
+# the committed sf/125 control_rtl_unchanged stored-'1' post-refresh range 1.35869..1.39556 V of run
+# 20261118T220449Z) through the victim's read window, while the RWL / latch / write-back waveform,
+# schedule, history, loading and reference stay IDENTICAL in both arms. The read select is untouched:
+# RWL is active LOW (driving a neighbour RWL low would select it and add a discharge path), so the only
+# intervention is the neighbours' storage-node level. DIAGNOSTIC ONLY: an ideal clamp that holds the level
+# stiffly is an intervention no physical periphery provides, and it is labelled as such in the deck.
+DIAG_WF = "anb"                    # paired-arm waveform key (identical trace source to ana)
+KIND_DIAG = "diagnostic_neighbour_sn_clamp"
+DIAG = dict(name="d5030nbr", dwell_ns=5030.0, cycles=1,           # exactly the ratified bound, cycle 1 only
+            victim_row=2, victim_cycle=1, clamp_rows=(0, 1), clamp_target_v=1.36,
+            clamp_tol_v=0.01, dec_delta_tol_v=0.01, ramp_ns=1.0, clamp_ron=1.0,
+            role="issue #373 paired neighbour-SN-level diagnostic at the ratified dwell (sf/125 C only)",
+            groups=[("ana", "main", ["1111"]), (DIAG_WF, KIND_DIAG, ["1111"])],
+            ammeter=True, diagnostic=True)
 
 # Declared horizon: 10 refresh cycles per row. Rationale (README): enough for a per-cycle loss/drift trend to
 # separate from a single-cycle offset and for a wrong write-back to feed >= 9 later reads, still a FINITE horizon.
@@ -92,6 +111,7 @@ VARIANTS = [
                  ("late", "experimental_unapproved", PATTERNS_CTRL), ("nowb", "control_missing_writeback", PATTERNS_NOWB)]),
     dict(name="d60000", dwell_ns=60000.0, cycles=2, role="EXCESSIVE-DWELL control (12x the ratified bound)",
          groups=[("ana", "control_excessive_dwell", PATTERNS_EXCESS)]),
+    DIAG,
 ]
 
 
@@ -155,6 +175,31 @@ def probe_times(v: dict, wf: str, k: int, n: int, waves: dict) -> dict:
     s = select_ns(v, k, n)
     o = s - sh["sel"]
     return dict(pre=s - PRE_LEAD_NS, dec=o + sh["wwl_rise"] - DEC_LEAD_NS, post=o + sh["last"] + T_MEAS_NS)
+
+
+def sense_window_ns(v: dict, wf: str, k: int, n: int, waves: dict) -> tuple[float, float]:
+    """Absolute ns [select edge, latch-enable rise] of row k's n-th pre-latch sensing interval."""
+    nodes = waves[wf]["nodes"]
+    sel = min(t for t, val in nodes["rwls"][1] if val == 1)
+    en = min(t for t, val in nodes["en"][1] if val == 1)
+    o = select_ns(v, k, n) - sel
+    return o + sel, o + en
+
+
+def clamp_window_ns(v: dict, waves: dict) -> tuple[float, float, float]:
+    """Absolute ns (ramp_on_start, plateau_end, ramp_done) of the diagnostic neighbour-SN clamp.
+
+    Opens after the last pre-victim neighbour's op has fully released AND its post-refresh probe is taken
+    (op last edge + T_MEAS, plus one ramp), settles one ramp later -- before the victim's pre-read probe --
+    and closes at the end of the victim's op (its `end` edge, before the next row's precharge drops).
+    """
+    d = v
+    sh = op_shape(waves["ana"]["nodes"])
+    o_prev = select_ns(v, d["victim_row"] - 1, d["victim_cycle"]) - sh["sel"]
+    open_start = o_prev + sh["last"] + T_MEAS_NS + d["ramp_ns"]
+    o_v = select_ns(v, d["victim_row"], d["victim_cycle"]) - sh["sel"]
+    close_end = o_v + sh["end"]
+    return open_start, close_end - d["ramp_ns"], close_end
 
 
 def t_stop_ns(v: dict, waves: dict) -> float:
@@ -228,6 +273,11 @@ def build_netlist(v: dict, waves: dict | None = None) -> str:
     a("* latch decision is written back and carried into the next cycle. Instance name <waveform>_<row0..row3 data>.")
     a("* Waveforms: ana = sim/refresh-op analog baseline; rtl = UNCHANGED phase-sequencer strobes + latch-hold adapter;")
     a("* late = EXPERIMENTAL UNAPPROVED rtl with RWL released after WWL fall; nowb = ana with write-back WWL pulses deleted.")
+    if v.get("diagnostic"):
+        a("*")
+        a(f"* DIAGNOSTIC, PAIRED ARMS (issue #373): cycle-1 row-{v['victim_row']} read of pattern 1111 at the ratified dwell, sf/125 C only.")
+        a("* ana_1111 = instrumented baseline; anb_1111 = IDENTICAL circuit plus the ideal neighbour-SN clamp emitted below.")
+        a("* RWL/latch/write-back waveform, schedule, write/refresh history, loading and reference are shared and identical.")
     a("*")
     a("* ASSUMPTIONS (labelled, none is a spec value): ideal drivers and 100 ohm switches, C_WBL = 10 fF (not extracted),")
     a("* ideal matched dummy reference load, VREF = VRBL - 100 mV, 4-row column, C_RBL = extracted 4-row worst net,")
@@ -255,7 +305,11 @@ def build_netlist(v: dict, waves: dict | None = None) -> str:
         a(f"vwbc_{wf} wbc_{wf} 0 {pwl_text(c['wbc'])}")
         a(f"vbpk_{wf} bpk_{wf} 0 {pwl_text(L.complement_pts(c['wbc']))}   $ ideal initial-write/park driver connected except during write-back")
         for k in range(N_ROWS):
-            a(f"vrws{k}_{wf} rwls{k}_{wf} 0 {pwl_text(c[f'rwls{k}'])}")
+            if v.get("ammeter"):
+                a(f"vrws{k}_{wf} rwlsrc{k}_{wf} 0 {pwl_text(c[f'rwls{k}'])}")
+                a(f"vmeas{k}_{wf} rwlsrc{k}_{wf} rwls{k}_{wf} dc 0   $ 0 V ammeter; positive i = this row's RWL rail -> its read device (onto the shared RBL)")
+            else:
+                a(f"vrws{k}_{wf} rwls{k}_{wf} 0 {pwl_text(c[f'rwls{k}'])}")
             a(f"vwl{k}_{wf} wl{k}_{wf} 0 {pwl_text(c[f'wwl{k}'])}")
     for bits in sorted({p["bits"] for p in pts}):
         a(f"vbld{bits} bld{bits} 0 {pwl_text(_bl_init(bits))}")
@@ -294,6 +348,23 @@ def build_netlist(v: dict, waves: dict | None = None) -> str:
     for k in range(0, len(ics), 6):
         a(".ic " + " ".join(ics[k:k + 6]))
     a("")
+    if v.get("diagnostic"):
+        dn = next(p["name"] for p in pts if p["wf"] == DIAG_WF)
+        on, off, done = clamp_window_ns(v, waves)
+        a("* ---- DIAGNOSTIC ONLY (issue #373): ideal neighbour storage-node clamp, paired arm "
+          f"{dn} ----")
+        a("* Not a circuit feature: an ideal source holds the two restored neighbours' SN stiffly at the")
+        a(f"* RTL-control restore level ({fmt_g6(v['clamp_target_v'])} V; sf/125 C control_rtl_unchanged range"
+          " 1.35869..1.39556 V, run 20261118T220449Z)")
+        a(f"* through the victim row-{v['victim_row']} read window. The baseline arm has no clamp; the read select")
+        a("* itself is never touched (RWL is active low: driving a neighbour RWL low would select it).")
+        a(f".model swclamp sw(vt=0.5 vh=0.1 ron={fmt_g6(v['clamp_ron'])} roff=1e12)")
+        a(f"vclmp_{DIAG_WF} clmp_{DIAG_WF} 0 dc {fmt_g6(v['clamp_target_v'])}")
+        clp = pwl_text([(0.0, "0"), (on, "0"), (on + v["ramp_ns"], "{VDD}"), (off, "{VDD}"), (done, "0")])
+        a(f"vclp_{DIAG_WF} clp_{DIAG_WF} 0 {clp}")
+        for r in v["clamp_rows"]:
+            a(f"swc_{DIAG_WF}_r{r} sn_{dn}_{r} clmp_{DIAG_WF} clp_{DIAG_WF} 0 swclamp")
+        a("")
     return "\n".join(L_)
 
 
@@ -313,8 +384,39 @@ def build_request(v: dict, waves: dict | None = None) -> dict:
                     {"name": f"dec_{n}_r{k}_c{c}", "unit": "V", "spice": f".meas tran dec_{n}_r{k}_c{c} FIND v(d_{n}) AT={fmt_g6(pt['dec'])}n"},
                     {"name": f"post_{n}_r{k}_c{c}", "unit": "V", "spice": f".meas tran post_{n}_r{k}_c{c} FIND v(sn_{n}_{k}) AT={fmt_g6(pt['post'])}n"},
                 ]
-    return klt_request(f"closed_loop_{v['name']}.spice", {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-                       f"100p {stop}n 0 {fmt_g6(TMAX_NS)}n uic", meas, 3300)
+    if v.get("diagnostic"):
+        vr, vc = v["victim_row"], v["victim_cycle"]
+        sel_v = select_ns(v, vr, vc)
+        for p in instances(v):
+            n, wf = p["name"], p["wf"]
+            w0, w1 = sense_window_ns(v, wf, vr, vc, waves)   # victim row's sensing interval, same for both arms
+            for k in range(N_ROWS):
+                if k != vr:   # victim's own pre-read probe is the standard pre_r<victim>_c<victim_cycle>
+                    meas.append({"name": f"npre_{n}_r{k}", "unit": "V",
+                                 "spice": f".meas tran npre_{n}_r{k} FIND v(sn_{n}_{k}) AT={fmt_g6(sel_v - PRE_LEAD_NS)}n"})
+                meas += [
+                    {"name": f"iavg_{n}_r{k}", "unit": "A",
+                     "spice": f".meas tran iavg_{n}_r{k} AVG i(vmeas{k}_{wf}) FROM={fmt_g6(w0)}n TO={fmt_g6(w1)}n"},
+                    {"name": f"imax_{n}_r{k}", "unit": "A",
+                     "spice": f".meas tran imax_{n}_r{k} MAX i(vmeas{k}_{wf}) FROM={fmt_g6(w0)}n TO={fmt_g6(w1)}n"},
+                    {"name": f"imin_{n}_r{k}", "unit": "A",
+                     "spice": f".meas tran imin_{n}_r{k} MIN i(vmeas{k}_{wf}) FROM={fmt_g6(w0)}n TO={fmt_g6(w1)}n"},
+                    {"name": f"ien_{n}_r{k}", "unit": "A",
+                     "spice": f".meas tran ien_{n}_r{k} FIND i(vmeas{k}_{wf}) AT={fmt_g6(w1)}n"},
+                ]
+            meas += [
+                {"name": f"rblsel_{n}", "unit": "V", "spice": f".meas tran rblsel_{n} FIND v(rbl_{n}) AT={fmt_g6(w0 + 0.2)}n"},
+                {"name": f"rblen_{n}", "unit": "V", "spice": f".meas tran rblen_{n} FIND v(rbl_{n}) AT={fmt_g6(w1)}n"},
+                {"name": f"rblavg_{n}", "unit": "V", "spice": f".meas tran rblavg_{n} AVG v(rbl_{n}) FROM={fmt_g6(w0)}n TO={fmt_g6(w1)}n"},
+                {"name": f"refen_{n}", "unit": "V", "spice": f".meas tran refen_{n} FIND v(ref_{n}) AT={fmt_g6(w1)}n"},
+                {"name": f"refavg_{n}", "unit": "V", "spice": f".meas tran refavg_{n} AVG v(ref_{n}) FROM={fmt_g6(w0)}n TO={fmt_g6(w1)}n"},
+                {"name": f"den_{n}", "unit": "V", "spice": f".meas tran den_{n} FIND v(d_{n}) AT={fmt_g6(w1)}n"},
+            ]
+    corners = ({"process": ["sf"], "temperature_c": [125]} if v.get("diagnostic")
+               else {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C})
+    return klt_request(f"closed_loop_{v['name']}.spice", corners,
+                       f"100p {stop}n 0 {fmt_g6(TMAX_NS)}n uic", meas,
+                       900 if v.get("diagnostic") else 3300)
 
 
 def paths(v: dict) -> tuple[Path, Path]:
