@@ -6,7 +6,8 @@ committed bench missing from the list is invisible to the gate. This check
 compares the list against the tracked tree. Stdlib only; needs ``git``.
 
 Candidate rule: a tracked file under ``sim/`` with no ``results`` path
-component that is a ``*.spice`` deck or a ``request*.json`` klt sim request.
+component that is a ``*.spice`` deck, a ``*.spice.tmpl`` template, or a
+``request*.json`` klt sim request.
 Fails (exit 1) naming every candidate absent from ``testbenches`` (unless
 listed in ``EXCLUDE``) and every inventoried path that is no longer tracked.
 Exit 2 if git cannot be queried; failure is never reported as success.

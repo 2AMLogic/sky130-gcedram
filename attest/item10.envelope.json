@@ -80,7 +80,7 @@
         "role": "hygiene",
         "path": "sim/check_item9_inventory.py",
         "passed": true,
-        "content_hash": "sha256:81df9fe2de146429a0adf6be57d7d4e82ae55b3995be197269d061ab70a69f0c"
+        "content_hash": "sha256:01eb6739e03e26ab8c362c49314be239d3520b52ffdfa3109469308105a976c6"
       },
       {
         "check": "present",
