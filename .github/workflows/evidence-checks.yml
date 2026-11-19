@@ -55,6 +55,9 @@ jobs:
       - name: Aged write/hold/read checks
         run: python3 -I sim/aged-read/test_aged_read.py
 
+      - name: Repeated closed-loop refresh (issue #147) checks
+        run: python3 -I sim/closed-loop-refresh/test_closed_loop.py
+
       - name: Extracted-C_RBL loaded-column (klt harness, issue #88) checks
         run: python3 -I sim/loaded-column/extracted-crbl/test_column_klt.py
 
