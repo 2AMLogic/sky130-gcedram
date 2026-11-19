@@ -58,6 +58,12 @@ class Item9Inventory(unittest.TestCase):
         self.assertEqual(r.returncode, 1)
         self.assertIn("sim/a/e.spice", r.stdout)
 
+    def test_missing_template_fails(self):
+        make_repo(self.root, ["sim/a/d.spice", "sim/a/t.spice.tmpl"], ["sim/a/d.spice"])
+        r = run(self.root)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("sim/a/t.spice.tmpl", r.stdout)
+
     def test_stale_entry_fails(self):
         make_repo(self.root, ["sim/a/d.spice"], ["sim/a/d.spice", "sim/a/gone.spice"])
         r = run(self.root)

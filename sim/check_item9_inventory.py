@@ -35,7 +35,11 @@ def is_candidate(path: str) -> bool:
     if parts[0] != "sim" or "results" in parts[:-1]:
         return False
     name = parts[-1]
-    return name.endswith(".spice") or (name.startswith("request") and name.endswith(".json"))
+    return (
+        name.endswith(".spice")
+        or name.endswith(".spice.tmpl")
+        or (name.startswith("request") and name.endswith(".json"))
+    )
 
 
 def tracked_files(repo: str) -> set[str]:
