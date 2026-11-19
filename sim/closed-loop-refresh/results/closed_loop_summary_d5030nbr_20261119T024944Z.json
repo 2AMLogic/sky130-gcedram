@@ -1,0 +1,537 @@
+{
+ "run_id": "20261119T024944Z",
+ "variant": "d5030nbr",
+ "dwell_ns": 5030.0,
+ "cycles": 1,
+ "role": "issue #373 paired neighbour-SN-level diagnostic at the ratified dwell (sf/125 C only)",
+ "status": "PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
+ "scope": "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, per spec/operating-range-decision-PROPOSED.md",
+ "klt_status": "pass",
+ "corner_count": 1,
+ "batch_job_id": null,
+ "batch_instance_type": null,
+ "netlist_sha256": "ed18a4d779a5b05e421fd965db0c4f6dda178d2c47de8181c0f3e472384ffd8a",
+ "models_lib_sha256": "48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+ "engine_version": "47",
+ "batch_fleet_jobs": [],
+ "sources": {
+  "deck": "closed_loop_d5030nbr.spice",
+  "latch": "design/sense_latch.spice (corrected, issue #293 provenance)",
+  "cell": "design/gain_cell_2t.spice with layout-drawn AD/AS/PD/PS",
+  "rtl_trace": "sim/refresh-replay/results/20261115T120746Z/rtl_trace.json",
+  "waveforms": {
+   "ana": "baseline_analog",
+   "rtl": "rtl_hold",
+   "late": "rwl_late_hold",
+   "nowb": "baseline_analog",
+   "anb": "baseline_analog"
+  }
+ },
+ "assumptions": {
+  "restore_reference": "sim/refresh-replay/results/20261115T120746Z/points.csv sn_ref_v (baseline_analog, op1, 0.9 V rows)",
+  "c_rbl_ff": 0.955559,
+  "c_sn_ff_array_min_wiring": 0.538402,
+  "c_wbl_ff_not_extracted": 10.0,
+  "vrbl_v": 0.9,
+  "dvref_v": 0.1,
+  "resolve_v": 0.9,
+  "restore_fractions": [
+   0.9,
+   0.95,
+   0.98
+  ],
+  "stored0_max_v": 0.05,
+  "refresh_bound_s_ratified_read_only": 5.03e-06,
+  "patterns": [
+   "1111"
+  ],
+  "horizon_cycles": 1,
+  "horizon_is_finite_not_indefinite_stability": true,
+  "drivers": "ideal wordline/bitline-init/precharge drivers and 100 ohm switches; no physical column or row driver",
+  "mismatch": "none (global corners only)",
+  "pattern_enumeration": "starting point, not proven worst case"
+ },
+ "claims": {
+  "full_macro_or_yield_claim": false,
+  "mismatch_or_offset_yield_validated": false,
+  "spec_changed": false,
+  "refresh_bound_signed_off": false,
+  "global_corner_evidence_only": true,
+  "indefinite_stability_claimed": false
+ },
+ "verdicts": {
+  "main_all_reads_correct_all_corners": false,
+  "main_all_restored_095_all_corners": false,
+  "main_corners_with_any_failure": [
+   "sf/125"
+  ],
+  "diagnostic_paired_verdict": "supported"
+ },
+ "paired": {
+  "victim_row": 2,
+  "victim_cycle": 1,
+  "clamp_target_v": 1.36,
+  "clamp_rows": [
+   0,
+   1
+  ],
+  "clamp_window_ns": [
+   5127.1,
+   5164.1,
+   5165.1
+  ],
+  "recorded_reference": {
+   "run_id": "20261118T220449Z",
+   "variant": "d5030",
+   "row1": {
+    "pre_read_v": 0.967506,
+    "dec_v": -1.61829,
+    "decision": "1"
+   },
+   "row2": {
+    "pre_read_v": 0.969999,
+    "dec_v": 1.72257,
+    "decision": "0"
+   },
+   "restored_neighbour_pre_clamp_v": {
+    "0": 1.63393,
+    "1": 1.61575
+   },
+   "rtl_control_stored1_post_refresh_v_range": [
+    1.35869,
+    1.39556
+   ]
+  },
+  "baseline": {
+   "instance": "ana_1111",
+   "neighbour_pre_select_v": {
+    "0": 1.67423,
+    "1": 1.65697,
+    "3": 0.970912
+   },
+   "victim_pre_read_v": 0.969898,
+   "rows": {
+    "0": {
+     "dec_v": -1.72144,
+     "decision": "1",
+     "correct": true
+    },
+    "1": {
+     "dec_v": -1.61837,
+     "decision": "1",
+     "correct": true
+    },
+    "2": {
+     "dec_v": 1.72263,
+     "decision": "0",
+     "correct": false
+    },
+    "3": {
+     "dec_v": 1.72298,
+     "decision": "0",
+     "correct": false
+    }
+   },
+   "currents": {
+    "0": {
+     "avg": 6.08059e-06,
+     "max": 6.29975e-06,
+     "min": 8.25044e-08,
+     "at_enable": 6.20456e-06
+    },
+    "1": {
+     "avg": 5.13471e-06,
+     "max": 5.32671e-06,
+     "min": 5.80571e-08,
+     "at_enable": 5.24153e-06
+    },
+    "2": {
+     "avg": -1.14782e-05,
+     "max": -5.14085e-06,
+     "min": -2.40147e-05,
+     "at_enable": -1.14625e-05
+    },
+    "3": {
+     "avg": 2.41946e-10,
+     "max": 2.04087e-08,
+     "min": -3.48745e-10,
+     "at_enable": 4.13931e-10
+    }
+   },
+   "rbl_at_select_v": 0.911537,
+   "rbl_at_enable_v": 0.835197,
+   "rbl_avg_v": 0.840033,
+   "ref_at_enable_v": 0.817983,
+   "ref_avg_v": 0.806166,
+   "d_at_enable_v": 0.0172141,
+   "sense_window_ns": [
+    5131.1,
+    5141.1
+   ],
+   "current_sign": "positive i = this row's RWL rail sourcing current into its read device (onto the shared RBL); negative = the rail sinking that row's read discharge"
+  },
+  "clamped": {
+   "instance": "anb_1111",
+   "neighbour_pre_select_v": {
+    "0": 1.36,
+    "1": 1.36,
+    "3": 0.953425
+   },
+   "victim_pre_read_v": 0.952415,
+   "rows": {
+    "0": {
+     "dec_v": -1.72135,
+     "decision": "1",
+     "correct": true
+    },
+    "1": {
+     "dec_v": -1.61843,
+     "decision": "1",
+     "correct": true
+    },
+    "2": {
+     "dec_v": -1.56216,
+     "decision": "1",
+     "correct": true
+    },
+    "3": {
+     "dec_v": -1.53059,
+     "decision": "1",
+     "correct": true
+    }
+   },
+   "currents": {
+    "0": {
+     "avg": 4.51502e-06,
+     "max": 4.70202e-06,
+     "min": -4.68422e-08,
+     "at_enable": 4.62853e-06
+    },
+    "1": {
+     "avg": 4.51502e-06,
+     "max": 4.70202e-06,
+     "min": -4.68422e-08,
+     "at_enable": 4.62853e-06
+    },
+    "2": {
+     "avg": -9.28989e-06,
+     "max": -5.13789e-06,
+     "min": -2.16132e-05,
+     "at_enable": -9.26275e-06
+    },
+    "3": {
+     "avg": 1.82334e-09,
+     "max": 1.27696e-08,
+     "min": -2.32361e-09,
+     "at_enable": 2.43669e-09
+    }
+   },
+   "rbl_at_select_v": 0.732471,
+   "rbl_at_enable_v": 0.63788,
+   "rbl_avg_v": 0.642686,
+   "ref_at_enable_v": 0.88115,
+   "ref_avg_v": 0.837149,
+   "d_at_enable_v": -0.24327,
+   "sense_window_ns": [
+    5131.1,
+    5141.1
+   ],
+   "current_sign": "positive i = this row's RWL rail sourcing current into its read device (onto the shared RBL); negative = the rail sinking that row's read discharge"
+  },
+  "baseline_neighbour_relaxation_v": {
+   "0": 0.0403,
+   "1": 0.041220000000000034
+  },
+  "decision_changed_by_clamp": true,
+  "clamped_victim_correct": true,
+  "d_at_enable_change_v": -0.2604841,
+  "neighbour_current_change_avg_a": {
+   "0": -1.5655700000000003e-06,
+   "1": -6.196900000000003e-07
+  },
+  "all_rows_current_change_avg_a": {
+   "0": {
+    "baseline_avg": 6.08059e-06,
+    "clamped_avg": 4.51502e-06,
+    "delta": -1.5655700000000003e-06
+   },
+   "1": {
+    "baseline_avg": 5.13471e-06,
+    "clamped_avg": 4.51502e-06,
+    "delta": -6.196900000000003e-07
+   },
+   "2": {
+    "baseline_avg": -1.14782e-05,
+    "clamped_avg": -9.28989e-06,
+    "delta": 2.1883099999999997e-06
+   },
+   "3": {
+    "baseline_avg": 2.41946e-10,
+    "clamped_avg": 1.82334e-09,
+    "delta": 1.581394e-09
+   }
+  },
+  "clean_comparison": true,
+  "limitations": [],
+  "verdict": "supported",
+  "conclusion_scope": "this pattern (1111), corner (sf/125 C) and model set only; diagnostic intervention, not a circuit feature or a refresh-bound claim"
+ },
+ "corners": [
+  {
+   "process": "sf",
+   "temperature_c": 125,
+   "by_kind": {
+    "diagnostic_neighbour_sn_clamp": {
+     "rows": 4,
+     "cycles": 1,
+     "all_reads_correct": true,
+     "rows_with_wrong_read": 0,
+     "first_failure_cycle_by_row": {},
+     "all_restored_095": true,
+     "rows_unrestored_095": 0,
+     "first_unrestored_cycle_by_row": {},
+     "failures_detected": false,
+     "min_post_refresh_stored1_v": 1.59951,
+     "min_restore_fraction_stored1": 1.030798082128219,
+     "min_pre_read_stored1_v": 0.951271,
+     "max_interval_loss_stored1_v": null,
+     "max_stored1_post_refresh_drift_first_to_last_cycle_v": null,
+     "min_abs_decision_v": 1.53059
+    },
+    "main": {
+     "rows": 4,
+     "cycles": 1,
+     "all_reads_correct": false,
+     "rows_with_wrong_read": 2,
+     "first_failure_cycle_by_row": {
+      "ana_1111_r2": 1,
+      "ana_1111_r3": 1
+     },
+     "all_restored_095": false,
+     "rows_unrestored_095": 2,
+     "first_unrestored_cycle_by_row": {
+      "ana_1111_r2": 1,
+      "ana_1111_r3": 1
+     },
+     "failures_detected": true,
+     "min_post_refresh_stored1_v": -0.0606579,
+     "min_restore_fraction_stored1": -0.03909075090866909,
+     "min_pre_read_stored1_v": 0.950201,
+     "max_interval_loss_stored1_v": null,
+     "max_stored1_post_refresh_drift_first_to_last_cycle_v": null,
+     "min_abs_decision_v": 1.61837
+    }
+   },
+   "instances": {},
+   "paired": {
+    "victim_row": 2,
+    "victim_cycle": 1,
+    "clamp_target_v": 1.36,
+    "clamp_rows": [
+     0,
+     1
+    ],
+    "clamp_window_ns": [
+     5127.1,
+     5164.1,
+     5165.1
+    ],
+    "recorded_reference": {
+     "run_id": "20261118T220449Z",
+     "variant": "d5030",
+     "row1": {
+      "pre_read_v": 0.967506,
+      "dec_v": -1.61829,
+      "decision": "1"
+     },
+     "row2": {
+      "pre_read_v": 0.969999,
+      "dec_v": 1.72257,
+      "decision": "0"
+     },
+     "restored_neighbour_pre_clamp_v": {
+      "0": 1.63393,
+      "1": 1.61575
+     },
+     "rtl_control_stored1_post_refresh_v_range": [
+      1.35869,
+      1.39556
+     ]
+    },
+    "baseline": {
+     "instance": "ana_1111",
+     "neighbour_pre_select_v": {
+      "0": 1.67423,
+      "1": 1.65697,
+      "3": 0.970912
+     },
+     "victim_pre_read_v": 0.969898,
+     "rows": {
+      "0": {
+       "dec_v": -1.72144,
+       "decision": "1",
+       "correct": true
+      },
+      "1": {
+       "dec_v": -1.61837,
+       "decision": "1",
+       "correct": true
+      },
+      "2": {
+       "dec_v": 1.72263,
+       "decision": "0",
+       "correct": false
+      },
+      "3": {
+       "dec_v": 1.72298,
+       "decision": "0",
+       "correct": false
+      }
+     },
+     "currents": {
+      "0": {
+       "avg": 6.08059e-06,
+       "max": 6.29975e-06,
+       "min": 8.25044e-08,
+       "at_enable": 6.20456e-06
+      },
+      "1": {
+       "avg": 5.13471e-06,
+       "max": 5.32671e-06,
+       "min": 5.80571e-08,
+       "at_enable": 5.24153e-06
+      },
+      "2": {
+       "avg": -1.14782e-05,
+       "max": -5.14085e-06,
+       "min": -2.40147e-05,
+       "at_enable": -1.14625e-05
+      },
+      "3": {
+       "avg": 2.41946e-10,
+       "max": 2.04087e-08,
+       "min": -3.48745e-10,
+       "at_enable": 4.13931e-10
+      }
+     },
+     "rbl_at_select_v": 0.911537,
+     "rbl_at_enable_v": 0.835197,
+     "rbl_avg_v": 0.840033,
+     "ref_at_enable_v": 0.817983,
+     "ref_avg_v": 0.806166,
+     "d_at_enable_v": 0.0172141,
+     "sense_window_ns": [
+      5131.1,
+      5141.1
+     ],
+     "current_sign": "positive i = this row's RWL rail sourcing current into its read device (onto the shared RBL); negative = the rail sinking that row's read discharge"
+    },
+    "clamped": {
+     "instance": "anb_1111",
+     "neighbour_pre_select_v": {
+      "0": 1.36,
+      "1": 1.36,
+      "3": 0.953425
+     },
+     "victim_pre_read_v": 0.952415,
+     "rows": {
+      "0": {
+       "dec_v": -1.72135,
+       "decision": "1",
+       "correct": true
+      },
+      "1": {
+       "dec_v": -1.61843,
+       "decision": "1",
+       "correct": true
+      },
+      "2": {
+       "dec_v": -1.56216,
+       "decision": "1",
+       "correct": true
+      },
+      "3": {
+       "dec_v": -1.53059,
+       "decision": "1",
+       "correct": true
+      }
+     },
+     "currents": {
+      "0": {
+       "avg": 4.51502e-06,
+       "max": 4.70202e-06,
+       "min": -4.68422e-08,
+       "at_enable": 4.62853e-06
+      },
+      "1": {
+       "avg": 4.51502e-06,
+       "max": 4.70202e-06,
+       "min": -4.68422e-08,
+       "at_enable": 4.62853e-06
+      },
+      "2": {
+       "avg": -9.28989e-06,
+       "max": -5.13789e-06,
+       "min": -2.16132e-05,
+       "at_enable": -9.26275e-06
+      },
+      "3": {
+       "avg": 1.82334e-09,
+       "max": 1.27696e-08,
+       "min": -2.32361e-09,
+       "at_enable": 2.43669e-09
+      }
+     },
+     "rbl_at_select_v": 0.732471,
+     "rbl_at_enable_v": 0.63788,
+     "rbl_avg_v": 0.642686,
+     "ref_at_enable_v": 0.88115,
+     "ref_avg_v": 0.837149,
+     "d_at_enable_v": -0.24327,
+     "sense_window_ns": [
+      5131.1,
+      5141.1
+     ],
+     "current_sign": "positive i = this row's RWL rail sourcing current into its read device (onto the shared RBL); negative = the rail sinking that row's read discharge"
+    },
+    "baseline_neighbour_relaxation_v": {
+     "0": 0.0403,
+     "1": 0.041220000000000034
+    },
+    "decision_changed_by_clamp": true,
+    "clamped_victim_correct": true,
+    "d_at_enable_change_v": -0.2604841,
+    "neighbour_current_change_avg_a": {
+     "0": -1.5655700000000003e-06,
+     "1": -6.196900000000003e-07
+    },
+    "all_rows_current_change_avg_a": {
+     "0": {
+      "baseline_avg": 6.08059e-06,
+      "clamped_avg": 4.51502e-06,
+      "delta": -1.5655700000000003e-06
+     },
+     "1": {
+      "baseline_avg": 5.13471e-06,
+      "clamped_avg": 4.51502e-06,
+      "delta": -6.196900000000003e-07
+     },
+     "2": {
+      "baseline_avg": -1.14782e-05,
+      "clamped_avg": -9.28989e-06,
+      "delta": 2.1883099999999997e-06
+     },
+     "3": {
+      "baseline_avg": 2.41946e-10,
+      "clamped_avg": 1.82334e-09,
+      "delta": 1.581394e-09
+     }
+    },
+    "clean_comparison": true,
+    "limitations": [],
+    "verdict": "supported",
+    "conclusion_scope": "this pattern (1111), corner (sf/125 C) and model set only; diagnostic intervention, not a circuit feature or a refresh-bound claim"
+   }
+  }
+ ]
+}
