@@ -197,7 +197,9 @@ def paired_block(corner: dict, v: dict) -> dict:
     Reports signed neighbour read-branch currents, RBL/REF across the victim's pre-latch sensing window and
     the decision at the existing pre-write-back sample for BOTH arms; states whether the level change altered
     the current, the differential at latch enable and the final decision. A clean refutation is a complete
-    outcome; a comparison whose preconditions fail is flagged inconclusive with the reason.
+    outcome; a comparison whose preconditions fail is flagged inconclusive with the reason. Side-effects of
+    the intervention on the nodes the clamp never touches are disclosed in unclamped_node_change_v and, when
+    they exceed dec_delta_tol_v, as a limitations entry with the direction argument.
     """
     m = measurements_of(corner)
     names = {p["kind"]: p["name"] for p in G.instances(v)}
@@ -224,6 +226,32 @@ def paired_block(corner: dict, v: dict) -> dict:
     controls_ok = all(a["rows"][0]["correct"] and a["rows"][1]["correct"] for a in (b, c))
     if not controls_ok:
         problems.append("row-0/row-1 controls (read before any clamp effect) did not stay correct in both arms")
+    # The clamp touches rows 0/1 only; disclose what the intervention does to the nodes it never touches.
+    # With the victim-row precharge open and RBL floating between the clamp settling and the victim's
+    # pre-read probe, the clamped neighbours inject less into RBL and the RBL difference couples back onto
+    # the other cells' storage nodes through their read devices -- the victim's own pre-read level is NOT
+    # matched between arms. Recorded as a limitation (with the direction argument), not silently, and not
+    # folded into clean_comparison: the four preconditions above are what that flag asserts, and they hold.
+    unclamped_rows = [r for r in range(G.N_ROWS) if r not in v["clamp_rows"] and r != vr]
+    unclamped_node_change_v = {
+        "victim_pre_read": None if None in (b["victim_pre_read_v"], c["victim_pre_read_v"])
+        else c["victim_pre_read_v"] - b["victim_pre_read_v"],
+        **{f"neighbour_r{r}_pre_select": None if None in (b["neighbour_pre_select_v"][r], c["neighbour_pre_select_v"][r])
+           else c["neighbour_pre_select_v"][r] - b["neighbour_pre_select_v"][r] for r in unclamped_rows},
+    }
+    shifted = {k: d for k, d in unclamped_node_change_v.items() if d is not None and abs(d) > dtol}
+    if shifted:
+        problems.append(
+            "the intervention also shifted the unclamped nodes between arms (unclamped_node_change_v,"
+            " clamped - baseline, V): " + ", ".join(f"{k} {d:+.6f}" for k, d in sorted(shifted.items()))
+            + "; with the victim-row precharge open and RBL floating between the clamp settling and the"
+            " victim's pre-read probe, the clamped neighbours inject less into RBL and the RBL difference"
+            " couples onto the other cells' storage nodes through their read devices, so the victim's"
+            " pre-read level is not matched between the arms; direction is conservative for the verdict:"
+            " the clamped arm's victim starts lower (less drive to read its stored '1') and still reads"
+            " correctly, and the ideal clamp holds the neighbour gates rigid against RBL's fall, so the"
+            " clamped arm's neighbour conduction is if anything overstated; clean_comparison is unchanged"
+            " because the four preconditions it asserts all still hold")
     clean = base_ok and base_neigh_ok and clamp_ok and controls_ok
     changed = b["rows"][vr]["decision"] != c["rows"][vr]["decision"]
     if not clean:
@@ -250,6 +278,7 @@ def paired_block(corner: dict, v: dict) -> dict:
         else c["d_at_enable_v"] - b["d_at_enable_v"],
         neighbour_current_change_avg_a={r: dcur[r]["delta"] for r in v["clamp_rows"]},
         all_rows_current_change_avg_a=dcur,
+        unclamped_node_change_v=unclamped_node_change_v,
         clean_comparison=clean, limitations=problems, verdict=verdict,
         conclusion_scope="this pattern (1111), corner (sf/125 C) and model set only; diagnostic intervention,"
                          " not a circuit feature or a refresh-bound claim")

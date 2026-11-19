@@ -154,9 +154,10 @@ same pass/fail.
 | row-2 decision (existing pre-write-back sample) | **'0' -- WRONG** (written back) | **'1' -- correct** |
 | row-3 decision (secondary observation) | '0' -- WRONG | '1' -- correct |
 
-The measured refutation did **not** occur: lowering only the neighbours' storage-node level changed the
+The measured refutation did **not** occur: lowering the neighbours' storage-node level changed the
 injection current, the differential at latch enable, and the final decision, and the victim then read
-correctly. Mechanism reading, at the level these measurements support: at the victim's select the restored
+correctly. (Not *only* the neighbours' level, see the disclosure below.) Mechanism reading, at the level
+these measurements support: at the victim's select the restored
 neighbours sit ~0.77 V above the precharged RBL and inject ~11 uA combined while the victim's own discharge
 sinks ~11.5 uA -- the two nearly cancel, so RBL erodes only to 17 mV above the reference by the enable instant
 and the latch resolves in the '0' direction. With the neighbours at 1.36 V their early-window vgs drops to
@@ -169,13 +170,29 @@ comparison). The baseline neighbours' SN relaxes upward between the recorded pos
 victim-select instant (+40.3 / +41.2 mV; `baseline_neighbour_relaxation_v` in the summary), so the recorded
 `post_refresh_v` values are not the levels at the victim's select -- both are recorded, at their own instants.
 
+**Disclosure: the intervention also moves the two unclamped nodes, so the victim's pre-read level is not
+matched between the arms.** Between the clamp settling (5128.1 ns) and the victim's pre-read probe
+(5130.9 ns) the victim row's precharge is open (released 5129.2 ns) and RBL floats; the clamped neighbours
+inject less into that floating RBL, and the resulting RBL level difference couples back onto the two cells
+the clamp never touches -- the victim's own pre-read level and row 3's `npre` both sit ~17.5 mV lower in
+the clamped arm (`unclamped_node_change_v` in the summary; `limitations` names it). 17.5 mV is not
+negligible here: it is the same order as the +17 mV baseline differential at latch enable that the
+experiment turns on. Two arguments say the bias runs **against** the claim, not for it: the clamped arm's
+victim starts 17.5 mV lower -- less drive to read its stored '1' -- and still reads correctly, so the flip
+is not explained by extra victim drive; and the ideal 1 Ohm clamp holds the neighbour gates rigid against
+RBL's fall where a physical periphery would let them droop, so the clamped arm's neighbour conduction is
+if anything overstated. `clean_comparison` stays true because the four preconditions it asserts (baseline
+reproduction, restored baseline neighbours, clamp level, row-0/1 controls) all still hold -- the shift is
+recorded as a `limitations` entry with this direction argument, not silently.
+
 **Claimed: the neighbour storage-node LEVEL is the controlling factor of the cycle-1 first-read failure of
 `ana_1111` row 2 at sf/125 C at the ratified 5.03 us dwell, in this deck (ideal drivers, this latch, this
 model set).** Not claimed: anything about other patterns/rows/corners, the physical column or row drivers
 (#114/#117), a reference that tracks the column, mismatch, or a revised refresh bound -- the sf/125 result at
 the ratified interval still stands as recorded and still needs its own spec/ decision record. The paired
 comparison is `clean_comparison=true` (baseline reproduced, clamp achieved its level, controls passed) with
-`verdict=supported` in `closed_loop_summary_d5030nbr_20261119T024944Z.json`.
+the unclamped-node shift disclosed in `limitations` (above), `verdict=supported` in
+`closed_loop_summary_d5030nbr_20261119T024944Z.json`.
 
 Run **locally** (single corner, so within the host rule for local runs): `klt sim --backend local`, ngspice-47,
 model library sha256 `48de7c67...133c84` (the pin of `docs/pdk-pin.md`; klt's first-match warning about

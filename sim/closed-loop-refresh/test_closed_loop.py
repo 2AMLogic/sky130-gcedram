@@ -325,17 +325,21 @@ class DiagnosticDeck(unittest.TestCase):
 
 
 def diag_measurements(v: dict, *, row2_clamped_dec: float | None, clamp_level: float = 1.36,
-                      neighbour_i_a: float = 2.5e-6, victim_dec: float = 1.72257) -> list[dict]:
+                      neighbour_i_a: float = 2.5e-6, victim_dec: float = 1.72257,
+                      unclamped_shift_v: float = 0.0) -> list[dict]:
     """Synthetic instrumented measurements for the paired deck. Baseline arm always reproduces the
-    recorded cycle-1 failure; the clamp arm's row-2 decision (and injection current) is the intervention."""
+    recorded cycle-1 failure; the clamp arm's row-2 decision (and injection current) is the intervention.
+    unclamped_shift_v moves the clamp arm's UNCLAMPED nodes (victim pre-read, row-3 npre) the way the real
+    run shows the floating-RBL coupling does; 0.0 keeps both arms symmetric as the fixtures above assume."""
     meas = []
     for p in G.instances(v):
         n, clamped = p["name"], p["wf"] == G.DIAG_WF
+        s = unclamped_shift_v if clamped else 0.0
         for r in range(G.N_ROWS):
             meas.append({"name": f"wr_{n}_r{r}", "value": 1.4})
         dec2 = (row2_clamped_dec if clamped and row2_clamped_dec is not None else victim_dec)
         meas += [
-            {"name": f"pre_{n}_r2_c1", "value": 0.969999}, {"name": f"dec_{n}_r2_c1", "value": dec2},
+            {"name": f"pre_{n}_r2_c1", "value": 0.969999 + s}, {"name": f"dec_{n}_r2_c1", "value": dec2},
             {"name": f"post_{n}_r2_c1", "value": 1.45 if dec2 < 0 else -0.06},
         ]
         for r in (0, 1):
@@ -346,7 +350,7 @@ def diag_measurements(v: dict, *, row2_clamped_dec: float | None, clamp_level: f
         meas.append({"name": f"pre_{n}_r3_c1", "value": 0.96})
         meas.append({"name": f"dec_{n}_r3_c1", "value": 1.72})
         meas.append({"name": f"post_{n}_r3_c1", "value": 1.45})
-        meas.append({"name": f"npre_{n}_r3", "value": 0.9686})
+        meas.append({"name": f"npre_{n}_r3", "value": 0.9686 + s})
         for r in range(G.N_ROWS):
             mag = 1e-12 if (clamped and r in v["clamp_rows"]) else neighbour_i_a
             i = -mag if r == 2 else mag   # victim's RWL rail sinks its read discharge; neighbours inject
@@ -413,6 +417,23 @@ class DiagnosticAnalyzer(unittest.TestCase):
         self.assertEqual(p["verdict"], "inconclusive")
         self.assertTrue(any("baseline" in x for x in p["limitations"]))
         self.assertEqual(A.verdicts([s], self.V)["diagnostic_paired_verdict"], "inconclusive")
+
+    def test_unclamped_node_shift_is_disclosed_not_silent(self):
+        # The real run's floating-RBL coupling: the clamp arm's victim pre-read and row-3 npre sit lower.
+        p = self.paired(row2_clamped_dec=-1.7, unclamped_shift_v=-0.0175)
+        self.assertTrue(p["clean_comparison"])   # the four preconditions do not look at these nodes
+        self.assertEqual(p["verdict"], "supported")   # the conservative direction keeps the verdict
+        self.assertAlmostEqual(p["unclamped_node_change_v"]["victim_pre_read"], -0.0175, places=9)
+        self.assertAlmostEqual(p["unclamped_node_change_v"]["neighbour_r3_pre_select"], -0.0175, places=9)
+        limitation = next(x for x in p["limitations"] if "unclamped_node_change_v" in x)
+        self.assertIn("victim_pre_read", limitation)
+        self.assertIn("conservative", limitation)   # the direction argument is part of the record
+
+    def test_symmetric_arms_report_no_limitation(self):
+        p = self.paired(row2_clamped_dec=-1.7)   # fixtures hand both arms identical unclamped levels
+        self.assertEqual(p["limitations"], [])
+        self.assertEqual(p["unclamped_node_change_v"]["victim_pre_read"], 0.0)
+        self.assertEqual(p["unclamped_node_change_v"]["neighbour_r3_pre_select"], 0.0)
 
 
 if __name__ == "__main__":

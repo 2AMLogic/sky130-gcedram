@@ -271,8 +271,14 @@
     "delta": 1.581394e-09
    }
   },
+  "unclamped_node_change_v": {
+   "victim_pre_read": -0.017483000000000026,
+   "neighbour_r3_pre_select": -0.01748700000000003
+  },
   "clean_comparison": true,
-  "limitations": [],
+  "limitations": [
+   "the intervention also shifted the unclamped nodes between arms (unclamped_node_change_v, clamped - baseline, V): neighbour_r3_pre_select -0.017487, victim_pre_read -0.017483; with the victim-row precharge open and RBL floating between the clamp settling and the victim's pre-read probe, the clamped neighbours inject less into RBL and the RBL difference couples onto the other cells' storage nodes through their read devices, so the victim's pre-read level is not matched between the arms; direction is conservative for the verdict: the clamped arm's victim starts lower (less drive to read its stored '1') and still reads correctly, and the ideal clamp holds the neighbour gates rigid against RBL's fall, so the clamped arm's neighbour conduction is if anything overstated; clean_comparison is unchanged because the four preconditions it asserts all still hold"
+  ],
   "verdict": "supported",
   "conclusion_scope": "this pattern (1111), corner (sf/125 C) and model set only; diagnostic intervention, not a circuit feature or a refresh-bound claim"
  },
@@ -527,8 +533,14 @@
       "delta": 1.581394e-09
      }
     },
+    "unclamped_node_change_v": {
+     "victim_pre_read": -0.017483000000000026,
+     "neighbour_r3_pre_select": -0.01748700000000003
+    },
     "clean_comparison": true,
-    "limitations": [],
+    "limitations": [
+     "the intervention also shifted the unclamped nodes between arms (unclamped_node_change_v, clamped - baseline, V): neighbour_r3_pre_select -0.017487, victim_pre_read -0.017483; with the victim-row precharge open and RBL floating between the clamp settling and the victim's pre-read probe, the clamped neighbours inject less into RBL and the RBL difference couples onto the other cells' storage nodes through their read devices, so the victim's pre-read level is not matched between the arms; direction is conservative for the verdict: the clamped arm's victim starts lower (less drive to read its stored '1') and still reads correctly, and the ideal clamp holds the neighbour gates rigid against RBL's fall, so the clamped arm's neighbour conduction is if anything overstated; clean_comparison is unchanged because the four preconditions it asserts all still hold"
+    ],
     "verdict": "supported",
     "conclusion_scope": "this pattern (1111), corner (sf/125 C) and model set only; diagnostic intervention, not a circuit feature or a refresh-bound claim"
    }
