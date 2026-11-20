@@ -286,6 +286,17 @@ The local `f6eeac7` probe agreeing to all printed digits, and the batch numbers 
 mean the two revisions' models for this device are numerically indistinguishable here, so this check cannot tell them
 apart. Confirming the fleet's PDK revision is a fleet-image question (see the PR for #168).
 
+**Follow-up (issue #377): the answer is `c6d73a3` -- the run above was a `mismatch`.** The report's
+`environment.remote.worker_environment.pdk.stamp_text` reads `open_pdks c6d73a35...` and its
+`pdk_stamp_comparison.status` is `mismatch`, so the 15 rows job `klt-sim-c2ed3f15ab70` appended (labelled
+`f6eeac7...`) were never proven to come from the pin. They are superseded by a re-run of the same request
+(`klt sim --backend batch --wait-for-capacity 600`): batch job `klt-sim-65de062d8f5c`, ngspice 47, 15/15 passed,
+worker stamp `open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`, `pdk_stamp_comparison.status == "match"`.
+Raw report `results/klt_report_20261120T0031Z.json`; 15 rows appended (worst case again `sf` / 125 C,
+`9.898880e-11 A`). `run_leakage_sweep.py --from-klt-report` now refuses any report whose stamp comparison is
+not `match` (fail closed when the block is absent), with tests in `test_klt_report_rows.py`; the old rows stay
+byte-identical append-only evidence, and `sim/retention/README.md` records the superseded derivations.
+
 ## Files
 
 | Path | Purpose |
@@ -293,6 +304,7 @@ apart. Confirming the fleet's PDK revision is a fleet-image question (see the PR
 | `tb_access_leakage.spice.tmpl` | ngspice netlist template (corner/temp substituted at run time) |
 | `run_leakage_sweep.py` | Sweep driver: renders netlists, invokes `ngspice -b`, appends results |
 | `request.json`, `access_leakage.spice` | Issue #168: `klt sim` batch corner request for the main grid (`run_leakage_sweep.py --from-klt-report` appends its rows) |
+| `test_klt_report_rows.py` | Issue #377: stdlib tests for the `--from-klt-report` stamp-match guard (`match` / `mismatch` / absent; refuses the committed #168 report) |
 | `results/leakage_results.csv` | Append-only recorded results (raw current vs. corner/temperature) |
 | `gen_geometry_leakage.py`, `geometry-matched/` | Issue #149: geometry-matched deck + `klt sim` batch request generated from the extraction |
 | `analyze_geometry_leakage.py`, `test_geometry_leakage.py` | Report reducer / comparison and its stdlib tests |

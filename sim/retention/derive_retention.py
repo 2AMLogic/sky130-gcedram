@@ -53,6 +53,10 @@ Stdlib only, no virtualenv required. Reads (never modifies)
 sim/leakage/results/leakage_results.csv, the shipped sky130 PDK model card
 resolved from $PDK_ROOT/--pdk-root, and the committed post-layout
 parasitics-extraction JSON under layout/ -- no local model or layout edits.
+The worst-case leakage input must moreover be traceable to a batch job
+whose committed report (sim/leakage/results/klt_report_*.json) shows a
+worker PDK stamp comparison of "match" (issue #377); anything else fails
+closed.
 
 This script never overwrites sim/retention/results/retention_results.csv --
 it always appends (creating the file with a header on first run), per
@@ -84,6 +88,7 @@ from _evidence_common import (
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_pdk_revision,
+    load_json,
     repo_git_sha,
     resolve_pdk_root,
 )
@@ -228,7 +233,32 @@ def parse_toxe_epsrox(model_file: Path) -> tuple[float, float]:
     return float(toxe_match.group(1)), float(epsrox_match.group(1))
 
 
-def load_worst_case_leakage(leakage_csv: Path) -> dict:
+def matched_batch_job_ids(reports_dir: Path) -> set[str]:
+    """Batch job ids (issue #377) whose committed klt report under
+    `reports_dir` proves the run's worker PDK stamp comparison was "match"
+    -- i.e. the worker resolved the same open_pdks revision the submitter
+    pinned. Fail closed: a report that is unreadable, or whose comparison
+    is missing or not "match", contributes no job id."""
+    matched: set[str] = set()
+    for report_path in sorted(reports_dir.glob("klt_report_*.json*")):
+        try:
+            report = load_json(report_path)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(report, dict):
+            continue
+        remote = (report.get("environment") or {}).get("remote") or {}
+        worker_env = remote.get("worker_environment") or {}
+        stamp_cmp = worker_env.get("pdk_stamp_comparison") or {}
+        job_id = remote.get("job_id")
+        if stamp_cmp.get("status") == "match" and job_id:
+            matched.add(job_id)
+    return matched
+
+
+def load_worst_case_leakage(
+    leakage_csv: Path, reports_dir: Path | None = None
+) -> dict:
     """Read sim/leakage/results/leakage_results.csv and return the row with
     the maximum ileak_a -- the worst-case (max leakage) measured point, per
     CLAUDE.md's 'Retention claims are made at the worst-case temperature
@@ -236,7 +266,16 @@ def load_worst_case_leakage(leakage_csv: Path) -> dict:
     is appended automatically re-derives against whatever is currently the
     worst-case row -- this is the mechanism that satisfies #3's Test Plan
     'confirm the derivation is re-run ... if #2's numbers change.'
-    """
+
+    Traceability (issue #377): among rows stamped with the current pin, only
+    rows whose `notes` cite a batch job id whose committed report (under
+    `reports_dir`, default the leakage results directory) shows a worker PDK
+    stamp comparison of "match" may supply the result. The issue #168 rows
+    cite job klt-sim-c2ed3f15ab70, whose report says "mismatch": they carry
+    the pin label without a stamp-matched run behind it, so they are
+    excluded here even on an ileak_a tie with (or a strictly larger value
+    than) a genuine run -- Python's max() returns the first maximal row in
+    file order, which is exactly how an older mislabelled row used to win."""
     if not leakage_csv.is_file():
         raise RuntimeError(
             f"leakage results not found: {leakage_csv} -- run "
@@ -255,7 +294,23 @@ def load_worst_case_leakage(leakage_csv: Path) -> dict:
             f"no rows stamped pdk_open_pdks_commit={PDK_OPEN_PDKS_COMMIT} in {leakage_csv} -- "
             "re-run the leakage grid under the current pin first (sim/leakage/README.md)"
         )
-    return max(rows, key=lambda r: float(r["ileak_a"]))
+    if reports_dir is None:
+        reports_dir = leakage_csv.parent
+    matched_jobs = matched_batch_job_ids(reports_dir)
+    traceable = [
+        r
+        for r in rows
+        if any(f"batch job {job_id}" in (r.get("notes") or "") for job_id in matched_jobs)
+    ]
+    if not traceable:
+        raise RuntimeError(
+            f"no rows in {leakage_csv} traceable to a stamp-matched batch run "
+            f"(job ids with pdk_stamp_comparison.status == 'match' among "
+            f"{reports_dir}/klt_report_*.json: {sorted(matched_jobs) or 'none'}) -- "
+            "re-run the leakage grid on a worker whose PDK stamp comparison "
+            "is 'match' first (sim/leakage/README.md, issue #377)"
+        )
+    return max(traceable, key=lambda r: float(r["ileak_a"]))
 
 
 def compute_cox_and_cgate(toxe_m: float, epsrox: float, w_um: float, l_um: float):

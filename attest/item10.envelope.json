@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 46/46 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 48/48 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 46,
-    "passed_count": 46,
+    "check_count": 48,
+    "passed_count": 48,
     "checks": [
       {
         "check": "present",
@@ -24,7 +24,7 @@
         "role": "hygiene",
         "path": ".github/workflows/evidence-checks.yml",
         "passed": true,
-        "content_hash": "sha256:f358656c60566d932f962e4c860d66ab5c15799cb9feb485a23ef305072ed4b4"
+        "content_hash": "sha256:c1dbacf5829da11378e34b864a21bfa91054334925007f7e482db05c8b87f0b1"
       },
       {
         "check": "present",
@@ -456,6 +456,32 @@
       {
         "check": "command",
         "role": "audit",
+        "name": "Leakage klt-report stamp-match guard (issue #377) tests",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/leakage/test_klt_report_rows.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Retention worst-case leakage selection (issue #377) tests",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/retention/test_derive_retention.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
         "name": "Artifact-store writer (issue #218) fail-closed checks",
         "argv": [
           "python3",
@@ -561,7 +587,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:bd932d068b3c357547cf189aaa4f05e5e379915ace53c343ec329dd515dbb4e5"
+      "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa"
     }
   }
 }
