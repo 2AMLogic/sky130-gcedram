@@ -617,6 +617,7 @@ window), staleness of the committed deck and reproduction of the committed resul
 | `test_compare_compact_c_sn.py` | Issue #161: stdlib tests (storage-node identification, orientation, reproduction of committed results) |
 | `compact_device_c_sn.py`, `compact-device-c-sn/`, `results/compact_device_c_sn_*.json`, `results/klt_report_*.json` | Issue #208: device-inclusive compact v2 `C_SN` (deck + `klt sim` request generator, reducer, committed batch report and result); measurement only |
 | `test_compact_device_c_sn.py` | Issue #208: stdlib tests (reducer, staleness, reproduction of the committed result) |
+| `test_derive_retention.py` | Issue #377: stdlib tests for the worst-case leakage selection (stamp-matched-run traceability, ileak ties, strictly-larger mislabelled rows, fail-closed) |
 
 ## Update: layout regenerated under klt 0.8.0 (issue #244)
 
@@ -640,3 +641,74 @@ The ratified value is unchanged. The re-ratification is a proposed decision:
 [`spec/c-sn-re-ratification-PROPOSED.md`](../../spec/c-sn-re-ratification-PROPOSED.md).
 The tests that compare against committed comparison files now reproduce only
 the newest file of each kind; earlier ones describe superseded inputs.
+
+## Stamp-matched leakage re-run (issue #377)
+
+The `f6eeac7` re-derivation above (and the 2026-10-16 / 2026-10-28 rows in
+`results/retention_results.csv`) rested on leakage job
+`klt-sim-c2ed3f15ab70`, whose raw report
+(`sim/leakage/results/klt_report_20261016T0731Z.json`) records an executed
+worker PDK of `open_pdks c6d73a35...` and a `pdk_stamp_comparison` of
+`mismatch` -- the open question that section ended on ("**Not confirmed:**
+which open_pdks revision the fleet image resolved") is now answered: not the
+pin. Despite the CSV pin label, those rows are not proven to come from
+`f6eeac7`. **Superseded**: every `retention_results.csv` row citing job
+`klt-sim-c2ed3f15ab70` (the 2026-10-16 and 2026-10-28 pairs) is superseded
+by the 2026-11-20 pair below; the old rows and reports are byte-identical
+append-only evidence and are never edited.
+
+The grid was re-run unchanged (`sim/leakage/request.json`, `klt sim
+--backend batch --wait-for-capacity 600`): batch job
+`klt-sim-65de062d8f5c` (aws-batch-fleet, spot), ngspice **47**, 15/15
+corners passed, worker stamp `open_pdks
+f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`,
+`environment.remote.worker_environment.pdk_stamp_comparison.status ==
+"match"`. Raw report:
+[`sim/leakage/results/klt_report_20261120T0031Z.json`](../leakage/results/klt_report_20261120T0031Z.json);
+15 rows appended to `sim/leakage/results/leakage_results.csv`
+(timestamp `2026-11-20T00:35:01+00:00`, job id in `notes`).
+
+Two guards make the label trustworthy now (both fail closed, with stdlib
+tests: `sim/leakage/test_klt_report_rows.py`,
+`sim/retention/test_derive_retention.py`):
+
+* `run_leakage_sweep.py --from-klt-report` refuses any report whose stamp
+  comparison is not `match` (missing block included), so rows can no longer
+  be stamped with the pin without a stamp-matched worker behind them.
+* `derive_retention.py` (`load_worst_case_leakage`) accepts only leakage
+  rows whose `notes` cite a batch job id whose committed report shows
+  `match` -- the `klt-sim-c2ed3f15ab70` rows are excluded even on an
+  `ileak_a` tie (file order used to win `max()`) or with a strictly larger
+  value.
+
+### Derivation record (2026-11-20 rows)
+
+* **Limiting process/temperature**: `sf` / 125 C -- the maximum `ileak_a`
+  across all 15 points of job `klt-sim-65de062d8f5c`
+  (`9.898880e-11 A`, row `timestamp_utc=2026-11-20T00:35:01+00:00`).
+* **Leakage row**: the `sf,125` row of the stamp-matched block above; the
+  derivation's `notes` cite the pin, that timestamp, ngspice-47 and the job
+  id.
+* **Capacitance basis** (unchanged from the #244 update; both paths
+  recorded per row for #171's refresh studies):
+  * `2T-min` -- **EXTRACTED** `C_SN` = 0.672741 fF (ground 0.655316 fF +
+    coupling to `bl`,`rwl` 0.017425 fF; `layout/gain_cell_2t.extract.
+    parasitics.json`, issue #7/#244). The margin-factor column is blank on
+    this row.
+  * `3T-min` -- **ASSUMED** `C_SN` = 2.212925 fF (4.0 x computed
+    `C_gate` = 0.553231 fF from the shipped model card's
+    `toxe`/`epsrox`; no 3T layout exists, issue #3).
+* **Sense margin**: `delta_v_sense_margin_v_ASSUMPTION = 0.9 V` (VDD/2,
+  unchanged; sense-latch offset/yield not validated).
+* **Derived row IDs** (`retention_results.csv`,
+  `timestamp_utc=2026-11-20T00:35:05+00:00`, `repo_git_sha` of the guard
+  commit): `2T-min` **6.116519e-06 s** (~6.12 us), `3T-min`
+  **2.011978e-05 s** (~20.12 us).
+
+Numerically identical at printed precision to the superseded rows (the
+`c6d73a3`/`f6eeac7` models were already indistinguishable for this device,
+and the worst-case point is the same); the difference is provenance: the
+worst-case 2T retention input for G4 (#166) is now traceable to a run the
+worker itself confirmed at the pinned revision. No ratified threshold and
+no `spec/` file changed; `sim/bitcell-transient` re-qualification remains
+#182's scope.
