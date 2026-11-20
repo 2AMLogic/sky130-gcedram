@@ -123,6 +123,47 @@ class PdkRevision(unittest.TestCase):
             self.assertEqual(C.pdk_revision_problems(v), [])
 
 
+class WorkerPdkStamp(unittest.TestCase):
+    """The fail-closed batch-worker stamp gate (#377/#171): only
+    `pdk_stamp_comparison.status == "match"` with the pinned commit in the
+    worker stamp text qualifies a report; everything else -- mismatch,
+    not_comparable, a missing block, a missing environment -- is a
+    failure, never a pass."""
+
+    PIN = "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+
+    @staticmethod
+    def _rep(status, stamp_text=PIN):
+        return {"status": "pass", "environment": {"remote": {"worker_environment": {
+            "pdk": {"stamp_text": stamp_text},
+            "pdk_stamp_comparison": {"status": status}}}}}
+
+    def test_match(self):
+        self.assertEqual(C.worker_pdk_stamp_problems(self._rep("match")), [])
+
+    def test_mismatch_is_a_failure(self):
+        problems = C.worker_pdk_stamp_problems(
+            self._rep("mismatch", "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"))
+        self.assertEqual(len(problems), 1)
+        self.assertIn("status='mismatch'", problems[0])
+
+    def test_not_comparable_is_a_failure(self):
+        # the committed 2026-11-15 refresh-op report carries this status
+        problems = C.worker_pdk_stamp_problems(self._rep("not_comparable"))
+        self.assertEqual(len(problems), 1)
+        self.assertIn("not proven at the pin", problems[0])
+
+    def test_missing_block_fails_closed(self):
+        self.assertTrue(C.worker_pdk_stamp_problems({"status": "pass", "environment": {}}))
+        self.assertTrue(C.worker_pdk_stamp_problems({"status": "pass"}))
+
+    def test_match_without_the_pin_in_the_stamp_text_is_a_failure(self):
+        problems = C.worker_pdk_stamp_problems(
+            self._rep("match", "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"))
+        self.assertEqual(len(problems), 1)
+        self.assertIn("does not name the pinned commit", problems[0])
+
+
 class NgspiceVersion(unittest.TestCase):
     """The simulator major version is pinned and checked exactly like the
     PDK revision (issue #300): ngspice-47, compared by parsed major

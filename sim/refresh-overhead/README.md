@@ -99,3 +99,48 @@ separate record feeds the **measured** slowest-corner value from
 `python3 -I sim/refresh-overhead/eval_measured_t_row.py sim/refresh-op/results/refresh_op_summary_<RUN_ID>.json`
 appends to `results/refresh_overhead_measured.csv` (new file; the two CSVs
 above are not touched). Results and caveats are in the `refresh-op` README.
+
+## Qualified measured record under open_pdks `f6eeac7` (issue #171, 2026-11-20)
+
+The measured record's inputs changed in two ways, both structural (the
+Section 7 formula, the 2x safety margin and the ASSUMED `N_rows` grid are
+unchanged):
+
+* **Retention bases are selected by identity, not iterated whole.** The
+  retention CSV is append-only and now carries five worst-case 2T rows; two
+  of them (2026-10-16, 2026-10-28) cite leakage from the `c6d73a3`-worker job
+  `klt-sim-c2ed3f15ab70` and must never silently qualify a G4 record, and the
+  2026-10-28 row prints **exactly the same retention time** (6.116519 us) as
+  the qualified 2026-11-20 row, so a value comparison cannot select the right
+  one. `eval_measured_t_row.py` now appends exactly two bases:
+  `historical_assumed_2t` (row `2026-08-20T22:38:54+00:00`, ASSUMED `C_SN`,
+  the ratified comparison basis — the rows the 2026-10-10 record already
+  carried) and `qualified_extracted_2t` (row `2026-11-20T00:35:05+00:00`,
+  EXTRACTED `C_SN` 0.672741 fF, t_retention 6.116519 us, interval 3.058260 us,
+  whose leakage input is the stamp-matched job `klt-sim-65de062d8f5c`; the
+  notes column names that job). `refresh_overhead.qualified_retention_rows()`
+  implements the identity selection and fails closed on absence, ambiguity or
+  missing job traceability; the old iterate-everything behaviour would also
+  have appended the superseded 2026-10-16/2026-10-28 rows, which is why it
+  was replaced. The scenario CSVs above (`_results`, `_breakeven`) are
+  ASSUMPTION envelopes and were not extended.
+* **The measured `t_row_refresh_op` must be stamp-matched.** The reducer now
+  reads the refresh-op klt report behind the summary (given with `--report`
+  or discovered next to it) and refuses to append anything unless its
+  `environment.remote.worker_environment.pdk_stamp_comparison.status` is
+  `match` (fail closed on mismatch / not_comparable / absent — the committed
+  2026-11-15 refresh-op report is `not_comparable` and is refused by this
+  gate; `sim/_evidence_common.py:worker_pdk_stamp_problems` is the shared
+  check).
+
+New rows (run `20261120T024342Z`, batch job `klt-sim-fb282dff4498`, measured
+t_row 11/14/19 ns best-SENSE and 19/22/27 ns contract-10 ns at 0.90/0.95/0.98,
+identical to the 2026-11-15 values): 108 appended to
+`results/refresh_overhead_measured.csv` (2 bases x 2 sense bases x 3 restore
+fractions x 9 `N_rows`). Like-for-like with the 2026-10-10 record on the
+shared historical basis: identical `t_row` figures (the underlying
+refresh-op re-run moved nothing), so the historical rows' overheads are
+unchanged (contract-10 ns @0.95 at `N_rows`=64: 27.99 % both records). The
+qualified extracted basis (interval 3.058 us, was 2.752 us on the superseded
+2026-08-25 extraction) lowers that same point 51.16 % -> 46.04 % purely by
+the interval change (still an ENVELOPE, not a macro claim).

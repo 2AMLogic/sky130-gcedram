@@ -417,6 +417,42 @@ def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
 
 
 # --------------------------------------------------------------------------
+# Worker PDK stamp gate (issue #377 / #171) -- the fail-closed check a
+# reducer runs on a `klt sim` batch report before letting it qualify a new
+# evidence record. `run_leakage_sweep.py` carries the original inline copy
+# (kept: its docstring names the #168 incident); this shared shape exists
+# so the G4 refresh reducers apply the identical rule instead of retyping
+# it: only `environment.remote.worker_environment.pdk_stamp_comparison
+# .status == "match"` qualifies, and a missing block or stamp text that
+# does not name the pinned commit is a failure, never a pass.
+# --------------------------------------------------------------------------
+
+def worker_pdk_stamp_problems(rep: dict, expected: str = PDK_OPEN_PDKS_COMMIT) -> list[str]:
+    """Mismatch messages (empty list = the report's batch worker executed
+    the pinned open_pdks revision). Fail closed, exactly like the leakage
+    guard: a report with no `pdk_stamp_comparison` block, a status other
+    than "match" (mismatch, not_comparable, client_stamp_unavailable ...),
+    or a worker stamp text that does not name `expected` cannot back a
+    qualified record."""
+    remote = (rep.get("environment") or {}).get("remote") or {}
+    worker_env = remote.get("worker_environment") or {}
+    stamp_cmp = worker_env.get("pdk_stamp_comparison") or {}
+    stamp_text = (worker_env.get("pdk") or {}).get("stamp_text", "unknown")
+    if stamp_cmp.get("status") != "match":
+        return [
+            f"worker PDK stamp comparison status={stamp_cmp.get('status')!r} "
+            f"(worker stamp {stamp_text!r}); the worker's open_pdks revision is "
+            f"not proven at the pin {expected}"
+        ]
+    if expected not in str(stamp_text):
+        return [
+            f"worker PDK stamp comparison is 'match' but the worker stamp text "
+            f"{stamp_text!r} does not name the pinned commit {expected}"
+        ]
+    return []
+
+
+# --------------------------------------------------------------------------
 # Evidence-summary preamble (issue #292) -- the spec-derived status/scope
 # literals and the klt provenance envelope that the sim/*/analyze_*.py
 # summaries re-spelled inline, eight copies across two drift-grown spellings.

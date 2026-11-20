@@ -8,6 +8,16 @@ converts them deterministically to PWL sources and replays them in the **same ci
 **PROPOSED, unratified scope** (27/125 C, tt/ss/ff/sf/fs, 1.8 V, no mismatch, ideal drivers). No spec,
 contract, scheduler timing, overlap rule or prior result was changed. 1 cycle = 1 ns is a study assumption.
 
+> **Historical evidence (issue #171, 2026-11-20).** This study is **uncited**
+> by any spec pass condition and was NOT re-qualified under open_pdks
+> `f6eeac7`: every run below predates the PDK re-pin (its reports carry the
+> retired `c6d73a3` worker stamp or none). The records here are retained
+> byte-identical as append-only history; nothing in them may back a qualified
+> G4 result. The qualified refresh records live in
+> [`sim/refresh-op`](../refresh-op/README.md) (job `klt-sim-fb282dff4498`,
+> stamp `match`) and [`sim/refresh-energy`](../refresh-energy/README.md) (jobs
+> `klt-sim-a830319cbebb` / `klt-sim-54a1d15c5269`, stamp `match`).
+
 ## Headline result (run `20261010T094617Z`)
 
 *Device provenance: this run's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`, i.e. no source-drain parasitic resistance). The bench was re-run under the corrected device — see "Latch geometry correction re-run (issue #293, 2026-11-15)" below — and the conclusions here are unchanged.*

@@ -126,6 +126,57 @@ def load_worst_case_retention(path: Path = RETENTION_CSV) -> list[dict]:
     return rows
 
 
+# Identity of the two worst-case 2T rows a G4 record scales against (issue
+# #171). Selected by row identity, NEVER by position or by value: the
+# 2026-10-28 row prints exactly the same retention time as the qualified
+# row (both 6.116519e-06 s from the same extracted C_SN), so a numeric
+# comparison cannot tell them apart -- only the row timestamp plus the
+# leakage job cited in its notes can. The 3T-min row shares the qualified
+# row's timestamp but is excluded by topology ("2T") upstream.
+HISTORICAL_ASSUMED_2T_TS = "2026-08-20T22:38:54+00:00"  # ratified ASSUMED C_SN basis (spec value)
+QUALIFIED_EXTRACTED_2T_TS = "2026-11-20T00:35:05+00:00"  # #377 stamp-matched leakage re-run
+QUALIFIED_LEAKAGE_JOB_ID = "klt-sim-65de062d8f5c"        # its report's worker stamp comparison is "match"
+
+
+def select_retention_row(rows: list[dict], timestamp: str, *, geometry: str = "2T-min",
+                         leakage_job: str | None = None) -> dict:
+    """One retention row selected by identity; SystemExit on absence,
+    ambiguity or (when `leakage_job` is given) missing leakage
+    traceability. The qualified row must cite the stamp-matched leakage
+    job in its notes and carry an EXTRACTED C_SN basis; the historical
+    ASSUMED row must keep its ASSUMED basis. Both checks fail closed."""
+    matches = [r for r in rows if r["timestamp_utc"] == timestamp and r["geometry_name"] == geometry]
+    if not matches:
+        raise SystemExit(f"no retention row {timestamp} {geometry} in the worst-case 2T set; "
+                         "cannot select a G4 scaling basis by identity")
+    if len(matches) != 1:
+        raise SystemExit(f"retention row {timestamp} {geometry} is ambiguous "
+                         f"({len(matches)} rows); cannot select a G4 scaling basis by identity")
+    r = matches[0]
+    if leakage_job is not None:
+        if leakage_job not in r["notes"]:
+            raise SystemExit(f"retention row {timestamp} {geometry} does not cite the stamp-matched "
+                             f"leakage job {leakage_job} in its notes; refusing to qualify it")
+        if c_sn_basis(r) != "EXTRACTED (layout)":
+            raise SystemExit(f"retention row {timestamp} {geometry} qualified basis must be EXTRACTED, "
+                             f"found {c_sn_basis(r)!r}")
+    return r
+
+
+def qualified_retention_rows(path: Path = RETENTION_CSV) -> list[dict]:
+    """The two identity-selected worst-case 2T rows G4 records scale
+    against (issue #171): the ratified ASSUMED-C_SN row (the separately
+    labelled historical comparison) and the 2026-11-20 EXTRACTED row whose
+    leakage input is the stamp-matched re-run (the qualified basis)."""
+    rows = load_worst_case_retention(path)
+    historical = select_retention_row(rows, HISTORICAL_ASSUMED_2T_TS)
+    if c_sn_basis(historical) != "ASSUMED margin factor":
+        raise SystemExit(f"historical comparison row {HISTORICAL_ASSUMED_2T_TS} must keep its "
+                         f"ASSUMED C_SN basis, found {c_sn_basis(historical)!r}")
+    qualified = select_retention_row(rows, QUALIFIED_EXTRACTED_2T_TS, leakage_job=QUALIFIED_LEAKAGE_JOB_ID)
+    return [historical, qualified]
+
+
 def c_sn_basis(r: dict) -> str:
     return ("ASSUMED margin factor" if r["c_storage_node_margin_factor_ASSUMPTION"]
             else "EXTRACTED (layout)")
