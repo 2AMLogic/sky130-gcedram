@@ -130,6 +130,12 @@ jobs:
       - name: Shared evidence helper tests
         run: python3 -I sim/test_evidence_common.py
 
+      - name: Leakage klt-report stamp-match guard (issue #377) tests
+        run: python3 -I sim/leakage/test_klt_report_rows.py
+
+      - name: Retention worst-case leakage selection (issue #377) tests
+        run: python3 -I sim/retention/test_derive_retention.py
+
       - name: Artifact-store writer (issue #218) fail-closed checks
         run: python3 -I sim/test_store_evidence.py
 
