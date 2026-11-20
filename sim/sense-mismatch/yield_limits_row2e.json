@@ -1,0 +1,28 @@
+{
+ "measurements": {
+  "dend_sp150_0": {
+   "min": 0.9,
+   "spec_row": "2e"
+  },
+  "dend_sp150_1": {
+   "min": 0.9,
+   "spec_row": "2e"
+  },
+  "dend_sp150_2": {
+   "min": 0.9,
+   "spec_row": "2e"
+  },
+  "dend_sp150_3": {
+   "min": 0.9,
+   "spec_row": "2e"
+  },
+  "dend_sp150_4": {
+   "min": 0.9,
+   "spec_row": "2e"
+  },
+  "dend_sp150_5": {
+   "min": 0.9,
+   "spec_row": "2e"
+  }
+ }
+}
