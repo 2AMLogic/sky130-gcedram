@@ -76,14 +76,15 @@ PDK_INSTALL_HINT = (
     f"    ciel enable --pdk-family sky130 -l sky130_fd_pr {PDK_OPEN_PDKS_COMMIT}"
 )
 
-# Canonical PROPOSED supply pair for every bench under sim/ -- the same
+# Canonical supply pair for every bench under sim/ -- the same
 # consolidation issue #37 did for the PDK pin, applied to the next
 # spec-derived constant of that class (out of what were previously 20
 # independently hand-maintained copies in five spellings). `VDD_V` quotes
 # spec/operating-range-decision-PROPOSED.md:130 ("Proposed interval:
 # junction temperature 27 C to 125 C at `VDD` = 1.8 V") and :148 ("the
-# grid is `VDD` = 1.8 V only"); both are NOT-RATIFIED, so a ratification
-# is one edit here, not twenty. `DELTA_V_V` is the retention-derivation
+# grid is `VDD` = 1.8 V only"); both carried no ratified status until the
+# operating-range record's ratification, which this single edit point is
+# what kept from being twenty hand-maintained flips. `DELTA_V_V` is the retention-derivation
 # half-supply margin, ASSUMED exactly as the spec states it
 # (spec/operating-range-decision-PROPOSED.md:19: "`delta_V` = `VDD`/2 =
 # 0.9 V ASSUMED"; spec/retention-refresh-budget.md:266 keeps it an open
@@ -456,29 +457,66 @@ def worker_pdk_stamp_problems(rep: dict, expected: str = PDK_OPEN_PDKS_COMMIT) -
 # Evidence-summary preamble (issue #292) -- the spec-derived status/scope
 # literals and the klt provenance envelope that the sim/*/analyze_*.py
 # summaries re-spelled inline, eight copies across two drift-grown spellings.
-# The operating-range decision is PROPOSED, not ratified: when
-# ratification/ee-key/ and ratification/market-key/ sign, the status and
-# every scope string must flip together, and this is the one edit point that
-# makes that flip reach every bench at once (same rationale as decided()
-# above). The emitted bytes are pinned by each bench's committed summary
-# (sim/check_append_only.py), so key spellings and field order here are
-# contract, not style.
+# The operating-range decision record was ratified by the two-key process
+# (ratification/ee-key/, ratification/market-key/); the operator's merge of
+# the ratification PR is the act of ratification. The constants keep the
+# names issue #305 single-sourced (renaming them would churn every bench's
+# analyzer for zero emitted-byte change); their VALUES are what flipped --
+# freshly emitted evidence now carries the ratified status. The
+# HISTORICAL_* pair below is what every summary committed before the flip
+# carries forever (sim/ results are append-only) and what replay tests
+# inject to reproduce those summaries byte-for-byte. The emitted bytes are
+# pinned by each bench's committed summary (sim/check_append_only.py), so
+# key spellings and field order here are contract, not style.
 # --------------------------------------------------------------------------
 
-PROPOSED_RANGE_STATUS = "PROPOSED_OPERATING_RANGE_NOT_RATIFIED"
+PROPOSED_RANGE_STATUS = "OPERATING_RANGE_RATIFIED"
 
 PROPOSED_RANGE_SCOPE = (
+    "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
+    "per spec/operating-range-decision-PROPOSED.md (ratified)"
+)
+
+# What the two constants above spelled before the operating-range
+# ratification flip; every summary committed before it carries these bytes
+# (sim/ results are append-only evidence).
+HISTORICAL_PROPOSED_RANGE_STATUS = "PROPOSED_OPERATING_RANGE_NOT_RATIFIED"
+HISTORICAL_PROPOSED_RANGE_SCOPE = (
     "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
     "per spec/operating-range-decision-PROPOSED.md"
 )
 
 # The refresh-replay family's committed summaries pre-date the "=" spelling
-# above and append per-bench tails ("no mismatch", "ideal drivers", the
-# "(PROPOSED range, not ratified)" tag); their shared prefix stays under its
-# own constant until a ratified value replaces both spellings together.
+# above and append per-bench tails ("no mismatch", "ideal drivers") plus a
+# status-derived range tag; their shared prefix stays under its own
+# constant. The tag is derived from the manifest's status token
+# (range_scope_tag below) so a re-analysis of a pre-ratification run
+# reproduces its committed scope byte-for-byte while a freshly generated
+# (post-flip) manifest labels its scope ratified.
 PROPOSED_RANGE_SCOPE_REPLAY_PREFIX = (
     "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V"
 )
+
+# Manifest status token -> the scope tag the three refresh-replay analyzers
+# append after their per-bench tails. Both spellings the committed evidence
+# has ever carried are known; anything else refuses the analysis rather
+# than silently mislabelling the evidence scope.
+RANGE_SCOPE_TAGS = {
+    HISTORICAL_PROPOSED_RANGE_STATUS: " (PROPOSED range, not ratified)",
+    PROPOSED_RANGE_STATUS: " (ratified range)",
+}
+
+
+def range_scope_tag(status: str) -> str:
+    """The refresh-replay scope tag for a manifest status token
+    (RANGE_SCOPE_TAGS). An unrecognized token exits with an error instead
+    of guessing: the scope string is pinned evidence bytes."""
+    try:
+        return RANGE_SCOPE_TAGS[status]
+    except KeyError:
+        raise SystemExit(
+            f"unrecognized evidence status {status!r}; expected one of {sorted(RANGE_SCOPE_TAGS)}"
+        ) from None
 
 
 def klt_provenance(

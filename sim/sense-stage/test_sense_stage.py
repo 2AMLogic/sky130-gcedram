@@ -10,12 +10,14 @@ import json
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_sense_stage as A  # noqa: E402
 import gen_sense_stage as G  # noqa: E402
+import _evidence_common as EC  # noqa: E402
 
 RESULTS = HERE / "results"
 
@@ -143,9 +145,28 @@ class Analysis(unittest.TestCase):
             with tempfile.TemporaryDirectory() as td:
                 for f in (rep,):
                     (Path(td) / f.name).write_text(f.read_text())
-                self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
+                # committed summaries pre-date the operating-range ratification flip: replay with the historical constants
+                with unittest.mock.patch.object(A, "PROPOSED_RANGE_STATUS", EC.HISTORICAL_PROPOSED_RANGE_STATUS), \
+                     unittest.mock.patch.object(A, "PROPOSED_RANGE_SCOPE", EC.HISTORICAL_PROPOSED_RANGE_SCOPE):
+                    self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
                 for name in (f"sense_summary_{rid}.json", f"sense_points_{rid}.csv"):
                     self.assertEqual((Path(td) / name).read_text(), (RESULTS / name).read_text(), name)
+
+    def test_fresh_summary_carries_the_current_status_and_scope(self):
+        done = [p for p in sorted(RESULTS.glob("klt_report_*.json"))
+                if (RESULTS / f"sense_summary_{p.stem.split('klt_report_')[1]}.json").exists()]
+        if not done:
+            self.skipTest("no analysed klt report committed")
+        rep = done[0]
+        rid = rep.stem.split("klt_report_")[1]
+        with tempfile.TemporaryDirectory() as td:
+            (Path(td) / rep.name).write_text(rep.read_text())
+            self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
+            fresh = json.loads((Path(td) / f"sense_summary_{rid}.json").read_text())
+            committed = json.loads((RESULTS / f"sense_summary_{rid}.json").read_text())
+            self.assertEqual((fresh["status"], fresh["scope"]), (A.PROPOSED_RANGE_STATUS, A.PROPOSED_RANGE_SCOPE))
+            fresh.pop("status"), fresh.pop("scope"), committed.pop("status"), committed.pop("scope")
+            self.assertEqual(fresh, committed)
 
     def test_refuses_to_overwrite(self):
         rep = sorted(RESULTS.glob("sense_summary_*.json"))[0]

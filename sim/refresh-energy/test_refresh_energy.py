@@ -12,12 +12,14 @@ import math
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_refresh_energy as A  # noqa: E402
 import gen_refresh_energy as G  # noqa: E402
+import _evidence_common as EC  # noqa: E402
 
 RESULTS = HERE / "results"
 
@@ -489,7 +491,10 @@ class Evidence(unittest.TestCase):
                 tm, tf = Path(td) / main.name, Path(td) / fine.name
                 tm.write_bytes(main.read_bytes())
                 tf.write_bytes(fine.read_bytes())
-                self.assertEqual(A.main([str(tm), str(tf)]), 0)
+                # committed summaries pre-date the operating-range ratification flip: replay with the historical constants
+                with unittest.mock.patch.object(A, "PROPOSED_RANGE_STATUS", EC.HISTORICAL_PROPOSED_RANGE_STATUS), \
+                     unittest.mock.patch.object(A, "PROPOSED_RANGE_SCOPE", EC.HISTORICAL_PROPOSED_RANGE_SCOPE):
+                    self.assertEqual(A.main([str(tm), str(tf)]), 0)
                 for k in ("sources", "points", "scaling"):
                     name = f"refresh_energy_{k}_{rid}.csv"
                     self.assertEqual((Path(td) / name).read_text(), (RESULTS / name).read_text(), name)
@@ -498,6 +503,26 @@ class Evidence(unittest.TestCase):
                 for x in (new, old):
                     x.pop("input_hashes")       # hashes the deck/scripts as they are at analysis time
                 self.assertEqual(new, old)
+
+    def test_fresh_summary_carries_the_current_status_and_scope(self):
+        if not self.summaries():
+            self.skipTest("no reduced results committed (batch evidence pending)")
+        s = self.summaries()[-1]
+        d = json.loads(s.read_text())
+        rid, frid = d["run_id"], d["fine_run_id"]
+        main = next(RESULTS.glob(f"klt_report_{rid}.json*"))
+        fine = next(RESULTS.glob(f"klt_report_{frid}.json*"))
+        with tempfile.TemporaryDirectory() as td:
+            tm, tf = Path(td) / main.name, Path(td) / fine.name
+            tm.write_bytes(main.read_bytes())
+            tf.write_bytes(fine.read_bytes())
+            self.assertEqual(A.main([str(tm), str(tf)]), 0)
+            fresh = json.loads((Path(td) / s.name).read_text())
+            self.assertEqual((fresh["status"], fresh["scope"]), (A.PROPOSED_RANGE_STATUS, A.PROPOSED_RANGE_SCOPE))
+            fresh.pop("input_hashes"), fresh.pop("status"), fresh.pop("scope")
+            old = dict(d)
+            old.pop("input_hashes"), old.pop("status"), old.pop("scope")
+            self.assertEqual(fresh, old)
             self.assertEqual(d["input_hashes"]["sim/refresh-energy/refresh_energy.spice"],
                              d["klt"]["main"]["netlist_sha256"])
             self.assertEqual(d["klt"]["main"]["netlist_sha256"], d["klt"]["fine"]["netlist_sha256"])

@@ -87,7 +87,7 @@
         "role": "hygiene",
         "path": "spec/README.md",
         "passed": true,
-        "content_hash": "sha256:6176dff7e1fd40670393e08c898d911050f5bf4fc8db74863de9ce3351808b3e"
+        "content_hash": "sha256:35f39b22027eb62f2cac957785af5814c8994dd50f296f3ad97c08985f2fcc75"
       },
       {
         "check": "command",

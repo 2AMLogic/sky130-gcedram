@@ -10,12 +10,14 @@ import json
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_refresh_op as A  # noqa: E402
 import gen_refresh_op as G  # noqa: E402
+import _evidence_common as EC  # noqa: E402
 
 RESULTS = HERE / "results"
 
@@ -152,9 +154,28 @@ class Analysis(unittest.TestCase):
             with tempfile.TemporaryDirectory() as td:
                 tp = Path(td) / rep.name
                 tp.write_bytes(rep.read_bytes())
-                self.assertEqual(A.main([str(tp)]), 0)
+                # committed summaries pre-date the operating-range ratification flip: replay with the historical constants
+                with unittest.mock.patch.object(A, "PROPOSED_RANGE_STATUS", EC.HISTORICAL_PROPOSED_RANGE_STATUS), \
+                     unittest.mock.patch.object(A, "PROPOSED_RANGE_SCOPE", EC.HISTORICAL_PROPOSED_RANGE_SCOPE):
+                    self.assertEqual(A.main([str(tp)]), 0)
                 for name in (f"refresh_op_summary_{r}.json", f"refresh_op_points_{r}.csv"):
                     self.assertEqual((Path(td) / name).read_text(), (RESULTS / name).read_text(), name)
+
+    def test_fresh_summary_carries_the_current_status_and_scope(self):
+        done = [p for p in reports() if (RESULTS / f"refresh_op_summary_{rid(p)}.json").exists()]
+        if not done:
+            self.skipTest("no analysed klt report committed")
+        rep = done[0]
+        r = rid(rep)
+        with tempfile.TemporaryDirectory() as td:
+            tp = Path(td) / rep.name
+            tp.write_bytes(rep.read_bytes())
+            self.assertEqual(A.main([str(tp)]), 0)
+            fresh = json.loads((Path(td) / f"refresh_op_summary_{r}.json").read_text())
+            committed = json.loads((RESULTS / f"refresh_op_summary_{r}.json").read_text())
+            self.assertEqual((fresh["status"], fresh["scope"]), (A.PROPOSED_RANGE_STATUS, A.PROPOSED_RANGE_SCOPE))
+            fresh.pop("status"), fresh.pop("scope"), committed.pop("status"), committed.pop("scope")
+            self.assertEqual(fresh, committed)
 
     def test_refuses_to_overwrite(self):
         sums = sorted(RESULTS.glob("refresh_op_summary_*.json"))
