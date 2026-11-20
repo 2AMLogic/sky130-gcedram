@@ -242,6 +242,22 @@
       ]
     },
     {
+      "name": "Leakage klt-report stamp-match guard (issue #377) tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/leakage/test_klt_report_rows.py"
+      ]
+    },
+    {
+      "name": "Retention worst-case leakage selection (issue #377) tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/retention/test_derive_retention.py"
+      ]
+    },
+    {
       "name": "Artifact-store writer (issue #218) fail-closed checks",
       "argv": [
         "python3",
