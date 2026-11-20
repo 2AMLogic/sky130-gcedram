@@ -177,7 +177,7 @@ Child issues, one per group, each `Part of #166`:
 | G1 retention chain (leakage, geometry-matched, retention) | #168 | Closed **`not_planned`**. Its leakage and retention records landed in **PR #183** (merged 2026-10-16, `3d7aa7c`); it was closed rather than completed because its one remaining criterion, `sim/bitcell-transient`, moved to #182. |
 | G1 `sim/bitcell-transient` | **#182** | Open, `loom:operator`. **PR #264** (merged 2026-11-02, `59a9a65`) landed the grid as batch `klt sim` requests and recorded the stamp mismatch instead of claiming a re-qualification. |
 | G2 loaded column | #169 | Open, `loom:building` (unparked from the gate 2026-11-14; the gate above still applies to its records). No `f6eeac7` record. |
-| G3 sense path | #170 | Closed `completed`. Its records are **declared-only**, the same condition as G1's: closing #170 recorded that the re-runs happened, not that the stamp matched. |
+| G3 sense path | #170 | Closed `completed`. The G3 re-runs recorded under #170 are **declared-only**. None of their reports establishes a worker/client stamp match. |
 | G4 refresh | #171 | Re-qualified 2026-11-20. Measured timing and energy points reproduce their prior CSVs. The updated extracted retention interval changes the derived 16-cell power. The measured overhead record uses the qualified inputs. Replay remains historical. |
 | G5 layout and sign-off | #172 | Closed `completed`. As of the 2026-11-14 inventory, G5 was the only group re-qualified against a verified `f6eeac7` tree. Its qualification uses KLayout. |
 
