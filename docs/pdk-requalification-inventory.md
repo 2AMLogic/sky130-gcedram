@@ -23,15 +23,15 @@ to 80, the `grep -rl c6d73a3 sim layout | wc -l` total.
 **A `grep -rl f6eeac7` hit is not a re-qualified record.** In a `klt sim`
 report, `provenance.pdk.version` is the pin the *submitter* declared, while
 `environment.remote.worker_environment.pdk.stamp_text` is what the machine
-that actually executed the job had installed. Those two disagree across the
-whole tree right now, and the repo recorded the disagreement rather than
-hiding it. The state column below therefore uses four values:
+that actually executed the job had installed. The 2026-11-14 inventory
+(`4de3e77`) found no matching worker/client stamps. Later entries give
+their re-qualification dates.
 
 | State | Meaning |
 |---|---|
 | **none** | No `f6eeac7` record exists for the row. |
 | **declared-only** | `f6eeac7` records exist, but the executing worker stamped `c6d73a3`. `environment.remote.worker_environment.pdk_stamp_comparison.status` is `mismatch`, or `not_comparable` (the comparison could not be made at all), or the key is absent (the report predates the block). **Not re-qualified.** |
-| **matched** | A batch `klt sim` report whose `environment.remote.worker_environment.pdk_stamp_comparison.status` is `match`. **No group is in this state** — see "The gate for the remaining re-runs". |
+| **matched** | A batch `klt sim` report whose `environment.remote.worker_environment.pdk_stamp_comparison.status` is `match`. The 2026-11-20 G4 timing and energy reports meet this condition. |
 | **tool-run** | G5 only: a KLayout-only group with no SPICE leg, so no worker stamp exists to compare. Re-qualified against the measured PDK tree of the machine that ran it (`pdk.identity.open_pdks_commit`, read from `$PDK_ROOT/$PDK/SOURCES` by `layout/generation_toolchain.py`, and checked against the pin by its `pdk_problems()`). |
 
 Measured on `main` @ `4de3e77`: of the 28 `f6eeac7`-declaring `klt_report*.json`
@@ -66,9 +66,9 @@ path that verifies it.
 | G3 | `sim/column-periphery` | 5 | **declared-only** — owner #170. `sim/column-periphery/results/klt_report_20261028T085441Z.json` -> `not_comparable`. | none | Historical unless a spec cites it by the time of re-run |
 | G3 | `sim/sense-mismatch` | 1 | **none** — owner #170. Explicitly not re-run; see the supersession note at `sim/sense-mismatch/README.md:272`. | none | Historical (Monte Carlo; re-run only if promoted to reference) |
 | G3 | `sim/write-disturb` | 3 | **declared-only** — owner #170. `sim/write-disturb/results/klt_report_20261028T083505Z.json` -> `not_comparable`. | none | Historical |
-| G4 (refresh) | `sim/refresh-replay` | 10 | **none** — owner #171 (open, `loom:blocked`). No `f6eeac7` record. | none | Historical |
-| G4 | `sim/refresh-overhead` | 0 | **none** — owner #171. A 0 count means nothing here carries `c6d73a3`, not that the directory is absent. | `density-vs-sram.md`, `macro-pass-conditions-PROPOSED.md` | Reference, but consumes other groups' numbers: re-evaluate after G1-G3 |
-| G4 | `sim/refresh-energy`, `sim/refresh-op` | 2 | **none** — owner #171. Both now carry `c6d73a3` (1 file each); `sim/refresh-energy/README.md:456` mentions `f6eeac7` in prose only. | none | Historical |
+| G4 (refresh) | `sim/refresh-replay` | 10 | **Historical** (owner #171, 2026-11-20). The four October reports lack a worker stamp. The 2026-11-15 job `klt-sim-ab4b1bbfdff1` ran on `f6eeac7`, but its comparison is `not_comparable` because the client stamp was unavailable. No pass condition cites these runs. | none | Historical |
+| G4 | `sim/refresh-overhead` | 0 | **re-qualified via inputs** (owner #171, 2026-11-20): no SPICE leg of its own; its measured record was re-appended (108 rows, run `20261120T024342Z`) from the stamp-matched refresh-op re-run and the identity-selected 2026-11-20 extracted retention row (leakage job `klt-sim-65de062d8f5c`). The reducer now fails closed on a non-`match` stamp. | `density-vs-sram.md`, `macro-pass-conditions-PROPOSED.md` | Reference: qualified measured record 2026-11-20; ASSUMED-scenario CSVs unchanged history |
+| G4 | `sim/refresh-energy`, `sim/refresh-op` | 2 | **re-qualified, stamp `match`** (owner #171, 2026-11-20): refresh-op job `klt-sim-fb282dff4498`, refresh-energy jobs `klt-sim-a830319cbebb` (main) + `klt-sim-54a1d15c5269` (fine), all 10/10 corners, worker `open_pdks f6eeac7…`, `pdk_stamp_comparison.status == "match"`, ngspice-47. The measured point CSVs are byte-identical to the 2026-11-15 timing and 2026-10-28 energy CSVs. The longer extracted-basis refresh interval (2.752 to 3.058 µs) lowers the derived 16-cell refresh power from 3.693 to 3.323 µW. | none | Qualified (2026-11-20 runs); the 2 prior `c6d73a3` files stay historical |
 | Shared helper | `sim/test_evidence_common.py` | 1 | **n/a** — the stamps are test-fixture data, not evidence of a run. | none (shared helper of the evidence tests, carries the stamp in its fixtures) | Reference: its `c6d73a3` stamps are test-fixture data; update only if the evidence-test contract changes, not per re-run |
 | G5 (layout) | `layout`, `layout/results` | 4 | **tool-run, re-qualified** — owner #172 (closed `completed`). `layout/results/generation_reproduction_f6eeac7_20261016.json` records `pdk.identity.open_pdks_commit = f6eeac7…` measured from the running tree's `SOURCES`; write-up at `layout/results/pdk_requalification_f6eeac7_20261016.md`. No `klt sim` leg exists, so no worker stamp applies. | both manifests, most specs | Reference: DRC/LVS/ERC results are tool-run, not PDK-model-run. Re-qualified 2026-10-16 (#172): no status or hash changed, only the `pdk.version` stamp in two generator reports; see `layout/results/pdk_requalification_f6eeac7_20261016.md` |
 
@@ -117,22 +117,20 @@ Nothing weaker counts:
   stamp). It is not a pass.
 * an absent `pdk_stamp_comparison` (or absent `worker_environment`) means the
   report predates the block and says nothing either way.
-* a `provenance.pdk.version` of `f6eeac7` on its own never counts: that field
-  is submitter-declared, and every such record on `main` today was executed
-  on a `c6d73a3` worker.
+* `provenance.pdk.version` records the submitter's declared pin. The
+  2026-11-14 inventory found `c6d73a3` wherever these reports included a
+  worker stamp.
 
-**What would satisfy it:** pinning the sky130A install in the fleet worker
-image to open_pdks `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` in the worker
-spec, which lives in `2AMLogic/2am` under `infra/aws/loom-worker/` (a
-different repository — not a change any sweep in this repo can make). That is
-tracked on **#182**, which carries `loom:operator`: a human-held step, not
-in-flight Builder work. #171 is parked on the same single condition, citing
-its probe job (`klt-sim-2066534a33a7`); #169 was parked on it too (probe
-`klt-sim-9287ff5eedde`) until its `loom:blocked` was removed on 2026-11-14 —
-the gate still applies to any record #169 lands, so a re-run it commits
-before #182 is resolved would still be declared-only.
+**Worker setup as of 2026-11-14.** Operator issue #182 tracked pinning the
+sky130A install to open_pdks `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`
+in the fleet worker spec (`2AMLogic/2am`, `infra/aws/loom-worker/`).
+At that point #171 was parked after probe `klt-sim-2066534a33a7`. Issue #169
+had been unparked on 2026-11-14 after probe `klt-sim-9287ff5eedde`.
+The worker stamp gate applies to each subsequent run.
 
 ## Batch-path findings behind the gate
+
+These observations describe the fleet at the 2026-11-14 inventory snapshot.
 
 * **Re-runs execute on the batch fleet, not on a dispatch host.** Multi-corner
   and Monte Carlo grids must be expressed as `klt sim` requests
@@ -180,9 +178,9 @@ Child issues, one per group, each `Part of #166`:
 | G1 `sim/bitcell-transient` | **#182** | Open, `loom:operator`. **PR #264** (merged 2026-11-02, `59a9a65`) landed the grid as batch `klt sim` requests and recorded the stamp mismatch instead of claiming a re-qualification. |
 | G2 loaded column | #169 | Open, `loom:building` (unparked from the gate 2026-11-14; the gate above still applies to its records). No `f6eeac7` record. |
 | G3 sense path | #170 | Closed `completed`. Its records are **declared-only**, the same condition as G1's: closing #170 recorded that the re-runs happened, not that the stamp matched. |
-| G4 refresh | #171 | Open, `loom:triage` + `loom:blocked` on the gate above. No `f6eeac7` record. |
-| G5 layout and sign-off | #172 | Closed `completed`. The only group re-qualified against a verified `f6eeac7` tree, and the only one with no SPICE leg. |
+| G4 refresh | #171 | Re-qualified 2026-11-20. Measured timing and energy points reproduce their prior CSVs. The updated extracted retention interval changes the derived 16-cell power. The measured overhead record uses the qualified inputs. Replay remains historical. |
+| G5 layout and sign-off | #172 | Closed `completed`. As of the 2026-11-14 inventory, G5 was the only group re-qualified against a verified `f6eeac7` tree. Its qualification uses KLayout. |
 
-G1 goes first; no retention number is re-cited until its chain is re-derived,
-and since no G1 record is stamp-matched that condition is still unmet. G2-G4
-depend on G1 results. The gate above applies to every remaining re-run.
+G2–G4 depend on G1 retention results. The 2026-11-20 G4 records use the
+retention row re-derived from stamp-matched leakage job `klt-sim-65de062d8f5c`
+(#377). The gate above applies to every remaining re-run.

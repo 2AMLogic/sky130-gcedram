@@ -22,6 +22,12 @@ import gen_refresh_energy as G  # noqa: E402
 RESULTS = HERE / "results"
 
 
+def rows_load(csv_path):
+    import csv as _csv
+    with Path(csv_path).open(newline="") as f:
+        return list(_csv.DictReader(f))
+
+
 # ---------------------------------------------------------------------------
 # synthetic report (analytic fixture for the reduction controls)
 # ---------------------------------------------------------------------------
@@ -265,12 +271,46 @@ class Calculation(unittest.TestCase):
         self.assertLess(A.duty_factor(4, G.t_row_refresh_op_s(), 2.7519205e-6), 1.0)
 
     def test_intervals_read_from_retention_chain(self):
+        """G4 bases are identity-selected (#171): the ratified ASSUMED row and
+        the 2026-11-20 EXTRACTED row traced to the stamp-matched leakage job."""
         ivs = A.intervals()
-        self.assertEqual([i["label"] for i in ivs], ["ratified_assumed_csn", "extracted_csn_unratified"])
-        self.assertAlmostEqual(ivs[0]["interval_s"], 5.029945e-6, delta=1e-12)
-        self.assertAlmostEqual(ivs[1]["interval_s"], 2.7519205e-6, delta=1e-12)
+        self.assertEqual([i["label"] for i in ivs], ["historical_assumed_2t", "qualified_extracted_2t"])
+        self.assertEqual(ivs[0]["retention_row_timestamp_utc"], "2026-08-20T22:38:54+00:00")
         self.assertEqual(ivs[0]["c_sn_basis"], "ASSUMED margin factor")
+        self.assertAlmostEqual(ivs[0]["interval_s"], 5.029945e-6, delta=1e-12)
+        self.assertEqual(ivs[1]["retention_row_timestamp_utc"], "2026-11-20T00:35:05+00:00")
         self.assertEqual(ivs[1]["c_sn_basis"], "EXTRACTED (layout)")
+        self.assertAlmostEqual(ivs[1]["interval_s"], 6.116519e-06 / 2, delta=1e-12)
+        self.assertEqual(ivs[1]["retention_leakage_job"], "klt-sim-65de062d8f5c")
+        # the tie trap: the 2026-10-28 row prints the SAME retention time
+        # (6.116519e-06) but cites the mismatched-stamp leakage job, so a
+        # value comparison alone cannot verify the selection -- identity does.
+        tie = [r for r in A.RO.load_worst_case_retention()
+               if r["timestamp_utc"] == "2026-10-28T07:09:34+00:00"]
+        self.assertEqual(len(tie), 1)
+        self.assertEqual(float(tie[0]["retention_time_s"]), ivs[1]["retention_time_s"])
+        self.assertNotEqual(tie[0]["timestamp_utc"], ivs[1]["retention_row_timestamp_utc"])
+        self.assertNotIn("klt-sim-65de062d8f5c", tie[0]["notes"])
+
+    def test_qualified_row_identity_fails_closed(self):
+        """Removing the qualified row (or stripping its job traceability)
+        must fail the selection, never fall back to the tied Oct-28 row."""
+        with tempfile.TemporaryDirectory() as td:
+            csv_path = Path(td) / "retention.csv"
+            rows = A.RO.load_worst_case_retention()
+            fields = list(rows[0].keys())
+            with csv_path.open("w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=fields)
+                w.writeheader()
+                w.writerows([r for r in rows
+                             if r["timestamp_utc"] != A.RO.QUALIFIED_EXTRACTED_2T_TS])  # tie row stays
+            with self.assertRaises(SystemExit):
+                A.RO.select_retention_row(rows_load(csv_path), A.RO.QUALIFIED_EXTRACTED_2T_TS,
+                                          leakage_job=A.RO.QUALIFIED_LEAKAGE_JOB_ID)
+            # same-timestamp 3T row must not satisfy the 2T-min identity either
+            with self.assertRaises(SystemExit):
+                A.RO.select_retention_row(rows_load(csv_path) + [dict(rows_load(csv_path)[0], geometry_name="3T-min")],
+                                          A.RO.QUALIFIED_EXTRACTED_2T_TS)
 
 
 class Reduction(unittest.TestCase):

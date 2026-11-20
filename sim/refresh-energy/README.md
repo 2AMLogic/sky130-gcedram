@@ -457,3 +457,54 @@ unchanged.
   this report.
 * `test_refresh_energy.py` reproduces only the newest run (the analyzer reads
   the current retention intervals and layout `C_SN`).
+
+## Re-qualification under open_pdks `f6eeac7` (issue #171, 2026-11-20)
+
+Both committed requests were re-run unchanged so this bench's G4 record rests
+on runs whose worker PDK is **proven** at the repo pin. Tool: one `klt sim
+--backend batch --format json --wait-for-capacity 600` per request (submitted
+concurrently), `PDK_ROOT` at the pinned ciel install so the client stamp is
+available. Main: batch job **`klt-sim-a830319cbebb`** (c7i.4xlarge, spot, run
+`20261120T024140Z`, 10/10 pass). Fine: batch job **`klt-sim-54a1d15c5269`**
+(run `fine_20261120T024341Z`, 10/10 pass). Both reports record worker stamp
+`open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` with
+`pdk_stamp_comparison.status == "match"` and fleet worker ngspice-47 —
+closing the caveat of the 2026-10-28 section above (that run was ngspice-46
+on a `c6d73a3` worker, comparison `not_comparable`). Files:
+`results/klt_report_20261120T024140Z.json.gz`,
+`results/klt_report_fine_20261120T024341Z.json.gz`,
+`results/refresh_energy_{sources,points,scaling}_20261120T024140Z.csv`,
+`results/refresh_energy_summary_20261120T024140Z.json`.
+
+Like-for-like against `20261028T071730Z` (same deck; crosses the PDK revision
+*and* the ngspice 46 -> 47 fleet worker):
+
+| Quantity | 2026-10-28 (`c6d73a3`, ngspice-46) | 2026-11-20 (`f6eeac7`, ngspice-47) |
+|---|---|---|
+| max `E_row_incremental` (sf / 125 C, all-one) | 2.54069059514e-12 J | 2.54069059514e-12 J |
+| max active net energy | 2.54071098e-12 J | 2.54071098e-12 J |
+| max idle hold power (sf / 125 C) | 7.029262068965518e-10 W | 7.029262068965518e-10 W |
+| failed points | 0 | 0 |
+| convergence, all-one pattern | met | met (identical) |
+| convergence, all-zero pattern | not met (max rel 0.298, E ~ 1e-16 J) | not met (same 10 points, same max rel 0.298) |
+
+**No verdict change** — every recorded maximum is identical to all printed
+digits, consistent with the leakage study's finding that the two open_pdks
+revisions' device models are numerically indistinguishable on these benches.
+
+**Scaling-basis change (documented, deliberate).** The scaling interval set
+is now selected by **row identity**, not position: label
+`historical_assumed_2t` (retention row `2026-08-20T22:38:54+00:00`, ASSUMED
+`C_SN` 1.106463 fF, interval 5.030 us — the ratified spec basis, kept as the
+separately labelled historical comparison) and label `qualified_extracted_2t`
+(retention row `2026-11-20T00:35:05+00:00`, EXTRACTED `C_SN` 0.672741 fF,
+interval 3.058 us — the qualified basis, whose leakage input is the
+stamp-matched job `klt-sim-65de062d8f5c`; `retention_leakage_job` is recorded
+in the summary's evidence chain). The previous `extracted_csn_unratified`
+label (the 2026-08-25 extraction, interval 2.752 us) is superseded history:
+its rows stay byte-identical in the committed 20261028 CSVs, and the
+reference-16-cell refresh power moves 3.693 uW -> 3.323 uW purely from the
+interval change (5.504 us -> 6.116 us retention). The analyzer now also
+refuses any report whose worker stamp comparison is not `match` (fail closed),
+so the 2026-10-28 reports cannot be re-reduced as qualified evidence;
+`test_refresh_energy.py` still reproduces only the newest run.
