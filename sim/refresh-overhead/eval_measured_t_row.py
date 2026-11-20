@@ -15,8 +15,8 @@ whole: the appended record covers the ratified ASSUMED-C_SN 2T row (the
 separately noted historical comparison) and the 2026-11-20 EXTRACTED row whose
 leakage input is the stamp-matched re-run (the qualified basis; the 2026-10-28
 row prints the same retention time and must never silently occupy the qualified
-slot). The refresh-op report the summary was reduced from must carry a worker
-``pdk_stamp_comparison`` of ``match`` or nothing is appended (fail closed).
+slot). The refresh-op report must name the same batch job as the summary
+and carry a worker ``pdk_stamp_comparison`` of ``match`` before any append.
 
     python3 -I sim/refresh-overhead/eval_measured_t_row.py <refresh_op_summary_RUN.json> [--report <klt_report.json[.gz]>]
 
@@ -99,7 +99,14 @@ def main(argv: list[str] | None = None) -> int:
               "a measured-overhead record cannot be qualified without the report's worker "
               "PDK stamp comparison", file=sys.stderr)
         return 1
-    problems = worker_pdk_stamp_problems(common.load_json(report))
+    raw_report = common.load_json(report)
+    problems = worker_pdk_stamp_problems(raw_report)
+    job_id = summ.get("batch_job_id")
+    remote = (raw_report.get("environment") or {}).get("remote") or {}
+    report_job_id = remote.get("job_id")
+    if not isinstance(job_id, str) or not job_id.strip() or job_id != report_job_id:
+        problems.append(f"summary batch_job_id {job_id!r} and report environment.remote.job_id "
+                        f"{report_job_id!r} must be nonempty and equal")
     if problems:
         print(f"ERROR ({report.name}): {'; '.join(problems)}", file=sys.stderr)
         return 1
@@ -131,7 +138,7 @@ def main(argv: list[str] | None = None) -> int:
                 ov = R.overhead(n, t_ns * 1e-9, interval)
                 common.append_result(a.measured_csv, FIELDS, {
                     "timestamp_utc": ts, "repo_git_sha": sha, "refresh_op_run_id": summ["run_id"],
-                    "refresh_op_batch_job_id": summ.get("batch_job_id"), "sense_basis": basis,
+                    "refresh_op_batch_job_id": job_id, "sense_basis": basis,
                     "restore_fraction_ASSUMPTION": frac, "slowest_corner": v["slowest_corner"],
                     "t_row_refresh_op_ns_MEASURED": f"{t_ns:.4f}",
                     "retention_row_timestamp_utc": r["timestamp_utc"], "retention_geometry": r["geometry_name"],

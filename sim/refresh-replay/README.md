@@ -8,12 +8,12 @@ converts them deterministically to PWL sources and replays them in the **same ci
 **PROPOSED, unratified scope** (27/125 C, tt/ss/ff/sf/fs, 1.8 V, no mismatch, ideal drivers). No spec,
 contract, scheduler timing, overlap rule or prior result was changed. 1 cycle = 1 ns is a study assumption.
 
-> **Historical evidence (issue #171, 2026-11-20).** This study is **uncited**
-> by any spec pass condition and was NOT re-qualified under open_pdks
-> `f6eeac7`: every run below predates the PDK re-pin (its reports carry the
-> retired `c6d73a3` worker stamp or none). The records here are retained
-> byte-identical as append-only history; nothing in them may back a qualified
-> G4 result. The qualified refresh records live in
+> **Historical evidence (issue #171, 2026-11-20).** No spec pass condition cites
+> this study. The four October replay reports recorded no worker PDK stamp.
+> The 2026-11-15 replay job `klt-sim-ab4b1bbfdff1` ran on open_pdks `f6eeac7`,
+> but its report records `not_comparable` with reason `client_stamp_unavailable`.
+> All five runs remain historical because none has a matching worker/client stamp.
+> The qualified refresh records live in
 > [`sim/refresh-op`](../refresh-op/README.md) (job `klt-sim-fb282dff4498`,
 > stamp `match`) and [`sim/refresh-energy`](../refresh-energy/README.md) (jobs
 > `klt-sim-a830319cbebb` / `klt-sim-54a1d15c5269`, stamp `match`).

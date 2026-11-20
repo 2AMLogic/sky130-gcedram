@@ -114,7 +114,7 @@ class EvalMeasuredGate(unittest.TestCase):
 
     @staticmethod
     def _report(status, stamp_text=PIN_STAMP):
-        return {"status": "pass", "environment": {"remote": {"worker_environment": {
+        return {"status": "pass", "environment": {"remote": {"job_id": "klt-sim-test", "worker_environment": {
             "pdk": {"stamp_text": stamp_text}, "pdk_stamp_comparison": {"status": status}}}}}
 
     def _run(self, report_status, stamp_text=PIN_STAMP):
@@ -133,6 +133,7 @@ class EvalMeasuredGate(unittest.TestCase):
     def test_match_report_appends_identity_selected_bases_only(self):
         rc, rows = self._run("match")
         self.assertEqual(rc, 0)
+        self.assertEqual({row["refresh_op_batch_job_id"] for row in rows}, {"klt-sim-test"})
         bases = {(r["retention_row_timestamp_utc"], r["retention_c_sn_basis"]) for r in rows}
         self.assertEqual(bases, {(R.HISTORICAL_ASSUMED_2T_TS, "ASSUMED margin factor"),
                                  (R.QUALIFIED_EXTRACTED_2T_TS, "EXTRACTED (layout)")})
@@ -141,6 +142,29 @@ class EvalMeasuredGate(unittest.TestCase):
         self.assertIn(R.QUALIFIED_LEAKAGE_JOB_ID, qualified[0]["notes"])
         self.assertNotIn(R.QUALIFIED_EXTRACTED_2T_TS.replace("2026-11-20", "2026-10-28"),
                          {r["retention_row_timestamp_utc"] for r in rows})
+
+    def test_job_ids_must_match_before_appending(self):
+        with tempfile.TemporaryDirectory() as td:
+            summary_path = Path(td) / "refresh_op_summary_TEST.json"
+            report_path = Path(td) / "klt_report_TEST.json"
+            measured = Path(td) / "measured.csv"
+            with E.MEASURED_CSV.open("rb") as source:
+                original = source.readline() + source.readline()  # header and one historical row
+            args = [str(summary_path), "--measured-csv", str(measured)]
+            summary = self._summary()
+            report = self._report("match")
+            for summary_job, report_job in (("klt-sim-old", "klt-sim-new"),
+                                            ("klt-sim-test", None), (None, None),
+                                            ("", ""), (" ", " ")):
+                summary["batch_job_id"] = summary_job
+                report["environment"]["remote"]["job_id"] = report_job
+                summary_path.write_text(json.dumps(summary))
+                report_path.write_text(json.dumps(report))
+                for option in ([], ["--report", str(report_path)]):
+                    with self.subTest(summary_job=summary_job, report_job=report_job, option=option):
+                        measured.write_bytes(original)
+                        self.assertEqual(E.main(args + option), 1)
+                        self.assertEqual(measured.read_bytes(), original)
 
     def test_mismatch_report_appends_nothing(self):
         rc, rows = self._run("mismatch", "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b")

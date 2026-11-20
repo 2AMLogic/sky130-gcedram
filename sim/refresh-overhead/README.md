@@ -126,7 +126,9 @@ unchanged):
   ASSUMPTION envelopes and were not extended.
 * **The measured `t_row_refresh_op` must be stamp-matched.** The reducer now
   reads the refresh-op klt report behind the summary (given with `--report`
-  or discovered next to it) and refuses to append anything unless its
+  or discovered next to it). Before appending, it checks that the summary's
+  `batch_job_id` is nonempty and equals the report's `environment.remote.job_id`.
+  It also checks that the report's
   `environment.remote.worker_environment.pdk_stamp_comparison.status` is
   `match` (fail closed on mismatch / not_comparable / absent — the committed
   2026-11-15 refresh-op report is `not_comparable` and is refused by this
