@@ -32,9 +32,19 @@
       "file": "attest/item2.envelope.json",
       "content_hash": "sha256:62ef4547f4cb762313355479bd4fa33f32ecfe9e2840fdb61347cdc60029f6b7"
     },
+    "7.analog": [
+      {
+        "file": "sim/pex_bitcell_array/results/klt_pex_bitcell_20261121T051134Z.json",
+        "content_hash": "sha256:ecc5f9ff8007a0a3f8bf731f5ffe484573d919f1b0ad3812b8dd447b09d39a12"
+      },
+      {
+        "file": "sim/pex_bitcell_array/results/klt_pex_array_20261121T051134Z.json",
+        "content_hash": "sha256:ece5b1808a81fb17a9ca9bc37e55e71ca98cf6ac6fe054899f9dfb0114941e03"
+      }
+    ],
     "9.analog": {
       "file": "attest/item9.envelope.json",
-      "content_hash": "sha256:de2773eda2e27d2fd3e89288a70814898044ee279e1109e9a3e807197c1b91e9"
+      "content_hash": "sha256:1301c9a7ae86b9301fe03f4a178d09908b1dd12289e610006a401c4988f08d15"
     },
     "10.analog": {
       "file": "attest/item10.envelope.json",

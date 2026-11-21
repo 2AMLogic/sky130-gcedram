@@ -104,3 +104,8 @@ flow/build/
 .loom/gh-config-by-owner-*/
 /.loom-local/
 # <<< loom-managed <<<
+# klt pex scratch for the schematic-vs-extracted study (issue #383): the
+# fresh extractions, pinned-klt venv and stdout/stderr captures live under
+# work/; the kept evidence is copied into results/ (envelopes, native
+# reports, benches, requests).
+sim/pex_bitcell_array/work/

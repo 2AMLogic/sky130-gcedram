@@ -43,6 +43,9 @@ jobs:
       - name: Bitcell-transient request generator / reducer (issue #182) checks
         run: python3 -I sim/bitcell-transient/test_gen_bitcell_transient.py
 
+      - name: PEX bitcell/array reference + bench + reduction (issue #383) checks
+        run: python3 -I sim/pex_bitcell_array/test_pex_bitcell_array.py
+
       - name: Cold-corner variant tests
         run: python3 -I sim/loaded-column/cold-corner/test_variants.py
 
