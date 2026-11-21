@@ -18,6 +18,14 @@
       "file": "layout/gain_cell_2t.lvs.result.json",
       "content_hash": "sha256:ae17e5fa1c5c139ccd2f16e2c5badd87579b43657d10d3602beb6593c9234295"
     },
+    "6.analog": [
+      {
+        "file": "sim/sense-mismatch/results/klt_yield_report_row2e_20261120T203548Z.json",
+        "rows": [
+          "2e"
+        ]
+      }
+    ],
     "11.analog": [
       {
         "file": "layout/gain_cell_2t_array.erc.result.json",
@@ -34,7 +42,7 @@
     },
     "9.analog": {
       "file": "attest/item9.envelope.json",
-      "content_hash": "sha256:de2773eda2e27d2fd3e89288a70814898044ee279e1109e9a3e807197c1b91e9"
+      "content_hash": "sha256:6df0788cd26f1b441f7f134daff1489a40f2ccbfe47ddec8b6a1f6bc9689cd63"
     },
     "10.analog": {
       "file": "attest/item10.envelope.json",
@@ -48,5 +56,13 @@
       "file": "attest/item10.envelope.json",
       "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa"
     }
+  },
+  "spec_rows": {
+    "6.analog": [
+      {
+        "id": "2e",
+        "ratified": false
+      }
+    ]
   }
 }
