@@ -41,6 +41,7 @@ import compare_array_layout as C  # noqa: E402
 import generation_toolchain as T  # noqa: E402
 import xor_layout_geometry as X  # noqa: E402
 import array_topology as A  # noqa: E402
+import sense_latch_topology as L  # noqa: E402
 
 COMMITTED_GDS = HERE / "gain_cell_2t_array.gds"
 TOP = "gain_cell_2t_array_4x4_layout_0"
@@ -314,6 +315,87 @@ class LvsReferenceProvenancePin(unittest.TestCase):
             "layout/generate_array.sh (or its --emit lvs-reference step)")
 
 
+# --------------------------- latch provenance pin (issue #387)
+class SenseLatchReferenceProvenancePin(unittest.TestCase):
+    """The committed sense-latch LVS reference netlist pins the sha256 of
+    design/sense_latch.spice in its header and is generated -- never
+    hand-transcribed -- by sense_latch_topology.build_lvs_reference, a pure
+    function of (source text, source hash) with no klt/KLayout/PDK. Tests
+    here re-render it with the hash computed from the live netlist at test
+    time and byte-compare against the committed file (the array's
+    LvsReferenceProvenancePin pattern, extended per issue #387), then pin
+    the derivation contract itself: a matched-pair W edit in the source
+    follows into both the generation inputs and the reference, a
+    comment-only edit still invalidates the committed reference through
+    the hash, and a topology edit is refused outright."""
+
+    def render(self, text: str, path: str = "design/sense_latch.spice") -> str:
+        src = self.dir / "sense_latch.spice"
+        src.write_text(text)
+        parsed = L.parse_sense_latch_spice(str(src))
+        live_hash = hashlib.sha256(src.read_bytes()).hexdigest()
+        return L.build_lvs_reference(path, live_hash, parsed), parsed
+
+    def setUp(self):
+        self._d = tempfile.TemporaryDirectory()
+        self.dir = Path(self._d.name)
+        self.live = (REPO / "design" / "sense_latch.spice").read_text()
+
+    def tearDown(self):
+        self._d.cleanup()
+
+    def test_committed_lvs_reference_pins_the_live_design_hash(self):
+        src = REPO / "design" / "sense_latch.spice"
+        parsed = L.parse_sense_latch_spice(str(src))
+        live_hash = hashlib.sha256(src.read_bytes()).hexdigest()
+        want = L.build_lvs_reference("design/sense_latch.spice", live_hash, parsed)
+        got = (HERE / "sense_latch.lvs_reference.spice").read_text()
+        self.assertEqual(
+            got, want,
+            "sense_latch.lvs_reference.spice is stale: re-run "
+            "layout/generate_sense_latch.sh (or its --emit lvs-reference step)")
+
+    def test_pair_w_edit_follows_into_gen_params_and_reference(self):
+        # XMP1/XMP2 are the only pfet_01v8 W=2 cards (XMNF is an nfet), so
+        # this replacement edits exactly the matched pmos pair.
+        mutated = self.live.replace(
+            "sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1",
+            "sky130_fd_pr__pfet_01v8 L=0.15 W=2.5 nf=1")
+        self.assertEqual(mutated.count("W=2.5"), 2, "mutation must touch both pair devices")
+        rendered, parsed = self.render(mutated)
+        self.assertEqual(L.build_gen_params(parsed["devices"], "ppair")["w_um"], 2.5)
+        self.assertIn("M_XMP1 rbl ref vp vdd pfet L=0.15U W=2.5U", rendered)
+        self.assertIn("M_XMP2 ref rbl vp vdd pfet L=0.15U W=2.5U", rendered)
+        # an untouched block keeps its own W
+        self.assertEqual(L.build_gen_params(parsed["devices"], "header")["w_um"], 4)
+
+    def test_comment_only_edit_invalidates_the_reference_through_the_hash(self):
+        rendered_live, _ = self.render(self.live)
+        rendered_comment, _ = self.render(self.live + "* a comment-only edit\n")
+        committed = (HERE / "sense_latch.lvs_reference.spice").read_text()
+        self.assertEqual(rendered_live, committed)
+        self.assertNotEqual(rendered_comment, committed,
+                            "a comment-only source edit must invalidate the committed reference")
+
+    def test_topology_edits_are_refused(self):
+        # break the cross-coupling: XMN2's gate onto its own drain's net
+        broken = self.live.replace("XMN2 ref rbl vn GND", "XMN2 ref ref vn GND", 1)
+        with self.assertRaises(ValueError):
+            self.render(broken)
+        # and a missing device
+        dropped = "\n".join(ln for ln in self.live.splitlines() if not ln.startswith("XMPH"))
+        with self.assertRaises(ValueError):
+            self.render(dropped)
+
+    def test_committed_compose_request_renders_from_the_committed_block_reports(self):
+        reports = {b: L.load_block_report(str(HERE / L._report_name(b))) for b in L.BLOCKS}
+        want = L.build_compose_request(reports)
+        got = json.loads((HERE / "sense_latch.layout.request.json").read_text())
+        self.assertEqual(got, want,
+                         "sense_latch.layout.request.json is stale: re-run "
+                         "layout/generate_sense_latch.sh (or its --emit compose-request step)")
+
+
 # ----------------------------------------------------- toolchain guard
 CFG = T.load_config()
 
@@ -470,7 +552,7 @@ class ToolchainGuard(Tmp):
         self.assertIn(E.PDK_OPEN_PDKS_COMMIT, (REPO / "docs" / "pdk-pin.md").read_text())
 
     def test_both_scripts_use_the_shared_pin_not_path_klt(self):
-        for name in ("generate_array.sh", "extract_array_parasitics.sh"):
+        for name in ("generate_array.sh", "extract_array_parasitics.sh", "generate_sense_latch.sh"):
             text = (HERE / name).read_text()
             self.assertTrue("generation_toolchain.py\" preflight --role generation --role check --pdk" in text,
                             f"{name} does not run the shared preflight")
@@ -703,7 +785,8 @@ class ScriptsFailBeforeWriting(Tmp):
     def test_mismatched_generation_toolchain(self):
         env = self.mismatched_env()  # generation slot holds the check revision
         for script, args in (("generate_array.sh", []), ("generate_array.sh", ["--check"]),
-                             ("extract_array_parasitics.sh", [])):
+                             ("extract_array_parasitics.sh", []),
+                             ("generate_sense_latch.sh", []), ("generate_sense_latch.sh", ["--check"])):
             with self.subTest(script=script, args=args):
                 p = self.run_script(script, args, env)
                 self.assertEqual(p.returncode, 2, p.stderr)
