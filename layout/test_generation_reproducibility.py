@@ -475,12 +475,24 @@ class ToolchainGuard(Tmp):
         self.assertIsNotNone(stated, f"{rel}: missing drawn-layer count for {rec['result']} XOR")
         self.assertEqual(int(stated.group(1)), len(drawn),
                          f"`verified` says {stated.group(1)} drawn layers, {rel} enumerates {len(drawn)}")
+        if differing:
+            # Bind the empty-pair clause too, in the same whole-clause style:
+            # the enumeration can supply neither the phrase nor its count.
+            empty_stated = re.search(r"The other (\d+) pairs XOR empty\b", verified)
+            self.assertIsNotNone(
+                empty_stated,
+                f"`verified` does not say how many of {rel}'s drawn pairs XOR empty")
+            self.assertEqual(
+                int(empty_stated.group(1)), len(drawn) - len(differing),
+                f"`verified` says {empty_stated.group(1)} pairs XOR empty, "
+                f"{rel} measures {len(drawn) - len(differing)} of {len(drawn)}")
 
     def test_nonempty_xor_citation_negative_controls(self):
         rel = "layout/results/geometry_xor_klt0.9.2_vs_committed_20261121.json"
         rec = json.loads((REPO / rel).read_text())
         drawn = ", ".join(rec["enumeration"]["in_committed"])
-        verified = f"10 drawn layers ({drawn}). Only layer 95/20 has 0.2336 um^2 total XOR."
+        verified = (f"10 drawn layers ({drawn}). Only layer 95/20 has 0.2336 um^2 total XOR. "
+                    f"The other 9 pairs XOR empty.")
         self.assert_xor_citation(rec, verified, rel)
 
         with self.assertRaisesRegex(AssertionError, "total XOR"):
@@ -489,6 +501,10 @@ class ToolchainGuard(Tmp):
             self.assert_xor_citation({**rec, "result": "inconclusive"}, verified, rel)
         with self.assertRaisesRegex(AssertionError, "XOR summary"):
             self.assert_xor_citation({**rec, "xor_empty_on_every_drawn_layer": True}, verified, rel)
+        with self.assertRaisesRegex(AssertionError, "pairs XOR empty"):
+            self.assert_xor_citation(rec, verified.replace("The other 9 pairs", "The other 3 pairs"), rel)
+        with self.assertRaisesRegex(AssertionError, "pairs XOR empty"):
+            self.assert_xor_citation(rec, verified.replace(" The other 9 pairs XOR empty", ""), rel)
 
     def test_check_pin_matches_signoff_workflow(self):
         wf = (REPO / ".github" / "workflows" / "signoff.yml").read_text()
