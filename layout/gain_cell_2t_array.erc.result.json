@@ -977,9 +977,9 @@
   },
   "ties_disclosure": null,
   "provenance": {
-    "klt_version": "0.9.1",
-    "klt_git_commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
-    "klt_reinstall_spec": "klayout-tools==0.9.1",
+    "klt_version": "0.9.2",
+    "klt_git_commit": "046ba74652fc096bd97071fc3237f7159dd40183",
+    "klt_reinstall_spec": "klayout-tools==0.9.2",
     "klayout_version": "0.30.12",
     "pdk": {
       "name": "sky130",

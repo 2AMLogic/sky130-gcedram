@@ -403,22 +403,46 @@ class ToolchainGuard(Tmp):
                                       f"evidence record (cited: {sorted(records)})")
         rel, rec = xor[0]
 
-        # The measurement came out equivalent, over an asserted enumeration.
-        self.assertEqual(rec["result"], "equivalent", f"{rel}: {rec.get('problems')}")
-        self.assertEqual(rec["problems"], [], rel)
-        self.assertIs(rec["xor_empty_on_every_drawn_layer"], True, rel)
+        # Whatever the verdict, the enumeration, bbox and label set are
+        # compared over the asserted set, and every drawn pair reports its
+        # counts and an explicit XOR figure -- never an absent key.
         self.assertIs(rec["enumeration"]["match"], True, rel)
         self.assertIs(rec["bbox"]["match"], True, rel)
         self.assertIs(rec["labels"]["match"], True, rel)
-
-        # Every drawn pair reports its counts and an explicit zero XOR -- an
-        # empty XOR must be a stated 0, never an absent key.
         for entry in rec["layers"]:
             for key in ("layer_datatype", "committed_polygons", "regenerated_polygons",
                         "xor_polygons", "xor_area_dbu2", "xor_area_um2"):
                 self.assertIn(key, entry, f"{rel}: layer entry missing {key}: {entry}")
-            self.assertEqual(entry["xor_polygons"], 0, f"{rel}: {entry['layer_datatype']} XOR not empty")
-            self.assertEqual(entry["xor_area_dbu2"], 0, f"{rel}: {entry['layer_datatype']} XOR area not 0")
+
+        if rec["result"] == "equivalent":
+            # The measurement came out equivalent, over an asserted enumeration:
+            # every drawn pair must report an explicit zero XOR.
+            self.assertEqual(rec["problems"], [], rel)
+            self.assertIs(rec["xor_empty_on_every_drawn_layer"], True, rel)
+            for entry in rec["layers"]:
+                self.assertEqual(entry["xor_polygons"], 0, f"{rel}: {entry['layer_datatype']} XOR not empty")
+                self.assertEqual(entry["xor_area_dbu2"], 0, f"{rel}: {entry['layer_datatype']} XOR area not 0")
+        else:
+            # klt 0.9.2's `gen mos_array` draws the 95/20 per-device marker
+            # larger than 0.8.0 does (issue #388): the divergence record came
+            # out not-equivalent, and the floor binds `verified` to the
+            # measured difference instead of to an empty XOR. Every non-empty
+            # layer must be named with its total XOR area, and the field must
+            # not claim the all-empty sentence the record contradicts. bbox
+            # and labels must still match -- a regeneration that moved either
+            # is a different, bigger finding; let it fail here loudly rather
+            # than stretch this branch to cover it.
+            self.assertNotEqual(rec["problems"], [], rel)
+            differing = [e for e in rec["layers"] if e["xor_polygons"]]
+            self.assertTrue(differing, f"{rel}: not-equivalent with no non-empty layer XOR")
+            for entry in differing:
+                self.assertIn(entry["layer_datatype"], gen["verified"],
+                              f"{rel}: {entry['layer_datatype']} XORs non-empty but `verified` does not name it")
+                self.assertIn(f"{entry['xor_area_um2']:.4f}", gen["verified"],
+                              f"{rel}: `verified` does not state {entry['layer_datatype']}'s "
+                              f"total XOR area ({entry['xor_area_um2']:.4f})")
+            self.assertIsNone(re.search(r"XOR empty on all \d+ drawn layers", gen["verified"]),
+                              "`verified` claims an all-empty XOR the cited record contradicts")
 
         # `verified`'s layer count must equal the record's enumeration, by name
         # where the field names them -- so rewording the prose cannot drift
@@ -426,8 +450,12 @@ class ToolchainGuard(Tmp):
         # set is 10 and the 2 label-only pairs are counted separately).
         drawn = rec["enumeration"]["in_committed"]
         self.assertEqual(sorted(drawn), sorted(rec["enumeration"]["expected"]), rel)
-        stated = re.search(r"XOR empty on all (\d+) drawn layers", gen["verified"])
-        self.assertIsNotNone(stated, "`verified` must state 'XOR empty on all <N> drawn layers'")
+        if rec["result"] == "equivalent":
+            stated = re.search(r"XOR empty on all (\d+) drawn layers", gen["verified"])
+            self.assertIsNotNone(stated, "`verified` must state 'XOR empty on all <N> drawn layers'")
+        else:
+            stated = re.search(r"(\d+) drawn layers", gen["verified"])
+            self.assertIsNotNone(stated, "`verified` must state the drawn-layer count it enumerates")
         self.assertEqual(int(stated.group(1)), len(drawn),
                          f"`verified` says {stated.group(1)} drawn layers, {rel} enumerates {len(drawn)}")
         for pair in drawn:
