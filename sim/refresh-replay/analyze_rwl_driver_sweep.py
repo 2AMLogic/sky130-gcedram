@@ -32,7 +32,7 @@ sys.path.insert(0, str(REPO / "sim" / "refresh-op"))
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 from _evidence_common import load_json  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
-from _evidence_common import PROPOSED_RANGE_SCOPE_REPLAY_PREFIX  # noqa: E402
+from _evidence_common import PROPOSED_RANGE_SCOPE_REPLAY_PREFIX, range_scope_tag  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
 import analyze_refresh_op as AR  # noqa: E402
 import replay_lib as L  # noqa: E402
@@ -419,7 +419,7 @@ def main(argv=None) -> int:
         run_id=man["run_id"], issue=man["issue"], status=man["status"],
         framing="EXPERIMENTAL stimulus model (ideal PWL source with a declared ramp time + series resistor to the cell pin); NOT a designed physical driver; "
                 "loads, write pulse, initial levels and thresholds identical to #131; sweep values are ASSUMPTIONS",
-        scope=PROPOSED_RANGE_SCOPE_REPLAY_PREFIX + ", no mismatch (PROPOSED range, not ratified)",
+        scope=PROPOSED_RANGE_SCOPE_REPLAY_PREFIX + ", no mismatch" + range_scope_tag(man["status"]),
         **klt_provenance(rep, hash_prefix="report_", engine=True),
         report_provenance=rep.get("provenance"),
         analyzer_sha256_at_analysis=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

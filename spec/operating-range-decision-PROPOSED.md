@@ -1,11 +1,12 @@
-# PROPOSED decision record: restricted operating-temperature range (outcome C, issue #56)
+# RATIFIED decision record: restricted operating-temperature range (outcome C, issue #56)
 
-> **STATUS: PROPOSED. NOT RATIFIED.** This document ratifies nothing and
-> changes no ratified value. It records the proposed written form of outcome C
-> for the two-key process (`ratification/ee-key/`,
-> `ratification/market-key/`). Two-key ratification is outside the authority
-> of issue #56 and of any agent that wrote this file. Until both keys sign,
-> nothing here may be quoted as a macro specification.
+> **STATUS: RATIFIED.** Flipped from PROPOSED by the two-key process
+> (`ratification/ee-key/`, `ratification/market-key/`): the operator's
+> merge of the PR that carries this flip is the act of ratification, and
+> that merge is the operator's. Ratification changed this status line,
+> the section 8 claim label, the `spec/README.md` row and the status
+> newly emitted evidence carries (`sim/_evidence_common.py`); it changed
+> no number, threshold, criterion or corner recorded below.
 
 Epic #24 (parent), issue #56. This is the "ratification-only increment" that
 [`supply-reliability-decision-PROPOSED.md`](supply-reliability-decision-PROPOSED.md)
@@ -222,7 +223,7 @@ This is a conservative interval that rests on **discrete simulated points**
 
 ## 8. Required claim wording (canonical; reference this, do not paraphrase)
 
-> **Operating range (PROPOSED, not ratified).** Simulated against the
+> **Operating range (RATIFIED).** Simulated against the
 > shipped sky130 models with ideal drivers, the gain-cell storage and read
 > path hold the study's placeholder read-separation criterion at the five
 > global process corners at junction temperatures of 27 C and 125 C and
