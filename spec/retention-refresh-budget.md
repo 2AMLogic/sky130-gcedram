@@ -264,8 +264,11 @@ tracked as follow-up rather than silently assumed away):
   `N_rows` and `t_row_refresh_op` from a ratified array/periphery design,
   per Section 7.
 - **Sense-amplifier-derived sense margin**: `delta_V = VDD/2` remains an
-  ASSUMPTION per #3, pending an actual sense-amplifier design for this
-  macro.
+  ASSUMPTION per #3: a schematic-level sense latch now exists for this
+  macro (`design/sense_latch.sch`, #109), but it has no layout and its
+  offset/yield is not validated, so there is still no validated
+  sense-margin budget to re-derive it from (see
+  [`sense-stage-premise-decision.md`](sense-stage-premise-decision.md)).
 - **Density vs SRAM comparison**: Section 6 uses density as a decisive
   *qualitative* argument (2T has fewer devices than 3T), but this document
   does not perform the README's target-spec "must beat a 6T SRAM bitcell on

@@ -31,7 +31,7 @@ replacement.
 | Newer layout-extracted-`C_SN` interval ~2.75 us (**2751 cycles**) | newer evidence, **not ratified** | CSV 2026-08-25 row (see [`sim/refresh-overhead/README.md`](../../sim/refresh-overhead/README.md)); run as a stress variant only |
 | 1 cycle = 1 ns | **ASSUMPTION** | arbitrary time base for converting ns to cycles; not a clock-rate claim |
 | `N_ROWS` = 32 | **ASSUMPTION** | array not designed; a value already in the refresh-overhead grid |
-| `t_row_refresh_op` = `T_ROW` = 34 cycles | **ASSUMPTION** | the `anchored` scenario of [`refresh_overhead.py`](../../sim/refresh-overhead/refresh_overhead.py); no sense amp or controller circuit exists |
+| `t_row_refresh_op` = `T_ROW` = 34 cycles | **ASSUMPTION** | the `anchored` scenario of [`refresh_overhead.py`](../../sim/refresh-overhead/refresh_overhead.py); derived from no real sense stage or controller circuit (the sense latch is schematic-only, `design/sense_latch.sch`, #109) |
 | `T_ACC` = 34 (external op duration) | **ASSUMPTION** | set equal to `T_ROW` |
 | Array contents valid after one initialisation sweep at reset; external reads do not restore a cell, writes and refreshes do | **ASSUMPTION** | modelling choice |
 
