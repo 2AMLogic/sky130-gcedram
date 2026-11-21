@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 149/149 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 151/151 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 149,
-    "passed_count": 149,
+    "check_count": 151,
+    "passed_count": 151,
     "checks": [
       {
         "check": "present",
@@ -778,6 +778,20 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/pex_bitcell_array/reference/gain_cell_2t_array_4x4_schematic.spice",
+        "passed": true,
+        "content_hash": "sha256:39b89352eef3d19ef005ec2424e949eca0ddcefaf0f450c25efef919f6431da1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex_bitcell_array/reference/gain_cell_2t_schematic.spice",
+        "passed": true,
+        "content_hash": "sha256:1b2bb9472e709d64cdeb64f33f965dd27fa4a5f5b56026b4fee48ee06f45ee87"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/refresh-energy/refresh_energy.spice",
         "passed": true,
         "content_hash": "sha256:a81122e4c3f4f35f9375a3dcc72da29cc0da4c6d3f5b302554d1efcecb3df552"
@@ -1081,7 +1095,7 @@
         "path": "attest/item9.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:de2773eda2e27d2fd3e89288a70814898044ee279e1109e9a3e807197c1b91e9"
+      "content_hash": "sha256:1301c9a7ae86b9301fe03f4a178d09908b1dd12289e610006a401c4988f08d15"
     }
   }
 }

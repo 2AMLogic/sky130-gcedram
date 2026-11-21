@@ -113,6 +113,8 @@
     "sim/loaded-column/klt/request_probe_ss40_lc_fresh_sel0.json",
     "sim/loaded-column/klt/request_probe_ss40_lc_refresh_bound_sel0.json",
     "sim/loaded-column/tb_loaded_column.spice.tmpl",
+    "sim/pex_bitcell_array/reference/gain_cell_2t_array_4x4_schematic.spice",
+    "sim/pex_bitcell_array/reference/gain_cell_2t_schematic.spice",
     "sim/refresh-energy/refresh_energy.spice",
     "sim/refresh-energy/request.json",
     "sim/refresh-energy/request_fine.json",
