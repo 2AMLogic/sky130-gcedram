@@ -221,8 +221,12 @@ flagged as its own most speculative assumptions.
 
 4. **Sense-margin definition mismatch — hypothesis, unresolved.** This repo
    assumes `delta_V = VDD/2 = 0.9 V`, a coarse rule stated as an explicit
-   ASSUMPTION absent a sense-amplifier design (see
-   [`sim/retention/README.md`](../sim/retention/README.md) "Sense margin").
+   ASSUMPTION absent a validated sense-margin budget: a schematic-level
+   sense latch exists (`design/sense_latch.sch`, #109) but has no layout
+   and its offset/yield is not validated (see
+   [`sense-stage-premise-decision.md`](sense-stage-premise-decision.md);
+   also [`sim/retention/README.md`](../sim/retention/README.md) "Sense
+   margin").
    Chun et al.'s 110 µs is defined via a "99.9% bit yield" criterion
    validated statistically against an actual fabricated sense amplifier
    across many cells and bitlines — a different, empirically-derived failure
