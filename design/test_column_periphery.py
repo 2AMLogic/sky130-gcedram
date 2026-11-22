@@ -12,12 +12,16 @@
 * The latch devices of every instance must equal design/sense_latch.spice.
 No xschem, ngspice or PDK needed.
 
+This module also hosts the shared SPICE X-card parser and deck matcher that
+design/test_sense_latch.py imports (issue #410).
+
 Run: python3 -I design/test_column_periphery.py
 """
 from __future__ import annotations
 
 import hashlib
 import re
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -35,7 +39,9 @@ LATCH_DEVICES = ("MN1", "MN2", "MP1", "MP2", "MNF", "MPH")
 SHARED = {"pref": "vref", "pcb": "pre_b", "prea": "vpre", "dinb1": "dinb", "dinb0": "dinb", "0": "GND",
           "wen": "wen", "wenb": "wenb", "sel": "sel", "selb": "selb", "vdd": "vdd",
           "en": "en", "enb": "enb"}
-LOCAL = ("rbl", "sbl", "ref", "sref", "wbl", "x", "y", "vn", "vp")
+# netlist-side ground canonicalisation; other decks (sense_stage.spice) pass
+# their own `shared` map instead of inheriting the slice-only aliases above
+GROUND = {"GND": "GND", "0": "GND"}
 
 
 def logical_lines(text: str):
@@ -76,41 +82,62 @@ def resized(dev: dict, w_um: float) -> dict:
     return want
 
 
-def canon(net: str, inst: str | None) -> str:
+def canon(net: str, inst: str | None, shared=SHARED) -> str:
     if inst and net.endswith("_" + inst):
         net = net[: -len(inst) - 1]
     net = re.sub(r"^(pcb|selb?)_\d+$", r"\1", net)  # per-edge-time control copies in the study deck
-    return SHARED.get(net, net) if inst else {"GND": "GND", "0": "GND"}.get(net, net)
+    return shared.get(net, net) if inst else GROUND.get(net, net)
 
 
-def netlist_devices(path: Path, names):
+def netlist_devices(path: Path):
+    """{name: parsed} for every X card in the netlist at `path`.
+
+    Deliberately unfiltered (issue #410): an unexpected card must surface here
+    -- and so fail the exactness tests -- not be silently discarded."""
     devs = {}
     for ln in logical_lines(path.read_text()):
         m = re.match(r"X(\w+) ", ln)
-        if m and not ln.startswith("*") and m.group(1) in names:
+        if m and not ln.startswith("*"):
             d = parse_device(ln)
             d["nets"] = tuple(canon(n, None) for n in d["nets"])
             devs[m.group(1)] = d
     return devs
 
 
-def deck_devices(names, path=DECK):
-    """{instance: {device: parsed}} for the given device names."""
+def deck_devices(names, path=DECK, *, shared=SHARED, skip_prefix="cp_"):
+    """{instance: {device: parsed}} for the given device names.
+
+    `shared` is the deck-side net canonicalisation map; `skip_prefix` drops
+    instances whose name starts with it (the study deck's `cp_` copies)."""
     pat = re.compile(r"X(%s)_(\w+) " % "|".join(names))
     inst: dict[str, dict] = {}
     for ln in logical_lines(path.read_text()):
         m = pat.match(ln)
-        if not m or m.group(2).startswith("cp_"):
+        if not m or (skip_prefix and m.group(2).startswith(skip_prefix)):
             continue
         d = parse_device(ln)
-        d["nets"] = tuple(canon(n, m.group(2)) for n in d["nets"])
+        d["nets"] = tuple(canon(n, m.group(2), shared) for n in d["nets"])
         inst.setdefault(m.group(2), {})[m.group(1)] = d
     return inst
 
 
 class ColumnPeripheryMatchesDeck(unittest.TestCase):
     def test_netlist_has_exactly_the_slice_devices(self):
-        self.assertEqual(sorted(netlist_devices(NETLIST, PERIPHERY_DEVICES)), sorted(PERIPHERY_DEVICES))
+        self.assertEqual(sorted(netlist_devices(NETLIST)), sorted(PERIPHERY_DEVICES))
+
+    def test_netlist_devices_surfaces_extra_cards(self):
+        # negative control (issue #410): an extra X card in netlist text must
+        # surface in netlist_devices() -- and so fail the exactness test above
+        # -- instead of being filtered out before the assertion runs
+        card = ("XMPS dinb gnd gnd gnd sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1"
+                " ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29"
+                " sa=0 sb=0 sd=0 mult=1 m=1")
+        with tempfile.TemporaryDirectory() as tmp:
+            doctored = Path(tmp) / "extra.spice"
+            doctored.write_text(NETLIST.read_text() + card + "\n")
+            devs = netlist_devices(doctored)
+        self.assertIn("MPS", devs)
+        self.assertNotEqual(sorted(devs), sorted(PERIPHERY_DEVICES))
 
     def test_netlist_provenance_hash_matches_schematic(self):
         h = hashlib.sha256(SCH.read_bytes()).hexdigest()
@@ -121,7 +148,7 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
         self.assertNotRegex(NETLIST.read_text(), r"(?m)^[SVRC]\w* ")
 
     def test_final_study_instances_equal_schematic(self):
-        sch = netlist_devices(NETLIST, PERIPHERY_DEVICES)
+        sch = netlist_devices(NETLIST)
         inst = deck_devices(PERIPHERY_DEVICES, STUDY)
         finals = {k: v for k, v in inst.items() if k.startswith("f00_")}
         self.assertEqual(sorted(finals), ["f00_w0", "f00_w1"])
@@ -137,10 +164,7 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
         for name in ("i00_w1", "i00_w0"):
             with self.subTest(instance=name):
                 for dev in BASELINE_114_DEVICES:
-                    want = dict(base[dev])
-                    if name.endswith("_w0") and "dinb" in want["nets"]:
-                        pass  # dinb1/dinb0 both canonicalise to dinb
-                    self.assertEqual(got[name][dev], want, f"{dev} in {name} drifted from the #114 baseline")
+                    self.assertEqual(got[name][dev], base[dev], f"{dev} in {name} drifted from the #114 baseline")
 
     def test_114_deck_is_self_consistent(self):
         inst = deck_devices(BASELINE_114_DEVICES)
@@ -158,20 +182,20 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
                     self.assertEqual(devs[dev], want, f"{dev} in {name}")
 
     def test_parser_keeps_full_geometry(self):
-        mp = netlist_devices(NETLIST, PERIPHERY_DEVICES)["MPPRE"]
+        mp = netlist_devices(NETLIST)["MPPRE"]
         for k in ("ad", "as", "pd", "ps", "nrd", "nrs"):
             self.assertIsNotNone(mp[k], f"{k} not parsed; geometry would go unchecked")
 
     def test_resize_convention_reproduces_every_schematic_device(self):
         # the single-finger rule used for the sweep expectation must reproduce the
         # schematic's own geometry at the schematic width, for every slice device
-        for dev, d in netlist_devices(NETLIST, PERIPHERY_DEVICES).items():
+        for dev, d in netlist_devices(NETLIST).items():
             with self.subTest(device=dev):
                 self.assertEqual(resized(d, d["W"]), d)
 
     def test_sweep_geometry_would_catch_unscaled_square_counts(self):
         # regression for the first sweep (run 20261009T204412Z): nrd/nrs left at the W=4 value
-        sch = netlist_devices(NETLIST, PERIPHERY_DEVICES)["MPPRE"]
+        sch = netlist_devices(NETLIST)["MPPRE"]
         stale = resized(sch, 1.0)
         stale["nrd"] = stale["nrs"] = sch["nrd"]
         self.assertNotEqual(stale, resized(sch, 1.0))
@@ -181,7 +205,7 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
         self.assertEqual((got8["nrd"], got8["nrs"]), (0.03625, 0.03625))
 
     def test_every_instance_latch_equals_sense_latch(self):
-        lat = netlist_devices(LATCH, LATCH_DEVICES)
+        lat = netlist_devices(LATCH)
         inst = deck_devices(LATCH_DEVICES)
         self.assertGreaterEqual(len(inst), 8)
         for name, devs in inst.items():
@@ -195,19 +219,19 @@ class ColumnPeripheryMatchesDeck(unittest.TestCase):
 
     def test_precharge_well_is_on_the_precharge_rail(self):
         # documented in the schematic header: MPPRE body = vpre, not vdd
-        devs = netlist_devices(NETLIST, PERIPHERY_DEVICES)
+        devs = netlist_devices(NETLIST)
         self.assertEqual(devs["MPPRE"]["nets"][3], "vpre")
         self.assertEqual(devs["MPPREF"]["nets"][3], "vref")
 
     def test_reference_precharge_is_a_copy_of_the_bitline_precharge(self):
-        devs = netlist_devices(NETLIST, PERIPHERY_DEVICES)
+        devs = netlist_devices(NETLIST)
         a, b = dict(devs["MPPRE"]), dict(devs["MPPREF"])
         self.assertEqual(a.pop("nets"), ("rbl", "pre_b", "vpre", "vpre"))
         self.assertEqual(b.pop("nets"), ("ref", "pre_b", "vref", "vref"))
         self.assertEqual(a, b)
 
     def test_final_isolation_is_nfet_only_and_dummy_matched(self):
-        devs = netlist_devices(NETLIST, PERIPHERY_DEVICES)
+        devs = netlist_devices(NETLIST)
         self.assertNotIn("MPS", devs)
         self.assertEqual(devs["MNS"]["W"], devs["MNSR"]["W"])
         self.assertEqual(devs["MNS"]["nets"], ("sbl", "sel", "rbl", "GND"))
