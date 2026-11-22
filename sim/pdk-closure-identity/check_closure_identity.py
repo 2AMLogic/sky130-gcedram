@@ -63,6 +63,7 @@ import re
 import subprocess
 import sys
 from collections import Counter
+from collections.abc import Collection, Iterator
 from pathlib import Path
 
 SCHEMA_VERSION = 1
@@ -371,48 +372,85 @@ def sha256s(multiset: list[str]) -> list[str]:
 # Deck parsing
 # --------------------------------------------------------------------------
 
-MODEL_CARD_LETTERS = "xmqj"
+FIXED_MODEL_FIELD = {"d": 3, "j": 4, "s": 5, "w": 4}
+SPICE_VALUE = re.compile(
+    r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?[a-z]*"
+    r"|\{[^}]*\}|'[^']*'",
+    re.IGNORECASE,
+)
 
 
-def deck_model_candidates(text: str) -> list[tuple[str, str]]:
-    """Model-name candidates from a deck's element cards.
-
-    For X/M/Q/J cards carrying `key=value` parameters, the model reference
-    is the last bare (no `=`) token before the first `=`-carrying token; for
-    bare cards, the last token (X cards: the subckt name is last by grammar)
-    or the positional 6th token (M cards: `M d g s b model`).  Returns
-    `(candidate, card)` pairs; used for the deck-model-absent safety check.
-    """
-    out = []
+def deck_cards(text: str) -> Iterator[str]:
+    """Yield logical cards with comment tails removed and continuations joined."""
+    card = ""
     for raw in text.splitlines():
-        line = raw.strip()
-        if not line or line.startswith(("*", ".", "+")):
-            continue
-        letter = line[0].lower()
-        if letter not in MODEL_CARD_LETTERS:
-            continue
-        tokens = line.split()
-        eq = next((k for k, t in enumerate(tokens[1:], 1) if "=" in t), None)
-        if eq is not None:
-            bare = [k for k in range(1, eq) if "=" not in tokens[k]]
-            if bare:
-                out.append((tokens[bare[-1]], line))
-        elif len(tokens) >= 2:
-            if letter == "m" and len(tokens) >= 6:
-                out.append((tokens[5], line))
-            elif letter == "x":
-                out.append((tokens[-1], line))
-    return out
-
-
-def deck_tokens(text: str) -> set[str]:
-    toks: set[str] = set()
-    for raw in text.splitlines():
-        line = raw.strip()
+        line = strip_comment_tails(raw).strip()
         if not line or line.startswith("*"):
             continue
-        toks.update(TOKEN_RE.findall(line))
-    return toks
+        if line.startswith("+"):
+            if not card:
+                raise fail(f"deck continuation without a card: {line[:100]}")
+            card += " " + line[1:].strip()
+        else:
+            if card:
+                yield card
+            card = line
+    if card:
+        yield card
+
+
+def deck_model_candidates(
+    text: str, known_blocks: Collection[str] = ()
+) -> list[tuple[str, str]]:
+    """PDK model references, one per device card, with the card for diagnostics."""
+    refs = []
+    local_models = set()
+    subckt_depth = 0
+    for card in deck_cards(text):
+        letter = card[0].lower()
+        if letter == ".":
+            fields = card.split(maxsplit=2)
+            directive = fields[0].lower()
+            if directive == ".subckt":
+                subckt_depth += 1
+            elif directive == ".ends":
+                subckt_depth -= 1
+            elif directive == ".model" and subckt_depth == 0 and len(fields) == 3:
+                local_models.add(fields[1])
+            continue
+        if letter in "vi":
+            continue
+
+        # The model precedes any named arguments, including X card PARAMS:.
+        fields = re.split(
+            r"\s+(?=params:(?:\s|$)|[^\s=]+\s*=)", card, maxsplit=1, flags=re.IGNORECASE
+        )[0].split()
+        if letter == "x" and len(fields) >= 2:
+            model = fields[-1]
+        elif letter == "m" and (
+            len(fields) == 6 or (len(fields) == 7 and fields[6].lower() == "off")
+        ):
+            model = fields[5]
+        elif letter in FIXED_MODEL_FIELD and len(fields) > FIXED_MODEL_FIELD[letter]:
+            model = fields[FIXED_MODEL_FIELD[letter]]
+        elif letter == "q" and len(fields) == 5:
+            model = fields[4]
+        elif letter in "rcl" and len(fields) == 4:
+            model = fields[3]
+            if model not in known_blocks and SPICE_VALUE.fullmatch(model):
+                continue
+        else:
+            raise fail(f"cannot identify the model for deck card: {card[:100]}")
+        refs.append((model, card))
+
+    # A top-level .model can supply a device such as the precharge switch.
+    # It cannot supply an X card, which calls a subcircuit. In a name
+    # collision, conservatively include the PDK definition in the comparison.
+    return [
+        (model, card)
+        for model, card in refs
+        if card[0].lower() == "x" or model in known_blocks or model not in local_models
+    ]
 
 
 # --------------------------------------------------------------------------
@@ -646,8 +684,6 @@ def build_record(args: argparse.Namespace) -> tuple[dict, int]:
             raise fail(f"root-{tag}: models.lib entry point not found: "
                        f"{d / lib}")
 
-    deck_texts = {d: d.read_text(errors="replace") for d in decks}
-
     closures_a = {s: Closure(pdk_dir_a, lib, s) for s in sections}
     closures_b = {s: Closure(pdk_dir_b, lib, s) for s in sections}
 
@@ -656,10 +692,13 @@ def build_record(args: argparse.Namespace) -> tuple[dict, int]:
     for c in list(closures_a.values()) + list(closures_b.values()):
         known_blocks |= set(c.facts().blocks)
     absent = []
-    for deck, text in deck_texts.items():
-        for cand, card in deck_model_candidates(text):
-            if cand not in known_blocks:
-                absent.append((deck.name, cand, card))
+    refs: Counter[str] = Counter()
+    for deck in decks:
+        deck_text = deck.read_text(errors="replace")
+        for model, card in deck_model_candidates(deck_text, known_blocks):
+            refs[model] += 1
+            if model not in known_blocks:
+                absent.append((deck.name, model, card))
     if absent:
         for name, cand, card in absent[:5]:
             print(f"error: deck {name} references model {cand!r} absent "
@@ -667,15 +706,7 @@ def build_record(args: argparse.Namespace) -> tuple[dict, int]:
         raise fail(f"{len(absent)} deck model reference(s) absent from the "
                    f"closure; cannot certify identity")
 
-    # Instantiated set: closure block names appearing in deck content.
-    instantiated: set[str] = set()
-    for text in deck_texts.values():
-        instantiated |= deck_tokens(text) & known_blocks
-    refs: Counter = Counter()
-    for text in deck_texts.values():
-        for name in instantiated:
-            refs[name] += len(re.findall(rf"\b{re.escape(name)}\b", text))
-
+    instantiated = set(refs)
     section_reports = {s: compare_section(closures_a[s], closures_b[s],
                                           instantiated)
                        for s in sections}
