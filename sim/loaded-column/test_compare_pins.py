@@ -135,6 +135,48 @@ class EquivExactMatch(unittest.TestCase):
         self.assertIn("`v_rbl_sense_v`", out)
 
 
+class EquivNonFinite(unittest.TestCase):
+    def _nonfinite_plus_above_bound(self, token, side):
+        def mutate(rows):
+            r = next(r for r in rows if r["pattern_rows3210"] == "0000")
+            r["v_sn_r0_wl_off_v"] = token
+            r["v_rbl_sense_v"] = f"{float(r['v_rbl_sense_v']) * 2:.6e}"
+        return mutate
+
+    def test_nan_or_inf_with_above_bound_value_is_unavailable_not_passing(self):
+        for token in ("nan", "inf", "-inf"):
+            with self.subTest(token=token):
+                with equiv_pair(self._nonfinite_plus_above_bound(token, "runner")) \
+                        as (rep, csvp):
+                    rc, out, err = run_equiv(rep, csvp)
+                self.assertEqual(rc, 2)
+                self.assertIn("non-finite", err)
+                self.assertIn("v_sn_r0_wl_off_v", err)
+                self.assertIn("0000", err)
+                self.assertNotIn("within the declared equivalence bound", out)
+
+    def test_non_finite_on_klt_side_is_unavailable(self):
+        report = fake_report(report_values())
+        key = f"{G.tag(G.PATTERNS[0])}__v_rbl_sense_v"
+        for m in report["corners"][0]["measurements"]:
+            if m["name"] == key:
+                m["value"] = float("nan")
+        age, sel = D.job_of(report)
+        good = fake_report(report_values())
+        rows = D.rows_for_corner(good["corners"][0], age=age, sel=sel,
+                                 knobs=dict(G.BASELINE_KNOBS),
+                                 c_sn_f=G.c_sn_farads(), prov=dict(PROV),
+                                 run_id="equiv", deck="lc_fresh_sel0.spice")
+        with tempfile.TemporaryDirectory() as d:
+            rep_p = Path(d) / "report.json"
+            rep_p.write_text(json.dumps(report))
+            csv_p = Path(d) / "rows.csv"
+            write_rows(csv_p, rows)
+            rc, out, err = run_equiv(str(rep_p), str(csv_p))
+        self.assertEqual(rc, 2, err)
+        self.assertIn("non-finite", err)
+
+
 class EquivNoMeasurements(unittest.TestCase):
     def test_an_empty_measurement_set_is_comparison_unavailable(self):
         rows = [{k: "" for k in R.FIELDS} for _ in G.PATTERNS]
