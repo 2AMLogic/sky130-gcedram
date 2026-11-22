@@ -941,7 +941,7 @@ the full device -> block map).
 
 | File | Purpose |
 |---|---|
-| [`sense_latch.gds`](sense_latch.gds) | The latch layout -- top cell `sense_latch_layout_0`, 12.23 x 11.94µm. |
+| [`sense_latch.gds`](sense_latch.gds) | The latch layout -- top cell `sense_latch_layout_0`, 12.23 x 13.07µm. |
 | [`generate_sense_latch.sh`](generate_sense_latch.sh) | Regenerates every `sense_latch*` artifact in place under the pinned toolchains; `--check` regenerates into a scratch dir, byte-compares all 15 artifacts with the committed ones (XOR-per-drawn-layer fallback via [`xor_layout_geometry.py`](xor_layout_geometry.py)) and gates on routed + DRC-clean + 6-device LVS match with verified body ties. |
 | [`sense_latch_topology.py`](sense_latch_topology.py) | The generator: parses `design/sense_latch.spice`, emits gen params / compose request / LVS reference / LVS request. Stdlib only. |
 | [`sense_latch_npair_mos.gds`](sense_latch_npair_mos.gds) / [`.json`](sense_latch_npair_mos.json) | `klt gen mos_array` block: the mirrored cross-coupled nmos pair (U0=`XMN1`, U1=`XMN2`), ringless. |
@@ -953,11 +953,14 @@ the full device -> block map).
 | [`sense_latch.layout.json`](sense_latch.layout.json) | `klt gen-compose` response -- placement/routing record. |
 | [`sense_latch.lvs_reference.spice`](sense_latch.lvs_reference.spice) | GENERATED plain-element (M-card) LVS reference, with the source netlist's sha256 in its header (`vn`/`vp` deliberately not `.SUBCKT` pins, matching the schematic's pin set). |
 | [`sense_latch.lvs.request.json`](sense_latch.lvs.request.json) | `klt lvs` request comparing `sense_latch.gds` against the reference. |
-| [`sense_latch.drc.result.json`](sense_latch.drc.result.json), [`sense_latch.lvs.result.json`](sense_latch.lvs.result.json) | Native `klt drc`/`klt lvs` reports (check pin, klt 0.9.1): DRC **clean** (0 violations); LVS **match**, 6/6/6 devices, 8/8/8 nets, `body_verification.status: "verified"` with an empty `device_classes` list. |
+| [`sense_latch.drc.result.json`](sense_latch.drc.result.json), [`sense_latch.lvs.result.json`](sense_latch.lvs.result.json) | Native `klt drc`/`klt lvs` reports (check pin, klt 0.9.2): DRC **clean** (0 violations); LVS **match**, 6/6/6 devices, 8/8/8 nets, `body_verification.status: "verified"` with an empty `device_classes` list. |
 
 ### Footprint, symmetry, dummies, taps
 
-- **Footprint**: 12.23 x 11.94µm (`x` -1.27..10.96, `y` -0.15..11.79).
+- **Footprint**: 12.23 x 13.07µm (`x` -1.27..10.96, `y` -0.785..12.285 from
+  `sense_latch_layout_0.dbbox()`, including the south `vn` under-row and
+  north `vdd` over-the-top routes; the placed blocks alone span `y`
+  -0.15..11.79).
   Two rows: the nmos pair + footer + ptap below, the pmos pair + header
   above; the 1.16µm channel between the rows carries the `vp`/`vdd`
   east-west tracks. Route totals: `vdd` 33.1µm, `vp` 31.4µm, `vn`
@@ -989,7 +992,7 @@ the full device -> block map).
 ### Cross-coupling routing
 
 `rbl` spans {XMN1.D, XMN2.G, XMP1.D, XMP2.G} and `ref` spans {XMN2.D,
-XMN1.G, XMP2.G, XMP1.D}, so inside each pair block the two nets' pads
+XMN1.G, XMP2.D, XMP1.G}, so inside each pair block the two nets' pads
 interleave and any planar routing of both must cross. The compose request
 resolves each crossing explicitly (see `sense_latch_topology.py`'s
 `build_compose_request`): `rbl`'s pair-internal leg takes a li1/met1
@@ -1008,7 +1011,7 @@ invalidating it.
 
 ```bash
 # One-time toolchain setup: the SAME two pinned klt venvs the array uses
-# (generation 0.8.0 / check 0.9.1, layout/generation-toolchain.json):
+# (generation 0.8.0 / check 0.9.2, layout/generation-toolchain.json):
 python3 layout/generation_toolchain.py install --role generation
 python3 layout/generation_toolchain.py install --role check
 source design/env.sh    # PDK_ROOT/PDK at the pinned open_pdks commit
@@ -1019,25 +1022,27 @@ source design/env.sh    # PDK_ROOT/PDK at the pinned open_pdks commit
                                             # assert routed + DRC clean +
                                             # LVS 6/6/6 match + verified bodies
 
+# Resolve the pinned check venv's `klt` (KLT_CHECK) from the repository root:
+eval "$(python3 -I layout/generation_toolchain.py preflight --role check)"
+
 # Report freshness under the active check pin (re-hash inputs vs the reports):
-cd layout && klt drc --check sense_latch.drc.result.json \
-              && klt lvs --check sense_latch.lvs.result.json
+( cd layout && "${KLT_CHECK}" drc --check sense_latch.drc.result.json \
+            && "${KLT_CHECK}" lvs --check sense_latch.lvs.result.json )
 
 # The six extracted M cards against the netlist table (extract to scratch,
 # then verify against the canonical netlist):
-cd layout
-klt extract sense_latch.gds --deck sky130 --top sense_latch_layout_0 \
-  -o /tmp/sense_latch.extract.spice --format json > /tmp/sense_latch.extract.json
-python3 sense_latch_topology.py --check-extract /tmp/sense_latch.extract.json \
-  --source-spice ../design/sense_latch.spice
-grep '^M\$' /tmp/sense_latch.extract.spice
+( cd layout && "${KLT_CHECK}" extract sense_latch.gds --deck sky130 --top sense_latch_layout_0 \
+    -o /tmp/sense_latch.extract.spice --format json > /tmp/sense_latch.extract.json \
+  && python3 -I sense_latch_topology.py --check-extract /tmp/sense_latch.extract.json \
+    --source-spice ../design/sense_latch.spice \
+  && grep '^M\$' /tmp/sense_latch.extract.spice )
 
 # Provenance: re-rendered reference == committed file (also enforced by
 # layout/test_generation_reproducibility.py):
 python3 -I layout/test_generation_reproducibility.py
 ```
 
-Extraction evidence for the committed stream (klt 0.9.1): exactly six
+Extraction evidence for the committed stream (klt 0.9.2): exactly six
 devices -- `M$1 rbl ref vn GND nfet W=1U`, `M$2 vn rbl ref GND nfet W=1U`
 (D/S order swapped, netgen-symmetric), `M$3 vn en GND GND nfet W=2U`,
 `M$4 rbl ref vp vdd pfet W=2U`, `M$5 vp rbl ref vdd pfet W=2U`,
@@ -1047,15 +1052,17 @@ terminal on `GND`, every pfet fourth terminal on `vdd`.
 ### DRC coverage of the committed stream
 
 `sense_latch.drc.result.json` (`status: "clean"`, `violation_count: 0`,
-`drc__error__count: 0`) records its own coverage: **65 rules checked over
-the 13 drawn layers** `64/20 65/20 65/44 66/20 66/44 67/20 67/44 68/20
-68/44 69/20 93/44 94/20 95/20` (nwell, diff, tap, poly, contact, li1,
-mcon, met1, via, met2, nplus, pplus, npc), `rules_skipped: []`,
-`nothing_checked: false`; the label-only pairs `67/5 68/5 69/5` are
-listed as `layers_in_stream_without_rules` (pin/label datatypes carry no
-DRC rules), and 54 further `unmodeled_rules` (e.g. `poly.3`, `licon.13`,
-the `capm` family) are disclosed as out of the curated deck's scope --
-the same honest-coverage statement the array's DRC reports make.
+`metrics.drc__error__count: 0`) records its own coverage under the klt
+0.9.2 check pin: **65 rules checked over the 13 drawn layers** `64/20
+65/20 65/44 66/20 66/44 67/20 67/44 68/20 68/44 69/20 93/44 94/20 95/20`
+(nwell, diff, tap, poly, contact, li1, mcon, met1, via, met2, nplus,
+pplus, npc), `skipped: []` (88 `rules_skipped`/`inapplicable` rules for
+layers absent from this stream), `nothing_checked: false`; the label-only
+pairs `67/5 68/5 69/5` are listed as `layers_in_stream_without_rules`
+(pin/label datatypes carry no DRC rules), and 347 further
+`unmodeled_rules` (e.g. `poly.3`, `licon.13`, the `capm` and `MR_*`
+families) are disclosed as out of the curated deck's scope -- the same
+honest-coverage statement the array's DRC reports make.
 
 ### Provenance pin
 
@@ -1076,14 +1083,14 @@ reports.
 
 The latch reuses the array's two pins unchanged
 ([`generation-toolchain.json`](generation-toolchain.json)): generation
-klt **0.8.0** (block `gen` + `gen-compose`), check klt **0.9.1**
+klt **0.8.0** (block `gen` + `gen-compose`), check klt **0.9.2**
 (`drc`/`lvs`/`extract`), both on KLayout 0.30.12 at the pinned open_pdks
 commit. Under the generation pin the stream is byte-stable:
 `generate_sense_latch.sh --check` reports **all 15 artifacts
 byte-identical** with the committed ones (measured at issue #387's
 landing), so no XOR fallback was needed -- the fallback exists for the
 day the generation pin moves and bytes drift the way the array's did at
-klt 0.9.1 (#275).
+klt 0.9.1 (#275) and 0.9.2 (#388).
 
 ### klayout-tools friction encountered (issue #387)
 

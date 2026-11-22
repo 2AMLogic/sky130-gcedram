@@ -386,14 +386,183 @@ class SenseLatchReferenceProvenancePin(unittest.TestCase):
         dropped = "\n".join(ln for ln in self.live.splitlines() if not ln.startswith("XMPH"))
         with self.assertRaises(ValueError):
             self.render(dropped)
+        # swapped XMP1/XMP2 drains violate U0/U1 vertical alignment with npair
+        swapped_p = (
+            self.live
+            .replace("XMP1 rbl ref vp vdd", "XMP1 ref rbl vp vdd", 1)
+            .replace("XMP2 ref rbl vp vdd", "XMP2 rbl ref vp vdd", 1)
+        )
+        with self.assertRaisesRegex(ValueError, "U0/U1 order"):
+            self.render(swapped_p)
+        # shorted enables (en == enb)
+        shorted_en = (
+            self.live
+            .replace("XMPH vp enb vdd vdd", "XMPH vp en vdd vdd", 1)
+        )
+        with self.assertRaisesRegex(ValueError, "pairwise distinct"):
+            self.render(shorted_en)
+        # asymmetric matched-pair sizing
+        asym = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1.5 nf=1",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, "must share W/L"):
+            self.render(asym)
+
+    def test_unsupported_device_cards_and_models_are_refused(self):
+        # seventh device with an unrecognized sky130 model
+        lvt = (
+            self.live
+            + "XLOAD rbl ref vn GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 mult=1 m=1\n"
+        )
+        with self.assertRaisesRegex(ValueError, r"XLOAD.*sky130_fd_pr__nfet_01v8_lvt"):
+            self.render(lvt)
+        # passive/non-X device card
+        cap = self.live + "C1 rbl GND 10f\n"
+        with self.assertRaisesRegex(ValueError, "C1"):
+            self.render(cap)
+        # seventh device with an otherwise-supported model
+        extra_nfet = (
+            self.live
+            + "XLOAD rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 mult=1 m=1\n"
+        )
+        with self.assertRaisesRegex(ValueError, "XLOAD"):
+            self.render(extra_nfet)
+        # unexpected SPICE directive
+        directive = self.live + ".param foo=1\n"
+        with self.assertRaisesRegex(ValueError, r"\.param"):
+            self.render(directive)
+
+    def test_unsupported_fingers_and_multiplicities_are_refused(self):
+        nf2 = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*nf=2"):
+            self.render(nf2)
+
+        mult2 = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=2 m=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*mult=2"):
+            self.render(mult2)
+
+        m2 = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*m=2"):
+            self.render(m2)
+
+        unknown_param = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 par=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*par=2"):
+            self.render(unknown_param)
 
     def test_committed_compose_request_renders_from_the_committed_block_reports(self):
+        parsed = L.parse_sense_latch_spice(str(REPO / "design" / "sense_latch.spice"))
         reports = {b: L.load_block_report(str(HERE / L._report_name(b))) for b in L.BLOCKS}
-        want = L.build_compose_request(reports)
+        want = L.build_compose_request(reports, parsed)
         got = json.loads((HERE / "sense_latch.layout.request.json").read_text())
         self.assertEqual(got, want,
                          "sense_latch.layout.request.json is stale: re-run "
                          "layout/generate_sense_latch.sh (or its --emit compose-request step)")
+
+    def test_swapped_enable_changes_compose_request_pins(self):
+        swapped = (
+            self.live
+            .replace("XMNF vn en GND GND", "XMNF vn enb GND GND", 1)
+            .replace("XMPH vp enb vdd vdd", "XMPH vp en vdd vdd", 1)
+        )
+        _, parsed = self.render(swapped)
+        reports = {b: L.load_block_report(str(HERE / L._report_name(b))) for b in L.BLOCKS}
+        req = L.build_compose_request(reports, parsed)
+        committed = json.loads((HERE / "sense_latch.layout.request.json").read_text())
+        self.assertNotEqual(req, committed)
+        self.assertEqual(
+            req["pins"],
+            [
+                {"net": "enb", "block": "footer", "port": "U0_G"},
+                {"net": "en", "block": "header", "port": "U0_G"},
+            ],
+        )
+
+    def _canonical_extract_report(self) -> dict:
+        # Matches the committed klt extract output (including D/S order
+        # swapped on M$2 and M$5 to prove unordered S/D matching works).
+        return {
+            "device_count": 6,
+            "device_counts": {"nfet": 3, "pfet": 3},
+            "devices": [
+                {"name": "$1", "class": "nfet", "nets": {"d": "rbl", "g": "ref", "s": "vn", "b": "GND"}, "params": {"w_um": 1.0, "l_um": 0.15}},
+                {"name": "$2", "class": "nfet", "nets": {"d": "vn", "g": "rbl", "s": "ref", "b": "GND"}, "params": {"w_um": 1.0, "l_um": 0.15}},
+                {"name": "$3", "class": "nfet", "nets": {"d": "vn", "g": "en", "s": "GND", "b": "GND"}, "params": {"w_um": 2.0, "l_um": 0.15}},
+                {"name": "$4", "class": "pfet", "nets": {"d": "rbl", "g": "ref", "s": "vp", "b": "vdd"}, "params": {"w_um": 2.0, "l_um": 0.15}},
+                {"name": "$5", "class": "pfet", "nets": {"d": "vp", "g": "rbl", "s": "ref", "b": "vdd"}, "params": {"w_um": 2.0, "l_um": 0.15}},
+                {"name": "$6", "class": "pfet", "nets": {"d": "vp", "g": "enb", "s": "vdd", "b": "vdd"}, "params": {"w_um": 4.0, "l_um": 0.15}},
+            ],
+        }
+
+    def _run_extract_check(self, report: dict, spice_text: str | None = None) -> list[str]:
+        if spice_text is None:
+            parsed = L.parse_sense_latch_spice(str(REPO / "design" / "sense_latch.spice"))
+        else:
+            _, parsed = self.render(spice_text)
+        ext_path = self.dir / "extract.json"
+        ext_path.write_text(json.dumps(report))
+        return L.check_extract(str(ext_path), parsed)
+
+    def test_extract_check_accepts_canonical_and_rejects_terminal_and_width_mutations(self):
+        base = self._canonical_extract_report()
+        self.assertEqual(self._run_extract_check(base), [])
+
+        # Tie M$1's gate to its own drain (rbl instead of ref)
+        tied = json.loads(json.dumps(base))
+        tied["devices"][0]["nets"]["g"] = "rbl"
+        probs = self._run_extract_check(tied)
+        self.assertTrue(probs, "gate tied to drain must fail check_extract")
+        self.assertTrue(any("XMN1" in p for p in probs), probs)
+
+        # Wrong footer width (1.0um matches XMN1/XMN2 class+width, not XMNF's 2.0um)
+        wrong_w = json.loads(json.dumps(base))
+        wrong_w["devices"][2]["params"]["w_um"] = 1.0
+        probs = self._run_extract_check(wrong_w)
+        self.assertTrue(probs, "incorrect footer width must fail check_extract")
+        self.assertTrue(any("XMNF" in p and "W=2.0" in p for p in probs), probs)
+
+        # Swapped footer/header enables in extracted report
+        swapped_ext = json.loads(json.dumps(base))
+        swapped_ext["devices"][2]["nets"]["g"] = "enb"
+        swapped_ext["devices"][5]["nets"]["g"] = "en"
+        probs = self._run_extract_check(swapped_ext)
+        self.assertTrue(probs, "swapped enables in extract must fail check_extract")
+        self.assertTrue(any("XMNF" in p for p in probs) and any("XMPH" in p for p in probs), probs)
+
+        # Canonical extract checked against a schematic with swapped enables
+        swapped_sch = (
+            self.live
+            .replace("XMNF vn en GND GND", "XMNF vn enb GND GND", 1)
+            .replace("XMPH vp enb vdd vdd", "XMPH vp en vdd vdd", 1)
+        )
+        probs = self._run_extract_check(base, spice_text=swapped_sch)
+        self.assertTrue(probs, "canonical extract against swapped-enable schematic must fail")
+
+    def test_generate_sense_latch_xor_fallback_uses_pinned_check_python(self):
+        text = (HERE / "generate_sense_latch.sh").read_text()
+        self.assertIn('"${KLT_CHECK_PYTHON}" -I "${LAYOUT_DIR}/xor_layout_geometry.py"', text)
+        self.assertNotRegex(text, r"python3\s+-I\s+.*xor_layout_geometry\.py")
 
 
 # ----------------------------------------------------- toolchain guard

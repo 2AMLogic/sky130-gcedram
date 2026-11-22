@@ -132,7 +132,7 @@ echo "== 2/6: emit + run klt gen-compose (place, route rbl/ref/vn/vp/GND/vdd, la
     > "${OUT_DIR}/sense_latch.layout.request.json" )
 run "${KLT_GENERATION}" gen-compose sense_latch.layout.request.json --format json \
   > sense_latch.layout.json
-UNROUTED="$(python3 -c "import json;print(json.load(open('sense_latch.layout.json')).get('unrouted_nets') or [])")"
+UNROUTED="$(python3 -I -c "import json;print(json.load(open('sense_latch.layout.json')).get('unrouted_nets') or [])")"
 echo "   unrouted_nets: ${UNROUTED}"
 [[ "${UNROUTED}" == "[]" ]] || FAILS+=("klt gen-compose left net(s) unrouted: ${UNROUTED}")
 
@@ -165,7 +165,7 @@ SCH_SPICE_HASH="$(sha256sum "${SOURCE_SPICE}" | cut -d' ' -f1)"
 run "${KLT_CHECK}" lvs sense_latch.lvs.request.json --format json > sense_latch.lvs.result.json || true
 LVS_STATUS="$(json_field sense_latch.lvs.result.json status)"
 LVS_BODY="$(json_field sense_latch.lvs.result.json body_verification.status)"
-LVS_DEVICES="$(python3 -c "
+LVS_DEVICES="$(python3 -I -c "
 import json
 try: c = json.load(open('sense_latch.lvs.result.json'))['counts']['devices']
 except Exception: c = {}
@@ -210,7 +210,7 @@ else
           # Drawn layers of the committed latch (13 pairs; enumerate, never
           # count -- layout/xor_layout_geometry.py's own rule). The label-only
           # pairs 67/5, 68/5, 69/5 are compared by the tool's label check.
-          if python3 -I "${LAYOUT_DIR}/xor_layout_geometry.py" \
+          if "${KLT_CHECK_PYTHON}" -I "${LAYOUT_DIR}/xor_layout_geometry.py" \
                --committed "${LAYOUT_DIR}/sense_latch.gds" \
                --regenerated "${OUT_DIR}/sense_latch.gds" \
                --top sense_latch_layout_0 \

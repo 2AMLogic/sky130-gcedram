@@ -41,7 +41,7 @@ the parser below validates every expectation and refuses anything else):
 
 Cross-coupling routing (the latch's one hard topology constraint): rbl
 spans {XMN1.D, XMN2.G, XMP1.D, XMP2.G} and ref spans {XMN2.D, XMN1.G,
-XMP2.G, XMP1.D}, so within each pair block the two nets' pads interleave
+XMP2.D, XMP1.G}, so within each pair block the two nets' pads interleave
 and any planar routing of both nets must cross. The compose request
 resolves each crossing explicitly instead of hoping the router's bounded
 detour search finds one: rbl's pair-internal leg takes a li1/met1 corridor
@@ -60,8 +60,10 @@ actual generated block, never from a hardcoded pitch guess).
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import hashlib
 import json
+import math
 import re
 import sys
 from typing import Any
@@ -221,9 +223,22 @@ def _r3(v: float) -> float:
     return round(v, 3)
 
 
-def build_compose_request(reports: dict[str, dict]) -> dict:
+def build_compose_request(reports: dict[str, dict], parsed: dict[str, Any]) -> dict:
     npair, ppair = reports["npair"], reports["ppair"]
     ptap, footer, header = reports["ptap"], reports["footer"], reports["header"]
+    devices = parsed["devices"]
+    n1, n2 = devices[PAIR_N[0]], devices[PAIR_N[1]]
+    p1 = devices[PAIR_P[0]]
+    nf, hd = devices[FOOTER], devices[HEADER]
+
+    rbl_net = n1["nets"]["D"]
+    ref_net = n2["nets"]["D"]
+    vn_net = n1["nets"]["S"]
+    vp_net = p1["nets"]["S"]
+    gnd_net = nf["nets"]["S"]
+    vdd_net = hd["nets"]["S"]
+    en_net = nf["nets"]["G"]
+    enb_net = hd["nets"]["G"]
 
     origins = {
         "npair": (0.0, 0.0),
@@ -277,7 +292,7 @@ def build_compose_request(reports: dict[str, dict]) -> dict:
         # pad-band hop and straight vertical); only the ppair-internal leg
         # needs its explicit corridor so ref's met2 crossing stays clear.
         {
-            "net": "rbl",
+            "net": rbl_net,
             "pins": [pin("npair", "U0_D"), pin("ppair", "U0_D"),
                      pin("npair", "U1_G"), pin("ppair", "U1_G")],
             "legs": [leg(("ppair", "U0_D"), ("ppair", "U1_G"), [
@@ -291,7 +306,7 @@ def build_compose_request(reports: dict[str, dict]) -> dict:
         # pinned to a met2 backbone (layer_role metal3) that hops over
         # rbl's met1/li1 corridor, with via drops at its two pins only.
         {
-            "net": "ref",
+            "net": ref_net,
             "pins": [pin("npair", "U0_G"), pin("ppair", "U0_G"),
                      pin("npair", "U1_D"), pin("ppair", "U1_D")],
             "legs": [leg(("ppair", "U0_G"), ("ppair", "U1_D"), [
@@ -304,7 +319,7 @@ def build_compose_request(reports: dict[str, dict]) -> dict:
         # bottom row and rise east of the footer so footer.U0_D is reached
         # from the east side its port faces.
         {
-            "net": "vn",
+            "net": vn_net,
             "pins": [pin("npair", "U1_S"), pin("npair", "U0_S"), pin("footer", "U0_D")],
             "legs": [
                 leg(("npair", "U1_S"), ("footer", "U0_D"), [
@@ -325,7 +340,7 @@ def build_compose_request(reports: dict[str, dict]) -> dict:
         # through the ring's S opening, run east on channel track 1 and
         # rise into the header's own S opening to header.U0_D.
         {
-            "net": "vp",
+            "net": vp_net,
             "pins": [pin("ppair", "U1_S"), pin("ppair", "U0_S"), pin("header", "U0_D")],
             "legs": [
                 leg(("ppair", "U1_S"), ("header", "U0_D"), [
@@ -340,14 +355,14 @@ def build_compose_request(reports: dict[str, dict]) -> dict:
         # GND = substrate tap + footer source (XMNF.S): head-on from the
         # ptap block sitting immediately west of the footer.
         {
-            "net": "GND",
+            "net": gnd_net,
             "pins": [pin("ptap", "TAP_E"), pin("footer", "U0_S")],
         },
         # vdd = both pfet well taps + header source (XMPH.S): ring-to-ring
         # over the top (both TAP_N ports face north), plus the header
         # source tie entering the header's S opening at U0_S's column.
         {
-            "net": "vdd",
+            "net": vdd_net,
             "pins": [pin("ppair", "TAP_N"), pin("ppair", "TAP_E"),
                      pin("header", "TAP_N"), pin("header", "U0_S")],
             "legs": [
@@ -387,8 +402,8 @@ def build_compose_request(reports: dict[str, dict]) -> dict:
             "cross_block_layer_role": "metal2",
         },
         "pins": [
-            {"net": "en", "block": "footer", "port": "U0_G"},
-            {"net": "enb", "block": "header", "port": "U0_G"},
+            {"net": en_net, "block": "footer", "port": "U0_G"},
+            {"net": enb_net, "block": "header", "port": "U0_G"},
         ],
         "options": {
             "cell_name": "sense_latch_layout_0",
@@ -399,30 +414,119 @@ def build_compose_request(reports: dict[str, dict]) -> dict:
 
 # ---- canonical-netlist parsing --------------------------------------------
 
-_X_CARD = re.compile(
-    r"^(?P<name>\S+)\s+(?P<d>\S+)\s+(?P<g>\S+)\s+(?P<s>\S+)\s+(?P<b>\S+)\s+"
-    r"(?P<model>sky130_fd_pr__(?:nfet|pfet)_01v8)\b"
-)
-_PARAM = re.compile(r"(?P<key>[A-Za-z][A-Za-z0-9_]*)\s*=\s*(?P<val>[^\s]+)")
+_PARAM_TOK = re.compile(r"^(?P<key>[A-Za-z][A-Za-z0-9_]*)=(?P<val>[^\s]+)$")
+_ALLOWED_MOS_PARAMS = frozenset({
+    "l", "w", "nf", "mult", "m",
+    "ad", "as", "pd", "ps", "nrd", "nrs", "sa", "sb", "sd",
+})
+_UNITY_MOS_PARAMS = ("nf", "mult", "m")
+
+
+def _parse_x_device_card(line: str, path: str) -> tuple[str, dict[str, Any]]:
+    """Parse one 4-terminal MOSFET X card and reject any model, parameter or
+    finger/multiplicity value this six-device single-finger generator cannot
+    represent."""
+    tokens = line.split()
+    name = tokens[0]
+    if not name.lower().startswith("x"):
+        raise ValueError(
+            f"{path}: unsupported device card {name!r} ({line!r}); "
+            f"this generator only supports the six {NFET_MODEL}/{PFET_MODEL} X cards"
+        )
+    if len(tokens) < 6 or any("=" in tok for tok in tokens[1:6]):
+        raise ValueError(
+            f"{path}: instance {name} is not a 4-terminal MOSFET X card ({line!r})"
+        )
+    d, g, s, b, model = tokens[1:6]
+    if model not in MODEL_CLASS:
+        raise ValueError(
+            f"{path}: instance {name} uses unsupported model {model!r} "
+            f"(supported: {', '.join(sorted(MODEL_CLASS))})"
+        )
+
+    param_text = re.sub(r"\s*=\s*", "=", " ".join(tokens[6:]))
+    params: dict[str, tuple[str, str]] = {}
+    for tok in param_text.split():
+        m = _PARAM_TOK.match(tok)
+        if not m:
+            raise ValueError(
+                f"{path}: instance {name} has unsupported token {tok!r}"
+            )
+        orig_key, val = m["key"], m["val"]
+        key = orig_key.lower()
+        if key not in _ALLOWED_MOS_PARAMS:
+            raise ValueError(
+                f"{path}: instance {name} has unsupported parameter {orig_key}={val}"
+            )
+        if key in params:
+            raise ValueError(
+                f"{path}: instance {name} specifies duplicate parameter {orig_key!r}"
+            )
+        params[key] = (orig_key, val)
+
+    for unity_key in _UNITY_MOS_PARAMS:
+        if unity_key in params:
+            orig_key, raw_val = params[unity_key]
+            try:
+                num = float(raw_val)
+            except ValueError as exc:
+                raise ValueError(
+                    f"{path}: instance {name} has unsupported parameter {orig_key}={raw_val} "
+                    f"(this generator only supports {unity_key}=1)"
+                ) from exc
+            if not math.isfinite(num) or num != 1.0:
+                raise ValueError(
+                    f"{path}: instance {name} has unsupported parameter {orig_key}={raw_val} "
+                    f"(this generator only supports {unity_key}=1)"
+                )
+
+    dims: dict[str, float] = {}
+    for dim_key, label in (("w", "W"), ("l", "L")):
+        if dim_key not in params:
+            raise ValueError(f"{path}: instance {name} is missing {label}")
+        orig_key, raw_val = params[dim_key]
+        try:
+            num = float(raw_val)
+        except ValueError as exc:
+            raise ValueError(
+                f"{path}: instance {name} has non-numeric {orig_key}={raw_val}"
+            ) from exc
+        if not math.isfinite(num) or num <= 0:
+            raise ValueError(
+                f"{path}: instance {name} has non-positive {orig_key}={raw_val}"
+            )
+        dims[dim_key] = num
+
+    return name, {
+        "class": MODEL_CLASS[model],
+        "model": model,
+        "nets": {"D": d, "G": g, "S": s, "B": b},
+        "w": dims["w"],
+        "l": dims["l"],
+    }
 
 
 def parse_sense_latch_spice(path: str) -> dict[str, Any]:
     """Parse design/sense_latch.spice's six X cards (D/G/S/B order, W/L
     params, `+`-continuation lines joined) plus the commented `**.subckt`
     wrapper line that names the top cell and its external pins. Returns
-    `{devices, top, pins}`; raises ValueError on any structural surprise
-    so a restructured netlist can never be silently mis-laid-out."""
+    `{devices, top, pins}`; raises ValueError on any unrecognized card,
+    unsupported model/parameter/multiplicity or structural surprise so a
+    modified netlist can never be silently mis-laid-out."""
     with open(path, encoding="utf-8") as fh:
         raw_lines = fh.read().splitlines()
 
     lines: list[str] = []
-    for line in raw_lines:
-        if line.startswith("*"):
+    for lineno, raw in enumerate(raw_lines, 1):
+        stripped = raw.strip()
+        if not stripped or stripped.startswith("*"):
             continue
-        if line.startswith("+") and lines:
-            lines[-1] += " " + line[1:]
+        if stripped.startswith("+"):
+            if not lines:
+                raise ValueError(f"{path}:{lineno}: stray continuation line {stripped!r}")
+            lines[-1] += " " + stripped[1:].strip()
         else:
-            lines.append(line)
+            lines.append(stripped)
 
     top, top_pins = None, []
     for line in raw_lines:
@@ -434,24 +538,19 @@ def parse_sense_latch_spice(path: str) -> dict[str, Any]:
 
     devices: dict[str, dict] = {}
     for line in lines:
-        m = _X_CARD.match(line)
-        if not m:
-            continue
-        params = {p["key"]: p["val"] for p in _PARAM.finditer(line)}
-        name = m["name"]
+        if line.startswith("."):
+            parts = line.split()
+            directive = parts[0].lower()
+            if directive == ".end" and len(parts) == 1:
+                continue
+            if directive == ".global" and len(parts) == 2 and parts[1] == SUBSTRATE_NET:
+                continue
+            raise ValueError(f"{path}: unsupported SPICE directive {line!r}")
+
+        name, dev = _parse_x_device_card(line, path)
         if name in devices:
             raise ValueError(f"duplicate instance {name} in {path}")
-        try:
-            w = float(params["W"])
-            l = float(params["L"])
-        except KeyError as exc:
-            raise ValueError(f"{name} in {path} is missing {exc.args[0]}") from exc
-        devices[name] = {
-            "class": MODEL_CLASS[m["model"]],
-            "nets": {"D": m["d"], "G": m["g"], "S": m["s"], "B": m["b"]},
-            "w": w,
-            "l": l,
-        }
+        devices[name] = dev
 
     missing = [d for d in ALL_DEVICES if d not in devices]
     if missing:
@@ -468,8 +567,9 @@ def parse_sense_latch_spice(path: str) -> dict[str, Any]:
 
 def _validate_structure(devices: dict, top: str, top_pins: list[str]) -> None:
     """The six-device latch contract (issue #387's connectivity table):
-    two cross-coupled pairs, a footer, a header, the substrate/well tie
-    nets, and the schematic's own pin set on the wrapper."""
+    two matched cross-coupled pairs, a footer, a header, the substrate/well
+    tie nets, distinct canonical nets, and the schematic's own pin set on
+    the wrapper."""
     n1, n2 = (devices[d] for d in PAIR_N)
     p1, p2 = (devices[d] for d in PAIR_P)
     nf, hd = devices[FOOTER], devices[HEADER]
@@ -483,9 +583,16 @@ def _validate_structure(devices: dict, top: str, top_pins: list[str]) -> None:
     if hd["class"] != "pfet":
         raise ValueError(f"{HEADER} must be {PFET_MODEL}")
 
+    if (n1["w"], n1["l"]) != (n2["w"], n2["l"]):
+        raise ValueError(f"{PAIR_N[0]} and {PAIR_N[1]} must share W/L, got {(n1['w'], n1['l'])} vs {(n2['w'], n2['l'])}")
+    if (p1["w"], p1["l"]) != (p2["w"], p2["l"]):
+        raise ValueError(f"{PAIR_P[0]} and {PAIR_P[1]} must share W/L, got {(p1['w'], p1['l'])} vs {(p2['w'], p2['l'])}")
+
     for a, b, label in ((n1, n2, PAIR_N), (p1, p2, PAIR_P)):
         if a["nets"]["D"] != b["nets"]["G"] or b["nets"]["D"] != a["nets"]["G"]:
             raise ValueError(f"{label} is not cross-coupled (a.D!=b.G or b.D!=a.G)")
+        if a["nets"]["D"] == b["nets"]["D"]:
+            raise ValueError(f"{label} drains are shorted to the same net {a['nets']['D']!r}")
         if a["nets"]["S"] != b["nets"]["S"]:
             raise ValueError(f"{label} sources are not shared")
 
@@ -502,8 +609,25 @@ def _validate_structure(devices: dict, top: str, top_pins: list[str]) -> None:
         raise ValueError(f"{HEADER} must tie source and bulk to {WELL_NET} and drain to vp")
 
     rbl, ref = n1["nets"]["D"], n2["nets"]["D"]
-    if {rbl, ref} != {p1["nets"]["D"], p2["nets"]["D"]}:
-        raise ValueError("the nmos and pmos pair drains do not share the same rbl/ref nets")
+    if p1["nets"]["D"] != rbl or p2["nets"]["D"] != ref:
+        raise ValueError(
+            f"{PAIR_P} drains ({p1['nets']['D']}, {p2['nets']['D']}) must match "
+            f"{PAIR_N} drains ({rbl}, {ref}) in U0/U1 order"
+        )
+
+    role_nets = {
+        "rbl": rbl,
+        "ref": ref,
+        "vn": vn,
+        "vp": vp,
+        f"{FOOTER}.G": nf["nets"]["G"],
+        f"{HEADER}.G": hd["nets"]["G"],
+        "substrate": SUBSTRATE_NET,
+        "well": WELL_NET,
+    }
+    if len(set(role_nets.values())) != len(role_nets):
+        raise ValueError(f"canonical latch nets must be pairwise distinct, got {role_nets}")
+
     expected_pins = [rbl, ref, nf["nets"]["G"], hd["nets"]["G"], WELL_NET]
     if sorted(top_pins) != sorted(expected_pins):
         raise ValueError(
@@ -578,46 +702,88 @@ def build_lvs_request(reference_path: str) -> dict:
 
 # ---- extract verification --------------------------------------------------
 
+def _norm_um(val: Any) -> float | None:
+    if isinstance(val, (int, float)) and not isinstance(val, bool) and math.isfinite(val):
+        return round(float(val), 6)
+    return None
+
+
+def _sd_pair(s: Any, d: Any) -> tuple[Any, Any]:
+    pair = [s, d]
+    pair.sort(key=lambda v: (v is None, "" if v is None else str(v)))
+    return (pair[0], pair[1])
+
+
+def _fmt_sig(sig: tuple) -> str:
+    cls, w, l, g, b, sd = sig
+    return f"{cls} W={w} L={l} G={g!r} B={b!r} S/D=({sd[0]!r}, {sd[1]!r})"
+
+
 def check_extract(extract_json_path: str, parsed: dict) -> list[str]:
-    """Compare a `klt extract` report against the parsed canonical netlist:
-    exactly six devices (three nfet with body=GND, three pfet with
-    body=vdd), each with the netlist's own W/L, and every net the netlist
-    declares present. Returns a list of problems (empty = conforms)."""
+    """Compare a `klt extract` report against the parsed canonical netlist
+    by exact multiset equality of (model class, W, L, gate, bulk, unordered
+    source/drain) with actual net names. Returns a list of problems (empty =
+    conforms)."""
     with open(extract_json_path, encoding="utf-8") as fh:
         report = json.load(fh)
 
     problems: list[str] = []
     devices = parsed["devices"]
     expected_counts = {"nfet": 0, "pfet": 0}
-    for dev in devices.values():
+    expected_sigs: Counter[tuple] = Counter()
+    sig_to_names: dict[tuple, list[str]] = {}
+    for name, dev in devices.items():
         expected_counts[dev["class"]] += 1
+        nets = dev["nets"]
+        sig = (
+            dev["class"],
+            _norm_um(dev["w"]),
+            _norm_um(dev["l"]),
+            nets["G"],
+            nets["B"],
+            _sd_pair(nets["S"], nets["D"]),
+        )
+        expected_sigs[sig] += 1
+        sig_to_names.setdefault(sig, []).append(name)
+
+    ext_devices = report.get("devices")
+    if not isinstance(ext_devices, list):
+        ext_devices = []
+        problems.append("extract report is missing a 'devices' list")
 
     if report.get("device_count") != len(devices):
         problems.append(f"device_count {report.get('device_count')} != {len(devices)}")
+    if len(ext_devices) != len(devices):
+        problems.append(f"len(devices) {len(ext_devices)} != {len(devices)}")
     for cls, want in expected_counts.items():
         got = (report.get("device_counts") or {}).get(cls)
         if got != want:
             problems.append(f"device_counts[{cls}] {got} != {want}")
 
-    by_class_wl = {}
-    for name, dev in devices.items():
-        by_class_wl.setdefault(dev["class"], []).append((dev["w"], dev["l"]))
-    for ext in report.get("devices", []):
-        cls = ext["class"]
-        params = ext.get("params", {})
-        wl = (params.get("w_um"), params.get("l_um"))
-        if wl not in by_class_wl.get(cls, []):
-            problems.append(f"extracted {cls} W/L {wl} matches no canonical device")
-        body = ext.get("nets", {}).get("b")
-        want_body = SUBSTRATE_NET if cls == "nfet" else WELL_NET
-        if body != want_body:
-            problems.append(f"extracted {cls} body net {body!r} != {want_body!r}")
+    actual_sigs: Counter[tuple] = Counter()
+    actual_sig_names: dict[tuple, list[str]] = {}
+    for idx, ext in enumerate(ext_devices):
+        nets = ext.get("nets") or {}
+        params = ext.get("params") or {}
+        sig = (
+            ext.get("class"),
+            _norm_um(params.get("w_um")),
+            _norm_um(params.get("l_um")),
+            nets.get("g"),
+            nets.get("b"),
+            _sd_pair(nets.get("s"), nets.get("d")),
+        )
+        actual_sigs[sig] += 1
+        actual_sig_names.setdefault(sig, []).append(str(ext.get("name", f"#{idx}")))
 
-    extracted_nets = {n for ext in report.get("devices", []) for n in ext.get("nets", {}).values()}
-    for name, dev in devices.items():
-        for terminal, net in dev["nets"].items():
-            if net not in extracted_nets:
-                problems.append(f"canonical net {net} ({name}.{terminal}) absent from the extracted netlist")
+    for sig, count in sorted((expected_sigs - actual_sigs).items(), key=lambda kv: _fmt_sig(kv[0])):
+        names = ", ".join(sig_to_names[sig])
+        problems.append(f"missing canonical device ({names}) x{count}: {_fmt_sig(sig)}")
+
+    for sig, count in sorted((actual_sigs - expected_sigs).items(), key=lambda kv: _fmt_sig(kv[0])):
+        names = ", ".join(actual_sig_names[sig])
+        problems.append(f"unexpected extracted device ({names}) x{count}: {_fmt_sig(sig)}")
+
     return problems
 
 
@@ -663,7 +829,7 @@ def main() -> int:
             b: load_block_report(f"{args.reports_dir}/{_report_name(b)}")
             for b in BLOCKS
         }
-        json.dump(build_compose_request(reports), sys.stdout, indent=2)
+        json.dump(build_compose_request(reports, parsed), sys.stdout, indent=2)
         sys.stdout.write("\n")
     elif args.emit == "lvs-reference":
         source_hash = args.source_hash
