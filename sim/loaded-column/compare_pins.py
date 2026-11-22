@@ -45,6 +45,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -345,7 +346,7 @@ def compare_equiv(report_path: str, runner_csv: str) -> int:
     meas = [f for f in FIELDS]
     n_cmp = n_empty = 0
     one_sided = []
-    worst = {"rel": 0.0, "field": None, "key": None, "klt": None, "runner": None}
+    non_finite = []
     per_field: dict[str, dict] = {}
     for rr in run_rows:
         kr = klt[rr["pattern_rows3210"]]
@@ -358,17 +359,26 @@ def compare_equiv(report_path: str, runner_csv: str) -> int:
                 one_sided.append((rr["pattern_rows3210"], field))
                 continue
             x, y = float(a), float(b)
+            if not (math.isfinite(x) and math.isfinite(y)):
+                non_finite.append((rr["pattern_rows3210"], field))
+                continue
             rel = abs(x - y) / max(abs(y), 1e-30)
             n_cmp += 1
             if field not in per_field or rel > per_field[field]["rel"]:
-                per_field[field] = {"rel": rel, "key": rr["pattern_rows3210"],
+                per_field[field] = {"field": field, "rel": rel,
+                                    "key": rr["pattern_rows3210"],
                                     "klt": x, "runner": y}
-            if rel > worst["rel"]:
-                worst.update(rel=rel, field=field, key=rr["pattern_rows3210"],
-                             klt=x, runner=y)
     if one_sided:
         print(f"one-sided values (present on only one side): {one_sided[:8]}",
               file=sys.stderr)
+        return 2
+    if non_finite:
+        print("non-finite measurement (NaN/inf on either side) as "
+              f"(pattern, field): {non_finite[:8]}; comparison unavailable",
+              file=sys.stderr)
+        return 2
+    if not per_field:
+        print("no comparable measurements", file=sys.stderr)
         return 2
 
     rr0 = run_rows[0]
@@ -394,7 +404,7 @@ def compare_equiv(report_path: str, runner_csv: str) -> int:
             continue
         print(f"| `{field}` | {f['rel']:.3e} | {f['klt']:.6e} | "
               f"{f['runner']:.6e} | {f['key']} |")
-    w = worst
+    w = max(per_field.values(), key=lambda f: f["rel"])
     print(f"\n**Worst: {w['rel']:.3e} relative on `{w['field']}` at pattern "
           f"{w['key']} (klt {w['klt']:.6e} vs runner {w['runner']:.6e}, "
           f"abs {abs(w['klt'] - w['runner']):.3e})**")
