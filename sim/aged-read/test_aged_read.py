@@ -10,12 +10,14 @@ import json
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_aged_read as A  # noqa: E402
 import gen_aged_read as G  # noqa: E402
+import _evidence_common as EC  # noqa: E402
 
 RESULTS = HERE / "results"
 
@@ -155,6 +157,8 @@ class Analyzer(unittest.TestCase):
             rep = Path(d) / "klt_report_T1.json"
             rep.write_text(json.dumps(synthetic_report()))
             self.assertEqual(A.main([str(rep)]), 0)
+            fresh = json.loads((Path(d) / "aged_summary_T1.json").read_text())
+            self.assertEqual((fresh["status"], fresh["scope"]), (A.PROPOSED_RANGE_STATUS, A.PROPOSED_RANGE_SCOPE))
             self.assertEqual(A.main([str(rep)]), 2)           # refuses to overwrite
             bad = Path(d) / "klt_report_T2.json"
             r = synthetic_report()
@@ -177,7 +181,10 @@ class Committed(unittest.TestCase):
             with tempfile.TemporaryDirectory() as d:
                 tmp = Path(d) / rep.name
                 tmp.write_text(rep.read_text())
-                self.assertEqual(A.main([str(tmp)]), 0)
+                # committed summaries pre-date the operating-range ratification flip: replay with the historical constants
+                with unittest.mock.patch.object(A, "PROPOSED_RANGE_STATUS", EC.HISTORICAL_PROPOSED_RANGE_STATUS), \
+                     unittest.mock.patch.object(A, "PROPOSED_RANGE_SCOPE", EC.HISTORICAL_PROPOSED_RANGE_SCOPE):
+                    self.assertEqual(A.main([str(tmp)]), 0)
                 for stem in ("aged_points", "aged_summary"):
                     ext = "csv" if stem == "aged_points" else "json"
                     self.assertEqual((Path(d) / f"{stem}_{rid}.{ext}").read_text(),

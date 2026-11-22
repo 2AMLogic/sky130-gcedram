@@ -12,12 +12,14 @@ import random
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_sense_mismatch as A  # noqa: E402
 import gen_sense_mismatch as M  # noqa: E402
+import _evidence_common as EC  # noqa: E402
 
 RESULTS = HERE / "results"
 BASE_CORNERS = {"tt", "ss", "ff", "sf", "fs"}
@@ -155,9 +157,22 @@ class Analysis(unittest.TestCase):
         for rep, rid, prefix in _analysed_reports():
             with tempfile.TemporaryDirectory() as td:
                 (Path(td) / rep.name).write_bytes(rep.read_bytes())
-                self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
+                # committed summaries pre-date the operating-range ratification flip: replay with the historical status
+                with unittest.mock.patch.object(A, "PROPOSED_RANGE_STATUS", EC.HISTORICAL_PROPOSED_RANGE_STATUS):
+                    self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
                 for name in (f"{prefix}_summary_{rid}.json", f"{prefix}_points_{rid}.csv"):
                     self.assertEqual((Path(td) / name).read_text(), (RESULTS / name).read_text(), name)
+
+    def test_fresh_summary_carries_the_current_status_and_scope(self):
+        rep, rid, prefix = _analysed_reports()[0]
+        with tempfile.TemporaryDirectory() as td:
+            (Path(td) / rep.name).write_bytes(rep.read_bytes())
+            self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
+            fresh = json.loads((Path(td) / f"{prefix}_summary_{rid}.json").read_text())
+            committed = json.loads((RESULTS / f"{prefix}_summary_{rid}.json").read_text())
+            self.assertEqual(fresh["status"], A.PROPOSED_RANGE_STATUS)
+            fresh.pop("status"), committed.pop("status")
+            self.assertEqual(fresh, committed)
 
     def test_refuses_to_overwrite(self):
         for rep, _rid, _prefix in _analysed_reports():

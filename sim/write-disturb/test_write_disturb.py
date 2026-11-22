@@ -11,13 +11,14 @@ import re
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_write_disturb as A  # noqa: E402
 import gen_write_disturb as G  # noqa: E402
-from _evidence_common import fmt_g6  # noqa: E402
+from _evidence_common import HISTORICAL_PROPOSED_RANGE_SCOPE, HISTORICAL_PROPOSED_RANGE_STATUS, fmt_g6  # noqa: E402
 
 RESULTS = HERE / "results"
 
@@ -265,6 +266,11 @@ class Analysis(unittest.TestCase):
         self.assertGreaterEqual(s["corners"][0]["missing_values"] + sum(c["missing_values"] for c in s["corners"][1:]), 0)
 
 
+    def test_fresh_summary_carries_the_current_status_and_scope(self):
+        _td, s = self.run_synth(synthetic_report())
+        self.assertEqual((s["status"], s["scope"]), (A.PROPOSED_RANGE_STATUS, A.PROPOSED_RANGE_SCOPE))
+
+
 class Committed(unittest.TestCase):
     def test_committed_summaries_reproduce_from_committed_reports(self):
         reports = sorted(RESULTS.glob("klt_report_*.json"))
@@ -276,7 +282,10 @@ class Committed(unittest.TestCase):
                 continue
             with tempfile.TemporaryDirectory() as td:
                 (Path(td) / rep.name).write_text(rep.read_text())
-                self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
+                # committed summaries pre-date the operating-range ratification flip: replay with the historical constants
+                with unittest.mock.patch.object(A, "PROPOSED_RANGE_STATUS", HISTORICAL_PROPOSED_RANGE_STATUS), \
+                     unittest.mock.patch.object(A, "PROPOSED_RANGE_SCOPE", HISTORICAL_PROPOSED_RANGE_SCOPE):
+                    self.assertEqual(A.main([str(Path(td) / rep.name)]), 0)
                 for name in (f"disturb_summary_{rid}.json", f"disturb_points_{rid}.csv",
                              f"disturb_halfselect_{rid}.csv"):
                     self.assertEqual((Path(td) / name).read_text(), (RESULTS / name).read_text(), name)

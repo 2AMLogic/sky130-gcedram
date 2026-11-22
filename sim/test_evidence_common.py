@@ -347,13 +347,30 @@ class KltProvenance(unittest.TestCase):
                              "batch_instance_type": None, "netlist_sha256": None,
                              "models_lib_sha256": None, "engine_version": None})
 
-    def test_scope_constants_pin_the_committed_spellings(self):
-        self.assertEqual(C.PROPOSED_RANGE_STATUS, "PROPOSED_OPERATING_RANGE_NOT_RATIFIED")
+    def test_scope_constants_pin_the_current_emitted_spellings(self):
+        self.assertEqual(C.PROPOSED_RANGE_STATUS, "OPERATING_RANGE_RATIFIED")
         self.assertEqual(C.PROPOSED_RANGE_SCOPE,
                          "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
-                         "per spec/operating-range-decision-PROPOSED.md")
+                         "per spec/operating-range-decision-PROPOSED.md (ratified)")
         self.assertEqual(C.PROPOSED_RANGE_SCOPE_REPLAY_PREFIX,
                          "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V")
+
+    def test_historical_pair_pins_the_pre_ratification_spellings(self):
+        self.assertEqual(C.HISTORICAL_PROPOSED_RANGE_STATUS, "PROPOSED_OPERATING_RANGE_NOT_RATIFIED")
+        self.assertEqual(C.HISTORICAL_PROPOSED_RANGE_SCOPE,
+                         "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, "
+                         "per spec/operating-range-decision-PROPOSED.md")
+
+    def test_range_scope_tag_maps_both_status_tokens_and_refuses_unknown(self):
+        # the historical token must reproduce the committed replay summaries'
+        # scope tail byte-for-byte (append-only evidence)
+        self.assertEqual(C.range_scope_tag(C.HISTORICAL_PROPOSED_RANGE_STATUS),
+                         " (PROPOSED range, not ratified)")
+        self.assertEqual(C.range_scope_tag(C.PROPOSED_RANGE_STATUS),
+                         " (ratified range)")
+        with self.assertRaises(SystemExit) as cm:
+            C.range_scope_tag("SOME_FUTURE_STATUS")
+        self.assertIn("unrecognized evidence status", str(cm.exception.code))
 
 
 class CsnProvenanceJson(unittest.TestCase):
