@@ -42,7 +42,9 @@ LC_DIR = HERE.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(LC_DIR))
 sys.path.insert(0, str(LC_DIR / "cold-corner"))
+sys.path.insert(0, str(LC_DIR.parent))
 import analyze_variants as AV  # noqa: E402  (cold-corner criteria + evaluate_point)
+from _evidence_common import load_json, sha256_hex  # noqa: E402
 import gen_column_klt as G  # noqa: E402
 import run_loaded_column as R  # noqa: E402
 import variants as VV  # noqa: E402
@@ -114,7 +116,7 @@ def detect_era(reports: list[dict]) -> str:
         for rep in reports:
             vid, age = report_name(rep)
             deck = G.era_decks(era) / f"{vid}_{age}.spice"
-            ok = ok and deck.is_file() and sha256(deck) == rep.get("environment", {}).get("netlist_sha256")
+            ok = ok and deck.is_file() and sha256_hex(deck) == rep.get("environment", {}).get("netlist_sha256")
         if ok:
             return era
     return "p244"
@@ -307,11 +309,6 @@ def comparison(ev: dict) -> dict:
     return {"per_point": table, "per_variant": verdict}
 
 
-def sha256(p: Path) -> str:
-    import hashlib
-    return hashlib.sha256(p.read_bytes()).hexdigest()
-
-
 def analyze(run_dir: Path) -> int:
     run_id = run_dir.name
     out_csv, out_json = run_dir / "cases.csv.gz", run_dir / "summary.json"
@@ -320,10 +317,10 @@ def analyze(run_dir: Path) -> int:
             print(f"refusing to overwrite existing evidence file {p}", file=sys.stderr)
             return 2
     reports = sorted(run_dir.glob("klt_report_*.json.gz"))
-    era = detect_era([json.loads(read_gz(p)) for p in reports])
+    era = detect_era([load_json(p) for p in reports])
     rows, jobs, errors = [], {}, []
     for p in reports:
-        rep = json.loads(read_gz(p))
+        rep = load_json(p)
         vid, age = report_name(rep)
         remote = rep.get("environment", {}).get("remote") or {}
         jobs[f"{vid}_{age}"] = {"file": p.name, "klt_status": rep.get("status"),
@@ -334,7 +331,7 @@ def analyze(run_dir: Path) -> int:
                                 "engine_version": rep.get("environment", {}).get("engine_version"),
                                 "klt_version": rep.get("provenance", {}).get("klt_version")}
         deck = G.era_decks(era) / f"{vid}_{age}.spice"
-        if not deck.is_file() or sha256(deck) != jobs[f"{vid}_{age}"]["netlist_sha256"]:
+        if not deck.is_file() or sha256_hex(deck) != jobs[f"{vid}_{age}"]["netlist_sha256"]:
             errors.append(f"{vid}_{age}: report netlist_sha256 does not match committed {deck.parent.name}/{deck.name}")
         rows += case_rows(rep, run_id, era)
     want = {f"{v}_{a}" for (v, a, _s) in G.REQUESTS}
