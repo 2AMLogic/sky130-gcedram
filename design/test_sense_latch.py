@@ -16,6 +16,7 @@ from __future__ import annotations
 import hashlib
 import re
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -25,6 +26,7 @@ sys.path.insert(0, str(HERE))  # python3 -I omits the script directory from sys.
 from test_column_periphery import (  # noqa: E402  (needs the sys.path insert above)
     GROUND,
     LATCH_DEVICES,
+    canon,
     deck_devices,
     logical_lines,
     netlist_devices,
@@ -63,10 +65,50 @@ class SenseLatchMatchesDeck(unittest.TestCase):
         # parameter (here nrd) parses as nrd=None and must not equal the
         # intact schematic card, so a deck regression that drops or alters
         # nrd cannot pass test_every_deck_instance_equals_schematic silently
-        card = next(ln for ln in logical_lines(NETLIST.read_text()) if ln.startswith("XMN1 "))
+        card = next(ln for ln in logical_lines(NETLIST.read_text()) if ln.split()[:1] == ["XMN1"])
         doctored = parse_device(re.sub(r" nrd=[-\w.]+", "", card))
         self.assertIsNone(doctored["nrd"])
         self.assertNotEqual(doctored, netlist_devices(NETLIST)["MN1"])
+
+    def test_numbered_nets_are_preserved(self):
+        # regression (issue #410): column-periphery's numbered-control rewrite
+        # (pcb_<n>/sel_<n>/selb_<n>) must not collapse distinct numbered nets
+        # in the sense-latch schematic or sense-stage deck
+        for net in ("pcb_1", "sel_1", "selb_1"):
+            self.assertEqual(canon(net, None), net)
+            self.assertEqual(canon(net, "st_m100mv", GROUND), net)
+        with tempfile.TemporaryDirectory() as tmp:
+            sch_path = Path(tmp) / "sense_latch.spice"
+            deck_path = Path(tmp) / "sense_stage.spice"
+            sch_path.write_text(re.sub(r"\brbl\b", "sel_1", NETLIST.read_text()))
+            deck_path.write_text(re.sub(r"\brbl_(\w+)", r"sel_2_\1", DECK.read_text()))
+            sch = netlist_devices(sch_path)
+            inst = deck_devices(LATCH_DEVICES, deck_path, shared=GROUND, skip_prefix=None)
+        self.assertGreater(len(inst), 0)
+        self.assertEqual(sch["MN1"]["nets"][0], "sel_1")
+        for suffix, devs in inst.items():
+            with self.subTest(instance=suffix):
+                self.assertEqual(devs["MN1"]["nets"][0], "sel_2")
+                self.assertNotEqual(devs["MN1"], sch["MN1"])
+
+    def test_tab_delimited_deck_instance_is_parsed(self):
+        # regression (issue #410): changing the first separator to a tab (or
+        # lowercasing the X designator) on an instance's latch cards must not
+        # silently drop that instance from the deck comparison
+        intact = deck_devices(LATCH_DEVICES, DECK, shared=GROUND, skip_prefix=None)
+        tabbed = re.sub(
+            r"(?m)^(X(?:%s)_st_m100mv) " % "|".join(LATCH_DEVICES),
+            r"\1\t",
+            DECK.read_text(),
+        )
+        tabbed = tabbed.replace("XMN1_st_m100mv\t", "xMN1_st_m100mv\t", 1)
+        with tempfile.TemporaryDirectory() as tmp:
+            deck_path = Path(tmp) / "tabbed_sense_stage.spice"
+            deck_path.write_text(tabbed)
+            got = deck_devices(LATCH_DEVICES, deck_path, shared=GROUND, skip_prefix=None)
+        self.assertEqual(len(got), len(intact))
+        self.assertIn("st_m100mv", got)
+        self.assertEqual(got["st_m100mv"], netlist_devices(NETLIST))
 
     def test_testbench_elements_not_in_cell(self):
         # ideal precharge switch / dummy reference stay in the testbench
