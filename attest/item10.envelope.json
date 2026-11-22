@@ -24,7 +24,7 @@
         "role": "hygiene",
         "path": ".github/workflows/evidence-checks.yml",
         "passed": true,
-        "content_hash": "sha256:c1dbacf5829da11378e34b864a21bfa91054334925007f7e482db05c8b87f0b1"
+        "content_hash": "sha256:601487f98d84776d264493723b48ef5031421b168da7ea5432e3f940cd14eb79"
       },
       {
         "check": "present",
