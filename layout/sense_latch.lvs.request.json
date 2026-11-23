@@ -1,0 +1,11 @@
+{
+  "layout": {
+    "file": "sense_latch.gds",
+    "deck": "sky130",
+    "top": "sense_latch_layout_0"
+  },
+  "reference": {
+    "netlist": "sense_latch.lvs_reference.spice",
+    "top": "sense_latch"
+  }
+}

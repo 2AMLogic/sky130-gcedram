@@ -10,7 +10,7 @@ from the tracker that day. `WORK_PLAN.md` is a generated label snapshot.
 ## Where it stands
 
 The verdict of record is the machine-graded
-[`block-manifest.signoff.json`](../block-manifest.signoff.json) (klt 0.9.1,
+[`block-manifest.signoff.json`](../block-manifest.signoff.json) (klt 0.9.2,
 re-run by `.github/workflows/signoff.yml`): **9 of 22 T1 rows met**. The
 tracker is [#13](https://github.com/2AMLogic/sky130-gcedram/issues/13); the
 macro build-out is [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).

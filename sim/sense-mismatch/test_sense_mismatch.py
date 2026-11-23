@@ -17,6 +17,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_sense_mismatch as A  # noqa: E402
+import build_yield_records as Y  # noqa: E402
 import gen_sense_mismatch as M  # noqa: E402
 
 RESULTS = HERE / "results"
@@ -184,6 +185,122 @@ class Analysis(unittest.TestCase):
                 self.assertEqual(c["distinct_seeds"], c["n_samples"])      # samples really differ
                 if prefix == "mismatch":
                     self.assertGreater(c["control_replica_disagreements"], 0)  # mismatch really acts
+
+
+class YieldEvidence(unittest.TestCase):
+    """T1 item 6 / spec row 2e campaign artifacts (issue #384)."""
+
+    def test_row2e_requests_recorded_and_in_scope(self):
+        stage_req = json.loads(M.STAGE_REQUEST_PATH.read_text())
+        for path, netlist in ((M.ROW2E_REQUEST_PATH, "sense_mismatch.spice"),
+                              (M.CONTROL_REQUEST_PATH, "sense_mismatch_control.spice")):
+            r = json.loads(path.read_text())
+            self.assertEqual(r["netlist"], netlist)
+            self.assertEqual(r["backend"], "batch")
+            self.assertEqual((r["monte_carlo"]["n"], r["monte_carlo"]["seed"], r["monte_carlo"]["vary"]),
+                             (M.ROW2E_MC_N, M.ROW2E_MC_SEED, "mismatch"))
+            # same restricted corner set as the committed study (no supply axis)
+            self.assertEqual(r["corners"]["process"], stage_req["corners"]["process"])
+            self.assertEqual(r["corners"]["temperature_c"], stage_req["corners"]["temperature_c"])
+            self.assertEqual(r["exclude"], stage_req["exclude"])
+            # same measurement set as the study deck (nothing re-labelled)
+            self.assertEqual([m["name"] for m in r["measurements"]],
+                             [m["name"] for m in stage_req["measurements"]])
+
+    def test_control_deck_differs_only_by_the_seeded_defect(self):
+        stage = M.STAGE_NETLIST_PATH.read_text().splitlines()
+        ctrl = M.CONTROL_NETLIST_PATH.read_text().splitlines()
+        # every latch device card is byte-identical (the defect is stimulus-side only)
+        self.assertEqual([l for l in ctrl if l.startswith("X")],
+                         [l for l in stage if l.startswith("X")])
+        ref = f"vref_{round(M.STAGE_DREF_V * 1000):03d}"
+        self.assertIn(f"{ref} pref_{round(M.STAGE_DREF_V * 1000):03d} 0 dc 0.8 ", "\n".join(stage))
+        self.assertIn(f"{ref} pref_{round(M.STAGE_DREF_V * 1000):03d} 0 dc 0.93 ",
+                      "\n".join(ctrl))  # 0.8 + CONTROL_REF_OFFSET_V = 0.93
+        self.assertEqual(round(0.8 + M.CONTROL_REF_OFFSET_V, 6), 0.93)
+        # every instance's reference initial condition carries the same offset
+        self.assertGreater("\n".join(ctrl).count(")=0.930000"), 100)
+        self.assertNotIn(")=0.930000", "\n".join(stage))
+
+    def test_yield_limits_row2e_shape(self):
+        limits = json.loads((HERE / "yield_limits_row2e.json").read_text())
+        self.assertEqual(sorted(limits["measurements"]),
+                         sorted(f"dend_sp{M.ROW2E_MARGIN_D_MV:03d}_{r}" for r in range(M.N_REPLICAS)))
+        for entry in limits["measurements"].values():
+            self.assertEqual(entry, {"min": 0.9, "spec_row": "2e"})  # no invented target_yield
+        self.assertNotIn("target_yield", json.dumps(limits))
+
+    def test_build_yield_records_decodes_names_and_skips_nulls(self):
+        report = {"corners": [
+            {"corner_id": "tt_mm/novdd/27C/mc0", "measurements": [
+                {"name": "dend_sp150_0", "value": 1.8},
+                {"name": "dend_sm050_3", "value": -1.8},
+                {"name": "dend_sz000_5", "value": None},
+                {"name": "din_sp150_0", "value": 0.15},      # not a decision: ignored
+            ]},
+            {"corner_id": "fs_mm/novdd/27C/mc17", "measurements": [
+                {"name": "dend_sp002_1", "value": -1.8},
+            ]},
+        ]}
+        records, skipped, per_corner = Y.build_records(report)
+        self.assertEqual(records, [
+            {"corner": "tt_mm/novdd/27C", "stimulus": 0.15, "value": 1.8},
+            {"corner": "tt_mm/novdd/27C", "stimulus": -0.05, "value": -1.8},
+            {"corner": "fs_mm/novdd/27C", "stimulus": 0.002, "value": -1.8},
+        ])
+        self.assertEqual(skipped, 1)
+        self.assertEqual(per_corner, {"tt_mm/novdd/27C": 2, "fs_mm/novdd/27C": 1})
+
+    def test_default_report_is_nominal_even_when_control_sorts_later(self):
+        import contextlib, io, tempfile
+        doc = {"corners": [{"corner_id": "tt_mm/novdd/27C/mc0",
+                            "measurements": [{"name": "dend_sp150_0", "value": 1.8}]}]}
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            (tmp / "klt_report_row2e_20261120T203548Z.json").write_text(json.dumps(doc))
+            (tmp / "klt_report_row2e_control_20261120T203859Z.json").write_text(json.dumps(doc))
+            old, Y.RESULTS = Y.RESULTS, tmp
+            try:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(Y.main([]), 0)
+            finally:
+                Y.RESULTS = old
+            self.assertEqual([p.name for p in tmp.glob("yield_records_*")],
+                             ["yield_records_row2e_20261120T203548Z.json"])
+
+    def _newest(self, pattern: str) -> Path:
+        paths = sorted(RESULTS.glob(pattern))
+        self.assertTrue(paths, pattern)
+        return paths[-1]
+
+    def test_committed_yield_records_reproduce_from_their_report(self):
+        doc = self._newest("yield_records_row2e_[0-9]*.json")
+        rid = doc.name.removesuffix(".json").split("yield_records_", 1)[1]
+        report = RESULTS / f"klt_report_{rid}.json"
+        self.assertTrue(report.exists(), report)
+        got, _skipped, _per = Y.build_records(Y.load_report(report))
+        self.assertEqual({"records": got}, json.loads(doc.read_text()))
+
+    def test_committed_yield_artifacts_carry_campaign_discipline(self):
+        report = json.loads(self._newest("klt_yield_report_row2e_[0-9]*.json").read_text())
+        self.assertEqual(report["status"], "reported")  # no target_yield declared: never failed, never claimed
+        self.assertEqual(len(report["measurements"]), M.N_REPLICAS)
+        for m in report["measurements"]:
+            self.assertEqual(m["spec_row"], "2e")
+            self.assertEqual(m["limits"], {"min": 0.9})
+            self.assertEqual(m["n"], 4 * M.ROW2E_MC_N)  # pooled over the four restricted corners
+            self.assertEqual(len(m["source_corners"]), 4)
+            self.assertEqual(m["sample_size"]["verdict"], "sufficient")
+            self.assertEqual(m["negative_control"]["verdict"], "detected")
+
+    def test_committed_threshold_report_fits_every_corner(self):
+        report = json.loads(self._newest("klt_yield_threshold_row2e_[0-9]*.json").read_text())
+        self.assertEqual([c["name"] for c in report["corners"]],
+                         [f"{p}/novdd/{t}C" for p, t in M.STAGE_CORNERS])
+        for c in report["corners"]:
+            self.assertEqual(c["fit"]["status"], "ok")
+            self.assertLess(c["fit"]["sigma_ci"]["lower"], c["fit"]["sigma"])
+            self.assertGreater(c["fit"]["sigma_ci"]["upper"], c["fit"]["sigma"])
 
 
 if __name__ == "__main__":

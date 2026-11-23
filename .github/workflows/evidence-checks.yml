@@ -1,12 +1,14 @@
 name: evidence-checks
 
-# Runs the stdlib-Python checks that guard the evidence chain: the
-# loaded-column analysis tests, the cold-corner variant tests, the
-# evidence-index consistency check, the append-only evidence guard's
-# fixture suite, the refresh-overhead arithmetic tests, and the shared
-# evidence-helper tests. No ngspice, no klt, no network (check_evidence_index.py is
-# run without --online). Keep this list in sync with the `test` script in
-# package.json.
+# Runs the stdlib-Python checks that guard the evidence chain: every
+# Git-tracked test_*.py suite outside .loom/, .claude/ and .agents/, then
+# the cold-corner evidence-index consistency check, the item-9 inventory
+# completeness check, and the artifact manifest checker — all discovered
+# and invoked by scripts/run_evidence_checks.py, the same runner `npm test`
+# calls, so the two entry points cannot drift (issue #277). A newly
+# committed test_*.py suite is CI-blocking without anyone registering it.
+# No ngspice, no klt, no network (check_evidence_index.py is run without
+# --online).
 #
 # The `append-only` job (issue #67) compares committed sim/ evidence blobs
 # between the PR's merge base and head commit. It runs on the `pull_request`
@@ -34,119 +36,8 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Loaded-column analysis tests
-        run: python3 -I sim/loaded-column/test_analysis.py
-
-      - name: Loaded-column klt request generator / reducer (issue #169) checks
-        run: python3 -I sim/loaded-column/test_gen_column_requests.py
-
-      - name: Bitcell-transient request generator / reducer (issue #182) checks
-        run: python3 -I sim/bitcell-transient/test_gen_bitcell_transient.py
-
-      - name: PEX bitcell/array reference + bench + reduction (issue #383) checks
-        run: python3 -I sim/pex_bitcell_array/test_pex_bitcell_array.py
-
-      - name: Cold-corner variant tests
-        run: python3 -I sim/loaded-column/cold-corner/test_variants.py
-
-      - name: Evidence index check
-        run: python3 -I sim/loaded-column/cold-corner/check_evidence_index.py
-
-      - name: Sense-stage checks
-        run: python3 -I sim/sense-stage/test_sense_stage.py
-
-      - name: Aged write/hold/read checks
-        run: python3 -I sim/aged-read/test_aged_read.py
-
-      - name: Repeated closed-loop refresh (issue #147) checks
-        run: python3 -I sim/closed-loop-refresh/test_closed_loop.py
-
-      - name: Extracted-C_RBL loaded-column (klt harness, issue #88) checks
-        run: python3 -I sim/loaded-column/extracted-crbl/test_column_klt.py
-
-      - name: Refresh-operation (sense + write-back) checks
-        run: python3 -I sim/refresh-op/test_refresh_op.py
-
-      - name: RTL-strobe replay (converter, consistency check, analysis) checks
-        run: python3 -I sim/refresh-replay/test_refresh_replay.py
-
-      - name: Refresh-replay matched initialization controls (issue #139) checks
-        run: python3 -I sim/refresh-replay/test_init_control.py
-
-      - name: Refresh energy / standby power checks
-        run: python3 -I sim/refresh-energy/test_refresh_energy.py
-
-      - name: Sense-latch design-vs-deck drift check
-        run: python3 -I design/test_sense_latch.py
-
-      - name: Normalizer raw-to-normalized freshness check (issue #229)
-        run: python3 -I design/test_normalize_netlist.py
-
-      - name: Column-periphery slice design-vs-deck drift check
-        run: python3 -I design/test_column_periphery.py
-
-      - name: Column-periphery comparison checks
-        run: python3 -I sim/column-periphery/test_column_periphery.py
-
-      - name: Sense-stage mismatch (Monte Carlo) checks
-        run: python3 -I sim/sense-mismatch/test_sense_mismatch.py
-
-      - name: Write-disturb checks
-        run: python3 -I sim/write-disturb/test_write_disturb.py
-
-      - name: Append-only guard fixture tests
-        run: python3 -I sim/test_append_only.py
-
-      - name: Item-9 inventory fixture tests (issue #371)
-        run: python3 -I sim/test_check_item9_inventory.py
-
-      - name: Item-9 inventory completeness (every sim/ bench inventoried, issue #371)
-        run: python3 -I sim/check_item9_inventory.py
-
-      - name: Array-context C_SN comparison (issue #89) checks
-        run: python3 -I sim/retention/test_compare_array_c_sn.py
-
-      - name: Array generation pin and baseline comparison (issue #91) checks
-        run: python3 -I layout/test_generation_reproducibility.py
-
-      - name: Geometry-matched access leakage (issue #149) checks
-        run: python3 -I sim/leakage/test_geometry_leakage.py
-
-      - name: Refresh-overhead arithmetic tests
-        run: python3 -I sim/refresh-overhead/test_refresh_overhead.py
-
-      - name: Bitcell compaction variants (issue #100) consistency checks
-        run: python3 -I layout/compact/test_compact.py
-
-      - name: Compact-layout parasitics, leakage and retention-budget (issue #161) checks
-        run: python3 -I sim/retention/test_compare_compact_c_sn.py
-
-      - name: Device-inclusive compact C_SN (issue #208) checks
-        run: python3 -I sim/retention/test_compact_device_c_sn.py
-
-      - name: Shared klt request skeleton tests (issue #196)
-        run: python3 -I sim/test_klt_request.py
-
-      - name: PDK model-closure identity checker tests (issue #338)
-        run: python3 -I sim/pdk-closure-identity/test_check_closure_identity.py
-
-      - name: Shared evidence helper tests
-        run: python3 -I sim/test_evidence_common.py
-
-      - name: Leakage klt-report stamp-match guard (issue #377) tests
-        run: python3 -I sim/leakage/test_klt_report_rows.py
-
-      - name: Retention worst-case leakage selection (issue #377) tests
-        run: python3 -I sim/retention/test_derive_retention.py
-
-      - name: Artifact-store writer (issue #218) fail-closed checks
-        run: python3 -I sim/test_store_evidence.py
-
-      - name: Artifact manifest checker (issue #218) fixture tests
-        run: python3 -I scripts/tests/test_check_artifact_manifests.py
-
-      - name: "Artifact manifests (schema, artifact: URIs, no committed bytes)"
-        run: python3 -I scripts/check_artifact_manifests.py check
+      - name: Evidence checks (every tracked test_*.py suite plus the standalone checks)
+        run: python3 -I scripts/run_evidence_checks.py
 
   append-only:
     # merge_group must run the job too: a gate that skips on the queue's

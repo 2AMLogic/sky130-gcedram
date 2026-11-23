@@ -59,10 +59,12 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 sys.path.insert(0, str(HERE.parent / "leakage"))
+sys.path.insert(0, str(HERE.parent / "write-disturb"))
 sys.path.insert(0, str(REPO / "layout"))
 import analyze_geometry_leakage as AN  # noqa: E402
 import compact_parasitics as CP  # noqa: E402
-from _evidence_common import sha256_prefixed, VDD_V  # noqa: E402
+import gen_write_disturb as WD  # noqa: E402  (extracted-array parser, as sim/refresh-energy)
+from _evidence_common import fmt_g6, sha256_prefixed, VDD_V  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
 
 OUT = HERE / "compact-device-c-sn"
@@ -103,10 +105,6 @@ VARIANTS = ("a", "p", "b")
 
 class DeviceCError(ValueError):
     pass
-
-
-def _f(x: float) -> str:
-    return f"{x:.6g}"
 
 
 def short(net: str) -> str:
@@ -173,35 +171,35 @@ def render_deck() -> str:
     a("* ASSUMPTIONS (labelled; none is a spec value): ideal drivers, stored '1' = 1.0 V, neighbours 1.0 V, no mismatch.")
     a("")
     a(f".options {SIM_OPTIONS}")
-    a(f".param VDD = {_f(VDD_V)}")
+    a(f".param VDD = {fmt_g6(VDD_V)}")
     a("vdd  vdd  0 dc {VDD}")
-    a(f"vrbl vrbl 0 dc {_f(VRBL_V)}")
+    a(f"vrbl vrbl 0 dc {fmt_g6(VRBL_V)}")
     a("")
     ics: list[str] = []
     for inst in insts:
         iid = inst["id"]
         if inst["variant"] == "ctl":
-            a(f"* ---- instance {iid}: ideal {_f(C_KNOWN_F * 1e15)} fF control ----")
-            a(f"cctl_{iid} ctl_hub 0 {_f(C_KNOWN_F)}")
-            ics.append(f"v(ctl_hub)={_f(V_START_V)}")
+            a(f"* ---- instance {iid}: ideal {fmt_g6(C_KNOWN_F * 1e15)} fF control ----")
+            a(f"cctl_{iid} ctl_hub 0 {fmt_g6(C_KNOWN_F)}")
+            ics.append(f"v(ctl_hub)={fmt_g6(V_START_V)}")
         else:
             a(f"* ---- instance {iid}: variant {inst['variant']}, probed storage node {inst['node']} ----")
             read_idle = 0.0 if inst["variant"] == "b" else None
-            for m in arr_mos(arr):
+            for m in arr["mos"]:
                 name, d, g, s, b, par = m
                 a(f"xm{name[2:].lower()}_{iid} {nn(d, iid)} {nn(g, iid)} {nn(s, iid)} {nn(b, iid)} sky130_fd_pr__nfet_01v8 "
-                  f"L={_f(par['L'])} W={_f(par['W'])} nf=1 ad={_f(par['AD'])} as={_f(par['AS'])} "
-                  f"pd={_f(par['PD'])} ps={_f(par['PS'])} mult=1 m=1")
+                  f"L={fmt_g6(par['L'])} W={fmt_g6(par['W'])} nf=1 ad={fmt_g6(par['AD'])} as={fmt_g6(par['AS'])} "
+                  f"pd={fmt_g6(par['PD'])} ps={fmt_g6(par['PS'])} mult=1 m=1")
             for nm, n1, n2, ohm in arr["res"]:
                 if nm == "Rvsubs_dctie":
                     continue
-                a(f"{nm.lower()}_{iid} {nn(n1, iid)} {nn(n2, iid)} {_f(ohm)}")
+                a(f"{nm.lower()}_{iid} {nn(n1, iid)} {nn(n2, iid)} {fmt_g6(ohm)}")
             for nm, n1, n2, f in arr["cap"]:
                 if inst["variant"] == "p" and (n1, n2) == (inst["node"], "vsubs"):
                     f -= poly[inst["node"]] * 1e-15           # whole extracted poly ground term of the probed node
                     if f <= 0:
                         raise DeviceCError(f"{iid}: poly term exceeds the node's ground capacitance")
-                a(f"{nm.lower()}_{iid} {nn(n1, iid)} {nn(n2, iid)} {_f(f)}")
+                a(f"{nm.lower()}_{iid} {nn(n1, iid)} {nn(n2, iid)} {fmt_g6(f)}")
             nets = {n for (_n, d, g, s, b, _p) in arr["mos"] for n in (d, g, s, b)} | {
                 n for (_n, n1, n2, _o) in arr["res"] for n in (n1, n2)}
             for r in range(4):
@@ -212,7 +210,7 @@ def render_deck() -> str:
                 a(f"vdp_{iid}_{c} rbl_{c}_{iid} {'0' if read_idle == 0.0 else 'vrbl'} dc 0")
             for n in nodes:
                 if n != inst["node"]:
-                    a(f"vdn_{iid}_{short(n)} {nn(n, iid)} 0 dc {_f(V_NEIGHBOUR_V)}")
+                    a(f"vdn_{iid}_{short(n)} {nn(n, iid)} 0 dc {fmt_g6(V_NEIGHBOUR_V)}")
             for net in sorted(nets):
                 base = hub_of(net)
                 if net in ("GND", "vsubs", "0"):
@@ -229,11 +227,11 @@ def render_deck() -> str:
                     val = 0.0
                 else:
                     raise DeviceCError(f"{iid}: unclassified net {net!r}")
-                ics.append(f"v({nn(net, iid)})={_f(val)}")
+                ics.append(f"v({nn(net, iid)})={fmt_g6(val)}")
         hub = hub_node(inst)
-        ramp = f"min(1,max(0,(time-{_f(T_RAMP_S)})/0.2n))"
-        gate = f"0.5*(1+tanh((v({hub})-{_f(V_GATE_V)})/{_f(V_GATE_W_V)}))"
-        a(f"bdr_{iid} {hub} 0 i={_f(inst['i_a'])}*{ramp}*{gate}")
+        ramp = f"min(1,max(0,(time-{fmt_g6(T_RAMP_S)})/0.2n))"
+        gate = f"0.5*(1+tanh((v({hub})-{fmt_g6(V_GATE_V)})/{fmt_g6(V_GATE_W_V)}))"
+        a(f"bdr_{iid} {hub} 0 i={fmt_g6(inst['i_a'])}*{ramp}*{gate}")
         a("")
     a("* initial conditions (tran uic): probed node at 1.1 V, everything else at its idle level")
     for k in range(0, len(ics), 4):
@@ -243,55 +241,21 @@ def render_deck() -> str:
 
 
 def parse_v2() -> dict:
-    """The extracted v2 subcircuit; same parser as sim/write-disturb, but the v2 file."""
-    text = re.sub(r"\n\+", " ", V2_NETLIST.read_text())
-    mos, res, cap = [], [], []
-    in_sub = False
-    for ln in (x.strip() for x in text.splitlines()):
-        if not ln or ln.startswith("*"):
-            continue
-        u = ln.upper()
-        if u.startswith(".SUBCKT"):
-            in_sub = True
-            continue
-        if u.startswith(".ENDS"):
-            in_sub = False
-            continue
-        if not in_sub:
-            continue
-        tok = ln.split()
-        kind = tok[0][0].upper()
-        if kind == "M":
-            if tok[5].lower() != "nfet":
-                raise DeviceCError(f"unexpected device model in the extracted array: {ln}")
-            par = {}
-            for t in tok[6:]:
-                k, v = t.split("=")
-                par[k.upper()] = float(re.sub(r"[UuPp]$", "", v))
-            mos.append((tok[0], tok[1], tok[2], tok[3], tok[4], par))
-        elif kind == "R":
-            res.append((tok[0], tok[1], tok[2], float(tok[3])))
-        elif kind == "C":
-            cap.append((tok[0], tok[1], tok[2], float(tok[3])))
-        else:
-            raise DeviceCError(f"unexpected element in the extracted array: {ln}")
-    if len(mos) != 32:
-        raise DeviceCError(f"expected 32 devices in the extracted v2 array, found {len(mos)}")
-    return {"mos": mos, "res": res, "cap": cap}
-
-
-def arr_mos(arr: dict) -> list:
-    return arr["mos"]
+    """The extracted v2 subcircuit; the sim/write-disturb parser (``WD.parse_array``), pointed at the v2 file."""
+    try:
+        return WD.parse_array(V2_NETLIST)
+    except RuntimeError as e:
+        raise DeviceCError(str(e)) from e
 
 
 def build_request() -> dict:
     ext = json.loads(V2_EXTRACT.read_text())
     insts = instances(sorted(storage(ext), key=lambda n: int(re.sub(r"\D", "", n))), limiting_node(ext))
     meas = [{"name": meas_name(i["id"], v), "unit": "s",
-             "spice": f".meas tran {meas_name(i['id'], v)} WHEN v({hub_node(i)})={_f(v)} FALL=1"}
+             "spice": f".meas tran {meas_name(i['id'], v)} WHEN v({hub_node(i)})={fmt_g6(v)} FALL=1"}
             for i in insts for v in LEVELS_V]
     return klt_request(DECK_PATH.name, {"process": list(PROCESS_CORNERS), "temperature_c": list(TEMPS_C)},
-                       f"10p {_f(T_STOP_S * 1e9)}n 0 100p uic", meas, 3600,
+                       f"10p {fmt_g6(T_STOP_S * 1e9)}n 0 100p uic", meas, 3600,
                        extra_options={"ngspice_init": ["set measureprec=12", "set numdgt=12"]})
 
 

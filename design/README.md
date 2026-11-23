@@ -184,8 +184,10 @@ frozen exactly as `sim/sense-stage/gen_sense_stage.py` instantiates them so
 provenance is fixed; this schematic makes no sizing claim, and a later
 sizing issue may change them. `python3 -I design/test_sense_latch.py`
 fails if the derived netlist and the sense-stage deck (names, model, W/L,
-nets) ever diverge. In the deck, per-instance nets carry an `_<instance>`
-suffix and ground is `0` (schematic `GND`); the test normalizes both.
+nets, and every geometry parameter: `nf`, `ad`/`as`, `pd`/`ps`, `nrd`/`nrs`,
+`sa`/`sb`/`sd`, `mult`, `m`) ever diverge. In the deck, per-instance nets
+carry an `_<instance>` suffix and ground is `0` (schematic `GND`); the test
+normalizes both.
 
 ## What's out of scope here
 
