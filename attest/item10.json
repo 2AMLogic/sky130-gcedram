@@ -339,6 +339,14 @@
       ]
     },
     {
+      "name": "klt pex bitcell/array schematic-vs-extracted retention evidence checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/pex_bitcell_array/test_pex_bitcell_array.py"
+      ]
+    },
+    {
       "name": "klt drc --check gain_cell_2t.drc.result.json",
       "argv": [
         "klt",
