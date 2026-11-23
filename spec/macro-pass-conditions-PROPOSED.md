@@ -134,6 +134,12 @@ Phase 3 criteria, and item 2/6 would be graded as failing there. Retention
 quantities are always evaluated at the worst-case corner, `sf`/125 C
 (ratified section 2), in addition to the set.
 
+**Supply reporting rule (Q7, operator ruling 2026-11-23, #396).** Item 6 is
+graded at `VDD` = 1.8 V only. Every graded item-6 result (6a-6d) must carry
+the sentence "VDD = 1.8 V only; supply tolerance not studied" (or equivalent)
+next to it, in the same table cell, summary or report line. No result may be
+described as supply-tolerant.
+
 **Statistical rows.** Rows **2e** and **6d** are statistical: their evidence
 is mismatch Monte Carlo, graded on sample statistics (sigma fits with
 confidence intervals and sample counts reported, unresolved tails stated),
@@ -155,10 +161,10 @@ from this statement.
 | 4b | SPI control | Data preservation and refresh deadline during SPI traffic at the maximum SCK | Digital, behavioral, with the 3a scenarios overlapped | Zero corrupted data; 3a threshold (<= 5.03 us) still met while SPI is active | **RATIFIED-CITED** for the 5.03 us bound (section 7), ASSUMPTION for the SCK limit | #83 testbench combined with `digital/refresh-scheduler/` |
 | 5a | Macro layout | Full-macro DRC | Corner-independent | `status: clean`, `violation_count: 0`, with the rule-deck coverage (layers checked, rules skipped) reported next to the result; a "clean" over a partial deck is reported as *informal*, not as a pass of this row | ASSUMPTION (the rows on the 4x4 array report only 6 of 16 deck layers; whether a released full deck exists is outside this repo, see Q5) | Planned: committed macro GDS plus fresh `klt drc` result JSON under `layout/` (same format as `layout/gain_cell_2t_array.drc.result.json`) |
 | 5b | Macro layout | Full-macro LVS and ERC | Corner-independent | LVS `match`, zero error-severity mismatches, 100 % of devices and nets matched; ERC clean; any warning-severity entries enumerated | ASSUMPTION (same reasoning; format as `layout/gain_cell_2t_array.lvs.result.json`, `layout/gain_cell_2t_array.erc.result.json`) | Planned: fresh LVS and ERC results for the macro GDS |
-| 6a | Post-layout PVT | Write/read functional margin on the extracted macro | RESTRICTED (mismatch included for 6d) | Items 2a, 2b, 2c, 2d thresholds met on extracted views, every point; no "informal" substitution of ideal drivers | ASSUMPTION (inherits 2a-2d) | Planned: extracted-netlist `klt sim` request under a new `sim/` directory; not yet committed |
-| 6b | Post-layout PVT | Retention/refresh margin: stored data survives a dwell equal to the ratified refresh interval, and the sense margin 6a still holds after that dwell | `sf`/125 C (worst case, ratified section 2) and the RESTRICTED set | Hold-and-read passes at dwell = 5.03 us at every point; the dwell at which the first failure occurs is reported and must be >= 5.03 us at `sf`/125 C | **RATIFIED-CITED** for 5.03 us (section 7); ASSUMPTION for "must hold at exactly the interval, i.e. no extra margin demanded here" (see Q1 on the 2x margin) | Planned: same as 6a |
-| 6c | Post-layout PVT | Refresh closure on the extracted macro | RESTRICTED | 3a and 3c thresholds re-evaluated with extracted `t_row_refresh_op` | **RATIFIED-CITED** (5.03 us) / ASSUMPTION (50 %) | Planned: same as 6a plus `digital/refresh-scheduler/` |
-| 6d | Post-layout PVT | Sense-offset margin on the extracted macro | RESTRICTED, mismatch Monte Carlo | 2e threshold on extracted bitline loading | ASSUMPTION (inherits 2e) | **Statistical row** (see legend). Waiting on a named input that still does not exist: a mismatch Monte Carlo study at the extracted-macro bitline load (extension of the #81 decks). The deterministic extracted-load variants — design card [`sense_summary_20261118T194931Z.json`](../sim/sense-stage/results/sense_summary_20261118T194931Z.json), layout card [`sense_summary_20261118T194901Z.json`](../sim/sense-stage/results/sense_summary_20261118T194901Z.json), C_RBL = 0.955559 fF — and the 10 fF mismatch study answer different parts of this row; neither is that input. Target basis: Q2 (#391) |
+| 6a | Post-layout PVT | Write/read functional margin on the extracted macro | RESTRICTED (mismatch included for 6d); **Supply: `VDD` = 1.8 V only; no supply-tolerance band simulated** (Q7). | Items 2a, 2b, 2c, 2d thresholds met on extracted views, every point; no "informal" substitution of ideal drivers | ASSUMPTION (inherits 2a-2d) | Planned: extracted-netlist `klt sim` request under a new `sim/` directory; not yet committed |
+| 6b | Post-layout PVT | Retention/refresh margin: stored data survives a dwell equal to the ratified refresh interval, and the sense margin 6a still holds after that dwell | `sf`/125 C (worst case, ratified section 2) and the RESTRICTED set; **Supply: `VDD` = 1.8 V only; no supply-tolerance band simulated** (Q7). | Hold-and-read passes at dwell = 5.03 us at every point; the dwell at which the first failure occurs is reported and must be >= 5.03 us at `sf`/125 C | **RATIFIED-CITED** for 5.03 us (section 7); ASSUMPTION for "must hold at exactly the interval, i.e. no extra margin demanded here" (see Q1 on the 2x margin) | Planned: same as 6a |
+| 6c | Post-layout PVT | Refresh closure on the extracted macro | RESTRICTED; **Supply: `VDD` = 1.8 V only; no supply-tolerance band simulated** (Q7). | 3a and 3c thresholds re-evaluated with extracted `t_row_refresh_op` | **RATIFIED-CITED** (5.03 us) / ASSUMPTION (50 %) | Planned: same as 6a plus `digital/refresh-scheduler/` |
+| 6d | Post-layout PVT | Sense-offset margin on the extracted macro | RESTRICTED, mismatch Monte Carlo; **Supply: `VDD` = 1.8 V only; no supply-tolerance band simulated** (Q7). | 2e threshold on extracted bitline loading | ASSUMPTION (inherits 2e) | **Statistical row** (see legend). Waiting on a named input that still does not exist: a mismatch Monte Carlo study at the extracted-macro bitline load (extension of the #81 decks). The deterministic extracted-load variants — design card [`sense_summary_20261118T194931Z.json`](../sim/sense-stage/results/sense_summary_20261118T194931Z.json), layout card [`sense_summary_20261118T194901Z.json`](../sim/sense-stage/results/sense_summary_20261118T194901Z.json), C_RBL = 0.955559 fF — and the 10 fF mismatch study answer different parts of this row; neither is that input. Target basis: Q2 (#391) |
 
 ## 4. Which conditions depend on outstanding evidence
 
@@ -239,6 +245,14 @@ operator in #208 (PR #223).
   and both key reviews — is #385's.*
 - **Q7. Supply.** All committed grids are `VDD` = 1.8 V only. Is a supply
   tolerance band required before item 6 is graded? *Filed as #396.*
+  **Resolved by operator ruling, 2026-11-23 (option a; round 20261121-r19,
+  r19-q293, slate r19-s26; #396):** "Grade item 6 at 1.8 V only, with the
+  absence of a supply band stated next to every graded result." No supply
+  band is required, and none has been simulated. Options b (a +/-10 % `VDD`
+  band) and c (wait for the Chipalooza rules-4.html) were ruled out. This
+  records the ruling only: it ratifies nothing, changes no threshold, and the
+  record stays PROPOSED. If the harness later defines a supply band, that is
+  a new decision record, not an edit here.
 
 **Next step once the operator has answered.** This record then goes to the
 `ee-key` and `market-key` reviews per section 6. That two-key pass is not run
