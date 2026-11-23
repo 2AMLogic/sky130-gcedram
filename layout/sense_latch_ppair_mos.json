@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "generator": "mos_array",
+  "cell_name": "sense_latch_ppair",
+  "gds_path": "sense_latch_ppair_mos.gds",
+  "pdk": {
+    "name": "sky130A",
+    "variant": "sky130A",
+    "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+  },
+  "dbu_um": 0.001,
+  "bbox_um": {
+    "x0": -1.27,
+    "y0": -1.27,
+    "x1": 3.85,
+    "y1": 4.39
+  },
+  "device_count": 2,
+  "ports": [
+    {
+      "name": "U0_S",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 0.21000000000000002,
+      "y_um": 1.0,
+      "width_um": 2.0,
+      "direction_deg": 180
+    },
+    {
+      "name": "U0_D",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 0.8800000000000001,
+      "y_um": 1.0,
+      "width_um": 2.0,
+      "direction_deg": 0
+    },
+    {
+      "name": "U0_G",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 0.545,
+      "y_um": 2.76,
+      "width_um": 0.42000000000000004,
+      "direction_deg": 90
+    },
+    {
+      "name": "U1_S",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 2.37,
+      "y_um": 1.0,
+      "width_um": 2.0,
+      "direction_deg": 0
+    },
+    {
+      "name": "U1_D",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 1.7000000000000002,
+      "y_um": 1.0,
+      "width_um": 2.0,
+      "direction_deg": 180
+    },
+    {
+      "name": "U1_G",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 2.035,
+      "y_um": 2.76,
+      "width_um": 0.42000000000000004,
+      "direction_deg": 90
+    },
+    {
+      "name": "TAP_N",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 1.2899999999999998,
+      "y_um": 3.9799999999999995,
+      "width_um": 0.42,
+      "direction_deg": 90
+    },
+    {
+      "name": "TAP_E",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 3.4399999999999995,
+      "y_um": 1.5599999999999998,
+      "width_um": 0.42,
+      "direction_deg": 0
+    },
+    {
+      "name": "TAP_W",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": -0.8600000000000001,
+      "y_um": 1.5599999999999998,
+      "width_um": 0.42,
+      "direction_deg": 180
+    },
+    {
+      "name": "GAP_S",
+      "net": null,
+      "layer": {
+        "layer": 67,
+        "datatype": 20,
+        "name": null
+      },
+      "x_um": 1.2899999999999998,
+      "y_um": -0.8600000000000001,
+      "width_um": 3.4,
+      "direction_deg": 270
+    }
+  ],
+  "navigable_regions": [],
+  "drc_hints": {
+    "min_spacing_um": 0.4,
+    "matched_group_id": "mos_array:1x2:array",
+    "snapped_to_grid": false,
+    "notes": [
+      "the ring carries a 3.4um routing opening on its 'S' side (params.ring_gap_side) -- it is a connected C-shaped conductor rather than a closed loop, so substrate isolation is interrupted there in exchange for letting a route reach the enclosed devices through the reported GAP_S position",
+      "gate length below 0.28um (this generator's own default): the S/D local-metal pads are automatically padded clear of the gate (issue #1187), so no S/D metal minimum-spacing violation results from this alone -- but params.l_um itself may still violate the target PDK's own poly minimum-width rule (e.g. sky130's poly.width.1 floor is 0.15um), which this generator does not check",
+      "params.mirror flips odd columns about their vertical axis: a flipped unit has D on its left and S on its right (see drc_hints.mirror.terminal_sides); U<i>_S/U<i>_D ports follow the flipped geometry"
+    ],
+    "voltage_flavor": null,
+    "voltage_flavor_mark_present": false,
+    "sd_implant_present": true,
+    "mirror": {
+      "mirrored_columns": [
+        1
+      ],
+      "terminal_sides": {
+        "U0": {
+          "S": "left",
+          "D": "right"
+        },
+        "U1": {
+          "S": "right",
+          "D": "left"
+        }
+      }
+    }
+  },
+  "warnings": [],
+  "provenance": {
+    "klt_version": "0.8.0",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "sky130A",
+      "source": "--pdk-root flag",
+      "version": "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+    },
+    "deck": null,
+    "input": null
+  }
+}

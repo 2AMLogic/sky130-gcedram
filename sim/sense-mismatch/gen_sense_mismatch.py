@@ -60,6 +60,26 @@ MC_SEED = 20261009_81          # base seed; klt derives per-sample seeds from it
 MC_N_STAGE = 40                # samples per stage corner
 MC_N_CELL = 40                 # samples at the cell corner
 
+# ---- T1 item 6 / spec row 2e yield campaign (issue #384) ----
+# Same stage deck, corners and measurement set as the study above, with a
+# larger n (klt yield's zero-failure sample-size verdict needs >= 183 pooled
+# samples; 4 corners x 64 = 256) and its own recorded seed, plus a NEGATIVE
+# CONTROL deck: the committed stage deck with one seeded defect -- the shared
+# reference source (and its .ic) forced high by CONTROL_REF_OFFSET_V, a
+# deterministic input-referred offset of about 6.8 sigma_worst on every
+# instance (d_eff = d - offset). Same seed and n as the nominal campaign
+# (common random numbers), so the degradation is attributable to the defect
+# alone and a re-run reproduces it exactly.
+ROW2E_MC_N = 64                            # samples per corner (256 pooled)
+ROW2E_MC_SEED = 20261120_384               # new seed, recorded here and in the request
+CONTROL_REF_OFFSET_V = 0.130               # seeded reference offset (V), see README
+ROW2E_MARGIN_D_MV = 150                    # graded differential: largest swept |d| at or
+                                           # below the committed 2a worst-case half-separation
+                                           # (fs/27 C aged 0.3289 V / 2 = 164.5 mV)
+CONTROL_NETLIST_PATH = HERE / "sense_mismatch_control.spice"
+ROW2E_REQUEST_PATH = HERE / "request_row2e.json"
+CONTROL_REQUEST_PATH = HERE / "request_row2e_control.json"
+
 # ---- stage-only sweep (ASSUMPTION: grid; same common mode as sense-stage st_*) ----
 STAGE_DREF_V = G.STAGE_ONLY_DREF_V          # ref = VRBL - 0.1 V, rbl = ref + d (as in sense-stage)
 D_MV = [0, 2, -2, 5, -5, 10, -10, 15, -15, 20, -20, 30, -30, 40, -40,
@@ -157,12 +177,26 @@ def _ic_block(ics: list[str]) -> list[str]:
     return out
 
 
-def build_stage_netlist() -> str:
-    L = _header("sense_mismatch.spice -- stage-only latch offset Monte Carlo (sense-stage latch, R replicas)",
-                "s<p|m|z><mV>_<r>: rbl precharged to VREF+d, no cells, replica r")
+def build_stage_netlist(ref_offset_v: float = 0.0) -> str:
+    """Stage deck; ``ref_offset_v != 0`` emits the NEGATIVE-CONTROL variant
+    (issue #384): the same deck with the shared reference (source and .ic)
+    forced by that offset -- a deterministic input-referred offset of
+    ``ref_offset_v`` on every instance. At ``0`` the output is byte-identical
+    to the committed study deck (test_sense_mismatch.py checks this)."""
+    control = ref_offset_v != 0.0
+    title = ("sense_mismatch_control.spice -- NEGATIVE CONTROL of the stage-only latch offset"
+             if control else "sense_mismatch.spice -- stage-only latch offset Monte Carlo (sense-stage latch, R replicas)")
+    L = _header(title, "s<p|m|z><mV>_<r>: rbl precharged to VREF+d, no cells, replica r")
     a = L.append
+    if control:
+        a(f"* SEEDED DEFECT (issue #384 negative control): shared reference forced +{fmt_g6(ref_offset_v)} V")
+        a(f"* (input-referred offset on every instance; d_eff = d - {fmt_g6(ref_offset_v)}). Deterministic:")
+        a("* same corners, n and seed as request_row2e.json (common random numbers).")
+        a("")
     ref = f"pref_{round(STAGE_DREF_V * 1000):03d}"
-    a(f"vref_{round(STAGE_DREF_V * 1000):03d} {ref} 0 dc {fmt_g6(G.VRBL_V - STAGE_DREF_V)}   $ reference = VRBL - {fmt_g6(STAGE_DREF_V)} (ASSUMPTION)")
+    ref_level = G.VRBL_V - STAGE_DREF_V + ref_offset_v
+    a(f"vref_{round(STAGE_DREF_V * 1000):03d} {ref} 0 dc {fmt_g6(ref_level)}   $ reference = VRBL - {fmt_g6(STAGE_DREF_V)} (ASSUMPTION)"
+      + (f" + seeded defect {fmt_g6(ref_offset_v)} V" if control else ""))
     for d in D_MV:
         va = G.VRBL_V - STAGE_DREF_V + d * 1e-3
         a(f"vpa_{_mv_tag(d)} pa_{_mv_tag(d)} 0 dc {va:.6f}")
@@ -179,7 +213,7 @@ def build_stage_netlist() -> str:
         a(f"spr_{n} {ref} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rb})={va:.6f}")
-        ics.append(f"v({rf})={G.VRBL_V - STAGE_DREF_V:.6f}")
+        ics.append(f"v({rf})={ref_level:.6f}")
         _latch(a, ics, n, rb, rf, latch)
         a("")
     L += _ic_block(ics)
@@ -248,15 +282,32 @@ def _corners(cs: list[tuple[str, int]]) -> tuple[dict, list[dict]]:
     return out, excl
 
 
-def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict]) -> dict:
+def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict],
+             seed: int = MC_SEED) -> dict:
     corners, excl = _corners(cs)
     return klt_request(netlist, corners, f"10p {fmt_g6(T_STOP_S * 1e9)}n 0 50p uic", meas, 900,
-                       exclude=excl, monte_carlo=mc_block(n_mc, MC_SEED))
+                       exclude=excl, monte_carlo=mc_block(n_mc, seed))
 
 
 def build_stage_request() -> dict:
     names = [p["name"] for p in stage_instances()]
     return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, MC_N_STAGE, _meas(names))
+
+
+def build_row2e_request() -> dict:
+    """Nominal campaign for the row-2e yield evidence: the committed stage deck
+    (netlist unchanged, same measurements), larger n, its own seed."""
+    names = [p["name"] for p in stage_instances()]
+    return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N, _meas(names),
+                    seed=ROW2E_MC_SEED)
+
+
+def build_control_request() -> dict:
+    """Negative-control campaign: the seeded-defect deck, same n and seed as
+    the nominal row-2e campaign (common random numbers)."""
+    names = [p["name"] for p in stage_instances()]
+    return _request(CONTROL_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N, _meas(names),
+                    seed=ROW2E_MC_SEED)
 
 
 def build_cell_request() -> dict:
@@ -271,6 +322,9 @@ def render() -> dict[Path, str]:
         STAGE_REQUEST_PATH: json.dumps(build_stage_request(), indent=1) + "\n",
         CELL_NETLIST_PATH: build_cell_netlist(c_sn_ff * 1e-15),
         CELL_REQUEST_PATH: json.dumps(build_cell_request(), indent=1) + "\n",
+        CONTROL_NETLIST_PATH: build_stage_netlist(CONTROL_REF_OFFSET_V),
+        ROW2E_REQUEST_PATH: json.dumps(build_row2e_request(), indent=1) + "\n",
+        CONTROL_REQUEST_PATH: json.dumps(build_control_request(), indent=1) + "\n",
     }
 
 

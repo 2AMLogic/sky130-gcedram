@@ -1,0 +1,80 @@
+samples: sim/sense-mismatch/results/yield_samples_row2e_20261120T203548Z.json
+limits: sim/sense-mismatch/yield_limits_row2e.json
+source: sample-set  samples_analyzed: 1536
+confidence: 0.95  target_ci_halfwidth: 0.01
+status: reported  measurements: 6
+
+dend_sp150_0 [V]  status: reported  N: 256
+  limits: min(>=)=0.9 max(<=)=- target_yield=-
+  fit (normal): mean=1.79998 stddev=1.58636e-05 normality=rejected
+  yield (empirical, clopper-pearson): 1.000000 [0.985694, 1.000000] at 95%, N=256
+  yield (normal, normal-delta): 1.000000 [1.000000, 1.000000] at 95%, N=256
+  capability: cp=- cpk=18910.8564 [17269.6085, 20552.1044] sigma_to_spec=56732.5693 limiting=lower
+  sample size: sufficient (N=256, required>=183, observed +/-0.007153 vs target +/-0.01)
+  negative control (reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)): detected -- yield 0.820312 [0.767697, 0.865340] vs nominal 1.000000, N=256
+  warning: measurement 'dend_sp150_0': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 12.3875 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate
+  warning: measurement 'dend_sp150_0': no sample fell outside the limits, so the empirical yield is bounded only from below -- "at least 98.5694% at 95% confidence, N = 256" is the honest statement, not "100% yield"
+  warning: measurement 'dend_sp150_0': samples were pooled across 4 originating corners; each corner is its own population, so the pooled estimate is a worst-case envelope rather than a distribution anyone sampled
+
+dend_sp150_1 [V]  status: reported  N: 256
+  limits: min(>=)=0.9 max(<=)=- target_yield=-
+  fit (normal): mean=1.79998 stddev=1.576e-05 normality=rejected
+  yield (empirical, clopper-pearson): 1.000000 [0.985694, 1.000000] at 95%, N=256
+  yield (normal, normal-delta): 1.000000 [1.000000, 1.000000] at 95%, N=256
+  capability: cp=- cpk=19035.1841 [17383.1459, 20687.2223] sigma_to_spec=57105.5524 limiting=lower
+  sample size: sufficient (N=256, required>=183, observed +/-0.007153 vs target +/-0.01)
+  negative control (reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)): detected -- yield 0.839844 [0.789067, 0.882551] vs nominal 1.000000, N=256
+  warning: measurement 'dend_sp150_1': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 13.0795 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate
+  warning: measurement 'dend_sp150_1': no sample fell outside the limits, so the empirical yield is bounded only from below -- "at least 98.5694% at 95% confidence, N = 256" is the honest statement, not "100% yield"
+  warning: measurement 'dend_sp150_1': samples were pooled across 4 originating corners; each corner is its own population, so the pooled estimate is a worst-case envelope rather than a distribution anyone sampled
+
+dend_sp150_2 [V]  status: reported  N: 256
+  limits: min(>=)=0.9 max(<=)=- target_yield=-
+  fit (normal): mean=1.79998 stddev=1.58671e-05 normality=rejected
+  yield (empirical, clopper-pearson): 1.000000 [0.985694, 1.000000] at 95%, N=256
+  yield (normal, normal-delta): 1.000000 [1.000000, 1.000000] at 95%, N=256
+  capability: cp=- cpk=18906.6586 [17265.7750, 20547.5423] sigma_to_spec=56719.9759 limiting=lower
+  sample size: sufficient (N=256, required>=183, observed +/-0.007153 vs target +/-0.01)
+  negative control (reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)): detected -- yield 0.851562 [0.801997, 0.892767] vs nominal 1.000000, N=256
+  warning: measurement 'dend_sp150_2': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 12.7604 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate
+  warning: measurement 'dend_sp150_2': no sample fell outside the limits, so the empirical yield is bounded only from below -- "at least 98.5694% at 95% confidence, N = 256" is the honest statement, not "100% yield"
+  warning: measurement 'dend_sp150_2': samples were pooled across 4 originating corners; each corner is its own population, so the pooled estimate is a worst-case envelope rather than a distribution anyone sampled
+
+dend_sp150_3 [V]  status: reported  N: 256
+  limits: min(>=)=0.9 max(<=)=- target_yield=-
+  fit (normal): mean=1.79998 stddev=1.60481e-05 normality=rejected
+  yield (empirical, clopper-pearson): 1.000000 [0.985694, 1.000000] at 95%, N=256
+  yield (normal, normal-delta): 1.000000 [1.000000, 1.000000] at 95%, N=256
+  capability: cp=- cpk=18693.3509 [17070.9800, 20315.7219] sigma_to_spec=56080.0527 limiting=lower
+  sample size: sufficient (N=256, required>=183, observed +/-0.007153 vs target +/-0.01)
+  negative control (reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)): detected -- yield 0.800781 [0.746528, 0.847923] vs nominal 1.000000, N=256
+  warning: measurement 'dend_sp150_3': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 12.1305 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate
+  warning: measurement 'dend_sp150_3': no sample fell outside the limits, so the empirical yield is bounded only from below -- "at least 98.5694% at 95% confidence, N = 256" is the honest statement, not "100% yield"
+  warning: measurement 'dend_sp150_3': samples were pooled across 4 originating corners; each corner is its own population, so the pooled estimate is a worst-case envelope rather than a distribution anyone sampled
+
+dend_sp150_4 [V]  status: reported  N: 256
+  limits: min(>=)=0.9 max(<=)=- target_yield=-
+  fit (normal): mean=1.79998 stddev=1.61081e-05 normality=rejected
+  yield (empirical, clopper-pearson): 1.000000 [0.985694, 1.000000] at 95%, N=256
+  yield (normal, normal-delta): 1.000000 [1.000000, 1.000000] at 95%, N=256
+  capability: cp=- cpk=18623.7642 [17007.4326, 20240.0958] sigma_to_spec=55871.2925 limiting=lower
+  sample size: sufficient (N=256, required>=183, observed +/-0.007153 vs target +/-0.01)
+  negative control (reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)): detected -- yield 0.839844 [0.789067, 0.882551] vs nominal 1.000000, N=256
+  warning: measurement 'dend_sp150_4': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 12.6740 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate
+  warning: measurement 'dend_sp150_4': no sample fell outside the limits, so the empirical yield is bounded only from below -- "at least 98.5694% at 95% confidence, N = 256" is the honest statement, not "100% yield"
+  warning: measurement 'dend_sp150_4': samples were pooled across 4 originating corners; each corner is its own population, so the pooled estimate is a worst-case envelope rather than a distribution anyone sampled
+
+dend_sp150_5 [V]  status: reported  N: 256
+  limits: min(>=)=0.9 max(<=)=- target_yield=-
+  fit (normal): mean=1.79998 stddev=1.58628e-05 normality=rejected
+  yield (empirical, clopper-pearson): 1.000000 [0.985694, 1.000000] at 95%, N=256
+  yield (normal, normal-delta): 1.000000 [1.000000, 1.000000] at 95%, N=256
+  capability: cp=- cpk=18911.7840 [17270.4555, 20553.1125] sigma_to_spec=56735.3520 limiting=lower
+  sample size: sufficient (N=256, required>=183, observed +/-0.007153 vs target +/-0.01)
+  negative control (reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)): detected -- yield 0.839844 [0.789067, 0.882551] vs nominal 1.000000, N=256
+  warning: measurement 'dend_sp150_5': the sample set is not consistent with a normal distribution (Anderson-Darling A2* = 13.1763 > 0.787); treat the parametric yield estimate and Cpk as indicative only and prefer the empirical estimate
+  warning: measurement 'dend_sp150_5': no sample fell outside the limits, so the empirical yield is bounded only from below -- "at least 98.5694% at 95% confidence, N = 256" is the honest statement, not "100% yield"
+  warning: measurement 'dend_sp150_5': samples were pooled across 4 originating corners; each corner is its own population, so the pooled estimate is a worst-case envelope rather than a distribution anyone sampled
+
+warnings:
+  no measurement declared a target_yield, so no yield claim was checked -- the estimates below are reported, never failed

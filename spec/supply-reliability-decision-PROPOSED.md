@@ -18,7 +18,11 @@ From [`retention-refresh-budget.md`](retention-refresh-budget.md) (RATIFIED):
 1.106463 fF ASSUMED, `delta_V` = `VDD`/2 = 0.9 V ASSUMED, `I_leak`
 9.898880e-11 A measured); refresh-interval upper bound ~5.03 us (2x margin
 ASSUMPTION); refresh bandwidth formula. `delta_V` = `VDD`/2 remains an
-ASSUMPTION pending a sense amplifier. No option below relaxes any of them.
+ASSUMPTION pending a validated sense-margin budget (a schematic-level sense
+latch exists, `design/sense_latch.sch`, #109, but has no layout and its
+offset/yield is not validated — see
+[`sense-stage-premise-decision.md`](sense-stage-premise-decision.md)). No
+option below relaxes any of them.
 One tension is **recorded, not resolved**: option B leaves the cold stored '1'
 at 0.864 V < 0.9 V.
 
