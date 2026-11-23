@@ -169,10 +169,12 @@ grades with different arguments. It runs through the same discovery as every
 other suite (`evidence-checks.yml` and `npm test`), and it is itself a graded
 item-10 command.
 
-- The inventory gains the five omitted suites and the completeness suite; at
-  landing (2026-11-23) that is 39 `python3 -I` commands plus the 4
-  `klt drc/lvs --check` commands, 54/54 checks pass under the pinned klt 0.9.2,
-  and the `hygiene` list is unchanged.
+- The inventory gains the five omitted suites, the completeness suite and the
+  evidence-runner fixture suite (`test_run_evidence_checks.py`, issue #415,
+  which landed on `main` while this was in review); at landing (2026-11-23)
+  that is 40 `python3 -I` commands plus the 4 `klt drc/lvs --check` commands,
+  55/55 checks pass under the pinned klt 0.9.2, and the `hygiene` list is
+  unchanged.
 - `block-manifest.json`'s `10.analog` and `10.digital` pins moved to the new
   inventory hash and `block-manifest.signoff.json` was regenerated; both item-10
   rows stay `met` and `t1_met_count` stays 9.

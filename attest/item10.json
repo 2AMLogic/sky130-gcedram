@@ -331,6 +331,14 @@
       ]
     },
     {
+      "name": "Evidence-runner scratch-git-repo fixture suite (issue #415)",
+      "argv": [
+        "python3",
+        "-I",
+        "scripts/tests/test_run_evidence_checks.py"
+      ]
+    },
+    {
       "name": "klt drc --check gain_cell_2t.drc.result.json",
       "argv": [
         "klt",

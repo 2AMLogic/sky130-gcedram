@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 54/54 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 55/55 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 54,
-    "passed_count": 54,
+    "check_count": 55,
+    "passed_count": 55,
     "checks": [
       {
         "check": "present",
@@ -600,6 +600,19 @@
       {
         "check": "command",
         "role": "audit",
+        "name": "Evidence-runner scratch-git-repo fixture suite (issue #415)",
+        "argv": [
+          "python3",
+          "-I",
+          "scripts/tests/test_run_evidence_checks.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
         "name": "klt drc --check gain_cell_2t.drc.result.json",
         "argv": [
           "klt",
@@ -665,7 +678,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:61d7d13e19ed2663ea4a6df40075c40f1935c035b63a619339c46787fc31b1cf"
+      "content_hash": "sha256:c933da02b21cc2fd0b6ec5952d1d33710be9326d09946a445bb69ab2f105f1e7"
     }
   }
 }
