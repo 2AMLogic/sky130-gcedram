@@ -55,7 +55,9 @@ Legend. **Status**: `RATIFIED-CITED (file section)` or `ASSUMPTION`.
 [`operating-range-decision-PROPOSED.md`](operating-range-decision-PROPOSED.md)
 section 6; if the keys do not ratify it, the fallback is the existing 15-point
 grid (5 corners x -40/27/125 C), on which fs/-40 C is already known to fail the
-Phase 3 criteria, and item 2/6 would be graded as failing there. Retention
+Phase 3 criteria. Per the operator ruling on Q6 (section 7), items 2 and 6 are
+then graded on the full 15-point grid and the fs/-40 C failures are reported as
+failures. Retention
 quantities are always evaluated at the worst-case corner, `sf`/125 C
 (ratified section 2), in addition to the set.
 
@@ -148,6 +150,13 @@ Not decided here; each needs a ruling or a key decision.
 - **Q6. Fallback if the restricted range is not ratified.** Should items 2 and
   6 then be graded against the full 15-point grid, where fs/-40 C is already
   known to fail?
+  **RULED 2026-11-23, option a** (issue #395, operator decision r19-q292):
+  grade on the full 15-point grid and report the fs/-40 C failures as
+  failures. No threshold, corner set or waiver changes; the ruling only fixes
+  the fallback grading rule. Options b (re-open the range) and c (grade on the
+  restricted set regardless) were rejected. This record stays PROPOSED and NOT
+  RATIFIED, and ratifying the range remains with #385. See
+  [`macro-pass-conditions-q6-fallback-decision.md`](macro-pass-conditions-q6-fallback-decision.md).
 - **Q7. Supply.** All committed grids are `VDD` = 1.8 V only. Is a supply
   tolerance band required before item 6 is graded?
 
