@@ -7,14 +7,18 @@ run when results/variant_results.csv exists."""
 import contextlib
 import csv
 import io
+import os
+import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_variants as X  # noqa: E402
+import extract_vth as EV  # noqa: E402
 import run_variants as RV  # noqa: E402
 import variants as V  # noqa: E402
 
@@ -155,6 +159,110 @@ class Harness(unittest.TestCase):
             self.assertEqual(diff, {x for x in v["changes"] if v["changes"][x] != V.BASELINE[x]})
             if v["class"].startswith("attribution:") and v["class"] != "attribution:forced_level":
                 self.assertEqual(len(diff), 1, v["id"])
+
+    def test_extract_vth_timeout_propagates_and_leaves_scratch_root_empty(self):
+        seen_decks = []
+
+        def timeout_stub(cmd, **kwargs):
+            deck = Path(cmd[2])
+            seen_decks.append(deck.is_file())
+            raise subprocess.TimeoutExpired(cmd=cmd, timeout=kwargs.get("timeout", 1800))
+
+        with tempfile.TemporaryDirectory() as root:
+            with (
+                mock.patch.object(tempfile, "tempdir", root),
+                mock.patch.object(EV.subprocess, "run", side_effect=timeout_stub),
+            ):
+                with self.assertRaises(subprocess.TimeoutExpired):
+                    EV.run((Path("/nonexistent/sky130.lib.spice"), "tt", 27))
+            self.assertEqual(seen_decks, [True])
+            self.assertEqual(list(Path(root).iterdir()), [])
+
+            ok_res = subprocess.CompletedProcess(["ngspice"], 0, stdout="vt00 = 0.45\n", stderr="")
+            with (
+                mock.patch.object(tempfile, "tempdir", root),
+                mock.patch.object(EV.subprocess, "run", return_value=ok_res),
+            ):
+                corner, temp, out, _tail = EV.run((Path("/nonexistent/sky130.lib.spice"), "tt", 27))
+            self.assertEqual((corner, temp, out), ("tt", 27, {"vt00": 0.45}))
+            self.assertEqual(list(Path(root).iterdir()), [])
+
+            real_rmdir = os.rmdir
+            with (
+                mock.patch.object(tempfile, "tempdir", root),
+                mock.patch.object(EV.subprocess, "run", return_value=ok_res),
+                mock.patch("os.rmdir", side_effect=OSError("strict cleanup error")),
+            ):
+                with self.assertRaises(OSError):
+                    EV.run((Path("/nonexistent/sky130.lib.spice"), "tt", 27))
+            for leftover in Path(root).iterdir():
+                for child in leftover.iterdir():
+                    child.unlink()
+                real_rmdir(leftover)
+
+    def test_run_variants_missing_case_output_and_cleanup(self):
+        seen_decks = []
+
+        def stub_run(cmd, **_kwargs):
+            deck = Path(cmd[2])
+            seen_decks.append(deck.is_file())
+            return subprocess.CompletedProcess(cmd, 1, stdout="", stderr="variant case missing\n")
+
+        batch_args = (
+            "baseline",
+            Path("/nonexistent/sky130.lib.spice"),
+            "tt",
+            27,
+            "fresh",
+            [(0, 0)],
+            6.0e-16,
+            "T_RUN",
+            PROV,
+            0.5e-9,
+        )
+        with tempfile.TemporaryDirectory() as root:
+            with (
+                mock.patch.object(tempfile, "tempdir", root),
+                mock.patch.object(RV.subprocess, "run", side_effect=stub_run),
+                mock.patch.object(RV.R, "T_SENSE_S", RV.R.T_SENSE_S),
+                mock.patch.object(RV.R, "C_RBL_F", RV.R.C_RBL_F),
+            ):
+                rows = RV.run_batch(batch_args)
+            self.assertEqual(seen_decks, [True])
+            self.assertEqual(list(Path(root).iterdir()), [])
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["status"], "sim_failed")
+            self.assertIn("ngspice produced no output for this case", rows[0]["reason"])
+            self.assertIn("variant case missing", rows[0]["reason"])
+
+            class _Abort(BaseException):
+                pass
+
+            with (
+                mock.patch.object(tempfile, "tempdir", root),
+                mock.patch.object(RV.subprocess, "run", side_effect=_Abort("stop")),
+                mock.patch.object(RV.R, "T_SENSE_S", RV.R.T_SENSE_S),
+                mock.patch.object(RV.R, "C_RBL_F", RV.R.C_RBL_F),
+            ):
+                with self.assertRaises(_Abort):
+                    RV.run_batch(batch_args)
+            self.assertEqual(list(Path(root).iterdir()), [])
+
+            real_rmdir = os.rmdir
+            with (
+                mock.patch.object(tempfile, "tempdir", root),
+                mock.patch.object(RV.subprocess, "run", side_effect=stub_run),
+                mock.patch.object(RV.R, "T_SENSE_S", RV.R.T_SENSE_S),
+                mock.patch.object(RV.R, "C_RBL_F", RV.R.C_RBL_F),
+                mock.patch("os.rmdir", side_effect=OSError("simulated busy scratch dir")),
+            ):
+                rows2 = RV.run_batch(batch_args)
+            self.assertEqual(rows2[0]["status"], "sim_failed")
+            self.assertTrue(rows2[0]["reason"])
+            for leftover in Path(root).iterdir():
+                for child in leftover.iterdir():
+                    child.unlink()
+                real_rmdir(leftover)
 
 
 @unittest.skipUnless(X.VARIANT_CSV.exists(), "no committed variant results")
