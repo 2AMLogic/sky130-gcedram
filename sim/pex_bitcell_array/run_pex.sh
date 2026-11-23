@@ -4,8 +4,9 @@
 # 4x4 array, on the ratified retention row (spec/retention-refresh-budget
 #.md §5, min = 1.005989e-5 s).
 #
-# What one invocation per cell does (klt pex 0.9.1, the .github/workflows/
-# signoff.yml pin):
+# What one invocation per cell does (klt pex 0.9.1, this study's own pin --
+# the version that produced the committed envelopes; the signoff workflow
+# separately pins 0.9.2 to grade them):
 #   1. extracts a fresh PDK-bound parasitic netlist from the GDS
 #      (--parasitics, --deck sky130 --pdk sky130A --pdk-root "$PDK_ROOT"),
 #      writing it under work/<cell>/ (never into layout/);

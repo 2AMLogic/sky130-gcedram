@@ -29,7 +29,7 @@ now `check_failed` instead of `no_evidence`.**
   [`block-manifest.json`](../../block-manifest.json), each pinned to its
   layout's content hash. The regenerated
   [`block-manifest.signoff.json`](../../block-manifest.signoff.json)
-  (pinned klt 0.9.1) grades item 7 analog **`unmet` / `check_failed`** with
+  (pinned klt 0.9.2, the signoff workflow pin) grades item 7 analog **`unmet` / `check_failed`** with
   both citations graded `unmet` / `check_failed`: item 7 requires the
   cited envelope's own `status` to be `pass`, and each envelope's status is
   `error` because the 10 unresolved rows render as `error` delta rows —
@@ -271,7 +271,7 @@ PDK_ROOT=~/.ciel bash sim/pex_bitcell_array/run_pex.sh
 python3 -I sim/pex_bitcell_array/test_pex_bitcell_array.py
 ```
 
-The run needs `uv` (pinned klt 0.9.1 venv), the pinned open_pdks install,
+The run needs `uv` (study-local venv pinned to klt 0.9.1, the version that produced the committed envelopes), the pinned open_pdks install,
 and the batch fleet (`--wait-for-capacity 600` on every `klt sim`). A
 rerun writes a new RUN_ID's envelopes and native reports; nothing
 committed is ever overwritten. To regenerate the manifest grade after a

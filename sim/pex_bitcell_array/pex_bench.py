@@ -58,7 +58,6 @@ import run_bitcell_transient as R  # noqa: E402
 #: same name -- extract.md "SPICE model binding").
 NFET_MODEL = "sky130_fd_pr__nfet_01v8"
 
-import pex_bench  # noqa: E402
 from reduce_bitcell_transient import ladder_crossing  # noqa: E402
 
 #: Ratified worst-case single-cell retention benchmark,

@@ -109,8 +109,8 @@ def klt_argv() -> list[str]:
     if version != KLT_PIN:
         raise SystemExit(
             f"klt at {' '.join(argv)!r} reports {version!r}, expected the pinned "
-            f"{KLT_PIN!r} (.github/workflows/signoff.yml). Set GCEDRAM_KLT_BIN to "
-            "the pinned install."
+            f"{KLT_PIN!r} (this study's own pin, the version that produced "
+            "the committed envelopes). Set GCEDRAM_KLT_BIN to the pinned install."
         )
     return argv
 
