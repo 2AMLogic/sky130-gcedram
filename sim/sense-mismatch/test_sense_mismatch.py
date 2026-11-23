@@ -251,13 +251,30 @@ class YieldEvidence(unittest.TestCase):
         self.assertEqual(skipped, 1)
         self.assertEqual(per_corner, {"tt_mm/novdd/27C": 2, "fs_mm/novdd/27C": 1})
 
+    def test_default_report_is_nominal_even_when_control_sorts_later(self):
+        import contextlib, io, tempfile
+        doc = {"corners": [{"corner_id": "tt_mm/novdd/27C/mc0",
+                            "measurements": [{"name": "dend_sp150_0", "value": 1.8}]}]}
+        with tempfile.TemporaryDirectory() as td:
+            tmp = Path(td)
+            (tmp / "klt_report_row2e_20261120T203548Z.json").write_text(json.dumps(doc))
+            (tmp / "klt_report_row2e_control_20261120T203859Z.json").write_text(json.dumps(doc))
+            old, Y.RESULTS = Y.RESULTS, tmp
+            try:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(Y.main([]), 0)
+            finally:
+                Y.RESULTS = old
+            self.assertEqual([p.name for p in tmp.glob("yield_records_*")],
+                             ["yield_records_row2e_20261120T203548Z.json"])
+
     def _newest(self, pattern: str) -> Path:
         paths = sorted(RESULTS.glob(pattern))
         self.assertTrue(paths, pattern)
         return paths[-1]
 
     def test_committed_yield_records_reproduce_from_their_report(self):
-        doc = self._newest("yield_records_row2e_*.json")
+        doc = self._newest("yield_records_row2e_[0-9]*.json")
         rid = doc.name.removesuffix(".json").split("yield_records_", 1)[1]
         report = RESULTS / f"klt_report_{rid}.json"
         self.assertTrue(report.exists(), report)
@@ -265,7 +282,7 @@ class YieldEvidence(unittest.TestCase):
         self.assertEqual({"records": got}, json.loads(doc.read_text()))
 
     def test_committed_yield_artifacts_carry_campaign_discipline(self):
-        report = json.loads(self._newest("klt_yield_report_row2e_*.json").read_text())
+        report = json.loads(self._newest("klt_yield_report_row2e_[0-9]*.json").read_text())
         self.assertEqual(report["status"], "reported")  # no target_yield declared: never failed, never claimed
         self.assertEqual(len(report["measurements"]), M.N_REPLICAS)
         for m in report["measurements"]:
@@ -277,7 +294,7 @@ class YieldEvidence(unittest.TestCase):
             self.assertEqual(m["negative_control"]["verdict"], "detected")
 
     def test_committed_threshold_report_fits_every_corner(self):
-        report = json.loads(self._newest("klt_yield_threshold_row2e_*.json").read_text())
+        report = json.loads(self._newest("klt_yield_threshold_row2e_[0-9]*.json").read_text())
         self.assertEqual([c["name"] for c in report["corners"]],
                          [f"{p}/novdd/{t}C" for p, t in M.STAGE_CORNERS])
         for c in report["corners"]:

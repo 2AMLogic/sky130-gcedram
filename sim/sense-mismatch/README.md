@@ -404,15 +404,20 @@ ratification of it.
   control attaches to exactly these six measurements), graded by `klt yield`
   with [`yield_limits_row2e.json`](yield_limits_row2e.json):
 
-  all six measurements: `n = 256` pooled over the four corners, empirical
-  yield 1.000 with exact CI `[0.9857, 1.0]` ("at least 98.57 % at 95 %
-  confidence", the honest zero-failure bound), `sample_size.verdict`
+  all six measurements: `n = 256` pooled over the four corners (64 draws per
+  corner), empirical yield 1.000 with exact CI `[0.9857, 1.0]` ("at least
+  98.57 % at 95 % confidence" -- a **pooled** bound that uses all 256
+  observations; a single corner's 64/64 supports only the two-sided
+  95 % lower endpoint `0.025**(1/64)` = 94.40 %, so the per-corner picture
+  stays with the per-corner `yield-threshold` sigmas above, not with this
+  pooled figure), `sample_size.verdict`
   **sufficient** (required >= 183, observed half-width 0.0072 <= 0.01),
   negative control **detected** on every measurement (control yield
   0.80-0.85 vs nominal 1.0, non-overlapping exact CIs). The tool's own
-  warnings travel with the report: the pooled draw is a worst-case envelope
-  over the four corner populations, and the bimodal rail values make the
-  normal fit indicative only (the empirical estimate is the quoted one).
+  warnings travel with the report: the draw is pooled over the four corner
+  populations (it is not a worst-case envelope over them), and the bimodal
+  rail values make the normal fit indicative only (the empirical estimate is
+  the quoted one).
 
 * **Why one polarity**: a forced offset can only *improve* the decisions on
   the other side of zero, so a control graded there reads `not_detected` —
@@ -439,10 +444,16 @@ ratification of it.
 `block-manifest.signoff.json` (pinned klt, no CI change) grades `6.analog`
 `unmet / partial_coverage` with `detail.unratified_rows: ["2e"]` (and
 `uncovered_rows: ["2e"]` — the open #5490 no-`target_yield` behavior, linked
-here rather than papered over). The row turns `met` when 2e is ratified, with
-no further evidence work. `t1_met_count` is unchanged (9): the citation
-itself graded `met` (sufficient sample size, detected control), only the
-unratified row keeps the item unmet.
+here rather than papered over). Ratifying 2e is **not sufficient** to turn
+the item `met`: with only `ratified` flipped to `true` (checked against a
+scratch manifest at klt 0.9.1) item 6 stays `unmet / partial_coverage` with
+`unratified_rows: []` and `uncovered_rows: ["2e"]`, because the pinned tool
+counts a citation with no `target_yield` as uncovered
+(klayout-tools #5490). The row closes only when ratification is combined
+with a pinned klt that covers a `target_yield`-less (or fitted-statistic)
+citation, so the proposed target in #384 stays open. `t1_met_count` is
+unchanged (9): the citation itself graded `met` (sufficient sample size,
+detected control), but the item stays unmet.
 
 ### Open questions for the pass-conditions record (not spec changes)
 
@@ -478,14 +489,18 @@ Reproduce: `python3 -I sim/sense-mismatch/gen_sense_mismatch.py`, then
 uvx --from klayout-tools==0.9.1 klt sim sim/sense-mismatch/request_row2e.json \
   --backend batch --wait-for-capacity 600 --format json \
   > sim/sense-mismatch/results/klt_report_row2e_<NEW_RUN_ID>.json      # ditto _control
-python3 -I sim/sense-mismatch/build_yield_records.py                   # -> yield_records_...
+python3 -I sim/sense-mismatch/build_yield_records.py                   # nominal run only -> yield_records_row2e_<RUN>.json
 uvx --from "klayout-tools[yield]==0.9.1" klt yield-threshold \
   sim/sense-mismatch/results/yield_records_row2e_<RUN>.json --threshold 0 --format json
 uvx --from "klayout-tools[yield]==0.9.1" klt yield-samples \
   sim/sense-mismatch/results/klt_report_row2e_<RUN>.json \
   --negative-control sim/sense-mismatch/results/klt_report_row2e_control_<RUN>.json \
   --measurement dend_sp150_0,dend_sp150_1,dend_sp150_2,dend_sp150_3,dend_sp150_4,dend_sp150_5 \
-  --description "..." --format json > sim/sense-mismatch/results/yield_samples_row2e_<RUN>.json
+  --description "reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)" \
+  --format json > /tmp/yield_samples_raw.json
+# klt emits only seed + draws_per_population in `provenance`; add the committed campaign metadata, 1-space indent:
+python3 -I -c 'import json,sys; d=json.load(open("/tmp/yield_samples_raw.json")); d["provenance"].update(rng="ngspice (per-instance AGAUSS Vth mismatch, per-sample seeds derived by klt)", corner_matrix=["tt_mm/27C","fs_mm/27C","ss_mm/125C","sf_mm/125C"], common_random_numbers=True); sys.stdout.write(json.dumps(d, indent=1)+"\n")' \
+  > sim/sense-mismatch/results/yield_samples_row2e_<RUN>.json
 uvx --from "klayout-tools[yield]==0.9.1" klt yield \
   sim/sense-mismatch/results/yield_samples_row2e_<RUN>.json \
   --limits sim/sense-mismatch/yield_limits_row2e.json --format json \

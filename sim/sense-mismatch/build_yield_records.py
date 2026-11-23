@@ -33,6 +33,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "results"
 
+# Nominal campaign reports only: a digit must follow "row2e_" (the control is "row2e_control_<ts>").
+NOMINAL_REPORT_GLOB = "klt_report_row2e_[0-9]*.json*"
+
 MEAS_RE = re.compile(r"^dend_s(?P<sign>[zpm])(?P<mv>\d{3})_(?P<rep>\d)$")
 
 
@@ -73,11 +76,19 @@ def build_records(report: dict) -> tuple[list[dict], int, dict[str, int]]:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("report", nargs="?", help="klt sim report (json or json.gz); default: newest klt_report_row2e_*.json*")
+    ap.add_argument("report", nargs="?", help="klt sim report (json or json.gz); default: newest nominal klt_report_row2e_<timestamp>.json* (the control campaign is never a default)")
     ap.add_argument("out", nargs="?", help="output records document; default: yield_records_row2e_<RUN_ID>.json next to the report")
     args = ap.parse_args(argv)
 
-    report_path = Path(args.report) if args.report else max(RESULTS.glob("klt_report_row2e_*.json*"))
+    if args.report:
+        report_path = Path(args.report)
+    else:
+        # Nominal runs only: "klt_report_row2e_control_<ts>" would otherwise sort after every timestamp.
+        nominal = sorted(RESULTS.glob(NOMINAL_REPORT_GLOB))
+        if not nominal:
+            print(f"error: no nominal report matching {NOMINAL_REPORT_GLOB} in {RESULTS}", file=sys.stderr)
+            return 1
+        report_path = nominal[-1]
     if not report_path.is_file():
         print(f"error: report not found: {report_path}", file=sys.stderr)
         return 1
