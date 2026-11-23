@@ -15,7 +15,7 @@ change does not touch that pin or any `layout/*.result.json`.
 |---|---|---|---|
 | 2 Layout | `attest/item2.envelope.json`, written by `attest/make_item2_envelope.py` (klt has no producer for item 2) | `layout/gain_cell_2t.gds`, `layout/gain_cell_2t_array.gds`, `layout/generate.sh`, `layout/generate_array.sh`, `layout/generation_toolchain.py` through `provenance.input.paths` | Re-run the script; the manifest pin is the combined digest, so editing any member makes the row stale |
 | 9 Testbenches | `attest/item9.json` -> `attest/item9.envelope.json` | every committed ngspice deck and `klt sim` request under `sim/` (benches, not recorded results), plus the new `sim/cold-start/request.json`; PDK `sky130A` at open_pdks `f6eeac7` (`docs/pdk-pin.md`), klt 0.8.0, ngspice 46 | **Locally** (needs ngspice and the pinned PDK): `klt signoff --attest 9 --inventory attest/item9.json -o attest/item9.envelope.json` |
-| 10 Repo hygiene | `attest/item10.json` -> `attest/item10.envelope.json` | `README.md`, `LICENSE`, `spec/README.md`, `docs/pdk-pin.md`, both workflows; 26 `evidence-checks.yml` commands and the 4 `klt drc/lvs --check` commands of `signoff.yml` | `klt signoff --attest 10 --inventory attest/item10.json -o attest/item10.envelope.json`; CI re-runs `--check` |
+| 10 Repo hygiene | `attest/item10.json` -> `attest/item10.envelope.json` | `README.md`, `LICENSE`, `spec/README.md`, `docs/pdk-pin.md`, both workflows; every command the shared evidence runner executes (each tracked `test_*.py` suite outside `.loom/`, `.claude/` and `.agents/`, plus its standalone checks), discovered at run time by `scripts/run_evidence_checks.py` and kept complete against that discovery by `scripts/tests/test_item10_inventory.py` (issue #414); and the 4 `klt drc/lvs --check` commands of `signoff.yml` | `klt signoff --attest 10 --inventory attest/item10.json -o attest/item10.envelope.json`; CI re-runs `--check` |
 
 Item 9's cold start is **one single-corner request** (tt, 125 C) over the
 sense-stage deck, run with `klt sim --backend local`, about 40 s. Every other
@@ -154,3 +154,28 @@ a declared `klt drc --check ...` audit resolves to whatever other `klt` is on
 `PATH` rather than the attesting one. Re-attest with a symlink to the pinned
 `klt` in a directory that is not the tool venv's `bin`, prepended to `PATH`
 (recipe in layout/README.md).
+
+## Addendum: item 10 grades the evidence runner's whole command list (issue #414)
+
+**Evidence record, not a spec change.** `attest/item10.json` had drifted from
+the checks CI runs: the shared runner `scripts/run_evidence_checks.py`
+(issue #277, PR #413) executed five suites the inventory did not list, the same
+omission #343 had fixed by hand at two entries. Since #413 nothing in the repo
+enumerates the command list, so the comparison is now a discovered suite,
+`scripts/tests/test_item10_inventory.py`: it imports the runner's discovery and
+command-building code, enumerates the same list without executing it, and fails
+naming any command the inventory is missing, no longer runs, duplicates, or
+grades with different arguments. It runs through the same discovery as every
+other suite (`evidence-checks.yml` and `npm test`), and it is itself a graded
+item-10 command.
+
+- The inventory gains the five omitted suites and the completeness suite; at
+  landing (2026-11-23) that is 39 `python3 -I` commands plus the 4
+  `klt drc/lvs --check` commands, 54/54 checks pass under the pinned klt 0.9.2,
+  and the `hygiene` list is unchanged.
+- `block-manifest.json`'s `10.analog` and `10.digital` pins moved to the new
+  inventory hash and `block-manifest.signoff.json` was regenerated; both item-10
+  rows stay `met` and `t1_met_count` stays 9.
+- Cost to know: a newly committed `test_*.py` suite is graded by item 10 only
+  once it has an `attest/item10.json` entry and a regenerated envelope. Until
+  then the completeness suite, CI-blocking through the runner, fails.

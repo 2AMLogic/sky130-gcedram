@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 48/48 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 54/54 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 48,
-    "passed_count": 48,
+    "check_count": 54,
+    "passed_count": 54,
     "checks": [
       {
         "check": "present",
@@ -522,6 +522,84 @@
       {
         "check": "command",
         "role": "audit",
+        "name": "Aged-read (issue #94) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/aged-read/test_aged_read.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Bitcell-transient generator / reducer (issue #182) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/bitcell-transient/test_gen_bitcell_transient.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Closed-loop-refresh (issue #147) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/closed-loop-refresh/test_closed_loop.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Extracted-CRBL column (issue #88) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/extracted-crbl/test_column_klt.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Loaded-column compare_pins equivalence (issue #400) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/test_compare_pins.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Item-10 inventory completeness (every evidence-runner command graded, issue #414)",
+        "argv": [
+          "python3",
+          "-I",
+          "scripts/tests/test_item10_inventory.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
         "name": "klt drc --check gain_cell_2t.drc.result.json",
         "argv": [
           "klt",
@@ -587,7 +665,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa"
+      "content_hash": "sha256:61d7d13e19ed2663ea4a6df40075c40f1935c035b63a619339c46787fc31b1cf"
     }
   }
 }
