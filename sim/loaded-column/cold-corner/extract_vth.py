@@ -65,12 +65,10 @@ def deck(lib, corner, temp):
 
 def run(args):
     lib, corner, temp = args
-    d = Path(tempfile.mkdtemp(prefix="gcedram_vth_"))
-    p = d / "vth.sp"
-    p.write_text(deck(lib, corner, temp))
-    res = subprocess.run(["ngspice", "-b", str(p)], capture_output=True, text=True, timeout=1800)
-    p.unlink()
-    d.rmdir()
+    with tempfile.TemporaryDirectory(prefix="gcedram_vth_") as d:
+        p = Path(d) / "vth.sp"
+        p.write_text(deck(lib, corner, temp))
+        res = subprocess.run(["ngspice", "-b", str(p)], capture_output=True, text=True, timeout=1800)
     out = {}
     for line in res.stdout.splitlines():
         s = line.split()
