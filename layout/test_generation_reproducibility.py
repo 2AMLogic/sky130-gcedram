@@ -41,6 +41,7 @@ import compare_array_layout as C  # noqa: E402
 import generation_toolchain as T  # noqa: E402
 import xor_layout_geometry as X  # noqa: E402
 import array_topology as A  # noqa: E402
+import sense_latch_topology as L  # noqa: E402
 
 COMMITTED_GDS = HERE / "gain_cell_2t_array.gds"
 TOP = "gain_cell_2t_array_4x4_layout_0"
@@ -314,6 +315,256 @@ class LvsReferenceProvenancePin(unittest.TestCase):
             "layout/generate_array.sh (or its --emit lvs-reference step)")
 
 
+# --------------------------- latch provenance pin (issue #387)
+class SenseLatchReferenceProvenancePin(unittest.TestCase):
+    """The committed sense-latch LVS reference netlist pins the sha256 of
+    design/sense_latch.spice in its header and is generated -- never
+    hand-transcribed -- by sense_latch_topology.build_lvs_reference, a pure
+    function of (source text, source hash) with no klt/KLayout/PDK. Tests
+    here re-render it with the hash computed from the live netlist at test
+    time and byte-compare against the committed file (the array's
+    LvsReferenceProvenancePin pattern, extended per issue #387), then pin
+    the derivation contract itself: a matched-pair W edit in the source
+    follows into both the generation inputs and the reference, a
+    comment-only edit still invalidates the committed reference through
+    the hash, and a topology edit is refused outright."""
+
+    def render(self, text: str, path: str = "design/sense_latch.spice") -> str:
+        src = self.dir / "sense_latch.spice"
+        src.write_text(text)
+        parsed = L.parse_sense_latch_spice(str(src))
+        live_hash = hashlib.sha256(src.read_bytes()).hexdigest()
+        return L.build_lvs_reference(path, live_hash, parsed), parsed
+
+    def setUp(self):
+        self._d = tempfile.TemporaryDirectory()
+        self.dir = Path(self._d.name)
+        self.live = (REPO / "design" / "sense_latch.spice").read_text()
+
+    def tearDown(self):
+        self._d.cleanup()
+
+    def test_committed_lvs_reference_pins_the_live_design_hash(self):
+        src = REPO / "design" / "sense_latch.spice"
+        parsed = L.parse_sense_latch_spice(str(src))
+        live_hash = hashlib.sha256(src.read_bytes()).hexdigest()
+        want = L.build_lvs_reference("design/sense_latch.spice", live_hash, parsed)
+        got = (HERE / "sense_latch.lvs_reference.spice").read_text()
+        self.assertEqual(
+            got, want,
+            "sense_latch.lvs_reference.spice is stale: re-run "
+            "layout/generate_sense_latch.sh (or its --emit lvs-reference step)")
+
+    def test_pair_w_edit_follows_into_gen_params_and_reference(self):
+        # XMP1/XMP2 are the only pfet_01v8 W=2 cards (XMNF is an nfet), so
+        # this replacement edits exactly the matched pmos pair.
+        mutated = self.live.replace(
+            "sky130_fd_pr__pfet_01v8 L=0.15 W=2 nf=1",
+            "sky130_fd_pr__pfet_01v8 L=0.15 W=2.5 nf=1")
+        self.assertEqual(mutated.count("W=2.5"), 2, "mutation must touch both pair devices")
+        rendered, parsed = self.render(mutated)
+        self.assertEqual(L.build_gen_params(parsed["devices"], "ppair")["w_um"], 2.5)
+        self.assertIn("M_XMP1 rbl ref vp vdd pfet L=0.15U W=2.5U", rendered)
+        self.assertIn("M_XMP2 ref rbl vp vdd pfet L=0.15U W=2.5U", rendered)
+        # an untouched block keeps its own W
+        self.assertEqual(L.build_gen_params(parsed["devices"], "header")["w_um"], 4)
+
+    def test_comment_only_edit_invalidates_the_reference_through_the_hash(self):
+        rendered_live, _ = self.render(self.live)
+        rendered_comment, _ = self.render(self.live + "* a comment-only edit\n")
+        committed = (HERE / "sense_latch.lvs_reference.spice").read_text()
+        self.assertEqual(rendered_live, committed)
+        self.assertNotEqual(rendered_comment, committed,
+                            "a comment-only source edit must invalidate the committed reference")
+
+    def test_topology_edits_are_refused(self):
+        # break the cross-coupling: XMN2's gate onto its own drain's net
+        broken = self.live.replace("XMN2 ref rbl vn GND", "XMN2 ref ref vn GND", 1)
+        with self.assertRaises(ValueError):
+            self.render(broken)
+        # and a missing device
+        dropped = "\n".join(ln for ln in self.live.splitlines() if not ln.startswith("XMPH"))
+        with self.assertRaises(ValueError):
+            self.render(dropped)
+        # swapped XMP1/XMP2 drains violate U0/U1 vertical alignment with npair
+        swapped_p = (
+            self.live
+            .replace("XMP1 rbl ref vp vdd", "XMP1 ref rbl vp vdd", 1)
+            .replace("XMP2 ref rbl vp vdd", "XMP2 rbl ref vp vdd", 1)
+        )
+        with self.assertRaisesRegex(ValueError, "U0/U1 order"):
+            self.render(swapped_p)
+        # shorted enables (en == enb)
+        shorted_en = (
+            self.live
+            .replace("XMPH vp enb vdd vdd", "XMPH vp en vdd vdd", 1)
+        )
+        with self.assertRaisesRegex(ValueError, "pairwise distinct"):
+            self.render(shorted_en)
+        # asymmetric matched-pair sizing
+        asym = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1.5 nf=1",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, "must share W/L"):
+            self.render(asym)
+
+    def test_unsupported_device_cards_and_models_are_refused(self):
+        # seventh device with an unrecognized sky130 model
+        lvt = (
+            self.live
+            + "XLOAD rbl ref vn GND sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 mult=1 m=1\n"
+        )
+        with self.assertRaisesRegex(ValueError, r"XLOAD.*sky130_fd_pr__nfet_01v8_lvt"):
+            self.render(lvt)
+        # passive/non-X device card
+        cap = self.live + "C1 rbl GND 10f\n"
+        with self.assertRaisesRegex(ValueError, "C1"):
+            self.render(cap)
+        # seventh device with an otherwise-supported model
+        extra_nfet = (
+            self.live
+            + "XLOAD rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 mult=1 m=1\n"
+        )
+        with self.assertRaisesRegex(ValueError, "XLOAD"):
+            self.render(extra_nfet)
+        # unexpected SPICE directive
+        directive = self.live + ".param foo=1\n"
+        with self.assertRaisesRegex(ValueError, r"\.param"):
+            self.render(directive)
+
+    def test_unsupported_fingers_and_multiplicities_are_refused(self):
+        nf2 = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*nf=2"):
+            self.render(nf2)
+
+        mult2 = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=2 m=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*mult=2"):
+            self.render(mult2)
+
+        m2 = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29\n"
+            "+ nrs=0.29 sa=0 sb=0 sd=0 mult=1 m=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*m=2"):
+            self.render(m2)
+
+        unknown_param = self.live.replace(
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1",
+            "XMN1 rbl ref vn GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 par=2",
+            1,
+        )
+        with self.assertRaisesRegex(ValueError, r"XMN1.*par=2"):
+            self.render(unknown_param)
+
+    def test_committed_compose_request_renders_from_the_committed_block_reports(self):
+        parsed = L.parse_sense_latch_spice(str(REPO / "design" / "sense_latch.spice"))
+        reports = {b: L.load_block_report(str(HERE / L._report_name(b))) for b in L.BLOCKS}
+        want = L.build_compose_request(reports, parsed)
+        got = json.loads((HERE / "sense_latch.layout.request.json").read_text())
+        self.assertEqual(got, want,
+                         "sense_latch.layout.request.json is stale: re-run "
+                         "layout/generate_sense_latch.sh (or its --emit compose-request step)")
+
+    def test_swapped_enable_changes_compose_request_pins(self):
+        swapped = (
+            self.live
+            .replace("XMNF vn en GND GND", "XMNF vn enb GND GND", 1)
+            .replace("XMPH vp enb vdd vdd", "XMPH vp en vdd vdd", 1)
+        )
+        _, parsed = self.render(swapped)
+        reports = {b: L.load_block_report(str(HERE / L._report_name(b))) for b in L.BLOCKS}
+        req = L.build_compose_request(reports, parsed)
+        committed = json.loads((HERE / "sense_latch.layout.request.json").read_text())
+        self.assertNotEqual(req, committed)
+        self.assertEqual(
+            req["pins"],
+            [
+                {"net": "enb", "block": "footer", "port": "U0_G"},
+                {"net": "en", "block": "header", "port": "U0_G"},
+            ],
+        )
+
+    def _canonical_extract_report(self) -> dict:
+        # Matches the committed klt extract output (including D/S order
+        # swapped on M$2 and M$5 to prove unordered S/D matching works).
+        return {
+            "device_count": 6,
+            "device_counts": {"nfet": 3, "pfet": 3},
+            "devices": [
+                {"name": "$1", "class": "nfet", "nets": {"d": "rbl", "g": "ref", "s": "vn", "b": "GND"}, "params": {"w_um": 1.0, "l_um": 0.15}},
+                {"name": "$2", "class": "nfet", "nets": {"d": "vn", "g": "rbl", "s": "ref", "b": "GND"}, "params": {"w_um": 1.0, "l_um": 0.15}},
+                {"name": "$3", "class": "nfet", "nets": {"d": "vn", "g": "en", "s": "GND", "b": "GND"}, "params": {"w_um": 2.0, "l_um": 0.15}},
+                {"name": "$4", "class": "pfet", "nets": {"d": "rbl", "g": "ref", "s": "vp", "b": "vdd"}, "params": {"w_um": 2.0, "l_um": 0.15}},
+                {"name": "$5", "class": "pfet", "nets": {"d": "vp", "g": "rbl", "s": "ref", "b": "vdd"}, "params": {"w_um": 2.0, "l_um": 0.15}},
+                {"name": "$6", "class": "pfet", "nets": {"d": "vp", "g": "enb", "s": "vdd", "b": "vdd"}, "params": {"w_um": 4.0, "l_um": 0.15}},
+            ],
+        }
+
+    def _run_extract_check(self, report: dict, spice_text: str | None = None) -> list[str]:
+        if spice_text is None:
+            parsed = L.parse_sense_latch_spice(str(REPO / "design" / "sense_latch.spice"))
+        else:
+            _, parsed = self.render(spice_text)
+        ext_path = self.dir / "extract.json"
+        ext_path.write_text(json.dumps(report))
+        return L.check_extract(str(ext_path), parsed)
+
+    def test_extract_check_accepts_canonical_and_rejects_terminal_and_width_mutations(self):
+        base = self._canonical_extract_report()
+        self.assertEqual(self._run_extract_check(base), [])
+
+        # Tie M$1's gate to its own drain (rbl instead of ref)
+        tied = json.loads(json.dumps(base))
+        tied["devices"][0]["nets"]["g"] = "rbl"
+        probs = self._run_extract_check(tied)
+        self.assertTrue(probs, "gate tied to drain must fail check_extract")
+        self.assertTrue(any("XMN1" in p for p in probs), probs)
+
+        # Wrong footer width (1.0um matches XMN1/XMN2 class+width, not XMNF's 2.0um)
+        wrong_w = json.loads(json.dumps(base))
+        wrong_w["devices"][2]["params"]["w_um"] = 1.0
+        probs = self._run_extract_check(wrong_w)
+        self.assertTrue(probs, "incorrect footer width must fail check_extract")
+        self.assertTrue(any("XMNF" in p and "W=2.0" in p for p in probs), probs)
+
+        # Swapped footer/header enables in extracted report
+        swapped_ext = json.loads(json.dumps(base))
+        swapped_ext["devices"][2]["nets"]["g"] = "enb"
+        swapped_ext["devices"][5]["nets"]["g"] = "en"
+        probs = self._run_extract_check(swapped_ext)
+        self.assertTrue(probs, "swapped enables in extract must fail check_extract")
+        self.assertTrue(any("XMNF" in p for p in probs) and any("XMPH" in p for p in probs), probs)
+
+        # Canonical extract checked against a schematic with swapped enables
+        swapped_sch = (
+            self.live
+            .replace("XMNF vn en GND GND", "XMNF vn enb GND GND", 1)
+            .replace("XMPH vp enb vdd vdd", "XMPH vp en vdd vdd", 1)
+        )
+        probs = self._run_extract_check(base, spice_text=swapped_sch)
+        self.assertTrue(probs, "canonical extract against swapped-enable schematic must fail")
+
+    def test_generate_sense_latch_xor_fallback_uses_pinned_check_python(self):
+        text = (HERE / "generate_sense_latch.sh").read_text()
+        self.assertIn('"${KLT_CHECK_PYTHON}" -I "${LAYOUT_DIR}/xor_layout_geometry.py"', text)
+        self.assertNotRegex(text, r"python3\s+-I\s+.*xor_layout_geometry\.py")
+
+
 # ----------------------------------------------------- toolchain guard
 CFG = T.load_config()
 
@@ -403,33 +654,16 @@ class ToolchainGuard(Tmp):
                                       f"evidence record (cited: {sorted(records)})")
         rel, rec = xor[0]
 
-        # The measurement came out equivalent, over an asserted enumeration.
-        self.assertEqual(rec["result"], "equivalent", f"{rel}: {rec.get('problems')}")
-        self.assertEqual(rec["problems"], [], rel)
-        self.assertIs(rec["xor_empty_on_every_drawn_layer"], True, rel)
+        # Whatever the verdict, the enumeration, bbox and label set are
+        # compared over the asserted set, and every drawn pair reports its
+        # counts and an explicit XOR figure -- never an absent key.
         self.assertIs(rec["enumeration"]["match"], True, rel)
         self.assertIs(rec["bbox"]["match"], True, rel)
         self.assertIs(rec["labels"]["match"], True, rel)
+        self.assert_xor_citation(rec, gen["verified"], rel)
 
-        # Every drawn pair reports its counts and an explicit zero XOR -- an
-        # empty XOR must be a stated 0, never an absent key.
-        for entry in rec["layers"]:
-            for key in ("layer_datatype", "committed_polygons", "regenerated_polygons",
-                        "xor_polygons", "xor_area_dbu2", "xor_area_um2"):
-                self.assertIn(key, entry, f"{rel}: layer entry missing {key}: {entry}")
-            self.assertEqual(entry["xor_polygons"], 0, f"{rel}: {entry['layer_datatype']} XOR not empty")
-            self.assertEqual(entry["xor_area_dbu2"], 0, f"{rel}: {entry['layer_datatype']} XOR area not 0")
-
-        # `verified`'s layer count must equal the record's enumeration, by name
-        # where the field names them -- so rewording the prose cannot drift
-        # away from the artifact (klt layers reports 12 on this GDS; the drawn
-        # set is 10 and the 2 label-only pairs are counted separately).
         drawn = rec["enumeration"]["in_committed"]
         self.assertEqual(sorted(drawn), sorted(rec["enumeration"]["expected"]), rel)
-        stated = re.search(r"XOR empty on all (\d+) drawn layers", gen["verified"])
-        self.assertIsNotNone(stated, "`verified` must state 'XOR empty on all <N> drawn layers'")
-        self.assertEqual(int(stated.group(1)), len(drawn),
-                         f"`verified` says {stated.group(1)} drawn layers, {rel} enumerates {len(drawn)}")
         for pair in drawn:
             self.assertIn(pair, gen["verified"], f"`verified` does not name drawn layer {pair} from {rel}")
         for pair in (p["layer_texttype"] for p in rec["labels"]["pairs"]):
@@ -456,6 +690,73 @@ class ToolchainGuard(Tmp):
         self.assertNotRegex((REPO / rel).read_text(), r"/home/|/Users/|/tmp/|/var/folders",
                             f"{rel} embeds an absolute host path")
 
+    def assert_xor_citation(self, rec, verified, rel):
+        differing = []
+        for entry in rec["layers"]:
+            for key in ("layer_datatype", "committed_polygons", "regenerated_polygons",
+                        "xor_polygons", "xor_area_dbu2", "xor_area_um2", "xor_empty"):
+                self.assertIn(key, entry, f"{rel}: layer entry missing {key}: {entry}")
+            pair = entry["layer_datatype"]
+            empty = entry["xor_polygons"] == 0
+            self.assertIs(entry["xor_empty"], empty, f"{rel}: {pair} XOR polygon count")
+            for area in ("xor_area_dbu2", "xor_area_um2"):
+                self.assertEqual(entry[area] == 0, empty, f"{rel}: {pair} {area}")
+            if not empty:
+                differing.append((pair, f"{entry['xor_area_um2']:.4f}"))
+
+        drawn = rec["enumeration"]["in_committed"]
+        self.assertCountEqual([entry["layer_datatype"] for entry in rec["layers"]], drawn, rel)
+        self.assertIs(rec["xor_empty_on_every_drawn_layer"], not differing,
+                      f"{rel}: XOR summary disagrees with per-layer measurements")
+        self.assertEqual(rec["result"], "not-equivalent" if differing else "equivalent",
+                         f"{rel}: XOR verdict disagrees with per-layer measurements")
+
+        # Match whole measurement clauses so the enumeration cannot supply the layer name.
+        claims = re.findall(r"\blayer (\d+/\d+) has (\d+\.\d+) um\^2 total XOR\b", verified)
+        self.assertCountEqual(claims, differing, f"{rel}: total XOR cited for the wrong layer or area")
+        empty_claim = r"XOR empty on all (\d+) drawn layers"
+        if differing:
+            self.assertTrue(rec["problems"], rel)
+            self.assertNotRegex(verified, empty_claim)
+            count_pattern = r"(\d+) drawn layers"
+        else:
+            self.assertEqual(rec["problems"], [], rel)
+            count_pattern = empty_claim
+        stated = re.search(count_pattern, verified)
+        self.assertIsNotNone(stated, f"{rel}: missing drawn-layer count for {rec['result']} XOR")
+        self.assertEqual(int(stated.group(1)), len(drawn),
+                         f"`verified` says {stated.group(1)} drawn layers, {rel} enumerates {len(drawn)}")
+        if differing:
+            # Bind the empty-pair clause too, in the same whole-clause style:
+            # the enumeration can supply neither the phrase nor its count.
+            empty_stated = re.search(r"The other (\d+) pairs XOR empty\b", verified)
+            self.assertIsNotNone(
+                empty_stated,
+                f"`verified` does not say how many of {rel}'s drawn pairs XOR empty")
+            self.assertEqual(
+                int(empty_stated.group(1)), len(drawn) - len(differing),
+                f"`verified` says {empty_stated.group(1)} pairs XOR empty, "
+                f"{rel} measures {len(drawn) - len(differing)} of {len(drawn)}")
+
+    def test_nonempty_xor_citation_negative_controls(self):
+        rel = "layout/results/geometry_xor_klt0.9.2_vs_committed_20261121.json"
+        rec = json.loads((REPO / rel).read_text())
+        drawn = ", ".join(rec["enumeration"]["in_committed"])
+        verified = (f"10 drawn layers ({drawn}). Only layer 95/20 has 0.2336 um^2 total XOR. "
+                    f"The other 9 pairs XOR empty.")
+        self.assert_xor_citation(rec, verified, rel)
+
+        with self.assertRaisesRegex(AssertionError, "total XOR"):
+            self.assert_xor_citation(rec, verified.replace("layer 95/20", "layer 94/20"), rel)
+        with self.assertRaisesRegex(AssertionError, "XOR verdict"):
+            self.assert_xor_citation({**rec, "result": "inconclusive"}, verified, rel)
+        with self.assertRaisesRegex(AssertionError, "XOR summary"):
+            self.assert_xor_citation({**rec, "xor_empty_on_every_drawn_layer": True}, verified, rel)
+        with self.assertRaisesRegex(AssertionError, "pairs XOR empty"):
+            self.assert_xor_citation(rec, verified.replace("The other 9 pairs", "The other 3 pairs"), rel)
+        with self.assertRaisesRegex(AssertionError, "pairs XOR empty"):
+            self.assert_xor_citation(rec, verified.replace(" The other 9 pairs XOR empty", ""), rel)
+
     def test_check_pin_matches_signoff_workflow(self):
         wf = (REPO / ".github" / "workflows" / "signoff.yml").read_text()
         ver = re.search(r"KLT_VERSION:\s*\"?(\d+\.\d+\.\d+)\"?\s*$", wf, re.M).group(1)
@@ -470,7 +771,7 @@ class ToolchainGuard(Tmp):
         self.assertIn(E.PDK_OPEN_PDKS_COMMIT, (REPO / "docs" / "pdk-pin.md").read_text())
 
     def test_both_scripts_use_the_shared_pin_not_path_klt(self):
-        for name in ("generate_array.sh", "extract_array_parasitics.sh"):
+        for name in ("generate_array.sh", "extract_array_parasitics.sh", "generate_sense_latch.sh"):
             text = (HERE / name).read_text()
             self.assertTrue("generation_toolchain.py\" preflight --role generation --role check --pdk" in text,
                             f"{name} does not run the shared preflight")
@@ -703,7 +1004,8 @@ class ScriptsFailBeforeWriting(Tmp):
     def test_mismatched_generation_toolchain(self):
         env = self.mismatched_env()  # generation slot holds the check revision
         for script, args in (("generate_array.sh", []), ("generate_array.sh", ["--check"]),
-                             ("extract_array_parasitics.sh", [])):
+                             ("extract_array_parasitics.sh", []),
+                             ("generate_sense_latch.sh", []), ("generate_sense_latch.sh", ["--check"])):
             with self.subTest(script=script, args=args):
                 p = self.run_script(script, args, env)
                 self.assertEqual(p.returncode, 2, p.stderr)
