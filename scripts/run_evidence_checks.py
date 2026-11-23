@@ -43,7 +43,9 @@ def repo_root() -> str | None:
             f" {proc.returncode}: {proc.stderr.decode('utf-8', 'replace').strip()}\n"
         )
         return None
-    return proc.stdout.decode("utf-8", "surrogateescape").strip()
+    out = proc.stdout.decode("utf-8", "surrogateescape")
+    # Remove exactly the newline git appends; the path may end in whitespace.
+    return out[:-1] if out.endswith("\n") else out
 
 
 def discover_suites() -> list[str] | None:
@@ -55,9 +57,12 @@ def discover_suites() -> list[str] | None:
         )
         return None
     suites = []
+    seen = set()
     for raw in proc.stdout.split(b"\0"):
-        if not raw:
+        # ls-files emits one entry per index stage of a conflicted path.
+        if not raw or raw in seen:
             continue
+        seen.add(raw)
         path = raw.decode("utf-8", "surrogateescape")
         if path.split("/", 1)[0] in EXCLUDED_TOP_LEVEL:
             continue
@@ -68,7 +73,7 @@ def discover_suites() -> list[str] | None:
 
 def run_check(argv: list[str]) -> int:
     print(" ".join(argv), flush=True)
-    return subprocess.run(["python3", "-I", *argv]).returncode
+    return subprocess.run(["python3", "-I", "--", *argv]).returncode
 
 
 def main() -> int:
