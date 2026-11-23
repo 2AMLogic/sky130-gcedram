@@ -142,6 +142,13 @@ Not decided here; each needs a ruling or a key decision.
 - **Q4. Whether the 0.1 V, 10 fF, 10 ns, 0.9 V and 5 ns values stay as
   placeholders** or are replaced once #80 and #81 land. This record carries
   them forward only so something is gradable now.
+  **Answered 2026-11-23 (#393): keep.** Operator ruling, option `a`: every
+  placeholder stays exactly as written and results are graded against them,
+  reporting pass or fail. The extracted 0.955559 fF `C_RBL` is evidence beside
+  the 10 fF basis, not a threshold change; re-deriving thresholds at it
+  remains a two-key ratification matter (section 1 rule). Failures against the
+  placeholders (e.g. the fs/-40 C fallback point at 24.4799 mV on the 10 fF
+  baseline, below 0.1 V) are reported as failures, not relaxed.
 - **Q5. What counts as a "full" DRC/LVS pass** (rows 5a, 5b) while the
   rule deck is partial; and whether a "clean over a partial deck" result may
   be reported at all, and under what label.
