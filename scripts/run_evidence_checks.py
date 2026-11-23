@@ -15,6 +15,13 @@ exit code is nonzero when discovery fails, zero suites are found, or any
 check fails. A clean run exits zero. stdlib plus ``git`` only, like the
 checks it runs: no ngspice, no klt, no network.
 
+This file is the only place the command list is written down: CI and
+``npm test`` both run this runner, and T1 item 10 grades its commands. One
+of the discovered suites, ``scripts/tests/test_item10_inventory.py``, imports
+``discover_suites`` and ``evidence_commands`` from here to check that
+``attest/item10.json`` grades every command (issue #414), so a newly
+committed suite is graded by item 10 or fails that suite.
+
 Usage: python3 -I scripts/run_evidence_checks.py
 """
 from __future__ import annotations
@@ -26,6 +33,7 @@ import sys
 
 EXCLUDED_TOP_LEVEL = (".loom", ".claude", ".agents")
 SUITE_PATTERN = "test_*.py"
+INTERPRETER = ["python3", "-I"]
 STANDALONE_CHECKS = [
     ["sim/loaded-column/cold-corner/check_evidence_index.py"],
     ["sim/check_item9_inventory.py"],
@@ -71,9 +79,16 @@ def discover_suites() -> list[str] | None:
     return suites
 
 
+def evidence_commands(suites: list[str]) -> list[list[str]]:
+    """Every argv the runner executes, in run order: one per suite, then the
+    standalone checks. Each is run behind ``INTERPRETER`` and a ``--``
+    option terminator; item 10 grades it as ``python3 -I <argv>``."""
+    return [[path] for path in suites] + STANDALONE_CHECKS
+
+
 def run_check(argv: list[str]) -> int:
     print(" ".join(argv), flush=True)
-    return subprocess.run(["python3", "-I", "--", *argv]).returncode
+    return subprocess.run([*INTERPRETER, "--", *argv]).returncode
 
 
 def main() -> int:
@@ -90,7 +105,7 @@ def main() -> int:
             f" outside {list(EXCLUDED_TOP_LEVEL)}\n"
         )
         return 1
-    commands = [[path] for path in suites] + STANDALONE_CHECKS
+    commands = evidence_commands(suites)
     failures = []
     for argv in commands:
         rc = run_check(argv)

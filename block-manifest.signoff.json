@@ -553,9 +553,27 @@
         "A `klt pex` citation is only as good as the **device-body bias** of the netlist it ran on (#1983). A device body left on an anonymous, deck-synthesized net has no DC bias path at all, which makes a resimulation of that extracted netlist *physically wrong, not merely imprecise* (`docs/cli/extract.md` \u2192 \"Coverage\") \u2014 the run converges and reports numbers, and those numbers are not comparable to the schematic leg they are being diffed against. A `klt pex` report states the condition in its own `body_bias` block (`docs/cli/pex.md`), and `klt signoff` surfaces it verbatim on this item's citation (`citation.body_bias`). **It does not grade on it**: an item-7 citation whose `body_bias.status` is `\"unbiased\"` still renders `met`, because the condition is a deck-coverage property some PDKs produce on every layout they extract, not a defect this command can adjudicate. So a claim citing item 7 must read that field and state whether its post-layout numbers were measured on a properly-biased netlist \u2014 claimant-enforced, exactly like item 3's DRC-coverage disclosure. The same discipline applies upstream at item 4: `klt lvs`'s `body_verification` block says whether the compare verified the body ties at all, and `\"unchecked\"` (a pre-extracted netlist) is not `\"verified\"`."
       ],
       "status": "unmet",
-      "reason": "no_evidence",
+      "reason": "check_failed",
       "graded_by_build": true,
-      "citation": null
+      "citation": null,
+      "citations_graded": [
+        {
+          "citation": "sim/pex_bitcell_array/results/klt_pex_bitcell_20261121T051134Z.json",
+          "status": "unmet",
+          "reason": "check_failed"
+        },
+        {
+          "citation": "sim/pex_bitcell_array/results/klt_pex_array_20261121T051134Z.json",
+          "status": "unmet",
+          "reason": "check_failed"
+        }
+      ],
+      "detail": {
+        "failed_citations": [
+          "sim/pex_bitcell_array/results/klt_pex_bitcell_20261121T051134Z.json",
+          "sim/pex_bitcell_array/results/klt_pex_array_20261121T051134Z.json"
+        ]
+      }
     },
     {
       "tier": "T1",
@@ -614,7 +632,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:6df0788cd26f1b441f7f134daff1489a40f2ccbfe47ddec8b6a1f6bc9689cd63",
+        "content_hash": "sha256:955a6cd67a94031735b7b7c188d7db7af5f006502570dbbfa8710c3144d4bc22",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -623,15 +641,15 @@
             "path": "attest/item9.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:6df0788cd26f1b441f7f134daff1489a40f2ccbfe47ddec8b6a1f6bc9689cd63",
+          "content_hash": "sha256:955a6cd67a94031735b7b7c188d7db7af5f006502570dbbfa8710c3144d4bc22",
           "input_verified": true,
-          "summary": "T1 item 9 (Testbenches shipped): 152/152 attestation checks passed (klt signoff --attest)",
+          "summary": "T1 item 9 (Testbenches shipped): 154/154 attestation checks passed (klt signoff --attest)",
           "source": "attest/item9.json",
           "attestation": {
             "producer": "klt signoff --attest",
             "inventory_schema_version": 1,
-            "check_count": 152,
-            "passed_count": 152
+            "check_count": 154,
+            "passed_count": 154
           }
         }
       }
@@ -690,7 +708,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa",
+        "content_hash": "sha256:c933da02b21cc2fd0b6ec5952d1d33710be9326d09946a445bb69ab2f105f1e7",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -699,15 +717,15 @@
             "path": "attest/item10.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa",
+          "content_hash": "sha256:c933da02b21cc2fd0b6ec5952d1d33710be9326d09946a445bb69ab2f105f1e7",
           "input_verified": true,
-          "summary": "T1 item 10 (Repo hygiene): 48/48 attestation checks passed (klt signoff --attest)",
+          "summary": "T1 item 10 (Repo hygiene): 55/55 attestation checks passed (klt signoff --attest)",
           "source": "attest/item10.json",
           "attestation": {
             "producer": "klt signoff --attest",
             "inventory_schema_version": 1,
-            "check_count": 48,
-            "passed_count": 48
+            "check_count": 55,
+            "passed_count": 55
           }
         }
       }
@@ -728,7 +746,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa",
+        "content_hash": "sha256:c933da02b21cc2fd0b6ec5952d1d33710be9326d09946a445bb69ab2f105f1e7",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -737,15 +755,15 @@
             "path": "attest/item10.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa",
+          "content_hash": "sha256:c933da02b21cc2fd0b6ec5952d1d33710be9326d09946a445bb69ab2f105f1e7",
           "input_verified": true,
-          "summary": "T1 item 10 (Repo hygiene): 48/48 attestation checks passed (klt signoff --attest)",
+          "summary": "T1 item 10 (Repo hygiene): 55/55 attestation checks passed (klt signoff --attest)",
           "source": "attest/item10.json",
           "attestation": {
             "producer": "klt signoff --attest",
             "inventory_schema_version": 1,
-            "check_count": 48,
-            "passed_count": 48
+            "check_count": 55,
+            "passed_count": 55
           }
         }
       }
