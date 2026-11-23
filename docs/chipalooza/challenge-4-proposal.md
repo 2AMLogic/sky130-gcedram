@@ -11,9 +11,7 @@ the challenge's submission process (see
 proposal](https://github.com/2AMLogic/sky130-temp-por/blob/main/docs/chipalooza/challenge-4-proposal.md)
 for a sibling repo's version of that same process, on the same PDK).
 
-**Rules status (as of this writing, 2026-09-05): Challenge #4's own rules
-page (`rules-4.html`) is not yet published** — the organizers' calendar puts
-launch at 2026-11-09. Per
+**Rules status (as of this writing, 2026-09-05): Challenge #4's own rules page (`rules-4.html`) is not yet published** — the organizers' calendar puts launch at 2026-11-09. Per
 [2AMLogic/2am#542](https://github.com/2AMLogic/2am/issues/542) (the epic
 this issue is a phase of), this document assumes the structure common to
 the two *published* briefs (`rules-2.html`/`rules-3.html`): a template
@@ -28,6 +26,8 @@ must re-check every assumption in this document against the real brief
 before any submission — this document is **not** a claim that Challenge
 #4's actual rules match this assumption, only the best available structure
 to design against today.
+
+*(Update, 2026-11-23: `https://opencircuitdesign.com/chipalooza/rules-4.html` published for the 2026-11-09 launch — Rule 2: "The official start date for the Chipalooza Challenge #4 is Monday, November 9, 2026." — and was read 2026-11-23; the 2026-09-05 paragraph above stays as a dated historical statement, and dependency-row item checks are recorded in [`spec/macro-pass-conditions-PROPOSED.md`](../../spec/macro-pass-conditions-PROPOSED.md) §4.)*
 
 **Repository status as of `main` @ `4de3e77`, checked 2026-11-14.** Every
 statement below about what this repository does and does not contain was
@@ -124,9 +124,16 @@ consistent with the repo README's own "Supply" row: *"sky130 standard
 | 1.8 V digital | **The only supply anything committed here uses.** Every measured, extracted or simulated evidence point in this document (leakage, retention, sense, refresh, DRC/LVS) is at `VDD` = 1.8 V against `nfet_01v8`/`pfet_01v8` — and the cold-corner `nfet_01v8_lvt` remedy variants noted above run on the same deck at the same 1.8 V rail. |
 | 3.3 V analog | **Not yet exercised by anything committed in this repo.** The sense stage that now exists is a 1.8 V latch at schematic level (§3), and no I/O buffer, level shifter or boosted-wordline charge pump is designed anywhere; a macro-ready sense path or refresh controller may still need 3.3 V-class devices for those functions (an open item the README itself flags: "boosted wordline is a design decision to record"). This document does not assert either way; it is an undesigned macro-integration decision, not a rail anything committed here currently consumes. |
 
-If Challenge #4's real (unpublished) brief forces a specific voltage split
+If Challenge #4's real (unpublished as of 2026-09-05; `rules-4.html`,
+published 2026-11-09 and fetched 2026-11-23, states in Rule 7 "Supply voltages
+at 1.8V (digital) and 3.3V (analog)" and in Rule 10 "The harness chip will be
+designed with a 1.8V logic library and the standard Sky130 PDK dual 1.8V
+core, 3.3V periphery pad library.", while Rule 20 leaves "The slot size and
+I/O configuration (TBD) will be specified in the harness repository" —
+harness repository not checked) brief forces a specific voltage split
 that differs from this reconciliation, that is a rail-flavor decision this
-document cannot resolve pre-publication and pre-periphery-design.
+document could not resolve pre-publication and still cannot resolve
+pre-periphery-design.
 
 ### 2.2 Harness-supplied bandgap bias voltage / current sources — not yet exercised
 
