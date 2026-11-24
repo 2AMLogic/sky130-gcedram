@@ -19,8 +19,8 @@ macro build-out is [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).
 |---|---|---|
 | 1 Design sources | met (`attest/item1.envelope.json`, PR #272) | unmet; PR #276 open |
 | 2 Layout | met (`attest/item2.envelope.json`, PR #269) | unmet; #231 |
-| 3 DRC clean | met (`layout/gain_cell_2t.drc.result.json`) | unmet; #232 |
-| 4 LVS clean | met (`layout/gain_cell_2t.lvs.result.json`) | unmet; #233 |
+| 3 DRC clean | met (`layout/gain_cell_2t.drc.result.json`, `layout/sense_latch.drc.result.json`) | unmet; #232 |
+| 4 LVS clean | met (`layout/gain_cell_2t.lvs.result.json`, `layout/sense_latch.lvs.result.json`) | unmet; #233 |
 | 5 Corner verification vs ratified spec | unmet | unmet |
 | 6 Monte Carlo for statistical claims | unmet | unmet |
 | 7 Post-layout verification | unmet: baseline-cell `klt pex` envelopes cited (`sim/pex_bitcell_array/`, #383), grade `check_failed` — 5 of 15 corner rows compared per cell, the pre-layout leg's written level sits below the 0.9 V sense margin at the rest; full-macro scope pending | unmet |
@@ -53,7 +53,9 @@ Against the six macro items of #24:
   (`digital/spi-control/results/spi_slave_synth_2026-11-11_issue273.v`); no
   `gc_ctrl_top` gate-level netlist, no gate-level replay and no layout is on
   `main`.
-- **Macro layout and post-layout PVT:** macro layout not started.
+- **Macro layout and post-layout PVT:** full-macro integration layout not started. Block-level
+  sense-latch layout is committed (`layout/sense_latch.gds`, DRC clean, LVS
+  matched; #387, signoff-integrated in #382 / PR #434).
   Baseline-cell post-layout comparison exists: `klt pex` envelopes for the
   drawn bitcell and the 4x4 array on the ratified retention row
   (`sim/pex_bitcell_array/`, #383), cited for item 7 but graded
