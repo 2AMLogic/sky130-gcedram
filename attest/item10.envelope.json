@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 48/48 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 58/58 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 48,
-    "passed_count": 48,
+    "check_count": 58,
+    "passed_count": 58,
     "checks": [
       {
         "check": "present",
@@ -24,14 +24,14 @@
         "role": "hygiene",
         "path": ".github/workflows/evidence-checks.yml",
         "passed": true,
-        "content_hash": "sha256:c1dbacf5829da11378e34b864a21bfa91054334925007f7e482db05c8b87f0b1"
+        "content_hash": "sha256:e5dafa518c229f880654b49e8a143cf5496a45ccadbacecf4fc4bc9761a3f967"
       },
       {
         "check": "present",
         "role": "hygiene",
         "path": ".github/workflows/signoff.yml",
         "passed": true,
-        "content_hash": "sha256:b53c28d193eaefe3e818bccc29c53be22c690ec079ed9235ca13f5ba2778dd78"
+        "content_hash": "sha256:3cd45d67f74c88baaae13cd2fc88a9fe414ab503ad6673bc60ef869748002cab"
       },
       {
         "check": "present",
@@ -87,7 +87,7 @@
         "role": "hygiene",
         "path": "spec/README.md",
         "passed": true,
-        "content_hash": "sha256:6176dff7e1fd40670393e08c898d911050f5bf4fc8db74863de9ce3351808b3e"
+        "content_hash": "sha256:296cb52e07c4e5231abe1472fca62bde55c25a138250d215914d53dd8bb126f6"
       },
       {
         "check": "command",
@@ -522,6 +522,110 @@
       {
         "check": "command",
         "role": "audit",
+        "name": "Aged-read (issue #94) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/aged-read/test_aged_read.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Bitcell-transient generator / reducer (issue #182) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/bitcell-transient/test_gen_bitcell_transient.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Closed-loop-refresh (issue #147) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/closed-loop-refresh/test_closed_loop.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Extracted-CRBL column (issue #88) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/extracted-crbl/test_column_klt.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Loaded-column compare_pins equivalence (issue #400) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/loaded-column/test_compare_pins.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Item-10 inventory completeness (every evidence-runner command graded, issue #414)",
+        "argv": [
+          "python3",
+          "-I",
+          "scripts/tests/test_item10_inventory.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "Evidence-runner scratch-git-repo fixture suite (issue #415)",
+        "argv": [
+          "python3",
+          "-I",
+          "scripts/tests/test_run_evidence_checks.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "PEX schematic-vs-extracted retention (issue #383) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/pex_bitcell_array/test_pex_bitcell_array.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
         "name": "klt drc --check gain_cell_2t.drc.result.json",
         "argv": [
           "klt",
@@ -574,6 +678,34 @@
         "cwd": "layout",
         "exit_status": 0,
         "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt drc --check sense_latch.drc.result.json",
+        "argv": [
+          "klt",
+          "drc",
+          "--check",
+          "sense_latch.drc.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt lvs --check sense_latch.lvs.result.json",
+        "argv": [
+          "klt",
+          "lvs",
+          "--check",
+          "sense_latch.lvs.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
       }
     ]
   },
@@ -587,7 +719,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:a0b7003aece4a752e84426950667e2d290a79da22fbea8360c0842922debcdfa"
+      "content_hash": "sha256:6c596d04b4a466dc13011f241e85b150731ddad3545dec8d925b8f5ffd6e2a4a"
     }
   }
 }

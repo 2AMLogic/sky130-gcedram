@@ -3,7 +3,7 @@
 item 2 (Layout).
 
 `klt signoff --attest` does not produce item 2 (its binding is the committed
-layout itself), so this binds the two layouts and their generator scripts via
+layout itself), so this binds the three layouts and their generator scripts via
 `provenance.input.paths` (a set binding, klayout-tools#3044). The combined
 digest follows klt's `input_set_digest`: sha256 over the lines
 "<hex>  <path>\\n", sorted bytewise by path. Editing any member turns the
@@ -18,8 +18,10 @@ import os
 MEMBERS = [
     "layout/gain_cell_2t.gds",
     "layout/gain_cell_2t_array.gds",
+    "layout/sense_latch.gds",
     "layout/generate.sh",
     "layout/generate_array.sh",
+    "layout/generate_sense_latch.sh",
     "layout/generation_toolchain.py",
 ]
 OUT = "attest/item2.envelope.json"
@@ -39,8 +41,8 @@ def main():
         "kind": "generic",
         "status": "pass",
         "t1_item": 2,
-        "summary": "T1 item 2 (Layout): the committed bitcell and 4x4 array GDS "
-                   "bound to the scripts that generate them",
+        "summary": "T1 item 2 (Layout): the committed bitcell, 4x4 array and "
+                   "sense latch GDS bound to the scripts that generate them",
         "source": "attest/make_item2_envelope.py",
         "provenance": {
             "klt_version": None,

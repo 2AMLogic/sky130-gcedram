@@ -32,6 +32,7 @@ Re-qualification under open_pdks `f6eeac7` (issue #169) adds:
 | [`reduce_column_results.py`](reduce_column_results.py) | Reducer: gates a report on the worker's PDK stamp, then appends rows in the schema above |
 | [`compare_pins.py`](compare_pins.py) | Tabulates the two pins' deltas against a declared tolerance; also diffs two reports (`--compare-reports`) |
 | [`test_gen_column_requests.py`](test_gen_column_requests.py) | Generator staleness / deck-relocatability / reducer-gate tests |
+| [`test_compare_pins.py`](test_compare_pins.py) | Equivalence-check tests (issue #400): exact match passes at zero deviation, above-bound exits 1, committed tt/27 C pair re-compared |
 | `results/klt_report_lc_*_20261114T091445Z.json.gz` | The eight raw fleet reports (gzipped), one per request |
 | [`results/summary_20261114T091445Z.json`](results/summary_20261114T091445Z.json) | Per-group summary of the `f6eeac7` run |
 | `results/pin-attribution/` | Six single-corner local reports that isolate the PDK revision from the simulator version (sf/125 C; ss/-40 C fresh and refresh_bound -- one pair of reports per open_pdks tree), with the committed ss/-40 C probe requests under [`klt/`](klt) |

@@ -48,7 +48,6 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
 from pathlib import Path
@@ -61,8 +60,8 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE / "cold-corner"))
 import run_loaded_column as R  # noqa: E402  (also sets up sim/ + layout/ imports)
 import run_variants as V2  # noqa: E402  (device_card / timing / read_time)
-from _evidence_common import PDK_OPEN_PDKS_COMMIT  # noqa: E402
-from klt_request import MODELS, ENGINE, BACKEND  # noqa: E402
+from _evidence_common import PDK_OPEN_PDKS_COMMIT, sha256_hex  # noqa: E402
+from klt_request import build_request as klt_request  # noqa: E402
 
 N_ROWS = R.N_ROWS
 PATTERNS = list(range(16))
@@ -145,7 +144,7 @@ def instants(P: dict, knobs: dict, age: str) -> dict:
 # deck
 # --------------------------------------------------------------------------- #
 def design_sha256() -> str:
-    return hashlib.sha256(R.DESIGN_NETLIST.read_bytes()).hexdigest()
+    return sha256_hex(R.DESIGN_NETLIST)
 
 
 def device_cards(knobs: dict) -> tuple[str, str]:
@@ -344,27 +343,15 @@ def request(netlist: str, knobs: dict, age: str, sel: int,
     temps = sorted({t for _, t in points})
     excl = [{"process": c, "temperature_c": t}
             for c in procs for t in temps if (c, t) not in points]
-    req = {
-        "netlist": netlist,
-        "engine": ENGINE,
-        "backend": BACKEND,
-        "models": dict(MODELS),
-        "corners": {"process": procs, "temperature_c": temps},
-    }
-    if excl:
-        req["exclude"] = excl
-    req["analysis"] = {
-        "kind": "tran",
-        "args": f"{TSTEP} {T['tstop']:.6e} 0 {TMAX_S:.3e}",
-    }
-    req["measurements"] = measurements(knobs, age, sel, patterns)
-    req["options"] = {
-        "timeout_s": TIMEOUT_S[age],
-        "keep_artifacts": False,
-        "waveforms": False,
-        "ngspice_init": list(MEAS_INIT),
-    }
-    return req
+    return klt_request(
+        netlist,
+        {"process": procs, "temperature_c": temps},
+        f"{TSTEP} {T['tstop']:.6e} 0 {TMAX_S:.3e}",
+        measurements(knobs, age, sel, patterns),
+        TIMEOUT_S[age],
+        exclude=excl,
+        extra_options={"ngspice_init": list(MEAS_INIT)},
+    )
 
 
 def phase2_jobs() -> list[dict]:

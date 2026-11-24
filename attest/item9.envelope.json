@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 149/149 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 154/154 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 149,
-    "passed_count": 149,
+    "check_count": 154,
+    "passed_count": 154,
     "checks": [
       {
         "check": "present",
@@ -778,6 +778,20 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/pex_bitcell_array/reference/gain_cell_2t_array_4x4_schematic.spice",
+        "passed": true,
+        "content_hash": "sha256:39b89352eef3d19ef005ec2424e949eca0ddcefaf0f450c25efef919f6431da1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex_bitcell_array/reference/gain_cell_2t_schematic.spice",
+        "passed": true,
+        "content_hash": "sha256:1b2bb9472e709d64cdeb64f33f965dd27fa4a5f5b56026b4fee48ee06f45ee87"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/refresh-energy/refresh_energy.spice",
         "passed": true,
         "content_hash": "sha256:a81122e4c3f4f35f9375a3dcc72da29cc0da4c6d3f5b302554d1efcecb3df552"
@@ -869,6 +883,20 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/sense-mismatch/request_row2e.json",
+        "passed": true,
+        "content_hash": "sha256:838279c0a9514d6dbfb833cfddbe6055f8fa921e408d47d08ab8228a30cb0f21"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-mismatch/request_row2e_control.json",
+        "passed": true,
+        "content_hash": "sha256:ab8191df928de7109fa2d264cb3bc2246d19d3771e4b1ff0866b4da7b154f691"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/sense-mismatch/sense_mismatch.spice",
         "passed": true,
         "content_hash": "sha256:dc1a8251d36694e0f4aa6ad3b8b18a19e3e0f5815413bc6361fba928f3f31497"
@@ -879,6 +907,13 @@
         "path": "sim/sense-mismatch/sense_mismatch_cell.spice",
         "passed": true,
         "content_hash": "sha256:94d86ecd72f4d4641c56f4848f2e9234a040aa097a2f4ade0e19de8ffc251804"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-mismatch/sense_mismatch_control.spice",
+        "passed": true,
+        "content_hash": "sha256:4056b298aa6cd48525dc6a24c37fe52ff406193e0d7e1d263e7e705a54d6fe63"
       },
       {
         "check": "present",
@@ -1072,7 +1107,7 @@
     ]
   },
   "provenance": {
-    "klt_version": "0.9.1",
+    "klt_version": "0.9.2",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -1081,7 +1116,7 @@
         "path": "attest/item9.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:de2773eda2e27d2fd3e89288a70814898044ee279e1109e9a3e807197c1b91e9"
+      "content_hash": "sha256:955a6cd67a94031735b7b7c188d7db7af5f006502570dbbfa8710c3144d4bc22"
     }
   }
 }

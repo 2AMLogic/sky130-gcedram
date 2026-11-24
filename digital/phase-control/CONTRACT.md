@@ -6,8 +6,13 @@ designed) analog array periphery, and a behavioral sequencer
 ([`phase_seq.v`](phase_seq.v)) that produces them. The macro is a **dynamic**
 gain-cell array: **refresh is mandatory** and every row must be rewritten
 within the retention-derived interval. This is not an SRAM interface and not
-a drop-in SRAM replacement. **No sense amplifier and no refresh controller
-exist**, so every row below is ASSUMPTION unless a committed deck setting is
+a drop-in SRAM replacement. **No `sense_en` timing derived from a real sense
+stage and no refresh controller exist**: a schematic-level sense latch is
+committed (`design/sense_latch.sch`, #109), but it has no layout, its
+offset/yield is not validated (`offset_yield_validated: false`), and no
+`sense_en` timing is derived from it (see
+[`sense-stage-premise-decision.md`](../../spec/sense-stage-premise-decision.md)),
+so every row below is ASSUMPTION unless a committed deck setting is
 cited (then SOURCED-by-deck; the deck value is itself a declared test choice).
 Behavioral only: not synthesis, timing, CDC or sign-off evidence, and no SPICE
 was run.
@@ -20,7 +25,7 @@ Time base 1 cycle = 1 ns, inherited from the scheduler (ASSUMPTION).
 |---|---|---|
 | `pre_en` | read-bitline (`rbl`) precharge switch closed | ASSUMPTION (signal set); precharge-switch concept SOURCED [`sim/loaded-column/tb_loaded_column.spice.tmpl`](../../sim/loaded-column/tb_loaded_column.spice.tmpl) |
 | `rwl_sel` | read select asserted on the selected row (active-low on `rwl` in the deck; polarity at the pin is not decided here) | ASSUMPTION |
-| `sense_en` | sample strobe, last cycle of the `rwl_sel` window | ASSUMPTION; no sense amp exists |
+| `sense_en` | sample strobe, last cycle of the `rwl_sel` window | ASSUMPTION; no `sense_en` timing is derived from a real sense stage (a schematic-level sense latch exists, #109, but has no layout and is unvalidated) |
 | `wwl_en` | write wordline of the selected row | ASSUMPTION |
 | `bl_drive` | write bitline driven; held through the guard phase | ASSUMPTION |
 | `busy`, `done`, `row_q` | op in flight, 1-cycle completion pulse, latched row | ASSUMPTION |

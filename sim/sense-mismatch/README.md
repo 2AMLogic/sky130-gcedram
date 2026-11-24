@@ -302,3 +302,207 @@ Issue #293 fixed the latch device this bench simulates: the generators had retyp
 | end-to-end fs_mm/27 C, ref 100 mV | lowest level with 0 errors at and above | 0.95 V | 0.95 V |
 
 **No verdict change.** With the same seeds the correction moves individual Bernoulli decisions near the threshold (tt_mm/27 C is bit-identical, the other corners re-fit to sigma within 0.1 mV and mu within 0.04 mV); the stored-'0' negative control still resolves everywhere and the "stored '1' 0.85 / 0.95 V" findings above stand as written. MC quantiles [2.5, 50, 97.5] are recomputed from the new run. No spec threshold was touched.
+
+## T1 item 6 yield evidence for spec row 2e (issue #384, 2026-11-20)
+
+`klt signoff --manifest block-manifest.json` graded `6.analog` (`no_evidence`,
+no `spec_rows."6"`) before this section. Item 6 needs a `klt yield` JSON report
+per statistical row; row 2e of
+[`spec/macro-pass-conditions-PROPOSED.md`](../../spec/macro-pass-conditions-PROPOSED.md)
+is the ratio *smallest passing separation (2a) >= 6 x input-referred offset
+sigma* — still PROPOSED, not ratified. This section records the campaign, the
+`klt yield` report now cited for that row, and exactly how the row's limit was
+expressed to the pinned tool. `offset_yield_validated` stays **false** (nothing
+here ratifies 2e).
+
+### How `klt yield` was installed at the pinned version
+
+The klt pin is 0.9.1 (`.github/workflows/signoff.yml`). The evidence commands
+ran in throwaway environments, no host tool changed:
+
+```
+uvx --from "klayout-tools[yield]==0.9.1" klt yield ...        # klt-yield-native 0.1.0 wheel
+uvx --from "klayout-tools==0.9.1" klt sim / klt signoff / klt yield-threshold ...
+```
+
+`klt-yield-native` 0.1.0 (published 2026-11-05; `manylinux_2_28_x86_64`)
+resolves behind the `[yield]` extra at the pin, so `klt yield` runs from the
+published release — the `klt yield --help` text that says otherwise is stale
+(klayout-tools [#6951](https://github.com/2AMLogic/klayout-tools/issues/6951)).
+CI is unchanged: `klt signoff` needs no native extension to re-grade a
+committed report, and the workflow's `klt signoff` step re-derives
+`block-manifest.signoff.json` from the pinned release without the extra.
+`klt yield-threshold` (the probit threshold fit that closed
+[#2976](https://github.com/2AMLogic/klayout-tools/issues/2976) via #3372) is
+pure Python and also runs at the pin; on the committed 2026-11-15 campaign it
+reproduces this study's own `analyze_sense_mismatch.py` sigmas to three
+decimals (17.655 / 16.416 / 17.708 / 19.149 mV), so the local analyzer and the
+tool agree bit-for-bit on the same draw.
+
+### Campaigns (append-only, new dated records)
+
+Both campaigns went to the **batch fleet** (`--backend batch
+--wait-for-capacity 600`); nothing was looped locally. Same four restricted
+corners as the study above, `n = 64` per corner (256 pooled samples per
+measurement — `klt yield`'s zero-failure sample-size verdict needs >= 183),
+seed **20261120384** recorded in both requests and echoed in both reports, 0
+errored samples in both, fleet worker ngspice-47, model lib sha256 `48de7c67...133c84`
+(same as every committed run here).
+
+| Request | Netlist | Batch job | What it is |
+|---|---|---|---|
+| [`request_row2e.json`](request_row2e.json) | `sense_mismatch.spice` (the committed study deck, netlist sha256 `dc1a8251...` — byte-identical to the 2026-11-15 run) | `klt-sim-48774a3c2aa6` | nominal: 256 samples x 150 latch instances |
+| [`request_row2e_control.json`](request_row2e_control.json) | `sense_mismatch_control.spice` (netlist sha256 `4056b298...`) | `klt-sim-fd84c9b4285e` | **negative control**: same deck with one seeded defect |
+
+**The seeded defect** (declared in the control deck header and request): the
+shared reference source and its `.ic` forced **+130 mV** — a deterministic
+input-referred offset of 130 mV on every instance (about 6.4 sigma of the
+worst corner), i.e. the defect class `klt yield`'s documentation itself uses
+("a forced offset"). The control uses the **same seed and n** as the nominal
+campaign (common random numbers), so the degradation is attributable to the
+defect alone and re-running reproduces it exactly.
+
+### How row 2e's limit is expressed to `klt yield`
+
+The row bounds a **ratio of two measured quantities**; `klt yield`'s limits
+apply to per-draw sample values. Both sides of the ratio are pinned to
+committed evidence, each by the tool that measures it:
+
+* **Separation (2a)**: `S = 0.3289 V`, the worst case over the restricted-range
+  2a evidence ([`sim/loaded-column/results/summary_20261114T091445Z.json`](../loaded-column/results/summary_20261114T091445Z.json),
+  fs/27 C aged to the refresh bound; the -40 C groups in that summary are
+  outside the PROPOSED restricted range this study is scoped to and are not
+  candidates). Worst-case half-separation at a centered reference: `S/2 =
+  164.5 mV`.
+* **Offset sigma**: `klt yield-threshold --threshold 0` on the nominal
+  campaign ([`build_yield_records.py`](build_yield_records.py) re-formats the
+  report's `dend` values 1:1 into the records document; it invents no numbers):
+
+| Corner | mu (mV) | sigma (mV) [95 % CI] | S / sigma | S / sigma_CI_upper |
+|---|---:|---|---:|---:|
+| tt_mm/27 C | +0.66 | 18.44 [17.62, 19.31] | 17.8 | 17.0 |
+| fs_mm/27 C | +0.23 | 16.34 [15.59, 17.13] | 20.1 | 19.2 |
+| ss_mm/125 C | +0.45 | 17.22 [16.45, 18.04] | 19.1 | 18.2 |
+| sf_mm/125 C | +0.26 | 20.19 [19.31, 21.11] | 16.3 | 15.6 |
+
+With the 6-sigma multiplier taken unchanged from the PROPOSED record, the row
+holds at every corner by a wide margin (>= 15.6 even against each sigma CI
+upper bound). This is evidence against the proposed limit, **not** a
+ratification of it.
+
+* **The `klt yield` report itself** (the item-6 citation) grades the per-draw
+  **decision measurements at the margin differential**: `dend_sp150_<r>`
+  (the six replicas at d = +150 mV, the largest swept differential at or below
+  the worst-case half-separation 164.5 mV — grading at 150 mV is therefore
+  conservative), one-sided limit `min 0.9 V` ("decided '0'", the study's
+  RESOLVE_V), `spec_row: "2e"`, **no `target_yield` declared** — none exists
+  (row 2e is unratified and spec Q2 has no ratified yield/error-rate target;
+  a citation with no `target_yield` counts as uncovered today,
+  klayout-tools [#5490](https://github.com/2AMLogic/klayout-tools/issues/5490),
+  which is why `spec_rows` carries `ratified: false` rather than an invented
+  target). Derived by `klt yield-samples` from the two reports above (the
+  control attaches to exactly these six measurements), graded by `klt yield`
+  with [`yield_limits_row2e.json`](yield_limits_row2e.json):
+
+  all six measurements: `n = 256` pooled over the four corners (64 draws per
+  corner), empirical yield 1.000 with exact CI `[0.9857, 1.0]` ("at least
+  98.57 % at 95 % confidence" -- a **pooled** bound that uses all 256
+  observations; a single corner's 64/64 supports only the two-sided
+  95 % lower endpoint `0.025**(1/64)` = 94.40 %, so the per-corner picture
+  stays with the per-corner `yield-threshold` sigmas above, not with this
+  pooled figure), `sample_size.verdict`
+  **sufficient** (required >= 183, observed half-width 0.0072 <= 0.01),
+  negative control **detected** on every measurement (control yield
+  0.80-0.85 vs nominal 1.0, non-overlapping exact CIs). The tool's own
+  warnings travel with the report: the draw is pooled over the four corner
+  populations (it is not a worst-case envelope over them), and the bimodal
+  rail values make the normal fit indicative only (the empirical estimate is
+  the quoted one).
+
+* **Why one polarity**: a forced offset can only *improve* the decisions on
+  the other side of zero, so a control graded there reads `not_detected` —
+  which fails a whole citation — and the raw-report path cannot declare the
+  `not_applicable` control form. The graded set is therefore the six
+  positive-polarity replicas; the negative polarity carries the same margin
+  because the fitted mu is +0.2 to +0.7 mV, well inside its CI at every
+  corner (the offset distribution is centered; the probit fit uses both
+  polarities).
+
+* **The gap (no local calculator was written)**: no per-sample form of the
+  ratio exists in the pinned tool — `klt yield` cannot bound a
+  campaign-fitted statistic (sigma from a threshold fit) or a ratio of two
+  quantities, and `klt yield-threshold` reports sigma with its CI but takes no
+  limits. The citation therefore demonstrates campaign discipline at the
+  margin differential; the ratio evaluation is the `yield-threshold` sigmas
+  above against the committed 2a separation. Filed generically as
+  klayout-tools [#6950](https://github.com/2AMLogic/klayout-tools/issues/6950).
+
+### Manifest and grade
+
+`block-manifest.json` now declares `spec_rows."6.analog"` with row `2e`
+`ratified: false` and cites the yield report against it. The regenerated
+`block-manifest.signoff.json` (pinned klt, no CI change) grades `6.analog`
+`unmet / partial_coverage` with `detail.unratified_rows: ["2e"]` (and
+`uncovered_rows: ["2e"]` — the open #5490 no-`target_yield` behavior, linked
+here rather than papered over). Ratifying 2e is **not sufficient** to turn
+the item `met`: with only `ratified` flipped to `true` (checked against a
+scratch manifest at klt 0.9.1) item 6 stays `unmet / partial_coverage` with
+`unratified_rows: []` and `uncovered_rows: ["2e"]`, because the pinned tool
+counts a citation with no `target_yield` as uncovered
+(klayout-tools #5490). The row closes only when ratification is combined
+with a pinned klt that covers a `target_yield`-less (or fitted-statistic)
+citation, so the proposed target in #384 stays open. `t1_met_count` is
+unchanged (9): the citation itself graded `met` (sufficient sample size,
+detected control), but the item stays unmet.
+
+### Open questions for the pass-conditions record (not spec changes)
+
+No rows were added to `spec/`. Questions the analog spec should answer, in
+descending order of consequence:
+
+* **Retention-time spread** (row 1b/3a territory): retention is a
+  statistical quantity (leakage + storage-node capacitance vary per instance);
+  should the retention budget carry a per-cell sigma or a worst-case-only
+  bound, and at what confidence?
+* **Read-separation spread** (row 2a/2c): 2a is stated per-case worst-case;
+  should the *distribution* of read separation (this study's cell-side `din`
+  spread at fs/27 C) carry its own statistical row, or is the 2a minimum
+  sufficient?
+* **Reference-generator offset**: this campaign's negative control treats the
+  shared reference level as design-side (a real offset there shifts every
+  decision); the reference generator does not exist yet as a committed
+  circuit — its offset budget belongs in the spec when it does.
+
+### klayout-tools friction filed by this round
+
+* [#6950](https://github.com/2AMLogic/klayout-tools/issues/6950): no way to
+  grade a spec row whose limit is on a campaign-fitted statistic or a ratio.
+* [#6951](https://github.com/2AMLogic/klayout-tools/issues/6951): stale
+  `klt yield --help` text about the native wheel's PyPI availability.
+* (standing) [#2975](https://github.com/2AMLogic/klayout-tools/issues/2975):
+  Monte Carlo reports grow to tens of MB; both new reports are ~47 MB JSON
+  because `klt yield-samples` reads no `.gz` form.
+
+Reproduce: `python3 -I sim/sense-mismatch/gen_sense_mismatch.py`, then
+
+```
+uvx --from klayout-tools==0.9.1 klt sim sim/sense-mismatch/request_row2e.json \
+  --backend batch --wait-for-capacity 600 --format json \
+  > sim/sense-mismatch/results/klt_report_row2e_<NEW_RUN_ID>.json      # ditto _control
+python3 -I sim/sense-mismatch/build_yield_records.py                   # nominal run only -> yield_records_row2e_<RUN>.json
+uvx --from "klayout-tools[yield]==0.9.1" klt yield-threshold \
+  sim/sense-mismatch/results/yield_records_row2e_<RUN>.json --threshold 0 --format json
+uvx --from "klayout-tools[yield]==0.9.1" klt yield-samples \
+  sim/sense-mismatch/results/klt_report_row2e_<RUN>.json \
+  --negative-control sim/sense-mismatch/results/klt_report_row2e_control_<RUN>.json \
+  --measurement dend_sp150_0,dend_sp150_1,dend_sp150_2,dend_sp150_3,dend_sp150_4,dend_sp150_5 \
+  --description "reference forced +130 mV (input-referred offset ~6.4x worst-corner sigma), same seed and n (common random numbers)" \
+  --format json > /tmp/yield_samples_raw.json
+# klt emits only seed + draws_per_population in `provenance`; add the committed campaign metadata, 1-space indent:
+python3 -I -c 'import json,sys; d=json.load(open("/tmp/yield_samples_raw.json")); d["provenance"].update(rng="ngspice (per-instance AGAUSS Vth mismatch, per-sample seeds derived by klt)", corner_matrix=["tt_mm/27C","fs_mm/27C","ss_mm/125C","sf_mm/125C"], common_random_numbers=True); sys.stdout.write(json.dumps(d, indent=1)+"\n")' \
+  > sim/sense-mismatch/results/yield_samples_row2e_<RUN>.json
+uvx --from "klayout-tools[yield]==0.9.1" klt yield \
+  sim/sense-mismatch/results/yield_samples_row2e_<RUN>.json \
+  --limits sim/sense-mismatch/yield_limits_row2e.json --format json \
+  > sim/sense-mismatch/results/klt_yield_report_row2e_<RUN>.json       # rerun both fleets' seeds first
+```

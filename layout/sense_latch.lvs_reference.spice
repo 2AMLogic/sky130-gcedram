@@ -1,0 +1,32 @@
+* sense_latch.lvs_reference.spice -- GENERATED plain-element
+* (schematic-equivalent) LVS reference netlist for the six-device
+* sense latch (issue #387), mechanically derived from design/sense_latch.spice's
+* six X-card device instances -- NOT hand-transcribed (regenerate with
+* layout/generate_sense_latch.sh, which re-renders this file every run
+* via `python3 layout/sense_latch_topology.py --emit lvs-reference`).
+* Device names, connectivity, and W/L are copied unchanged from the
+* source netlist; only the SPICE *shape* differs here (an M-card device
+* class "nfet"/"pfet" instead of an X-card subcircuit call), mirroring
+* layout/gain_cell_2t.lvs_reference.spice's own precedent and the reason
+* documented there (klt lvs requires the plain-element form).
+*
+* Provenance: sha256 of the source netlist this reference derives from
+* (reproduce with: sha256sum design/sense_latch.spice). This is the file-content
+* hash of the canonical design source, so even a comment-only edit
+* there invalidates this committed reference (the test in
+* layout/test_generation_reproducibility.py re-derives and compares).
+*   design/sense_latch.spice: sha256:4f9db65dd376bfc8c1a4b1f1ac9da0a5ba5319bd31ae542c9654bba60f299f58
+*
+* vn / vp (the footer/header switch nodes) are deliberately NOT
+* top-level .SUBCKT pins here -- matching design/sense_latch.sch's own
+* pin set. `klt extract` still promotes them as layout-side pins;
+* `klt lvs` compares topology, and layout-only pins matched the same
+* way in the single-cell and array precedents.
+.SUBCKT sense_latch rbl ref en enb vdd
+M_XMN1 rbl ref vn GND nfet L=0.15U W=1U
+M_XMN2 ref rbl vn GND nfet L=0.15U W=1U
+M_XMP1 rbl ref vp vdd pfet L=0.15U W=2U
+M_XMP2 ref rbl vp vdd pfet L=0.15U W=2U
+M_XMNF vn en GND GND nfet L=0.15U W=2U
+M_XMPH vp enb vdd vdd pfet L=0.15U W=4U
+.ENDS sense_latch

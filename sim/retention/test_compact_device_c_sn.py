@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -62,6 +63,41 @@ class Generated(unittest.TestCase):
         tag = f"c_{M.short(node)[1:]}_p_{M.short(node)}"
         line = next(ln for ln in deck.splitlines() if ln.startswith(tag + " "))
         self.assertAlmostEqual(float(line.split()[-1]), full - poly[node] * 1e-15, delta=1e-20)
+
+
+class ParseV2(unittest.TestCase):
+    """parse_v2() delegates to WD.parse_array; malformed-input RuntimeError surfaces as DeviceCError."""
+
+    def _parse_text(self, text: str) -> dict:
+        """Run M.parse_v2() against `text` written to a temp extracted-netlist file."""
+        with tempfile.NamedTemporaryFile("w", suffix=".spice", delete=False) as f:
+            f.write(text)
+            path = Path(f.name)
+        saved = M.V2_NETLIST
+        M.V2_NETLIST = path
+        try:
+            return M.parse_v2()
+        finally:
+            M.V2_NETLIST = saved
+            path.unlink()
+
+    def test_unexpected_element_raises_device_c_error(self):
+        with self.assertRaises(M.DeviceCError):
+            self._parse_text(".subckt arr\nxagg a b c\n.ends\n")
+
+    def test_unexpected_model_raises_device_c_error(self):
+        with self.assertRaises(M.DeviceCError):
+            self._parse_text(".subckt arr\nm1 d g s b pfet w=1u l=1u\n.ends\n")
+
+    def test_wrong_device_count_raises_device_c_error(self):
+        with self.assertRaises(M.DeviceCError):
+            self._parse_text(".subckt arr\nm1 d g s b nfet w=1u l=1u\n.ends\n")
+
+    def test_valid_v2_deck_parses_with_expected_counts(self):
+        arr = M.parse_v2()
+        self.assertEqual(len(arr["mos"]), 32)
+        self.assertIn("res", arr)
+        self.assertIn("cap", arr)
 
 
 class Committed(unittest.TestCase):
