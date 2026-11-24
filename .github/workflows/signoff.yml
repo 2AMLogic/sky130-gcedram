@@ -52,6 +52,8 @@ jobs:
           klt lvs --check gain_cell_2t.lvs.result.json
           klt drc --check gain_cell_2t_array.drc.result.json
           klt lvs --check gain_cell_2t_array.lvs.result.json
+          klt drc --check sense_latch.drc.result.json
+          klt lvs --check sense_latch.lvs.result.json
 
       - name: Re-attest the repo-hygiene and analog testbench inventories (T1 items 10 and 9, analog)
         # --check re-runs each inventoried command and refuses a drifted
