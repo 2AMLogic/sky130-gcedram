@@ -10,7 +10,7 @@ runner's discovery and command-building code, enumerates the same list
 without executing anything (so it can check its own entry without
 recursion), and compares it with the inventory's ``python3`` entries by
 argument vector, with multiplicity. It fails naming every command that is
-missing, stale, duplicated or graded with different arguments. The four
+missing, stale, duplicated or graded with different arguments. The
 ``klt drc/lvs --check`` entries and the content-hashed ``hygiene`` files are
 outside the comparison.
 
