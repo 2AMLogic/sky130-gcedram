@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 55/55 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 56/56 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 55,
-    "passed_count": 55,
+    "check_count": 56,
+    "passed_count": 56,
     "checks": [
       {
         "check": "present",
@@ -613,6 +613,19 @@
       {
         "check": "command",
         "role": "audit",
+        "name": "PEX schematic-vs-extracted retention (issue #383) checks",
+        "argv": [
+          "python3",
+          "-I",
+          "sim/pex_bitcell_array/test_pex_bitcell_array.py"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
         "name": "klt drc --check gain_cell_2t.drc.result.json",
         "argv": [
           "klt",
@@ -678,7 +691,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:c933da02b21cc2fd0b6ec5952d1d33710be9326d09946a445bb69ab2f105f1e7"
+      "content_hash": "sha256:b2ee697d5d0107949e182b5c7aaf5a8f17436fcc7ba097a314efc50d62fff234"
     }
   }
 }
