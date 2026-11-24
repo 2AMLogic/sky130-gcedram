@@ -27,7 +27,7 @@ macro build-out is [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).
 | 8 Characterization report | unmet | unmet |
 | 9 Testbenches shipped | met (`attest/item9.envelope.json`) | met (`attest/item9.digital.envelope.json`, PR #271) |
 | 10 Repo hygiene | met (`attest/item10.envelope.json`) | met (same envelope, PR #270) |
-| 11 Power delivery | met (`layout/gain_cell_2t_array.erc.result.json`) | unmet; #236 |
+| 11 Power delivery | met (`layout/gain_cell_2t_array.erc.result.json`, `layout/gain_cell_2t_array.lvs.result.json`) | unmet; #236 |
 
 Against the six macro items of #24:
 
