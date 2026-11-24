@@ -85,16 +85,17 @@ def fail(msg: str) -> CheckError:
 # --------------------------------------------------------------------------
 
 def strip_comment_tails(text: str) -> str:
-    """Drop `;`/`$` comment tails outside single-quoted expressions."""
-    out = []
-    in_quote = False
-    for ch in text:
-        if ch == "'":
-            in_quote = not in_quote
-        elif not in_quote and ch in ";$":
-            break
-        out.append(ch)
-    return "".join(out)
+    """Drop unquoted ngspice comment tails beginning with `;`, `$`, or `//`."""
+    quote = None
+    for i, ch in enumerate(text):
+        if quote:
+            if ch == quote and text[i - 1] != "\\":
+                quote = None
+        elif ch in "\"'":
+            quote = ch
+        elif ch in ";$" or (ch == "/" and text.startswith("//", i)):
+            return text[:i]
+    return text
 
 
 def directive_lines(raw_lines: list[str]) -> list[str]:
@@ -115,7 +116,7 @@ def directive_lines(raw_lines: list[str]) -> list[str]:
 def content_line(raw: str) -> str | None:
     """Normalized content line, or None for comments/blanks/directives.
 
-    Strips full-line `*` comments and unquoted `;`/`$` comment tails, then
+    Strips full-line `*` comments and unquoted `;`/`$`/`//` comment tails, then
     collapses whitespace.  Include-graph directives (`.include`, one- and
     two-argument `.lib`, `.endl`) are structure, not content.
     """
@@ -345,6 +346,7 @@ class SideFacts:
     def __init__(self, closure: Closure):
         self.closure = closure
         self.blocks: dict[str, list[str]] = {}   # name -> multiset of contents
+        self.model_names: set[str] = set()       # .model definitions only
         self.params: dict[str, list[str]] = {}   # name -> multiset of exprs
         self.other: Counter = Counter()          # unmatched content lines
         self.content_lines = 0
@@ -353,6 +355,8 @@ class SideFacts:
                 self.content_lines += len(body)
                 if kind == "block":
                     self.blocks.setdefault(name, []).append("\n".join(body))
+                    if body[0].lower().startswith(".model "):
+                        self.model_names.add(name)
                 elif kind == "param":
                     joined = " ".join(
                         strip_comment_tails(l).strip().lstrip("+").strip()
@@ -372,7 +376,7 @@ def sha256s(multiset: list[str]) -> list[str]:
 # Deck parsing
 # --------------------------------------------------------------------------
 
-FIXED_MODEL_FIELD = {"d": 3, "j": 4, "s": 5, "w": 4}
+FIXED_MODEL_FIELD = {"j": 4, "s": 5, "w": 4}
 SPICE_VALUE = re.compile(
     r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?[a-z]*"
     r"|\{[^}]*\}|'[^']*'",
@@ -400,10 +404,10 @@ def deck_cards(text: str) -> Iterator[str]:
 
 
 def deck_model_candidates(
-    text: str, known_blocks: Collection[str] = ()
+    text: str, known_blocks: Collection[str] = (), pdk_models: Collection[str] = ()
 ) -> list[tuple[str, str]]:
     """PDK model references, one per device card, with the card for diagnostics."""
-    refs = []
+    devices = []
     local_models = set()
     subckt_depth = 0
     for card in deck_cards(text):
@@ -417,10 +421,15 @@ def deck_model_candidates(
                 subckt_depth -= 1
             elif directive == ".model" and subckt_depth == 0 and len(fields) == 3:
                 local_models.add(fields[1])
-            continue
-        if letter in "vi":
-            continue
+        elif letter not in "vi":
+            devices.append(card)
 
+    refs = []
+    declared_models: dict[str, set[str]] = {}
+    for name in local_models.union(pdk_models):
+        declared_models.setdefault(name.lower(), set()).add(name)
+    for card in devices:
+        letter = card[0].lower()
         # The model precedes any named arguments, including X card PARAMS:.
         fields = re.split(
             r"\s+(?=params:(?:\s|$)|[^\s=]+\s*=)", card, maxsplit=1, flags=re.IGNORECASE
@@ -431,6 +440,19 @@ def deck_model_candidates(
             len(fields) == 6 or (len(fields) == 7 and fields[6].lower() == "off")
         ):
             model = fields[5]
+        elif letter == "d" and len(fields) >= 4:
+            # A diode can have a third (thermal) node before its .model or a
+            # positional area/flag after it. Only .model declarations resolve
+            # the field, and the choice must agree across the closures.
+            candidates = set()
+            for field in fields[3:5]:
+                candidates.update(declared_models.get(field.lower(), ()))
+            if len(candidates) == 1:
+                model = candidates.pop()
+            elif not candidates and len(fields) == 4 and fields[3] not in known_blocks:
+                model = fields[3]  # unambiguous field for the missing-model check
+            else:
+                raise fail(f"cannot identify the model for deck card: {card[:100]}")
         elif letter in FIXED_MODEL_FIELD and len(fields) > FIXED_MODEL_FIELD[letter]:
             model = fields[FIXED_MODEL_FIELD[letter]]
         elif letter == "q" and len(fields) == 5:
@@ -441,16 +463,11 @@ def deck_model_candidates(
                 continue
         else:
             raise fail(f"cannot identify the model for deck card: {card[:100]}")
-        refs.append((model, card))
-
-    # A top-level .model can supply a device such as the precharge switch.
-    # It cannot supply an X card, which calls a subcircuit. In a name
-    # collision, conservatively include the PDK definition in the comparison.
-    return [
-        (model, card)
-        for model, card in refs
-        if card[0].lower() == "x" or model in known_blocks or model not in local_models
-    ]
+        # A local .model cannot supply an X card. In a name collision,
+        # conservatively include the PDK definition in the comparison.
+        if letter == "x" or model in known_blocks or model not in local_models:
+            refs.append((model, card))
+    return refs
 
 
 # --------------------------------------------------------------------------
@@ -689,13 +706,16 @@ def build_record(args: argparse.Namespace) -> tuple[dict, int]:
 
     # Safety check: every deck model reference must exist in some closure.
     known_blocks: set[str] = set()
+    pdk_models: set[str] = set()
     for c in list(closures_a.values()) + list(closures_b.values()):
-        known_blocks |= set(c.facts().blocks)
+        facts = c.facts()
+        known_blocks.update(facts.blocks)
+        pdk_models.update(facts.model_names)
     absent = []
     refs: Counter[str] = Counter()
     for deck in decks:
         deck_text = deck.read_text(errors="replace")
-        for model, card in deck_model_candidates(deck_text, known_blocks):
+        for model, card in deck_model_candidates(deck_text, known_blocks, pdk_models):
             refs[model] += 1
             if model not in known_blocks:
                 absent.append((deck.name, model, card))

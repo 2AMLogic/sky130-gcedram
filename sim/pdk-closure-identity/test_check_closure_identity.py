@@ -312,6 +312,45 @@ class DeckModelReferences(Base):
         )
         self.assertIn("n_device.0", self.fx.last_output)
 
+    def test_slash_comment_cannot_select_another_subcircuit(self):
+        models = (".subckt actual a b\nR1 a b 1k\n.ends\n"
+                  ".subckt alias a b\nR2 a b 2k\n.ends\n")
+        deck = "X1 1 0 actual // alias\nX2 2 0 // alias\n+ actual // alias\n"
+        record = self.compare(deck, models, models.replace("1k", "4k"), 1)
+        self.assertEqual(
+            record["sections"]["tt"]["inside_deltas"]["blocks"], ["actual"]
+        )
+        self.assertEqual(
+            [(m["name"], m["deck_references"]) for m in record["instantiated_models"]],
+            [("actual", 2)],
+        )
+
+    def test_thermal_diode_node_named_for_a_subcircuit(self):
+        models = ".subckt tj a b\nR1 a b 1k\n.ends\n.model dmod d(is=1p)\n"
+        record = self.compare("D1 1 0 tj dmod thermal\n", models,
+                              models.replace("is=1p", "is=2p"), 1)
+        self.assertEqual(
+            record["sections"]["tt"]["inside_deltas"]["blocks"], ["dmod"]
+        )
+        self.assertEqual([m["name"] for m in record["instantiated_models"]], ["dmod"])
+
+    def test_missing_thermal_diode_model_is_an_error(self):
+        models = ".subckt tj a b\nR1 a b 1k\n.ends\n"
+        card = "D1 1 0 tj missing thermal"
+        self.compare(card, models, models, 2)
+        self.assertIn(card, self.fx.last_output)
+
+    def test_diode_model_position_differs_between_trees(self):
+        card = "D1 a k TJ off"
+        self.compare(card, ".model tj d\n", ".model off d\n", 2)
+        self.assertIn(card, self.fx.last_output)
+
+    def test_diode_with_positional_area_and_local_model(self):
+        deck = "D1 a k dev 2 off\nD2 a k tj local thermal\n.model local d\n"
+        models = ".model dev d(is=1p)\n"
+        record = self.compare(deck, models, models.replace("is=1p", "is=2p"), 1)
+        self.assertEqual([m["name"] for m in record["instantiated_models"]], ["dev"])
+
     def test_bare_device_cards_compare_the_full_model_name(self):
         for card, model in (
             ("D1 a k dev.0", "d"),
@@ -545,6 +584,11 @@ class SplitAssignments(unittest.TestCase):
 
 
 class DeckModelCandidates(unittest.TestCase):
+    def test_slashes_inside_quotes_survive_comment_stripping(self):
+        line = """X1 'first//node' "second//node" actual// alias"""
+        self.assertEqual(list(C.deck_cards(line)),
+                         ["""X1 'first//node' "second//node" actual"""])
+
     def test_x_card_with_params(self):
         cands = C.deck_model_candidates(
             "XM_WR a b c GND sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 m=1")
