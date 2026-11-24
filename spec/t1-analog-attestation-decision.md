@@ -171,12 +171,13 @@ item-10 command.
 
 - The inventory gains the five omitted suites, the completeness suite and the
   evidence-runner fixture suite (`test_run_evidence_checks.py`, issue #415,
-  which landed on `main` while this was in review) and the klt pex
-  bitcell/array suite (`sim/pex_bitcell_array/test_pex_bitcell_array.py`, which
-  also landed on `main` while this was in review); at landing (2026-11-23)
-  that is 41 `python3 -I` commands plus the 4 `klt drc/lvs --check` commands,
-  56/56 checks pass under the pinned klt 0.9.2, and the `hygiene` list is
-  unchanged.
+  which landed on `main` while this was in review); at landing (2026-11-23)
+  that is 40 `python3 -I` commands plus the 4 `klt drc/lvs --check` commands,
+  55/55 checks pass under the pinned klt 0.9.2, and the `hygiene` list is
+  unchanged. The klt pex bitcell/array suite
+  (`sim/pex_bitcell_array/test_pex_bitcell_array.py`) reached `main` afterwards,
+  in #403; #425 added it to the inventory, which makes the current count 41
+  `python3 -I` commands and 56/56 checks.
 - `block-manifest.json`'s `10.analog` and `10.digital` pins moved to the new
   inventory hash and `block-manifest.signoff.json` was regenerated; both item-10
   rows stay `met` and `t1_met_count` stays 9.
