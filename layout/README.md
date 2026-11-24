@@ -955,6 +955,11 @@ the full device -> block map).
 | [`sense_latch.lvs.request.json`](sense_latch.lvs.request.json) | `klt lvs` request comparing `sense_latch.gds` against the reference. |
 | [`sense_latch.drc.result.json`](sense_latch.drc.result.json), [`sense_latch.lvs.result.json`](sense_latch.lvs.result.json) | Native `klt drc`/`klt lvs` reports (check pin, klt 0.9.2): DRC **clean** (0 violations); LVS **match**, 6/6/6 devices, 8/8/8 nets, `body_verification.status: "verified"` with an empty `device_classes` list. |
 
+Both reports are cited beside the bitcell's in
+[`block-manifest.json`](../block-manifest.json) (`3.analog`, `4.analog`) and
+graded in [`block-manifest.signoff.json`](../block-manifest.signoff.json)
+(issue #382's integration step).
+
 ### Footprint, symmetry, dummies, taps
 
 - **Footprint**: 12.23 x 13.07µm (`x` -1.27..10.96, `y` -0.785..12.285 from

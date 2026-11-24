@@ -3,14 +3,14 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 56/56 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 58/58 attestation checks passed (klt signoff --attest)",
   "source": "attest/item10.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 56,
-    "passed_count": 56,
+    "check_count": 58,
+    "passed_count": 58,
     "checks": [
       {
         "check": "present",
@@ -31,7 +31,7 @@
         "role": "hygiene",
         "path": ".github/workflows/signoff.yml",
         "passed": true,
-        "content_hash": "sha256:b53c28d193eaefe3e818bccc29c53be22c690ec079ed9235ca13f5ba2778dd78"
+        "content_hash": "sha256:3cd45d67f74c88baaae13cd2fc88a9fe414ab503ad6673bc60ef869748002cab"
       },
       {
         "check": "present",
@@ -678,6 +678,34 @@
         "cwd": "layout",
         "exit_status": 0,
         "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt drc --check sense_latch.drc.result.json",
+        "argv": [
+          "klt",
+          "drc",
+          "--check",
+          "sense_latch.drc.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "klt lvs --check sense_latch.lvs.result.json",
+        "argv": [
+          "klt",
+          "lvs",
+          "--check",
+          "sense_latch.lvs.result.json"
+        ],
+        "cwd": "layout",
+        "exit_status": 0,
+        "passed": true
       }
     ]
   },
@@ -691,7 +719,7 @@
         "path": "attest/item10.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:b2ee697d5d0107949e182b5c7aaf5a8f17436fcc7ba097a314efc50d62fff234"
+      "content_hash": "sha256:6c596d04b4a466dc13011f241e85b150731ddad3545dec8d925b8f5ffd6e2a4a"
     }
   }
 }
