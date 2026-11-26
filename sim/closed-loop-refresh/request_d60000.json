@@ -1,0 +1,453 @@
+{
+ "netlist": "closed_loop_d60000.spice",
+ "engine": "ngspice",
+ "backend": "batch",
+ "models": {
+  "pdk": "sky130A",
+  "lib": "libs.tech/combined/sky130.lib.spice"
+ },
+ "corners": {
+  "process": [
+   "tt",
+   "ss",
+   "ff",
+   "sf",
+   "fs"
+  ],
+  "temperature_c": [
+   27,
+   125
+  ]
+ },
+ "analysis": {
+  "kind": "tran",
+  "args": "100p 120177n 0 2n uic"
+ },
+ "measurements": [
+  {
+   "name": "wr_ana_1111_r0",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r0 FIND v(sn_ana_1111_0) AT=21.6n"
+  },
+  {
+   "name": "pre_ana_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r0_c1 FIND v(sn_ana_1111_0) AT=60020.9n"
+  },
+  {
+   "name": "dec_ana_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r0_c1 FIND v(d_ana_1111) AT=60032n"
+  },
+  {
+   "name": "post_ana_1111_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r0_c1 FIND v(sn_ana_1111_0) AT=60056.1n"
+  },
+  {
+   "name": "pre_ana_1111_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r0_c2 FIND v(sn_ana_1111_0) AT=120021n"
+  },
+  {
+   "name": "dec_ana_1111_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r0_c2 FIND v(d_ana_1111) AT=120032n"
+  },
+  {
+   "name": "post_ana_1111_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r0_c2 FIND v(sn_ana_1111_0) AT=120056n"
+  },
+  {
+   "name": "wr_ana_1111_r1",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r1 FIND v(sn_ana_1111_1) AT=61.6n"
+  },
+  {
+   "name": "pre_ana_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r1_c1 FIND v(sn_ana_1111_1) AT=60060.9n"
+  },
+  {
+   "name": "dec_ana_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r1_c1 FIND v(d_ana_1111) AT=60072n"
+  },
+  {
+   "name": "post_ana_1111_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r1_c1 FIND v(sn_ana_1111_1) AT=60096.1n"
+  },
+  {
+   "name": "pre_ana_1111_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r1_c2 FIND v(sn_ana_1111_1) AT=120061n"
+  },
+  {
+   "name": "dec_ana_1111_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r1_c2 FIND v(d_ana_1111) AT=120072n"
+  },
+  {
+   "name": "post_ana_1111_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r1_c2 FIND v(sn_ana_1111_1) AT=120096n"
+  },
+  {
+   "name": "wr_ana_1111_r2",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r2 FIND v(sn_ana_1111_2) AT=101.6n"
+  },
+  {
+   "name": "pre_ana_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r2_c1 FIND v(sn_ana_1111_2) AT=60100.9n"
+  },
+  {
+   "name": "dec_ana_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r2_c1 FIND v(d_ana_1111) AT=60112n"
+  },
+  {
+   "name": "post_ana_1111_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r2_c1 FIND v(sn_ana_1111_2) AT=60136.1n"
+  },
+  {
+   "name": "pre_ana_1111_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r2_c2 FIND v(sn_ana_1111_2) AT=120101n"
+  },
+  {
+   "name": "dec_ana_1111_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r2_c2 FIND v(d_ana_1111) AT=120112n"
+  },
+  {
+   "name": "post_ana_1111_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r2_c2 FIND v(sn_ana_1111_2) AT=120136n"
+  },
+  {
+   "name": "wr_ana_1111_r3",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1111_r3 FIND v(sn_ana_1111_3) AT=141.6n"
+  },
+  {
+   "name": "pre_ana_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r3_c1 FIND v(sn_ana_1111_3) AT=60140.9n"
+  },
+  {
+   "name": "dec_ana_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r3_c1 FIND v(d_ana_1111) AT=60152n"
+  },
+  {
+   "name": "post_ana_1111_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r3_c1 FIND v(sn_ana_1111_3) AT=60176.1n"
+  },
+  {
+   "name": "pre_ana_1111_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1111_r3_c2 FIND v(sn_ana_1111_3) AT=120141n"
+  },
+  {
+   "name": "dec_ana_1111_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1111_r3_c2 FIND v(d_ana_1111) AT=120152n"
+  },
+  {
+   "name": "post_ana_1111_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1111_r3_c2 FIND v(sn_ana_1111_3) AT=120176n"
+  },
+  {
+   "name": "wr_ana_1010_r0",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1010_r0 FIND v(sn_ana_1010_0) AT=21.6n"
+  },
+  {
+   "name": "pre_ana_1010_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r0_c1 FIND v(sn_ana_1010_0) AT=60020.9n"
+  },
+  {
+   "name": "dec_ana_1010_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r0_c1 FIND v(d_ana_1010) AT=60032n"
+  },
+  {
+   "name": "post_ana_1010_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r0_c1 FIND v(sn_ana_1010_0) AT=60056.1n"
+  },
+  {
+   "name": "pre_ana_1010_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r0_c2 FIND v(sn_ana_1010_0) AT=120021n"
+  },
+  {
+   "name": "dec_ana_1010_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r0_c2 FIND v(d_ana_1010) AT=120032n"
+  },
+  {
+   "name": "post_ana_1010_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r0_c2 FIND v(sn_ana_1010_0) AT=120056n"
+  },
+  {
+   "name": "wr_ana_1010_r1",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1010_r1 FIND v(sn_ana_1010_1) AT=61.6n"
+  },
+  {
+   "name": "pre_ana_1010_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r1_c1 FIND v(sn_ana_1010_1) AT=60060.9n"
+  },
+  {
+   "name": "dec_ana_1010_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r1_c1 FIND v(d_ana_1010) AT=60072n"
+  },
+  {
+   "name": "post_ana_1010_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r1_c1 FIND v(sn_ana_1010_1) AT=60096.1n"
+  },
+  {
+   "name": "pre_ana_1010_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r1_c2 FIND v(sn_ana_1010_1) AT=120061n"
+  },
+  {
+   "name": "dec_ana_1010_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r1_c2 FIND v(d_ana_1010) AT=120072n"
+  },
+  {
+   "name": "post_ana_1010_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r1_c2 FIND v(sn_ana_1010_1) AT=120096n"
+  },
+  {
+   "name": "wr_ana_1010_r2",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1010_r2 FIND v(sn_ana_1010_2) AT=101.6n"
+  },
+  {
+   "name": "pre_ana_1010_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r2_c1 FIND v(sn_ana_1010_2) AT=60100.9n"
+  },
+  {
+   "name": "dec_ana_1010_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r2_c1 FIND v(d_ana_1010) AT=60112n"
+  },
+  {
+   "name": "post_ana_1010_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r2_c1 FIND v(sn_ana_1010_2) AT=60136.1n"
+  },
+  {
+   "name": "pre_ana_1010_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r2_c2 FIND v(sn_ana_1010_2) AT=120101n"
+  },
+  {
+   "name": "dec_ana_1010_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r2_c2 FIND v(d_ana_1010) AT=120112n"
+  },
+  {
+   "name": "post_ana_1010_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r2_c2 FIND v(sn_ana_1010_2) AT=120136n"
+  },
+  {
+   "name": "wr_ana_1010_r3",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_1010_r3 FIND v(sn_ana_1010_3) AT=141.6n"
+  },
+  {
+   "name": "pre_ana_1010_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r3_c1 FIND v(sn_ana_1010_3) AT=60140.9n"
+  },
+  {
+   "name": "dec_ana_1010_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r3_c1 FIND v(d_ana_1010) AT=60152n"
+  },
+  {
+   "name": "post_ana_1010_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r3_c1 FIND v(sn_ana_1010_3) AT=60176.1n"
+  },
+  {
+   "name": "pre_ana_1010_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_1010_r3_c2 FIND v(sn_ana_1010_3) AT=120141n"
+  },
+  {
+   "name": "dec_ana_1010_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_1010_r3_c2 FIND v(d_ana_1010) AT=120152n"
+  },
+  {
+   "name": "post_ana_1010_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_1010_r3_c2 FIND v(sn_ana_1010_3) AT=120176n"
+  },
+  {
+   "name": "wr_ana_0000_r0",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_0000_r0 FIND v(sn_ana_0000_0) AT=21.6n"
+  },
+  {
+   "name": "pre_ana_0000_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r0_c1 FIND v(sn_ana_0000_0) AT=60020.9n"
+  },
+  {
+   "name": "dec_ana_0000_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r0_c1 FIND v(d_ana_0000) AT=60032n"
+  },
+  {
+   "name": "post_ana_0000_r0_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r0_c1 FIND v(sn_ana_0000_0) AT=60056.1n"
+  },
+  {
+   "name": "pre_ana_0000_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r0_c2 FIND v(sn_ana_0000_0) AT=120021n"
+  },
+  {
+   "name": "dec_ana_0000_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r0_c2 FIND v(d_ana_0000) AT=120032n"
+  },
+  {
+   "name": "post_ana_0000_r0_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r0_c2 FIND v(sn_ana_0000_0) AT=120056n"
+  },
+  {
+   "name": "wr_ana_0000_r1",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_0000_r1 FIND v(sn_ana_0000_1) AT=61.6n"
+  },
+  {
+   "name": "pre_ana_0000_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r1_c1 FIND v(sn_ana_0000_1) AT=60060.9n"
+  },
+  {
+   "name": "dec_ana_0000_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r1_c1 FIND v(d_ana_0000) AT=60072n"
+  },
+  {
+   "name": "post_ana_0000_r1_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r1_c1 FIND v(sn_ana_0000_1) AT=60096.1n"
+  },
+  {
+   "name": "pre_ana_0000_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r1_c2 FIND v(sn_ana_0000_1) AT=120061n"
+  },
+  {
+   "name": "dec_ana_0000_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r1_c2 FIND v(d_ana_0000) AT=120072n"
+  },
+  {
+   "name": "post_ana_0000_r1_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r1_c2 FIND v(sn_ana_0000_1) AT=120096n"
+  },
+  {
+   "name": "wr_ana_0000_r2",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_0000_r2 FIND v(sn_ana_0000_2) AT=101.6n"
+  },
+  {
+   "name": "pre_ana_0000_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r2_c1 FIND v(sn_ana_0000_2) AT=60100.9n"
+  },
+  {
+   "name": "dec_ana_0000_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r2_c1 FIND v(d_ana_0000) AT=60112n"
+  },
+  {
+   "name": "post_ana_0000_r2_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r2_c1 FIND v(sn_ana_0000_2) AT=60136.1n"
+  },
+  {
+   "name": "pre_ana_0000_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r2_c2 FIND v(sn_ana_0000_2) AT=120101n"
+  },
+  {
+   "name": "dec_ana_0000_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r2_c2 FIND v(d_ana_0000) AT=120112n"
+  },
+  {
+   "name": "post_ana_0000_r2_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r2_c2 FIND v(sn_ana_0000_2) AT=120136n"
+  },
+  {
+   "name": "wr_ana_0000_r3",
+   "unit": "V",
+   "spice": ".meas tran wr_ana_0000_r3 FIND v(sn_ana_0000_3) AT=141.6n"
+  },
+  {
+   "name": "pre_ana_0000_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r3_c1 FIND v(sn_ana_0000_3) AT=60140.9n"
+  },
+  {
+   "name": "dec_ana_0000_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r3_c1 FIND v(d_ana_0000) AT=60152n"
+  },
+  {
+   "name": "post_ana_0000_r3_c1",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r3_c1 FIND v(sn_ana_0000_3) AT=60176.1n"
+  },
+  {
+   "name": "pre_ana_0000_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran pre_ana_0000_r3_c2 FIND v(sn_ana_0000_3) AT=120141n"
+  },
+  {
+   "name": "dec_ana_0000_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran dec_ana_0000_r3_c2 FIND v(d_ana_0000) AT=120152n"
+  },
+  {
+   "name": "post_ana_0000_r3_c2",
+   "unit": "V",
+   "spice": ".meas tran post_ana_0000_r3_c2 FIND v(sn_ana_0000_3) AT=120176n"
+  }
+ ],
+ "options": {
+  "timeout_s": 3300,
+  "keep_artifacts": false,
+  "waveforms": false
+ }
+}

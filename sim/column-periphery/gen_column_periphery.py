@@ -40,7 +40,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V  # noqa: E402
+from _evidence_common import VDD_V, fmt_g6, join_lines, parse_cards  # noqa: E402,F401
 from klt_request import build_request as klt_request  # noqa: E402
 
 NETLIST_PATH = HERE / "column_periphery.spice"
@@ -107,26 +107,6 @@ PRE_W_SWEEP_UM = [1.0, 2.0, 4.0, 8.0]
 DIFF_UM = 0.29
 
 
-def _fmt(x: float) -> str:
-    return f"{x:.6g}"
-
-
-def join_lines(text: str) -> str:
-    return re.sub(r"\n\+", " ", text)
-
-
-def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
-    """{device: (nets[D G S B], model, trailing params)} for every X card."""
-    out = {}
-    for line in join_lines(path.read_text()).splitlines():
-        if line.startswith("*"):
-            continue
-        t = line.split()
-        if t and t[0].startswith("XM"):
-            out[t[0][1:]] = (t[1:5], t[5], " ".join(t[6:]))
-    return out
-
-
 def set_width(params: str, w_um: float) -> str:
     """Rewrite W and ALL width-dependent geometry for a sweep width.
 
@@ -139,9 +119,9 @@ def set_width(params: str, w_um: float) -> str:
     ad = w_um * DIFF_UM
     pd = 2 * (w_um + DIFF_UM)
     nr = DIFF_UM / w_um
-    p = re.sub(r"\bW=\S+", f"W={_fmt(w_um)}", params)
+    p = re.sub(r"\bW=\S+", f"W={fmt_g6(w_um)}", params)
     for k, v in (("ad", ad), ("as", ad), ("pd", pd), ("ps", pd), ("nrd", nr), ("nrs", nr)):
-        p, n = re.subn(rf"\b{k}=\S+", f"{k}={_fmt(v)}", p)
+        p, n = re.subn(rf"\b{k}=\S+", f"{k}={fmt_g6(v)}", p)
         if n != 1:
             raise ValueError(f"set_width: expected exactly one {k}= in {params!r}")
     return p
@@ -186,30 +166,30 @@ def build_netlist(c_sn_f: float) -> str:
     a("* sense instant, reference level, ideal reference-side precharge and matched dummy load, ideal")
     a("* digital control edges (100 ps), global corners only.")
     a("")
-    a(f".param VDD     = {_fmt(VDD_V)}")
-    a(f".param VRBL    = {_fmt(VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param VREF    = {_fmt(VRBL_V - DREF_V)}   $ ASSUMPTION: VRBL - 0.1 V (as sense-stage)")
-    a(f".param TEDGE   = {_fmt(T_EDGE_S)}")
-    a(f".param C_RBL   = {_fmt(C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
-    a(f".param C_WBL   = {_fmt(C_WBL_F)}   $ ASSUMPTION (not extracted)")
-    a(f".param C_SN    = {_fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param VDD     = {fmt_g6(VDD_V)}")
+    a(f".param VRBL    = {fmt_g6(VRBL_V)}   $ ASSUMPTION (contract)")
+    a(f".param VREF    = {fmt_g6(VRBL_V - DREF_V)}   $ ASSUMPTION: VRBL - 0.1 V (as sense-stage)")
+    a(f".param TEDGE   = {fmt_g6(T_EDGE_S)}")
+    a(f".param C_RBL   = {fmt_g6(C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
+    a(f".param C_WBL   = {fmt_g6(C_WBL_F)}   $ ASSUMPTION (not extracted)")
+    a(f".param C_SN    = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("")
     a("* ---- shared control (ideal digital edges) ----")
     a("vdd   vdd 0 dc {VDD}")
-    a(f"vpca  pca 0 pwl(0 0 {_fmt(T_PRE_ON_S)} 0 {_fmt(T_PRE_ON_S + T_EDGE_S)} {{VDD}} {_fmt(t_pre_rel)} {{VDD}} {_fmt(t_pre_rel + T_EDGE_S)} 0)   $ active-high precharge")
-    a(f"vpcb  pcb 0 pwl(0 {{VDD}} {_fmt(T_PRE_ON_S)} {{VDD}} {_fmt(T_PRE_ON_S + T_EDGE_S)} 0 {_fmt(t_pre_rel)} 0 {_fmt(t_pre_rel + T_EDGE_S)} {{VDD}})   $ active-low precharge")
-    a(f"vwen  wen 0 pwl(0 0 {_fmt(T_WBL_ON_S)} 0 {_fmt(T_WBL_ON_S + T_EDGE_S)} {{VDD}} {_fmt(T_WBL_OFF_S)} {{VDD}} {_fmt(T_WBL_OFF_S + T_EDGE_S)} 0)")
-    a(f"vwenb wenb 0 pwl(0 {{VDD}} {_fmt(T_WBL_ON_S)} {{VDD}} {_fmt(T_WBL_ON_S + T_EDGE_S)} 0 {_fmt(T_WBL_OFF_S)} 0 {_fmt(T_WBL_OFF_S + T_EDGE_S)} {{VDD}})")
+    a(f"vpca  pca 0 pwl(0 0 {fmt_g6(T_PRE_ON_S)} 0 {fmt_g6(T_PRE_ON_S + T_EDGE_S)} {{VDD}} {fmt_g6(t_pre_rel)} {{VDD}} {fmt_g6(t_pre_rel + T_EDGE_S)} 0)   $ active-high precharge")
+    a(f"vpcb  pcb 0 pwl(0 {{VDD}} {fmt_g6(T_PRE_ON_S)} {{VDD}} {fmt_g6(T_PRE_ON_S + T_EDGE_S)} 0 {fmt_g6(t_pre_rel)} 0 {fmt_g6(t_pre_rel + T_EDGE_S)} {{VDD}})   $ active-low precharge")
+    a(f"vwen  wen 0 pwl(0 0 {fmt_g6(T_WBL_ON_S)} 0 {fmt_g6(T_WBL_ON_S + T_EDGE_S)} {{VDD}} {fmt_g6(T_WBL_OFF_S)} {{VDD}} {fmt_g6(T_WBL_OFF_S + T_EDGE_S)} 0)")
+    a(f"vwenb wenb 0 pwl(0 {{VDD}} {fmt_g6(T_WBL_ON_S)} {{VDD}} {fmt_g6(T_WBL_ON_S + T_EDGE_S)} 0 {fmt_g6(T_WBL_OFF_S)} 0 {fmt_g6(T_WBL_OFF_S + T_EDGE_S)} {{VDD}})")
     a("vdinb1 dinb1 0 dc 0          $ data '1': wbl = NOT dinb = VDD")
     a("vdinb0 dinb0 0 dc {VDD}      $ data '0'")
-    a(f"vwl   wl 0 pwl(0 0 {_fmt(T_WL_ON_S)} 0 {_fmt(T_WL_ON_S + T_EDGE_S)} {{VDD}} {_fmt(T_WL_OFF_S)} {{VDD}} {_fmt(T_WL_OFF_S + T_EDGE_S)} 0)")
-    a(f"vrwls rwl_sel 0 pwl(0 {{VDD}} {_fmt(T_READ_S)} {{VDD}} {_fmt(T_READ_S + T_EDGE_S)} 0)")
+    a(f"vwl   wl 0 pwl(0 0 {fmt_g6(T_WL_ON_S)} 0 {fmt_g6(T_WL_ON_S + T_EDGE_S)} {{VDD}} {fmt_g6(T_WL_OFF_S)} {{VDD}} {fmt_g6(T_WL_OFF_S + T_EDGE_S)} 0)")
+    a(f"vrwls rwl_sel 0 pwl(0 {{VDD}} {fmt_g6(T_READ_S)} {{VDD}} {fmt_g6(T_READ_S + T_EDGE_S)} 0)")
     a("vrwld rwl_des 0 dc {VDD}")
     t_iso = T_EN_S - T_ISO_LEAD_S
-    a(f"vsel  sel  0 pwl(0 {{VDD}} {_fmt(t_iso)} {{VDD}} {_fmt(t_iso + T_EDGE_S)} 0)")
-    a(f"vselb selb 0 pwl(0 0 {_fmt(t_iso)} 0 {_fmt(t_iso + T_EDGE_S)} {{VDD}})")
-    a(f"ven   en  0 pwl(0 0 {_fmt(T_EN_S)} 0 {_fmt(T_EN_S + T_EDGE_S)} {{VDD}})")
-    a(f"venb  enb 0 pwl(0 {{VDD}} {_fmt(T_EN_S)} {{VDD}} {_fmt(T_EN_S + T_EDGE_S)} 0)")
+    a(f"vsel  sel  0 pwl(0 {{VDD}} {fmt_g6(t_iso)} {{VDD}} {fmt_g6(t_iso + T_EDGE_S)} 0)")
+    a(f"vselb selb 0 pwl(0 0 {fmt_g6(t_iso)} 0 {fmt_g6(t_iso + T_EDGE_S)} {{VDD}})")
+    a(f"ven   en  0 pwl(0 0 {fmt_g6(T_EN_S)} 0 {fmt_g6(T_EN_S + T_EDGE_S)} {{VDD}})")
+    a(f"venb  enb 0 pwl(0 {{VDD}} {fmt_g6(T_EN_S)} {{VDD}} {fmt_g6(T_EN_S + T_EDGE_S)} 0)")
     a("vprea prea 0 dc {VRBL}       $ ASSUMPTION: ideal 0.9 V precharge rail")
     a("vpref pref 0 dc {VREF}")
     a(".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)")
@@ -230,21 +210,21 @@ def build_netlist(c_sn_f: float) -> str:
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
             # row 0 starts at the OPPOSITE of the data (genuine overwrite); rows 1..3 at the data level
             if r == 0:
-                ics.append(f"v({sn})={_fmt(0.0 if d == 1 else SN_HOLD1_V)}")
+                ics.append(f"v({sn})={fmt_g6(0.0 if d == 1 else SN_HOLD1_V)}")
             else:
-                ics.append(f"v({sn})={_fmt(SN_HOLD1_V if d == 1 else 0.0)}")
+                ics.append(f"v({sn})={fmt_g6(SN_HOLD1_V if d == 1 else 0.0)}")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"cwbl_{n} {wb} 0 {{C_WBL}}")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         a(f"spr_{n} pref {rf} pca 0 swpre   $ reference-side precharge stays an ideal switch")
-        ics += [f"v({rb})=0", f"v({rf})={_fmt(VRBL_V - DREF_V)}", f"v({wb})=0"]
+        ics += [f"v({rb})=0", f"v({rf})={fmt_g6(VRBL_V - DREF_V)}", f"v({wb})=0"]
         if kind == "ideal":
             sbl, sref = rb, rf
             a(f"spa_{n} prea {rb} pca 0 swpre   $ existing ideal precharge switch")
             # ideal write-bitline source: same edges as the WEN window, data level
             lvl = "{VDD}" if d == 1 else "0"
-            a(f"vwbl_{n} {wb} 0 pwl(0 0 {_fmt(T_WBL_ON_S)} 0 {_fmt(T_WBL_ON_S + T_EDGE_S)} {lvl} "
-              f"{_fmt(T_WBL_OFF_S)} {lvl} {_fmt(T_WBL_OFF_S + T_EDGE_S)} 0)   $ ideal write source")
+            a(f"vwbl_{n} {wb} 0 pwl(0 0 {fmt_g6(T_WBL_ON_S)} 0 {fmt_g6(T_WBL_ON_S + T_EDGE_S)} {lvl} "
+              f"{fmt_g6(T_WBL_OFF_S)} {lvl} {fmt_g6(T_WBL_OFF_S + T_EDGE_S)} 0)   $ ideal write source")
         else:
             sbl, sref = f"sbl_{n}", f"sref_{n}"
             netmap = {"rbl": rb, "sbl": sbl, "ref": rf, "sref": sref, "wbl": wb,
@@ -256,7 +236,7 @@ def build_netlist(c_sn_f: float) -> str:
                 if kind == "sweep" and dev == "MPPRE":
                     params = set_width(params, p["w"])
                 a(f"X{dev}_{n} {' '.join(nn)} {model} {params}")
-            ics += [f"v({sbl})=0", f"v({sref})={_fmt(VRBL_V - DREF_V)}"]
+            ics += [f"v({sbl})=0", f"v({sref})={fmt_g6(VRBL_V - DREF_V)}"]
         lmap = {"rbl": sbl, "ref": sref, "en": "en", "enb": "enb", "vdd": "vdd", "vn": vn, "vp": vp, "GND": "0", "0": "0"}
         for dev, (nets, model, params) in latch.items():
             a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
@@ -273,13 +253,13 @@ def build_netlist(c_sn_f: float) -> str:
 
 def build_request() -> dict:
     meas = []
-    f = lambda t: _fmt(t * 1e9)
+    f = lambda t: fmt_g6(t * 1e9)
     for p in instances():
         n = p["name"]
         # lower-case names only (klayout-tools#2914)
         meas += [
             {"name": f"tpre_{n}", "unit": "s",
-             "spice": f".meas tran tpre_{n} WHEN v(rbl_{n})={_fmt(VRBL_V - SETTLE_V)} RISE=1"},
+             "spice": f".meas tran tpre_{n} WHEN v(rbl_{n})={fmt_g6(VRBL_V - SETTLE_V)} RISE=1"},
             {"name": f"vrel_{n}", "unit": "V",
              "spice": f".meas tran vrel_{n} FIND v(rbl_{n}) AT={f(T_READ_S - T_PRE_GAP_S)}n"},
         ]

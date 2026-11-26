@@ -20,8 +20,8 @@ Definitions (ASSUMPTIONS unless stated; parameters at the top):
 * d = V(rbl) - V(ref). '0' decision: final d >= +RESOLVE_V; '1': <= -RESOLVE_V.
   Stage-only: correct decision is '0' for d > 0 and '1' for d < 0 (d = 0 has
   no correct answer; it is reported as P(decide '0')).
-* resolves = correct decision AND tdec <= T_WINDOW_S (same rule as
-  sim/sense-stage/analyze_sense_stage.py).
+* resolves = correct decision AND 0 < tdec <= T_WINDOW_S (same rule as
+  sim/sense-stage/analyze_sense_stage.py; _evidence_common.tdec_in_window).
 * Offset model (probit): P(decide '0' | x) = Phi((x - mu) / sigma), fitted by
   maximum likelihood over every trial that reached a definite polarity.
   sigma is the input-referred offset standard deviation, mu its mean
@@ -54,6 +54,7 @@ sys.path.insert(0, str(HERE.parent))
 from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import tdec_in_window  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
 import gen_sense_mismatch as M  # noqa: E402
@@ -246,7 +247,7 @@ def sample_rows(rep: dict, kind: str) -> list[dict]:
                 ref_offset_v=i["dref"], nominal_d_mv=i.get("d_mv", ""), sn_level_v=i.get("sn", ""),
                 replica=i["rep"], din_v=din, dend_v=dend, tdec_s=tdec, expected=expect, decided=dec,
                 correct="" if not expect else dec == expect,
-                resolves_in_window="" if not expect else (dec == expect and tdec is not None and tdec <= T_WINDOW_S)))
+                resolves_in_window="" if not expect else (dec == expect and tdec_in_window(tdec, T_WINDOW_S))))
     return rows
 
 

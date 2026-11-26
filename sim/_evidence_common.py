@@ -49,6 +49,18 @@ DEFAULT_NGSPICE_LIB_REL = "libs.tech/combined/sky130.lib.spice"
 # the install hint and revision check `check_ngspice_available()` runs.
 PDK_OPEN_PDKS_COMMIT = "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
 
+# The simulator major version every runner is pinned to (issue #300) --
+# what the batch fleet image actually runs. Pinned and checked exactly
+# like the PDK revision above, closing the asymmetry that let committed
+# characterization numbers move up to 8.8e-02 V between ngspice-46 and
+# ngspice-47 unnoticed (the version was stamped per row, never checked).
+# Compared as the major version parsed out of the `ngspice --version`
+# banner, not the full banner, so a build-date or banner-format change is
+# not a false mismatch. A simulator-version change triggers
+# re-qualification on the same terms as a PDK re-pin; see
+# docs/pdk-pin.md and docs/simulator-requalification-inventory.md.
+NGSPICE_VERSION_PIN = "ngspice-47"
+
 
 # Default PDK root: where `ciel enable` installs (`~/.ciel/<variant>`). The
 # retired volare root (`~/.volare`) is deliberately never searched -- a
@@ -173,11 +185,65 @@ def resolve_ngspice_lib(pdk_root: Path, variant: str) -> Path:
     return pdk_root / variant / DEFAULT_NGSPICE_LIB_REL
 
 
+def ngspice_major_version(version_banner: str) -> str | None:
+    """The `ngspice-NN` token parsed out of a `ngspice --version` banner
+    line (case-insensitive; e.g. "ngspice-46" out of
+    "** ngspice-46 : Circuit level simulation program"), or None if the
+    banner carries no parsable version -- including the "unknown"
+    sentinel `ngspice_version()` returns on failure. Only the major
+    number is kept, so build options, compile date and banner formatting
+    are not part of the comparison."""
+    m = re.search(r"ngspice-(\d+)", version_banner, re.IGNORECASE)
+    return f"ngspice-{m.group(1)}" if m else None
+
+
+def ngspice_version_problems(
+    version_banner: str, expected: str = NGSPICE_VERSION_PIN
+) -> list[str]:
+    """Mismatch messages (empty list = the simulator that would stamp new
+    rows is at the pinned major version), mirroring
+    `pdk_revision_problems`'s return convention. An unparsable banner --
+    including `ngspice_version()`'s "unknown" failure sentinel -- is a
+    failure, not a pass: a record cannot be written with absent simulator
+    provenance and still satisfy the check (issue #300)."""
+    actual = ngspice_major_version(version_banner)
+    if actual == expected:
+        return []
+    if actual is None:
+        return [
+            "cannot verify the ngspice version: no parsable `ngspice-NN` "
+            f"in the version banner {version_banner!r} (expected {expected})"
+        ]
+    return [f"ngspice version mismatch: expected {expected}, actual {actual}"]
+
+
+def check_ngspice_version(version_banner: str) -> bool:
+    """Print `ngspice_version_problems` plus a remediation hint to stderr;
+    True if the simulator is at the pin."""
+    problems = ngspice_version_problems(version_banner)
+    for p in problems:
+        print(f"ERROR: {p}", file=sys.stderr)
+    if problems:
+        print(
+            f"  Run on the batch fleet, whose image runs {NGSPICE_VERSION_PIN};",
+            file=sys.stderr,
+        )
+        print(
+            "  a simulator-version change is re-qualified on the same terms as a PDK re-pin "
+            "(docs/pdk-pin.md, docs/simulator-requalification-inventory.md).",
+            file=sys.stderr,
+        )
+    return not problems
+
+
 def check_ngspice_available(ngspice_lib: Path) -> bool:
     """Check that the sky130 ngspice model library exists and `ngspice`
     is on PATH, printing an install hint on failure. Callers with
     additional environment checks (e.g. a testbench template or design
-    netlist) run those separately and AND the result with this one."""
+    netlist) run those separately and AND the result with this one.
+    Also verifies the PDK revision (issue #165) and the simulator major
+    version (issue #300) against their pins, so every runner already
+    calling this inherits both checks with no new call site."""
     ok = True
     if not ngspice_lib.is_file():
         print(
@@ -201,6 +267,8 @@ def check_ngspice_available(ngspice_lib: Path) -> bool:
         ok = check_pdk_revision(variant_dir)
     if not which("ngspice"):
         print("ERROR: `ngspice` not found on PATH.", file=sys.stderr)
+        ok = False
+    elif not check_ngspice_version(ngspice_version()):
         ok = False
     return ok
 
@@ -247,6 +315,14 @@ def sha256_hex(path: Path) -> str:
 def sha256_prefixed(path: Path) -> str:
     """`"sha256:"`-prefixed SHA-256 digest of a file's bytes."""
     return "sha256:" + sha256_hex(path)
+
+
+def fmt_g6(x: float) -> str:
+    """`%.6g` formatting for every value a generator interpolates into a
+    committed deck (`.param` cards, PWL vertices, ICs, `.meas` bounds).
+    One definition so the deck-emitting generators cannot drift apart on
+    number spelling."""
+    return f"{x:.6g}"
 
 
 def load_json(path: Path):
@@ -301,6 +377,79 @@ def decided(dend: float | None, threshold_v: float) -> str:
     if dend >= threshold_v:
         return "0"
     return "unresolved"
+
+
+def tdec_in_window(tdec: float | None, window_s: float) -> bool:
+    """True only for a measured decision time `0 < tdec <= window_s`.
+
+    `tdec` is the difference of two independently-located ngspice crossings
+    (latch enable, then the |d| target). A non-positive value means the target
+    crossed at or before the enable -- not a decision time -- so it must not
+    count as a fast resolve. Shared so every bench uses one definition."""
+    return tdec is not None and 0 < tdec <= window_s
+
+
+# --------------------------------------------------------------------------
+# Design-netlist card parsing (issue #293) -- the {device: (nets, model,
+# params)} view of a committed design/*.spice netlist that deck generators
+# emit device cards from, so a simulated device can never drift from the
+# schematic-derived netlist (design/regen_netlist.sh --check keeps that
+# file fresh). Moved from gen_column_periphery.py, which had been the sole
+# definition; the sense-stage / sense-mismatch / refresh-op / refresh-replay
+# generators previously retyped the latch geometry and silently dropped the
+# nrd/nrs/sa/sb/sd tokens the design netlist carries.
+# --------------------------------------------------------------------------
+
+def join_lines(text: str) -> str:
+    return re.sub(r"\n\+", " ", text)
+
+
+def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
+    """{device: (nets[D G S B], model, trailing params)} for every X card."""
+    out = {}
+    for line in join_lines(path.read_text()).splitlines():
+        if line.startswith("*"):
+            continue
+        t = line.split()
+        if t and t[0].startswith("XM"):
+            out[t[0][1:]] = (t[1:5], t[5], " ".join(t[6:]))
+    return out
+
+
+# --------------------------------------------------------------------------
+# Worker PDK stamp gate (issue #377 / #171) -- the fail-closed check a
+# reducer runs on a `klt sim` batch report before letting it qualify a new
+# evidence record. `run_leakage_sweep.py` carries the original inline copy
+# (kept: its docstring names the #168 incident); this shared shape exists
+# so the G4 refresh reducers apply the identical rule instead of retyping
+# it: only `environment.remote.worker_environment.pdk_stamp_comparison
+# .status == "match"` qualifies, and a missing block or stamp text that
+# does not name the pinned commit is a failure, never a pass.
+# --------------------------------------------------------------------------
+
+def worker_pdk_stamp_problems(rep: dict, expected: str = PDK_OPEN_PDKS_COMMIT) -> list[str]:
+    """Mismatch messages (empty list = the report's batch worker executed
+    the pinned open_pdks revision). Fail closed, exactly like the leakage
+    guard: a report with no `pdk_stamp_comparison` block, a status other
+    than "match" (mismatch, not_comparable, client_stamp_unavailable ...),
+    or a worker stamp text that does not name `expected` cannot back a
+    qualified record."""
+    remote = (rep.get("environment") or {}).get("remote") or {}
+    worker_env = remote.get("worker_environment") or {}
+    stamp_cmp = worker_env.get("pdk_stamp_comparison") or {}
+    stamp_text = (worker_env.get("pdk") or {}).get("stamp_text", "unknown")
+    if stamp_cmp.get("status") != "match":
+        return [
+            f"worker PDK stamp comparison status={stamp_cmp.get('status')!r} "
+            f"(worker stamp {stamp_text!r}); the worker's open_pdks revision is "
+            f"not proven at the pin {expected}"
+        ]
+    if expected not in str(stamp_text):
+        return [
+            f"worker PDK stamp comparison is 'match' but the worker stamp text "
+            f"{stamp_text!r} does not name the pinned commit {expected}"
+        ]
+    return []
 
 
 # --------------------------------------------------------------------------
@@ -367,6 +516,35 @@ def klt_provenance(
     if engine:
         out["engine"] = env.get("engine")
     out["engine_version"] = env.get("engine_version")
+    return out
+
+
+# Repo root (the directory containing sim/), for the repo-relative
+# provenance paths recorded below. Derived from __file__ so it is correct
+# in any checkout, worktree or CI runner.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def c_sn_provenance_json(prov: dict) -> dict:
+    """JSON-ready copy of a `load_extracted_c_sn` provenance dict, safe to
+    embed in emitted evidence: `extract_json_path` (which the loader
+    returns as a Path) is rewritten to a repo-root-relative POSIX string,
+    the machine-independent shape refresh-energy summaries already record
+    (an absolute path differs between worktrees / CI runners). Every other
+    key passes through unchanged and in the same order. A report resolving
+    outside REPO_ROOT is refused with a clear message instead of a
+    traceback mid-generation -- recording a machine-specific absolute path
+    there would poison the evidence chain this field exists to carry."""
+    out = dict(prov)
+    path = Path(out["extract_json_path"]).resolve()
+    try:
+        out["extract_json_path"] = path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        raise SystemExit(
+            f"ERROR: extracted-C_SN report {path} resolves outside the repo root "
+            f"{REPO_ROOT}; refusing to record a machine-specific absolute path "
+            "in evidence (c_sn_provenance_json)"
+        ) from None
     return out
 
 

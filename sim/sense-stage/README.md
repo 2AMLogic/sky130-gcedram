@@ -126,6 +126,26 @@ historical record.
   old run (`48de7c67...133c84`). It hashes only the top-level
   `sky130.lib.spice`, so it does not distinguish the two revisions; the
   included device model files are not hashed separately by klt.
+* **Correction note (issue #362, 2026-11-18; original text above kept as the
+  record of what was believed then).** (1) The "written by the runner that ran
+  the job" statement holds for this klt 0.6.0 run only. For the klt 0.8.0 runs
+  (`20261028T085441Z`, `20261029T194412Z`-`20261029T194414Z`) `provenance.pdk`
+  says `f6eeac7` while the worker's executed-scope capture
+  (`environment.remote.worker_environment.pdk.stamp_text`) says `c6d73a3`, so
+  there `provenance.pdk` is not executed-scope evidence. (2) The two klt 0.6.0
+  reports (`20261009T131831Z`, `20261016T072807Z`) carry no
+  `worker_environment` capture: their PDK revisions (`c6d73a3`, `f6eeac7`) are
+  the client-side `provenance.pdk` values, not executed-scope evidence.
+  (3) `models_lib_sha256` is client-side (`models_lib_sha256_scope: "client"`,
+  `models_lib.path: null`, `models_staged: false`) and is `48de7c67...` in
+  every report cited in this README; it is not PDK identity and must not be
+  read as such. (4) Whether the `c6d73a3` -> `f6eeac7` step is material for
+  this bench: `sense_points_20261009T131831Z.csv` and
+  `sense_points_20261016T072807Z.csv` are byte-identical (`cmp`). That is
+  bench-level equivalence evidence for this one revision pair, limited by (2):
+  the revisions of those two runs rest on client-side stamps. (Suspected cause
+  of the 0.6.0 vs 0.8.0 `provenance.pdk` difference, a klt semantics change, is
+  an unverified hypothesis; klt was not inspected.)
 * **Simulator.** `engine_version` is `46` in both runs, and klt 0.6.0 /
   KLayout 0.30.12 are the same, so there is no simulator delta to separate
   from the PDK change. Netlist sha256 is unchanged (`4cd2834d...530ff0`).
@@ -238,6 +258,107 @@ temperature outside {27, 125} C; no extracted `C_RBL`; no layout of the
 stage; no sense-time vs enable-time sweep; no power. Nothing here ratifies
 the proposed range or any sense-amplifier specification.
 
+## Issue #88: re-run with the extracted 4-row `C_RBL` (append-only, 2026-10-11)
+
+> **Pre-#244 layout.** Everything in this section (0.859179 fF, `C_SN` 0.605354 fF) is history of the layout before PR #248. The same variants on the current layout are in "Issue #261" at the end of this file. The decks and results here are not regenerated or edited.
+
+> **Device provenance (pre-#293 latch).** The decks behind this section predate the issue-#293 latch correction: `gen_sense_stage.py` had dropped the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens from the latch devices, so these runs simulated a latch with no source-drain parasitic resistance. The correction and its effect on the 10 fF deck are in "Latch geometry correction re-run (issue #293, 2026-11-15)" at the end of this file. These variant decks are append-only history and were **not** regenerated, so every `t_dec`, floor and droop-verdict number in this section describes the pre-correction latch. Re-running the variants under the corrected device is tracked in #357 (open).
+
+New evidence only. The sections above and their results files are
+unchanged. The loaded-column half of the issue, and the full description of
+the `C_RBL` value, are in
+[`../loaded-column/extracted-crbl/README.md`](../loaded-column/extracted-crbl/README.md).
+
+**`C_RBL` source.**
+
+| Item | Value |
+|---|---|
+| File | [`layout/gain_cell_2t_array.parasitics.summary.json`](../../layout/gain_cell_2t_array.parasitics.summary.json) |
+| Key | `comparison.c_rbl.extracted_4row_worst_total_ff` |
+| Value | **0.859179 fF** (worst `rbl_<c>`: 0.581168 fF ground + 0.278011 fF coupling) |
+| Extracted netlist | `layout/gain_cell_2t_array.extract.parasitics.spice`, sha256 `dd2cca26de34d6b7cd39a0d794db64993d6440c5ca7f248cf4d657b6f6b88d33` |
+| Label | **EXTRACTED-4-ROW**. The 4-row column stays a STUDY-ASSUMPTION; `N_rows` is **not ratified**. |
+
+**Deck changes.** The generator reads the value from the JSON key
+(`gen_sense_stage.py --variant`). Without `--variant` the generator
+output is byte-identical to the committed `sense_stage.spice` / `request.json`
+(tested). Each variant is a new deck and a new request; `request.json` was
+not edited. A variant changes only:
+
+* `.param C_RBL`. It loads both `rbl` and the **matched dummy reference
+  load** (`cref_*`), so the reference side drops to the same value. That
+  keeps the "ideal matched dummy load" assumption.
+* For the layout-card variant, the bitcell diffusion card.
+
+**Interpretation.** The extracted value is wiring only, and it replaces
+10 fF. The latch transistors are simulated explicitly, so their own input
+load is present. Any further sense-input load that the 10 fF may have
+included (isolation, muxing) is not, so 0.859 fF is the lightest-load bound.
+2 fF is an ASSUMPTION mid-point.
+
+The scope is unchanged: 27 C and 125 C only. **No -40 C sense-stage result is
+claimed.** The -40 C sensitivity is in the loaded-column re-run.
+
+| Run | Variant | `C_RBL` | Bitcell card | Fleet job | Deck sha256 |
+|---|---|---|---|---|---|
+| `20261009T131831Z` | (issue #60 baseline) | 10 fF ASSUMPTION | design | `klt-sim-8c62fc8d1019` | `4cd2834d...` |
+| `20261011T015836Z` | `crbl_ext4row` | 0.859179 fF EXTRACTED-4-ROW | design | `klt-sim-6008da1d6b94` (c7i.4xlarge, 138 s) | `64232229...` |
+| `20261011T020128Z` | `crbl_2f` | 2 fF ASSUMPTION | design | `klt-sim-d5296ed7f82b` (m6i.4xlarge, 135 s) | `098cd39b...` |
+| `20261011T020422Z` | `crbl_ext4row_layoutcard` | 0.859179 fF EXTRACTED-4-ROW | layout (`ad=as=0.1974`, `pd=ps=1.78`) | `klt-sim-9ad077c252f4` (m6i.4xlarge, 147 s) | `5f0d3f66...` |
+
+**Run details.**
+
+* Every variant ran 10/10 corners `pass` on the batch fleet as a first
+  submission, using `uvx --from "klayout-tools==0.6.0" klt sim --backend batch`.
+  No local grid was run.
+* Reports have the bucket name redacted. Each summary's `netlist_sha256`
+  equals the committed variant deck (tested).
+* **Negative control.** The `cell0_*` instances are in every deck: a '1' that
+  was never written must read '0'. They resolve as '0' at every corner and
+  every reference for all three variants.
+
+### Old vs new (summary JSONs; ranges over the 10 corners)
+
+| Quantity | 10 fF (issue #60) | **0.859 fF** | 2 fF | 0.859 fF + layout card |
+|---|---|---|---|---|
+| Stage-only `t_dec` at the 1 mV point | 0.27-0.51 ns | **0.11-0.23 ns** | 0.14-0.26 ns | 0.11-0.23 ns |
+| Stage-only `|d|` at enable, nominal 1 mV | 1.10-1.31 mV | 1.27-1.95 mV | 1.22-1.76 mV | 1.27-1.95 mV |
+| All stage-only points (+/-1..100 mV) resolve | yes | yes | yes | yes |
+| `t_dec` at `SN` = 1.0 V, 100 mV reference | 0.059-0.090 ns | **0.034-0.053 ns** | 0.037-0.059 ns | 0.033-0.053 ns |
+| Min resolvable `SN` at the 100 mV reference | 0.45-0.75 V | 0.40-0.70 V | 0.40-0.70 V | 0.40-0.70 V |
+| Droop verdict vs `VDD`/2 at 100 mV reference | violated 10/10 | violated 10/10 | violated 10/10 | violated 10/10 |
+| Best-reference droop verdict at sf/125 C | indeterminate (0.87-0.92 V) | **met** (>= 0.917 V, at 20 mV) | indeterminate | indeterminate (0.87-0.92 V, at 50 mV) |
+
+**Decision time.**
+
+* With the extracted load, `t_dec` falls by a factor of about 2.2-2.5 at every
+  corner.
+* The `|d|` seen at the enable instant drifts further from the nominal 1 mV.
+  A lighter floating `rbl` moves more in the 2 ns before enable. Every
+  stage-only point still resolves with the correct sign.
+* A random-offset budget is still missing (see `sim/sense-mismatch/`, which
+  used 10 fF; not re-run here). The 1 mV floor therefore still says nothing
+  about mismatch.
+
+**Verdicts.**
+
+* **The droop reading of the `VDD`/2 finding moves at one corner, one
+  reference.** At sf/125 C with the 20 mV reference, every swept stored-'1'
+  level down to the sweep floor (0.30 V) now resolves. The usable droop is
+  therefore >= 0.917 V. That is bounded by the sweep, not measured, and it is
+  `met` against 0.9 V, where it was indeterminate before.
+* Three things qualify that:
+  * It holds only for the bounding 0.859 fF load on the design card. With 2 fF
+    or with the layout card it stays indeterminate.
+  * The 20 mV reference was already called not credible without an offset
+    result.
+  * At the 100 mV placeholder reference every corner is still violated.
+* The earlier finding stands: `VDD`/2 is not supported by this stage as
+  built. Nothing here changes `delta_V` or any spec value. That would need a
+  decision record.
+* The stored-level reading ("a stored '1' at 0.9 V resolves") remains met
+  at every corner, reference and variant.
+
 ## Post-#244 layout re-run (issue #249, 2026-10-28)
 
 PR #248 (issue #244) regenerated the layout under klt 0.8.0 (cell 1.84 -> 2.115 um tall, extracted `C_SN` 0.605354 -> 0.672741 fF). This section records the re-run of this bench on the regenerated decks as **new dated evidence**; the earlier results above are untouched history of the pre-#244 layout. Tool: `uvx --from klayout-tools==0.8.0 klt sim --backend batch --format json` (job `klt-sim-43d4e52bc5e0`, run `20261028T085441Z`, 10/10 corners pass); fleet worker ngspice-46, open_pdks stamp `c6d73a3` as reported in the klt report. Request files unchanged (same corners / seeds / thresholds); the decks were regenerated by `gen_sense_stage.py` first and match the committed ones.
@@ -258,3 +379,142 @@ Old = `results/sense_summary_20261016T072807Z.json` (the latest prior run, re-qu
 | fs | 125 | 1.21 -> 1.21 | 1.027 -> 1.027 | 0.477-0.527 -> 0.477-0.527 | violated -> violated |
 
 **No verdict change, and no metric moved at the reported precision.** The only deck difference is the `C_SN` parameter (0.605354 -> 0.672741 fF): the stage sweeps the pre-read storage level directly, so (not separately isolated here) the stage floor, the written-'1' minimum, the usable-`delta_V` window and the best-swept-reference verdict (violated at every corner except sf/125 C, which stays `indeterminate_on_this_grid`) are unchanged. The `VDD`/2 FINDING above stands as written.
+
+## Issue #261: #88 variants re-run on the post-#244 layout (append-only, 2026-10-29)
+
+> **Device provenance (pre-#293 latch).** The three `*_p244` decks of this section (runs `20261029T194412Z`-`20261029T194414Z`) predate the issue-#293 latch correction (latch without `nrd`/`nrs`/`sa`/`sb`/`sd`, i.e. no source-drain parasitic resistance), and were **not** regenerated; every number below, including the `t_dec` tables and the sf/125 C best-reference droop verdict (where the latch is the sensing element), describes the pre-correction latch. See "Latch geometry correction re-run (issue #293, 2026-11-15)" at the end of this file. Re-running these variants under the corrected device was done in #357; see "Corrected-latch re-run of the #88/#261 variants (issue #357, 2026-11-18)" at the end of this file.
+>
+> **Corrected-device variant decks (since simulated in #357).** `gen_sense_stage.py` also registers `crbl_ext4row_p244_l293`, `crbl_2f_p244_l293` and `crbl_ext4row_layoutcard_p244_l293` (same post-#244 `C_RBL`/`C_SN`, latch emitted from `design/sense_latch.spice`); their decks and request files are in this directory. At the time of #88 no results existed for them; they were run in #357 (section at the end of this file).
+
+New evidence only; the 2026-10-11 variants above stay as pre-#244 history. PR #248 regenerated the layout, so the extracted `C_RBL` moved and the extracted `C_SN` moved too (0.605354 -> 0.672741 fF).
+
+**`C_RBL` source.** Same file and key as above (`layout/gain_cell_2t_array.parasitics.summary.json`, `comparison.c_rbl.extracted_4row_worst_total_ff`), now **0.955559 fF** (worst net `rbl_2`: 0.66272 fF ground; was 0.859179 fF with 0.581168 fF ground). Label unchanged: **EXTRACTED-4-ROW**, 4 rows is a STUDY-ASSUMPTION, `N_rows` is **not ratified**. No `spec/` change.
+
+**Deck handling.** The three 2026-10-11 variant decks are frozen: `gen_sense_stage.py` keeps them in the variant registry as `legacy` entries with the pre-#244 `C_RBL` (so their summaries still reproduce byte for byte) but no longer regenerates them. New variants `crbl_ext4row_p244`, `crbl_2f_p244` and `crbl_ext4row_layoutcard_p244` are generated from the current JSON key and the current extracted `C_SN`; `python3 -I sim/sense-stage/gen_sense_stage.py --variant <id>`. Request files carry the same corners and thresholds as before.
+
+| Run | Variant | `C_RBL` | Bitcell card | Fleet job | Deck sha256 |
+|---|---|---|---|---|---|
+| `20261029T194412Z` | `crbl_ext4row_p244` | 0.955559 fF EXTRACTED-4-ROW | design | `klt-sim-d8de3410f41e` (c7i.8xlarge) | `3cd4da62...` |
+| `20261029T194413Z` | `crbl_2f_p244` | 2 fF ASSUMPTION | design | `klt-sim-9c4817dc05f6` (m6i.4xlarge) | `ff6bf583...` |
+| `20261029T194414Z` | `crbl_ext4row_layoutcard_p244` | 0.955559 fF EXTRACTED-4-ROW | layout (`ad=as=0.1974`, `pd=ps=1.78`) | `klt-sim-b233e4ba63c2` (c7i.8xlarge) | `04a4bbc9...` |
+
+**Run details.** Each variant ran 10/10 corners `pass` on the batch fleet (`uvx --from klayout-tools==0.8.0 klt sim --backend batch --format json`), ngspice 46, first submission, no local grid. Run ids are the ingest times of the reports. Each summary's `netlist_sha256` equals the committed variant deck (tested).
+
+### Old vs new (summary JSONs; ranges over the 10 corners)
+
+"Pre-#244" is the 2026-10-11 variant run; "post-#244" is the run above. The 10 fF baseline on the post-#244 layout is `20261028T085441Z` (issue #249).
+
+| Quantity | 10 fF (`20261028T085441Z`) | 0.955559 fF (pre-#244: 0.859179) | 2 fF (pre-#244 in brackets) | 0.955559 fF + layout card |
+|---|---|---|---|---|
+| Stage-only `t_dec` at the 1 mV point | 0.27-0.51 ns | **0.11-0.23 ns** (0.11-0.23) | 0.14-0.26 ns (0.14-0.26) | 0.11-0.23 ns |
+| Stage-only `|d|` at enable, nominal 1 mV | 1.10-1.31 mV | 1.26-1.93 mV (1.27-1.95) | 1.22-1.76 mV (1.22-1.76) | 1.26-1.93 mV |
+| All stage-only points (+/-1..100 mV) resolve | yes | yes | yes | yes |
+| `t_dec` at `SN` = 1.0 V, 100 mV reference | 0.058-0.089 ns | 0.034-0.053 ns (0.034-0.053) | 0.037-0.058 ns (0.037-0.059) | 0.033-0.053 ns |
+| Min resolvable `SN` at the 100 mV reference | 0.45-0.75 V | 0.40-0.70 V (0.40-0.70) | 0.40-0.70 V (0.40-0.70) | 0.40-0.70 V |
+| Droop verdict vs `VDD`/2 at 100 mV reference | violated 10/10 | violated 10/10 | violated 10/10 | violated 10/10 |
+| Best-reference droop verdict at sf/125 C | indeterminate (0.87-0.92 V) | **met** (>= 0.917 V, at 20 mV) | indeterminate (0.87-0.92 V, at 50 mV) | indeterminate (0.87-0.92 V, at 50 mV) |
+
+**Verdicts.**
+
+* **No verdict changed.** The heavier extracted load (0.859 -> 0.956 fF) and the larger `C_SN` move the numbers by at most two units in the last reported digit (for example the nominal-1 mV `|d|` range 1.27-1.95 -> 1.26-1.93 mV). Decision times keep the 2.2-2.5x improvement over the 10 fF baseline.
+* **sf/125 C droop verdict stays `met`, as the data shows.** At the 20 mV reference with `C_RBL` = 0.955559 fF on the design card, every swept stored-'1' level down to the 0.30 V sweep floor resolves, so the usable droop is >= 0.917 V against 0.9 V. That is a bound set by the sweep, not a measurement. The pre-#244 qualifiers carry over unchanged: it holds only for this bounding load on the design card (2 fF and the layout card stay indeterminate), the 20 mV reference was already called not credible without an offset result, and at the 100 mV placeholder reference every corner is still violated.
+* The earlier finding stands: `VDD`/2 is not supported by this stage as built. The stored-level reading ("a stored '1' at 0.9 V resolves") remains met at every corner, reference and variant. Nothing here changes `delta_V` or any spec value.
+* Not re-run, and still 10 fF based: `sim/sense-mismatch/`. The 1 mV floor says nothing about mismatch.
+
+## Latch geometry correction re-run (issue #293, 2026-11-15)
+
+Issue #293 fixed this deck's latch device: `gen_sense_stage.py` had retyped the latch/footer/header geometry (`dev_params()`), silently dropping the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens that the schematic-derived [`design/sense_latch.spice`](../../design/sense_latch.spice) carries, so this bench simulated a latch with no source-drain parasitic resistance. The generator now emits the latch through `parse_cards()` from the design netlist (as the column-periphery benches already did); the regenerated deck's token-level delta is exactly the five added tokens per latch device (`nrd=0.29`/`0.145`/`0.0725`, `nrs=`, `sa=0 sb=0 sd=0` on `XMN1`/`XMN2`, `XMP1`/`XMP2`/`XMNF`, `XMPH` respectively = `0.29/W` per the bitcell convention). This section records the re-run as **new dated evidence**; earlier results are untouched history. Tool: `uvx --from klayout-tools==0.9.1 klt sim --backend batch --format json --wait-for-capacity 600` (job `klt-sim-e974c305611b`, run `20261115T115315Z`, 10/10 corners pass; runner klt 0.9.0, fleet worker ngspice-47).
+
+**Engine and tool provenance differ between old and new run (not just the latch).** From `environment` in the committed reports (`engine_version` is the worker-side simulator major version; the top-level `engine_build` banner of the old report is the client-side ngspice-42 and is not the engine that ran it): old run `20261028T085441Z` = **ngspice-46** (worker banner built 2026-10-01), runner/client klt 0.8.0; new run `20261115T115315Z` = **ngspice-47** (worker banner built 2026-11-13), runner klt 0.9.0, client/submit klt 0.9.1. The open_pdks revision also differs: the worker-executed stamp (`environment.remote.worker_environment.pdk.stamp_text`, `stamp_scope: "executed"`) is `c6d73a35f524070e85faff4a6a9eef49553ebc2b` (`c6d73a3`) for the old run and `f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7` (`f6eeac7`) for the new one. `models_lib_sha256` (`48de7c67...133c84`) is identical in both but is a client-side hash of the top-level `sky130.lib.spice` only (`models_lib.path: null`, scope `external`; `models_staged: false`), so it does not show that the PDK is the same (see the re-qualification note under `f6eeac7` above). Whether the `c6d73a3` -> `f6eeac7` step matters for this bench is argued from other evidence: `sense_points_20261009T131831Z.csv` and `sense_points_20261016T072807Z.csv` are byte-identical (980 rows) across exactly that PDK pair; neither of those reports carries a `worker_environment` capture (klt 0.6.0), so their revisions are the client-side `provenance.pdk` values. The old-vs-new comparison below therefore changes the latch device, the ngspice version, the open_pdks revision and klt together.
+
+Old = `results/sense_summary_20261028T085441Z.json`, new = `results/sense_summary_20261115T115315Z.json` (report `klt_report_20261115T115315Z.json`).
+
+| Corner | T | stage floor (mV, -) | `t_dec` @ 1 mV (ns) | min resolvable `SN` @100 mV (V) | usable `dV_SN` @ best ref (V) | best-ref verdict |
+|---|---:|---|---|---|---|---|
+| tt | 27 | 1.11 -> 1.11 | 0.383 -> 0.404 | 0.65 -> 0.65 | 0.478-0.528 -> 0.478-0.528 | violated -> violated |
+| tt | 125 | 1.16 -> 1.16 | 0.333 -> 0.353 | 0.55 -> 0.55 | 0.673-0.723 -> 0.673-0.723 | violated -> violated |
+| ss | 27 | 1.12 -> 1.12 | 0.510 -> 0.536 | 0.7 -> 0.7 | 0.310-0.360 -> 0.310-0.360 | violated -> violated |
+| ss | 125 | 1.14 -> 1.14 | 0.407 -> 0.427 | 0.65 -> 0.65 | 0.498-0.548 -> 0.498-0.548 | violated -> violated |
+| ff | 27 | 1.10 -> 1.10 | 0.300 -> 0.319 | 0.6 -> 0.6 | 0.588-0.638 -> 0.588-0.638 | violated -> violated |
+| ff | 125 | 1.31 -> 1.31 | 0.274 -> 0.293 | 0.5 -> 0.5 | 0.787-0.837 -> 0.787-0.837 | violated -> violated |
+| sf | 27 | 1.12 -> 1.12 | 0.387 -> 0.408 | 0.55 -> 0.55 | 0.673-0.723 -> 0.673-0.723 | violated -> violated |
+| sf | 125 | 1.17 -> 1.17 | 0.330 -> 0.350 | 0.45 -> 0.45 | 0.867-0.917 -> 0.867-0.917 | indeterminate_on_this_grid -> indeterminate_on_this_grid |
+| fs | 27 | 1.10 -> 1.10 | 0.383 -> 0.403 | 0.75 -> 0.75 | 0.232-0.282 -> 0.232-0.282 | violated -> violated |
+| fs | 125 | 1.21 -> 1.21 | 0.334 -> 0.354 | 0.65 -> 0.65 | 0.477-0.527 -> 0.477-0.527 | violated -> violated |
+
+**Scope of the "verdicts unchanged" conclusion.** It was measured on the **10 fF** baseline deck only. For the #88 and #261 variant decks (`C_RBL` 0.859/0.956 fF and 2 fF, layout card) it is an *expectation*, not a measurement: at the time of writing those were not re-simulated on the corrected device; #357 has since done so (see the last section), and the sf/125 C best-reference droop verdict (`met` for the 0.955559 fF design-card variant) holds under the corrected latch.
+
+**The simulated device really changed** -- every one of the 980 measurement rows moved (`t_dec` shifts +0.019-0.025 ns at every corner; `dend` deltas up to 19 mV near the resolution limit). That `t_dec` shift is the *combined* latch + ngspice-46 -> 47 + open_pdks `c6d73a3` -> `f6eeac7` (+ klt) delta: the latch effect is **not isolated** from the engine step or the PDK-revision step, and no run of the pre-#293 deck on ngspice-47 exists to separate them, so the shift must not be quoted as a latch-only number. The direction is consistent with slower regeneration from source-drain resistance in the latch, but that attribution is not established here. Even so, **every summary-level verdict is unchanged at the reported precision** (across the latch change, the ngspice 46 -> 47 step and the open_pdks revision step taken together, which these runs do not separate): the stage floor, the min-resolvable level at every reference, the usable-`dV` brackets and the best-swept-reference verdicts in the per-corner table above are re-derived from run `20261115T115315Z` and all hold as printed. Stored '0' resolves correctly at every corner and reference (negative control: 0 failures), every decided point reaches >= 1.55 V full swing with correct sign, and max `t_dec` is 0.54 ns against the 5 ns window, so **pass condition 2c of `spec/macro-pass-conditions-PROPOSED.md` (Status column: ASSUMPTION) still passes under the corrected device**. The `VDD`/2 FINDING above stands as written. No spec threshold was touched.
+
+## Corrected-latch re-run of the #88/#261 variants (issue #357, 2026-11-18)
+
+Follow-up to #152. The three `*_p244_l293` variants (same post-#244 `C_RBL` 0.955559 fF / 2 fF and cards as the `*_p244` runs, latch emitted from `design/sense_latch.spice` per #293) had committed decks and requests but no results. They were run as **new dated evidence**; the legacy `*_p244` results above are untouched. Tool: `uvx --from klayout-tools==0.9.1 klt sim --batch-set ... --wait-for-capacity 600 --format json` (one invocation, three jobs on the batch fleet, no local grid; runner klt 0.9.0, fleet worker ngspice-47). Every variant: 10/10 corners `pass`, first submission. Each summary's `netlist_sha256` equals the committed `_l293` deck (checked).
+
+**Simulator caveat (old vs new is not engine-matched).** The legacy `*_p244` runs report `environment.engine_version` = `46` (runs `20261029T194412Z`-`20261029T194414Z`); the `*_p244_l293` runs here report `47`. `models_lib_sha256` is identical in all six, but see the correction note below: that hash is client-side and does not identify the PDK revision. The simulator moved 46 -> 47 between the old and new columns, so the `t_dec` deltas below are **not isolated to the latch correction**. At the small end (e.g. `crbl_ext4row` tt/125 C, +0.0015 ns on 0.1544 ns, about 1 %) the delta is of the same order as a simulator minor-version step. Mitigation: #293's own +0.019-0.025 ns reference shift was measured across the same 46 -> 47 step, so the percentage comparison against it is like-for-like even though the absolute attribution is not.
+
+**Correction note (issue #362, 2026-11-18): the old and new columns differ in the executed PDK revision as well as the simulator.** The sentence above originally read "`models_lib_sha256` is identical in all six, so the PDK library is the same"; that does not follow, because the hash is client-side (`models_lib_sha256_scope: "client"`, `models_staged: false`) and is constant by construction. The worker's executed-scope stamp (`environment.remote.worker_environment.pdk.stamp_text`) says otherwise: old `*_p244` runs `20261029T194412Z`-`20261029T194414Z` executed `open_pdks c6d73a35...`; new `*_p244_l293` runs `20261118T194857Z`, `20261118T194901Z`, `20261118T194931Z` executed `open_pdks f6eeac7d...`. So the old -> new `t_dec` deltas are not isolated to the latch correction on two counts: simulator 46 -> 47 **and** PDK revision `c6d73a3` -> `f6eeac7`. For the legacy runs `provenance.pdk` reads `f6eeac7` but disagrees with the worker capture (see the #261 correction note). Existing evidence on the PDK step alone: the #261 pair `sense_points_20261009T131831Z.csv` / `sense_points_20261016T072807Z.csv` is byte-identical across `c6d73a3` -> `f6eeac7` (client-side stamps, simulator held at 46), which suggests the PDK step is not what moved `t_dec`, but it is a different bench state (pre-#244 layout, pre-#293 latch) and does not isolate it here.
+
+| Run | Variant | Fleet job (`environment.remote.job_id`) | Instance | Old run (`*_p244`) |
+|---|---|---|---|---|
+| `20261118T194931Z` | `crbl_ext4row_p244_l293` | `klt-sim-ebe9d5695365` | c7i.8xlarge | `20261029T194412Z` |
+| `20261118T194857Z` | `crbl_2f_p244_l293` | `klt-sim-2a399df2cd34` | m7i.4xlarge | `20261029T194413Z` |
+| `20261118T194901Z` | `crbl_ext4row_layoutcard_p244_l293` | `klt-sim-85557e880cf9` | m7i.4xlarge | `20261029T194414Z` |
+
+Run ids are the report ingest (`client_collected_at`) times. Reports: `results/klt_report_<RUN>.json`; reduced by `analyze_sense_stage.py` to `results/sense_summary_<RUN>.json` / `sense_points_<RUN>.csv`.
+
+### Old vs new, per corner (`*_p244` -> `*_p244_l293`)
+
+Quantities: stage-only `t_dec` at the 1 mV point (ns, minus polarity); min resolvable stored-'1' `SN` at the 100 mV reference (V); best-swept-reference droop verdict vs `VDD`/2 (reference in parentheses); 100 mV-reference verdict. The stage floor (minimum resolved |din|) is identical to the printed precision at every corner and is omitted.
+
+**`crbl_ext4row` (0.955559 fF, design card)**
+
+| Corner | T | `t_dec` @ 1 mV (ns) | min `SN` @100 mV (V) | best-ref verdict | 100 mV verdict |
+|---|---:|---|---|---|---|
+| tt | 27 | 0.166 -> 0.182 | 0.6 -> 0.6 | violated (20 mV) -> violated | violated -> violated |
+| tt | 125 | 0.154 -> 0.156 | 0.5 -> 0.5 | violated (20 mV) -> violated | violated -> violated |
+| ss | 27 | 0.231 -> 0.242 | 0.7 -> 0.7 | violated (20 mV) -> violated | violated -> violated |
+| ss | 125 | 0.181 -> 0.192 | 0.6 -> 0.6 | violated (20 mV) -> violated | violated -> violated |
+| ff | 27 | 0.140 -> 0.144 | 0.55 -> 0.55 | violated (50 mV) -> violated | violated -> violated |
+| ff | 125 | 0.111 -> 0.122 | 0.45 -> 0.45 | violated (20 mV) -> violated | violated -> violated |
+| sf | 27 | 0.170 -> 0.185 | 0.5 -> 0.5 | violated (50 mV) -> violated | violated -> violated |
+| sf | 125 | 0.147 -> 0.155 | 0.4 -> 0.4 | **met** (20 mV) -> **met** | violated -> violated |
+| fs | 27 | 0.164 -> 0.176 | 0.7 -> 0.7 | violated (20 mV) -> violated | violated -> violated |
+| fs | 125 | 0.148 -> 0.155 | 0.6 -> 0.6 | violated (20 mV) -> violated | violated -> violated |
+
+**`crbl_2f` (2 fF ASSUMPTION, design card)**
+
+| Corner | T | `t_dec` @ 1 mV (ns) | min `SN` @100 mV (V) | best-ref verdict | 100 mV verdict |
+|---|---:|---|---|---|---|
+| tt | 27 | 0.196 -> 0.204 | 0.6 -> 0.6 | violated -> violated | violated -> violated |
+| tt | 125 | 0.166 -> 0.176 | 0.5 -> 0.5 | violated -> violated | violated -> violated |
+| ss | 27 | 0.257 -> 0.273 | 0.7 -> 0.7 | violated -> violated | violated -> violated |
+| ss | 125 | 0.206 -> 0.214 | 0.6 -> 0.6 | violated -> violated | violated -> violated |
+| ff | 27 | 0.151 -> 0.160 | 0.55 -> 0.55 | violated -> violated | violated -> violated |
+| ff | 125 | 0.136 -> 0.146 | 0.45 -> 0.45 | violated -> violated | violated -> violated |
+| sf | 27 | 0.198 -> 0.207 | 0.5 -> 0.5 | violated -> violated | violated -> violated |
+| sf | 125 | 0.165 -> 0.175 | 0.4 -> 0.4 | indeterminate (50 mV) -> indeterminate | violated -> violated |
+| fs | 27 | 0.193 -> 0.202 | 0.7 -> 0.7 | violated -> violated | violated -> violated |
+| fs | 125 | 0.166 -> 0.177 | 0.65 -> 0.65 | violated -> violated | violated -> violated |
+
+**`crbl_ext4row_layoutcard` (0.955559 fF, layout bitcell card)**
+
+| Corner | T | `t_dec` @ 1 mV (ns) | min `SN` @100 mV (V) | best-ref verdict | 100 mV verdict |
+|---|---:|---|---|---|---|
+| tt | 27 | 0.166 -> 0.181 | 0.6 -> 0.6 | violated -> violated | violated -> violated |
+| tt | 125 | 0.154 -> 0.156 | 0.5 -> 0.5 | violated -> violated | violated -> violated |
+| ss | 27 | 0.231 -> 0.242 | 0.7 -> 0.7 | violated -> violated | violated -> violated |
+| ss | 125 | 0.181 -> 0.192 | 0.6 -> 0.6 | violated -> violated | violated -> violated |
+| ff | 27 | 0.140 -> 0.144 | 0.55 -> 0.55 | violated -> violated | violated -> violated |
+| ff | 125 | 0.111 -> 0.122 | 0.45 -> 0.45 | violated -> violated | violated -> violated |
+| sf | 27 | 0.170 -> 0.185 | 0.5 -> 0.5 | violated -> violated | violated -> violated |
+| sf | 125 | 0.147 -> 0.155 | 0.4 -> 0.4 | indeterminate (50 mV) -> indeterminate | violated -> violated |
+| fs | 27 | 0.164 -> 0.176 | 0.7 -> 0.7 | violated -> violated | violated -> violated |
+| fs | 125 | 0.148 -> 0.155 | 0.6 -> 0.6 | violated -> violated | violated -> violated |
+
+### Does the #293 `t_dec` shift hold for the extracted-`C_RBL` variants?
+
+**Partly: same sign, smaller magnitude, and no verdict change.** #293's own re-run of the 10 fF default deck moved `t_dec` by +0.019-0.025 ns. For the variants the shift of the 1 mV `t_dec` is positive at every corner but smaller: +0.0015-0.0155 ns (`crbl_ext4row`), +0.008-0.016 ns (`crbl_2f`), +0.0015-0.0153 ns (`crbl_ext4row_layoutcard`), i.e. roughly 8-80 % of the 10 fF-deck shift (0.0015/0.019 to 0.0155/0.019), with the smallest shifts at 125 C for the two extracted-`C_RBL` variants (`crbl_ext4row`, `crbl_ext4row_layoutcard`: +0.0015 ns at tt/125 C) but not for `crbl_2f`, whose smallest shift is +0.0082 ns at ff/27 C and whose 125 C shift is larger than its 27 C shift at 4 of 5 corners (tt, ff, sf, fs). The reduction is consistent with the lighter bitline load making the latch's own regeneration a smaller part of `t_dec`, but this section does not isolate that cause; it is an observation of the numbers above, not a mechanism claim.
+
+**Verdicts.** No summary-level verdict changed in any variant at any of the 10 corners: stage floors (identical to the printed precision), min-resolvable `SN` at 100 mV, the 100 mV droop verdict (violated 10/10) and the best-swept-reference verdicts are all as before. In particular the sf/125 C best-reference droop verdict stays **`met`** for `crbl_ext4row` (20 mV reference, as a sweep-floor-bounded result, not a measurement; same qualifiers as in the #261 section: holds only for this bounding load on the design card, the 20 mV reference was already called not credible without an offset result), and stays `indeterminate_on_this_grid` for `crbl_2f` and the layout-card variant. The `VDD`/2 FINDING stands as written. No spec threshold was touched; the macro pass-condition status is not changed by this run.
+
+**Provenance of the #88/#261 numbers.** Where this section supersedes them they are pre-#293-latch numbers and should be read that way: the `*_p244` tables above remain as recorded history on the uncorrected latch, and the corrected-latch values are the ones in this section. Items not re-run remain on their original basis (the 2026-10-11 pre-#244 variants are frozen legacy; `sim/sense-mismatch/` is still 10 fF based).

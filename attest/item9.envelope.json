@@ -3,28 +3,42 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 9,
-  "summary": "T1 item 9 (Testbenches shipped): 61/61 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 9 (Testbenches shipped): 154/154 attestation checks passed (klt signoff --attest)",
   "source": "attest/item9.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 61,
-    "passed_count": 61,
+    "check_count": 154,
+    "passed_count": 154,
     "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/aged-read/aged_read.spice",
+        "passed": true,
+        "content_hash": "sha256:e85e0481bbfa27a148845bf98b19ae7ef33624c54bfa370de6e760a0a64b8563"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/aged-read/request.json",
+        "passed": true,
+        "content_hash": "sha256:a359f0e88c12ed303d5eae15c3ba1a936ad6a08cb40229b3d650fd7c40d78721"
+      },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/bitcell-transient/bitcell_d0.spice",
         "passed": true,
-        "content_hash": "sha256:d7da108c7710491bbdffbd22540c5e0a4da9f81229097dbca0c3c1cb8b544ce6"
+        "content_hash": "sha256:944bb2676256130661a49833beee5124817e14bfd08ed53b58d64cf0964d95b5"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/bitcell-transient/bitcell_d1.spice",
         "passed": true,
-        "content_hash": "sha256:39b4e6a88551696af0770770007c9c01c283b1055888522f2f732ccba35465ff"
+        "content_hash": "sha256:d5d0df5f553776317b835b879740ba4167a3343a63387333f30cb7c649a7f68e"
       },
       {
         "check": "present",
@@ -176,6 +190,76 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/closed-loop-refresh/closed_loop_d2500.spice",
+        "passed": true,
+        "content_hash": "sha256:43f9cf78b7edc2185292a3404db472c1532cf3427cd8f961852b4a53b7ea5ba0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/closed_loop_d5030.spice",
+        "passed": true,
+        "content_hash": "sha256:b6f6de27f13f23950b6d75b30c10c7342c89f76c2812a7d9b150fdc8510fe729"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/closed_loop_d5030nbr.spice",
+        "passed": true,
+        "content_hash": "sha256:ed18a4d779a5b05e421fd965db0c4f6dda178d2c47de8181c0f3e472384ffd8a"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/closed_loop_d60000.spice",
+        "passed": true,
+        "content_hash": "sha256:11e283592207801e3ea43b391c8af948924896bcd5dc4096f19921396b740c16"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/closed_loop_d8000.spice",
+        "passed": true,
+        "content_hash": "sha256:9e1987ce698b78a2b4603c4a40e43c9a0183fa0046da609ceb606be72eea2c7b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/request_d2500.json",
+        "passed": true,
+        "content_hash": "sha256:04acc5ac78b0de941f7cbebf3697f76e68300568e7adad134cb9b8135f916c91"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/request_d5030.json",
+        "passed": true,
+        "content_hash": "sha256:ebfbcea3999e3cec0254a3415afc1a526cdb1cdc95523283191ca9500d39b74e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/request_d5030nbr.json",
+        "passed": true,
+        "content_hash": "sha256:20538cfd47fbc0d2fa894914b60fea44ff5f54631d395667716aecb64471954b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/request_d60000.json",
+        "passed": true,
+        "content_hash": "sha256:ee998ca7c0753fa61b41dccfb26acf1a67580ee2c49ef0b438033e64b406240b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/closed-loop-refresh/request_d8000.json",
+        "passed": true,
+        "content_hash": "sha256:357352c50cd7f1debfcf82265b4e16ccc51a288b15ef50da6f368f117a1c7b0d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/cold-start/request.json",
         "passed": true,
         "content_hash": "sha256:3691d1363c5656c5259f461e028027f7f3c323b610e2957fcebbffdcecf10033"
@@ -281,9 +365,429 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/crbl_2f_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:38415c7f4335f7dd0420ca8975fc9990590e8b4ca85def8996a682df6c45904b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/crbl_2f_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:6fae068d360532d6ac187fdca7fb73237cd540b7c07b341e6ed49a6945491f56"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/crbl_ext4row_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:055f8ee876e0fe8fc5391e5e532ef2c63c35e438395b087d6b38392aa2f81827"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/crbl_ext4row_layoutcard_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:961a746511ddab446dcc084b467e49cd4c4c1389b11d537922dd238360557843"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/crbl_ext4row_layoutcard_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:fefeaf986f5153faee05db3823ad21bbfce586c1e1f3f6e0ea7a367c462b9352"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/crbl_ext4row_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:2a742a51ceec6640f7fe9d64be96c9efd213550d1c74d0d333085da98678a230"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/nc_write_disabled_ext4row_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:a3cbbfac36bcc67b475c750a0310095adfa423a1495dbd785394f1f102569416"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/nc_write_disabled_ext4row_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:619a9aa1cf7db500d199f21fe264be430f191a4572f5d50c5e4cca418aec5e10"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/ref_crbl_10f_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:11cc60ca8a687a1bd2eea8e72764993a62b7f689b07407487b17916d2a621c1d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/ref_crbl_10f_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:2c8a58e9464f333562ef625d406c1a06024f27fdb26b7220bf2bbc4c1e754d05"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_crbl_2f_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:a268b18357f4e2d272757c21764c1579bef3101ca8d5abe50bfd005257237d5c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_crbl_2f_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:7e498eeefd3f0dfd41df12d64667197d68efe895a4ffa4c4b531de456210fc71"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_crbl_ext4row_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:d4a30364183a515de0e0d5c65080488e9a8be482bf77808938bdd0dcf616cc85"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_crbl_ext4row_layoutcard_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:46e95fda6a19198e90f36158c65947e568cb4b130d2ccdf4496d1cb6dd705256"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_crbl_ext4row_layoutcard_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:2059854741c3df494ad5d8e1904a1c6f2b084ccc83fb8c64deb4ee40bde66ff0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_crbl_ext4row_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:cd40f261b656a97d545baf7246084ce66ad9edc6018c475cbbe545a7cf44fe63"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_nc_write_disabled_ext4row_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:e7c532b7c5bdf9e9e578c8c85b26f6ddf606b68130f3e041e668887f085c9335"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_nc_write_disabled_ext4row_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:6074bf19734ef48eba18b4cfe5002f79114e3b2f5f230db3768b85d00a5ecdd6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_ref_crbl_10f_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:2eaf054d97aa66a5bdc4263471bb6bafde8d4105691751f1cd7ac2b165ec19f2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks/request_ref_crbl_10f_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:6b3ca70f123bd6ae6e3e5a7fe2347e48ea60986a4326c174f1cb23d64b922995"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/crbl_2f_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:851e39908f37dc224e8b6069c02085843e0f959795e1ef3457e0c3f88e7fd7a9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/crbl_2f_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:849813af50319c44c931ad261c3e4f85a9d5625e46996efa91ddb53fa74d39ac"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/crbl_ext4row_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:d4aa08838ac3c0c57c77e10f9827d8cf328555720fa38b24a4f8d448574ae487"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/crbl_ext4row_layoutcard_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:5f3e80541f052524f427721fda1ab8be180575f8b26289be374824e355250161"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/crbl_ext4row_layoutcard_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:5a2543ecacc7722f1e4bcef2340895777b74982db0650a8ec0c9732199bbef83"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/crbl_ext4row_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:ae0f0dda765b9abf47993c65d63732200f0849f435ec32b078ad88a7adda2e17"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/nc_write_disabled_ext4row_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:15ad5338b23ed3a0cff190e025268ac5c16474d0a8dcbd4bf7e038f7f81264b2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/nc_write_disabled_ext4row_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:6a3b74d8d1aacf068a6e2183f43d40a6dc39d9b7476056ca8ddb649ecd602c87"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/ref_crbl_10f_fresh.spice",
+        "passed": true,
+        "content_hash": "sha256:409faddac6b12936efec9fa7a0005b53d4b1f136cf50cc176d267b56bca9c7c5"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/ref_crbl_10f_refresh_bound.spice",
+        "passed": true,
+        "content_hash": "sha256:4f5ff50d6623e131d674685b69b7ced119c2e12c2a3ff41ceade9c98a6204469"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_crbl_2f_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:a268b18357f4e2d272757c21764c1579bef3101ca8d5abe50bfd005257237d5c"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_crbl_2f_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:7e498eeefd3f0dfd41df12d64667197d68efe895a4ffa4c4b531de456210fc71"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_crbl_ext4row_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:d4a30364183a515de0e0d5c65080488e9a8be482bf77808938bdd0dcf616cc85"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_crbl_ext4row_layoutcard_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:46e95fda6a19198e90f36158c65947e568cb4b130d2ccdf4496d1cb6dd705256"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_crbl_ext4row_layoutcard_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:2059854741c3df494ad5d8e1904a1c6f2b084ccc83fb8c64deb4ee40bde66ff0"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_crbl_ext4row_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:cd40f261b656a97d545baf7246084ce66ad9edc6018c475cbbe545a7cf44fe63"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_nc_write_disabled_ext4row_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:e7c532b7c5bdf9e9e578c8c85b26f6ddf606b68130f3e041e668887f085c9335"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_nc_write_disabled_ext4row_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:6074bf19734ef48eba18b4cfe5002f79114e3b2f5f230db3768b85d00a5ecdd6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_ref_crbl_10f_fresh.json",
+        "passed": true,
+        "content_hash": "sha256:2eaf054d97aa66a5bdc4263471bb6bafde8d4105691751f1cd7ac2b165ec19f2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/extracted-crbl/decks_p244/request_ref_crbl_10f_refresh_bound.json",
+        "passed": true,
+        "content_hash": "sha256:6b3ca70f123bd6ae6e3e5a7fe2347e48ea60986a4326c174f1cb23d64b922995"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_fresh_sel0.spice",
+        "passed": true,
+        "content_hash": "sha256:5126a5a375ef65afde2deca44465867d6d066eea8d9b64e85a0d1b63b3e22ca1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_fresh_sel1.spice",
+        "passed": true,
+        "content_hash": "sha256:bd7cfe938d110b49f229d7887535284fee78d99fbe9aefb6a0620944fc877ae7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_fresh_sel2.spice",
+        "passed": true,
+        "content_hash": "sha256:3b51277002471ab12531c4b0db0b19d3750bc610fb3cd0caad1fb12307bd474b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_fresh_sel3.spice",
+        "passed": true,
+        "content_hash": "sha256:cdd3f06f091507f7ce517b6645ed13dd4284ab85fda182dc8e9a78b27af29b64"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_refresh_bound_sel0.spice",
+        "passed": true,
+        "content_hash": "sha256:4b609de46393b52972b1eebb7200f69ca86ff973f9b8d4fd74a5d1f3979a659d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_refresh_bound_sel1.spice",
+        "passed": true,
+        "content_hash": "sha256:a6a73d69688ed0ccbd35074b006f53fd7cc7d40145d7699fed0bc6fb745de8f1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_refresh_bound_sel2.spice",
+        "passed": true,
+        "content_hash": "sha256:d7d5a8432a7b674fdb752180da36d4059ffd70366f98df54579146ee7da5defd"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/lc_refresh_bound_sel3.spice",
+        "passed": true,
+        "content_hash": "sha256:a2adbd1bdcdc2a3a937ecc53b92eb9a5cfcf59a51d1130db3c49559a9e6ed86d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_fresh_sel0.json",
+        "passed": true,
+        "content_hash": "sha256:bf714028167822a938fed1e0946b25987a274626243888f443f66269cd15ca6e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_fresh_sel1.json",
+        "passed": true,
+        "content_hash": "sha256:f1adbdd93d29b27192b87f6d2c68de49ef14ff4b06ca8a3a5bcefb63e9586b39"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_fresh_sel2.json",
+        "passed": true,
+        "content_hash": "sha256:178da794a7bce8fdc478d1722f3b500a3c483cde5a20923b56d411ef17cb51bb"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_fresh_sel3.json",
+        "passed": true,
+        "content_hash": "sha256:768209605eeb3ecd6c5ea8282213f082836c791abda9cbb0943f929c9a982e60"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_refresh_bound_sel0.json",
+        "passed": true,
+        "content_hash": "sha256:83029b3d361a67d25eff85134aedddf8e4e7e394010e4afc7a912b423b292585"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_refresh_bound_sel1.json",
+        "passed": true,
+        "content_hash": "sha256:32852b8df530cd6f98b7285dc747b8a8d2f0c4ccf248f71dec29df33a0c6ecea"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_refresh_bound_sel2.json",
+        "passed": true,
+        "content_hash": "sha256:d6a70df256b4d248d997b40cc2845d9d48934ce20203866a3b27c0a1fd81f727"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_lc_refresh_bound_sel3.json",
+        "passed": true,
+        "content_hash": "sha256:43d976eda9ca18c79b1c59ac79cb7555a20a26f6c6e1d3bb16b974c7c17dce38"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_probe_ss40_lc_fresh_sel0.json",
+        "passed": true,
+        "content_hash": "sha256:bf829f72d924d94bf5d2833b44907d24a8f3941bf523ff087538b7c679e568c8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/loaded-column/klt/request_probe_ss40_lc_refresh_bound_sel0.json",
+        "passed": true,
+        "content_hash": "sha256:77e8383c85edbf0755c96ace807f53217ad20ffff1e9bfc838466cc9940f8997"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/loaded-column/tb_loaded_column.spice.tmpl",
         "passed": true,
         "content_hash": "sha256:3820bf12f6e4a1f5128953727cd92c72f534b8063997165cb256398c01e26d3d"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex_bitcell_array/reference/gain_cell_2t_array_4x4_schematic.spice",
+        "passed": true,
+        "content_hash": "sha256:39b89352eef3d19ef005ec2424e949eca0ddcefaf0f450c25efef919f6431da1"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/pex_bitcell_array/reference/gain_cell_2t_schematic.spice",
+        "passed": true,
+        "content_hash": "sha256:1b2bb9472e709d64cdeb64f33f965dd27fa4a5f5b56026b4fee48ee06f45ee87"
       },
       {
         "check": "present",
@@ -311,7 +815,7 @@
         "role": "testbench",
         "path": "sim/refresh-op/refresh_op.spice",
         "passed": true,
-        "content_hash": "sha256:7686e29211b773c68449a72a74e8c40c40b347be482780bfb3997294765fabd7"
+        "content_hash": "sha256:23071105f19f3f3aab5f55fed25db0122d25f8ee65df7b18c0b7a731ec04363a"
       },
       {
         "check": "present",
@@ -379,16 +883,37 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/sense-mismatch/request_row2e.json",
+        "passed": true,
+        "content_hash": "sha256:838279c0a9514d6dbfb833cfddbe6055f8fa921e408d47d08ab8228a30cb0f21"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-mismatch/request_row2e_control.json",
+        "passed": true,
+        "content_hash": "sha256:ab8191df928de7109fa2d264cb3bc2246d19d3771e4b1ff0866b4da7b154f691"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/sense-mismatch/sense_mismatch.spice",
         "passed": true,
-        "content_hash": "sha256:22693170c7928b92d2cfc19016da8fceb201aa2785fda8db6a1b23fcb4615e53"
+        "content_hash": "sha256:dc1a8251d36694e0f4aa6ad3b8b18a19e3e0f5815413bc6361fba928f3f31497"
       },
       {
         "check": "present",
         "role": "testbench",
         "path": "sim/sense-mismatch/sense_mismatch_cell.spice",
         "passed": true,
-        "content_hash": "sha256:898002d5f434081505d9a4704454c560f962e8c73729bfb91aaaaebdfe24a186"
+        "content_hash": "sha256:94d86ecd72f4d4641c56f4848f2e9234a040aa097a2f4ade0e19de8ffc251804"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-mismatch/sense_mismatch_control.spice",
+        "passed": true,
+        "content_hash": "sha256:4056b298aa6cd48525dc6a24c37fe52ff406193e0d7e1d263e7e705a54d6fe63"
       },
       {
         "check": "present",
@@ -400,9 +925,135 @@
       {
         "check": "present",
         "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_2f.json",
+        "passed": true,
+        "content_hash": "sha256:1e20f5cf07f94bbcb9b37c739db8db371896bdc5a862269993694b510efa114b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_2f_p244.json",
+        "passed": true,
+        "content_hash": "sha256:1bcdb675d0ae3c10c6e1034996459c9a530f118a7e36a619105217fdfad7d744"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_2f_p244_l293.json",
+        "passed": true,
+        "content_hash": "sha256:257bfc0ed7b184332b39eb60d4531f809a7805ada7e4f1b97b51e0786a9f0532"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_ext4row.json",
+        "passed": true,
+        "content_hash": "sha256:35b4205ae545b62e858f3904e820f61ed3dd4a9dbd9f3b7022ac6cb17970e789"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_ext4row_layoutcard.json",
+        "passed": true,
+        "content_hash": "sha256:7951ae95a0d866a7e791e867911047460a737fe267015a91b5e4e13568b202a7"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_ext4row_layoutcard_p244.json",
+        "passed": true,
+        "content_hash": "sha256:4325ed165c7a8ee8142579364365cc84fde5e8b440b54b845778c74ea89906a4"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_ext4row_layoutcard_p244_l293.json",
+        "passed": true,
+        "content_hash": "sha256:80acb54be6408b3f82145b043c73ce65f2e5b326f800d43a0504362082ddcf56"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_ext4row_p244.json",
+        "passed": true,
+        "content_hash": "sha256:f832f7855c91537678b09a8c1fa2b3ee24d75176a44e7d109998b422c90025d8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/request_crbl_ext4row_p244_l293.json",
+        "passed": true,
+        "content_hash": "sha256:cbdcc05ad046e6e0bbcc51087a04ccefd63e387ceaeca7c2fafb06362db909f2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
         "path": "sim/sense-stage/sense_stage.spice",
         "passed": true,
-        "content_hash": "sha256:35c89978b6dec9666aa97c5ff847a3fff076b8716b5036cf2edfbf26a331cc62"
+        "content_hash": "sha256:0b206f40dfa293671653564b3198ade76799fcd2ad2ae7f099563e097425dfe2"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_2f.spice",
+        "passed": true,
+        "content_hash": "sha256:098cd39b5044f887be613f3dfc55ea47ad38298810f18a9adb3b4087ef18d220"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_2f_p244.spice",
+        "passed": true,
+        "content_hash": "sha256:ff6bf58386a1a39e13fc2cba436a40868fa53c227dc1c7600b836a39bb8d2411"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_2f_p244_l293.spice",
+        "passed": true,
+        "content_hash": "sha256:648ebaf1bf6261438b437d2b2f15a64320cf4dfb5d949e39e03d1b7a3a24c608"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_ext4row.spice",
+        "passed": true,
+        "content_hash": "sha256:642322294456d7ef8ad3a18e7b10f138178a2456373be801b3dfd3760a22a1a6"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_ext4row_layoutcard.spice",
+        "passed": true,
+        "content_hash": "sha256:5f0d3f66161d3c040fd565bf72873841e99c97fbfe60d85501e02c7edec51ba8"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_ext4row_layoutcard_p244.spice",
+        "passed": true,
+        "content_hash": "sha256:04a4bbc9f5f7419a5dc3d357b63c460b23a90e0a939b71dc25ea3cd2de9a0db3"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_ext4row_layoutcard_p244_l293.spice",
+        "passed": true,
+        "content_hash": "sha256:08060c45bc0bc2932cc67a63f4dacc4beeb4a5ac6f82cefed0432aae44ae9db9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_ext4row_p244.spice",
+        "passed": true,
+        "content_hash": "sha256:3cd4da625358b202932e5b22a1585c657095f014af350151112f6400344a668b"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/sense-stage/sense_stage_crbl_ext4row_p244_l293.spice",
+        "passed": true,
+        "content_hash": "sha256:83d8901285c936bda3ab4e4bd33fa38b2aa7b50e70b905a1ea6c5db899b519a0"
       },
       {
         "check": "present",
@@ -456,7 +1107,7 @@
     ]
   },
   "provenance": {
-    "klt_version": "0.9.1",
+    "klt_version": "0.9.2",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -465,7 +1116,7 @@
         "path": "attest/item9.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:aab635779d1553be1fa41989348f31a8c93d820607bac93c60a775f3bf14bd09"
+      "content_hash": "sha256:955a6cd67a94031735b7b7c188d7db7af5f006502570dbbfa8710c3144d4bc22"
     }
   }
 }

@@ -1,0 +1,1531 @@
+{
+ "run_id": "20261118T201556Z",
+ "status": "PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
+ "scope": "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, per spec/operating-range-decision-PROPOSED.md",
+ "klt_status": "pass",
+ "corner_count": 10,
+ "batch_job_id": null,
+ "batch_instance_type": null,
+ "netlist_sha256": "e85e0481bbfa27a148845bf98b19ae7ef33624c54bfa370de6e760a0a64b8563",
+ "models_lib_sha256": "48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+ "engine_version": "47",
+ "batch_fleet_jobs": [
+  "klt-sim-17c2f35b58ef",
+  "klt-sim-217c0a868a54",
+  "klt-sim-56eb32f1323b",
+  "klt-sim-690d707622c4",
+  "klt-sim-6a5644114195",
+  "klt-sim-7100b7fa58e6",
+  "klt-sim-9c73390eb030",
+  "klt-sim-b495eb44a8b1",
+  "klt-sim-d8eff59f582b",
+  "klt-sim-fb89ffc911bd"
+ ],
+ "sources": {
+  "deck": "aged_read.spice",
+  "latch": "design/sense_latch.spice (corrected, issue #293 provenance)",
+  "cell": "design/gain_cell_2t.spice with layout-drawn AD/AS/PD/PS"
+ },
+ "assumptions": {
+  "c_rbl_ff": 0.955559,
+  "c_sn_ff_array_min_wiring": 0.538402,
+  "vrbl_v": 0.9,
+  "dvref_v": 0.1,
+  "t_window_s": 5e-09,
+  "resolve_v": 0.9,
+  "ages_ns": [
+   5,
+   500,
+   1000,
+   2000,
+   3000,
+   4000,
+   5030,
+   6500,
+   8000,
+   12000
+  ],
+  "neighbour_patterns": [
+   "sss",
+   "ooo",
+   "sos",
+   "oso"
+  ],
+  "refresh_bound_s_ratified_read_only": 5.03e-06,
+  "drivers": "ideal write/wordline/bitline drivers, ideal 100 ohm precharge switch, ideal matched dummy reference load",
+  "mismatch": "none (global corners only)",
+  "pattern_enumeration": "starting point, not proven worst case",
+  "weak_write_control_wl_v": 0.55
+ },
+ "claims": {
+  "mismatch_or_offset_yield_validated": false,
+  "spec_changed": false,
+  "refresh_bound_signed_off": false,
+  "global_corner_evidence_only": true
+ },
+ "corners": [
+  {
+   "process": "tt",
+   "temperature_c": 27,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 1.03004,
+   "min_pre_read_stored1_longest_age_v": 1.02994,
+   "max_droop_stored1_within_bound_v": -1.0000000000065512e-05,
+   "max_abs_read_disturb_v": 0.2591429999999999,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "tt",
+   "temperature_c": 125,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 1.0638,
+   "min_pre_read_stored1_longest_age_v": 0.979457,
+   "max_droop_stored1_within_bound_v": 0.061860000000000026,
+   "max_abs_read_disturb_v": 0.28855799999999987,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "ss",
+   "temperature_c": 27,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 0.963643,
+   "min_pre_read_stored1_longest_age_v": 0.963632,
+   "max_droop_stored1_within_bound_v": -1.3000000000040757e-05,
+   "max_abs_read_disturb_v": 0.2156260000000001,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "ss",
+   "temperature_c": 125,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 1.01096,
+   "min_pre_read_stored1_longest_age_v": 0.954533,
+   "max_droop_stored1_within_bound_v": 0.04068999999999989,
+   "max_abs_read_disturb_v": 0.25185100000000005,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "ff",
+   "temperature_c": 27,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 1.08839,
+   "min_pre_read_stored1_longest_age_v": 1.08729,
+   "max_droop_stored1_within_bound_v": 0.0006500000000000394,
+   "max_abs_read_disturb_v": 0.28931300000000004,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "ff",
+   "temperature_c": 125,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 1.00838,
+   "min_pre_read_stored1_longest_age_v": 0.793738,
+   "max_droop_stored1_within_bound_v": 0.18232000000000004,
+   "max_abs_read_disturb_v": 0.32202,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "sf",
+   "temperature_c": 27,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 1.12209,
+   "min_pre_read_stored1_longest_age_v": 1.11977,
+   "max_droop_stored1_within_bound_v": 0.0014899999999999913,
+   "max_abs_read_disturb_v": 0.308508,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "sf",
+   "temperature_c": 125,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 0.947511,
+   "min_pre_read_stored1_longest_age_v": 0.650516,
+   "max_droop_stored1_within_bound_v": 0.27366899999999994,
+   "max_abs_read_disturb_v": 0.339869,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "fs",
+   "temperature_c": 27,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 0.935935,
+   "min_pre_read_stored1_longest_age_v": 0.935922,
+   "max_droop_stored1_within_bound_v": -2.599999999997049e-05,
+   "max_abs_read_disturb_v": 0.188006,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  },
+  {
+   "process": "fs",
+   "temperature_c": 125,
+   "points": 322,
+   "main_points": 320,
+   "all_within_bound_resolve": true,
+   "failing_points_within_bound": 0,
+   "failing_points_total": 0,
+   "min_pre_read_stored1_within_bound_v": 0.991153,
+   "min_pre_read_stored1_longest_age_v": 0.934948,
+   "max_droop_stored1_within_bound_v": 0.03995700000000002,
+   "max_abs_read_disturb_v": 0.24565599999999999,
+   "zero_hold_all_resolve": true,
+   "failure_boundary_by_case": {
+    "v0_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v0_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r0_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r1_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r2_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_ooo": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_oso": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sos": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    },
+    "v1_r3_sss": {
+     "last_resolving_age_ns": 12000,
+     "first_failing_age_ns": null
+    }
+   },
+   "negative_control_detected": true,
+   "negative_control_points": 2
+  }
+ ],
+ "negative_control_detected_all_corners": true,
+ "zero_hold_control_ok_all_corners": true,
+ "all_corners_all_within_bound_resolve": true
+}

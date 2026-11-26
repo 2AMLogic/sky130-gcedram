@@ -204,3 +204,62 @@ Old = `results/refresh_op_summary_20261010T005003Z.json`, new = `results/refresh
 | fs | 125 | 1.262 -> 1.255 | 12.5 -> 12.5 | 9.5 -> 9.5 | 17.5 -> 17.5 |
 
 Slowest-corner `t_row_refresh_op` (worst case first): fs/27C 14 ns at FRAC 0.95 (11 / 19 ns at 0.90 / 0.98) and, with the contract 10 ns SENSE, ss/125C 22 ns at 0.95 (19 ns at 0.90; fs/125C 27 ns at 0.98) are **identical** before and after. The only per-corner change is ss/27C at FRAC 0.95, 11.0 -> 13.0 ns (one coarse write-pulse step; not a limiting corner). `SN_ref` falls by 5-13 mV at every corner. The negative control still fails to restore at every corner. **No verdict change**, so the overhead record derived from the slowest corner (`../refresh-overhead/`) needs no new row.
+
+## Latch geometry correction re-run (issue #293, 2026-11-15)
+
+Issue #293 fixed the latch device this bench simulates: `gen_refresh_op.py` had retyped the latch/footer/header geometry (via `gen_sense_stage.py`'s `dev_params()`), silently dropping the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens of the schematic-derived `design/sense_latch.spice`, so this deck simulated a latch with no source-drain parasitic resistance. The generator now emits the latch through `parse_cards()` from the design netlist; the regenerated deck's token-level delta is exactly the five added tokens per latch device. This section records the re-run as **new dated evidence**; earlier results are untouched history. Tool: `uvx --from klayout-tools==0.9.1 klt sim --backend batch --format json --wait-for-capacity 600` (job `klt-sim-c1dba595ca52`, run `20261115T120247Z`, 10/10 corners pass; runner klt 0.9.0, fleet worker ngspice-47). Corners are the committed ones (tt/ss/ff/sf/fs x 27/125 C).
+
+Old = `results/refresh_op_summary_20261028T085441Z.json`, new = `results/refresh_op_summary_20261115T120247Z.json` (report `klt_report_20261115T120247Z.json.gz`).
+
+| Corner | T | SN_ref old -> new (V) | min-pass WB @0.95 / 10 ns SENSE old -> new (ns) | t_row @ contract old -> new (ns) |
+|---|---:|---|---|---|
+| tt | 27 | 1.276 -> 1.277 | 3.0 -> 3.0 | 20.0 -> 20.0 |
+| tt | 125 | 1.400 -> 1.401 | 3.0 -> 3.0 | 20.0 -> 20.0 |
+| ss | 27 | 1.173 -> 1.174 | 5.0 -> 5.0 | 22.0 -> 22.0 |
+| ss | 125 | 1.287 -> 1.288 | 5.0 -> 5.0 | 22.0 -> 22.0 |
+| ff | 27 | 1.368 -> 1.369 | 2.0 -> 2.0 | 19.0 -> 19.0 |
+| ff | 125 | 1.497 -> 1.499 | 3.0 -> 3.0 | 20.0 -> 20.0 |
+| sf | 27 | 1.426 -> 1.427 | 2.0 -> 2.0 | 19.0 -> 19.0 |
+| sf | 125 | 1.550 -> 1.552 | 2.0 -> 2.0 | 19.0 -> 19.0 |
+| fs | 27 | 1.133 -> 1.134 | 5.0 -> 5.0 | 22.0 -> 22.0 |
+| fs | 125 | 1.255 -> 1.256 | 5.0 -> 5.0 | 22.0 -> 22.0 |
+
+**No verdict change.** The corrected latch restores marginally more (`SN_ref` +0.5-2 mV at every corner) and every min-pass pulse width, searched SENSE and `t_row_refresh_op` (including the slowest-corner figures above and the best-SENSE row: fs/27 C 14 ns @0.95) is identical. The negative control (0.2 ns WWL) still fails to restore at every corner. The overhead record derived from the slowest corner (`../refresh-overhead/`) needs no new row, and no spec threshold was touched.
+
+## Re-qualification under open_pdks `f6eeac7` (issue #171, 2026-11-20)
+
+The committed request was re-run unchanged on the batch fleet so this bench's
+G4 record rests on a run whose worker PDK is **proven** at the repo pin, not
+merely labelled with it. Tool: `klt sim --backend batch --format json
+--wait-for-capacity 600` with `PDK_ROOT` at the pinned ciel install (client
+stamp available); batch job **`klt-sim-fb282dff4498`** (c7i.4xlarge, spot,
+run `20261120T024342Z`, 10/10 corners pass, fleet worker ngspice-47). The
+report records worker stamp `open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7`
+with `pdk_stamp_comparison.status == "match"` — the first refresh-op run with a
+comparable, matching stamp (the 2026-11-15 run's worker was already at
+`f6eeac7` but its comparison read `not_comparable / client_stamp_unavailable`;
+the 2026-10-28 and earlier runs were ngspice-46 on `c6d73a3`). Files:
+`results/klt_report_20261120T024342Z.json.gz`,
+`results/refresh_op_points_20261120T024342Z.csv`,
+`results/refresh_op_summary_20261120T024342Z.json`.
+
+Like-for-like against `20261115T120247Z` (same deck, same ngspice major):
+
+| Quantity (slowest corner) | 2026-11-15 | 2026-11-20 |
+|---|---|---|
+| t_row @0.90 / best SENSE (fs/27 C) | 11.0 ns | 11.0 ns |
+| t_row @0.95 / best SENSE (fs/27 C) | 14.0 ns | 14.0 ns |
+| t_row @0.98 / best SENSE (fs/27 C) | 19.0 ns | 19.0 ns |
+| t_row @0.95 / 10 ns contract (ss/125 C) | 22.0 ns | 22.0 ns |
+| t_row @0.98 / 10 ns contract (fs/125 C) | 27.0 ns | 27.0 ns |
+| SN_ref per corner | — | identical to all printed digits |
+| Negative control unrestored | yes, all corners | yes, all corners |
+
+**No verdict change**: every per-corner min-pass pulse width, searched SENSE
+and `t_row_refresh_op` is identical to the 2026-11-15 run, so the PDK
+revision question this re-run answers could not move the numbers (consistent
+with the leakage study's finding that the two revisions' device models are
+numerically indistinguishable here). The earlier reports stay byte-identical
+append-only evidence; the qualified overhead record derived from this run is
+in `../refresh-overhead/` (whose reducer now refuses a report whose stamp
+comparison is not `match`).

@@ -51,6 +51,8 @@ from _evidence_common import sha256_hex as sha256_file  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
+from _evidence_common import c_sn_provenance_json  # noqa: E402
+from _evidence_common import worker_pdk_stamp_problems  # noqa: E402
 sys.path.insert(0, str(REPO / "sim" / "refresh-overhead"))
 import gen_refresh_energy as G  # noqa: E402
 import refresh_overhead as RO  # noqa: E402
@@ -63,9 +65,9 @@ IDENTITY_REL = 1e-3            # net vs gross - recovered consistency (relative 
 IDENTITY_ABS_J = 1e-21
 DC_CHECK_REL = 2e-3            # DC source: E_net vs -V * Q (independent charge integral)
 DC_CHECK_ABS_J = 1e-21
-INTERVALS = [  # (label, retention row basis) -- read from the retention CSV, not retyped
-    ("ratified_assumed_csn", 0),
-    ("extracted_csn_unratified", 1),
+INTERVALS = [  # (label, retention row identity) -- selected by identity, never position/value (#171)
+    ("historical_assumed_2t", dict(timestamp=RO.HISTORICAL_ASSUMED_2T_TS, leakage_job=None)),
+    ("qualified_extracted_2t", dict(timestamp=RO.QUALIFIED_EXTRACTED_2T_TS, leakage_job=RO.QUALIFIED_LEAKAGE_JOB_ID)),
 ]
 # Numerical floor of the idle measurement: ngspice shunts every MOS junction with gmin, so up to
 # (2 junctions x 32 devices) x gmin x VDD^2 of "hold power" can be the solver's own shunt, not leakage.
@@ -368,13 +370,21 @@ def maxima(pts: list[dict]) -> dict:
 
 
 def intervals() -> list[dict]:
+    """The two G4 scaling bases, selected by row identity (#171): the
+    ratified ASSUMED-C_SN row (separately labelled historical comparison)
+    and the 2026-11-20 EXTRACTED row traced to the stamp-matched leakage
+    job (the qualified basis). Identity selection -- not position, not the
+    printed value -- is what keeps the 2026-10-28 tie (identical retention
+    time) and any same-timestamp 3T row out of the qualified slot;
+    `refresh_overhead.select_retention_row` fails closed on both."""
     rows = RO.load_worst_case_retention()
     out = []
-    for label, k in INTERVALS:
-        r = rows[k]
+    for label, ident in INTERVALS:
+        r = RO.select_retention_row(rows, ident["timestamp"], leakage_job=ident["leakage_job"])
         t_ret = float(r["retention_time_s"])
         out.append(dict(label=label, interval_s=t_ret / RO.SAFETY_MARGIN_ASSUMPTION,
                         retention_row_timestamp_utc=r["timestamp_utc"], retention_time_s=t_ret,
+                        retention_leakage_job=(ident["leakage_job"] or ""),
                         c_sn_ff=float(r["c_storage_node_ff_ASSUMPTION"]), c_sn_basis=RO.c_sn_basis(r),
                         leakage_ileak_a=float(r["leakage_ileak_a"]),
                         delta_v_v=float(r["delta_v_sense_margin_v_ASSUMPTION"]),
@@ -456,11 +466,18 @@ def main(argv: list[str] | None = None) -> int:
             print(f"refusing to overwrite existing evidence file {p}", file=sys.stderr)
             return 2
     rep, rep_f = load_report(a.report), load_report(a.fine)
+    # G4 stamp gate (#171): only reports whose batch worker executed the pinned
+    # open_pdks revision (pdk_stamp_comparison "match") may qualify a new energy
+    # record. Fails closed on a missing block, exactly like the #377 leakage guard.
+    for tag, r in (("main", rep), ("fine", rep_f)):
+        problems = worker_pdk_stamp_problems(r)
+        if problems:
+            print(f"ERROR ({tag} report): {'; '.join(problems)}", file=sys.stderr)
+            return 1
     c_sn_ff, c_sn_prov = G.G.S.load_extracted_c_sn(G.G.S.EXTRACT_JSON, "sn")
     # Record the extraction report repo-root-relative so the committed summary is
     # machine-independent (an absolute path differs between worktrees / CI runners).
-    c_sn_prov = dict(c_sn_prov)
-    c_sn_prov["extract_json_path"] = Path(c_sn_prov["extract_json_path"]).resolve().relative_to(REPO).as_posix()
+    c_sn_prov = c_sn_provenance_json(c_sn_prov)
     src, pts, ctl = reduce_report(rep, c_sn_ff * 1e-15)
     _src_f, pts_f, ctl_f = reduce_report(rep_f, c_sn_ff * 1e-15)
     add_convergence(pts, pts_f)
@@ -488,6 +505,12 @@ def main(argv: list[str] | None = None) -> int:
                                      pre_batch=dict(klt_version=rep.get("provenance", {}).get("klt_version"))),
                  fine=klt_provenance(rep_f, status_key="status",
                                      pre_batch=dict(klt_version=rep_f.get("provenance", {}).get("klt_version")))),
+        worker_pdk_stamp={tag: dict(
+            stamp_text=((r.get("environment", {}).get("remote", {}).get("worker_environment", {})
+                         .get("pdk") or {}).get("stamp_text")),
+            comparison=((r.get("environment", {}).get("remote", {}).get("worker_environment", {})
+                         .get("pdk_stamp_comparison") or {}).get("status")))
+            for tag, r in (("main", rep), ("fine", rep_f))},
         input_hashes={str(p.relative_to(REPO)): sha256_file(p) for p in (
             G.ARRAY_NETLIST, G.NETLIST_PATH, G.REQUEST_PATH, G.REQUEST_FINE_PATH, HERE / "gen_refresh_energy.py",
             HERE / "analyze_refresh_energy.py", REPO / "sim" / "refresh-op" / "gen_refresh_op.py",

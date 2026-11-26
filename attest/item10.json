@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "t1-attestation-inventory",
   "t1_item": 10,
-  "description": "Repo hygiene for both partitions: README, LICENSE, the spec index and PDK pin, the evidence-checks.yml and signoff.yml commands (stdlib checks and klt DRC/LVS freshness), and the digital regression entry points (digital-regressions.yml, run_digital_regressions.sh, digital/ci/README.md) inventoried by content hash only; the ~17 min digital run is not a graded command.",
+  "description": "Repo hygiene for both partitions: README, LICENSE, the spec index and PDK pin, the commands of evidence-checks.yml (every test_*.py suite scripts/run_evidence_checks.py discovers plus its standalone checks, kept complete by scripts/tests/test_item10_inventory.py) and of signoff.yml (klt DRC/LVS freshness), and the digital regression entry points (digital-regressions.yml, run_digital_regressions.sh, digital/ci/README.md) inventoried by content hash only; the ~17 min digital run is not a graded command.",
   "hygiene": [
     "README.md",
     "LICENSE",
@@ -10,6 +10,8 @@
     "docs/pdk-pin.md",
     ".github/workflows/evidence-checks.yml",
     ".github/workflows/signoff.yml",
+    "sim/check_append_only.py",
+    "sim/check_item9_inventory.py",
     ".github/workflows/digital-regressions.yml",
     "digital/ci/run_digital_regressions.sh",
     "digital/ci/README.md"
@@ -21,6 +23,14 @@
         "python3",
         "-I",
         "sim/loaded-column/test_analysis.py"
+      ]
+    },
+    {
+      "name": "Loaded-column klt request generator / reducer (issue #169) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/test_gen_column_requests.py"
       ]
     },
     {
@@ -88,6 +98,14 @@
       ]
     },
     {
+      "name": "Normalizer raw-to-normalized freshness check (issue #229)",
+      "argv": [
+        "python3",
+        "-I",
+        "design/test_normalize_netlist.py"
+      ]
+    },
+    {
       "name": "Column-periphery slice design-vs-deck drift check",
       "argv": [
         "python3",
@@ -125,6 +143,22 @@
         "python3",
         "-I",
         "sim/test_append_only.py"
+      ]
+    },
+    {
+      "name": "Item-9 inventory fixture tests (issue #371)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/test_check_item9_inventory.py"
+      ]
+    },
+    {
+      "name": "Item-9 inventory completeness (every sim/ bench inventoried, issue #371)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/check_item9_inventory.py"
       ]
     },
     {
@@ -192,11 +226,35 @@
       ]
     },
     {
+      "name": "PDK model-closure identity checker tests (issue #338)",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/pdk-closure-identity/test_check_closure_identity.py"
+      ]
+    },
+    {
       "name": "Shared evidence helper tests",
       "argv": [
         "python3",
         "-I",
         "sim/test_evidence_common.py"
+      ]
+    },
+    {
+      "name": "Leakage klt-report stamp-match guard (issue #377) tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/leakage/test_klt_report_rows.py"
+      ]
+    },
+    {
+      "name": "Retention worst-case leakage selection (issue #377) tests",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/retention/test_derive_retention.py"
       ]
     },
     {
@@ -222,6 +280,70 @@
         "-I",
         "scripts/check_artifact_manifests.py",
         "check"
+      ]
+    },
+    {
+      "name": "Aged-read (issue #94) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/aged-read/test_aged_read.py"
+      ]
+    },
+    {
+      "name": "Bitcell-transient generator / reducer (issue #182) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/bitcell-transient/test_gen_bitcell_transient.py"
+      ]
+    },
+    {
+      "name": "Closed-loop-refresh (issue #147) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/closed-loop-refresh/test_closed_loop.py"
+      ]
+    },
+    {
+      "name": "Extracted-CRBL column (issue #88) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/extracted-crbl/test_column_klt.py"
+      ]
+    },
+    {
+      "name": "Loaded-column compare_pins equivalence (issue #400) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/loaded-column/test_compare_pins.py"
+      ]
+    },
+    {
+      "name": "Item-10 inventory completeness (every evidence-runner command graded, issue #414)",
+      "argv": [
+        "python3",
+        "-I",
+        "scripts/tests/test_item10_inventory.py"
+      ]
+    },
+    {
+      "name": "Evidence-runner scratch-git-repo fixture suite (issue #415)",
+      "argv": [
+        "python3",
+        "-I",
+        "scripts/tests/test_run_evidence_checks.py"
+      ]
+    },
+    {
+      "name": "PEX schematic-vs-extracted retention (issue #383) checks",
+      "argv": [
+        "python3",
+        "-I",
+        "sim/pex_bitcell_array/test_pex_bitcell_array.py"
       ]
     },
     {
@@ -261,6 +383,26 @@
         "lvs",
         "--check",
         "gain_cell_2t_array.lvs.result.json"
+      ],
+      "cwd": "layout"
+    },
+    {
+      "name": "klt drc --check sense_latch.drc.result.json",
+      "argv": [
+        "klt",
+        "drc",
+        "--check",
+        "sense_latch.drc.result.json"
+      ],
+      "cwd": "layout"
+    },
+    {
+      "name": "klt lvs --check sense_latch.lvs.result.json",
+      "argv": [
+        "klt",
+        "lvs",
+        "--check",
+        "sense_latch.lvs.result.json"
       ],
       "cwd": "layout"
     }

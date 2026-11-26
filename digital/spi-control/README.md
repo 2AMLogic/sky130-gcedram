@@ -1,6 +1,6 @@
 # SPI control behavioral model (issue #83, epic #24 item 4)
 
-A **PROPOSED**, behavioral (not synthesised, no timing) SPI slave that
+A **PROPOSED**, behavioral (no timing) SPI slave that
 configures a refresh controller for a dynamic gain-cell macro. It is not an
 SRAM-replacement interface. Interface definition and the ASSUMPTION/sourced tags
 are in [`SPEC.md`](SPEC.md). `spec/` is not edited.
@@ -18,8 +18,10 @@ are in [`SPEC.md`](SPEC.md). `spec/` is not edited.
 Run: `./run_tests.sh` then `./run_mutation.sh`.
 
 Limits: protocol model only; `sclk`/`cs_n` are used directly as clocks, so no
-CDC, timing or synthesis claims. All interface choices are ASSUMPTIONs until
-the challenge rules and a real scheduler fix them (SPEC.md Sec. 5).
+CDC, timing or layout claims. Synthesis evidence for `spi_slave` exists and is
+committed (see the `Synthesis:` paragraph below); gate-level behaviour of that
+netlist is not verified. All interface choices are ASSUMPTIONs until the
+challenge rules and a real scheduler fix them (SPEC.md Sec. 5).
 
 ## Reset / clear structure (issue #273)
 
@@ -43,7 +45,7 @@ otherwise; real flops are level-sensitive).
 Synthesis: `spi_slave.synth.request.json` (`klt synthesize`, sv2v frontend,
 `sky130_fd_sc_hd`, `MAX_INTERVAL=5029`) completes through `proc` and maps to
 library cells (259 instances, no warnings); report and netlist in
-`results/*_2026-11-11_issue273.*`.
+`results/*_2026-11-16_issue342.*`.
 
 **Not yet verified:** timing (recovery/removal of `clr_n` against `sclk`,
 glitches on the combinational `clr_n`), CDC, gate-level behaviour of the commit

@@ -3,7 +3,7 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 2,
-  "summary": "T1 item 2 (Layout): the committed bitcell and 4x4 array GDS bound to the scripts that generate them",
+  "summary": "T1 item 2 (Layout): the committed bitcell, 4x4 array and sense latch GDS bound to the scripts that generate them",
   "source": "attest/make_item2_envelope.py",
   "provenance": {
     "klt_version": null,
@@ -42,13 +42,27 @@
         },
         {
           "path": {
+            "path": "layout/generate_sense_latch.sh",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:0b11bcfc9f9adb76d1f23d0ad6954c4cf42ca3a19361100f1abd4c30b184d72a"
+        },
+        {
+          "path": {
             "path": "layout/generation_toolchain.py",
             "scope": "repo"
           },
           "content_hash": "sha256:4e2d2197fdd8ce0ff8220b7fb4635a9d53a01d2ee4e1a596da08ecf4a9f39104"
+        },
+        {
+          "path": {
+            "path": "layout/sense_latch.gds",
+            "scope": "repo"
+          },
+          "content_hash": "sha256:e75b0d5bf6c21bb1d3f455aad1ecaf31a3fe17489d41bf39989a72f59648c099"
         }
       ],
-      "content_hash": "sha256:62ef4547f4cb762313355479bd4fa33f32ecfe9e2840fdb61347cdc60029f6b7"
+      "content_hash": "sha256:cecec4c5b12e4a587f9e378b1145e08a335ccd64a15e926c7252369ae0e32d60"
     }
   }
 }

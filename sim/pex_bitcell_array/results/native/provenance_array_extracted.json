@@ -1,0 +1,10 @@
+{
+  "side": "extracted",
+  "cell": "gain_cell_2t_array_4x4_layout_0",
+  "netlist": "/home/ubuntu/GitHub/sky130-gcedram/.loom/worktrees/issue-383/sim/pex_bitcell_array/work/array/extracted.spice",
+  "netlist_sha256": "sha256:4f22027b55f315929b42939bfee4019d5c31f3a77091abf5d9faf96f00f15c0b",
+  "klt_version": "klt 0.9.1",
+  "generated_utc": "20261121T052353Z",
+  "pdk_root_commit": "f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7",
+  "c_sn_seed_ff": "0.672741"
+}

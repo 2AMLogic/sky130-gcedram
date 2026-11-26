@@ -39,7 +39,7 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
 import gen_sense_stage as G  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V  # noqa: E402
+from _evidence_common import VDD_V, fmt_g6, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request, mc_block  # noqa: E402
 
 STAGE_NETLIST_PATH = HERE / "sense_mismatch.spice"
@@ -59,6 +59,26 @@ CELL_CORNERS = [("fs_mm", 27)]
 MC_SEED = 20261009_81          # base seed; klt derives per-sample seeds from it (SHA-256)
 MC_N_STAGE = 40                # samples per stage corner
 MC_N_CELL = 40                 # samples at the cell corner
+
+# ---- T1 item 6 / spec row 2e yield campaign (issue #384) ----
+# Same stage deck, corners and measurement set as the study above, with a
+# larger n (klt yield's zero-failure sample-size verdict needs >= 183 pooled
+# samples; 4 corners x 64 = 256) and its own recorded seed, plus a NEGATIVE
+# CONTROL deck: the committed stage deck with one seeded defect -- the shared
+# reference source (and its .ic) forced high by CONTROL_REF_OFFSET_V, a
+# deterministic input-referred offset of about 6.8 sigma_worst on every
+# instance (d_eff = d - offset). Same seed and n as the nominal campaign
+# (common random numbers), so the degradation is attributable to the defect
+# alone and a re-run reproduces it exactly.
+ROW2E_MC_N = 64                            # samples per corner (256 pooled)
+ROW2E_MC_SEED = 20261120_384               # new seed, recorded here and in the request
+CONTROL_REF_OFFSET_V = 0.130               # seeded reference offset (V), see README
+ROW2E_MARGIN_D_MV = 150                    # graded differential: largest swept |d| at or
+                                           # below the committed 2a worst-case half-separation
+                                           # (fs/27 C aged 0.3289 V / 2 = 164.5 mV)
+CONTROL_NETLIST_PATH = HERE / "sense_mismatch_control.spice"
+ROW2E_REQUEST_PATH = HERE / "request_row2e.json"
+CONTROL_REQUEST_PATH = HERE / "request_row2e_control.json"
 
 # ---- stage-only sweep (ASSUMPTION: grid; same common mode as sense-stage st_*) ----
 STAGE_DREF_V = G.STAGE_ONLY_DREF_V          # ref = VRBL - 0.1 V, rbl = ref + d (as in sense-stage)
@@ -117,13 +137,13 @@ def _header(title: str, kinds: str) -> list[str]:
         "* ASSUMPTIONS (labelled; none is a spec value): C_RBL, VRBL, reference level, sense instant,",
         "* latch/footer/header sizes, ideal precharge switch, ideal drivers, ideal matched dummy load.",
         "",
-        f".param VDD     = {G._fmt(VDD_V)}",
-        f".param VRBL    = {G._fmt(G.VRBL_V)}   $ ASSUMPTION (contract)",
-        f".param TEDGE   = {G._fmt(G.T_EDGE_S)}",
-        f".param T_READ  = {G._fmt(G.T_READ_S)}   $ select edge",
-        f".param T_PGAP  = {G._fmt(G.T_PRE_GAP_S)}   $ precharge released this long before T_READ",
-        f".param T_EN    = {G._fmt(G.T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)",
-        f".param C_RBL   = {G._fmt(G.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)",
+        f".param VDD     = {fmt_g6(VDD_V)}",
+        f".param VRBL    = {fmt_g6(G.VRBL_V)}   $ ASSUMPTION (contract)",
+        f".param TEDGE   = {fmt_g6(G.T_EDGE_S)}",
+        f".param T_READ  = {fmt_g6(G.T_READ_S)}   $ select edge",
+        f".param T_PGAP  = {fmt_g6(G.T_PRE_GAP_S)}   $ precharge released this long before T_READ",
+        f".param T_EN    = {fmt_g6(G.T_EN_S)}   $ ASSUMPTION: latch enable = contract sense instant (T_READ+10n)",
+        f".param C_RBL   = {fmt_g6(G.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)",
         "",
         "* ---- shared drivers (ideal) ----",
         "vdd   vdd 0 dc {VDD}",
@@ -134,15 +154,15 @@ def _header(title: str, kinds: str) -> list[str]:
     ]
 
 
-def _latch(a, ics: list[str], n: str, rb: str, rf: str) -> None:
+def _latch(a, ics: list[str], n: str, rb: str, rf: str, latch: dict) -> None:
+    """Emit the latch of design/sense_latch.spice (via G.parse_cards, issue #293):
+    same devices, sizes and full geometry (nrd/nrs/sa/sb/sd included) as the
+    schematic-derived netlist the sense-stage deck now also emits."""
     vn, vp = f"vn_{n}", f"vp_{n}"
-    ln, lp, fo, he = G.LATCH_N, G.LATCH_P, G.FOOTER, G.HEADER
-    a(f"XMN1_{n} {rb} {rf} {vn} 0 {ln[0]} {G.dev_params(ln[1], ln[2])}")
-    a(f"XMN2_{n} {rf} {rb} {vn} 0 {ln[0]} {G.dev_params(ln[1], ln[2])}")
-    a(f"XMP1_{n} {rb} {rf} {vp} vdd {lp[0]} {G.dev_params(lp[1], lp[2])}")
-    a(f"XMP2_{n} {rf} {rb} {vp} vdd {lp[0]} {G.dev_params(lp[1], lp[2])}")
-    a(f"XMNF_{n} {vn} en 0 0 {fo[0]} {G.dev_params(fo[1], fo[2])}")
-    a(f"XMPH_{n} {vp} enb vdd vdd {he[0]} {G.dev_params(he[1], he[2])}")
+    lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": "en", "enb": "enb",
+            "vdd": "vdd", "GND": "0", "0": "0"}
+    for dev, (nets, model, params) in latch.items():
+        a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
     ics.append(f"v({vn})=0.45")
     ics.append(f"v({vp})=1.35")
     a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
@@ -157,16 +177,31 @@ def _ic_block(ics: list[str]) -> list[str]:
     return out
 
 
-def build_stage_netlist() -> str:
-    L = _header("sense_mismatch.spice -- stage-only latch offset Monte Carlo (sense-stage latch, R replicas)",
-                "s<p|m|z><mV>_<r>: rbl precharged to VREF+d, no cells, replica r")
+def build_stage_netlist(ref_offset_v: float = 0.0) -> str:
+    """Stage deck; ``ref_offset_v != 0`` emits the NEGATIVE-CONTROL variant
+    (issue #384): the same deck with the shared reference (source and .ic)
+    forced by that offset -- a deterministic input-referred offset of
+    ``ref_offset_v`` on every instance. At ``0`` the output is byte-identical
+    to the committed study deck (test_sense_mismatch.py checks this)."""
+    control = ref_offset_v != 0.0
+    title = ("sense_mismatch_control.spice -- NEGATIVE CONTROL of the stage-only latch offset"
+             if control else "sense_mismatch.spice -- stage-only latch offset Monte Carlo (sense-stage latch, R replicas)")
+    L = _header(title, "s<p|m|z><mV>_<r>: rbl precharged to VREF+d, no cells, replica r")
     a = L.append
+    if control:
+        a(f"* SEEDED DEFECT (issue #384 negative control): shared reference forced +{fmt_g6(ref_offset_v)} V")
+        a(f"* (input-referred offset on every instance; d_eff = d - {fmt_g6(ref_offset_v)}). Deterministic:")
+        a("* same corners, n and seed as request_row2e.json (common random numbers).")
+        a("")
     ref = f"pref_{round(STAGE_DREF_V * 1000):03d}"
-    a(f"vref_{round(STAGE_DREF_V * 1000):03d} {ref} 0 dc {G._fmt(G.VRBL_V - STAGE_DREF_V)}   $ reference = VRBL - {G._fmt(STAGE_DREF_V)} (ASSUMPTION)")
+    ref_level = G.VRBL_V - STAGE_DREF_V + ref_offset_v
+    a(f"vref_{round(STAGE_DREF_V * 1000):03d} {ref} 0 dc {fmt_g6(ref_level)}   $ reference = VRBL - {fmt_g6(STAGE_DREF_V)} (ASSUMPTION)"
+      + (f" + seeded defect {fmt_g6(ref_offset_v)} V" if control else ""))
     for d in D_MV:
         va = G.VRBL_V - STAGE_DREF_V + d * 1e-3
         a(f"vpa_{_mv_tag(d)} pa_{_mv_tag(d)} 0 dc {va:.6f}")
     a("")
+    latch = parse_cards(G.REPO / "design" / "sense_latch.spice")
     ics: list[str] = []
     for p in stage_instances():
         n = p["name"]
@@ -178,8 +213,8 @@ def build_stage_netlist() -> str:
         a(f"spr_{n} {ref} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rb})={va:.6f}")
-        ics.append(f"v({rf})={G.VRBL_V - STAGE_DREF_V:.6f}")
-        _latch(a, ics, n, rb, rf)
+        ics.append(f"v({rf})={ref_level:.6f}")
+        _latch(a, ics, n, rb, rf, latch)
         a("")
     L += _ic_block(ics)
     return "\n".join(L)
@@ -190,32 +225,33 @@ def build_cell_netlist(c_sn_f: float) -> str:
     L = _header("sense_mismatch_cell.spice -- end-to-end (4-row column + latch) Monte Carlo at fs/27 C",
                 "c1_* stored '1', c0_* stored '0'; r<mV> = reference offset; last field = replica")
     a = L.append
-    a(f".param C_SN    = {G._fmt(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    a(f".param C_SN    = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
     a("vrwls rwl_sel 0 pwl(0 {VDD} {T_READ} {VDD} {T_READ+TEDGE} 0)")
     a("vrwld rwl_des 0 dc {VDD}")
     a("vpre  prea 0 dc {VRBL}")
     for dref in CELL_DVREF_V:
-        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {G._fmt(G.VRBL_V - dref)}   $ reference = VRBL - {G._fmt(dref)} (ASSUMPTION)")
+        a(f"vref_{round(dref * 1000):03d} pref_{round(dref * 1000):03d} 0 dc {fmt_g6(G.VRBL_V - dref)}   $ reference = VRBL - {fmt_g6(dref)} (ASSUMPTION)")
     a("")
+    latch = parse_cards(G.REPO / "design" / "sense_latch.spice")
     ics: list[str] = []
     for p in cell_instances():
         n = p["name"]
         rb, rf = f"rbl_{n}", f"ref_{n}"
         a(f"* ---- {n}: {p['kind']} SN = {p['sn']} V, ref offset {p['dref']} V, replica {p['rep']} ----")
         a(f"spa_{n} prea {rb} ctl 0 swpre")
-        ics.append(f"v({rb})={G._fmt(G.VRBL_V)}")
+        ics.append(f"v({rb})={fmt_g6(G.VRBL_V)}")
         for r in range(G.N_ROWS):
             sn = f"sn_{n}_{r}"
             rwl = "rwl_sel" if r == 0 else "rwl_des"
             a(f"XMWR_{n}_{r} {sn} 0 0 0 {wr_m} {wr_p}")
             a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
             a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={G._fmt(p['sn'])}")
+            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"spr_{n} pref_{round(p['dref'] * 1000):03d} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rf})={G.VRBL_V - p['dref']:.6f}")
-        _latch(a, ics, n, rb, rf)
+        _latch(a, ics, n, rb, rf, latch)
         a("")
     L += _ic_block(ics)
     return "\n".join(L)
@@ -223,8 +259,8 @@ def build_cell_netlist(c_sn_f: float) -> str:
 
 def _meas(names: list[str]) -> list[dict]:
     """din (differential at the enable instant), dend (at stop), tdec per instance."""
-    t_en_ns = G._fmt(G.T_EN_S * 1e9)
-    t_stop_ns = G._fmt(T_STOP_S * 1e9)
+    t_en_ns = fmt_g6(G.T_EN_S * 1e9)
+    t_stop_ns = fmt_g6(T_STOP_S * 1e9)
     out = []
     for n in names:
         out += [
@@ -246,15 +282,32 @@ def _corners(cs: list[tuple[str, int]]) -> tuple[dict, list[dict]]:
     return out, excl
 
 
-def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict]) -> dict:
+def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict],
+             seed: int = MC_SEED) -> dict:
     corners, excl = _corners(cs)
-    return klt_request(netlist, corners, f"10p {G._fmt(T_STOP_S * 1e9)}n 0 50p uic", meas, 900,
-                       exclude=excl, monte_carlo=mc_block(n_mc, MC_SEED))
+    return klt_request(netlist, corners, f"10p {fmt_g6(T_STOP_S * 1e9)}n 0 50p uic", meas, 900,
+                       exclude=excl, monte_carlo=mc_block(n_mc, seed))
 
 
 def build_stage_request() -> dict:
     names = [p["name"] for p in stage_instances()]
     return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, MC_N_STAGE, _meas(names))
+
+
+def build_row2e_request() -> dict:
+    """Nominal campaign for the row-2e yield evidence: the committed stage deck
+    (netlist unchanged, same measurements), larger n, its own seed."""
+    names = [p["name"] for p in stage_instances()]
+    return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N, _meas(names),
+                    seed=ROW2E_MC_SEED)
+
+
+def build_control_request() -> dict:
+    """Negative-control campaign: the seeded-defect deck, same n and seed as
+    the nominal row-2e campaign (common random numbers)."""
+    names = [p["name"] for p in stage_instances()]
+    return _request(CONTROL_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N, _meas(names),
+                    seed=ROW2E_MC_SEED)
 
 
 def build_cell_request() -> dict:
@@ -269,6 +322,9 @@ def render() -> dict[Path, str]:
         STAGE_REQUEST_PATH: json.dumps(build_stage_request(), indent=1) + "\n",
         CELL_NETLIST_PATH: build_cell_netlist(c_sn_ff * 1e-15),
         CELL_REQUEST_PATH: json.dumps(build_cell_request(), indent=1) + "\n",
+        CONTROL_NETLIST_PATH: build_stage_netlist(CONTROL_REF_OFFSET_V),
+        ROW2E_REQUEST_PATH: json.dumps(build_row2e_request(), indent=1) + "\n",
+        CONTROL_REQUEST_PATH: json.dumps(build_control_request(), indent=1) + "\n",
     }
 
 

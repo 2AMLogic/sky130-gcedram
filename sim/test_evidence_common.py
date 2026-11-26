@@ -123,6 +123,124 @@ class PdkRevision(unittest.TestCase):
             self.assertEqual(C.pdk_revision_problems(v), [])
 
 
+class WorkerPdkStamp(unittest.TestCase):
+    """The fail-closed batch-worker stamp gate (#377/#171): only
+    `pdk_stamp_comparison.status == "match"` with the pinned commit in the
+    worker stamp text qualifies a report; everything else -- mismatch,
+    not_comparable, a missing block, a missing environment -- is a
+    failure, never a pass."""
+
+    PIN = "open_pdks f6eeac7dad085ffcc829ccfd721f7b4ce39edcf7"
+
+    @staticmethod
+    def _rep(status, stamp_text=PIN):
+        return {"status": "pass", "environment": {"remote": {"worker_environment": {
+            "pdk": {"stamp_text": stamp_text},
+            "pdk_stamp_comparison": {"status": status}}}}}
+
+    def test_match(self):
+        self.assertEqual(C.worker_pdk_stamp_problems(self._rep("match")), [])
+
+    def test_mismatch_is_a_failure(self):
+        problems = C.worker_pdk_stamp_problems(
+            self._rep("mismatch", "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"))
+        self.assertEqual(len(problems), 1)
+        self.assertIn("status='mismatch'", problems[0])
+
+    def test_not_comparable_is_a_failure(self):
+        # the committed 2026-11-15 refresh-op report carries this status
+        problems = C.worker_pdk_stamp_problems(self._rep("not_comparable"))
+        self.assertEqual(len(problems), 1)
+        self.assertIn("not proven at the pin", problems[0])
+
+    def test_missing_block_fails_closed(self):
+        self.assertTrue(C.worker_pdk_stamp_problems({"status": "pass", "environment": {}}))
+        self.assertTrue(C.worker_pdk_stamp_problems({"status": "pass"}))
+
+    def test_match_without_the_pin_in_the_stamp_text_is_a_failure(self):
+        problems = C.worker_pdk_stamp_problems(
+            self._rep("match", "open_pdks c6d73a35f524070e85faff4a6a9eef49553ebc2b"))
+        self.assertEqual(len(problems), 1)
+        self.assertIn("does not name the pinned commit", problems[0])
+
+
+class NgspiceVersion(unittest.TestCase):
+    """The simulator major version is pinned and checked exactly like the
+    PDK revision (issue #300): ngspice-47, compared by parsed major
+    version, `unknown` is a mismatch."""
+
+    def test_match(self):
+        self.assertEqual(
+            C.ngspice_version_problems("** ngspice-47 : Circuit level simulation program"),
+            [],
+        )
+
+    def test_mismatch(self):
+        problems = C.ngspice_version_problems(
+            "** ngspice-46 : Circuit level simulation program"
+        )
+        self.assertEqual(len(problems), 1)
+        self.assertIn("expected ngspice-47", problems[0])
+        self.assertIn("actual ngspice-46", problems[0])
+
+    def test_banner_build_detail_is_not_a_mismatch(self):
+        # Only the parsed major version is compared, so compile options,
+        # creation date and banner formatting differences do not fail.
+        banner = (
+            "******\n** ngspice-47 : Circuit level simulation program\n"
+            "** Compiled with KLU Direct Linear Solver\n"
+            "** The U. C. Berkeley CAD Group\n"
+            "** Creation Date: Sun Mar 31 20:15:14 UTC 2024\n******"
+        )
+        self.assertEqual(C.ngspice_version_problems(banner), [])
+
+    def test_unknown_is_a_mismatch(self):
+        # ngspice_version() returns "unknown" on any failure; that must
+        # be a visible problem, never a pass.
+        problems = C.ngspice_version_problems("unknown")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("cannot verify", problems[0])
+        self.assertIn(C.NGSPICE_VERSION_PIN, problems[0])
+
+    def test_unparsable_banner_is_a_mismatch(self):
+        problems = C.ngspice_version_problems("** no version here **")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("cannot verify", problems[0])
+
+    def test_env_check_fails_on_stray_simulator(self):
+        # check_ngspice_available must reject a PDK tree at the pin when
+        # the ngspice it would stamp rows with is a different major
+        # version. ngspice_version/which are patched so the test host's
+        # own binary (or its absence) does not decide the outcome.
+        with tempfile.TemporaryDirectory() as d:
+            PdkRevision()._variant(
+                Path(d), f"open_pdks {C.PDK_OPEN_PDKS_COMMIT}\n"
+            )
+            lib = C.resolve_ngspice_lib(Path(d), "sky130A")
+            self.assertTrue(lib.is_file())
+            real_version, real_which = C.ngspice_version, C.which
+            try:
+                C.which = lambda name: "/usr/bin/ngspice"
+                C.ngspice_version = lambda: "** ngspice-46 : Circuit level simulation program"
+                self.assertFalse(C.check_ngspice_available(lib))
+                C.ngspice_version = lambda: "** ngspice-47 : Circuit level simulation program"
+                self.assertTrue(C.check_ngspice_available(lib))
+            finally:
+                C.ngspice_version, C.which = real_version, real_which
+
+    def test_env_check_missing_binary_is_a_clean_failure(self):
+        # ngspice absent from PATH must stay a failure, not a crash.
+        with tempfile.TemporaryDirectory() as d:
+            PdkRevision()._variant(Path(d), f"open_pdks {C.PDK_OPEN_PDKS_COMMIT}\n")
+            lib = C.resolve_ngspice_lib(Path(d), "sky130A")
+            real = C.which
+            try:
+                C.which = lambda name: None
+                self.assertFalse(C.check_ngspice_available(lib))
+            finally:
+                C.which = real
+
+
 class Sha256(unittest.TestCase):
     def test_hex_and_prefixed(self):
         with tempfile.TemporaryDirectory() as d:
@@ -133,6 +251,16 @@ class Sha256(unittest.TestCase):
             self.assertEqual(C.sha256_prefixed(f), "sha256:" + h)
 
 
+class FmtG6(unittest.TestCase):
+    def test_six_significant_digits(self):
+        self.assertEqual(C.fmt_g6(1.8), "1.8")
+        self.assertEqual(C.fmt_g6(0.0), "0")
+        self.assertEqual(C.fmt_g6(1e-9), "1e-09")
+        self.assertEqual(C.fmt_g6(2.5e-12), "2.5e-12")
+        self.assertEqual(C.fmt_g6(1.23456789), "1.23457")
+        self.assertEqual(C.fmt_g6(1234567.0), "1.23457e+06")
+
+
 class Decided(unittest.TestCase):
     def test_classification_and_edges(self):
         self.assertEqual(C.decided(None, 0.9), "none")
@@ -140,6 +268,17 @@ class Decided(unittest.TestCase):
         self.assertEqual(C.decided(0.9, 0.9), "0")
         self.assertEqual(C.decided(-0.89, 0.9), "unresolved")
         self.assertEqual(C.decided(0.0, 0.9), "unresolved")
+
+
+class TdecInWindow(unittest.TestCase):
+    def test_only_positive_in_window_passes(self):
+        w = 5e-9
+        self.assertFalse(C.tdec_in_window(None, w))
+        self.assertFalse(C.tdec_in_window(-1e-12, w))     # pre-enable crossing
+        self.assertFalse(C.tdec_in_window(0.0, w))        # coincident crossings
+        self.assertTrue(C.tdec_in_window(1e-11, w))
+        self.assertTrue(C.tdec_in_window(w, w))           # upper bound inclusive
+        self.assertFalse(C.tdec_in_window(w * 1.001, w))
 
 
 class LoadJson(unittest.TestCase):
@@ -215,6 +354,24 @@ class KltProvenance(unittest.TestCase):
                          "per spec/operating-range-decision-PROPOSED.md")
         self.assertEqual(C.PROPOSED_RANGE_SCOPE_REPLAY_PREFIX,
                          "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD 1.8 V")
+
+
+class CsnProvenanceJson(unittest.TestCase):
+    def test_relative_conversion_is_machine_independent_and_non_mutating(self):
+        prov = {"extract_json_path": C.REPO_ROOT / "layout" / "gain_cell_2t.extract.parasitics.json",
+                "klt_version": "0.8.0", "input_content_hash": "sha256:ab", "ground_c_ff": 0.5,
+                "coupling_c_ff": 0.1, "coupled_nets": ["rbl"]}
+        out = C.c_sn_provenance_json(prov)
+        self.assertEqual(out["extract_json_path"], "layout/gain_cell_2t.extract.parasitics.json")
+        for k in ("klt_version", "input_content_hash", "ground_c_ff", "coupling_c_ff", "coupled_nets"):
+            self.assertEqual(out[k], prov[k], k)
+        self.assertEqual(list(out), list(prov))                      # field order preserved (json.dumps contract)
+        self.assertIsInstance(prov["extract_json_path"], Path)       # input dict untouched (loader Path contract)
+
+    def test_out_of_repo_path_refused_with_clear_message_not_a_traceback(self):
+        with self.assertRaises(SystemExit) as cm:
+            C.c_sn_provenance_json({"extract_json_path": "/etc/passwd"})
+        self.assertIn("outside the repo root", str(cm.exception.code))
 
 
 if __name__ == "__main__":

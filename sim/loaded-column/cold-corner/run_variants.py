@@ -234,41 +234,33 @@ def run_batch(args):
                      "C_RBL, extracted C_SN, no extracted bitline parasitics",
         })
         rows.append(row)
-    tmpdir = Path(tempfile.mkdtemp(prefix="gcedram_cold_"))
-    deck = tmpdir / "tb.spice"
-    err = None
-    try:
-        deck.write_text(render(k, lib, corner, temp, [(p, s, t_read) for p, s in cases],
-                               c_sn_f, tmpdir, tmax, P))
-        res = subprocess.run(["ngspice", "-b", str(deck)], capture_output=True, text=True, timeout=7200)
-        err = (res.stdout + res.stderr)[-300:].replace("\n", " ")
-    except Exception as e:  # recorded, never hidden
-        err = str(e)[:300]
-    for j, row in enumerate(rows):
-        out = tmpdir / f"case{j}.dat"
+    with tempfile.TemporaryDirectory(prefix="gcedram_cold_", ignore_cleanup_errors=True) as td:
+        tmpdir = Path(td)
+        deck = tmpdir / "tb.spice"
+        err = None
         try:
-            if not out.is_file():
-                raise RuntimeError("ngspice produced no output for this case: " + str(err))
-            cols = R.read_wrdata(out, R.MIN_TIMEPOINTS)
-            R.check_complete(cols[0], R.case_tstop(P, t_read))
-            sel = int(row["sel_row"])
-            m = R.measure(cols, P, t_read, sel)
-            m["v_sn_sel_sense_v"] = R.interp_at(cols[0], cols[1 + sel], t_read + k["t_sense_s"])
-            for key, v in m.items():
-                row[key] = "" if v is None else (v if isinstance(v, str) else f"{v:.6e}")
-            row["status"] = "ok"
-        except Exception as e:
-            row["status"] = "sim_failed"
-            row["reason"] = str(e)[:400]
-    for p in tmpdir.glob("*"):
-        try:
-            p.unlink()
-        except OSError:
-            pass
-    try:
-        tmpdir.rmdir()
-    except OSError:
-        pass
+            deck.write_text(render(k, lib, corner, temp, [(p, s, t_read) for p, s in cases],
+                                   c_sn_f, tmpdir, tmax, P))
+            res = subprocess.run(["ngspice", "-b", str(deck)], capture_output=True, text=True, timeout=7200)
+            err = (res.stdout + res.stderr)[-300:].replace("\n", " ")
+        except Exception as e:  # recorded, never hidden
+            err = str(e)[:300]
+        for j, row in enumerate(rows):
+            out = tmpdir / f"case{j}.dat"
+            try:
+                if not out.is_file():
+                    raise RuntimeError("ngspice produced no output for this case: " + str(err))
+                cols = R.read_wrdata(out, R.MIN_TIMEPOINTS)
+                R.check_complete(cols[0], R.case_tstop(P, t_read))
+                sel = int(row["sel_row"])
+                m = R.measure(cols, P, t_read, sel)
+                m["v_sn_sel_sense_v"] = R.interp_at(cols[0], cols[1 + sel], t_read + k["t_sense_s"])
+                for key, v in m.items():
+                    row[key] = "" if v is None else (v if isinstance(v, str) else f"{v:.6e}")
+                row["status"] = "ok"
+            except Exception as e:
+                row["status"] = "sim_failed"
+                row["reason"] = str(e)[:400]
     return rows
 
 

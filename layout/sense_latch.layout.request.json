@@ -1,0 +1,379 @@
+{
+  "pdk": {
+    "variant": "sky130A"
+  },
+  "blocks": [
+    {
+      "id": "npair",
+      "generator_report": "sense_latch_npair_mos.json"
+    },
+    {
+      "id": "ppair",
+      "generator_report": "sense_latch_ppair_mos.json"
+    },
+    {
+      "id": "ptap",
+      "generator_report": "sense_latch_ptap.json"
+    },
+    {
+      "id": "footer",
+      "generator_report": "sense_latch_footer_mos.json"
+    },
+    {
+      "id": "header",
+      "generator_report": "sense_latch_header_mos.json"
+    }
+  ],
+  "placement": {
+    "strategy": "explicit",
+    "order": [
+      "npair",
+      "ppair",
+      "ptap",
+      "footer",
+      "header"
+    ],
+    "origins_um": {
+      "npair": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "ppair": {
+        "x": 0.0,
+        "y": 5.4
+      },
+      "ptap": {
+        "x": 3.9,
+        "y": 0.0
+      },
+      "footer": {
+        "x": 6.4,
+        "y": 0.0
+      },
+      "header": {
+        "x": 8.6,
+        "y": 5.4
+      }
+    }
+  },
+  "connectivity": [
+    {
+      "net": "rbl",
+      "pins": [
+        {
+          "block": "npair",
+          "port": "U0_D"
+        },
+        {
+          "block": "ppair",
+          "port": "U0_D"
+        },
+        {
+          "block": "npair",
+          "port": "U1_G"
+        },
+        {
+          "block": "ppair",
+          "port": "U1_G"
+        }
+      ],
+      "legs": [
+        {
+          "from_pin": {
+            "block": "ppair",
+            "port": "U0_D"
+          },
+          "to_pin": {
+            "block": "ppair",
+            "port": "U1_G"
+          },
+          "waypoints_um": [
+            [
+              0.88,
+              7.2
+            ],
+            [
+              2.035,
+              7.2
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "net": "ref",
+      "pins": [
+        {
+          "block": "npair",
+          "port": "U0_G"
+        },
+        {
+          "block": "ppair",
+          "port": "U0_G"
+        },
+        {
+          "block": "npair",
+          "port": "U1_D"
+        },
+        {
+          "block": "ppair",
+          "port": "U1_D"
+        }
+      ],
+      "legs": [
+        {
+          "from_pin": {
+            "block": "ppair",
+            "port": "U0_G"
+          },
+          "to_pin": {
+            "block": "ppair",
+            "port": "U1_D"
+          },
+          "waypoints_um": [
+            [
+              0.545,
+              5.2
+            ],
+            [
+              1.7,
+              5.2
+            ]
+          ],
+          "layer_role": "metal3"
+        }
+      ]
+    },
+    {
+      "net": "vn",
+      "pins": [
+        {
+          "block": "npair",
+          "port": "U1_S"
+        },
+        {
+          "block": "npair",
+          "port": "U0_S"
+        },
+        {
+          "block": "footer",
+          "port": "U0_D"
+        }
+      ],
+      "legs": [
+        {
+          "from_pin": {
+            "block": "npair",
+            "port": "U1_S"
+          },
+          "to_pin": {
+            "block": "footer",
+            "port": "U0_D"
+          },
+          "waypoints_um": [
+            [
+              3.3,
+              0.5
+            ],
+            [
+              3.3,
+              -0.7
+            ],
+            [
+              8.7,
+              -0.7
+            ],
+            [
+              8.7,
+              1.0
+            ]
+          ]
+        },
+        {
+          "from_pin": {
+            "block": "npair",
+            "port": "U0_S"
+          },
+          "to_pin": {
+            "block": "footer",
+            "port": "U0_D"
+          },
+          "waypoints_um": [
+            [
+              -0.6,
+              0.5
+            ],
+            [
+              -0.6,
+              -0.7
+            ],
+            [
+              8.7,
+              -0.7
+            ],
+            [
+              8.7,
+              1.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "net": "vp",
+      "pins": [
+        {
+          "block": "ppair",
+          "port": "U1_S"
+        },
+        {
+          "block": "ppair",
+          "port": "U0_S"
+        },
+        {
+          "block": "header",
+          "port": "U0_D"
+        }
+      ],
+      "legs": [
+        {
+          "from_pin": {
+            "block": "ppair",
+            "port": "U1_S"
+          },
+          "to_pin": {
+            "block": "header",
+            "port": "U0_D"
+          },
+          "waypoints_um": [
+            [
+              2.37,
+              3.3
+            ],
+            [
+              9.48,
+              3.3
+            ]
+          ]
+        },
+        {
+          "from_pin": {
+            "block": "ppair",
+            "port": "U0_S"
+          },
+          "to_pin": {
+            "block": "header",
+            "port": "U0_D"
+          },
+          "waypoints_um": [
+            [
+              0.21,
+              3.3
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "net": "GND",
+      "pins": [
+        {
+          "block": "ptap",
+          "port": "TAP_E"
+        },
+        {
+          "block": "footer",
+          "port": "U0_S"
+        }
+      ]
+    },
+    {
+      "net": "vdd",
+      "pins": [
+        {
+          "block": "ppair",
+          "port": "TAP_N"
+        },
+        {
+          "block": "ppair",
+          "port": "TAP_E"
+        },
+        {
+          "block": "header",
+          "port": "TAP_N"
+        },
+        {
+          "block": "header",
+          "port": "U0_S"
+        }
+      ],
+      "legs": [
+        {
+          "from_pin": {
+            "block": "ppair",
+            "port": "TAP_N"
+          },
+          "to_pin": {
+            "block": "header",
+            "port": "TAP_N"
+          },
+          "waypoints_um": [
+            [
+              1.29,
+              12.2
+            ],
+            [
+              9.145,
+              12.2
+            ]
+          ]
+        },
+        {
+          "from_pin": {
+            "block": "ppair",
+            "port": "TAP_E"
+          },
+          "to_pin": {
+            "block": "header",
+            "port": "U0_S"
+          },
+          "waypoints_um": [
+            [
+              4.6,
+              6.96
+            ],
+            [
+              4.6,
+              3.65
+            ],
+            [
+              8.81,
+              3.65
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "routing": {
+    "layer_role": "metal",
+    "width_um": 0.17,
+    "cross_block_layer_role": "metal2"
+  },
+  "pins": [
+    {
+      "net": "en",
+      "block": "footer",
+      "port": "U0_G"
+    },
+    {
+      "net": "enb",
+      "block": "header",
+      "port": "U0_G"
+    }
+  ],
+  "options": {
+    "cell_name": "sense_latch_layout_0",
+    "output": "sense_latch.gds"
+  }
+}

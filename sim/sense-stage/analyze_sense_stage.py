@@ -15,8 +15,8 @@ Definitions (all ASSUMPTIONS, parameters at the top):
   includes charge drift during the floating interval, so it differs a few mV
   from the nominal stage-only offset).
 * a point RESOLVES when the final |d| >= RESOLVE_V of full swing, with the
-  correct sign, and ``tdec`` (enable edge at 0.9 V -> |d| = 0.9 V) is within
-  T_WINDOW_S. ``tdec`` is reported for every point so other windows can be
+  correct sign, and ``tdec`` (enable edge at 0.9 V -> |d| = 0.9 V) satisfies
+  0 < tdec <= T_WINDOW_S. ``tdec`` is reported for every point so other windows can be
   applied.
 * min resolvable SN level = lowest swept '1' level such that EVERY swept
   level at or above it resolves (monotone-from-above), reported with the
@@ -41,6 +41,7 @@ sys.path.insert(0, str(HERE.parent))
 from _evidence_common import DELTA_V_V  # noqa: E402
 from _evidence_common import decided as _decided  # noqa: E402
 from _evidence_common import measurements_of  # noqa: E402
+from _evidence_common import tdec_in_window  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_SCOPE  # noqa: E402
 from _evidence_common import PROPOSED_RANGE_STATUS  # noqa: E402
 from _evidence_common import klt_provenance  # noqa: E402
@@ -75,7 +76,7 @@ def decided(dend: float | None) -> str:
 
 
 def resolves(p: dict, expect: str) -> bool:
-    return (decided(p["dend"]) == expect and p["tdec"] is not None and p["tdec"] <= T_WINDOW_S)
+    return (decided(p["dend"]) == expect and tdec_in_window(p["tdec"], T_WINDOW_S))
 
 
 def summarize_corner(corner: dict, writes: dict) -> tuple[list[dict], dict]:
@@ -155,6 +156,20 @@ def summarize_corner(corner: dict, writes: dict) -> tuple[list[dict], dict]:
     return rows, res
 
 
+def report_variant(rep: dict) -> str | None:
+    """Issue #88 variant id from the report's netlist path (None = the default deck)."""
+    net = rep.get("netlist") or {}
+    name = Path(net.get("path", "") if isinstance(net, dict) else str(net)).name
+    if name in ("", G.NETLIST_PATH.name):
+        return None
+    if not (name.startswith("sense_stage_") and name.endswith(".spice")):
+        raise ValueError(f"unrecognised sense-stage netlist {name!r}")
+    vid = name[len("sense_stage_"):-len(".spice")]
+    if vid not in G.variants():
+        raise ValueError(f"unknown sense-stage variant {vid!r}")
+    return vid
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("report", type=Path, help="results/klt_report_<RUN_ID>.json")
@@ -180,17 +195,29 @@ def main(argv: list[str] | None = None) -> int:
         w = csv.DictWriter(f, fieldnames=list(rows[0]))
         w.writeheader()
         w.writerows(rows)
+    variant = report_variant(rep)
+    c_rbl_f = G.C_RBL_F if variant is None else G.variants()[variant]["c_rbl_f"]
     summary = dict(
         run_id=run_id,
         status=PROPOSED_RANGE_STATUS,
         scope=PROPOSED_RANGE_SCOPE,
         **klt_provenance(rep),
-        assumptions=dict(t_window_s=T_WINDOW_S, resolve_v=RESOLVE_V, c_rbl_f=G.C_RBL_F, vrbl_v=G.VRBL_V,
+        assumptions=dict(t_window_s=T_WINDOW_S, resolve_v=RESOLVE_V, c_rbl_f=c_rbl_f, vrbl_v=G.VRBL_V,
                          dvref_v=G.DVREF_V, t_en_after_select_s=G.T_EN_S - G.T_READ_S, n_rows=G.N_ROWS),
         claims=dict(mismatch_or_offset_yield_validated=False, supply_tolerance_studied=False,
                     extracted_c_rbl=False, spec_changed=False),
         corners=corners,
     )
+    if variant is not None:  # issue #88; the default (issue #60) summary keeps its exact shape
+        v = G.variants()[variant]
+        summary["variant"] = dict(
+            id=variant, c_rbl_label=v["c_rbl_label"], cell_card=v["card"],
+            reference_dummy_load="same C_RBL as rbl (ideal matched dummy load)",
+            c_rbl_source=dict(file="layout/gain_cell_2t_array.parasitics.summary.json",
+                              key=".".join(G.C_RBL_KEY), value_ff=v["c_rbl_source_ff"]),
+            n_rows_ratified=False)
+        summary["claims"]["extracted_c_rbl"] = v["c_rbl_label"].startswith("EXTRACTED-4-ROW")
+        summary["claims"]["n_rows_ratified"] = False
     sum_json.write_text(json.dumps(summary, indent=1) + "\n")
     print(f"wrote {pts_csv.name} and {sum_json.name}")
     return 0

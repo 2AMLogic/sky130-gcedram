@@ -20,7 +20,9 @@ Usage:
 
 `--from-klt-report` (issue #168) appends rows from a `klt sim` corner-request
 report (sim/leakage/request.json, backend `batch`) instead of looping
-`ngspice -b` locally; it runs no simulation itself.
+`ngspice -b` locally; it runs no simulation itself. It refuses any report
+whose worker PDK stamp comparison is not "match" (issue #377, fail closed
+on a missing comparison too).
 
 Stdlib only, no virtualenv required. Uses ONLY the shipped sky130 PDK
 model library resolved below -- no local model edits, no uncommitted
@@ -136,7 +138,16 @@ def rows_from_klt_report(report_path: Path) -> list[dict]:
 
     Every corner must have passed with an `ileak_a` measurement; anything
     else raises rather than writing a partial grid. The simulator version and
-    batch job id come from the report, not from this host's ngspice."""
+    batch job id come from the report, not from this host's ngspice.
+
+    Fails closed on the worker PDK stamp comparison (issue #377): only a
+    report whose `environment.remote.worker_environment.
+    pdk_stamp_comparison.status` is explicitly "match" may append rows.
+    A missing, "mismatch" or otherwise-statused comparison means the
+    worker's open_pdks revision could not be confirmed at the repo pin, so
+    writing `PDK_OPEN_PDKS_COMMIT` into those rows (the issue #168 failure:
+    job klt-sim-c2ed3f15ab70 was recorded as `f6eeac7...` while its worker
+    actually resolved `c6d73a3...`) must never happen again."""
     report = json.loads(report_path.read_text())
     if report.get("status") != "pass" or report.get("errored") or report.get("failed"):
         raise RuntimeError(
@@ -145,6 +156,16 @@ def rows_from_klt_report(report_path: Path) -> list[dict]:
         )
     env = report["environment"]
     remote = env.get("remote") or {}
+    worker_env = remote.get("worker_environment") or {}
+    stamp_cmp = worker_env.get("pdk_stamp_comparison") or {}
+    if stamp_cmp.get("status") != "match":
+        raise RuntimeError(
+            f"{report_path}: worker PDK stamp comparison status="
+            f"{stamp_cmp.get('status')!r} (worker stamp "
+            f"{(worker_env.get('pdk') or {}).get('stamp_text', 'unknown')!r}); "
+            "refusing to append rows not proven to come from the pinned "
+            f"open_pdks revision {PDK_OPEN_PDKS_COMMIT} (issue #377)"
+        )
     job_id = remote.get("job_id", "unknown")
     note = (
         f"klt sim batch job {job_id}; ngspice-{env.get('engine_version', 'unknown')}; "

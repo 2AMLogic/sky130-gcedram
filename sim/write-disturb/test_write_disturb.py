@@ -17,6 +17,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import analyze_write_disturb as A  # noqa: E402
 import gen_write_disturb as G  # noqa: E402
+from _evidence_common import fmt_g6  # noqa: E402
 
 RESULTS = HERE / "results"
 
@@ -127,7 +128,7 @@ class Generated(unittest.TestCase):
         src = G.ARRAY_NETLIST.read_text()
         m = re.search(r"^Ccc_bl_1_sn_1_1 bl_1 sn_1_1 (\S+)$", src, re.M)
         if m:
-            self.assertIn(f"ccc_bl_1_sn_1_1_ctl0 bl_1_ctl0 sn_1_1_ctl0 {G._fmt(float(m.group(1)))}", "\n".join(net))
+            self.assertIn(f"ccc_bl_1_sn_1_1_ctl0 bl_1_ctl0 sn_1_1_ctl0 {fmt_g6(float(m.group(1)))}", "\n".join(net))
 
     def test_negative_control_only_widens_write_devices(self):
         net = G.NETLIST_PATH.read_text().splitlines()

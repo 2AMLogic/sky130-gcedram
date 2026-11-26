@@ -1,0 +1,867 @@
+{
+ "run_id": "20261011T015836Z",
+ "status": "PROPOSED_OPERATING_RANGE_NOT_RATIFIED",
+ "scope": "27 C and 125 C, tt/ss/ff/sf/fs global corners, VDD=1.8 V, per spec/operating-range-decision-PROPOSED.md",
+ "klt_status": "pass",
+ "corner_count": 10,
+ "batch_job_id": "klt-sim-6008da1d6b94",
+ "batch_instance_type": "c7i.4xlarge",
+ "netlist_sha256": "642322294456d7ef8ad3a18e7b10f138178a2456373be801b3dfd3760a22a1a6",
+ "models_lib_sha256": "48de7c677e2c6e7d09b2559279de9f818be71010a4aa933d728eb4db3b133c84",
+ "engine_version": "46",
+ "assumptions": {
+  "t_window_s": 5e-09,
+  "resolve_v": 0.9,
+  "c_rbl_f": 8.591790000000001e-16,
+  "vrbl_v": 0.9,
+  "dvref_v": [
+   0.02,
+   0.05,
+   0.1,
+   0.2
+  ],
+  "t_en_after_select_s": 1e-08,
+  "n_rows": 4
+ },
+ "claims": {
+  "mismatch_or_offset_yield_validated": false,
+  "supply_tolerance_studied": false,
+  "extracted_c_rbl": true,
+  "spec_changed": false,
+  "n_rows_ratified": false
+ },
+ "corners": [
+  {
+   "corner": "tt",
+   "temp_c": 27,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.2958,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.1632,
+   "stage_min_resolved_abs_din_mv_plus": 1.2959,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1632,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.55,
+     "sn1_highest_failing_level_below_v": 0.5,
+     "din_at_min_resolvable_v": -0.0409425,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0609,
+     "tdec_at_min_resolvable_ns": 0.112,
+     "sense_time_ns_at_1p0V": 0.0347,
+     "phase3_stored1_after_write_min_v": 1.027961,
+     "usable_dv_sn_lower_bound_v": 0.478,
+     "usable_dv_sn_upper_bound_v": 0.528,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.6,
+     "sn1_highest_failing_level_below_v": 0.55,
+     "din_at_min_resolvable_v": -0.117172,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1672,
+     "tdec_at_min_resolvable_ns": 0.0912,
+     "sense_time_ns_at_1p0V": 0.0374,
+     "phase3_stored1_after_write_min_v": 1.027961,
+     "usable_dv_sn_lower_bound_v": 0.428,
+     "usable_dv_sn_upper_bound_v": 0.478,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.6,
+     "sn1_highest_failing_level_below_v": 0.55,
+     "din_at_min_resolvable_v": -0.0489845,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.149,
+     "tdec_at_min_resolvable_ns": 0.1089,
+     "sense_time_ns_at_1p0V": 0.0426,
+     "phase3_stored1_after_write_min_v": 1.027961,
+     "usable_dv_sn_lower_bound_v": 0.428,
+     "usable_dv_sn_upper_bound_v": 0.478,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.65,
+     "sn1_highest_failing_level_below_v": 0.6,
+     "din_at_min_resolvable_v": -0.143113,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.3431,
+     "tdec_at_min_resolvable_ns": 0.087,
+     "sense_time_ns_at_1p0V": 0.0531,
+     "phase3_stored1_after_write_min_v": 1.027961,
+     "usable_dv_sn_lower_bound_v": 0.378,
+     "usable_dv_sn_upper_bound_v": 0.428,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.478,
+     0.528
+    ],
+    "ratio_to_vdd_half": [
+     0.531,
+     0.587
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "tt",
+   "temp_c": 125,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.4515,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.1467,
+   "stage_min_resolved_abs_din_mv_plus": 1.4529,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1467,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.4,
+     "sn1_highest_failing_level_below_v": 0.35,
+     "din_at_min_resolvable_v": -0.00373921,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0237,
+     "tdec_at_min_resolvable_ns": 0.1495,
+     "sense_time_ns_at_1p0V": 0.0371,
+     "phase3_stored1_after_write_min_v": 1.123083,
+     "usable_dv_sn_lower_bound_v": 0.7231,
+     "usable_dv_sn_upper_bound_v": 0.7731,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.45,
+     "sn1_highest_failing_level_below_v": 0.4,
+     "din_at_min_resolvable_v": -0.000139563,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0501,
+     "tdec_at_min_resolvable_ns": 0.1428,
+     "sense_time_ns_at_1p0V": 0.0389,
+     "phase3_stored1_after_write_min_v": 1.123083,
+     "usable_dv_sn_lower_bound_v": 0.6731,
+     "usable_dv_sn_upper_bound_v": 0.7231,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.5,
+     "sn1_highest_failing_level_below_v": 0.45,
+     "din_at_min_resolvable_v": -0.0194301,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1194,
+     "tdec_at_min_resolvable_ns": 0.1055,
+     "sense_time_ns_at_1p0V": 0.042,
+     "phase3_stored1_after_write_min_v": 1.123083,
+     "usable_dv_sn_lower_bound_v": 0.6231,
+     "usable_dv_sn_upper_bound_v": 0.6731,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.55,
+     "sn1_highest_failing_level_below_v": 0.5,
+     "din_at_min_resolvable_v": -0.05046,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.2505,
+     "tdec_at_min_resolvable_ns": 0.0884,
+     "sense_time_ns_at_1p0V": 0.0484,
+     "phase3_stored1_after_write_min_v": 1.123083,
+     "usable_dv_sn_lower_bound_v": 0.5731,
+     "usable_dv_sn_upper_bound_v": 0.6231,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.7231,
+     0.7731
+    ],
+    "ratio_to_vdd_half": [
+     0.803,
+     0.859
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "ss",
+   "temp_c": 27,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.3294,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.2269,
+   "stage_min_resolved_abs_din_mv_plus": 1.3294,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.2268,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.6,
+     "sn1_highest_failing_level_below_v": 0.55,
+     "din_at_min_resolvable_v": -0.014187,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0342,
+     "tdec_at_min_resolvable_ns": 0.1967,
+     "sense_time_ns_at_1p0V": 0.0326,
+     "phase3_stored1_after_write_min_v": 0.9605081,
+     "usable_dv_sn_lower_bound_v": 0.3605,
+     "usable_dv_sn_upper_bound_v": 0.4105,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.65,
+     "sn1_highest_failing_level_below_v": 0.6,
+     "din_at_min_resolvable_v": -0.0516914,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1017,
+     "tdec_at_min_resolvable_ns": 0.1401,
+     "sense_time_ns_at_1p0V": 0.0364,
+     "phase3_stored1_after_write_min_v": 0.9605081,
+     "usable_dv_sn_lower_bound_v": 0.3105,
+     "usable_dv_sn_upper_bound_v": 0.3605,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.7,
+     "sn1_highest_failing_level_below_v": 0.65,
+     "din_at_min_resolvable_v": -0.167829,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.2678,
+     "tdec_at_min_resolvable_ns": 0.1041,
+     "sense_time_ns_at_1p0V": 0.044,
+     "phase3_stored1_after_write_min_v": 0.9605081,
+     "usable_dv_sn_lower_bound_v": 0.2605,
+     "usable_dv_sn_upper_bound_v": 0.3105,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.7,
+     "sn1_highest_failing_level_below_v": 0.65,
+     "din_at_min_resolvable_v": -0.0282349,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.2282,
+     "tdec_at_min_resolvable_ns": 0.1445,
+     "sense_time_ns_at_1p0V": 0.0571,
+     "phase3_stored1_after_write_min_v": 0.9605081,
+     "usable_dv_sn_lower_bound_v": 0.2605,
+     "usable_dv_sn_upper_bound_v": 0.3105,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.3605,
+     0.4105
+    ],
+    "ratio_to_vdd_half": [
+     0.401,
+     0.456
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "ss",
+   "temp_c": 125,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.3756,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.178,
+   "stage_min_resolved_abs_din_mv_plus": 1.3764,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.178,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.5,
+     "sn1_highest_failing_level_below_v": 0.45,
+     "din_at_min_resolvable_v": -0.0122014,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0322,
+     "tdec_at_min_resolvable_ns": 0.1513,
+     "sense_time_ns_at_1p0V": 0.041,
+     "phase3_stored1_after_write_min_v": 1.048223,
+     "usable_dv_sn_lower_bound_v": 0.5482,
+     "usable_dv_sn_upper_bound_v": 0.5982,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.55,
+     "sn1_highest_failing_level_below_v": 0.5,
+     "din_at_min_resolvable_v": -0.0280328,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.078,
+     "tdec_at_min_resolvable_ns": 0.1254,
+     "sense_time_ns_at_1p0V": 0.0437,
+     "phase3_stored1_after_write_min_v": 1.048223,
+     "usable_dv_sn_lower_bound_v": 0.4982,
+     "usable_dv_sn_upper_bound_v": 0.5482,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.6,
+     "sn1_highest_failing_level_below_v": 0.55,
+     "din_at_min_resolvable_v": -0.0865246,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1865,
+     "tdec_at_min_resolvable_ns": 0.1026,
+     "sense_time_ns_at_1p0V": 0.0484,
+     "phase3_stored1_after_write_min_v": 1.048223,
+     "usable_dv_sn_lower_bound_v": 0.4482,
+     "usable_dv_sn_upper_bound_v": 0.4982,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.65,
+     "sn1_highest_failing_level_below_v": 0.6,
+     "din_at_min_resolvable_v": -0.175616,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.3756,
+     "tdec_at_min_resolvable_ns": 0.0827,
+     "sense_time_ns_at_1p0V": 0.0544,
+     "phase3_stored1_after_write_min_v": 1.048223,
+     "usable_dv_sn_lower_bound_v": 0.3982,
+     "usable_dv_sn_upper_bound_v": 0.4482,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.5482,
+     0.5982
+    ],
+    "ratio_to_vdd_half": [
+     0.609,
+     0.665
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "ff",
+   "temp_c": 27,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.2659,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.1378,
+   "stage_min_resolved_abs_din_mv_plus": 1.2663,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1377,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.5,
+     "sn1_highest_failing_level_below_v": 0.45,
+     "din_at_min_resolvable_v": -0.0623128,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0823,
+     "tdec_at_min_resolvable_ns": 0.0773,
+     "sense_time_ns_at_1p0V": 0.0351,
+     "phase3_stored1_after_write_min_v": 1.08821,
+     "usable_dv_sn_lower_bound_v": 0.5882,
+     "usable_dv_sn_upper_bound_v": 0.6382,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.5,
+     "sn1_highest_failing_level_below_v": 0.45,
+     "din_at_min_resolvable_v": -0.0228843,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0729,
+     "tdec_at_min_resolvable_ns": 0.0936,
+     "sense_time_ns_at_1p0V": 0.0371,
+     "phase3_stored1_after_write_min_v": 1.08821,
+     "usable_dv_sn_lower_bound_v": 0.5882,
+     "usable_dv_sn_upper_bound_v": 0.6382,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.55,
+     "sn1_highest_failing_level_below_v": 0.5,
+     "din_at_min_resolvable_v": -0.09446,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1945,
+     "tdec_at_min_resolvable_ns": 0.074,
+     "sense_time_ns_at_1p0V": 0.0408,
+     "phase3_stored1_after_write_min_v": 1.08821,
+     "usable_dv_sn_lower_bound_v": 0.5382,
+     "usable_dv_sn_upper_bound_v": 0.5882,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.6,
+     "sn1_highest_failing_level_below_v": 0.55,
+     "din_at_min_resolvable_v": -0.214926,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.4149,
+     "tdec_at_min_resolvable_ns": 0.0602,
+     "sense_time_ns_at_1p0V": 0.0497,
+     "phase3_stored1_after_write_min_v": 1.08821,
+     "usable_dv_sn_lower_bound_v": 0.4882,
+     "usable_dv_sn_upper_bound_v": 0.5382,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "50mV",
+    "usable_dv_sn_v": [
+     0.5882,
+     0.6382
+    ],
+    "ratio_to_vdd_half": [
+     0.654,
+     0.709
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "ff",
+   "temp_c": 125,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.9461,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.108,
+   "stage_min_resolved_abs_din_mv_plus": 1.9475,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1079,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.35,
+     "sn1_highest_failing_level_below_v": 0.3,
+     "din_at_min_resolvable_v": -0.025781,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0458,
+     "tdec_at_min_resolvable_ns": 0.079,
+     "sense_time_ns_at_1p0V": 0.0303,
+     "phase3_stored1_after_write_min_v": 1.187364,
+     "usable_dv_sn_lower_bound_v": 0.8374,
+     "usable_dv_sn_upper_bound_v": 0.8874,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.4,
+     "sn1_highest_failing_level_below_v": 0.35,
+     "din_at_min_resolvable_v": -0.035443,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0854,
+     "tdec_at_min_resolvable_ns": 0.0744,
+     "sense_time_ns_at_1p0V": 0.0316,
+     "phase3_stored1_after_write_min_v": 1.187364,
+     "usable_dv_sn_lower_bound_v": 0.7874,
+     "usable_dv_sn_upper_bound_v": 0.8374,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.45,
+     "sn1_highest_failing_level_below_v": 0.4,
+     "din_at_min_resolvable_v": -0.0798181,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1798,
+     "tdec_at_min_resolvable_ns": 0.0646,
+     "sense_time_ns_at_1p0V": 0.0337,
+     "phase3_stored1_after_write_min_v": 1.187364,
+     "usable_dv_sn_lower_bound_v": 0.7374,
+     "usable_dv_sn_upper_bound_v": 0.7874,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.5,
+     "sn1_highest_failing_level_below_v": 0.45,
+     "din_at_min_resolvable_v": -0.137422,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.3374,
+     "tdec_at_min_resolvable_ns": 0.0591,
+     "sense_time_ns_at_1p0V": 0.0383,
+     "phase3_stored1_after_write_min_v": 1.187364,
+     "usable_dv_sn_lower_bound_v": 0.6874,
+     "usable_dv_sn_upper_bound_v": 0.7374,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.8374,
+     0.8874
+    ],
+    "ratio_to_vdd_half": [
+     0.93,
+     0.986
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "sf",
+   "temp_c": 27,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.3328,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.1664,
+   "stage_min_resolved_abs_din_mv_plus": 1.3334,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1663,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.45,
+     "sn1_highest_failing_level_below_v": 0.4,
+     "din_at_min_resolvable_v": -0.0655767,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0856,
+     "tdec_at_min_resolvable_ns": 0.1049,
+     "sense_time_ns_at_1p0V": 0.0411,
+     "phase3_stored1_after_write_min_v": 1.123369,
+     "usable_dv_sn_lower_bound_v": 0.6734,
+     "usable_dv_sn_upper_bound_v": 0.7234,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.45,
+     "sn1_highest_failing_level_below_v": 0.4,
+     "din_at_min_resolvable_v": -0.0235226,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0735,
+     "tdec_at_min_resolvable_ns": 0.1352,
+     "sense_time_ns_at_1p0V": 0.0465,
+     "phase3_stored1_after_write_min_v": 1.123369,
+     "usable_dv_sn_lower_bound_v": 0.6734,
+     "usable_dv_sn_upper_bound_v": 0.7234,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.5,
+     "sn1_highest_failing_level_below_v": 0.45,
+     "din_at_min_resolvable_v": -0.104136,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.2041,
+     "tdec_at_min_resolvable_ns": 0.0995,
+     "sense_time_ns_at_1p0V": 0.0534,
+     "phase3_stored1_after_write_min_v": 1.123369,
+     "usable_dv_sn_lower_bound_v": 0.6234,
+     "usable_dv_sn_upper_bound_v": 0.6734,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.55,
+     "sn1_highest_failing_level_below_v": 0.5,
+     "din_at_min_resolvable_v": -0.248479,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.4485,
+     "tdec_at_min_resolvable_ns": 0.0783,
+     "sense_time_ns_at_1p0V": 0.064,
+     "phase3_stored1_after_write_min_v": 1.123369,
+     "usable_dv_sn_lower_bound_v": 0.5734,
+     "usable_dv_sn_upper_bound_v": 0.6234,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "50mV",
+    "usable_dv_sn_v": [
+     0.6734,
+     0.7234
+    ],
+    "ratio_to_vdd_half": [
+     0.748,
+     0.804
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "sf",
+   "temp_c": 125,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.5069,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.1456,
+   "stage_min_resolved_abs_din_mv_plus": 1.5086,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1456,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.3,
+     "sn1_highest_failing_level_below_v": null,
+     "din_at_min_resolvable_v": -0.0110635,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0311,
+     "tdec_at_min_resolvable_ns": 0.1542,
+     "sense_time_ns_at_1p0V": 0.0458,
+     "phase3_stored1_after_write_min_v": 1.216843,
+     "usable_dv_sn_lower_bound_v": 0.9168,
+     "usable_dv_sn_upper_bound_v": 0.9168,
+     "usable_dv_vs_vdd_half": "met",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.35,
+     "sn1_highest_failing_level_below_v": 0.3,
+     "din_at_min_resolvable_v": -0.0187358,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0687,
+     "tdec_at_min_resolvable_ns": 0.1169,
+     "sense_time_ns_at_1p0V": 0.0483,
+     "phase3_stored1_after_write_min_v": 1.216843,
+     "usable_dv_sn_lower_bound_v": 0.8668,
+     "usable_dv_sn_upper_bound_v": 0.9168,
+     "usable_dv_vs_vdd_half": "indeterminate_on_this_grid",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.4,
+     "sn1_highest_failing_level_below_v": 0.35,
+     "din_at_min_resolvable_v": -0.058601,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1586,
+     "tdec_at_min_resolvable_ns": 0.092,
+     "sense_time_ns_at_1p0V": 0.0517,
+     "phase3_stored1_after_write_min_v": 1.216843,
+     "usable_dv_sn_lower_bound_v": 0.8168,
+     "usable_dv_sn_upper_bound_v": 0.8668,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.45,
+     "sn1_highest_failing_level_below_v": 0.4,
+     "din_at_min_resolvable_v": -0.117948,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.3179,
+     "tdec_at_min_resolvable_ns": 0.0796,
+     "sense_time_ns_at_1p0V": 0.0582,
+     "phase3_stored1_after_write_min_v": 1.216843,
+     "usable_dv_sn_lower_bound_v": 0.7668,
+     "usable_dv_sn_upper_bound_v": 0.8168,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.9168,
+     0.9168
+    ],
+    "ratio_to_vdd_half": [
+     1.019,
+     1.019
+    ],
+    "verdict": "met",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "fs",
+   "temp_c": 27,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.2718,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.1619,
+   "stage_min_resolved_abs_din_mv_plus": 1.2718,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1618,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.65,
+     "sn1_highest_failing_level_below_v": 0.6,
+     "din_at_min_resolvable_v": -0.0228886,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0429,
+     "tdec_at_min_resolvable_ns": 0.1187,
+     "sense_time_ns_at_1p0V": 0.0314,
+     "phase3_stored1_after_write_min_v": 0.9323276,
+     "usable_dv_sn_lower_bound_v": 0.2823,
+     "usable_dv_sn_upper_bound_v": 0.3323,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.7,
+     "sn1_highest_failing_level_below_v": 0.65,
+     "din_at_min_resolvable_v": -0.0694716,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1195,
+     "tdec_at_min_resolvable_ns": 0.0998,
+     "sense_time_ns_at_1p0V": 0.0336,
+     "phase3_stored1_after_write_min_v": 0.9323276,
+     "usable_dv_sn_lower_bound_v": 0.2323,
+     "usable_dv_sn_upper_bound_v": 0.2823,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.7,
+     "sn1_highest_failing_level_below_v": 0.65,
+     "din_at_min_resolvable_v": -0.00574677,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1057,
+     "tdec_at_min_resolvable_ns": 0.1259,
+     "sense_time_ns_at_1p0V": 0.0371,
+     "phase3_stored1_after_write_min_v": 0.9323276,
+     "usable_dv_sn_lower_bound_v": 0.2323,
+     "usable_dv_sn_upper_bound_v": 0.2823,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.75,
+     "sn1_highest_failing_level_below_v": 0.7,
+     "din_at_min_resolvable_v": -0.0596023,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.2596,
+     "tdec_at_min_resolvable_ns": 0.0991,
+     "sense_time_ns_at_1p0V": 0.0443,
+     "phase3_stored1_after_write_min_v": 0.9323276,
+     "usable_dv_sn_lower_bound_v": 0.1823,
+     "usable_dv_sn_upper_bound_v": 0.2323,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.2823,
+     0.3323
+    ],
+    "ratio_to_vdd_half": [
+     0.314,
+     0.369
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  },
+  {
+   "corner": "fs",
+   "temp_c": 125,
+   "klt_corner_status": "pass",
+   "stage_min_resolved_abs_din_mv_minus": 1.5808,
+   "stage_all_minus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_minus": 0.1456,
+   "stage_min_resolved_abs_din_mv_plus": 1.5812,
+   "stage_all_plus_points_resolve": true,
+   "stage_tdec_at_1mv_ns_plus": 0.1455,
+   "end_to_end": {
+    "20mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.5,
+     "sn1_highest_failing_level_below_v": 0.45,
+     "din_at_min_resolvable_v": -0.00233406,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0223,
+     "tdec_at_min_resolvable_ns": 0.1252,
+     "sense_time_ns_at_1p0V": 0.0302,
+     "phase3_stored1_after_write_min_v": 1.027288,
+     "usable_dv_sn_lower_bound_v": 0.5273,
+     "usable_dv_sn_upper_bound_v": 0.5773,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "50mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.55,
+     "sn1_highest_failing_level_below_v": 0.5,
+     "din_at_min_resolvable_v": 0.0122282,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0378,
+     "tdec_at_min_resolvable_ns": 0.1712,
+     "sense_time_ns_at_1p0V": 0.0317,
+     "phase3_stored1_after_write_min_v": 1.027288,
+     "usable_dv_sn_lower_bound_v": 0.4773,
+     "usable_dv_sn_upper_bound_v": 0.5273,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "100mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.6,
+     "sn1_highest_failing_level_below_v": 0.55,
+     "din_at_min_resolvable_v": 0.0138796,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.0861,
+     "tdec_at_min_resolvable_ns": 0.1311,
+     "sense_time_ns_at_1p0V": 0.0342,
+     "phase3_stored1_after_write_min_v": 1.027288,
+     "usable_dv_sn_lower_bound_v": 0.4273,
+     "usable_dv_sn_upper_bound_v": 0.4773,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    },
+    "200mV": {
+     "stored0_all_resolve": true,
+     "sn1_min_resolvable_upper_bound_v": 0.65,
+     "sn1_highest_failing_level_below_v": 0.6,
+     "din_at_min_resolvable_v": 0.0148513,
+     "rbl_droop_below_precharge_at_min_resolvable_v": 0.1851,
+     "tdec_at_min_resolvable_ns": 0.1112,
+     "sense_time_ns_at_1p0V": 0.0389,
+     "phase3_stored1_after_write_min_v": 1.027288,
+     "usable_dv_sn_lower_bound_v": 0.3773,
+     "usable_dv_sn_upper_bound_v": 0.4273,
+     "usable_dv_vs_vdd_half": "violated",
+     "stored1_at_vdd_half_resolves": true
+    }
+   },
+   "best_swept_reference": {
+    "reference_offset": "20mV",
+    "usable_dv_sn_v": [
+     0.5273,
+     0.5773
+    ],
+    "ratio_to_vdd_half": [
+     0.586,
+     0.641
+    ],
+    "verdict": "violated",
+    "stored1_at_vdd_half_resolves": true
+   }
+  }
+ ],
+ "variant": {
+  "id": "crbl_ext4row",
+  "c_rbl_label": "EXTRACTED-4-ROW (layout/gain_cell_2t_array.parasitics.summary.json comparison.c_rbl.extracted_4row_worst_total_ff; N_rows = 4 is a STUDY-ASSUMPTION)",
+  "cell_card": "design",
+  "reference_dummy_load": "same C_RBL as rbl (ideal matched dummy load)",
+  "c_rbl_source": {
+   "file": "layout/gain_cell_2t_array.parasitics.summary.json",
+   "key": "comparison.c_rbl.extracted_4row_worst_total_ff",
+   "value_ff": 0.859179
+  },
+  "n_rows_ratified": false
+ }
+}

@@ -150,11 +150,12 @@ verification pass (that is a separate, later T1 item). Captured by
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t.drc.result.json`](gain_cell_2t.drc.result.json)): `status:
-  "clean"`, `violation_count: 0` under klt 0.9.1 (the committed report's pin
-  since #275) and under klt 0.8.0 after the issue #244 regeneration (the
-  0.4.0-generated geometry gave `violations`, 34, under 0.8.0; it was `clean`,
-  0, under 0.5.0) -- see "DRC under klt 0.8.0" and "DRC/LVS/ERC under klt
-  0.9.1" below.
+  "clean"`, `violation_count: 0` under klt 0.9.2 (the committed report's pin
+  since #388; previously 0.9.1 since #275) and under klt 0.8.0 after the
+  issue #244 regeneration (the 0.4.0-generated geometry gave `violations`,
+  34, under 0.8.0; it was `clean`, 0, under 0.5.0) -- see "DRC under klt
+  0.8.0", "DRC/LVS/ERC under klt 0.9.1" and "DRC/LVS/ERC under klt 0.9.2"
+  below.
 - **`klt extract --deck sky130`**
   ([`gain_cell_2t.extract.json`](gain_cell_2t.extract.json) /
   [`.spice`](gain_cell_2t.extract.spice)): `device_count: 2`, both `nfet`,
@@ -403,18 +404,20 @@ to 0.17 um. The extra `_mos.gds` PCell parameters come from klayout-tools
   `licon1.ongrid.1` and `poly.endcap.diff.1`, and the 0.8.0 generators do not.
   The 4x4 array regenerated in a scratch directory reproduces the committed
   array byte-for-byte (`baseline comparison: match`). 0.8.0 is still the newest
-  release that does -- see "Generation and check pins diverge at klt 0.9.1"
+  release that does -- see "Generation and check pins diverge at klt 0.9.1
+  (issues #275, #388)"
   below. KLayout stays pinned (with `klayout==0.30.10` PCell
   context serialization differs).
-- **check** (`klt drc`, `klt lvs`, `klt erc`): PyPI `klayout-tools==0.9.1`
-  with `klayout==0.30.12` (issue #275). This is the same release
+- **check** (`klt drc`, `klt lvs`, `klt erc`): PyPI `klayout-tools==0.9.2`
+  with `klayout==0.30.12` (issues #275 and #388; #275 moved this pin off
+  0.8.0 to 0.9.1, #388 moved it to 0.9.2). This is the same release
   `.github/workflows/signoff.yml` grades with (`KLT_VERSION`), and the one the
   committed DRC/LVS/ERC reports record. It is a release pin, so
   `generation_toolchain.py` checks the exact
   package version and rejects a git install (no commit is probed). klt 0.7.0
   could not run this ERC spec: it rejected the spec's `_comment` key
   (klayout-tools #2822). 0.8.0 accepts it unchanged (measured, #242), and so
-  does 0.9.1 (measured, #275).
+  do 0.9.1 (measured, #275) and 0.9.2 (measured, #388).
 - **PDK**: sky130A at open_pdks `f6eeac7d...` (`docs/pdk-pin.md`), read from
   `$PDK_ROOT/$PDK/SOURCES`.
 
@@ -499,11 +502,12 @@ reported, signed-off verification pass (#24 item 5):
 
 - **`klt drc --deck sky130`**
   ([`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)):
-  `status: "clean"`, `violation_count: 0` under klt 0.9.1 (the committed
-  report's pin since #275) and under klt 0.8.0 after the issue #244
-  regeneration (the 0.4.0-generated geometry gave `violations`, 64, under
-  0.8.0; it was `clean`, 0, under 0.6.0) -- see "DRC under klt 0.8.0" and
-  "DRC/LVS/ERC under klt 0.9.1" below.
+  `status: "clean"`, `violation_count: 0` under klt 0.9.2 (the committed
+  report's pin since #388; previously 0.9.1 since #275) and under klt 0.8.0
+  after the issue #244 regeneration (the 0.4.0-generated geometry gave
+  `violations`, 64, under 0.8.0; it was `clean`, 0, under 0.6.0) -- see
+  "DRC under klt 0.8.0", "DRC/LVS/ERC under klt 0.9.1" and "DRC/LVS/ERC
+  under klt 0.9.2" below.
 - **`klt lvs`**
   ([`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json))
   against the generated
@@ -585,11 +589,46 @@ moved 2 -> 3 (`reference` became a `{path, scope}` object; an
 `excluded_pins` field was added) and the ERC coverage block gained
 `missing_tie_checked: true`. T1 items 3, 4 and 11 stay `met`.
 
-### Generation and check pins diverge at klt 0.9.1 (issue #275)
+### DRC/LVS/ERC under klt 0.9.2 (issue #388)
+
+The check pin moved 0.9.1 -> 0.9.2 (`klayout` stays 0.30.12) to adopt the
+release that lets one manifest evidence row grade a bitcell report and an
+array (later: latch) report together -- the multi-report form #382's
+citations need. The 0.9.2 sky130 deck is again a different deck
+(`provenance.deck.content_hash` `sha256:029ef177...` -> `sha256:36027b82...`),
+so all four committed DRC/LVS reports read `status: drifted` under
+`klt drc --check` / `klt lvs --check` until they were regenerated (the ERC
+report carries no deck hash and stayed fresh). Re-run against the
+**unchanged** committed GDS, every verdict holds:
+
+| Report | 0.9.1 | 0.9.2 |
+|---|---|---|
+| `gain_cell_2t.drc.result.json` | clean, 0 | clean, 0 |
+| `gain_cell_2t_array.drc.result.json` | clean, 0 | clean, 0 |
+| `gain_cell_2t.lvs.result.json` | match (2 `pfet` warnings) | match (2 `pfet` warnings) |
+| `gain_cell_2t_array.lvs.result.json` | match (2 `pfet` warnings) | match (2 `pfet` warnings) |
+| `gain_cell_2t_array.erc.result.json` | clean, 0 findings | clean, 0 findings |
+
+`rules_checked` is identical (47, same names, same `deck_layers`); the 0.9.2
+deck only discloses 293 more `unmodeled_rules` (54 -> 347, e.g. the `MR_*`
+latch family and more `capm`/`cap2m`), so the coverage statement got wider
+while the checked set did not move. LVS device/net/pin counts, body
+verification and the ERC gate/antenna verdicts are unchanged. T1 items 3, 4
+and 11 stay `met`.
+
+The issue's scratch two-member probe, repeated under 0.9.2 with the
+refreshed reports: `3.analog` and `4.analog` converted to two-member lists
+(bitcell + array reports) grade `met` with `members_covered = members_total
+= 2` on both rows, and substituting the bitcell GDS hash for the array DRC
+member flips that one citation to `unmet / stale_evidence` while `4.analog`
+stays `met` (0.9.1 had graded the same manifest's item 3 `unmet /
+invalid_evidence`; scratch run, 2026-11-20).
+
+### Generation and check pins diverge at klt 0.9.1 (issues #275, #388)
 
 The two pins in [`generation-toolchain.json`](generation-toolchain.json)
 coincided from #244 until #275. They no longer do: **generation stays
-`0.8.0`, check moves to `0.9.1`.**
+`0.8.0`, check moves to `0.9.1` (#275) and then `0.9.2` (#388).**
 
 Measured on 2026-11-14 with a 0.9.1 generation toolchain (same
 `klayout==0.30.12`, same `array_topology.py` params, same PDK pin),
@@ -601,15 +640,16 @@ emits its inner PCell structure as `<cell-name>__core`
 `$$$CONTEXT_INFO$$$` record. Structure names and PCell context live in the
 GDS, so the bytes differ.
 
-What is drawn does not -- and since issue #284 that is a committed
-measurement, not a sentence. `layout/xor_layout_geometry.py` flattens the
-committed and the 0.9.1-regenerated `gain_cell_2t_array_4x4_layout_0`
-full-depth and XORs them per layer/datatype; the record is
+Under 0.9.1 what is drawn does not change either -- and since issue #284
+that is a committed measurement, not a sentence.
+`layout/xor_layout_geometry.py` flattens the committed and the
+0.9.1-regenerated `gain_cell_2t_array_4x4_layout_0` full-depth and XORs them
+per layer/datatype; the record is
 [`layout/results/geometry_xor_klt0.9.1_vs_committed_20261114.json`](results/geometry_xor_klt0.9.1_vs_committed_20261114.json),
-stamped with both toolchain identities (klayout-tools 0.8.0 and 0.9.1, both on
-`klayout==0.30.12`) and the committed GDS's own sha256:
+stamped with both toolchain identities (klayout-tools 0.8.0 and 0.9.1, both
+on `klayout==0.30.12`) and the committed GDS's own sha256:
 
-| What | Result |
+| What | Result under 0.9.1 |
 |---|---|
 | Drawn layer/datatype pairs | **10**, enumerated by name: `65/20`, `65/44`, `66/20`, `66/44`, `67/20`, `67/44`, `68/20`, `93/44`, `94/20`, `95/20` |
 | Per-pair XOR | **empty on all 10** -- 0 polygons, 0.0 um^2, each stated explicitly |
@@ -617,8 +657,26 @@ stamped with both toolchain identities (klayout-tools 0.8.0 and 0.9.1, both on
 | Labels | identical, **33** on the two label-only pairs `67/5` (25) and `68/5` (8) |
 | DRC / LVS / ERC on the scratch run | `clean` / `match` / `clean` |
 
-So the committed geometry remains the geometry 0.9.1 would produce, and no
-density, `C_SN`, parasitic or retention number is affected.
+**Under 0.9.2 the generation is no longer geometry-identical (issue #388).**
+Re-measured on 2026-11-21 with the same commands, same params and same PDK
+(no parameter in the emitted `gain_cell_2t_array_mos.json` differs -- only
+provenance), the record is
+[`layout/results/geometry_xor_klt0.9.2_vs_committed_20261121.json`](results/geometry_xor_klt0.9.2_vs_committed_20261121.json):
+of the same 10 drawn pairs exactly one, `95/20`, XORs non-empty -- each of
+its **32 per-device markers grew from 0.36 x 0.36 um to 0.37 x 0.37 um**
+(+5 nm per side, on the 5 nm grid; 0.0073 um^2 each, **0.2336 um^2** total
+XOR). The other 9 pairs XOR empty, and the bounding box and all 33 labels
+are identical. The 0.9.2-drawn scratch stream is itself DRC `clean` / LVS
+`match` / ERC `clean` under 0.9.2, and the committed 0.8.0-drawn geometry is
+DRC clean under the 0.9.2 deck too ("DRC/LVS/ERC under klt 0.9.2" above), so
+this is a measured upstream generator change (klt's bundled `mos_array`
+PCell), not a deck or grading regression -- surfaced in #388, not papered
+over.
+
+So the committed geometry remains the geometry 0.9.1 would produce; 0.9.2
+would draw `95/20` slightly larger. Nothing was regenerated for either
+pin move -- the check pin only re-checks the committed GDS, it never redraws
+it -- and no density, `C_SN`, parasitic or retention number is affected.
 
 **Why 10 and not 12.** `klt layers` on this GDS reports **12** layer/datatype
 pairs, because it folds `TEXT` records into its per-pair shape counts. The
@@ -628,16 +686,17 @@ enumerate the 10 pairs **by name** -- a bare count is what made this ambiguous
 in the first place, and `xor_layout_geometry.py` asserts the enumeration rather
 than looping over whichever layers happen to be present.
 
-**Reproducing it.** The measurement needs a klt **0.9.1** *generation*
-toolchain, which the committed pin is not. Note that
+**Reproducing it.** The measurement needs a klt **0.9.x** *generation*
+toolchain (0.9.1 for the #284 record, 0.9.2 for the #388 one), which the
+committed pin is not. Note that
 `GCEDRAM_KLT_GENERATION_PYTHON` does **not** get you one:
 `generation_toolchain.py preflight` validates whatever that variable points at
-*against* the committed pin, so a 0.9.1 interpreter in the generation slot is
-rejected with `klayout-tools package version: expected 0.8.0, actual 0.9.1`
+*against* the committed pin, so a 0.9.x interpreter in the generation slot is
+rejected with `klayout-tools package version: expected 0.8.0, actual 0.9.x`
 (exit 2, nothing written). That is the override working as designed -- it
 redirects *where* the pinned toolchain lives, it does not waive the pin. So run
-the two generation commands directly, in a scratch dir, with a 0.9.1 venv's
-`klt`; the full command list is in the record's `commands` array, and
+the two generation commands directly, in a scratch dir, with a 0.9.x venv's
+`klt`; the full command list is in each record's `commands` array, and
 `./layout/generate_array.sh --check` keeps reporting `baseline comparison:
 mismatch` under the committed 0.8.0 pin's *byte* gate, which is correct and is
 not the claim under test.
@@ -654,13 +713,15 @@ happened to look at proves less than it appears to:
   see); the third keeps the enumeration intact and is caught by the XOR at
   0.00015 um^2, the manufacturing grid.
 
-Bumping the generation pin to 0.9.1 was therefore rejected: it would make
+Bumping the generation pin to 0.9.x was therefore rejected: it would make
 `generate_array.sh --check` fail against the committed baseline, and
 re-generating the array to satisfy it would change
-`gain_cell_2t_array.gds`'s content hash for a cell rename, invalidating every
-extraction, parasitics, density and sim-side report that cites that hash --
-cost with no geometric benefit. The generation pin's contract is "the release
-that reproduces the committed GDS byte-for-byte", and that release is still
+`gain_cell_2t_array.gds`'s content hash -- for a cell rename under 0.9.1,
+and for a renamed *and* partially redrawn stream under 0.9.2 -- invalidating
+every extraction, parasitics, density and sim-side report that cites that
+hash, with no geometric benefit (under 0.9.2 it would not even be
+geometry-preserving). The generation pin's contract is "the release that
+reproduces the committed GDS byte-for-byte", and that release is still
 0.8.0. `layout/test_generation_reproducibility.py::ToolchainGuard::test_config_pins`
 no longer asserts the two pins are equal; it requires the generation pin to
 carry its reproduction evidence in `verified` and, when the pins differ, to
@@ -670,11 +731,18 @@ Prose containment alone cannot tell a measured justification from a plausible
 sentence, so `ToolchainGuard::test_generation_pin_divergence_cites_the_xor_evidence_record`
 (issue #284) puts a mechanical floor under it: when the pins differ, every
 `layout/results/` file `verified` cites must exist, exactly one must parse as
-the geometry-XOR record kind, and that record must report an empty XOR on every
-enumerated drawn pair, a matching bbox and label set, the two pin versions it
-ran under, and **the sha256 of the committed `gain_cell_2t_array.gds` as it is
-on disk now**. Regenerate the array, move either pin, or reword `verified`'s
-layer enumeration and the citation fails loudly instead of going quietly stale.
+the geometry-XOR record kind, and that record must report a matching
+enumeration, bbox and label set, the two pin versions it ran under, and
+**the sha256 of the committed `gain_cell_2t_array.gds` as it is on disk
+now**. Until #388 the record also had to come out `equivalent` (an empty XOR
+on every enumerated drawn pair); the 0.9.2 measurement does not, so the test
+now branches on the record's own verdict: an `equivalent` record still
+requires the empty-XOR sentence, while a `not-equivalent` record requires
+`verified` to name every layer with a non-empty XOR together with its total
+XOR area and forbids the all-empty claim the record contradicts. Either way
+the prose is bound to the artifact. Regenerate the array, move either pin, or
+reword `verified`'s layer enumeration and the citation fails loudly instead
+of going quietly stale.
 The test stays stdlib-only and never computes the XOR itself --
 `.github/workflows/evidence-checks.yml` runs it under a bare `python3 -I`,
 which has no `klayout`.
@@ -704,7 +772,7 @@ directory that is **not** the tool venv's `bin`, prepended to `PATH`:
 
 ```bash
 python3 layout/generation_toolchain.py install --role check   # .toolchains/klt-check-v<ver>-klayout-<ver>
-mkdir -p /tmp/klt-pinned && ln -sf "$PWD/.toolchains/klt-check-v0.9.1-klayout-0.30.12/bin/klt" /tmp/klt-pinned/klt
+mkdir -p /tmp/klt-pinned && ln -sf "$PWD/.toolchains/klt-check-v0.9.2-klayout-0.30.12/bin/klt" /tmp/klt-pinned/klt
 PATH=/tmp/klt-pinned:$PATH klt signoff --attest 10 --inventory attest/item10.json -o attest/item10.envelope.json
 ```
 
@@ -723,8 +791,8 @@ debugging (issue #39). Two committed files:
   `ties[]` entry, `psub_guard_ring`. The spec's own `_comment` block
   justifies every entry.
 - **[`gain_cell_2t_array.erc.result.json`](gain_cell_2t_array.erc.result.json)** --
-  the run against the committed GDS, produced by klt v0.9.1
-  (PyPI `klayout-tools==0.9.1`, previously `0.8.0`, before that
+  the run against the committed GDS, produced by klt v0.9.2
+  (PyPI `klayout-tools==0.9.2`, previously `0.9.1` (#275), `0.8.0`, before that
   `c622e8addb36`/0.6.0) **from the repository root**
   (`klt signoff` re-reads the spec the report names relative to its own
   working directory, so the report must record `layout/erc-supply-spec.json`):
@@ -772,9 +840,11 @@ debugging (issue #39). Two committed files:
     the spec's content hash is pinned in `provenance.spec`.
 - **[`gain_cell_2t_array.lvs.result.json`](gain_cell_2t_array.lvs.result.json)**
   and **[`gain_cell_2t_array.drc.result.json`](gain_cell_2t_array.drc.result.json)**
-  -- refreshed with klt v0.9.1 (#275) against the committed GDS regenerated in #244
-  (`klt lvs gain_cell_2t_array.lvs.request.json`, `klt drc
-  gain_cell_2t_array.gds --deck sky130`, from `layout/`): LVS `match` with
+  -- refreshed with klt v0.9.2 (#388; previously 0.9.1, #275) against the
+  committed GDS regenerated in #244
+  (`klt lvs layout/gain_cell_2t_array.lvs.request.json`, `klt drc
+  layout/gain_cell_2t_array.gds --deck sky130`, from the repository root):
+  LVS `match` with
   `GND` paired, carrying `provenance.input`; DRC **`clean`** (0; it was 64
   violations on the pre-#244 geometry, see
   "DRC under klt 0.8.0" below).
@@ -836,6 +906,218 @@ filed against [2AMLogic/klayout-tools](https://github.com/2AMLogic/klayout-tools
   records this was not derivable from a value `klt gen-compose` exposes to
   a caller, itself an instance of the gap those two upstream issues
   describe.
+
+## Sense latch (issue #387): the six-device latch for #382's sense amplifier
+
+The physical deliverable for the sense-amplifier epic (#382): the sky130
+geometry for the provisional six-device sense latch defined by the canonical
+netlist [`design/sense_latch.spice`](../design/sense_latch.spice) (issue
+#109) -- the cross-coupled nmos pair (`XMN1`/`XMN2`, W=1µm each), the
+cross-coupled pmos pair (`XMP1`/`XMP2`, W=2µm each), the `vn` footer switch
+(`XMNF`, nfet W=2µm, gated by `en`) and the `vp` header switch (`XMPH`, pfet
+W=4µm, gated by `enb`), all at L=0.15µm. Sizing is **provisional** -- carried
+over unchanged from the netlist, not re-derived here (resizing, spec
+ratification, offset/yield validation and post-layout simulation are all
+#387's declared out-of-scope, owned by later work).
+
+**Scope**: geometry capture and physical body-tie verification, the same
+informal, not-a-formal-sign-off bar the single cell (#15) and the array
+(#34) established. The pass condition is a committed, reproducible GDS plus
+native `klt drc`/`klt lvs` evidence that the stream really holds exactly
+the netlist's six devices with their bulks on the right supplies.
+
+Everything is generated, never hand-drawn:
+[`sense_latch_topology.py`](sense_latch_topology.py) parses the canonical
+netlist's six X cards and derives **all** generation inputs from that one
+parse -- the `klt gen` params for five blocks, the `klt gen-compose`
+request (placement, connectivity, the explicit cross-coupling routing
+below), and the plain-element LVS reference with the netlist's sha256
+pinned in its header -- so the layout, its request and the LVS reference
+cannot silently drift from the design source (the array's #34/#91
+"generated, not hand-transcribed" bar; see the module's own docstring for
+the full device -> block map).
+
+### What's here
+
+| File | Purpose |
+|---|---|
+| [`sense_latch.gds`](sense_latch.gds) | The latch layout -- top cell `sense_latch_layout_0`, 12.23 x 13.07µm. |
+| [`generate_sense_latch.sh`](generate_sense_latch.sh) | Regenerates every `sense_latch*` artifact in place under the pinned toolchains; `--check` regenerates into a scratch dir, byte-compares all 15 artifacts with the committed ones (XOR-per-drawn-layer fallback via [`xor_layout_geometry.py`](xor_layout_geometry.py)) and gates on routed + DRC-clean + 6-device LVS match with verified body ties. |
+| [`sense_latch_topology.py`](sense_latch_topology.py) | The generator: parses `design/sense_latch.spice`, emits gen params / compose request / LVS reference / LVS request. Stdlib only. |
+| [`sense_latch_npair_mos.gds`](sense_latch_npair_mos.gds) / [`.json`](sense_latch_npair_mos.json) | `klt gen mos_array` block: the mirrored cross-coupled nmos pair (U0=`XMN1`, U1=`XMN2`), ringless. |
+| [`sense_latch_ppair_mos.gds`](sense_latch_ppair_mos.gds) / [`.json`](sense_latch_ppair_mos.json) | The mirrored cross-coupled pmos pair (U0=`XMP1`, U1=`XMP2`), enclosed in its own n-well tap ring with a south routing opening (`ring_gap_side: "S"`). |
+| [`sense_latch_footer_mos.gds`](sense_latch_footer_mos.gds) / [`.json`](sense_latch_footer_mos.json) | The `vn` footer switch `XMNF` (ringless nfet). |
+| [`sense_latch_header_mos.gds`](sense_latch_header_mos.gds) / [`.json`](sense_latch_header_mos.json) | The `vp` header switch `XMPH` (pfet in its own well ring, south opening). |
+| [`sense_latch_ptap.gds`](sense_latch_ptap.gds) / [`.json`](sense_latch_ptap.json) | `klt gen guard_ring` P-substrate tap (`add_well=false`), the gain cell's own tap precedent. |
+| [`sense_latch.layout.request.json`](sense_latch.layout.request.json) | `klt gen-compose` request: places the five blocks, routes `rbl`/`ref`/`vn`/`vp`/`GND`/`vdd`, labels `en`/`enb`. |
+| [`sense_latch.layout.json`](sense_latch.layout.json) | `klt gen-compose` response -- placement/routing record. |
+| [`sense_latch.lvs_reference.spice`](sense_latch.lvs_reference.spice) | GENERATED plain-element (M-card) LVS reference, with the source netlist's sha256 in its header (`vn`/`vp` deliberately not `.SUBCKT` pins, matching the schematic's pin set). |
+| [`sense_latch.lvs.request.json`](sense_latch.lvs.request.json) | `klt lvs` request comparing `sense_latch.gds` against the reference. |
+| [`sense_latch.drc.result.json`](sense_latch.drc.result.json), [`sense_latch.lvs.result.json`](sense_latch.lvs.result.json) | Native `klt drc`/`klt lvs` reports (check pin, klt 0.9.2): DRC **clean** (0 violations); LVS **match**, 6/6/6 devices, 8/8/8 nets, `body_verification.status: "verified"` with an empty `device_classes` list. |
+
+Both reports are cited beside the bitcell's in
+[`block-manifest.json`](../block-manifest.json) (`3.analog`, `4.analog`) and
+graded in [`block-manifest.signoff.json`](../block-manifest.signoff.json)
+(issue #382's integration step).
+
+### Footprint, symmetry, dummies, taps
+
+- **Footprint**: 12.23 x 13.07µm (`x` -1.27..10.96, `y` -0.785..12.285 from
+  `sense_latch_layout_0.dbbox()`, including the south `vn` under-row and
+  north `vdd` over-the-top routes; the placed blocks alone span `y`
+  -0.15..11.79).
+  Two rows: the nmos pair + footer + ptap below, the pmos pair + header
+  above; the 1.16µm channel between the rows carries the `vp`/`vdd`
+  east-west tracks. Route totals: `vdd` 33.1µm, `vp` 31.4µm, `vn`
+  25.1µm, `ref` 18.1µm, `rbl` 11.6µm, `GND` 1.2µm.
+- **Pair symmetry**: both pairs are single `mos_array cols=2 mirror=true`
+  blocks -- mirroring puts the two source pads on the units' outer edges
+  (so `vn`/`vp` leave the pair sideways) and the two drains facing each
+  other in the middle, the classic cross-coupled-inverter pair geometry.
+  The footer/header sit on the pair's switch nodes (`vn` east of the
+  nmos pair, `vp` east of the pmos pair).
+- **Dummies: none** (`dummy: 0` on every block). Edge dummies are
+  standard matched-pair practice, but every dummy a `mos_array` draws is
+  a real extracted device: with dummies the stream would hold more than
+  the netlist's six devices and the LVS 6/6/6 device match (this issue's
+  own acceptance bar) could not hold. Dummy handling that is
+  LVS-invisible is an open layout probe for the macro integration (#382).
+- **Body ties, physical**: the nmos side is tied by the standalone
+  `sense_latch_ptap` ring (`GND`) sitting between the nmos pair and the
+  footer -- the p-substrate is global, so one named tap pins all three
+  nfet bodies to `GND` (the #15 tap precedent), and its `TAP_E` port
+  ties `XMNF`'s source to `GND` head-on. Each pfet block carries its own
+  in-well n-tap ring (`TAP_*` ports) so the pmos body tie is guaranteed
+  *inside the same well* by construction; both rings and `XMPH`'s source
+  are strapped to `vdd`. Both pfet rings declare one south routing
+  opening each (`ring_gap_side: "S"`) -- `gen-compose` refuses any route
+  that would cross a *closed* ring, so the opening is what lets
+  `rbl`/`ref`/`vp` reach the inner pads.
+
+### Cross-coupling routing
+
+`rbl` spans {XMN1.D, XMN2.G, XMP1.D, XMP2.G} and `ref` spans {XMN2.D,
+XMN1.G, XMP2.D, XMP1.G}, so inside each pair block the two nets' pads
+interleave and any planar routing of both must cross. The compose request
+resolves each crossing explicitly (see `sense_latch_topology.py`'s
+`build_compose_request`): `rbl`'s pair-internal leg takes a li1/met1
+corridor between the S/D and gate bands, and `ref`'s pair-internal leg is
+pinned to a met2 backbone (the per-leg `layer_role: "metal3"` override)
+with via drops at its two pins only -- hopping over `rbl`'s metal instead
+of fighting it on the same plane. The remaining legs (`vn` under the
+bottom row to reach `footer.U0_D` from the side its port faces, `vp`
+through the ring openings on channel track 1, `vdd` over the top
+ring-to-ring plus the header-source tie on track 2) are explicit
+waypoint legs too, every coordinate computed from the generated block
+reports so a netlist W/L change reshapes the recipe rather than
+invalidating it.
+
+### Regenerating and verifying
+
+```bash
+# One-time toolchain setup: the SAME two pinned klt venvs the array uses
+# (generation 0.8.0 / check 0.9.2, layout/generation-toolchain.json):
+python3 layout/generation_toolchain.py install --role generation
+python3 layout/generation_toolchain.py install --role check
+source design/env.sh    # PDK_ROOT/PDK at the pinned open_pdks commit
+
+./layout/generate_sense_latch.sh            # regenerate in place
+./layout/generate_sense_latch.sh --check    # scratch regen: byte-compare
+                                            # all 15 artifacts (XOR fallback),
+                                            # assert routed + DRC clean +
+                                            # LVS 6/6/6 match + verified bodies
+
+# Resolve the pinned check venv's `klt` (KLT_CHECK) from the repository root:
+eval "$(python3 -I layout/generation_toolchain.py preflight --role check)"
+
+# Report freshness under the active check pin (re-hash inputs vs the reports):
+( cd layout && "${KLT_CHECK}" drc --check sense_latch.drc.result.json \
+            && "${KLT_CHECK}" lvs --check sense_latch.lvs.result.json )
+
+# The six extracted M cards against the netlist table (extract to scratch,
+# then verify against the canonical netlist):
+( cd layout && "${KLT_CHECK}" extract sense_latch.gds --deck sky130 --top sense_latch_layout_0 \
+    -o /tmp/sense_latch.extract.spice --format json > /tmp/sense_latch.extract.json \
+  && python3 -I sense_latch_topology.py --check-extract /tmp/sense_latch.extract.json \
+    --source-spice ../design/sense_latch.spice \
+  && grep '^M\$' /tmp/sense_latch.extract.spice )
+
+# Provenance: re-rendered reference == committed file (also enforced by
+# layout/test_generation_reproducibility.py):
+python3 -I layout/test_generation_reproducibility.py
+```
+
+Extraction evidence for the committed stream (klt 0.9.2): exactly six
+devices -- `M$1 rbl ref vn GND nfet W=1U`, `M$2 vn rbl ref GND nfet W=1U`
+(D/S order swapped, netgen-symmetric), `M$3 vn en GND GND nfet W=2U`,
+`M$4 rbl ref vp vdd pfet W=2U`, `M$5 vp rbl ref vdd pfet W=2U`,
+`M$6 vp enb vdd vdd pfet W=4U`, all `L=0.15U` -- every nfet fourth
+terminal on `GND`, every pfet fourth terminal on `vdd`.
+
+### DRC coverage of the committed stream
+
+`sense_latch.drc.result.json` (`status: "clean"`, `violation_count: 0`,
+`metrics.drc__error__count: 0`) records its own coverage under the klt
+0.9.2 check pin: **65 rules checked over the 13 drawn layers** `64/20
+65/20 65/44 66/20 66/44 67/20 67/44 68/20 68/44 69/20 93/44 94/20 95/20`
+(nwell, diff, tap, poly, contact, li1, mcon, met1, via, met2, nplus,
+pplus, npc), `skipped: []` (88 `rules_skipped`/`inapplicable` rules for
+layers absent from this stream), `nothing_checked: false`; the label-only
+pairs `67/5 68/5 69/5` are listed as `layers_in_stream_without_rules`
+(pin/label datatypes carry no DRC rules), and 347 further
+`unmodeled_rules` (e.g. `poly.3`, `licon.13`, the `capm` and `MR_*`
+families) are disclosed as out of the curated deck's scope -- the same
+honest-coverage statement the array's DRC reports make.
+
+### Provenance pin
+
+`sense_latch.lvs_reference.spice`'s header pins
+`sha256:4f9db65dd376bfc8c1a4b1f1ac9da0a5ba5319bd31ae542c9654bba60f299f58`
+(the file-content hash of `design/sense_latch.spice`).
+`layout/test_generation_reproducibility.py`'s
+`SenseLatchReferenceProvenancePin` re-renders the reference from the live
+netlist and byte-compares, so **any** edit to the design source -- even a
+comment-only one, which changes the hash -- goes stale loudly until
+`generate_sense_latch.sh` regenerates it; the same test class pins the
+derivation contract itself (a matched-pair W edit follows into the gen
+params and the reference; a topology edit is refused by the parser) and
+re-renders the committed compose request from the committed block
+reports.
+
+### Toolchain pins
+
+The latch reuses the array's two pins unchanged
+([`generation-toolchain.json`](generation-toolchain.json)): generation
+klt **0.8.0** (block `gen` + `gen-compose`), check klt **0.9.2**
+(`drc`/`lvs`/`extract`), both on KLayout 0.30.12 at the pinned open_pdks
+commit. Under the generation pin the stream is byte-stable:
+`generate_sense_latch.sh --check` reports **all 15 artifacts
+byte-identical** with the committed ones (measured at issue #387's
+landing), so no XOR fallback was needed -- the fallback exists for the
+day the generation pin moves and bytes drift the way the array's did at
+klt 0.9.1 (#275) and 0.9.2 (#388).
+
+### klayout-tools friction encountered (issue #387)
+
+- `mos_array`'s `mirror` parameter is defined as mirroring every **odd
+  column**, so a single-column block (`cols=1`, like the footer/header
+  here) cannot be flipped at all -- its drain always faces east. The
+  `vn` route therefore has to loop around the whole footer to reach
+  `U0_D` "from the side its port faces" instead of a one-line flip;
+  `gen-compose`'s placement offers no rotation/mirror either. Filed
+  upstream as 2AMLogic/klayout-tools#7002.
+- A same-block pair of nets whose pads interleave (exactly the
+  cross-coupled latch topology) cannot be auto-routed by `gen-compose`'s
+  bounded same-block detour search (4 lanes, all conflicted); the
+  per-leg `layer_role` override + explicit waypoints is a working answer,
+  but the router could not discover the layer swap itself. Filed
+  upstream as 2AMLogic/klayout-tools#7003.
+- `gen-compose`'s refusal to route across a *closed* guard ring (with the
+  pointer to `ring_gap_side`/`ring_gap_um` in the error text) is good,
+  honest tooling -- listed here only to note the one-gap-per-block limit:
+  a block that needs signal exits on two sides must route everything
+  through its single opening, which is what pushed this layout's pfet
+  blocks to a south-opening-only geometry.
 
 ## Array bitline/wordline/storage-node parasitics (issue #80)
 

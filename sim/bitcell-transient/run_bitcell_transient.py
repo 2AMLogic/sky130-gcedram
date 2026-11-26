@@ -90,7 +90,6 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime
-import os
 import re
 import subprocess
 import sys
@@ -104,6 +103,7 @@ REPO_ROOT = SIM_DIR.parent
 sys.path.insert(0, str(SIM_DIR))
 from _evidence_common import (  # noqa: E402
     DEFAULT_PDK_VARIANT,
+    DELTA_V_V,
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_ngspice_available,
@@ -133,7 +133,7 @@ DEFAULT_TEMPS_C = [-40, 27, 125]
 # margin" carries (delta_V = VDD/2 = 0.9 V, the coarse half-VDD bound used
 # absent a sense-amplifier offset/noise budget). Kept identical on purpose:
 # this study's whole point is to be comparable to that derivation.
-DEFAULT_DELTA_V = 0.9
+DEFAULT_DELTA_V = DELTA_V_V
 
 # .tran numerics. `tstep` is only ngspice's suggested initial/print step --
 # the accepted timepoints are LTE-controlled, with breakpoints forced at
@@ -435,24 +435,26 @@ def run_tran(
     tmax: float,
     tag: str,
 ) -> tuple[list[float], list[float], list[float]]:
-    tmpdir = Path(tempfile.mkdtemp(prefix=f"gcedram_tran_{tag}_"))
-    deck_path = tmpdir / "tb.spice"
-    out_path = tmpdir / "tran.dat"
-    deck_path.write_text(
-        render_netlist(
-            ngspice_lib,
-            corner,
-            temp_c,
-            c_sn_f,
-            vrbl,
-            vbl_data,
-            vsn_init,
-            tstop,
-            tmax,
-            out_path,
+    with tempfile.TemporaryDirectory(
+        prefix=f"gcedram_tran_{tag}_", ignore_cleanup_errors=True
+    ) as td:
+        tmpdir = Path(td)
+        deck_path = tmpdir / "tb.spice"
+        out_path = tmpdir / "tran.dat"
+        deck_path.write_text(
+            render_netlist(
+                ngspice_lib,
+                corner,
+                temp_c,
+                c_sn_f,
+                vrbl,
+                vbl_data,
+                vsn_init,
+                tstop,
+                tmax,
+                out_path,
+            )
         )
-    )
-    try:
         result = subprocess.run(
             ["ngspice", "-b", str(deck_path)],
             capture_output=True,
@@ -466,16 +468,6 @@ def run_tran(
             )
         t, vsn, irbl = read_wrdata(out_path, MIN_TIMEPOINTS)[:3]
         return t, vsn, irbl
-    finally:
-        for p in (deck_path, out_path):
-            try:
-                os.unlink(p)
-            except OSError:
-                pass
-        try:
-            os.rmdir(tmpdir)
-        except OSError:
-            pass
 
 
 def read_phase_window(params: dict[str, float]) -> tuple[float, float]:

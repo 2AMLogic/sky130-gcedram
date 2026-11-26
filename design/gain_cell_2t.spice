@@ -8,7 +8,7 @@
 * file-content hash, not a git commit reference, so it stays meaningful
 * in a shallow clone and does not drift when an unrelated commit
 * elsewhere touches HEAD.
-*   design/gain_cell_2t.sch: sha256:1e778b714b4eeb3433afd6b5785cc22b47c41a29d832522e8f5874c31f98927e
+*   design/gain_cell_2t.sch: sha256:01965828996949232734c04f7dc01b238c4a56e62f37c3ee13ec58cc1710e686
 *
 * Every device instance below is sky130_fd_pr__nfet_01v8 -- verified
 * mechanically by this script, not by review alone.

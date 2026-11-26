@@ -11,7 +11,7 @@ data values:
     (a) settle time <= the 2 ns precharge phase of t_row_refresh_op `anchored`
     (b) |V(rbl) - 0.9 V| <= 10 mV when the precharge is released
     (c) the latch decides the correct polarity with |d| >= RESOLVE_V
-    (d) within T_WINDOW_S of the enable (sense-stage criterion)
+    (d) 0 < tdec <= T_WINDOW_S after the enable (sense-stage criterion)
 
 It lives here, next to the thresholds it reads, because BOTH analyzers in this
 directory gate on it: `analyze_column_periphery.py` reports it per corner for
@@ -41,7 +41,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import DELTA_V_V, decided as _decided  # noqa: E402
+from _evidence_common import DELTA_V_V, decided as _decided, tdec_in_window  # noqa: E402
 import gen_column_periphery as G  # noqa: E402
 
 SETTLE_BUDGET_S = G.T_PRE_BUDGET_S
@@ -65,7 +65,7 @@ def compliance(r1: dict, r0: dict) -> dict:
     ok_a = all(x["settle_s"] is not None and x["settle_s"] <= SETTLE_BUDGET_S for x in (r1, r0))
     ok_b = all(x["vrel_v"] is not None and abs(x["vrel_v"] - G.VRBL_V) <= RELEASE_TOL_V for x in (r1, r0))
     ok_c = decided(r1["dend_v"]) == "1" and decided(r0["dend_v"]) == "0"
-    ok_d = all(x["tdec_s"] is not None and 0 <= x["tdec_s"] <= T_WINDOW_S for x in (r1, r0))
+    ok_d = all(tdec_in_window(x["tdec_s"], T_WINDOW_S) for x in (r1, r0))
     return dict(settle_within_budget=ok_a, release_level_within_tol=ok_b,
                 correct_decision=ok_c, decision_within_window=ok_d,
                 compliant=ok_a and ok_b and ok_c and ok_d)

@@ -8,13 +8,29 @@ converts them deterministically to PWL sources and replays them in the **same ci
 **PROPOSED, unratified scope** (27/125 C, tt/ss/ff/sf/fs, 1.8 V, no mismatch, ideal drivers). No spec,
 contract, scheduler timing, overlap rule or prior result was changed. 1 cycle = 1 ns is a study assumption.
 
+> **Historical evidence (issue #171, 2026-11-20).** No spec pass condition cites
+> this study. The four October replay reports recorded no worker PDK stamp.
+> The 2026-11-15 replay job `klt-sim-ab4b1bbfdff1` ran on open_pdks `f6eeac7`,
+> but its report records `not_comparable` with reason `client_stamp_unavailable`.
+> All five runs remain historical because none has a matching worker/client stamp.
+> The qualified refresh records live in
+> [`sim/refresh-op`](../refresh-op/README.md) (job `klt-sim-fb282dff4498`,
+> stamp `match`) and [`sim/refresh-energy`](../refresh-energy/README.md) (jobs
+> `klt-sim-a830319cbebb` / `klt-sim-54a1d15c5269`, stamp `match`).
+
 ## Headline result (run `20261010T094617Z`)
+
+*Device provenance: this run's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`, i.e. no source-drain parasitic resistance). The bench was re-run under the corrected device — see "Latch geometry correction re-run (issue #293, 2026-11-15)" below — and the conclusions here are unchanged.*
 
 **The unmodified RTL waveform does not restore the stored level at any of the 10 corners** (0/10 at restore
 fractions 0.90, 0.95 and 0.98), with or without the explicit latch-hold adapter. The latch decision itself is
 correct everywhere (10/10, all four patterns), the PWL conversion is valid (10/10), and the matched baseline
 (the existing analog sequence at SENSE 10 ns / WWL 20 ns, same deck) restores at 10/10 and agrees with the prior
-`sim/refresh-op` report to 1e-5 V. The failure is preserved, not tuned away; see "Proposed follow-up".
+`sim/refresh-op` report to 1e-5 V. *(Issue-293 note: this 1e-5 V figure is superseded by the latch correction —
+the re-run summary's pinned `baseline_matches_prior` flag, pinned to the pre-correction `sim/refresh-op` report,
+now reads `False` at max |SN_end delta| = 20 mV, while the baseline re-verifies to 3e-5 V against the
+corrected-device refresh-op run `20261115T120247Z`; see "Latch geometry correction re-run (issue #293, 2026-11-15)"
+below.)* The failure is preserved, not tuned away; see "Proposed follow-up".
 
 Stored '1' pre-read 0.9 V, SN(end) in V (SN_ref = in-deck reference write; fraction of SN_ref in brackets):
 
@@ -44,6 +60,8 @@ lets the latch decide but then floats: the latch complement node shares charge w
 feedthrough dominates was **not** isolated; that needs a separate experiment.
 
 ## Release-order attribution experiment (issue #131, run `20261010T130000Z`)
+
+*Device provenance: this run's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`, i.e. no source-drain parasitic resistance). The bench was re-run under the corrected device — see "Latch geometry correction re-run (issue #293, 2026-11-15)" below — and the conclusions here are unchanged.*
 
 Question left open above: is the restoration failure caused by the RWL release ordering, by the latch-enable
 release, or by ideal-driver coupling? The RTL, `CONTRACT.md`, scheduler defaults, restoration criteria
@@ -129,6 +147,8 @@ The analog baseline needs 37. Nothing in `scheduler`/`CONTRACT.md` was changed.
   No ratified specification or digital overlap rule was revised.
 
 ## RWL driver slew / impedance / release-delay sensitivity (issue #134, run `driver_sweep_results/20261010T141816Z`)
+
+*Device provenance: this study's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`) and was **not** regenerated — it is append-only archived evidence. The numbers below therefore describe the pre-correction latch. See "Latch geometry correction re-run (issue #293, 2026-11-15)" below.*
 
 **Experimental stimulus model, not a designed physical driver.** Question left open by #131: is the late-RWL restoration
 benefit an artifact of the ideal 0.1 ns edge and a zero-impedance read-wordline source? The selected row's RWL source (the
@@ -265,6 +285,8 @@ pin-crossing probes of series-R instances locked onto the t = 0 start-up charge 
 Single-corner local runs of small subset decks (and of the failed full deck) were diagnostics only. No grid was run locally.
 
 ## Matched initialization controls (issue #139, run `init_control_results/20261010T163500Z`)
+
+*Device provenance: this study's deck predates the issue-293 latch correction (the latch lacked `nrd`/`nrs`/`sa`/`sb`/`sd`) and was **not** regenerated — it is append-only archived evidence. The numbers below therefore describe the pre-correction latch. See "Latch geometry correction re-run (issue #293, 2026-11-15)" below.*
 
 Question: the start-up artifact above means every recorded sense / restore verdict of #128/#131/#134 was obtained from a storage-node level
 that is **not** its label. Which conclusions depend on that legacy start, and which survive when the stored level is prepared differently?
@@ -460,5 +482,22 @@ python3 -I sim/refresh-replay/test_init_control.py
 Run `20261010T130000Z` (issue #131): one `klt sim` batch request (`uvx --from klayout-tools==0.6.0 klt sim --backend batch --format json`,
 job `klt-sim-b8ad51731243`, c7i.4xlarge spot, 95 s, 10/10 corners; first and only submission, no local simulation, no fallback;
 `fleet_attempts.json`). The report arrived on stdout (the `-o` file was not written by this client); the bucket name is redacted in the gzip.
+
+## Latch geometry correction re-run (issue #293, 2026-11-15)
+
+Issue #293 fixed the latch device this bench's circuit simulates: `gen_refresh_replay.py` (whose netlist writer also builds the #134 driver-sweep and #139 init-control decks) had retyped the latch/footer/header geometry, silently dropping the `nrd`/`nrs`/`sa`/`sb`/`sd` tokens of the schematic-derived `design/sense_latch.spice`, so the replay deck simulated a latch with no source-drain parasitic resistance. The generator now emits the latch through `parse_cards()` from the design netlist; the regenerated deck's token-level delta is exactly the five added tokens per latch device. This section records the re-run as **new dated evidence** under `results/20261115T120746Z/` (41 instances: 10 variants x 4 patterns + reference write); earlier results are untouched history. Tool: `uvx --from klayout-tools==0.9.1 klt sim --backend batch --format json --wait-for-capacity 600` (job `klt-sim-ab4b1bbfdff1`, 10/10 corners; runner klt 0.9.0, fleet worker ngspice-47; first and only submission, no local simulation, no fallback). The corner set is the committed request's (copied from `results/20261010T094617Z/request.json`: tt/ss/ff/sf/fs x 27/125 C) and the golden RTL trace was re-exported from the unchanged `phase_seq` RTL (14 edges, matches `CONTRACT.md` Sec. 2).
+
+Old = `results/20261010T130000Z/summary.json`, new = `results/20261115T120746Z/summary.json` (report `klt_report.json.gz`, gzip; no bucket string appeared in this client's output).
+
+| Variant | restore 0.95 old -> new (of 10) | sense old -> new | negative control / note |
+|---|---|---|---|
+| `baseline_analog` | 10 -> 10 | 10 -> 10 | see the prior-match note below |
+| `rtl_raw` | 0 -> 0 | 10 -> 10 | headline failure preserved |
+| `rtl_hold` | 0 -> 0 | 10 -> 10 | headline failure preserved |
+| `rwl_late_hold` | 10 -> 10 | 10 -> 10 | #131 attribution unchanged |
+| `combined_hold` | 10 -> 10 | 10 -> 10 | identical to `rwl_late_hold` as before |
+| `neg_missing_wb` / `neg_short_wb` | 0 -> 0 | 10 -> 10 | negative controls still fail restore as designed |
+
+**No verdict change anywhere**: the baseline still restores 10/10, the unmodified RTL waveform still restores 0/10 (the #128 headline finding, preserved not tuned away), the #131 release-order attribution stands, and both negative controls still fail restoration. One recorded check moved for the expected reason: the summary's built-in `baseline_matches_prior` flag is pinned to the **pre-correction** `sim/refresh-op` report (`klt_report_20261010T005003Z.json.gz`) and now reads `False` with max |SN_end delta| = 20 mV -- the correction's own effect (the corrected latch restores slightly more). Cross-checked directly against the new corrected-device refresh-op run `20261115T120247Z` at the same op point, the baseline agrees to 3e-5 V, the same agreement the old pair had (3e-5 V); the pinned prior in the analyzer was left as committed. No spec file, contract, scheduler timing or overlap rule was touched; the archived `driver_sweep_results/` and `init_control_results/` decks are append-only history and were **not** regenerated.
 
 Rerun with a **new** run id; never edit `results/`.

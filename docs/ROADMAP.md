@@ -4,13 +4,13 @@ sky130-gcedram is a 2T gain-cell embedded-DRAM macro on SkyWater sky130, built
 to find out what an open-PDK gain cell can honestly claim and to expose tool
 gaps in [klayout-tools](https://github.com/2AMLogic/klayout-tools) on the way.
 
-Status as of 2026-11-13, `main` @ `d9ee3fe`; issue and PR states as read
+Status as of 2026-11-15, `main` @ `58af135`; issue and PR states as read
 from the tracker that day. `WORK_PLAN.md` is a generated label snapshot.
 
 ## Where it stands
 
 The verdict of record is the machine-graded
-[`block-manifest.signoff.json`](../block-manifest.signoff.json) (klt 0.8.0,
+[`block-manifest.signoff.json`](../block-manifest.signoff.json) (klt 0.9.2,
 re-run by `.github/workflows/signoff.yml`): **9 of 22 T1 rows met**. The
 tracker is [#13](https://github.com/2AMLogic/sky130-gcedram/issues/13); the
 macro build-out is [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).
@@ -19,20 +19,28 @@ macro build-out is [#24](https://github.com/2AMLogic/sky130-gcedram/issues/24).
 |---|---|---|
 | 1 Design sources | met (`attest/item1.envelope.json`, PR #272) | unmet; PR #276 open |
 | 2 Layout | met (`attest/item2.envelope.json`, PR #269) | unmet; #231 |
-| 3 DRC clean | met (`layout/gain_cell_2t.drc.result.json`) | unmet; #232 |
-| 4 LVS clean | met (`layout/gain_cell_2t.lvs.result.json`) | unmet; #233 |
+| 3 DRC clean | met (`layout/gain_cell_2t.drc.result.json`, `layout/sense_latch.drc.result.json`) | unmet; #232 |
+| 4 LVS clean | met (`layout/gain_cell_2t.lvs.result.json`, `layout/sense_latch.lvs.result.json`) | unmet; #233 |
 | 5 Corner verification vs ratified spec | unmet | unmet |
 | 6 Monte Carlo for statistical claims | unmet | unmet |
-| 7 Post-layout verification | unmet | unmet |
+| 7 Post-layout verification | unmet: baseline-cell `klt pex` envelopes cited (`sim/pex_bitcell_array/`, #383), grade `check_failed` — 5 of 15 corner rows compared per cell, the pre-layout leg's written level sits below the 0.9 V sense margin at the rest; full-macro scope pending | unmet |
 | 8 Characterization report | unmet | unmet |
 | 9 Testbenches shipped | met (`attest/item9.envelope.json`) | met (`attest/item9.digital.envelope.json`, PR #271) |
 | 10 Repo hygiene | met (`attest/item10.envelope.json`) | met (same envelope, PR #270) |
-| 11 Power delivery | met (`layout/gain_cell_2t_array.erc.result.json`) | unmet; #236 |
+| 11 Power delivery | met (`layout/gain_cell_2t_array.erc.result.json`, `layout/gain_cell_2t_array.lvs.result.json`) | unmet; #236 |
 
 Against the six macro items of #24:
 
 - **Array:** shared-tap 4x4 proof of technique, DRC clean and LVS matched
-  (`layout/gain_cell_2t_array.*`, regenerated under klt 0.8.0 in PR #248).
+  (`layout/gain_cell_2t_array.*`). The committed GDS is generated under the
+  klt 0.8.0 generation pin while its DRC/LVS/ERC evidence is produced under
+  the 0.9.1 check pin (`layout/generation-toolchain.json`). What is drawn is
+  unchanged between the pins — per-layer XOR empty on all 10 drawn
+  layer/datatype pairs, same bounding box and same 33-label set
+  (`layout/results/geometry_xor_klt0.9.1_vs_committed_20261114.json`,
+  issue #284, PR #299) — though the streams differ in structure naming, so
+  `generate_array.sh --check` still reports `mismatch` under its byte gate
+  (`layout/README.md` § "Generation and check pins diverge at klt 0.9.1").
   Not a ratified row/column count.
 - **Sense path:** sense latch and column-periphery schematics with derived
   netlists (`design/sense_latch.*`, `design/column_periphery.*`) and studies
@@ -45,7 +53,15 @@ Against the six macro items of #24:
   (`digital/spi-control/results/spi_slave_synth_2026-11-11_issue273.v`); no
   `gc_ctrl_top` gate-level netlist, no gate-level replay and no layout is on
   `main`.
-- **Macro layout and post-layout PVT:** not started.
+- **Macro layout and post-layout PVT:** full-macro integration layout not started. Block-level
+  sense-latch layout is committed (`layout/sense_latch.gds`, DRC clean, LVS
+  matched; #387, signoff-integrated in #382 / PR #434).
+  Baseline-cell post-layout comparison exists: `klt pex` envelopes for the
+  drawn bitcell and the 4x4 array on the ratified retention row
+  (`sim/pex_bitcell_array/`, #383), cited for item 7 but graded
+  `check_failed` — the pre-layout leg resolves only 5 of 15 corners, so
+  the envelopes carry unresolved rows. The full-macro extracted PVT grid
+  remains pending.
 
 Known limits, with committed evidence: the loaded-column read fails at the
 cold corner, so the operating range is restricted (proposed,
@@ -55,28 +71,16 @@ device-inclusive retention measures below the ratified 10.06 us (#208).
 
 ## Now
 
-1. **Bump the klt pin 0.8.0 -> 0.9.1 and regenerate layout evidence**
-   ([#275](https://github.com/2AMLogic/sky130-gcedram/issues/275)). Done when
-   `KLT_VERSION` is 0.9.1 in `signoff.yml`, the DRC/LVS/ERC reports and attest
-   envelopes are regenerated, the `signoff` job is green and no met row
-   becomes unmet. No technical dependency, but the issue carries a park
-   pointing at PR #276 while #276 needs this first (see Blocked).
-2. **Index three studies in `sim/README.md`** (no issue; seed drafted):
-   `sim/cold-start/`, `sim/column-periphery/` and `sim/sense-mismatch/` have
-   no section. Done when each has one in the existing per-study format.
-3. **Correct `docs/chipalooza/challenge-4-proposal.md`** (no issue; seed
-   drafted; named in #24's affected files). It still says no array, sense
-   amplifier, refresh controller or SPI exists. Done when every "does not
-   exist" statement matches `main`, with unmet rows left unmet.
-4. **Refresh `docs/pdk-requalification-inventory.md`** (no issue; seed
-   drafted). Its Split section predates #168 closing and the split to #182.
-   Done when each group row carries its current issue and state.
+1. **Digital item 1** (#230, PR #276): #275 has landed (PR #282), so the
+   stated precondition is met. Done when PR #276 is rebased on current
+   `main`, `attest/item1.digital.envelope.json` is regenerated on the
+   pinned klt, `signoff` is green and row `1.digital` is met. Blockers:
+   PR #276 is routed for a decision (`loom:operator`) and currently
+   conflicts with `main`, so it needs the rebase and the decision first
+   (see Blocked).
 
 ## Next
 
-- **Digital item 1** (#230, PR #276): after #275 lands, rebase, regenerate
-  `attest/item1.digital.envelope.json` on the pinned klt, `signoff` green,
-  row `1.digital` met.
 - **Digital layout chain:** #231 (place-and-route, `2.digital`) after #230;
   then #232 and #233 (`3.digital`, `4.digital`); then #236 (`11.digital`).
   Each is done when `klt signoff` reports its row met.
@@ -102,7 +106,11 @@ device-inclusive retention measures below the ratified 10.06 us (#208).
   statistical; verdicts against a draft spec are provisional.
 - **Item 7 and #24 items 5-6** (full-macro GDS, extracted PVT). First: the
   ratified row count and `t_row_refresh_op`
-  (`spec/retention-refresh-budget.md` section 7).
+  (`spec/retention-refresh-budget.md` section 7). Baseline-cell coverage
+  (bitcell + 4x4 array) is committed under `sim/pex_bitcell_array/` (#383);
+  closing the item needs a `pass`-status envelope, which at today's write
+  ceiling means either a spec-row choice whose pre-layout leg resolves at
+  every corner or a resolved write-margin finding.
 - **Digital items 5-8** (multi-corner timing, post-route functional re-run,
   characterization). First: a routed controller (#231).
 - **Cell of record.** `layout/compact/` holds two smaller variants beside
@@ -113,18 +121,26 @@ device-inclusive retention measures below the ratified 10.06 us (#208).
 
 ## Blocked and waiting
 
-No open issue is drawable as labelled today: Now items 2-4 are seed drafts
-only, and item 1 needs its park cleared.
+Current label state is the generated `WORK_PLAN.md` snapshot named in the
+header; the bullets below record why each item waits.
 
-- **#275 and PR #276 are parked on each other** (Doctor note on PR #276,
-  2026-11-12; routed for a decision). The note's first option is #275 first.
+- **PR #276** (Digital item 1, #230): the former mutual park with #275 is
+  resolved — #275 landed in PR #282 — but PR #276 is still routed for a
+  decision (`loom:operator`; Doctor note 2026-11-12) and now conflicts with
+  `main`.
 - **PR #152** (issue #88, follow-up #261): approved, with the post-#244
-  0.955559 fF C_RBL re-run on the branch, held under `loom:blocked`.
+  0.955559 fF C_RBL re-run on the branch, held under `loom:blocked`; it now
+  conflicts with `main`.
 - **PR #223** (issue #208, shorter refresh interval on the 6.45 us bound):
   needs both key reviews re-run on the revised head, then ratification; it
-  also conflicts with `main`.
-- **Proposed records awaiting ratification:** operating range (#56), macro
-  pass conditions (#82), C_SN re-ratification (#244), density inputs (#252).
+  also conflicts with `main` and is now routed for a decision
+  (`loom:operator`).
+- **Proposed records awaiting ratification:** all five `spec/*-PROPOSED.md`
+  records are still unratified — operating range, macro pass conditions,
+  C_SN re-ratification, density inputs, and supply reliability. Ratification
+  is the two-key process each record names (`ratification/ee-key/`,
+  `ratification/market-key/`); the drafting issues (#49, #56, #82, #244,
+  #252) are closed and never gated it.
 - **Batch worker PDK revision** gates #182, #169 and #171; **#277** is
   routed for a decision (discovery runner or the two explicit lists).
 
