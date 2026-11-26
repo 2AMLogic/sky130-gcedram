@@ -210,8 +210,11 @@ P_total = N_rows * E_row_incremental / refresh_interval  +  N_rows * (P_idle_16 
 four-column width. Intervals are read from
 [`sim/retention/results/retention_results.csv`](../retention/results/retention_results.csv)
 via `refresh_overhead.load_worst_case_retention()`, not retyped: **5.03 us**
-(ratified basis, ASSUMED `C_SN`) and **2.75 us** (extracted `C_SN`, newer,
-unratified). Linear scaling in rows is an ASSUMPTION: height-dependent
+(ratified basis, ASSUMED `C_SN`; label `historical_assumed_2t`, kept as the
+separate historical comparison) and **3.058 us** (label
+`qualified_extracted_2t`, EXTRACTED `C_SN`: the qualified extracted basis,
+unratified; row identity and provenance in the 2026-11-20 re-qualification
+section below). Linear scaling in rows is an ASSUMPTION: height-dependent
 bitline loading (a taller column has a longer, heavier RBL/WBL) is ignored.
 Duty factor = `N_rows x t_row_refresh_op / interval`; a configuration with
 duty >= 1 is **flagged infeasible** (refresh operations would overlap), not
