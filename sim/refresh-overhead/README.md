@@ -28,11 +28,28 @@ external access. Nothing below makes this macro an SRAM replacement.
 
 > Cross-reference (issue #114): a designed precharge/write-driver/isolation slice now exists ([`design/column_periphery.sch`](../../design/column_periphery.sch)); its precharge settling (0.29-1.62 ns across the restricted corners) is measured against the 2 ns `anchored` precharge phase in [`sim/column-periphery`](../column-periphery/README.md). The phase durations in this README remain the borrowed ASSUMPTIONs; no sense-amp-timing or refresh-controller phase is derived from the slice.
 
-The retention CSV is append-only and has two `2T-min` worst-case rows, so
-both are evaluated: the 2026-08-20 row (ASSUMED `C_SN`, 10.06 us -> 5.03 us
-interval; **the value the spec ratifies**) and the later 2026-08-25 row
-(layout-**extracted** `C_SN`, 5.50 us -> 2.75 us interval; newer evidence the
-spec does not yet reflect). Do not read the second as a ratified value.
+The retention CSV is append-only and carries five `2T-min` worst-case rows
+(counted 2026-11-26). The two consumers in this directory read them
+differently:
+
+* **Scenario envelope** (`refresh_overhead.py`; the tables below) evaluates
+  **every** matching row, in file order, through
+  `load_worst_case_retention()`; no row is selected by identity, so a re-run
+  would also cover every retention row appended since. The committed scenario
+  CSVs hold the two rows that existed at their 2026-10-09 run (2026-08-20 and
+  2026-08-25) and were not extended by the 2026-11-20 qualification.
+* **Measured reducer** (`eval_measured_t_row.py`) selects exactly two rows by
+  identity through `qualified_retention_rows()`: the 2026-08-20 row (ASSUMED
+  `C_SN`, 10.06 us -> 5.03 us interval; **the ratified assumed-capacitance
+  interval**, the value the spec ratifies) and the 2026-11-20 row
+  (layout-**extracted** `C_SN`, 6.12 us -> 3.058 us interval; **the
+  qualified, unratified extracted interval**: newer evidence the spec does
+  not yet reflect).
+
+Do not read any extracted-`C_SN` interval as a ratified value. Row
+identities and the reason selection is by identity are recorded in
+[Qualified measured record under open_pdks `f6eeac7` (issue #171,
+2026-11-20)](#qualified-measured-record-under-open_pdks-f6eeac7-issue-171-2026-11-20).
 
 ## `t_row_refresh_op` scenarios (all ASSUMPTION; phases in the script)
 
@@ -57,7 +74,10 @@ Interval 5.03 us (ratified, ASSUMED `C_SN`):
 | full_read_pulse | 44 ns | 114 | 28.6 | 11.4 |
 | slow | 85 ns | 59 | 14.8 | 5.9 |
 
-Interval 2.75 us (extracted `C_SN`, newer evidence):
+Interval 2.75 us — dated scenario table (2026-10-09 run) built on the
+**2026-08-25** retention row (layout-**extracted** `C_SN`, 5.50 us -> 2.75
+us). Superseded as an extracted basis by the 2026-11-20 qualification
+(3.058 us, see the measured record below); not ratified:
 
 | Scenario | t_row | 100 % | 25 % | 10 % |
 |---|---|---|---|---|
