@@ -78,8 +78,8 @@ def ladder_crossing(thr: float, ladder: dict[float, float | None]) -> float | No
 def stamp_of(report: dict) -> tuple[str, str]:
     w = (report.get("environment", {}).get("remote") or {}).get("worker_environment") or {}
     status = (w.get("pdk_stamp_comparison") or {}).get("status", "unknown")
-    text = (w.get("pdk") or {}).get("stamp_text", "unknown")
-    return status, text
+    text = (w.get("pdk") or {}).get("stamp_text")
+    return status, "unknown" if text is None else text
 
 
 def load_report(path: Path) -> dict:

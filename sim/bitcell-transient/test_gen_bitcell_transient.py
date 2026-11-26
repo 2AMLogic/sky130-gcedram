@@ -124,6 +124,18 @@ class ReducerStampGate(unittest.TestCase):
         root = self._copy_reports("match", f"open_pdks {self.OLD_PIN}")
         self.assertEqual(self._commits(root), {f"fleet-stamp:{self.OLD_PIN}"})
 
+    def test_null_and_missing_stamp_text_share_the_unknown_fleet_stamp(self):
+        root = self._copy_reports("match", None)
+        path = next(root.glob("klt_report_*.json"))
+        report = json.loads(path.read_text())
+        del report["environment"]["remote"]["worker_environment"]["pdk"]["stamp_text"]
+        path.write_text(json.dumps(report))
+
+        rows, _ = RED.build_rows(root)
+        self.assertEqual({row["pdk_open_pdks_commit"] for row in rows}, {"fleet-stamp:unknown"})
+        for row in rows:
+            self.assertIn(f"repo pin {G.PIN[:7]} NOT confirmed on the worker", row["notes"])
+
 
 class ScratchCleanup(unittest.TestCase):
     def _call_run_tran(self):
