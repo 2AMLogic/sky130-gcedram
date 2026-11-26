@@ -90,6 +90,7 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime
+import math
 import re
 import subprocess
 import sys
@@ -378,7 +379,9 @@ def load_leakage_by_point(
             try:
                 key = (row["corner"], int(row["temp_c"]))
                 val = float(row["ileak_a"])
-            except (KeyError, ValueError):
+            except (KeyError, TypeError, ValueError):
+                continue
+            if not math.isfinite(val):
                 continue
             if key not in table or val > table[key]:
                 table[key] = val
