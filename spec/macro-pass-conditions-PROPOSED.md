@@ -54,11 +54,10 @@ Legend. **Status**: `RATIFIED-CITED (file section)` or `ASSUMPTION`.
 27 C and 125 C, `VDD` = 1.8 V, which is the interval *proposed* in
 [`operating-range-decision-PROPOSED.md`](operating-range-decision-PROPOSED.md)
 section 6; if the keys do not ratify it, the fallback is the existing 15-point
-grid (5 corners x -40/27/125 C), on which fs/-40 C is already known to fail the
-Phase 3 criteria. Per the operator ruling on Q6 (section 7), items 2 and 6 are
-then graded on the full 15-point grid and the fs/-40 C failures are reported as
-failures. Retention
-quantities are always evaluated at the worst-case corner, `sf`/125 C
+grid (5 corners x -40/27/125 C). Per the Q6 ruling (section 7), grade items
+2 and 6 on that full grid and report the fs/-40 C failures of the 10 fF
+`C_RBL` baseline (section 4) as failures.
+Retention quantities are always evaluated at the worst-case corner, `sf`/125 C
 (ratified section 2), in addition to the set.
 
 | # | Item | Quantity | Corner / temperature set | Pass threshold | Status | Testbench that will produce the evidence |
@@ -148,8 +147,8 @@ Not decided here; each needs a ruling or a key decision.
   rule deck is partial; and whether a "clean over a partial deck" result may
   be reported at all, and under what label.
 - **Q6. Fallback if the restricted range is not ratified.** Should items 2 and
-  6 then be graded against the full 15-point grid, where fs/-40 C is already
-  known to fail?
+  6 then be graded against the full 15-point grid, where the 10 fF baseline
+  fails at fs/-40 C?
   **RULED 2026-11-23, option a** (issue #395, operator decision r19-q292):
   grade on the full 15-point grid and report the fs/-40 C failures as
   failures. No threshold, corner set or waiver changes; the ruling only fixes

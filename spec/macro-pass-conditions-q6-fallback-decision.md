@@ -12,7 +12,7 @@ Q6 (section 7 of the PROPOSED record): if the restricted operating range
 (27 C and 125 C, five process corners, `VDD` = 1.8 V, from
 [`operating-range-decision-PROPOSED.md`](operating-range-decision-PROPOSED.md))
 is not ratified, are items 2 and 6 graded against the full 15-point grid
-(5 corners x -40/27/125 C), where fs/-40 C is already known to fail?
+(5 corners x -40/27/125 C), where the 10 fF baseline fails at fs/-40 C?
 
 ## Ruling
 
@@ -25,17 +25,25 @@ set regardless of ratification).
 
 ## Evidence for the known failure
 
-`sim/loaded-column/results/summary_20261114T091445Z.json`, group fs, -40 C,
-age `refresh_bound`, scope `column_all_rows`: `worst_case_separation_v` =
-0.0244799 V (24.4799 mV), against the 0.1 V row-2a criterion of the PROPOSED
-record. The fresh-age group at the same corner reads 0.0267021 V. The figures
-are quoted from the committed file; nothing was re-run and no `sim/` file was
-touched.
+The schematic baseline uses `C_RBL` = 10 fF (**ASSUMPTION**), ideal write
+and read drivers, an ideal precharge switch, and `t_sense` = 10 ns. At
+fs/-40 C, the worst-case read separation across all rows (`column_all_rows`)
+is 0.0267021 V fresh and 0.0244799 V (24.4799 mV) at the refresh bound. Both
+fail the proposed 0.1 V row-2a criterion. [Baseline summary](../sim/loaded-column/results/summary_20261114T091445Z.json)
+
+On the post-#244 layout, the **EXTRACTED-4-ROW** case replaces the entire
+10 fF load with 0.955559 fF of wiring capacitance. At fs/-40 C the separation
+is 0.110545 V fresh and 0.102376 V aged, a narrow pass at both ages. This
+wiring-only case gives the lightest-load bound. Predicting macro read
+separation requires the sense-input load that the substitution removes.
+[Campaign description](../sim/loaded-column/extracted-crbl/README.md) ·
+[Post-#244 results](../sim/loaded-column/extracted-crbl/results/20261029T203633Z/summary.json)
 
 ## Effect
 
-- If the keys do not ratify RESTRICTED, items 2 and 6 are graded on the
-  15-point grid and the fs/-40 C failures are reported as failures.
+- If the keys do not ratify RESTRICTED, grade items 2 and 6 on the full
+  15-point grid and report the committed 10 fF baseline's fs/-40 C failures
+  as failures.
 - No threshold, corner set or waiver changes. This is a grading rule for a
   fallback case, not a relaxation.
 - If the keys do ratify RESTRICTED, this record has no effect on grading.
