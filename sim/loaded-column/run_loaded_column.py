@@ -139,17 +139,21 @@ def parse_design_devices() -> dict[str, tuple[str, str]]:
     return devs
 
 
-def build_cells() -> str:
+def build_cells(wr_card: str | None = None, rd_card: str | None = None) -> str:
     """Cell instances from array_topology + committed device cards. Node
-    order (design/gain_cell_2t.spice): M_WR sn wl bl GND; M_RD rbl sn rwl GND."""
+    order (design/gain_cell_2t.spice): M_WR sn wl bl GND; M_RD rbl sn rwl GND.
+    `wr_card` / `rd_card` replace the design's own cards (the cold-corner
+    runner passes a re-sized or re-flavoured one)."""
     topo = build_topology(N_ROWS, N_COLS)
     devs = parse_design_devices()
+    wm, wp = devs["M_WR"]
+    rm, rp = devs["M_RD"]
+    wr = f"{wm} {wp}" if wr_card is None else wr_card
+    rd = f"{rm} {rp}" if rd_card is None else rd_card
     lines = []
     for d in topo["devices"]:
-        wm, wp = devs["M_WR"]
-        rm, rp = devs["M_RD"]
-        lines.append(f"X{d['wr_name']} {d['sn']} {d['wl']} {d['bl']} GND {wm} {wp}")
-        lines.append(f"X{d['rd_name']} {d['rbl']} {d['sn']} {d['rwl']} GND {rm} {rp}")
+        lines.append(f"X{d['wr_name']} {d['sn']} {d['wl']} {d['bl']} GND {wr}")
+        lines.append(f"X{d['rd_name']} {d['rbl']} {d['sn']} {d['rwl']} GND {rd}")
     return "\n".join(lines)
 
 
@@ -175,34 +179,65 @@ def check_complete(t: list[float], tstop: float) -> None:
         )
 
 
+def wl_pulse(r: int, vwl: str) -> str:
+    """Write-wordline source of row r: one pulse to the `vwl` expression at
+    TW0 + r*TWSTEP, so rows are written 0..3 sequentially."""
+    return (f"vwl_{r} wl_{r} 0 pulse(0 {vwl} {{TW0+{r}*TWSTEP}} {{TEDGE}} {{TEDGE}} "
+            f"{{TWPULSE-TEDGE}} 1)")
+
+
+def bl_pwl(levels: list[str]) -> str:
+    """Write-bitline PWL of one column: row r's level `levels[r]` (a template
+    expression) is held for row r's write pulse and returns to 0 TBL_LAG after
+    the wordline is fully low."""
+    pts = ["0 0"]
+    for r in range(N_ROWS):
+        on, off = f"TW0+{r}*TWSTEP", f"TW0+{r}*TWSTEP+TWPULSE"
+        pts += [
+            f"{{{on}-TEDGE}} 0", f"{{{on}}} {{{levels[r]}}}",
+            f"{{{off}+TBL_LAG}} {{{levels[r]}}}", f"{{{off}+TBL_LAG+TEDGE}} 0",
+        ]
+    return "pwl(" + " ".join(pts) + ")"
+
+
 def render(tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P):
-    """One deck per (corner, temp, batch): the .lib parse dominates ngspice
-    runtime, so the batch's cases (pattern, sel, t_read) run in ONE process,
-    re-parameterized with alterparam + reset between cases."""
+    """Phase 2 deck: the design's own device cards, VDD write wordlines and
+    every storage node starting at the opposite of its data."""
+    return render_deck(
+        tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P,
+        cells_body=build_cells(), vwl="{VDD}",
+        rwl_levels=[f"{{VDD*(1-SL{r})}}" for r in range(N_ROWS)],
+        ic_levels=[f"{{VDD*(1-B{r})}}" for r in range(N_ROWS)],
+        subs={"@@C_RBL@@": f"{C_RBL_F:.6e}"},
+    )
+
+
+def render_deck(tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P, *,
+                cells_body: str, vwl: str, rwl_levels: list[str], ic_levels: list[str],
+                subs: dict | None = None) -> str:
+    """The deck both loaded-column runners render (Phase 2: render();
+    cold-corner: run_variants.render()), i.e. one deck per (corner, temp,
+    batch): the .lib parse dominates ngspice runtime, so the batch's cases
+    (pattern, sel, t_read) run in ONE process, re-parameterized with
+    alterparam + reset between cases.
+
+    `cells_body` is the cell block (build_cells); `vwl` the expression the
+    write wordlines pulse to; `rwl_levels[r]` the expression on rwl_r while
+    its row is selected and `ic_levels[r]` the one sn_r_0 starts from. `subs`
+    are the runner's own @@TOKEN@@ values, applied before the shared ones."""
     cells = (
-        build_cells()
+        cells_body
         + "\n* extracted per-cell storage-node capacitance (lumped)\n"
         + "\n".join(f"c_sn_{r} sn_{r}_0 0 {c_sn_f:.6e}" for r in range(N_ROWS))
     )
-    ws, pw = [], ["0 0"]
-    for r in range(N_ROWS):
-        ws.append(
-            f"vwl_{r} wl_{r} 0 pulse(0 {{VDD}} {{TW0+{r}*TWSTEP}} {{TEDGE}} {{TEDGE}} "
-            f"{{TWPULSE-TEDGE}} 1)"
-        )
-        on = f"TW0+{r}*TWSTEP"
-        off = f"TW0+{r}*TWSTEP+TWPULSE"
-        pw += [
-            f"{{{on}-TEDGE}} 0", f"{{{on}}} {{VDD*B{r}}}",
-            f"{{{off}+TBL_LAG}} {{VDD*B{r}}}", f"{{{off}+TBL_LAG+TEDGE}} 0",
-        ]
-    ws.append("vbl bl_0 0 pwl(" + " ".join(pw) + ")")
+    ws = [wl_pulse(r, vwl) for r in range(N_ROWS)]
+    ws.append("vbl bl_0 0 " + bl_pwl([f"VDD*B{r}" for r in range(N_ROWS)]))
     rs = [
-        f"vrwl_{r} rwl_{r} 0 pwl(0 {{VDD}} {{T_READ}} {{VDD}} {{T_READ+TEDGE}} {{VDD*(1-SL{r})}} "
-        f"{{T_READ+TREAD_PULSE}} {{VDD*(1-SL{r})}} {{T_READ+TREAD_PULSE+TEDGE}} {{VDD}})"
+        f"vrwl_{r} rwl_{r} 0 pwl(0 {{VDD}} {{T_READ}} {{VDD}} {{T_READ+TEDGE}} {rwl_levels[r]} "
+        f"{{T_READ+TREAD_PULSE}} {rwl_levels[r]} {{T_READ+TREAD_PULSE+TEDGE}} {{VDD}})"
         for r in range(N_ROWS)
     ]
-    ics = ".ic " + " ".join(f"v(sn_{r}_0)={{VDD*(1-B{r})}}" for r in range(N_ROWS))
+    ics = ".ic " + " ".join(f"v(sn_{r}_0)={ic_levels[r]}" for r in range(N_ROWS))
     ctl = []
     for k, (pattern, sel, t_read) in enumerate(cases):
         for r in range(N_ROWS):
@@ -219,21 +254,23 @@ def render(tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P):
             f"wrdata {outdir}/case{k}.dat v(sn_0_0) v(sn_1_0) v(sn_2_0) v(sn_3_0) v(rbl_0) "
             "i(vrwl_0) i(vrwl_1) i(vrwl_2) i(vrwl_3)"
         )
-    subs = {
-        "@@C_RBL@@": f"{C_RBL_F:.6e}",
+    subs = dict(subs or {})
+    subs.update({
         "@@PDK_NGSPICE_LIB@@": str(lib), "@@CORNER@@": corner, "@@TEMP_C@@": str(temp),
         "@@CELLS@@": cells, "@@WRITE_SOURCES@@": "\n".join(ws),
         "@@RWL_SOURCES@@": "\n".join(rs), "@@ICS@@": ics, "@@CASES@@": "\n".join(ctl),
-    }
-    for k, v in subs.items():
-        tmpl = tmpl.replace(k, v)
-    left = re.findall(r"@@[A-Z_]+@@", tmpl)
+    })
+    for key, val in subs.items():
+        tmpl = tmpl.replace(key, val)
+    left = re.findall(r"@@[A-Z_0-9]+@@", tmpl)
     if left:
         raise RuntimeError(f"unsubstituted tokens {left}")
     return tmpl
 
 
-def measure(cols, P, t_read, sel):
+def measure(cols, P, t_read, sel, t_sense_s=None):
+    """One case's fields from its wrdata columns. The sense readings are taken
+    `t_sense_s` after the read begins: the module's T_SENSE_S when omitted."""
     t, sn, rbl = cols[0], cols[1:5], cols[5]
     irw = [[-x for x in c] for c in cols[6:10]]  # into rbl from rwl_r
     m = {}
@@ -248,7 +285,7 @@ def measure(cols, P, t_read, sel):
     m["v_rbl_preread_float_v"] = interp_at(t, rbl, t_read - 0.2e-9)
     uns = [r for r in range(N_ROWS) if r != sel]
     m["i_desel_sum_preread_a"] = sum(m[f"i_into_rbl_r{r}_preread_a"] for r in uns)
-    t_s = t_read + T_SENSE_S
+    t_s = t_read + (T_SENSE_S if t_sense_s is None else t_sense_s)
     for r in range(N_ROWS):
         m[f"i_into_rbl_r{r}_sense_a"] = interp_at(t, irw[r], t_s)
     m["i_desel_sum_sense_a"] = sum(m[f"i_into_rbl_r{r}_sense_a"] for r in uns)
@@ -270,6 +307,75 @@ def measure(cols, P, t_read, sel):
     return m
 
 
+NOTES = (
+    "schematic-level ASSUMED rbl loading (C_RBL), extracted C_SN per cell, no "
+    "extracted bitline parasitics; rows written 0..3 sequentially; read age "
+    "measured from row write end"
+)
+
+
+def base_row(pattern, sel, P, t_read, c_sn_f, run_id, corner, temp, age, *,
+             c_rbl_f=None, t_sense_s=None, notes=None) -> dict:
+    """The fields every loaded-column runner records for one stored pattern
+    with row `sel` selected. `c_rbl_f`, `t_sense_s` and `notes` default to the
+    Phase 2 ASSUMPTIONs; a variant passes its own knob values."""
+    bits = [(pattern >> r) & 1 for r in range(N_ROWS)]
+    c_rbl_f = C_RBL_F if c_rbl_f is None else c_rbl_f
+    t_sense_s = T_SENSE_S if t_sense_s is None else t_sense_s
+    return {
+        "run_id": run_id, "corner": corner, "temp_c": temp, "age_label": age,
+        "sel_row": sel, "stored_value": bits[sel],
+        "pattern_rows3210": "".join(str(bits[r]) for r in reversed(range(N_ROWS))),
+        "other_rows_pattern": "".join(
+            str(bits[r]) for r in reversed(range(N_ROWS)) if r != sel
+        ),
+        "c_sn_ff": f"{c_sn_f * 1e15:.6f}",
+        "c_rbl_ff_ASSUMPTION": f"{c_rbl_f * 1e15:.3f}", "vdd_v": VDD,
+        "vrbl_precharge_v": P["VRBL"], "t_read_s": f"{t_read:.9e}",
+        "t_sense_s_ASSUMPTION": t_sense_s, "dv_latency_v_ASSUMPTION": DV_LATENCY_V,
+        "sel_row_age_at_read_s": f"{t_read - (P['TW0'] + sel * P['TWSTEP'] + P['TWPULSE']):.6e}",
+        "max_row_age_at_read_s": f"{t_read - (P['TW0'] + P['TWPULSE']):.6e}",
+        "notes": NOTES if notes is None else notes,
+    }
+
+
+def execute_batch(rows, deck_text, P, t_read, tmax, *, run_cmd, t_sense_s=None,
+                  extra_measure=None, prefix="gcedram_col_", timeout=3600):
+    """Run one batch in a single `ngspice -b` and fill each row from its
+    waveform. Row j is the jth case of the deck `deck_text(outdir)` renders
+    into the scratch directory the cases are written to. `extra_measure(cols,
+    sel)` may add fields to each row's measurements. A failure is recorded on
+    the rows (status sim_failed), never hidden."""
+    with tempfile.TemporaryDirectory(prefix=prefix, ignore_cleanup_errors=True) as td:
+        tmpdir = Path(td)
+        deck = tmpdir / "tb.spice"
+        err = None
+        try:
+            deck.write_text(deck_text(tmpdir))
+            res = run_cmd(["ngspice", "-b", str(deck)], capture_output=True, text=True, timeout=timeout)
+            err = (res.stdout + res.stderr)[-300:].replace("\n", " ")
+        except Exception as e:  # recorded, never hidden
+            err = str(e)[:300]
+        for j, row in enumerate(rows):
+            out = tmpdir / f"case{j}.dat"
+            try:
+                if not out.is_file():
+                    raise RuntimeError("ngspice produced no output for this case: " + str(err))
+                cols = read_wrdata(out, MIN_TIMEPOINTS)
+                check_complete(cols[0], case_tstop(P, t_read))
+                sel = int(row["sel_row"])
+                m = measure(cols, P, t_read, sel, t_sense_s)
+                if extra_measure is not None:
+                    m.update(extra_measure(cols, sel))
+                for key, v in m.items():
+                    row[key] = "" if v is None else (v if isinstance(v, str) else f"{v:.6e}")
+                row["status"] = "ok"
+            except Exception as e:
+                row["status"] = "sim_failed"
+                row["reason"] = str(e)[:400]
+    return rows
+
+
 def run_batch(args):
     """All cases of one (corner, temp, age, sel_row): 16 stored patterns."""
     lib, corner, temp, age, sel, patterns, c_sn_f, run_id, prov, tmax = args
@@ -279,56 +385,14 @@ def run_batch(args):
     cases = [(p, sel, t_read) for p in patterns]
     rows = []
     for pattern in patterns:
-        bits = [(pattern >> r) & 1 for r in range(N_ROWS)]
         row = {k: "" for k in FIELDS}
         row.update(prov)
-        row.update(
-            {
-                "run_id": run_id, "corner": corner, "temp_c": temp, "age_label": age,
-                "sel_row": sel, "stored_value": bits[sel],
-                "pattern_rows3210": "".join(str(bits[r]) for r in reversed(range(N_ROWS))),
-                "other_rows_pattern": "".join(
-                    str(bits[r]) for r in reversed(range(N_ROWS)) if r != sel
-                ),
-                "c_sn_ff": f"{c_sn_f * 1e15:.6f}",
-                "c_rbl_ff_ASSUMPTION": f"{C_RBL_F * 1e15:.3f}", "vdd_v": VDD,
-                "vrbl_precharge_v": P["VRBL"], "t_read_s": f"{t_read:.9e}",
-                "t_sense_s_ASSUMPTION": T_SENSE_S, "dv_latency_v_ASSUMPTION": DV_LATENCY_V,
-                "sel_row_age_at_read_s": f"{t_read - (P['TW0'] + sel * P['TWSTEP'] + P['TWPULSE']):.6e}",
-                "max_row_age_at_read_s": f"{t_read - (P['TW0'] + P['TWPULSE']):.6e}",
-                "notes": (
-                    "schematic-level ASSUMED rbl loading (C_RBL), extracted C_SN per cell, no "
-                    "extracted bitline parasitics; rows written 0..3 sequentially; read age "
-                    "measured from row write end"
-                ),
-            }
-        )
+        row.update(base_row(pattern, sel, P, t_read, c_sn_f, run_id, corner, temp, age))
         rows.append(row)
-    with tempfile.TemporaryDirectory(prefix="gcedram_col_", ignore_cleanup_errors=True) as td:
-        tmpdir = Path(td)
-        deck = tmpdir / "tb.spice"
-        err = None
-        try:
-            deck.write_text(render(tmpl, lib, corner, temp, cases, c_sn_f, tmpdir, tmax, P))
-            res = subprocess.run(["ngspice", "-b", str(deck)], capture_output=True, text=True, timeout=3600)
-            err = (res.stdout + res.stderr)[-300:].replace("\n", " ")
-        except Exception as e:  # recorded, never hidden
-            err = str(e)[:300]
-        for k, row in enumerate(rows):
-            out = tmpdir / f"case{k}.dat"
-            try:
-                if not out.is_file():
-                    raise RuntimeError("ngspice produced no output for this case: " + str(err))
-                cols = read_wrdata(out, MIN_TIMEPOINTS)
-                check_complete(cols[0], case_tstop(P, t_read))
-                m = measure(cols, P, t_read, sel)
-                for key, v in m.items():
-                    row[key] = "" if v is None else (v if isinstance(v, str) else f"{v:.6e}")
-                row["status"] = "ok"
-            except Exception as e:
-                row["status"] = "sim_failed"
-                row["reason"] = str(e)[:400]
-    return rows
+    return execute_batch(
+        rows, lambda outdir: render(tmpl, lib, corner, temp, cases, c_sn_f, outdir, tmax, P),
+        P, t_read, tmax, run_cmd=subprocess.run,
+    )
 
 
 def main(argv=None) -> int:
