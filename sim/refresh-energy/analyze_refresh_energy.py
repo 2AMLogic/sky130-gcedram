@@ -65,10 +65,6 @@ IDENTITY_REL = 1e-3            # net vs gross - recovered consistency (relative 
 IDENTITY_ABS_J = 1e-21
 DC_CHECK_REL = 2e-3            # DC source: E_net vs -V * Q (independent charge integral)
 DC_CHECK_ABS_J = 1e-21
-INTERVALS = [  # (label, retention row identity) -- selected by identity, never position/value (#171)
-    ("historical_assumed_2t", dict(timestamp=RO.HISTORICAL_ASSUMED_2T_TS, leakage_job=None)),
-    ("qualified_extracted_2t", dict(timestamp=RO.QUALIFIED_EXTRACTED_2T_TS, leakage_job=RO.QUALIFIED_LEAKAGE_JOB_ID)),
-]
 # Numerical floor of the idle measurement: ngspice shunts every MOS junction with gmin, so up to
 # (2 junctions x 32 devices) x gmin x VDD^2 of "hold power" can be the solver's own shunt, not leakage.
 # Idle points at or below this bound are flagged, not presented as physical leakage.
@@ -369,22 +365,26 @@ def maxima(pts: list[dict]) -> dict:
     return out
 
 
-def intervals() -> list[dict]:
-    """The two G4 scaling bases, selected by row identity (#171): the
-    ratified ASSUMED-C_SN row (separately labelled historical comparison)
-    and the 2026-11-20 EXTRACTED row traced to the stamp-matched leakage
-    job (the qualified basis). Identity selection -- not position, not the
-    printed value -- is what keeps the 2026-10-28 tie (identical retention
-    time) and any same-timestamp 3T row out of the qualified slot;
-    `refresh_overhead.select_retention_row` fails closed on both."""
-    rows = RO.load_worst_case_retention()
+def intervals(retention_csv: Path = RO.RETENTION_CSV) -> list[dict]:
+    """The two G4 scaling bases as the CHECKED pair from
+    `refresh_overhead.qualified_retention_rows` (#171): the ratified
+    ASSUMED-C_SN row (separately labelled historical comparison) and the
+    2026-11-20 EXTRACTED row traced to the stamp-matched leakage job (the
+    qualified basis). Row identity and both basis checks live in
+    refresh_overhead alone (#443); this module adds only the energy report's
+    labels and leakage-job metadata. Identity selection -- not position, not
+    the printed value -- keeps the 2026-10-28 tie (identical retention time)
+    and any same-timestamp 3T row out of the qualified slot, and the
+    historical row must keep its ASSUMED basis; the shared selector fails
+    closed on all of them."""
+    historical, qualified = RO.qualified_retention_rows(retention_csv)
     out = []
-    for label, ident in INTERVALS:
-        r = RO.select_retention_row(rows, ident["timestamp"], leakage_job=ident["leakage_job"])
+    for label, r, leakage_job in (("historical_assumed_2t", historical, ""),
+                                  ("qualified_extracted_2t", qualified, RO.QUALIFIED_LEAKAGE_JOB_ID)):
         t_ret = float(r["retention_time_s"])
         out.append(dict(label=label, interval_s=t_ret / RO.SAFETY_MARGIN_ASSUMPTION,
                         retention_row_timestamp_utc=r["timestamp_utc"], retention_time_s=t_ret,
-                        retention_leakage_job=(ident["leakage_job"] or ""),
+                        retention_leakage_job=leakage_job,
                         c_sn_ff=float(r["c_storage_node_ff_ASSUMPTION"]), c_sn_basis=RO.c_sn_basis(r),
                         leakage_ileak_a=float(r["leakage_ileak_a"]),
                         delta_v_v=float(r["delta_v_sense_margin_v_ASSUMPTION"]),
