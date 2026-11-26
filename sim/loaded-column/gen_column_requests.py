@@ -62,6 +62,9 @@ import run_loaded_column as R  # noqa: E402  (also sets up sim/ + layout/ import
 import run_variants as V2  # noqa: E402  (device_card / timing / read_time)
 from _evidence_common import PDK_OPEN_PDKS_COMMIT, sha256_hex  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
+# The Phase 2 knob set IS the cold-corner baseline (one table for both
+# campaigns), so this generator renders the cold-corner variants too.
+from variants import BASELINE as BASELINE_KNOBS  # noqa: E402
 
 N_ROWS = R.N_ROWS
 PATTERNS = list(range(16))
@@ -84,22 +87,6 @@ TIMEOUT_S = {"fresh": 180, "refresh_bound": 220}
 KLT_DIR = HERE / "klt"  # decks and requests live together: a klt request
 #: resolves `netlist` relative to its own file.
 
-#: Phase 2 knob set: every value equals cold-corner/variants.py BASELINE, so the
-#: same generator renders the cold-corner variants from `variants.knobs(vid)`.
-BASELINE_KNOBS = {
-    "vwl_v": 1.8,
-    "twpulse_s": 20e-9,
-    "vrwl_sel_v": 0.0,
-    "c_rbl_f": 10e-15,
-    "t_sense_s": 10e-9,
-    "wr_model": "sky130_fd_pr__nfet_01v8",
-    "wr_w_um": 0.42,
-    "rd_model": "sky130_fd_pr__nfet_01v8",
-    "rd_w_um": 0.42,
-    "force": 0,
-    "vsn1_v": 0.0,
-}
-
 
 class GenError(ValueError):
     pass
@@ -112,9 +99,7 @@ def params(knobs: dict) -> dict[str, float]:
     """Timing/bias parameters: the `.param` block of the Phase 2 template with
     the write-pulse-derived instants recomputed for this knob set. At the
     baseline 20 ns pulse this reproduces TWSTEP 25 ns / THOLD0 100 ns exactly."""
-    P = R.parse_params(R.TEMPLATE.read_text())
-    P.update(V2.timing(knobs))
-    return P
+    return V2.params(knobs, R.TEMPLATE.read_text())
 
 
 def read_time(P: dict, age: str) -> float:
@@ -162,18 +147,8 @@ def device_cards(knobs: dict) -> tuple[str, str]:
 
 def _bl_pwl(pattern: int) -> str:
     """Write-bitline PWL of one instance: row r's data level held for its write
-    pulse (identical shape to run_loaded_column.render)."""
-    pts = ["0 0"]
-    for r in range(N_ROWS):
-        bit = (pattern >> r) & 1
-        on, off = f"TW0+{r}*TWSTEP", f"TW0+{r}*TWSTEP+TWPULSE"
-        pts += [
-            f"{{{on}-TEDGE}} 0",
-            f"{{{on}}} {{VDD*{bit}}}",
-            f"{{{off}+TBL_LAG}} {{VDD*{bit}}}",
-            f"{{{off}+TBL_LAG+TEDGE}} 0",
-        ]
-    return "pwl(" + " ".join(pts) + ")"
+    pulse (the Phase 2 runner's own write-bitline stimulus)."""
+    return R.bl_pwl([f"VDD*{(pattern >> r) & 1}" for r in range(N_ROWS)])
 
 
 def tag(pattern: int) -> str:
@@ -227,10 +202,7 @@ def deck_text(knobs: dict, age: str, sel: int, c_sn_f: float,
         "* shared write wordlines (row r pulses at TW0 + r*TWSTEP)",
     ]
     for r in range(N_ROWS):
-        L.append(
-            f"vwl_{r} wl_{r} 0 pulse(0 {{VWL}} {{TW0+{r}*TWSTEP}} {{TEDGE}} {{TEDGE}} "
-            f"{{TWPULSE-TEDGE}} 1)"
-        )
+        L.append(R.wl_pulse(r, "{VWL}"))
     L += ["", f"* shared read wordlines: row {sel} is the selected row and falls to VRWL_SEL"]
     for r in range(N_ROWS):
         lvl = "{VRWL_SEL}" if r == sel else "{VDD}"

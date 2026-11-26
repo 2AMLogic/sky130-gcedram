@@ -233,15 +233,10 @@ def build_netlist(vid: str, age: str) -> str:
     a("")
     a("* ---- shared ideal sources ----")
     for r in range(N_ROWS):
-        a(f"vwl_{r} wl_{r} 0 pulse(0 {{VWL}} {{TW0+{r}*TWSTEP}} {{TEDGE}} {{TEDGE}} {{TWPULSE-TEDGE}} 1)")
+        a(R.wl_pulse(r, "{VWL}"))
     for pattern in range(16):
-        pw = ["0 0"]
-        for r in range(N_ROWS):
-            b = (pattern >> r) & 1
-            on, off = f"TW0+{r}*TWSTEP", f"TW0+{r}*TWSTEP+TWPULSE"
-            pw += [f"{{{on}-TEDGE}} 0", f"{{{on}}} {{VDD*{b}}}",
-                   f"{{{off}+TBL_LAG}} {{VDD*{b}}}", f"{{{off}+TBL_LAG+TEDGE}} 0"]
-        a(f"vblp{pattern:02d} blp{pattern:02d} 0 pwl(" + " ".join(pw) + ")")
+        a(f"vblp{pattern:02d} blp{pattern:02d} 0 "
+          + R.bl_pwl([f"VDD*{(pattern >> r) & 1}" for r in range(N_ROWS)]))
     a("vrwls rwls 0 pwl(0 {VDD} {T_READ} {VDD} {T_READ+TEDGE} 0 {T_READ+TREAD_PULSE} 0 "
       "{T_READ+TREAD_PULSE+TEDGE} {VDD})")
     a("vrwld rwld 0 dc {VDD}")

@@ -157,6 +157,41 @@ class RunnerScratchCleanup(unittest.TestCase):
                 real_rmdir(leftover)
 
 
+class SenseInstant(unittest.TestCase):
+    """measure() takes the sense instant as an argument (a cold-corner variant
+    passes its own t_sense); omitted, it is the module's T_SENSE_S."""
+
+    SENSE_KEYS = {f"i_into_rbl_r{r}_sense_a" for r in range(4)} | {
+        "i_desel_sum_sense_a", "v_rbl_sense_v", "dv_rbl_sense_v"}
+
+    def measure(self, **kwargs):
+        """R.measure() on a waveform whose every vector IS time (t + 4 sn + rbl + 4 rwl)."""
+        import run_loaded_column as R
+        t = [i * 1e-9 for i in range(200)]
+        cols = [t] + [list(t) for _ in range(9)]
+        P = R.parse_params(R.TEMPLATE.read_text())
+        t_read = R.read_time(P, "fresh")
+        return R, t_read, R.measure(cols, P, t_read, 2, **kwargs)
+
+    def test_an_explicit_sense_instant_moves_only_the_sense_readings(self):
+        R, t_read, default = self.measure()
+        _, _, at_15ns = self.measure(t_sense_s=15e-9)
+        self.assertEqual(set(at_15ns), set(default))
+        for key in default:
+            if key not in self.SENSE_KEYS:
+                self.assertEqual(at_15ns[key], default[key], key)
+        self.assertAlmostEqual(float(default["v_rbl_sense_v"]), t_read + R.T_SENSE_S, places=12)
+        self.assertAlmostEqual(float(at_15ns["v_rbl_sense_v"]), t_read + 15e-9, places=12)
+        self.assertAlmostEqual(float(default["i_into_rbl_r1_sense_a"]), -(t_read + R.T_SENSE_S), places=12)
+        self.assertAlmostEqual(float(at_15ns["i_into_rbl_r1_sense_a"]), -(t_read + 15e-9), places=12)
+
+    def test_the_default_sense_instant_is_the_module_value_at_call_time(self):
+        R, t_read, _ = self.measure()
+        with mock.patch.object(R, "T_SENSE_S", 3e-9):
+            m = self.measure()[2]
+        self.assertAlmostEqual(float(m["v_rbl_sense_v"]), t_read + 3e-9, places=12)
+
+
 @unittest.skipUnless(A.RESULTS_CSV.exists(), "no committed campaign results")
 class Committed(unittest.TestCase):
     def test_coverage_and_provenance(self):

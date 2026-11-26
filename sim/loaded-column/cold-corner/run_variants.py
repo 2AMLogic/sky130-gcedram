@@ -27,12 +27,10 @@ from __future__ import annotations
 import argparse
 import concurrent.futures as cf
 import datetime
-import hashlib
 import os
 import re
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -46,10 +44,12 @@ from _evidence_common import (  # noqa: E402
     PDK_OPEN_PDKS_COMMIT,
     append_result,
     check_ngspice_available,
+    interp_at,
     ngspice_version,
     repo_git_sha,
     resolve_ngspice_lib,
     resolve_pdk_root,
+    sha256_hex,
 )
 
 TEMPLATE = HERE / "tb_cold_variant.spice.tmpl"
@@ -74,8 +74,11 @@ def timing(k: dict) -> dict:
     return {"TWPULSE": tw, "TWSTEP": twstep, "THOLD0": thold0}
 
 
-def params(k: dict) -> dict:
-    P = R.parse_params(TEMPLATE.read_text())
+def params(k: dict, tmpl: str | None = None) -> dict:
+    """`.param` block of the cold-corner template -- or of `tmpl`, the Phase 2
+    template the request generator takes its instants from -- with the write
+    timing of knob set k."""
+    P = R.parse_params(TEMPLATE.read_text() if tmpl is None else tmpl)
     P.update(timing(k))
     return P
 
@@ -108,81 +111,33 @@ def device_card(base_params: str, model: str, w_um: float) -> str:
 
 
 def build_cells(k: dict) -> str:
-    topo = R.build_topology(N_ROWS, R.N_COLS)
     devs = R.parse_design_devices()
     for name in ("M_WR", "M_RD"):
         if devs[name][0] != V.NFET:
             raise RuntimeError(f"design {name} model changed: {devs[name][0]}")
-    wr = device_card(devs["M_WR"][1], k["wr_model"], k["wr_w_um"])
-    rd = device_card(devs["M_RD"][1], k["rd_model"], k["rd_w_um"])
-    lines = []
-    for d in topo["devices"]:
-        lines.append(f"X{d['wr_name']} {d['sn']} {d['wl']} {d['bl']} GND {wr}")
-        lines.append(f"X{d['rd_name']} {d['rbl']} {d['sn']} {d['rwl']} GND {rd}")
-    return "\n".join(lines)
+    return R.build_cells(
+        device_card(devs["M_WR"][1], k["wr_model"], k["wr_w_um"]),
+        device_card(devs["M_RD"][1], k["rd_model"], k["rd_w_um"]),
+    )
 
 
 def render(k, lib, corner, temp, cases, c_sn_f, outdir, tmax, P):
     """cases: [(pattern, sel_row, t_read)]; one ngspice process per batch."""
-    tmpl = TEMPLATE.read_text()
-    cells = (
-        build_cells(k)
-        + "\n* extracted per-cell storage-node capacitance (lumped)\n"
-        + "\n".join(f"c_sn_{r} sn_{r}_0 0 {c_sn_f:.6e}" for r in range(N_ROWS))
+    return R.render_deck(
+        TEMPLATE.read_text(), lib, corner, temp, cases, c_sn_f, outdir, tmax, P,
+        cells_body=build_cells(k), vwl="{VWL}",
+        rwl_levels=[f"{{VDD*(1-SL{r})+VRWL_SEL*SL{r}}}" for r in range(N_ROWS)],
+        # Phase 2: each sn starts at the OPPOSITE of its data (genuine overwrite).
+        # FORCE=1 (attribution only): sn starts AT its data, '1' = VSN1.
+        ic_levels=[f"{{(1-FORCE)*VDD*(1-B{r})+FORCE*VSN1*B{r}}}" for r in range(N_ROWS)],
+        subs={
+            "@@TWPULSE@@": f"{P['TWPULSE']:.6e}", "@@TWSTEP@@": f"{P['TWSTEP']:.6e}",
+            "@@THOLD0@@": f"{P['THOLD0']:.6e}", "@@VWL@@": f"{k['vwl_v']:.6g}",
+            "@@VRWL_SEL@@": f"{k['vrwl_sel_v']:.6g}", "@@FORCE@@": str(int(k["force"])),
+            "@@VSN1@@": f"{k['vsn1_v']:.6g}", "@@T_READ_DEFAULT@@": f"{read_time(P, 'fresh'):.6e}",
+            "@@C_RBL@@": f"{k['c_rbl_f']:.6e}",
+        },
     )
-    ws, pw = [], ["0 0"]
-    for r in range(N_ROWS):
-        ws.append(
-            f"vwl_{r} wl_{r} 0 pulse(0 {{VWL}} {{TW0+{r}*TWSTEP}} {{TEDGE}} {{TEDGE}} "
-            f"{{TWPULSE-TEDGE}} 1)"
-        )
-        on = f"TW0+{r}*TWSTEP"
-        off = f"TW0+{r}*TWSTEP+TWPULSE"
-        pw += [
-            f"{{{on}-TEDGE}} 0", f"{{{on}}} {{VDD*B{r}}}",
-            f"{{{off}+TBL_LAG}} {{VDD*B{r}}}", f"{{{off}+TBL_LAG+TEDGE}} 0",
-        ]
-    ws.append("vbl bl_0 0 pwl(" + " ".join(pw) + ")")
-    rs = [
-        f"vrwl_{r} rwl_{r} 0 pwl(0 {{VDD}} {{T_READ}} {{VDD}} {{T_READ+TEDGE}} "
-        f"{{VDD*(1-SL{r})+VRWL_SEL*SL{r}}} {{T_READ+TREAD_PULSE}} {{VDD*(1-SL{r})+VRWL_SEL*SL{r}}} "
-        f"{{T_READ+TREAD_PULSE+TEDGE}} {{VDD}})"
-        for r in range(N_ROWS)
-    ]
-    # Phase 2: each sn starts at the OPPOSITE of its data (genuine overwrite).
-    # FORCE=1 (attribution only): sn starts AT its data, '1' = VSN1.
-    ics = ".ic " + " ".join(
-        f"v(sn_{r}_0)={{(1-FORCE)*VDD*(1-B{r})+FORCE*VSN1*B{r}}}" for r in range(N_ROWS)
-    )
-    ctl = []
-    for j, (pattern, sel, t_read) in enumerate(cases):
-        for r in range(N_ROWS):
-            ctl.append(f"alterparam B{r} = {(pattern >> r) & 1}")
-            ctl.append(f"alterparam SL{r} = {1 if r == sel else 0}")
-        ctl.append(f"alterparam T_READ = {t_read:.9e}")
-        ctl.append("reset")
-        ctl.append("destroy all")
-        ctl.append(f"tran 10p {R.case_tstop(P, t_read):.9e} 0 {tmax:.3e}")
-        ctl.append(
-            f"wrdata {outdir}/case{j}.dat v(sn_0_0) v(sn_1_0) v(sn_2_0) v(sn_3_0) v(rbl_0) "
-            "i(vrwl_0) i(vrwl_1) i(vrwl_2) i(vrwl_3)"
-        )
-    subs = {
-        "@@TWPULSE@@": f"{P['TWPULSE']:.6e}", "@@TWSTEP@@": f"{P['TWSTEP']:.6e}",
-        "@@THOLD0@@": f"{P['THOLD0']:.6e}", "@@VWL@@": f"{k['vwl_v']:.6g}",
-        "@@VRWL_SEL@@": f"{k['vrwl_sel_v']:.6g}", "@@FORCE@@": str(int(k["force"])),
-        "@@VSN1@@": f"{k['vsn1_v']:.6g}", "@@T_READ_DEFAULT@@": f"{read_time(P, 'fresh'):.6e}",
-        "@@C_RBL@@": f"{k['c_rbl_f']:.6e}",
-        "@@PDK_NGSPICE_LIB@@": str(lib), "@@CORNER@@": corner, "@@TEMP_C@@": str(temp),
-        "@@CELLS@@": cells, "@@WRITE_SOURCES@@": "\n".join(ws),
-        "@@RWL_SOURCES@@": "\n".join(rs), "@@ICS@@": ics, "@@CASES@@": "\n".join(ctl),
-    }
-    for key, val in subs.items():
-        tmpl = tmpl.replace(key, val)
-    left = re.findall(r"@@[A-Z_0-9]+@@", tmpl)
-    if left:
-        raise RuntimeError(f"unsubstituted tokens {left}")
-    return tmpl
 
 
 def batches_for(vid: str):
@@ -202,14 +157,11 @@ def batches_for(vid: str):
 def run_batch(args):
     vid, lib, corner, temp, age, cases, c_sn_f, run_id, prov, tmax = args
     k = V.knobs(vid)
-    R.T_SENSE_S = k["t_sense_s"]  # module global read by R.measure (this worker only)
-    R.C_RBL_F = k["c_rbl_f"]
     P = params(k)
     t_read = read_time(P, age)
-    tmpl_sha = hashlib.sha256(TEMPLATE.read_bytes()).hexdigest()[:16]
+    tmpl_sha = sha256_hex(TEMPLATE)[:16]
     rows = []
     for pattern, sel in cases:
-        bits = [(pattern >> r) & 1 for r in range(N_ROWS)]
         row = {f: "" for f in FIELDS}
         row.update(prov)
         row.update({
@@ -220,48 +172,25 @@ def run_batch(args):
             "wr_model": k["wr_model"], "wr_w_um": k["wr_w_um"], "rd_model": k["rd_model"],
             "rd_w_um": k["rd_w_um"], "force_sn": k["force"], "vsn1_v": k["vsn1_v"],
             "template_sha": tmpl_sha,
-            "run_id": run_id, "corner": corner, "temp_c": temp, "age_label": age,
-            "sel_row": sel, "stored_value": bits[sel],
-            "pattern_rows3210": "".join(str(bits[r]) for r in reversed(range(N_ROWS))),
-            "other_rows_pattern": "".join(str(bits[r]) for r in reversed(range(N_ROWS)) if r != sel),
-            "c_sn_ff": f"{c_sn_f * 1e15:.6f}",
-            "c_rbl_ff_ASSUMPTION": f"{k['c_rbl_f'] * 1e15:.3f}", "vdd_v": R.VDD,
-            "vrbl_precharge_v": P["VRBL"], "t_read_s": f"{t_read:.9e}",
-            "t_sense_s_ASSUMPTION": k["t_sense_s"], "dv_latency_v_ASSUMPTION": R.DV_LATENCY_V,
-            "sel_row_age_at_read_s": f"{t_read - (P['TW0'] + sel * P['TWSTEP'] + P['TWPULSE']):.6e}",
-            "max_row_age_at_read_s": f"{t_read - (P['TW0'] + P['TWPULSE']):.6e}",
-            "notes": f"issue #47 variant {vid}: {V.BY_ID[vid]['why']}; schematic-level ASSUMED "
-                     "C_RBL, extracted C_SN, no extracted bitline parasitics",
         })
+        row.update(R.base_row(
+            pattern, sel, P, t_read, c_sn_f, run_id, corner, temp, age,
+            c_rbl_f=k["c_rbl_f"], t_sense_s=k["t_sense_s"],
+            notes=f"issue #47 variant {vid}: {V.BY_ID[vid]['why']}; schematic-level ASSUMED "
+                  "C_RBL, extracted C_SN, no extracted bitline parasitics",
+        ))
         rows.append(row)
-    with tempfile.TemporaryDirectory(prefix="gcedram_cold_", ignore_cleanup_errors=True) as td:
-        tmpdir = Path(td)
-        deck = tmpdir / "tb.spice"
-        err = None
-        try:
-            deck.write_text(render(k, lib, corner, temp, [(p, s, t_read) for p, s in cases],
-                                   c_sn_f, tmpdir, tmax, P))
-            res = subprocess.run(["ngspice", "-b", str(deck)], capture_output=True, text=True, timeout=7200)
-            err = (res.stdout + res.stderr)[-300:].replace("\n", " ")
-        except Exception as e:  # recorded, never hidden
-            err = str(e)[:300]
-        for j, row in enumerate(rows):
-            out = tmpdir / f"case{j}.dat"
-            try:
-                if not out.is_file():
-                    raise RuntimeError("ngspice produced no output for this case: " + str(err))
-                cols = R.read_wrdata(out, R.MIN_TIMEPOINTS)
-                R.check_complete(cols[0], R.case_tstop(P, t_read))
-                sel = int(row["sel_row"])
-                m = R.measure(cols, P, t_read, sel)
-                m["v_sn_sel_sense_v"] = R.interp_at(cols[0], cols[1 + sel], t_read + k["t_sense_s"])
-                for key, v in m.items():
-                    row[key] = "" if v is None else (v if isinstance(v, str) else f"{v:.6e}")
-                row["status"] = "ok"
-            except Exception as e:
-                row["status"] = "sim_failed"
-                row["reason"] = str(e)[:400]
-    return rows
+    return R.execute_batch(
+        rows,
+        lambda outdir: render(k, lib, corner, temp, [(p, s, t_read) for p, s in cases],
+                              c_sn_f, outdir, tmax, P),
+        P, t_read, tmax,
+        run_cmd=subprocess.run, t_sense_s=k["t_sense_s"],
+        extra_measure=lambda cols, sel: {
+            "v_sn_sel_sense_v": interp_at(cols[0], cols[1 + sel], t_read + k["t_sense_s"]),
+        },
+        prefix="gcedram_cold_", timeout=7200,
+    )
 
 
 def main(argv=None) -> int:

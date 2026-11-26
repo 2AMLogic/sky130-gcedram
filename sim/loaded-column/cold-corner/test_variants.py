@@ -61,6 +61,32 @@ def run(args):
     return rc
 
 
+def synth_run(cmd, **_kwargs):
+    """ngspice stand-in: writes every case file the deck asks for, each vector
+    encoding its own timestamp (rbl: flat on odd cases, falling 0.1 V/ns from
+    the read on even ones), so a reading tells the instant it was taken at."""
+    cur, cases = {}, []
+    for line in Path(cmd[2]).read_text().splitlines():
+        s = line.strip()
+        if s.startswith("alterparam T_READ ="):
+            cur["t_read"] = float(s.split("=")[1])
+        elif s.startswith("tran "):
+            cur["tstop"] = float(s.split()[2])
+        elif s.startswith("wrdata "):
+            cases.append((dict(cur), s.split()[1]))
+    for j, (c, path) in enumerate(cases):
+        rows = []
+        for i in range(200):
+            t = 1.02 * c["tstop"] * i / 199
+            after = max(0.0, t - c["t_read"])
+            sn = [0.1 * (r + 1) + 1e-3 * (t * 1e9) for r in range(4)]
+            rbl = 0.9 if t < c["t_read"] or j % 2 else 0.9 - after * 1e8
+            irw = [-(1e-6 * (r + 1)) - 1e-9 * (t * 1e9) for r in range(4)]
+            rows.append(" ".join(f"{t:.9e} {x:.9e}" for x in sn + [rbl] + irw))
+        Path(path).write_text("\n".join(rows) + "\n")
+    return subprocess.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+
 class Synthetic(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
@@ -200,6 +226,38 @@ class Harness(unittest.TestCase):
                     child.unlink()
                 real_rmdir(leftover)
 
+    def test_run_batch_passes_knobs_by_argument_and_leaves_the_phase2_module_alone(self):
+        """t_sense / C_RBL of a non-baseline variant reach the deck, the row and
+        the measurement as arguments: the Phase 2 module globals are not
+        rewritten and the sense readings are taken at the variant's instant."""
+        decks = []
+
+        def stub_run(cmd, **kwargs):
+            decks.append(Path(cmd[2]).read_text())
+            return synth_run(cmd, **kwargs)
+
+        phase2 = (RV.R.T_SENSE_S, RV.R.C_RBL_F)
+        self.addCleanup(setattr, RV.R, "T_SENSE_S", phase2[0])
+        self.addCleanup(setattr, RV.R, "C_RBL_F", phase2[1])
+        for vid in ("attr_tsense_15n", "attr_crbl_5f"):
+            k = V.knobs(vid)
+            t_read = RV.read_time(RV.params(k), "fresh")
+            batch_args = (vid, Path("/nonexistent/sky130.lib.spice"), "fs", -40, "fresh",
+                          [(0b0010, 1), (0b0100, 2)], 6.0e-16, "T_RUN", PROV, 0.5e-9)
+            with mock.patch.object(RV.subprocess, "run", side_effect=stub_run):
+                rows = RV.run_batch(batch_args)
+            self.assertEqual((RV.R.T_SENSE_S, RV.R.C_RBL_F), phase2, vid)
+            self.assertRegex(decks[-1], rf"(?m)^\.param C_RBL\s*= {k['c_rbl_f']:.6e}$")
+            for row in rows:
+                self.assertEqual(row["status"], "ok", row["reason"])
+                self.assertEqual(row["t_sense_s_ASSUMPTION"], k["t_sense_s"])
+                self.assertEqual(row["c_rbl_ff_ASSUMPTION"], f"{k['c_rbl_f'] * 1e15:.3f}")
+                t_sense = t_read + k["t_sense_s"]
+                self.assertAlmostEqual(float(row["v_sn_sel_sense_v"]),
+                                       0.1 * (row["sel_row"] + 1) + 1e-3 * (t_sense * 1e9), delta=1e-6)
+            self.assertAlmostEqual(float(rows[0]["v_rbl_sense_v"]),
+                                   0.9 - k["t_sense_s"] * 1e8, delta=1e-6)
+
     def test_run_variants_missing_case_output_and_cleanup(self):
         seen_decks = []
 
@@ -224,8 +282,6 @@ class Harness(unittest.TestCase):
             with (
                 mock.patch.object(tempfile, "tempdir", root),
                 mock.patch.object(RV.subprocess, "run", side_effect=stub_run),
-                mock.patch.object(RV.R, "T_SENSE_S", RV.R.T_SENSE_S),
-                mock.patch.object(RV.R, "C_RBL_F", RV.R.C_RBL_F),
             ):
                 rows = RV.run_batch(batch_args)
             self.assertEqual(seen_decks, [True])
@@ -241,8 +297,6 @@ class Harness(unittest.TestCase):
             with (
                 mock.patch.object(tempfile, "tempdir", root),
                 mock.patch.object(RV.subprocess, "run", side_effect=_Abort("stop")),
-                mock.patch.object(RV.R, "T_SENSE_S", RV.R.T_SENSE_S),
-                mock.patch.object(RV.R, "C_RBL_F", RV.R.C_RBL_F),
             ):
                 with self.assertRaises(_Abort):
                     RV.run_batch(batch_args)
@@ -252,8 +306,6 @@ class Harness(unittest.TestCase):
             with (
                 mock.patch.object(tempfile, "tempdir", root),
                 mock.patch.object(RV.subprocess, "run", side_effect=stub_run),
-                mock.patch.object(RV.R, "T_SENSE_S", RV.R.T_SENSE_S),
-                mock.patch.object(RV.R, "C_RBL_F", RV.R.C_RBL_F),
                 mock.patch("os.rmdir", side_effect=OSError("simulated busy scratch dir")),
             ):
                 rows2 = RV.run_batch(batch_args)
