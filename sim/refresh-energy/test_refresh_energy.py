@@ -312,6 +312,38 @@ class Calculation(unittest.TestCase):
                 A.RO.select_retention_row(rows_load(csv_path) + [dict(rows_load(csv_path)[0], geometry_name="3T-min")],
                                           A.RO.QUALIFIED_EXTRACTED_2T_TS)
 
+    def test_historical_row_losing_its_assumed_basis_is_rejected(self):
+        """Regression (#443): energy scaling consumes the CHECKED pair from
+        `refresh_overhead.qualified_retention_rows()`, so a historical row
+        that lost its ASSUMED C_SN basis is refused here exactly as the
+        measured-overhead path refuses it -- never emitted under the
+        `historical_assumed_2t` label with an EXTRACTED basis. The same
+        temp-CSV round trip of the unaltered rows is accepted and equals the
+        default-path intervals, so the refusal is caused by the altered
+        basis alone."""
+        with tempfile.TemporaryDirectory() as td:
+            csv_path = Path(td) / "retention.csv"
+            rows = A.RO.load_worst_case_retention()
+            fields = list(rows[0].keys())
+
+            def write(out_rows):
+                with csv_path.open("w", newline="") as f:
+                    w = csv.DictWriter(f, fieldnames=fields)
+                    w.writeheader()
+                    w.writerows(out_rows)
+
+            write(rows)
+            self.assertEqual(A.intervals(csv_path), A.intervals())
+            write([dict(r, c_storage_node_margin_factor_ASSUMPTION="")
+                   if (r["timestamp_utc"], r["geometry_name"]) == (A.RO.HISTORICAL_ASSUMED_2T_TS, "2T-min") else r
+                   for r in rows])
+            with self.assertRaises(SystemExit) as energy:
+                A.intervals(csv_path)
+            with self.assertRaises(SystemExit) as overhead:
+                A.RO.qualified_retention_rows(csv_path)
+            for refused in (energy, overhead):
+                self.assertIn("must keep its ASSUMED C_SN basis", str(refused.exception))
+
 
 class Reduction(unittest.TestCase):
     def reduce(self, rep):
