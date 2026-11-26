@@ -58,6 +58,26 @@ class Generator(unittest.TestCase):
                 w.writerow([G.PIN, "tt", "27", "2e-12"])
             self.assertEqual(G.load_leakage_current_pin(p), {("tt", 27): 2e-12})
 
+    def test_leakage_loader_skips_malformed_rows(self):
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "l.csv"
+            with p.open("w", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["pdk_open_pdks_commit", "corner", "temp_c", "ileak_a"])
+                w.writerow([G.PIN, "tt", "27", "NaN"])
+                w.writerow([G.PIN, "tt"])
+                w.writerow([G.PIN, "tt", "27"])
+                w.writerow([G.PIN, "ss", "125", "not-a-float"])
+                w.writerow([G.PIN, "ff", "12x5", "1e-12"])
+                w.writerow([G.PIN, "ff", "27", "inf"])
+                w.writerow([G.PIN, "ss", "27", "-inf"])
+                w.writerow([G.PIN, "tt", "27", "2e-12"])
+                w.writerow([G.PIN, "tt", "27", "1e-12"])
+            leak = G.load_leakage_current_pin(p)
+            self.assertEqual(leak, {("tt", 27): 2e-12})
+            self.assertEqual(G.hold_window_s(leak, 27, 1.0, corner="tt"),
+                             R.seed_hold_window(2e-12, 1.0))
+
     def test_hold_end_instant_inside_tstop(self):
         req = G.build_hold(1, 27, 5e-3, "tt")
         stop = float(req["analysis"]["args"].split()[1])
