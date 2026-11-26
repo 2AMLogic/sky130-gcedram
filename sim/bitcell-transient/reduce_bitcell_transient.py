@@ -19,7 +19,8 @@ threshold is a cubic (4 nearest rungs) interpolation. Rows whose threshold falls
 ladder, or whose rungs were not crossed inside the window, leave ``t_ret_tran_s`` blank with a note.
 
 PDK stamp: a row is stamped with the repo pin only when the report's
-``pdk_stamp_comparison.status`` is ``match``; otherwise it is stamped ``fleet-stamp:<worker commit>``
+``pdk_stamp_comparison.status`` is ``match`` and the worker's PDK stamp text names that pin;
+otherwise it is stamped ``fleet-stamp:<worker commit>``
 and the note says so (the fleet's PDK is a worker-spec matter, not worked around here).
 """
 from __future__ import annotations
@@ -35,7 +36,13 @@ SIM = HERE.parent
 sys.path.insert(0, str(SIM))
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(SIM / "retention"))
-from _evidence_common import PDK_OPEN_PDKS_COMMIT, append_result, measurements_of, repo_git_sha  # noqa: E402
+from _evidence_common import (  # noqa: E402
+    PDK_OPEN_PDKS_COMMIT,
+    append_result,
+    measurements_of,
+    repo_git_sha,
+    worker_pdk_stamp_problems,
+)
 from derive_retention import load_extracted_c_sn  # noqa: E402
 import gen_bitcell_transient as G  # noqa: E402
 import run_bitcell_transient as R  # noqa: E402
@@ -116,11 +123,14 @@ def build_rows(root: Path, delta_v: float = R.DEFAULT_DELTA_V) -> tuple[list[dic
     if len(stamps) != 1:
         raise ReduceError(f"reports disagree on the worker PDK stamp: {sorted(stamps)}")
     status, text = stamps.pop()
-    pin_ok = status == "match"
+    first = next(iter(reports.values()))[1]
+    # pin_ok needs both clauses of the shared gate (#439): "match" alone
+    # only proves the worker's PDK equals the submitter's local PDK, so a
+    # stale-revision run would otherwise be stamped with the repo pin.
+    pin_ok = not worker_pdk_stamp_problems(first)
     commit = PDK_OPEN_PDKS_COMMIT if pin_ok else "fleet-stamp:" + text.replace("open_pdks ", "")
     sha = repo_git_sha(HERE)
     ts = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
-    first = next(iter(reports.values()))[1]
     env = first["environment"]
     ver = f"ngspice-{env.get('engine_version', 'unknown')} (klt sim batch)"
     leak = G.load_leakage_current_pin()

@@ -60,6 +60,7 @@ from _evidence_common import (
     repo_git_sha,
     resolve_ngspice_lib,
     resolve_pdk_root,
+    worker_pdk_stamp_problems,
 )
 
 TEMPLATE_PATH = SIM_LEAKAGE_DIR / "tb_access_leakage.spice.tmpl"
@@ -156,16 +157,9 @@ def rows_from_klt_report(report_path: Path) -> list[dict]:
         )
     env = report["environment"]
     remote = env.get("remote") or {}
-    worker_env = remote.get("worker_environment") or {}
-    stamp_cmp = worker_env.get("pdk_stamp_comparison") or {}
-    if stamp_cmp.get("status") != "match":
-        raise RuntimeError(
-            f"{report_path}: worker PDK stamp comparison status="
-            f"{stamp_cmp.get('status')!r} (worker stamp "
-            f"{(worker_env.get('pdk') or {}).get('stamp_text', 'unknown')!r}); "
-            "refusing to append rows not proven to come from the pinned "
-            f"open_pdks revision {PDK_OPEN_PDKS_COMMIT} (issue #377)"
-        )
+    problems = worker_pdk_stamp_problems(report)
+    if problems:
+        raise RuntimeError(f"{report_path}: {'; '.join(problems)} (issue #377)")
     job_id = remote.get("job_id", "unknown")
     note = (
         f"klt sim batch job {job_id}; ngspice-{env.get('engine_version', 'unknown')}; "

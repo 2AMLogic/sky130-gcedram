@@ -2,6 +2,7 @@
 """Tests for gen_bitcell_transient.py / reduce_bitcell_transient.py (issue #182).
 Run: python3 -I sim/bitcell-transient/test_gen_bitcell_transient.py"""
 import csv
+import json
 import os
 import subprocess
 import sys
@@ -86,6 +87,42 @@ class Reducer(unittest.TestCase):
         ladder = {mv / 1000: 1e-3 for mv in G.LADDER_MV}
         self.assertIsNone(RED.ladder_crossing(0.9, ladder))
         self.assertIsNone(RED.ladder_crossing(0.1, {0.05: None, 0.075: None, 0.1: None, 0.125: None}))
+
+
+class ReducerStampGate(unittest.TestCase):
+    """Issue #439: `pdk_open_pdks_commit` may carry the repo pin only when
+    the comparison status is "match" AND the worker stamp text names the
+    pin. A "match" against another revision (a submitter on a stale PDK
+    matched against a worker on that same stale PDK) must fall back to the
+    fleet stamp, never record the pin. The committed 2026-11-02 reports
+    (a real "mismatch" run on the old revision) are the fixture base."""
+
+    RESULTS = HERE / "results"
+    OLD_PIN = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+
+    def _copy_reports(self, stamp_status, stamp_text):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = Path(tmp.name)
+        for src in self.RESULTS.glob("klt_report_*.json"):
+            rep = json.loads(src.read_text())
+            worker = rep["environment"]["remote"]["worker_environment"]
+            worker["pdk_stamp_comparison"]["status"] = stamp_status
+            worker["pdk"]["stamp_text"] = stamp_text
+            (root / src.name).write_text(json.dumps(rep))
+        return root
+
+    def _commits(self, root):
+        rows, _ = RED.build_rows(root)
+        return {r["pdk_open_pdks_commit"] for r in rows}
+
+    def test_match_on_the_pin_stamps_the_repo_pin(self):
+        root = self._copy_reports("match", f"open_pdks {G.PIN}")
+        self.assertEqual(self._commits(root), {G.PIN})
+
+    def test_match_against_another_revision_falls_back_to_the_fleet_stamp(self):
+        root = self._copy_reports("match", f"open_pdks {self.OLD_PIN}")
+        self.assertEqual(self._commits(root), {f"fleet-stamp:{self.OLD_PIN}"})
 
 
 class ScratchCleanup(unittest.TestCase):
