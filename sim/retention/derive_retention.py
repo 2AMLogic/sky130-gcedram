@@ -91,6 +91,7 @@ from _evidence_common import (
     load_json,
     repo_git_sha,
     resolve_pdk_root,
+    worker_pdk_stamp_problems,
 )
 
 LEAKAGE_CSV = SIM_RETENTION_DIR.parent / "leakage" / "results" / "leakage_results.csv"
@@ -236,9 +237,11 @@ def parse_toxe_epsrox(model_file: Path) -> tuple[float, float]:
 def matched_batch_job_ids(reports_dir: Path) -> set[str]:
     """Batch job ids (issue #377) whose committed klt report under
     `reports_dir` proves the run's worker PDK stamp comparison was "match"
-    -- i.e. the worker resolved the same open_pdks revision the submitter
-    pinned. Fail closed: a report that is unreadable, or whose comparison
-    is missing or not "match", contributes no job id."""
+    and the worker's stamp text names the repo pin -- i.e. the worker
+    executed the pinned open_pdks revision, not merely the same revision
+    the submitter resolved locally. Fail closed: a report that is
+    unreadable, or whose comparison is missing, not "match", or whose
+    stamp text does not name the pin, contributes no job id."""
     matched: set[str] = set()
     for report_path in sorted(reports_dir.glob("klt_report_*.json*")):
         try:
@@ -248,10 +251,8 @@ def matched_batch_job_ids(reports_dir: Path) -> set[str]:
         if not isinstance(report, dict):
             continue
         remote = (report.get("environment") or {}).get("remote") or {}
-        worker_env = remote.get("worker_environment") or {}
-        stamp_cmp = worker_env.get("pdk_stamp_comparison") or {}
         job_id = remote.get("job_id")
-        if stamp_cmp.get("status") == "match" and job_id:
+        if not worker_pdk_stamp_problems(report) and job_id:
             matched.add(job_id)
     return matched
 

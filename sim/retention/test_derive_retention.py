@@ -32,20 +32,26 @@ OLD_TS = "2026-10-16T07:43:01+00:00"
 NEW_TS = "2026-11-20T00:31:00+00:00"
 
 
-def write_report(dir_path, name, job_id, stamp_status):
+def write_report(dir_path, name, job_id, stamp_status, stamp_text=None):
+    """Minimal klt report. The worker `pdk` block always carries a
+    `stamp_text` (as the real committed reports do); it defaults to the
+    repo pin and can name another revision to exercise the stamp-text
+    clause of the gate. `stamp_status` is the `pdk_stamp_comparison
+    .status` to embed; None omits that block entirely."""
+    worker_env = {
+        "pdk": {"stamp_text": stamp_text or f"open_pdks {PDK_OPEN_PDKS_COMMIT}"}
+    }
+    if stamp_status is not None:
+        worker_env["pdk_stamp_comparison"] = {"status": stamp_status}
     report = {
         "status": "pass",
         "failed": 0,
         "errored": 0,
         "corners": [],
         "environment": {
-            "remote": {"job_id": job_id, "worker_environment": {}},
+            "remote": {"job_id": job_id, "worker_environment": worker_env},
         },
     }
-    if stamp_status is not None:
-        report["environment"]["remote"]["worker_environment"][
-            "pdk_stamp_comparison"
-        ] = {"status": stamp_status}
     path = Path(dir_path) / name
     path.write_text(json.dumps(report))
     return path
@@ -110,6 +116,21 @@ class StampMatchedSelection(unittest.TestCase):
         write_report(self.results, "klt_report_old.json", OLD_JOB, "mismatch")
         write_report(self.results, "klt_report_new.json", NEW_JOB, "match")
         self.assertEqual(D.matched_batch_job_ids(self.results), {NEW_JOB})
+
+    def test_match_on_another_revision_stamp_text_does_not_qualify(self):
+        # "match" only proves the worker's PDK equals the submitter's
+        # local PDK (issue #439): a submitter on a stale PDK gets "match"
+        # against a worker on that same stale revision. Such a report must
+        # not qualify its job id, or its rows could supply a retention
+        # number while stamped with a pin the worker never executed.
+        write_report(
+            self.results,
+            "klt_report_stale.json",
+            NEW_JOB,
+            "match",
+            stamp_text=f"open_pdks {OLD_PIN}",
+        )
+        self.assertEqual(D.matched_batch_job_ids(self.results), set())
 
     def test_tie_prefers_stamp_matched_row(self):
         # Equal ileak_a, the older mislabelled row first in file order:

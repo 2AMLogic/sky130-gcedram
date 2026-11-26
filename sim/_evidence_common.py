@@ -419,10 +419,11 @@ def parse_cards(path: Path) -> dict[str, tuple[list[str], str, str]]:
 # --------------------------------------------------------------------------
 # Worker PDK stamp gate (issue #377 / #171) -- the fail-closed check a
 # reducer runs on a `klt sim` batch report before letting it qualify a new
-# evidence record. `run_leakage_sweep.py` carries the original inline copy
-# (kept: its docstring names the #168 incident); this shared shape exists
-# so the G4 refresh reducers apply the identical rule instead of retyping
-# it: only `environment.remote.worker_environment.pdk_stamp_comparison
+# evidence record. The leakage reducer carried the original inline copy
+# (its docstring names the #168 incident) and, since issue #439, delegates
+# here like every other gated reducer -- loaded-column, retention and
+# bitcell-transient included -- instead of retyping the rule: only
+# `environment.remote.worker_environment.pdk_stamp_comparison
 # .status == "match"` qualifies, and a missing block or stamp text that
 # does not name the pinned commit is a failure, never a pass.
 # --------------------------------------------------------------------------

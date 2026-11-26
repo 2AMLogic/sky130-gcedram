@@ -90,6 +90,7 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime
+import math
 import re
 import subprocess
 import sys
@@ -363,20 +364,24 @@ def check_env(ngspice_lib: Path) -> bool:
     return ok
 
 
-def load_leakage_by_point() -> dict[tuple[str, int], float]:
+def load_leakage_by_point(
+    path: Path = LEAKAGE_CSV, pin: str = PDK_OPEN_PDKS_COMMIT
+) -> dict[tuple[str, int], float]:
     """Worst (maximum) recorded DC leakage per (corner, temp_c) from
     sim/leakage/results/leakage_results.csv, over rows of the CURRENT PDK pin
     only (the file also holds the historical c6d73a3 block). Used ONLY to
     size the hold-phase simulation window -- never as a reported result."""
     table: dict[tuple[str, int], float] = {}
-    with LEAKAGE_CSV.open(newline="") as f:
+    with Path(path).open(newline="") as f:
         for row in csv.DictReader(f):
-            if not str(row.get("pdk_open_pdks_commit", "")).startswith(PDK_OPEN_PDKS_COMMIT[:7]):
+            if not str(row.get("pdk_open_pdks_commit", "")).startswith(pin[:7]):
                 continue
             try:
                 key = (row["corner"], int(row["temp_c"]))
                 val = float(row["ileak_a"])
-            except (KeyError, ValueError):
+            except (KeyError, TypeError, ValueError):
+                continue
+            if not math.isfinite(val):
                 continue
             if key not in table or val > table[key]:
                 table[key] = val
@@ -480,6 +485,26 @@ def read_phase_window(params: dict[str, float]) -> tuple[float, float]:
     return params["THOLD_START"], params["TEDGE"] / READ_TMAX_DIVISOR
 
 
+def seed_hold_window(
+    ileak_a: float, c_sn_ff: float, delta_v: float = DEFAULT_DELTA_V
+) -> float:
+    """The hold window's seed: HOLD_WINDOW_SLACK x the analytic estimate
+    (C_SN + C_INTRINSIC_EST_FF) * delta_V / I_leak, clamped to
+    [HOLD_WINDOW_MIN_S, HOLD_WINDOW_MAX_S]. The single definition shared by
+    this driver's grow loop and gen_bitcell_transient's fixed window."""
+    c_est_f = (c_sn_ff + C_INTRINSIC_EST_FF) * 1e-15
+    return min(
+        max(HOLD_WINDOW_SLACK * c_est_f * delta_v / ileak_a, HOLD_WINDOW_MIN_S),
+        HOLD_WINDOW_MAX_S,
+    )
+
+
+def tmax_for(window: float) -> float:
+    """The long `.tran`'s tmax, clamped from the hold window (see
+    TMAX_DIVISOR above)."""
+    return min(max(window / TMAX_DIVISOR, TMAX_MIN_S), TMAX_MAX_S)
+
+
 def measure_read_currents(
     t: list[float], irbl: list[float], params: dict[str, float]
 ) -> tuple[float, float]:
@@ -581,7 +606,7 @@ def run_point(
         tmax = (
             tmax_override
             if tmax_override is not None
-            else min(max(hold_window / TMAX_DIVISOR, TMAX_MIN_S), TMAX_MAX_S)
+            else tmax_for(hold_window)
         )
         t, vsn, irbl = run_tran(
             ngspice_lib,
@@ -796,11 +821,7 @@ def main(argv: list[str] | None = None) -> int:
                     f"no leakage row for corner={corner} temp_c={temp_c} in "
                     f"{LEAKAGE_CSV} -- needed to size the hold window"
                 )
-            c_est_f = (c_sn_ff + C_INTRINSIC_EST_FF) * 1e-15
-            hold_window = min(
-                max(HOLD_WINDOW_SLACK * c_est_f * delta_v / ileak, HOLD_WINDOW_MIN_S),
-                HOLD_WINDOW_MAX_S,
-            )
+            hold_window = seed_hold_window(ileak, c_sn_ff, delta_v)
 
             m1, hold_window, tstop, tmax = run_point(
                 ngspice_lib,

@@ -15,7 +15,7 @@ change does not touch that pin or any `layout/*.result.json`.
 |---|---|---|---|
 | 2 Layout | `attest/item2.envelope.json`, written by `attest/make_item2_envelope.py` (klt has no producer for item 2) | `layout/gain_cell_2t.gds`, `layout/gain_cell_2t_array.gds`, `layout/generate.sh`, `layout/generate_array.sh`, `layout/generation_toolchain.py` through `provenance.input.paths` | Re-run the script; the manifest pin is the combined digest, so editing any member makes the row stale |
 | 9 Testbenches | `attest/item9.json` -> `attest/item9.envelope.json` | every committed ngspice deck and `klt sim` request under `sim/` (benches, not recorded results), plus the new `sim/cold-start/request.json`; PDK `sky130A` at open_pdks `f6eeac7` (`docs/pdk-pin.md`), klt 0.8.0, ngspice 46 | **Locally** (needs ngspice and the pinned PDK): `klt signoff --attest 9 --inventory attest/item9.json -o attest/item9.envelope.json` |
-| 10 Repo hygiene | `attest/item10.json` -> `attest/item10.envelope.json` | `README.md`, `LICENSE`, `spec/README.md`, `docs/pdk-pin.md`, both workflows; every command the shared evidence runner executes (each tracked `test_*.py` suite outside `.loom/`, `.claude/` and `.agents/`, plus its standalone checks), discovered at run time by `scripts/run_evidence_checks.py` and kept complete against that discovery by `scripts/tests/test_item10_inventory.py` (issue #414); and the 4 `klt drc/lvs --check` commands of `signoff.yml` | `klt signoff --attest 10 --inventory attest/item10.json -o attest/item10.envelope.json`; CI re-runs `--check` |
+| 10 Repo hygiene | `attest/item10.json` -> `attest/item10.envelope.json` | `README.md`, `LICENSE`, `spec/README.md`, `docs/pdk-pin.md`, both workflows; every command the shared evidence runner executes (each tracked `test_*.py` suite outside `.loom/`, `.claude/` and `.agents/`, plus its standalone checks), discovered at run time by `scripts/run_evidence_checks.py` and kept complete against that discovery by `scripts/tests/test_item10_inventory.py` (issue #414); and the `klt drc/lvs --check` commands of `signoff.yml` | `klt signoff --attest 10 --inventory attest/item10.json -o attest/item10.envelope.json`; CI re-runs `--check` |
 
 Item 9's cold start is **one single-corner request** (tt, 125 C) over the
 sense-stage deck, run with `klt sim --backend local`, about 40 s. Every other
@@ -176,8 +176,10 @@ item-10 command.
   55/55 checks pass under the pinned klt 0.9.2, and the `hygiene` list is
   unchanged. The klt pex bitcell/array suite
   (`sim/pex_bitcell_array/test_pex_bitcell_array.py`) reached `main` afterwards,
-  in #403; #425 added it to the inventory, which makes the current count 41
-  `python3 -I` commands and 56/56 checks.
+  in #403, and was inventoried in #433, giving 41 `python3 -I` commands and
+  56/56 checks; the sense-latch `klt drc/lvs --check` commands then raised the
+  current count to 58/58. #425 re-attested the envelope after its
+  `spec/README.md` change.
 - `block-manifest.json`'s `10.analog` and `10.digital` pins moved to the new
   inventory hash and `block-manifest.signoff.json` was regenerated; both item-10
   rows stay `met` and `t1_met_count` stays 9.

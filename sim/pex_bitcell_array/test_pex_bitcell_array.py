@@ -10,7 +10,9 @@ reduction on synthetic corner data. Stdlib only.
 from __future__ import annotations
 
 import sys
+import tempfile
 from pathlib import Path
+from unittest import mock
 
 STUDY_DIR = Path(__file__).resolve().parent
 SIM_DIR = STUDY_DIR.parent
@@ -23,6 +25,7 @@ sys.path.insert(0, str(STUDY_DIR))
 
 import gen_bitcell_transient as G  # noqa: E402
 import gen_reference_netlists as GEN  # noqa: E402
+import measure_pex_retention as M  # noqa: E402
 import pex_bench  # noqa: E402
 
 FAILURES: list[str] = []
@@ -182,6 +185,57 @@ def test_reduce_t_ret() -> None:
           and "ladder" in row["message"] and "4.000000e-04" in row["message"], str(row))
 
 
+def test_param_block_tracks_vdd() -> None:
+    """Issue #441: the bench's `.param VBL_DATA` / `VRBL` must be derived
+    from the template's VDD through gen_bitcell_transient.param_block (the
+    shared single definition), not hardcoded -- an overridden or updated
+    VDD must propagate into the rendered bench."""
+    cell = pex_bench.CELLS["bitcell"]
+    dut = cell["reference"].read_text()
+    base = G.params()
+    for vdd in (1.8, 1.2):
+        with mock.patch.object(G, "params", return_value=dict(base, VDD=vdd)):
+            bench = pex_bench.build_bench(dut, cell, "schematic", "ref.spice", "0" * 64)
+        stale = ".param VBL_DATA = 1.8" in bench and vdd != 1.8
+        check(f"VBL_DATA/VRBL track the template VDD ({vdd:g})",
+              f".param VBL_DATA = {vdd:g}" in bench
+              and f".param VRBL   = {vdd / 2.0:g}" in bench
+              and not stale,
+              "bench does not derive VBL_DATA/VRBL from VDD")
+
+
+def test_check_pdk_root_fails_closed() -> None:
+    """Issue #441: check_pdk_root goes through _evidence_common's
+    pdk_revision_problems, so an unidentifiable tree (missing SOURCES) or
+    one at another revision fails closed; only the pinned revision
+    passes."""
+    other = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"
+    cases = [
+        ("missing SOURCES", None),
+        ("mismatched SOURCES", f"open_pdks {other}\n"),
+        ("pinned revision", f"open_pdks {G.PIN}\n"),
+    ]
+    for label, body in cases:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            variant = root / "sky130A"
+            variant.mkdir()
+            if body is not None:
+                (variant / "SOURCES").write_text(body)
+            with mock.patch.object(M, "resolve_pdk_root", return_value=root):
+                try:
+                    result: object = M.check_pdk_root()
+                except SystemExit as e:
+                    result = e
+            if body == f"open_pdks {G.PIN}\n":
+                check(f"check_pdk_root passes on the {label}",
+                      result == root, str(result))
+            else:
+                check(f"check_pdk_root fails closed on {label}",
+                      isinstance(result, SystemExit) and "sky130A" in str(result),
+                      str(result))
+
+
 def main() -> int:
     test_references_fresh()
     test_bitcell_reference()
@@ -189,6 +243,8 @@ def main() -> int:
     test_committed_extracts()
     test_hold_measurements_for()
     test_bench_shape()
+    test_param_block_tracks_vdd()
+    test_check_pdk_root_fails_closed()
     test_reduce_t_ret()
     if FAILURES:
         print(f"\n{len(FAILURES)} failure(s)")

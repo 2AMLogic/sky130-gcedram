@@ -339,7 +339,7 @@
       ]
     },
     {
-      "name": "klt pex bitcell/array schematic-vs-extracted retention evidence checks",
+      "name": "PEX schematic-vs-extracted retention (issue #383) checks",
       "argv": [
         "python3",
         "-I",
@@ -383,6 +383,26 @@
         "lvs",
         "--check",
         "gain_cell_2t_array.lvs.result.json"
+      ],
+      "cwd": "layout"
+    },
+    {
+      "name": "klt drc --check sense_latch.drc.result.json",
+      "argv": [
+        "klt",
+        "drc",
+        "--check",
+        "sense_latch.drc.result.json"
+      ],
+      "cwd": "layout"
+    },
+    {
+      "name": "klt lvs --check sense_latch.lvs.result.json",
+      "argv": [
+        "klt",
+        "lvs",
+        "--check",
+        "sense_latch.lvs.result.json"
       ],
       "cwd": "layout"
     }
