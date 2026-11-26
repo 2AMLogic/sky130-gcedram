@@ -209,7 +209,8 @@ P_total = N_rows * E_row_incremental / refresh_interval  +  N_rows * (P_idle_16 
 `N_rows` = 4 .. 1024 (powers of two, the refresh-overhead grid), fixed
 four-column width. Intervals are read from
 [`sim/retention/results/retention_results.csv`](../retention/results/retention_results.csv)
-via `refresh_overhead.load_worst_case_retention()`, not retyped: **5.03 us**
+via `refresh_overhead.qualified_retention_rows()` (the checked historical/qualified
+pair shared with the measured-overhead path, issue #443), not retyped: **5.03 us**
 (ratified basis, ASSUMED `C_SN`) and **2.75 us** (extracted `C_SN`, newer,
 unratified). Linear scaling in rows is an ASSUMPTION: height-dependent
 bitline loading (a taller column has a longer, heavier RBL/WBL) is ignored.
