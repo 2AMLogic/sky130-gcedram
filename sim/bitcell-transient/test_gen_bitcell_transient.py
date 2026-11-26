@@ -58,6 +58,20 @@ class Generator(unittest.TestCase):
                 w.writerow([G.PIN, "tt", "27", "2e-12"])
             self.assertEqual(G.load_leakage_current_pin(p), {("tt", 27): 2e-12})
 
+    def test_leakage_loader_skips_malformed_rows(self):
+        # issue #441: the loader is the driver's load_leakage_by_point, whose
+        # (KeyError, ValueError) row guard must survive the aliasing -- a row
+        # it cannot parse is skipped, not a crash.
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "l.csv"
+            with p.open("w", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["pdk_open_pdks_commit", "corner", "temp_c", "ileak_a"])
+                w.writerow([G.PIN, "tt", "27", "not-a-float"])
+                w.writerow([G.PIN, "ff", "12x5", "1e-12"])
+                w.writerow([G.PIN, "ss", "125", "3e-12"])
+            self.assertEqual(G.load_leakage_current_pin(p), {("ss", 125): 3e-12})
+
     def test_hold_end_instant_inside_tstop(self):
         req = G.build_hold(1, 27, 5e-3, "tt")
         stop = float(req["analysis"]["args"].split()[1])

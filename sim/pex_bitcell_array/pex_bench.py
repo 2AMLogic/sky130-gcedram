@@ -225,32 +225,6 @@ def dut_problems(text: str, cell: dict) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
-def _g(x: float) -> str:
-    return f"{x:.6e}"
-
-
-def _param_block() -> str:
-    """The write/read/hold phase block, byte-identical in shape to
-    `bitcell_d1.spice`'s (parsed out of the committed template, the single
-    source of truth -- never retyped here)."""
-    p = G.params()
-    return "\n".join(
-        [
-            f".param VDD    = {p['VDD']:g}",
-            f".param VRBL   = {p['VDD'] / 2.0:g}",
-            f".param TEDGE       = {_g(p['TEDGE'])}",
-            f".param TWL_ON      = {_g(p['TWL_ON'])}",
-            f".param TWL_OFF     = {_g(p['TWL_OFF'])}",
-            f".param TBL_OFF     = {_g(p['TBL_OFF'])}",
-            f".param TRWL_ON     = {_g(p['TRWL_ON'])}",
-            f".param TRWL_OFF    = {_g(p['TRWL_OFF'])}",
-            f".param THOLD_START = {_g(p['THOLD_START'])}",
-            ".param VBL_DATA = 1.8",
-            ".param VSN_INIT = 0",
-        ]
-    )
-
-
 def hold_measurements_for(cell: dict, window: float) -> list[dict]:
     """The stored-'1 hold `.meas` set of `gen_bitcell_transient.
     hold_measurements(1, window)`, re-pointed at THIS cell's selected
@@ -326,38 +300,39 @@ def _x_line(cell: dict) -> str:
     return f"Xdut {' '.join(nets)} {cell['top']}"
 
 
+def _line0(card: str, source: str, net: str) -> str:
+    """A single-cell waveform card re-pointed at the array's row-0/col-0
+    line: same waveform, source and node renamed with the `_0` index."""
+    toks = card.split(maxsplit=2)
+    if (
+        len(toks) != 3
+        or toks[:2] != [source, net]
+        or toks[2].split(maxsplit=1)[0] != "0"
+    ):
+        raise BenchError(f"{source} card not in the expected form: {card!r}")
+    return f"{source}_0 {net}_0 {toks[2]}"
+
+
 def _stimulus(cell: dict) -> str:
     """Write/read/hold stimulus, the single-cell sequence verbatim for the
     bitcell; the array drives the selected row/column (0, 0) with every
     unselected line held at its documented idle bias."""
     if cell["top"] == "gain_cell_2t_layout_0":
-        return "\n".join(
-            [
-                "vwl  wl  0 pulse(0 {VDD} {TWL_ON} {TEDGE} {TEDGE} {TWL_OFF-TWL_ON-TEDGE} 1)",
-                "vbl  bl  0 pwl(0 {VBL_DATA} {TBL_OFF} {VBL_DATA} {TBL_OFF+TEDGE} 0)",
-                "vrwl rwl 0 pwl(0 {VDD} {TRWL_ON} {VDD} {TRWL_ON+TEDGE} 0 {TRWL_OFF} 0 {TRWL_OFF+TEDGE} {VDD})",
-                "vrbl rbl 0 dc {VRBL}",
-                ".ic v(sn)={VSN_INIT}",
-            ]
-        )
+        return G.single_cell_stimulus()
     lines = ["* selected row 0 / column 0: the single-cell write/read sequence"]
     for r in range(4):
         if r == 0:
-            lines.append(
-                "vwl_0 wl_0 0 pulse(0 {VDD} {TWL_ON} {TEDGE} {TEDGE} {TWL_OFF-TWL_ON-TEDGE} 1)"
-            )
+            lines.append(_line0(G.WL_PULSE, "vwl", "wl"))
         else:
             lines.append(f"vwl_{r} wl_{r} 0 dc 0")
     for c in range(4):
         if c == 0:
-            lines.append("vbl_0 bl_0 0 pwl(0 {VBL_DATA} {TBL_OFF} {VBL_DATA} {TBL_OFF+TEDGE} 0)")
+            lines.append(_line0(G.BL_PWL, "vbl", "bl"))
         else:
             lines.append(f"vbl_{c} bl_{c} 0 dc 0")
     for r in range(4):
         if r == 0:
-            lines.append(
-                "vrwl_0 rwl_0 0 pwl(0 {VDD} {TRWL_ON} {VDD} {TRWL_ON+TEDGE} 0 {TRWL_OFF} 0 {TRWL_OFF+TEDGE} {VDD})"
-            )
+            lines.append(_line0(G.RWL_PWL, "vrwl", "rwl"))
         else:
             lines.append(f"vrwl_{r} rwl_{r} 0 dc {{VDD}}")
     for c in range(4):
@@ -390,7 +365,7 @@ def build_bench(dut_text: str, cell: dict, side: str, netlist_path: str, sha: st
             "* storage-node wiring capacitance exactly once.",
             f"* {side}-leg DUT, inlined verbatim from {netlist_path} (sha256:{sha}).",
             "*",
-            _param_block(),
+            G.param_block(1),
             dut_text.rstrip("\n"),
             "",
             _x_line(cell),

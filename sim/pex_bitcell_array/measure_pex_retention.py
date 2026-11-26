@@ -54,11 +54,9 @@ from __future__ import annotations
 
 import argparse
 import datetime
-import hashlib
 import json
 import os
 import shlex
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -73,10 +71,12 @@ sys.path.insert(0, str(SIM_DIR / "retention"))
 sys.path.insert(0, str(STUDY_DIR))
 
 from _evidence_common import (  # noqa: E402
+    DEFAULT_PDK_VARIANT,
     PDK_OPEN_PDKS_COMMIT,
     measurements_of,
-    read_open_pdks_commit,
+    pdk_revision_problems,
     resolve_pdk_root,
+    sha256_hex,
     worker_pdk_stamp_problems,
 )
 import gen_bitcell_transient as G  # noqa: E402
@@ -96,10 +96,6 @@ from derive_retention import load_extracted_c_sn  # noqa: E402
 C_SN_SEED_FF, _ = load_extracted_c_sn(R.EXTRACT_JSON, "sn")
 
 
-def sha256_of(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def klt_argv() -> list[str]:
     argv = shlex.split(os.environ.get("GCEDRAM_KLT_BIN") or "klt")
     probe = subprocess.run(
@@ -117,13 +113,9 @@ def klt_argv() -> list[str]:
 
 def check_pdk_root() -> Path:
     root = resolve_pdk_root(None)
-    variant = root / "sky130A"
-    commit = read_open_pdks_commit(variant)
-    if commit != PDK_OPEN_PDKS_COMMIT:
-        raise SystemExit(
-            f"PDK_ROOT={root} resolves to open_pdks {commit!r}, pinned is "
-            f"{PDK_OPEN_PDKS_COMMIT!r}"
-        )
+    problems = pdk_revision_problems(root / DEFAULT_PDK_VARIANT)
+    if problems:
+        raise SystemExit(f"PDK_ROOT={root} is not at the pinned revision: " + "; ".join(problems))
     return root
 
 
@@ -139,7 +131,7 @@ def run_leg(cell: dict, side: str, netlist: Path, results_dir: Path) -> dict:
     p = G.params()
     t_hold = p["THOLD_START"]
 
-    netlist_sha = sha256_of(netlist)
+    netlist_sha = sha256_hex(netlist)
     dut_text = netlist.read_text()
     problems = pex_bench.dut_problems(dut_text, cell)
     if problems:
