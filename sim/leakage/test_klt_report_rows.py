@@ -19,13 +19,17 @@ import run_leakage_sweep as S  # noqa: E402
 
 RES = HERE / "results"
 COMMITTED_MISMATCHED_REPORT = RES / "klt_report_20261016T0731Z.json"
+OLD_PIN = "c6d73a35f524070e85faff4a6a9eef49553ebc2b"  # the issue #168 worker revision
 
 
-def synth_report(stamp_status):
+def synth_report(stamp_status, stamp_text=None):
     """Minimal report shaped like sim/leakage/results/klt_report_*.json.
 
     `stamp_status` is the `pdk_stamp_comparison.status` to embed; None
-    omits the block entirely (the fail-closed "absent" case)."""
+    omits the block entirely (the fail-closed "absent" case).
+    `stamp_text` is the worker's PDK stamp; it defaults to the repo pin
+    (as in a genuine stamp-matched report) and can name another revision
+    to exercise the stamp-text clause of the gate."""
     corners = []
     for process in S.DEFAULT_CORNERS:
         for temp_c in S.DEFAULT_TEMPS_C:
@@ -46,7 +50,7 @@ def synth_report(stamp_status):
                 }
             )
     worker_env = {
-        "pdk": {"stamp_text": f"open_pdks {S.PDK_OPEN_PDKS_COMMIT}"},
+        "pdk": {"stamp_text": stamp_text or f"open_pdks {S.PDK_OPEN_PDKS_COMMIT}"},
     }
     if stamp_status is not None:
         worker_env["pdk_stamp_comparison"] = {"status": stamp_status}
@@ -104,6 +108,17 @@ class StampMatchGuard(unittest.TestCase):
     def test_other_status_refused(self):
         with self.assertRaises(RuntimeError):
             S.rows_from_klt_report(write_report(synth_report("unknown")))
+
+    def test_match_against_another_revision_refused(self):
+        # A status of "match" only proves the worker's PDK equals the
+        # submitter's local PDK (issue #439): a submitter on a stale PDK
+        # gets "match" against a worker on that same stale revision. The
+        # worker stamp text must also name the repo pin before rows may
+        # carry it.
+        report = synth_report("match", stamp_text=f"open_pdks {OLD_PIN}")
+        with self.assertRaises(RuntimeError) as ctx:
+            S.rows_from_klt_report(write_report(report))
+        self.assertIn("does not name the pinned commit", str(ctx.exception))
 
     def test_committed_mismatched_report_refused(self):
         # The real issue #168 report (job klt-sim-c2ed3f15ab70, worker

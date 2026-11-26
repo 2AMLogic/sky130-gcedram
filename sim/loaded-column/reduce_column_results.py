@@ -42,7 +42,8 @@ sys.path.insert(0, str(HERE))
 import run_loaded_column as R  # noqa: E402
 import gen_column_requests as G  # noqa: E402
 from _evidence_common import (  # noqa: E402
-    PDK_OPEN_PDKS_COMMIT, append_result, load_json, repo_git_sha,
+    PDK_OPEN_PDKS_COMMIT, append_result, load_json, measurements_of,
+    repo_git_sha, worker_pdk_stamp_problems,
 )
 
 N_ROWS = R.N_ROWS
@@ -60,23 +61,14 @@ class GateError(RuntimeError):
 def gate(report: dict, *, pin: str = PDK_OPEN_PDKS_COMMIT) -> dict:
     """Refuse a report that was not produced by a worker on `pin`. Returns the
     provenance fields every row records about the run."""
+    problems = worker_pdk_stamp_problems(report, expected=pin)
+    if problems:
+        raise GateError("; ".join(problems))
     env = report.get("environment") or {}
     remote = env.get("remote") or {}
     worker = remote.get("worker_environment") or {}
     pdk = worker.get("pdk") or {}
-    cmp_ = worker.get("pdk_stamp_comparison") or {}
     stamp = str(pdk.get("stamp_text") or "")
-    status = str(cmp_.get("status") or "missing")
-    if status != "match":
-        raise GateError(
-            f"pdk_stamp_comparison is {status!r} (not 'match'): "
-            f"{json.dumps(cmp_)}; worker stamp {stamp!r}. Issue #169 allows a "
-            "fleet report to be filed as f6eeac7 evidence only on 'match'."
-        )
-    if pin not in stamp:
-        raise GateError(
-            f"worker PDK stamp {stamp!r} does not name the repo pin {pin}"
-        )
     banner = ((worker.get("simulator") or {}).get("version_banner") or "")
     ngs = next((ln.strip() for ln in banner.splitlines() if "ngspice" in ln.lower()),
                f"ngspice-{env.get('engine_version', 'unknown')}")
@@ -105,10 +97,6 @@ def job_of(report: dict, override: str | None = None) -> tuple[str, int]:
     return m.group("age"), int(m.group("sel"))
 
 
-def corner_measurements(corner: dict) -> dict[str, float | None]:
-    return {m["name"]: m.get("value") for m in corner.get("measurements") or []}
-
-
 def corner_failure(corner: dict) -> str:
     """A one-line reason for a corner that did not produce usable results."""
     diags = [d for d in corner.get("diagnostics") or []
@@ -125,7 +113,7 @@ def rows_for_corner(corner: dict, *, age: str, sel: int, knobs: dict, c_sn_f: fl
     P = G.params(knobs)
     T = G.instants(P, knobs, age)
     t_read = T["t_read"]
-    mv = corner_measurements(corner)
+    mv = measurements_of(corner)
     corner_bad = None if corner.get("status") in ("pass", "fail") else corner_failure(corner)
     lat_threshold = P["VRBL"] - R.DV_LATENCY_V
     out = []
