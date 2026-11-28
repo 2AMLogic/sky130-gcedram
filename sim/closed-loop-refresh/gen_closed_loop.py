@@ -317,7 +317,7 @@ def build_netlist(v: dict, waves: dict | None = None) -> str:
     ics: list[str] = []
     for p in pts:
         n, wf, bits = p["name"], p["wf"], p["bits"]
-        rb, rf, vn, vp, wb = f"rbl_{n}", f"ref_{n}", f"vn_{n}", f"vp_{n}", f"wbl_{n}"
+        rb, rf, wb = f"rbl_{n}", f"ref_{n}", f"wbl_{n}"
         a(f"* ---- instance {p['idx']}: {n} ({p['kind']}) ----")
         a(f"sbi_{n} bld{bits} {wb} bpk_{wf} 0 swwbl")
         a(f"swb_{n} {rf} {wb} wbc_{wf} 0 swwbl")
@@ -329,24 +329,15 @@ def build_netlist(v: dict, waves: dict | None = None) -> str:
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rb})={fmt_g6(VRBL_V)}")
         ics.append(f"v({rf})={fmt_g6(VRBL_V - DREF_V)}")
-        for r in range(N_ROWS):
-            sn = f"sn_{n}_{r}"
-            a(f"XMWR_{n}_{r} {sn} wl{r}_{wf} {wb} 0 {wr_m} {wr_p}")
-            a(f"XMRD_{n}_{r} {rb} {sn} rwls{r}_{wf} 0 {rd_m} {rd_p}")
-            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={fmt_g6(0.0 if p['data'][r] else VDD_V)}")   # opposite of the data to be written
-        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{wf}", "enb": f"enb_{wf}",
-                "vdd": "vdd", "GND": "0", "0": "0"}
-        for dev, (nets, model, params) in latch.items():
-            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-        ics.append(f"v({vn})=0.45")
-        ics.append(f"v({vp})=1.35")
-        a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
+        S.emit_column_cells(a, ics, n, rb, wb, (wr_m, wr_p), (rd_m, rd_p),
+                            rwl=lambda r: f"rwls{r}_{wf}", wwl=lambda r: f"wl{r}_{wf}",
+                            sn_ic=lambda r: 0.0 if p["data"][r] else VDD_V,   # opposite of the data to be written
+                            n_rows=N_ROWS)
+        S.emit_sense_latch(a, ics, n, rb, rf, latch, en=f"en_{wf}", enb=f"enb_{wf}", bdabs=False)
         a("")
     a("* initial conditions (tran uic): precharged rails, cells at the opposite of their data, latch tail nodes.")
     a("* They apply ONLY at t = 0 (before the initial write); nothing is reset between refresh cycles.")
-    for k in range(0, len(ics), 6):
-        a(".ic " + " ".join(ics[k:k + 6]))
+    L_ += S.ic_lines(ics)
     a("")
     if v.get("diagnostic"):
         dn = next(p["name"] for p in pts if p["wf"] == DIAG_WF)

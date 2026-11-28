@@ -15,6 +15,11 @@ Stdlib only. Writes, next to this file:
 Re-run after editing any constant; ``test_sense_stage.py`` fails if the
 committed files are stale.
 
+This module is also the single source of the deck elements every sense-path
+generator shares (issue #456): ``sn_mv_tag``, ``emit_column_cells``,
+``emit_sense_latch``, ``ic_lines`` and ``sense_stage_meas``. Each generator's
+committed deck pins their output byte for byte.
+
 PROPOSED, NOT RATIFIED: the corner/temperature set is the restricted range
 of ``spec/operating-range-decision-PROPOSED.md`` (27 C and 125 C, five
 global process corners, VDD = 1.8 V). Nothing outside it is simulated.
@@ -159,6 +164,85 @@ def design_cell_cards() -> tuple[str, str]:
     return out["M_WR"], out["M_RD"]
 
 
+def sn_mv_tag(sn_v: float) -> str:
+    """Instance-name tag of a storage-node level in mV: ``n100`` for -0.10 V, ``0900`` for 0.90 V."""
+    return ("n%03d" % round(-sn_v * 1000)) if sn_v < 0 else ("%04d" % round(sn_v * 1000))
+
+
+def _row_net(spec, r: int) -> str:
+    """The net row ``r``'s control connects to under ``spec``: a ``(selected, deselected)`` pair -- row 0
+    selected, the read-select convention of every deck here -- or a callable of the row index for the
+    decks with a per-row write wordline / select (aged-read, closed-loop)."""
+    if callable(spec):
+        return spec(r)
+    return spec[0] if r == 0 else spec[1]
+
+
+def emit_column_cells(a, ics: list[str], name: str, rbl: str, wbl: str, wr_card: tuple[str, str],
+                      rd_card: tuple[str, str], *, rwl, wwl=("0", "0"), sn_ic, n_rows: int = N_ROWS) -> None:
+    """Emit the ``n_rows``-row gain-cell column of instance ``name``: per row ``r`` the write device
+    ``XMWR_<name>_<r>`` (drain on the storage node, gate on the row's write wordline, source on
+    ``wbl``), the read device ``XMRD_<name>_<r>`` (drain on ``rbl``, gate on the row's read wordline)
+    and ``csn_<name>_<r>``, then append ``v(sn_<name>_<r>)=`` to the initial conditions ``ics``.
+
+    ``wr_card`` / ``rd_card`` are the ``(model, params)`` bitcell cards; each deck passes its own
+    (``design_cell_cards()`` or a ``parse_cards`` tuple, whose spacing differs). ``wbl`` = ``"0"`` with
+    ``wwl`` left at its default leaves the write device off (the sense-stage decks). ``rwl`` / ``wwl``:
+    see ``_row_net``. ``sn_ic(r)`` is the pre-read storage-node level (V) of row ``r``.
+    """
+    (wr_m, wr_p), (rd_m, rd_p) = wr_card, rd_card
+    for r in range(n_rows):
+        sn = f"sn_{name}_{r}"
+        a(f"XMWR_{name}_{r} {sn} {_row_net(wwl, r)} {wbl} 0 {wr_m} {wr_p}")
+        a(f"XMRD_{name}_{r} {rbl} {sn} {_row_net(rwl, r)} 0 {rd_m} {rd_p}")
+        a(f"csn_{name}_{r} {sn} 0 {{C_SN}}")
+        ics.append(f"v({sn})={fmt_g6(sn_ic(r))}")
+
+
+def emit_sense_latch(a, ics: list[str], name: str, rbl: str, ref: str, latch: dict, *, en: str = "en",
+                     enb: str = "enb", bdabs: bool = True) -> None:
+    """Emit the sense latch of instance ``name``: the ``design/sense_latch.spice`` cards ``latch`` (via
+    ``parse_cards``, issue #293) with its inputs on ``rbl`` / ``ref`` and its enable on ``en`` /
+    ``enb``; the tail-node initial conditions appended to ``ics`` (settle values of the floating tail
+    nodes; ASSUMPTION: ~ source-follower levels, then settle in idle time); and the differential
+    probe source ``bd_<name>`` on ``d_<name>``, plus ``bdabs_<name>`` on ``dabs_<name>`` when ``bdabs``.
+    """
+    vn, vp = f"vn_{name}", f"vp_{name}"
+    lmap = {"rbl": rbl, "ref": ref, "vn": vn, "vp": vp, "en": en, "enb": enb,
+            "vdd": "vdd", "GND": "0", "0": "0"}
+    for dev, (nets, model, params) in latch.items():
+        a(f"X{dev}_{name} {' '.join(lmap[x] for x in nets)} {model} {params}")
+    ics.append(f"v({vn})=0.45")
+    ics.append(f"v({vp})=1.35")
+    a(f"bd_{name} d_{name} 0 v=v({rbl})-v({ref})")
+    if bdabs:
+        a(f"bdabs_{name} dabs_{name} 0 v=abs(v({rbl})-v({ref}))")
+
+
+def ic_lines(ics: list[str], per_line: int = 6) -> list[str]:
+    """``.ic`` cards (``tran uic``): ``per_line`` node assignments per card."""
+    return [".ic " + " ".join(ics[k:k + per_line]) for k in range(0, len(ics), per_line)]
+
+
+def sense_stage_meas(names: list[str], *, t_en_s: float = T_EN_S, t_stop_s: float = T_STOP_S) -> list[dict]:
+    """The sense-stage measurement set per instance in ``names``: ``din`` (differential at the enable
+    instant ``t_en_s``), ``dend`` (at ``t_stop_s``) and ``tdec`` (shared ``en`` rise -> |differential|
+    0.9 V)."""
+    t_en_ns = fmt_g6(t_en_s * 1e9)
+    t_stop_ns = fmt_g6(t_stop_s * 1e9)
+    meas: list[dict] = []
+    for n in names:
+        meas += [
+            {"name": f"din_{n}", "unit": "V",
+             "spice": f".meas tran din_{n} FIND v(d_{n}) AT={t_en_ns}n"},
+            {"name": f"dend_{n}", "unit": "V",
+             "spice": f".meas tran dend_{n} FIND v(d_{n}) AT={t_stop_ns}n"},
+            {"name": f"tdec_{n}", "unit": "s",
+             "spice": f".meas tran tdec_{n} TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_{n}) VAL=0.9 RISE=1"},
+        ]
+    return meas
+
+
 def instances() -> list[dict]:
     """Ordered sweep points; each becomes one parallel instance in the deck."""
     pts = []
@@ -175,8 +259,7 @@ def instances() -> list[dict]:
             # against ngspice's lower-cased output (klayout-tools#2914)
             p["name"] = f"st_{'p' if p['d_mv'] > 0 else 'm'}{abs(p['d_mv'])}mv"
         else:
-            tag = ("n%03d" % round(-p["sn"] * 1000)) if p["sn"] < 0 else ("%04d" % round(p["sn"] * 1000))
-            p["name"] = f"{p['kind']}_r{round(p['dref'] * 1000):03d}_{tag}"
+            p["name"] = f"{p['kind']}_r{round(p['dref'] * 1000):03d}_{sn_mv_tag(p['sn'])}"
         p["idx"] = i
     return pts
 
@@ -247,7 +330,7 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
     for p in pts:
         i = p["idx"]
         n = p["name"]
-        rb, rf, vn, vp = f"rbl_{n}", f"ref_{n}", f"vn_{n}", f"vp_{n}"
+        rb, rf = f"rbl_{n}", f"ref_{n}"
         a(f"* ---- instance {i}: {n} ----")
         refbus = f"pref_{round(p['dref'] * 1000):03d}"
         if p["kind"] == "stage":
@@ -258,51 +341,25 @@ def build_netlist(c_sn_f: float, variant: str | None = None) -> str:
         else:
             a(f"spa_{n} prea {rb} ctl 0 swpre")
             ics.append(f"v({rb})={fmt_g6(VRBL_V)}")
-            for r in range(N_ROWS):
-                sn = f"sn_{n}_{r}"
-                rwl = "rwl_sel" if r == 0 else "rwl_des"
-                a(f"XMWR_{n}_{r} {sn} 0 0 0 {wr_m} {wr_p}")
-                a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
-                a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-                ics.append(f"v({sn})={fmt_g6(p['sn'])}")
+            emit_column_cells(a, ics, n, rb, "0", (wr_m, wr_p), (rd_m, rd_p),
+                              rwl=("rwl_sel", "rwl_des"), sn_ic=lambda _r: p["sn"])
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"spr_{n} {refbus} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rf})={VRBL_V - p['dref']:.6f}")
-        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": "en", "enb": "enb",
-                "vdd": "vdd", "GND": "0", "0": "0"}
-        for dev, (nets, model, params) in latch.items():
-            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-        # settle values of the floating tail nodes (ASSUMPTION: ~ source-follower levels, then settle in idle time)
-        ics.append(f"v({vn})=0.45")
-        ics.append(f"v({vp})=1.35")
-        a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
-        a(f"bdabs_{n} dabs_{n} 0 v=abs(v({rb})-v({rf}))")
+        emit_sense_latch(a, ics, n, rb, rf, latch)
         a("")
     a("* initial conditions (tran uic): precharged rails, stored levels, tail nodes")
-    for k in range(0, len(ics), 6):
-        a(".ic " + " ".join(ics[k:k + 6]))
+    L += ic_lines(ics)
     a("")
     return "\n".join(L)
 
 
 def build_request(variant: str | None = None) -> dict:
-    meas = []
-    t_en_ns = fmt_g6(T_EN_S * 1e9)
-    t_stop_ns = fmt_g6(T_STOP_S * 1e9)
-    for p in instances():
-        n = p["name"]
-        meas += [
-            {"name": f"din_{n}", "unit": "V",
-             "spice": f".meas tran din_{n} FIND v(d_{n}) AT={t_en_ns}n"},
-            {"name": f"dend_{n}", "unit": "V",
-             "spice": f".meas tran dend_{n} FIND v(d_{n}) AT={t_stop_ns}n"},
-            {"name": f"tdec_{n}", "unit": "s",
-             "spice": f".meas tran tdec_{n} TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_{n}) VAL=0.9 RISE=1"},
-        ]
     return klt_request(variant_paths(variant)[0].name,
                        {"process": PROCESS_CORNERS, "temperature_c": TEMPS_C},
-                       f"10p {t_stop_ns}n 0 50p uic", meas, 900)
+                       f"10p {fmt_g6(T_STOP_S * 1e9)}n 0 50p uic",
+                       sense_stage_meas([p["name"] for p in instances()]), 900)
 
 
 def render(variant: str | None = None) -> tuple[str, str]:

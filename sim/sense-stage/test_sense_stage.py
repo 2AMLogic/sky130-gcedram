@@ -171,5 +171,30 @@ class Analysis(unittest.TestCase):
             self.assertEqual(len(rows), len(d["corners"]) * len(G.instances()))
 
 
+class SharedDeckEmitters(unittest.TestCase):
+    """Issue #456: the column cells, sense latch, ``.ic`` cards, measurement triplet and SN tag that the
+    sense-path generators emit come from this module's shared helpers. A dependent that re-inlines one
+    is the duplication #456 removed; asserted against the source, so it cannot come back untested.
+    ``SIGNATURES`` is source text only the shared emitter (or a re-inlined copy of it) contains."""
+
+    DEPENDENTS = (
+        "sense-mismatch/gen_sense_mismatch.py", "column-periphery/gen_column_periphery.py",
+        "column-periphery/gen_isolation_study.py", "refresh-op/gen_refresh_op.py",
+        "refresh-replay/gen_refresh_replay.py", "aged-read/gen_aged_read.py",
+        "closed-loop-refresh/gen_closed_loop.py",
+    )
+    SIGNATURES = ("XMWR_", "lmap = {", "vn})=0.45", "bdabs_", '"n%03d"', '".ic " +', "TRIG v(en) VAL=0.9")
+
+    def test_the_signatures_are_spelled_as_the_shared_emitters_spell_them(self):
+        host = Path(G.__file__).read_text()
+        for sig in self.SIGNATURES:
+            self.assertIn(sig, host, sig)
+
+    def test_dependents_do_not_reinline_the_shared_deck_emitters(self):
+        offenders = [f"sim/{rel}: {sig!r}" for rel in self.DEPENDENTS for sig in self.SIGNATURES
+                     if sig in (G.REPO / "sim" / rel).read_text()]
+        self.assertEqual(offenders, [], "re-inlined a shared deck emitter; use the gen_sense_stage helper")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -34,15 +34,15 @@ the four corners of ``sim/sense-mismatch`` (tt/27, fs/27, ss/125, sf/125).
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import gen_column_periphery as G  # noqa: E402
+import gen_sense_stage as S  # noqa: E402
 sys.path.insert(0, str(HERE.parent))
-from _evidence_common import VDD_V, fmt_g6, parse_cards  # noqa: E402
+from _evidence_common import fmt_g6  # noqa: E402
 from klt_request import build_request as klt_request, mc_block  # noqa: E402
 
 STUDY_NETLIST = HERE / "isolation_study.spice"
@@ -67,13 +67,7 @@ def set_width(params: str, w_um: float) -> str:
     """As gen_column_periphery.set_width but with 14 significant digits, the precision xschem
     writes (so a resized card equals the schematic-derived netlist byte for byte, e.g. nrd =
     0.29/0.42 = 0.69047619047619)."""
-    ad, pd, nr = w_um * G.DIFF_UM, 2 * (w_um + G.DIFF_UM), G.DIFF_UM / w_um
-    p = re.sub(r"\bW=\S+", f"W={w_um:.14g}", params)
-    for k, v in (("ad", ad), ("as", ad), ("pd", pd), ("ps", pd), ("nrd", nr), ("nrs", nr)):
-        p, n = re.subn(rf"\b{k}=\S+", f"{k}={v:.14g}", p)
-        if n != 1:
-            raise ValueError(f"set_width: expected exactly one {k}= in {params!r}")
-    return p
+    return G.set_width(params, w_um, sig_digits=14)
 
 
 def baseline_cards() -> dict[str, tuple[list[str], str, str]]:
@@ -247,13 +241,7 @@ def build_netlist(points: list[dict], c_sn_f: float, title: str) -> str:
     a("* sense instant, reference level, ideal reference-side precharge and matched dummy load, ideal")
     a("* digital control edges (100 ps). sbl/sref carry only device parasitics unless csb is set.")
     a("")
-    a(f".param VDD     = {fm(G.VDD_V)}")
-    a(f".param VRBL    = {fm(G.VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param VREF    = {fm(G.VRBL_V - G.DREF_V)}   $ ASSUMPTION: VRBL - 0.1 V (as sense-stage)")
-    a(f".param TEDGE   = {fm(G.T_EDGE_S)}")
-    a(f".param C_RBL   = {fm(G.C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
-    a(f".param C_WBL   = {fm(G.C_WBL_F)}   $ ASSUMPTION (not extracted)")
-    a(f".param C_SN    = {fm(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    L += G.param_lines(c_sn_f)
     a("")
     a("* ---- shared control (ideal digital edges) ----")
     a("vdd   vdd 0 dc {VDD}")
@@ -288,40 +276,33 @@ def build_netlist(points: list[dict], c_sn_f: float, title: str) -> str:
     for p in points:
         n, d, kind = p["name"], p["data"], p["kind"]
         rb, rf, wb = f"rbl_{n}", f"ref_{n}", f"wbl_{n}"
-        vn, vp = f"vn_{n}", f"vp_{n}"
         if kind == "cprobe":
             sbl = f"sbl_{n}"
             a(f"* ---- instance {p['idx']}: {n} (capacitance probe, no array load) ----")
             a(f"icp_{n} {rb} 0 dc {fm(I_PROBE_A)}")
             ics += [f"v({rb})={fm(G.VRBL_V)}", f"v({sbl})={fm(G.VRBL_V)}"]
-            if True:
-                pw = {"MNS": p["wn"], "MPS": p["wp"], "MPPRE": p["wpre"]}
-                nm = {"rbl": rb, "sbl": sbl, "pre_b": "vdd", "vpre": "prea", "sel": "vdd", "selb": "0", "GND": "0", "vdd": "vdd"}
-                for dev in ("MPPRE", "MNS", "MPS"):
-                    nets, model, params = per[dev]
-                    if pw[dev] <= 0:
-                        continue
-                    if abs(pw[dev] - float(params.split("W=")[1].split()[0])) > 1e-12:
-                        params = set_width(params, pw[dev])
-                    a(f"X{dev}_{n} {' '.join(nm[x] for x in nets)} {model} {params}")
-                if p["pdum"] > 0:
-                    a(f"XMPDUM_{n} {rb} vdd {rb} prea {per['MPPRE'][1]} {set_width(per['MPPRE'][2], p['pdum'] * p['wpre'])}")
-                if p["csb"] > 0:
-                    a(f"csb_{n} {sbl} 0 {fm(p['csb'])}")
+            pw = {"MNS": p["wn"], "MPS": p["wp"], "MPPRE": p["wpre"]}
+            nm = {"rbl": rb, "sbl": sbl, "pre_b": "vdd", "vpre": "prea", "sel": "vdd", "selb": "0", "GND": "0", "vdd": "vdd"}
+            for dev in ("MPPRE", "MNS", "MPS"):
+                nets, model, params = per[dev]
+                if pw[dev] <= 0:
+                    continue
+                if abs(pw[dev] - float(params.split("W=")[1].split()[0])) > 1e-12:
+                    params = set_width(params, pw[dev])
+                a(f"X{dev}_{n} {' '.join(nm[x] for x in nets)} {model} {params}")
+            if p["pdum"] > 0:
+                a(f"XMPDUM_{n} {rb} vdd {rb} prea {per['MPPRE'][1]} {set_width(per['MPPRE'][2], p['pdum'] * p['wpre'])}")
+            if p["csb"] > 0:
+                a(f"csb_{n} {sbl} 0 {fm(p['csb'])}")
             a("")
             continue
         a(f"* ---- instance {p['idx']}: {n}" + (f" ({p['desc']})" if kind == "real" else "") + " ----")
-        for r in range(G.N_ROWS):
-            sn = f"sn_{n}_{r}"
-            rwl = "rwl_sel" if r == 0 else "rwl_des"
-            gate = "wl" if r == 0 else "0"
-            a(f"XMWR_{n}_{r} {sn} {gate} {wb} 0 {wr_m} {wr_p}")
-            a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
-            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            if r == 0:
-                ics.append(f"v({sn})={fm(0.0 if d == 1 else G.SN_HOLD1_V)}")
-            else:
-                ics.append(f"v({sn})={fm(G.SN_HOLD1_V if d == 1 else 0.0)}")
+
+        def sn_ic(r: int) -> float:
+            return (0.0 if d == 1 else G.SN_HOLD1_V) if r == 0 else (G.SN_HOLD1_V if d == 1 else 0.0)
+
+        S.emit_column_cells(a, ics, n, rb, wb, (wr_m, wr_p), (rd_m, rd_p),
+                            rwl=("rwl_sel", "rwl_des"), wwl=("wl", "0"), sn_ic=sn_ic, n_rows=G.N_ROWS)
         a(f"crbl_{n} {rb} 0 " + (fm(p["crbl"]) if p.get("crbl") else "{C_RBL}"))
         a(f"cwbl_{n} {wb} 0 {{C_WBL}}")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
@@ -330,10 +311,7 @@ def build_netlist(points: list[dict], c_sn_f: float, title: str) -> str:
         ics += [f"v({rb})=0", f"v({rf})={fm(G.VRBL_V - G.DREF_V)}", f"v({wb})=0"]
         if kind == "ideal":
             sbl, sref = rb, rf
-            a(f"spa_{n} prea {rb} pca 0 swpre   $ existing ideal precharge switch")
-            lvl = "{VDD}" if d == 1 else "0"
-            a(f"vwbl_{n} {wb} 0 pwl(0 0 {fm(G.T_WBL_ON_S)} 0 {fm(G.T_WBL_ON_S + G.T_EDGE_S)} {lvl} "
-              f"{fm(G.T_WBL_OFF_S)} {lvl} {fm(G.T_WBL_OFF_S + G.T_EDGE_S)} 0)   $ ideal write source")
+            G.emit_ideal_periphery(a, n, rb, wb, d)
         else:
             sbl, sref = f"sbl_{n}", f"sref_{n}"
             ti = round(t_iso(p) * 1e12)
@@ -365,16 +343,10 @@ def build_netlist(points: list[dict], c_sn_f: float, title: str) -> str:
                 a(f"csb_{n} {sbl} 0 {fm(p['csb'])}   $ STUDY option: extra latch-input hold capacitance")
                 a(f"csr_{n} {sref} 0 {fm(p['csb'])}")
             ics += [f"v({sbl})=0", f"v({sref})={fm(G.VRBL_V - G.DREF_V)}"]
-        lmap = {"rbl": sbl, "ref": sref, "en": "en", "enb": "enb", "vdd": "vdd", "vn": vn, "vp": vp, "GND": "0", "0": "0"}
-        for dev, (nets, model, params) in latch.items():
-            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-        ics += [f"v({vn})=0.45", f"v({vp})=1.35"]
-        a(f"bd_{n} d_{n} 0 v=v({sbl})-v({sref})")
-        a(f"bdabs_{n} dabs_{n} 0 v=abs(v({sbl})-v({sref}))")
+        S.emit_sense_latch(a, ics, n, sbl, sref, latch)
         a("")
     a("* initial conditions (tran uic): rbl fully discharged, stored levels, tail nodes")
-    for k in range(0, len(ics), 6):
-        a(".ic " + " ".join(ics[k:k + 6]))
+    L += S.ic_lines(ics)
     a("")
     return "\n".join(L)
 

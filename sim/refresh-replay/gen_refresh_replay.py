@@ -147,8 +147,7 @@ def timing(trace: dict, golden: dict, nodes: dict) -> dict:
 
 
 def inst_name(kind: str, sn: float, variant: str) -> str:
-    tag = ("n%03d" % round(-sn * 1000)) if sn < 0 else ("%04d" % round(sn * 1000))
-    return f"{kind}_{tag}_{variant}"
+    return f"{kind}_{S.sn_mv_tag(sn)}_{variant}"
 
 
 def build_instances(golden: dict) -> list[dict]:
@@ -205,7 +204,7 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
     ics: list[str] = []
     for i, p in enumerate(insts):
         n = p["name"]
-        rb, rf, vn, vp, wb = f"rbl_{n}", f"ref_{n}", f"vn_{n}", f"vp_{n}", f"wbl_{n}"
+        rb, rf, wb = f"rbl_{n}", f"ref_{n}", f"wbl_{n}"
         a(f"* ---- instance {i}: {n} (variant {p['variant']}; probe dec {p['t_dec_ns']:.4g} ns, release {p['t_release_ns']:.4g} ns, meas {p['t_meas_ns']:.4g} ns) ----")
         pw = node_pwl(p["nodes"])
         a(src_line("vctl", "ctl", n, pw["ctl"]))
@@ -228,25 +227,12 @@ def build_netlist(c_sn_f: float, insts: list[dict]) -> str:
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rb})={fmt_g6(G.VDD_V)}")
         ics.append(f"v({rf})=0")
-        for r in range(G.N_ROWS):
-            sn = f"sn_{n}_{r}"
-            rwl = f"rwls_{n}" if r == 0 else "rwl_des"
-            wwl = f"wwl_{n}" if r == 0 else "wwl_des"
-            a(f"XMWR_{n}_{r} {sn} {wwl} {wb} 0 {wr_m} {wr_p}")
-            a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
-            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
-        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{n}", "enb": f"enb_{n}",
-                "vdd": "vdd", "GND": "0", "0": "0"}
-        for dev, (nets, model, params) in latch.items():
-            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-        ics.append(f"v({vn})=0.45")
-        ics.append(f"v({vp})=1.35")
-        a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
+        S.emit_column_cells(a, ics, n, rb, wb, (wr_m, wr_p), (rd_m, rd_p), rwl=(f"rwls_{n}", "rwl_des"),
+                            wwl=(f"wwl_{n}", "wwl_des"), sn_ic=lambda _r: p["sn"], n_rows=G.N_ROWS)
+        S.emit_sense_latch(a, ics, n, rb, rf, latch, en=f"en_{n}", enb=f"enb_{n}", bdabs=False)
         a("")
     a("* initial conditions (tran uic)")
-    for k in range(0, len(ics), 6):
-        a(".ic " + " ".join(ics[k:k + 6]))
+    Ln += S.ic_lines(ics)
     a("")
     return "\n".join(Ln)
 

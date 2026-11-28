@@ -13,6 +13,9 @@ Stdlib only. Writes, next to this file:
   {27 C, 125 C}, one ``tran`` per corner; every case is an independent
   parallel instance inside that one deck.
 
+The 4-row column, the sense latch and the ``.ic`` cards are emitted by the
+shared helpers of ``sim/sense-stage/gen_sense_stage.py`` (issue #456).
+
 Instance kinds (each: 4-row column, row 0 written then read, latch enabled):
 
 * ``ideal_w1/w0``  the existing ideal-source setup (100 ohm ideal precharge
@@ -40,8 +43,10 @@ REPO = HERE.parent.parent
 sys.path.insert(0, str(REPO / "sim" / "retention"))
 from derive_retention import load_extracted_c_sn  # noqa: E402
 sys.path.insert(0, str(REPO / "sim"))
-from _evidence_common import VDD_V, fmt_g6, join_lines, parse_cards  # noqa: E402,F401
+from _evidence_common import VDD_V, fmt_g6, parse_cards  # noqa: E402
 from klt_request import build_request as klt_request  # noqa: E402
+sys.path.insert(0, str(REPO / "sim" / "sense-stage"))
+import gen_sense_stage as S  # noqa: E402
 
 NETLIST_PATH = HERE / "column_periphery.spice"
 REQUEST_PATH = HERE / "request.json"
@@ -107,24 +112,53 @@ PRE_W_SWEEP_UM = [1.0, 2.0, 4.0, 8.0]
 DIFF_UM = 0.29
 
 
-def set_width(params: str, w_um: float) -> str:
+def set_width(params: str, w_um: float, sig_digits: int = 6) -> str:
     """Rewrite W and ALL width-dependent geometry for a sweep width.
 
     Single-finger xschem/bitcell convention (as in design/*.spice):
     ad = as = W * 0.29, pd = ps = 2 * (W + 0.29), nrd = nrs = 0.29 / W.
     Every one of the six must follow W (nrd/nrs were missed in the first
     sweep, run 20261009T204412Z; design/test_column_periphery.py now checks
-    the full geometry).
+    the full geometry). ``sig_digits`` is the significant-digit count of every
+    written number: 6 (``fmt_g6``) here; the isolation study passes 14, the
+    precision xschem writes.
     """
     ad = w_um * DIFF_UM
     pd = 2 * (w_um + DIFF_UM)
     nr = DIFF_UM / w_um
-    p = re.sub(r"\bW=\S+", f"W={fmt_g6(w_um)}", params)
+
+    def num(v: float) -> str:
+        return f"{v:.{sig_digits}g}"
+
+    p = re.sub(r"\bW=\S+", f"W={num(w_um)}", params)
     for k, v in (("ad", ad), ("as", ad), ("pd", pd), ("ps", pd), ("nrd", nr), ("nrs", nr)):
-        p, n = re.subn(rf"\b{k}=\S+", f"{k}={fmt_g6(v)}", p)
+        p, n = re.subn(rf"\b{k}=\S+", f"{k}={num(v)}", p)
         if n != 1:
             raise ValueError(f"set_width: expected exactly one {k}= in {params!r}")
     return p
+
+
+def param_lines(c_sn_f: float) -> list[str]:
+    """The deck's ``.param`` cards; ``c_sn_f`` is the extracted storage-node capacitance (F)."""
+    return [
+        f".param VDD     = {fmt_g6(VDD_V)}",
+        f".param VRBL    = {fmt_g6(VRBL_V)}   $ ASSUMPTION (contract)",
+        f".param VREF    = {fmt_g6(VRBL_V - DREF_V)}   $ ASSUMPTION: VRBL - 0.1 V (as sense-stage)",
+        f".param TEDGE   = {fmt_g6(T_EDGE_S)}",
+        f".param C_RBL   = {fmt_g6(C_RBL_F)}   $ ASSUMPTION (contract; not extracted)",
+        f".param C_WBL   = {fmt_g6(C_WBL_F)}   $ ASSUMPTION (not extracted)",
+        f".param C_SN    = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)",
+    ]
+
+
+def emit_ideal_periphery(a, n: str, rb: str, wb: str, d: int) -> None:
+    """The ideal-source periphery of instance ``n`` (the existing testbench setup): the ideal precharge
+    switch on ``rb`` (pca) and the ideal write-bitline source on ``wb`` -- same edges as the WEN
+    window, at the data level ``d``."""
+    a(f"spa_{n} prea {rb} pca 0 swpre   $ existing ideal precharge switch")
+    lvl = "{VDD}" if d == 1 else "0"
+    a(f"vwbl_{n} {wb} 0 pwl(0 0 {fmt_g6(T_WBL_ON_S)} 0 {fmt_g6(T_WBL_ON_S + T_EDGE_S)} {lvl} "
+      f"{fmt_g6(T_WBL_OFF_S)} {lvl} {fmt_g6(T_WBL_OFF_S + T_EDGE_S)} 0)   $ ideal write source")
 
 
 def instances() -> list[dict]:
@@ -166,13 +200,7 @@ def build_netlist(c_sn_f: float) -> str:
     a("* sense instant, reference level, ideal reference-side precharge and matched dummy load, ideal")
     a("* digital control edges (100 ps), global corners only.")
     a("")
-    a(f".param VDD     = {fmt_g6(VDD_V)}")
-    a(f".param VRBL    = {fmt_g6(VRBL_V)}   $ ASSUMPTION (contract)")
-    a(f".param VREF    = {fmt_g6(VRBL_V - DREF_V)}   $ ASSUMPTION: VRBL - 0.1 V (as sense-stage)")
-    a(f".param TEDGE   = {fmt_g6(T_EDGE_S)}")
-    a(f".param C_RBL   = {fmt_g6(C_RBL_F)}   $ ASSUMPTION (contract; not extracted)")
-    a(f".param C_WBL   = {fmt_g6(C_WBL_F)}   $ ASSUMPTION (not extracted)")
-    a(f".param C_SN    = {fmt_g6(c_sn_f)}   $ extracted-from-netlist (layout/gain_cell_2t.extract.parasitics.json)")
+    L += param_lines(c_sn_f)
     a("")
     a("* ---- shared control (ideal digital edges) ----")
     a("vdd   vdd 0 dc {VDD}")
@@ -198,21 +226,15 @@ def build_netlist(c_sn_f: float) -> str:
     for p in pts:
         n, d, kind = p["name"], p["data"], p["kind"]
         rb, rf, wb = f"rbl_{n}", f"ref_{n}", f"wbl_{n}"
-        vn, vp = f"vn_{n}", f"vp_{n}"
         a(f"* ---- instance {p['idx']}: {n} ----")
-        # column: write access M_WR source on wbl, read M_RD drain on rbl
-        for r in range(N_ROWS):
-            sn = f"sn_{n}_{r}"
-            rwl = "rwl_sel" if r == 0 else "rwl_des"
-            gate = "wl" if r == 0 else "0"
-            a(f"XMWR_{n}_{r} {sn} {gate} {wb} 0 {wr_m} {wr_p}")
-            a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
-            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
+
+        def sn_ic(r: int) -> float:
             # row 0 starts at the OPPOSITE of the data (genuine overwrite); rows 1..3 at the data level
-            if r == 0:
-                ics.append(f"v({sn})={fmt_g6(0.0 if d == 1 else SN_HOLD1_V)}")
-            else:
-                ics.append(f"v({sn})={fmt_g6(SN_HOLD1_V if d == 1 else 0.0)}")
+            return (0.0 if d == 1 else SN_HOLD1_V) if r == 0 else (SN_HOLD1_V if d == 1 else 0.0)
+
+        # column: write access M_WR source on wbl, read M_RD drain on rbl
+        S.emit_column_cells(a, ics, n, rb, wb, (wr_m, wr_p), (rd_m, rd_p),
+                            rwl=("rwl_sel", "rwl_des"), wwl=("wl", "0"), sn_ic=sn_ic, n_rows=N_ROWS)
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"cwbl_{n} {wb} 0 {{C_WBL}}")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
@@ -220,11 +242,7 @@ def build_netlist(c_sn_f: float) -> str:
         ics += [f"v({rb})=0", f"v({rf})={fmt_g6(VRBL_V - DREF_V)}", f"v({wb})=0"]
         if kind == "ideal":
             sbl, sref = rb, rf
-            a(f"spa_{n} prea {rb} pca 0 swpre   $ existing ideal precharge switch")
-            # ideal write-bitline source: same edges as the WEN window, data level
-            lvl = "{VDD}" if d == 1 else "0"
-            a(f"vwbl_{n} {wb} 0 pwl(0 0 {fmt_g6(T_WBL_ON_S)} 0 {fmt_g6(T_WBL_ON_S + T_EDGE_S)} {lvl} "
-              f"{fmt_g6(T_WBL_OFF_S)} {lvl} {fmt_g6(T_WBL_OFF_S + T_EDGE_S)} 0)   $ ideal write source")
+            emit_ideal_periphery(a, n, rb, wb, d)
         else:
             sbl, sref = f"sbl_{n}", f"sref_{n}"
             netmap = {"rbl": rb, "sbl": sbl, "ref": rf, "sref": sref, "wbl": wb,
@@ -237,16 +255,10 @@ def build_netlist(c_sn_f: float) -> str:
                     params = set_width(params, p["w"])
                 a(f"X{dev}_{n} {' '.join(nn)} {model} {params}")
             ics += [f"v({sbl})=0", f"v({sref})={fmt_g6(VRBL_V - DREF_V)}"]
-        lmap = {"rbl": sbl, "ref": sref, "en": "en", "enb": "enb", "vdd": "vdd", "vn": vn, "vp": vp, "GND": "0", "0": "0"}
-        for dev, (nets, model, params) in latch.items():
-            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-        ics += [f"v({vn})=0.45", f"v({vp})=1.35"]
-        a(f"bd_{n} d_{n} 0 v=v({sbl})-v({sref})")
-        a(f"bdabs_{n} dabs_{n} 0 v=abs(v({sbl})-v({sref}))")
+        S.emit_sense_latch(a, ics, n, sbl, sref, latch)
         a("")
     a("* initial conditions (tran uic): rbl fully discharged, stored levels, tail nodes")
-    for k in range(0, len(ics), 6):
-        a(".ic " + " ".join(ics[k:k + 6]))
+    L += S.ic_lines(ics)
     a("")
     return "\n".join(L)
 
