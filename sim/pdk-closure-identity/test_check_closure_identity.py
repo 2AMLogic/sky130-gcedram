@@ -264,6 +264,122 @@ class InSetModelDeltaFails(Base):
         self.assertEqual(rc, 1)
 
 
+class DeckModelReferences(Base):
+    def compare(self, deck, models_a, models_b, expected_rc):
+        self.fx.deck = deck
+        self.fx.make_request()
+        path = "libs.tech/combined/models.spice"
+        entry = entry_with({"tt": ["models.spice"]})
+        self.fx.build_roots({path: models_a}, {path: models_b}, entry, entry)
+        record = self.fx.dir / "record.json"
+        self.assertEqual(
+            self.fx.run(["--out", str(record)]), expected_rc, self.fx.last_output
+        )
+        if expected_rc != 2:
+            return json.loads(record.read_text())
+
+    def test_changed_dotted_model_is_inside(self):
+        record = self.compare(
+            "M1 d g s b n_device.0 L=0.15 W=0.42\n",
+            ".model n_device.0 nmos vto=0.4\n",
+            ".model n_device.0 nmos vto=0.5\n",
+            1,
+        )
+        self.assertEqual(
+            record["sections"]["tt"]["inside_deltas"]["blocks"], ["n_device.0"]
+        )
+
+    def test_identical_model_counts_only_instance_references(self):
+        deck = (
+            "* n_device.0 and n_device are mentioned here\n"
+            "M1 n_device g s b n_device.0 L=0.15 ; n_device.0\n"
+            "M2 d g s b\n+ n_device.0 $ n_device\n"
+            ".meas tran result find v(n_device.0) at=1n\n"
+        )
+        models = ".model n_device.0 nmos vto=0.4\n.model n_device nmos\n"
+        record = self.compare(deck, models, models, 0)
+        self.assertEqual(
+            [(m["name"], m["deck_references"]) for m in record["instantiated_models"]],
+            [("n_device.0", 2)],
+        )
+
+    def test_absent_dotted_model_is_an_error(self):
+        self.compare(
+            "M1 d g s b n_device.0\n",
+            ".model n_device nmos\n",
+            ".model n_device nmos\n",
+            2,
+        )
+        self.assertIn("n_device.0", self.fx.last_output)
+
+    def test_slash_comment_cannot_select_another_subcircuit(self):
+        models = (".subckt actual a b\nR1 a b 1k\n.ends\n"
+                  ".subckt alias a b\nR2 a b 2k\n.ends\n")
+        deck = "X1 1 0 actual // alias\nX2 2 0 // alias\n+ actual // alias\n"
+        record = self.compare(deck, models, models.replace("1k", "4k"), 1)
+        self.assertEqual(
+            record["sections"]["tt"]["inside_deltas"]["blocks"], ["actual"]
+        )
+        self.assertEqual(
+            [(m["name"], m["deck_references"]) for m in record["instantiated_models"]],
+            [("actual", 2)],
+        )
+
+    def test_thermal_diode_node_named_for_a_subcircuit(self):
+        models = ".subckt tj a b\nR1 a b 1k\n.ends\n.model dmod d(is=1p)\n"
+        record = self.compare("D1 1 0 tj dmod thermal\n", models,
+                              models.replace("is=1p", "is=2p"), 1)
+        self.assertEqual(
+            record["sections"]["tt"]["inside_deltas"]["blocks"], ["dmod"]
+        )
+        self.assertEqual([m["name"] for m in record["instantiated_models"]], ["dmod"])
+
+    def test_missing_thermal_diode_model_is_an_error(self):
+        models = ".subckt tj a b\nR1 a b 1k\n.ends\n"
+        card = "D1 1 0 tj missing thermal"
+        self.compare(card, models, models, 2)
+        self.assertIn(card, self.fx.last_output)
+
+    def test_diode_model_position_differs_between_trees(self):
+        card = "D1 a k TJ off"
+        self.compare(card, ".model tj d\n", ".model off d\n", 2)
+        self.assertIn(card, self.fx.last_output)
+
+    def test_diode_with_positional_area_and_local_model(self):
+        deck = "D1 a k dev 2 off\nD2 a k tj local thermal\n.model local d\n"
+        models = ".model dev d(is=1p)\n"
+        record = self.compare(deck, models, models.replace("is=1p", "is=2p"), 1)
+        self.assertEqual([m["name"] for m in record["instantiated_models"]], ["dev"])
+
+    def test_bare_device_cards_compare_the_full_model_name(self):
+        for card, model in (
+            ("D1 a k dev.0", "d"),
+            ("J1 d g s dev.0", "njf"),
+            ("Q1 c b e dev.0", "npn"),
+        ):
+            with self.subTest(card=card):
+                self.compare(
+                    card,
+                    f".model dev.0 {model} is=1p\n",
+                    f".model dev.0 {model} is=2p\n",
+                    1,
+                )
+
+    def test_unknown_device_form_is_an_input_error(self):
+        self.compare(
+            "A1 in out custom.0\n",
+            ".model custom.0 custom gain=1\n",
+            ".model custom.0 custom gain=2\n",
+            2,
+        )
+        self.assertIn("A1 in out custom.0", self.fx.last_output)
+
+    def test_switch_can_use_model_defined_later_in_deck(self):
+        deck = "S1 a b ctl 0 swpre\n.model swpre sw(ron=1)\n"
+        record = self.compare(deck, "", "", 0)
+        self.assertEqual(record["instantiated_models"], [])
+
+
 class InSetParamFailsDirectAndTransitive(Base):
     """Champion note: a `.param` consumed by an instantiated model (directly
     or through another parameter) must classify inside and fail, even though
@@ -468,6 +584,11 @@ class SplitAssignments(unittest.TestCase):
 
 
 class DeckModelCandidates(unittest.TestCase):
+    def test_slashes_inside_quotes_survive_comment_stripping(self):
+        line = """X1 'first//node' "second//node" actual// alias"""
+        self.assertEqual(list(C.deck_cards(line)),
+                         ["""X1 'first//node' "second//node" actual"""])
+
     def test_x_card_with_params(self):
         cands = C.deck_model_candidates(
             "XM_WR a b c GND sky130_fd_pr__nfet_01v8 L=0.15 W=0.42 m=1")
