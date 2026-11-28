@@ -71,7 +71,7 @@ quantities are always evaluated at the worst-case corner, `sf`/125 C
 | 3c | Refresh controller | Refresh bandwidth overhead `(N_rows * t_row_refresh_op) / refresh_interval`, evaluated with the *design's own* `N_rows` and the measured `t_row_refresh_op` at the slowest corner | Slowest-read corner of the RESTRICTED set; `refresh_interval` = 5.03 us | <= 50 % | ASSUMPTION (rationale: leaves at least half of the bandwidth to foreground access; the formula is ratified, the limit is not; this is the cost the macro pays for density and is not hidden) | `sim/refresh-overhead/` (envelope, committed) fed by the macro's `t_row_refresh_op` once measured |
 | 4a | SPI control | Function: single-address read, write, refresh-status read; first and last valid address; invalid opcode and invalid address rejected with a status/error; interrupted frame and reset recovery | Digital, behavioral (no temperature dependence) | Every self-checking test passes, and the deliberately-broken mutant fails | ASSUMPTION (command set, mode, clock limit, framing are provisional until checked against the published Challenge #4 brief) | Planned: #83 (SPI-slave behavioral model and testbench); not yet committed |
 | 4b | SPI control | Data preservation and refresh deadline during SPI traffic at the maximum SCK | Digital, behavioral, with the 3a scenarios overlapped | Zero corrupted data; 3a threshold (<= 5.03 us) still met while SPI is active | **RATIFIED-CITED** for the 5.03 us bound (section 7), ASSUMPTION for the SCK limit | #83 testbench combined with `digital/refresh-scheduler/` |
-| 5a | Macro layout | Full-macro DRC | Corner-independent | `status: clean`, `violation_count: 0`, with the rule-deck coverage (layers checked, rules skipped) reported next to the result; a "clean" over a partial deck is reported as *informal*, not as a pass of this row | ASSUMPTION (the rows on the 4x4 array report only 6 of 16 deck layers; whether a released full deck exists is outside this repo, see Q5) | Planned: committed macro GDS plus fresh `klt drc` result JSON under `layout/` (same format as `layout/gain_cell_2t_array.drc.result.json`) |
+| 5a | Macro layout | Full-macro DRC | Corner-independent | `status: clean`, `violation_count: 0`, with the rule-deck coverage (layers checked, rules skipped) reported next to the result; a "clean" over a partial deck is reported as *informal*, not as a pass of this row | ASSUMPTION (the rows on the 4x4 array report only 6 of 16 deck layers; whether a released full deck exists is outside this repo; see the Q5 ruling in section 7) | Planned: committed macro GDS plus fresh `klt drc` result JSON under `layout/` (same format as `layout/gain_cell_2t_array.drc.result.json`) |
 | 5b | Macro layout | Full-macro LVS and ERC | Corner-independent | LVS `match`, zero error-severity mismatches, 100 % of devices and nets matched; ERC clean; any warning-severity entries enumerated | ASSUMPTION (same reasoning; format as `layout/gain_cell_2t_array.lvs.result.json`, `layout/gain_cell_2t_array.erc.result.json`) | Planned: fresh LVS and ERC results for the macro GDS |
 | 6a | Post-layout PVT | Write/read functional margin on the extracted macro | RESTRICTED (mismatch included for 6d) | Items 2a, 2b, 2c, 2d thresholds met on extracted views, every point; no "informal" substitution of ideal drivers | ASSUMPTION (inherits 2a-2d) | Planned: extracted-netlist `klt sim` request under a new `sim/` directory; not yet committed |
 | 6b | Post-layout PVT | Retention/refresh margin: stored data survives a dwell equal to the ratified refresh interval, and the sense margin 6a still holds after that dwell | `sf`/125 C (worst case, ratified section 2) and the RESTRICTED set | Hold-and-read passes at dwell = 5.03 us at every point; the dwell at which the first failure occurs is reported and must be >= 5.03 us at `sf`/125 C | **RATIFIED-CITED** for 5.03 us (section 7); ASSUMPTION for "must hold at exactly the interval, i.e. no extra margin demanded here" (see Q1 on the 2x margin) | Planned: same as 6a |
@@ -143,8 +143,17 @@ Not decided here; each needs a ruling or a key decision.
   placeholders** or are replaced once #80 and #81 land. This record carries
   them forward only so something is gradable now.
 - **Q5. What counts as a "full" DRC/LVS pass** (rows 5a, 5b) while the
-  rule deck is partial; and whether a "clean over a partial deck" result may
-  be reported at all, and under what label.
+  rule deck is partial. **Ruled 2026-11-23, option `a`:** "Keep the current
+  rule: coverage reported beside every result; partial-deck clean is
+  informal; 5a/5b pass only over a stated-coverage deck". Source: issue #394,
+  operator ruling from the attended `/fleet:decide` session, round
+  `20261121-r19`, `r19-q291`. This is an operator ruling, not an
+  `ee-key`/`market-key` ratification, so the status of this record stays
+  PROPOSED, NOT RATIFIED. A partial-deck clean is never reported as "passing
+  5a/5b", and a full-deck pass needs a deck whose coverage is stated. Rows
+  5a and 5b keep their current pass conditions. The Chipalooza #4 dependency
+  (rules-4.html, line 92) stays open: the ruling does not adopt that
+  harness's deck.
 - **Q6. Fallback if the restricted range is not ratified.** Should items 2 and
   6 then be graded against the full 15-point grid, where fs/-40 C is already
   known to fail?
