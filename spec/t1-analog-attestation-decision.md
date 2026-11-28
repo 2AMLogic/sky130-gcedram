@@ -174,7 +174,12 @@ item-10 command.
   which landed on `main` while this was in review); at landing (2026-11-23)
   that is 40 `python3 -I` commands plus the 4 `klt drc/lvs --check` commands,
   55/55 checks pass under the pinned klt 0.9.2, and the `hygiene` list is
-  unchanged.
+  unchanged. The klt pex bitcell/array suite
+  (`sim/pex_bitcell_array/test_pex_bitcell_array.py`) reached `main` afterwards,
+  in #403, and was inventoried in #433, giving 41 `python3 -I` commands and
+  56/56 checks; the sense-latch `klt drc/lvs --check` commands then raised the
+  current count to 58/58. #425 re-attested the envelope after its
+  `spec/README.md` change.
 - `block-manifest.json`'s `10.analog` and `10.digital` pins moved to the new
   inventory hash and `block-manifest.signoff.json` was regenerated; both item-10
   rows stay `met` and `t1_met_count` stays 9.
