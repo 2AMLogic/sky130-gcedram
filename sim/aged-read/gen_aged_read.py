@@ -106,10 +106,9 @@ def instances() -> list[dict]:
 
 
 def build_netlist(variant_label: str = "") -> str:
-    from gen_sense_stage import design_cell_cards, extracted_c_rbl_ff, layout_card
-    (wr_m, wr_p), (rd_m, rd_p) = design_cell_cards()
-    wr_p, rd_p = layout_card(wr_p), layout_card(rd_p)   # drawn diffusion (issue #89 reconciliation)
-    c_rbl_f = extracted_c_rbl_ff() * 1e-15
+    (wr_m, wr_p), (rd_m, rd_p) = S.design_cell_cards()
+    wr_p, rd_p = S.layout_card(wr_p), S.layout_card(rd_p)   # drawn diffusion (issue #89 reconciliation)
+    c_rbl_f = S.extracted_c_rbl_ff() * 1e-15
     c_sn_f = array_c_sn_ff() * 1e-15
     latch = parse_cards(LATCH_SPICE)
     pts = instances()
@@ -168,36 +167,24 @@ def build_netlist(variant_label: str = "") -> str:
     ics: list[str] = []
     for p in pts:
         n, age = p["name"], p["age_ns"]
-        rb, rf, vn, vp = f"rbl_{n}", f"ref_{n}", f"vn_{n}", f"vp_{n}"
+        rb, rf = f"rbl_{n}", f"ref_{n}"
         a(f"* ---- instance {p['idx']}: {n} (write order rows {p['order']}, slot bits {p['slot_bits']}) ----")
         a(f"spa_{n} prea {rb} ctl{age} 0 swpre")
         ics.append(f"v({rb})={fmt_g6(VRBL_V)}")
         bl = f"bld{p['slot_bits']}"
-        for r in range(N_ROWS):
-            slot = p["order"].index(r)
-            wl = "wlsw" if (p["weak"] and r == p["row"]) else f"wls{slot}"
-            rwl = f"rwls{age}" if r == p["row"] else "rwl_des"
-            sn = f"sn_{n}_{r}"
-            a(f"XMWR_{n}_{r} {sn} {wl} {bl} 0 {wr_m} {wr_p}")
-            a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
-            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={fmt_g6(0.0 if p['data'][r] else VDD_V)}")   # opposite of the data to be written
+        S.emit_column_cells(a, ics, n, rb, bl, (wr_m, wr_p), (rd_m, rd_p),
+                            rwl=lambda r: f"rwls{age}" if r == p["row"] else "rwl_des",
+                            wwl=lambda r: "wlsw" if (p["weak"] and r == p["row"]) else f"wls{p['order'].index(r)}",
+                            sn_ic=lambda r: 0.0 if p["data"][r] else VDD_V,   # opposite of the data to be written
+                            n_rows=N_ROWS)
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"spr_{n} pref {rf} ctl{age} 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rf})={fmt_g6(VRBL_V - DREF_V)}")
-        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en{age}", "enb": f"enb{age}",
-                "vdd": "vdd", "GND": "0", "0": "0"}
-        for dev, (nets, model, params) in latch.items():
-            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-        ics.append(f"v({vn})=0.45")
-        ics.append(f"v({vp})=1.35")
-        a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
-        a(f"bdabs_{n} dabs_{n} 0 v=abs(v({rb})-v({rf}))")
+        S.emit_sense_latch(a, ics, n, rb, rf, latch, en=f"en{age}", enb=f"enb{age}")
         a("")
     a("* initial conditions (tran uic): precharged rails, cells at the opposite of their data, latch tail nodes")
-    for k in range(0, len(ics), 6):
-        a(".ic " + " ".join(ics[k:k + 6]))
+    L += S.ic_lines(ics)
     a("")
     return "\n".join(L)
 

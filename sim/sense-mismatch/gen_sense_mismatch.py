@@ -115,9 +115,8 @@ def cell_instances() -> list[dict]:
         for kind, levels in (("cell0", CELL_SN0_LEVELS_V), ("cell1", CELL_SN1_LEVELS_V)):
             for lvl in levels:
                 for r in range(N_CELL_REPLICAS):
-                    tag = ("n%03d" % round(-lvl * 1000)) if lvl < 0 else ("%04d" % round(lvl * 1000))
                     pts.append(dict(kind=kind, dref=dref, sn=lvl, rep=r,
-                                    name=f"{'c1' if kind == 'cell1' else 'c0'}_r{round(dref * 1000):03d}_{tag}_{r}"))
+                                    name=f"{'c1' if kind == 'cell1' else 'c0'}_r{round(dref * 1000):03d}_{G.sn_mv_tag(lvl)}_{r}"))
     return pts
 
 
@@ -152,29 +151,6 @@ def _header(title: str, kinds: str) -> list[str]:
         "venb  enb 0 pwl(0 {VDD} {T_EN} {VDD} {T_EN+TEDGE} 0)",
         ".model swpre sw(vt=0.9 vh=0.1 ron=100 roff=1e12)",
     ]
-
-
-def _latch(a, ics: list[str], n: str, rb: str, rf: str, latch: dict) -> None:
-    """Emit the latch of design/sense_latch.spice (via G.parse_cards, issue #293):
-    same devices, sizes and full geometry (nrd/nrs/sa/sb/sd included) as the
-    schematic-derived netlist the sense-stage deck now also emits."""
-    vn, vp = f"vn_{n}", f"vp_{n}"
-    lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": "en", "enb": "enb",
-            "vdd": "vdd", "GND": "0", "0": "0"}
-    for dev, (nets, model, params) in latch.items():
-        a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-    ics.append(f"v({vn})=0.45")
-    ics.append(f"v({vp})=1.35")
-    a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
-    a(f"bdabs_{n} dabs_{n} 0 v=abs(v({rb})-v({rf}))")
-
-
-def _ic_block(ics: list[str]) -> list[str]:
-    out = ["* initial conditions (tran uic): precharged rails, stored levels, tail nodes"]
-    for k in range(0, len(ics), 6):
-        out.append(".ic " + " ".join(ics[k:k + 6]))
-    out.append("")
-    return out
 
 
 def build_stage_netlist(ref_offset_v: float = 0.0) -> str:
@@ -214,9 +190,11 @@ def build_stage_netlist(ref_offset_v: float = 0.0) -> str:
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rb})={va:.6f}")
         ics.append(f"v({rf})={ref_level:.6f}")
-        _latch(a, ics, n, rb, rf, latch)
+        G.emit_sense_latch(a, ics, n, rb, rf, latch)
         a("")
-    L += _ic_block(ics)
+    a("* initial conditions (tran uic): precharged rails, stored levels, tail nodes")
+    L += G.ic_lines(ics)
+    a("")
     return "\n".join(L)
 
 
@@ -240,38 +218,18 @@ def build_cell_netlist(c_sn_f: float) -> str:
         a(f"* ---- {n}: {p['kind']} SN = {p['sn']} V, ref offset {p['dref']} V, replica {p['rep']} ----")
         a(f"spa_{n} prea {rb} ctl 0 swpre")
         ics.append(f"v({rb})={fmt_g6(G.VRBL_V)}")
-        for r in range(G.N_ROWS):
-            sn = f"sn_{n}_{r}"
-            rwl = "rwl_sel" if r == 0 else "rwl_des"
-            a(f"XMWR_{n}_{r} {sn} 0 0 0 {wr_m} {wr_p}")
-            a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
-            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
+        G.emit_column_cells(a, ics, n, rb, "0", (wr_m, wr_p), (rd_m, rd_p),
+                            rwl=("rwl_sel", "rwl_des"), sn_ic=lambda _r: p["sn"])
         a(f"crbl_{n} {rb} 0 {{C_RBL}}")
         a(f"spr_{n} pref_{round(p['dref'] * 1000):03d} {rf} ctl 0 swpre")
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rf})={G.VRBL_V - p['dref']:.6f}")
-        _latch(a, ics, n, rb, rf, latch)
+        G.emit_sense_latch(a, ics, n, rb, rf, latch)
         a("")
-    L += _ic_block(ics)
+    a("* initial conditions (tran uic): precharged rails, stored levels, tail nodes")
+    L += G.ic_lines(ics)
+    a("")
     return "\n".join(L)
-
-
-def _meas(names: list[str]) -> list[dict]:
-    """din (differential at the enable instant), dend (at stop), tdec per instance."""
-    t_en_ns = fmt_g6(G.T_EN_S * 1e9)
-    t_stop_ns = fmt_g6(T_STOP_S * 1e9)
-    out = []
-    for n in names:
-        out += [
-            {"name": f"din_{n}", "unit": "V",
-             "spice": f".meas tran din_{n} FIND v(d_{n}) AT={t_en_ns}n"},
-            {"name": f"dend_{n}", "unit": "V",
-             "spice": f".meas tran dend_{n} FIND v(d_{n}) AT={t_stop_ns}n"},
-            {"name": f"tdec_{n}", "unit": "s",
-             "spice": f".meas tran tdec_{n} TRIG v(en) VAL=0.9 RISE=1 TARG v(dabs_{n}) VAL=0.9 RISE=1"},
-        ]
-    return out
 
 
 def _corners(cs: list[tuple[str, int]]) -> tuple[dict, list[dict]]:
@@ -291,28 +249,30 @@ def _request(netlist: str, cs: list[tuple[str, int]], n_mc: int, meas: list[dict
 
 def build_stage_request() -> dict:
     names = [p["name"] for p in stage_instances()]
-    return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, MC_N_STAGE, _meas(names))
+    return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, MC_N_STAGE,
+                    G.sense_stage_meas(names, t_stop_s=T_STOP_S))
 
 
 def build_row2e_request() -> dict:
     """Nominal campaign for the row-2e yield evidence: the committed stage deck
     (netlist unchanged, same measurements), larger n, its own seed."""
     names = [p["name"] for p in stage_instances()]
-    return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N, _meas(names),
-                    seed=ROW2E_MC_SEED)
+    return _request(STAGE_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N,
+                    G.sense_stage_meas(names, t_stop_s=T_STOP_S), seed=ROW2E_MC_SEED)
 
 
 def build_control_request() -> dict:
     """Negative-control campaign: the seeded-defect deck, same n and seed as
     the nominal row-2e campaign (common random numbers)."""
     names = [p["name"] for p in stage_instances()]
-    return _request(CONTROL_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N, _meas(names),
-                    seed=ROW2E_MC_SEED)
+    return _request(CONTROL_NETLIST_PATH.name, STAGE_CORNERS, ROW2E_MC_N,
+                    G.sense_stage_meas(names, t_stop_s=T_STOP_S), seed=ROW2E_MC_SEED)
 
 
 def build_cell_request() -> dict:
     names = [p["name"] for p in cell_instances()]
-    return _request(CELL_NETLIST_PATH.name, CELL_CORNERS, MC_N_CELL, _meas(names))
+    return _request(CELL_NETLIST_PATH.name, CELL_CORNERS, MC_N_CELL,
+                    G.sense_stage_meas(names, t_stop_s=T_STOP_S))
 
 
 def render() -> dict[Path, str]:

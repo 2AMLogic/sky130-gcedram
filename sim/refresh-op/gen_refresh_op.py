@@ -86,8 +86,7 @@ def instances() -> list[dict]:
         if p["kind"] == "ref":
             p["name"] = "refw"
         else:
-            tag = ("n%03d" % round(-p["sn"] * 1000)) if p["sn"] < 0 else ("%04d" % round(p["sn"] * 1000))
-            p["name"] = f"{p['kind']}_{tag}_s{_ns(p['sense'])}_w{_ns(p['wb'])}"
+            p["name"] = f"{p['kind']}_{S.sn_mv_tag(p['sn'])}_s{_ns(p['sense'])}_w{_ns(p['wb'])}"
         p["idx"] = i
         p.update(times(p["sense"], p["wb"]))
     return pts
@@ -164,7 +163,7 @@ def build_netlist(c_sn_f: float) -> str:
     ics: list[str] = []
     for p in pts:
         n = p["name"]
-        rb, rf, vn, vp, wb = f"rbl_{n}", f"ref_{n}", f"vn_{n}", f"vp_{n}", f"wbl_{n}"
+        rb, rf, wb = f"rbl_{n}", f"ref_{n}", f"wbl_{n}"
         a(f"* ---- instance {p['idx']}: {n} (t_en {p['t_en']*1e9:.4g} ns, WWL {p['t_on']*1e9:.4g}..{p['t_off']*1e9:.4g} ns, release {p['t_rel']*1e9:.4g} ns) ----")
         a(f"ven_{n}  en_{n}  0 pwl(0 0 {p['t_en']:.4e} 0 {p['t_en'] + T_EDGE_S:.4e} {{VDD}} {p['t_rel']:.4e} {{VDD}} {p['t_rel'] + T_EDGE_S:.4e} 0)")
         a(f"venb_{n} enb_{n} 0 pwl(0 {{VDD}} {p['t_en']:.4e} {{VDD}} {p['t_en'] + T_EDGE_S:.4e} 0 {p['t_rel']:.4e} 0 {p['t_rel'] + T_EDGE_S:.4e} {{VDD}})")
@@ -186,25 +185,12 @@ def build_netlist(c_sn_f: float) -> str:
         a(f"cref_{n} {rf} 0 {{C_RBL}}   $ ASSUMPTION: ideal matched dummy load")
         ics.append(f"v({rb})={fmt_g6(VDD_V)}")
         ics.append(f"v({rf})=0")
-        for r in range(N_ROWS):
-            sn = f"sn_{n}_{r}"
-            rwl = f"rwls_{n}" if r == 0 else "rwl_des"
-            wwl = f"wwl_{n}" if r == 0 else "wwl_des"
-            a(f"XMWR_{n}_{r} {sn} {wwl} {wb} 0 {wr_m} {wr_p}")
-            a(f"XMRD_{n}_{r} {rb} {sn} {rwl} 0 {rd_m} {rd_p}")
-            a(f"csn_{n}_{r} {sn} 0 {{C_SN}}")
-            ics.append(f"v({sn})={fmt_g6(p['sn'])}")
-        lmap = {"rbl": rb, "ref": rf, "vn": vn, "vp": vp, "en": f"en_{n}", "enb": f"enb_{n}",
-                "vdd": "vdd", "GND": "0", "0": "0"}
-        for dev, (nets, model, params) in latch.items():
-            a(f"X{dev}_{n} {' '.join(lmap[x] for x in nets)} {model} {params}")
-        ics.append(f"v({vn})=0.45")
-        ics.append(f"v({vp})=1.35")
-        a(f"bd_{n} d_{n} 0 v=v({rb})-v({rf})")
+        S.emit_column_cells(a, ics, n, rb, wb, (wr_m, wr_p), (rd_m, rd_p), rwl=(f"rwls_{n}", "rwl_des"),
+                            wwl=(f"wwl_{n}", "wwl_des"), sn_ic=lambda _r: p["sn"], n_rows=N_ROWS)
+        S.emit_sense_latch(a, ics, n, rb, rf, latch, en=f"en_{n}", enb=f"enb_{n}", bdabs=False)
         a("")
     a("* initial conditions (tran uic)")
-    for k in range(0, len(ics), 6):
-        a(".ic " + " ".join(ics[k:k + 6]))
+    L += S.ic_lines(ics)
     a("")
     return "\n".join(L)
 
