@@ -87,4 +87,8 @@ interface (parallel vs serial).
 
 ## 6. Not covered
 
-No timing, CDC or layout evidence, and no gate-level replay of the committed `spi_slave` netlist; synthesis evidence for `spi_slave` exists (`results/synth_spi_slave_2026-11-16_issue342.json`). The behavioral model uses `sclk`/`cs_n` as clocks directly and is a protocol model only.
+The behavioral model uses `sclk` and `cs_n` directly as clocks to exercise the SPI protocol.
+The [synthesis report](results/synth_spi_slave_2026-11-16_issue342.json) records the
+mapping of `spi_slave` to `sky130_fd_sc_hd` cells and an unconstrained ABC delay
+estimate of 1713.62 ps. SPI timing, CDC and layout remain unverified. The mapped
+netlist has no gate-level replay (see the [reset and clear discussion](README.md#reset--clear-structure-issue-273)).
